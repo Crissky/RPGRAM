@@ -28,24 +28,24 @@ class BaseStats:
         points = max_level_points - self.total_base_stats
         if points < 0:
             raise ValueError(
-                f'Foi gasto mais pontos nos atributos que o nível permite.\n'
-                f'Total de pontos do level {self.__level}: '
+                f'Foi gasto mais Pontos nos atributos que o Nível permite.\n'
+                f'Total de Pontos do Nível {self.__level}: '
                 f'{max_level_points}.\n'
-                f'Total de pontos gastos: {self.total_base_stats}.'
+                f'Total de Pontos gastos: {self.total_base_stats}.'
             )
         return points
 
     def __add_stats(self, points: int, attribute: str) -> None:
         points = int(points)
         clean_attribute = attribute.split('_')[-1].title()
-        print(f'Adicionando {points} ponto(s) ao atributo {clean_attribute}.')
+        print(f'Adicionando {points} Ponto(s) ao atributo {clean_attribute}.')
         if points > self.points:
             raise ValueError(
-                f'Não há pontos suficientes para adicionar.\n'
-                f'Atualmente você tem {self.points} ponto(s).'
+                f'Não há Pontos suficientes para adicionar.\n'
+                f'Atualmente você tem {self.points} Ponto(s).'
             )
         if points <= 0:
-            raise ValueError('Não é possível adicionar menos que 1 ponto.')
+            raise ValueError('Não é possível adicionar menos que 1 Ponto.')
         new_value = getattr(self, attribute) + points
         setattr(self, attribute, new_value)
 
@@ -53,11 +53,12 @@ class BaseStats:
         value = int(value)
         clean_attribute = attribute.split('_')[-1].title()
         print(
-            f'Adicionando {value} ponto(s) '
+            f'Adicionando {value} Ponto(s) '
             f'ao modificador do atributo {clean_attribute}.'
         )
         setattr(self, attribute, value)
 
+    # Getters
     @property
     def total_base_stats(self) -> int:
         return int(sum([
@@ -69,7 +70,6 @@ class BaseStats:
             self.base_charisma
         ]))
 
-    # Getters
     @property
     def level(self) -> int:
         return self.__level
@@ -111,6 +111,7 @@ class BaseStats:
     def base_charisma(self) -> int:
         return self.__base_charisma
 
+    # Attributes
     @property
     def strength(self) -> int:
         return self.base_strength + self.mod_strength
@@ -139,18 +140,21 @@ class BaseStats:
     @xp.setter
     def xp(self, value: int) -> None:
         value = int(value)
-        if value < 0:
+        if value <= 0:
             raise ValueError(
-                f'Não é possível adicionar pontos de experiência com valores '
-                f'negativos. Valor {value}.'
+                f'Não é possível adicionar Pontos de Experiência menor que 1.'
             )
-        print(f'Ganhou {value} pontos de experiência.')
+        print(f'Ganhou {value} Pontos de Experiência.')
         while value > 0:
             self.__current_xp += value
             if self.__current_xp >= self.next_level_xp:
                 value = self.__current_xp - self.next_level_xp
                 self.__current_xp = 0
                 self.__level += 1
+                print(
+                    f'Subiu para o Nível {self.__level}. '
+                    f'Agora possui {self.points} Pontos.'
+                )
             else:
                 break
 
@@ -179,6 +183,9 @@ class BaseStats:
         return self.__add_stats(value, '_BaseStats__base_charisma')
 
     xp_points = xp
+
+    # Getters and Setters
+    # Attribute Modifiers
     mod_strength = property(
         fget=lambda self: self.__mod_strength,
         fset=lambda self, value: self.__add_mod_stats(
