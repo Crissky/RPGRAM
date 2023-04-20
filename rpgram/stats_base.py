@@ -16,12 +16,12 @@ class BaseStats:
         self.__base_wisdom = 0
         self.__base_charisma = 0
 
-        self.__mod_strength = 0
-        self.__mod_dexterity = 0
-        self.__mod_constitution = 0
-        self.__mod_intelligence = 0
-        self.__mod_wisdom = 0
-        self.__mod_charisma = 0
+        self.__bonus_strength = 0
+        self.__bonus_dexterity = 0
+        self.__bonus_constitution = 0
+        self.__bonus_intelligence = 0
+        self.__bonus_wisdom = 0
+        self.__bonus_charisma = 0
 
     def __get_points(self) -> int:
         max_level_points = self.__level * 3
@@ -34,6 +34,9 @@ class BaseStats:
                 f'Total de Pontos gastos: {self.total_base_stats}.'
             )
         return points
+
+    def __get_modifier_stats(self, attribute_points: int) -> int:
+        return (attribute_points - 10) // 2
 
     def __add_stats(self, points: int, attribute: str) -> None:
         points = int(points)
@@ -49,12 +52,12 @@ class BaseStats:
         new_value = getattr(self, attribute) + points
         setattr(self, attribute, new_value)
 
-    def __add_mod_stats(self, value: int, attribute: str) -> None:
+    def __add_bonus_stats(self, value: int, attribute: str) -> None:
         value = int(value)
         clean_attribute = attribute.split('_')[-1].title()
         print(
             f'Adicionando {value} Ponto(s) '
-            f'ao modificador do atributo {clean_attribute}.'
+            f'ao bônus do atributo {clean_attribute}.'
         )
         setattr(self, attribute, value)
 
@@ -114,27 +117,27 @@ class BaseStats:
     # Attributes
     @property
     def strength(self) -> int:
-        return self.base_strength + self.mod_strength
+        return self.base_strength + self.bonus_strength
 
     @property
     def dexterity(self) -> int:
-        return self.base_dexterity + self.mod_dexterity
+        return self.base_dexterity + self.bonus_dexterity
 
     @property
     def constitution(self) -> int:
-        return self.base_constitution + self.mod_constitution
+        return self.base_constitution + self.bonus_constitution
 
     @property
     def intelligence(self) -> int:
-        return self.base_intelligence + self.mod_intelligence
+        return self.base_intelligence + self.bonus_intelligence
 
     @property
     def wisdom(self) -> int:
-        return self.base_wisdom + self.mod_wisdom
+        return self.base_wisdom + self.bonus_wisdom
 
     @property
     def charisma(self) -> int:
-        return self.base_charisma + self.mod_charisma
+        return self.base_charisma + self.bonus_charisma
 
     # Setters
     @xp.setter
@@ -185,63 +188,104 @@ class BaseStats:
     xp_points = xp
 
     # Getters and Setters
-    # Attribute Modifiers
-    mod_strength = property(
-        fget=lambda self: self.__mod_strength,
-        fset=lambda self, value: self.__add_mod_stats(
-            value, '_BaseStats__mod_strength'
+    # Attribute Bonus
+    bonus_strength = property(
+        fget=lambda self: self.__bonus_strength,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_BaseStats__bonus_strength'
         )
     )
-    mod_dexterity = property(
-        fget=lambda self: self.__mod_dexterity,
-        fset=lambda self, value: self.__add_mod_stats(
-            value, '_BaseStats__mod_dexterity'
+    bonus_dexterity = property(
+        fget=lambda self: self.__bonus_dexterity,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_BaseStats__bonus_dexterity'
         )
     )
-    mod_constitution = property(
-        fget=lambda self: self.__mod_constitution,
-        fset=lambda self, value: self.__add_mod_stats(
-            value, '_BaseStats__mod_constitution'
+    bonus_constitution = property(
+        fget=lambda self: self.__bonus_constitution,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_BaseStats__bonus_constitution'
         )
     )
-    mod_intelligence = property(
-        fget=lambda self: self.__mod_intelligence,
-        fset=lambda self, value: self.__add_mod_stats(
-            value, '_BaseStats__mod_intelligence'
+    bonus_intelligence = property(
+        fget=lambda self: self.__bonus_intelligence,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_BaseStats__bonus_intelligence'
         )
     )
-    mod_wisdom = property(
-        fget=lambda self: self.__mod_wisdom,
-        fset=lambda self, value: self.__add_mod_stats(
-            value, '_BaseStats__mod_wisdom'
+    bonus_wisdom = property(
+        fget=lambda self: self.__bonus_wisdom,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_BaseStats__bonus_wisdom'
         )
     )
-    mod_charisma = property(
-        fget=lambda self: self.__mod_charisma,
-        fset=lambda self, value: self.__add_mod_stats(
-            value, '_BaseStats__mod_charisma'
+    bonus_charisma = property(
+        fget=lambda self: self.__bonus_charisma,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_BaseStats__bonus_charisma'
         )
     )
 
+    # Getters and Setters
+    # Attribute Modifiers
+    mod_strength = property(
+        fget=lambda self: self.__get_modifier_stats(self.strength)
+    )
+    mod_dexterity = property(
+        fget=lambda self: self.__get_modifier_stats(self.dexterity)
+    )
+    mod_constitution = property(
+        fget=lambda self: self.__get_modifier_stats(self.constitution)
+    )
+    mod_intelligence = property(
+        fget=lambda self: self.__get_modifier_stats(self.intelligence)
+    )
+    mod_wisdom = property(
+        fget=lambda self: self.__get_modifier_stats(self.wisdom)
+    )
+    mod_charisma = property(
+        fget=lambda self: self.__get_modifier_stats(self.charisma)
+    )
+
     def __repr__(self) -> str:
+        str_sign = '+' if self.bonus_strength >= 0 else ''
+        dex_sign = '+' if self.bonus_dexterity >= 0 else ''
+        con_sign = '+' if self.bonus_constitution >= 0 else ''
+        int_sign = '+' if self.bonus_intelligence >= 0 else ''
+        wis_sign = '+' if self.bonus_wisdom >= 0 else ''
+        cha_sign = '+' if self.bonus_charisma >= 0 else ''
         return (
             f'########################################\n'
+
             f'Level: {self.level}\n'
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
-            f'Forca: {self.base_strength} + '
-            f'({self.mod_strength}) = {self.strength}\n'
-            f'Destreza: {self.base_dexterity} + '
-            f'({self.mod_dexterity}) = {self.dexterity}\n'
-            f'Constituição: {self.base_constitution} + '
-            f'({self.mod_constitution}) = {self.constitution}\n'
-            f'Inteligência: {self.base_intelligence} + '
-            f'({self.mod_intelligence}) = {self.intelligence}\n'
-            f'Sabedoria: {self.base_wisdom} + '
-            f'({self.mod_wisdom}) = {self.wisdom}\n'
-            f'Carisma: {self.base_charisma} + '
-            f'({self.mod_charisma}) = {self.charisma}\n'
-            f'########################################'
+
+            f'Força: {self.strength} '
+            f'[{self.base_strength}{str_sign}{self.bonus_strength}] '
+            f'({self.mod_strength})\n'
+
+            f'Destreza: {self.dexterity} '
+            f'[{self.base_dexterity}{dex_sign}{self.bonus_dexterity}] '
+            f'({self.mod_dexterity})\n'
+
+            f'Constituição: {self.constitution} '
+            f'[{self.base_constitution}{con_sign}{self.bonus_constitution}] '
+            f'({self.mod_constitution})\n'
+
+            f'Inteligência: {self.intelligence} '
+            f'[{self.base_intelligence}{int_sign}{self.bonus_intelligence}] '
+            f'({self.mod_intelligence})\n'
+
+            f'Sabedoria: {self.base_wisdom} '
+            f'[{self.base_wisdom}{wis_sign}{self.bonus_wisdom}] '
+            f'({self.mod_wisdom})\n'
+
+            f'Carisma: {self.base_charisma} '
+            f'[{self.base_charisma}{cha_sign}{self.bonus_charisma}] '
+            f'({self.mod_charisma})\n'
+
+            f'########################################\n'
         )
 
 
@@ -251,19 +295,19 @@ if __name__ == '__main__':
     stats.xp = 310
     print(stats)
     stats.base_strength = 2
-    stats.mod_strength = 5
+    stats.bonus_strength = 5
     print(stats)
     stats.base_dexterity = 1
-    stats.mod_dexterity = 2
+    stats.bonus_dexterity = 2
     print(stats)
     stats.base_constitution = 1
-    stats.mod_constitution = 3
+    stats.bonus_constitution = 3
     print(stats)
     stats.base_intelligence = 1
-    stats.mod_intelligence = 10
+    stats.bonus_intelligence = 10
     print(stats)
     stats.base_wisdom = 1
     print(stats)
     stats.base_charisma = 1
-    stats.mod_charisma = -5
+    stats.bonus_charisma = -5
     print(stats)
