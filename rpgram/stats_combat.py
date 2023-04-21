@@ -146,13 +146,6 @@ class CombatStats:
     )
 
     def __repr__(self) -> str:
-        str_sign = '+' if self.__base_stats.bonus_strength >= 0 else ''
-        dex_sign = '+' if self.__base_stats.bonus_dexterity >= 0 else ''
-        con_sign = '+' if self.__base_stats.bonus_constitution >= 0 else ''
-        int_sign = '+' if self.__base_stats.bonus_intelligence >= 0 else ''
-        wis_sign = '+' if self.__base_stats.bonus_wisdom >= 0 else ''
-        cha_sign = '+' if self.__base_stats.bonus_charisma >= 0 else ''
-        
         init_sign = '+' if self.bonus_initiative >= 0 else ''
         hp_sign = '+' if self.bonus_hit_points >= 0 else ''
         phy_sign = '+' if self.bonus_physical_attack >= 0 else ''
@@ -166,70 +159,32 @@ class CombatStats:
         base_mag_atk = self.magical_attack - self.bonus_magical_attack
         base_phy_def = self.physical_defense - self.bonus_physical_defense
         base_mag_def = self.magical_defense - self.bonus_magical_defense
-        
 
         return (
-            f'########################################\n'
-
-            f'Level: {self.__base_stats.level}\n'
-            f'Experiência: {self.__base_stats.xp}/'
-            f'{self.__base_stats.next_level_xp}\n'
-            f'Pontos: {self.__base_stats.points}\n'
-
-            f'\n-ATRIBUTOS BASE-\n'
-
-            f'FOR: {self.strength} '
-            f'[{self.__base_stats.base_strength}{str_sign}'
-            f'{self.__base_stats.bonus_strength}] '
-            f'({self.__base_stats.mod_strength})\n'
-
-            f'DES: {self.dexterity} '
-            f'[{self.__base_stats.base_dexterity}{dex_sign}'
-            f'{self.__base_stats.bonus_dexterity}] '
-            f'({self.__base_stats.mod_dexterity})\n'
-
-            f'CON: {self.constitution} '
-            f'[{self.__base_stats.base_constitution}{con_sign}'
-            f'{self.__base_stats.bonus_constitution}] '
-            f'({self.__base_stats.mod_constitution})\n'
-
-            f'INT: {self.intelligence} '
-            f'[{self.__base_stats.base_intelligence}{int_sign}'
-            f'{self.__base_stats.bonus_intelligence}] '
-            f'({self.__base_stats.mod_intelligence})\n'
-
-            f'SAB: {self.wisdom} '
-            f'[{self.__base_stats.base_wisdom}{wis_sign}'
-            f'{self.__base_stats.bonus_wisdom}] '
-            f'({self.__base_stats.mod_wisdom})\n'
-
-            f'CAR: {self.charisma} '
-            f'[{self.__base_stats.base_charisma}{cha_sign}'
-            f'{self.__base_stats.bonus_charisma}] '
-            f'({self.__base_stats.mod_charisma})\n'
+            f'{self.__base_stats.__repr__()}'
 
             f'\n-ATRIBUTOS DE COMBATE-\n'
 
             f'HP: {self.current_hit_points}/{self.hit_points} '
             f'[{base_hp}{hp_sign}{self.bonus_hit_points}]\n'
-            
+
             f'INICIATIVA: {self.initiative} '
             f'[{base_init}{init_sign}'
             f'{self.bonus_initiative}]\n'
-            
+
             f'ATAQUE FÍSICO: {self.physical_attack} '
             f'[{base_phy_atk}{phy_sign}'
             f'{self.bonus_physical_attack}]\n'
-            
+
             f'ATAQUE MÁGICO: {self.magical_attack} '
             f'[{base_mag_atk}{mag_sign}'
             f'{self.bonus_magical_attack}]\n'
-            
-            f'DEFESA FÍSICO: {self.physical_defense} '
+
+            f'DEFESA FÍSICA: {self.physical_defense} '
             f'[{base_phy_def}{phy_def_sign}'
             f'{self.bonus_physical_defense}]\n'
-            
-            f'DEFESA MÁGICO: {self.magical_defense} '
+
+            f'DEFESA MÁGICA: {self.magical_defense} '
             f'[{base_mag_def}{mag_def_sign}'
             f'{self.bonus_magical_defense}]\n'
 

@@ -264,6 +264,8 @@ class BaseStats:
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
 
+            f'\n-ATRIBUTOS BASE-\n'
+
             f'FOR: {self.strength} '
             f'[{self.base_strength}{str_sign}{self.bonus_strength}] '
             f'({self.mod_strength})\n'
@@ -280,15 +282,13 @@ class BaseStats:
             f'[{self.base_intelligence}{int_sign}{self.bonus_intelligence}] '
             f'({self.mod_intelligence})\n'
 
-            f'SAB: {self.base_wisdom} '
+            f'SAB: {self.wisdom} '
             f'[{self.base_wisdom}{wis_sign}{self.bonus_wisdom}] '
             f'({self.mod_wisdom})\n'
 
-            f'CAR: {self.base_charisma} '
+            f'CAR: {self.charisma} '
             f'[{self.base_charisma}{cha_sign}{self.bonus_charisma}] '
             f'({self.mod_charisma})\n'
-
-            f'########################################\n'
         )
 
 
