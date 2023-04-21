@@ -2,7 +2,7 @@ from stats_base import BaseStats
 
 
 class CombatStats:
-    def __init__(self, base_stats) -> None:
+    def __init__(self, base_stats: BaseStats) -> None:
         self.__base_stats = base_stats
         self.__damage = 0
         self.__bonus_physical_attack = 0
@@ -159,7 +159,6 @@ class CombatStats:
         base_mag_atk = self.magical_attack - self.bonus_magical_attack
         base_phy_def = self.physical_defense - self.bonus_physical_defense
         base_mag_def = self.magical_defense - self.bonus_magical_defense
-
         return (
             f'{self.__base_stats.__repr__()}'
 
