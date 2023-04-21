@@ -41,14 +41,17 @@ class BaseStats:
     def __add_stats(self, points: int, attribute: str) -> None:
         points = int(points)
         clean_attribute = attribute.split('_')[-1].title()
-        print(f'Adicionando {points} Ponto(s) ao atributo {clean_attribute}.')
+        print(f'Adicionando {points} Ponto(s) de {clean_attribute}.')
         if points > self.points:
             raise ValueError(
                 f'Não há Pontos suficientes para adicionar.\n'
                 f'Atualmente você tem {self.points} Ponto(s).'
             )
         if points <= 0:
-            raise ValueError('Não é possível adicionar menos que 1 Ponto.')
+            raise ValueError(
+                f'Não é possível adicionar menos que '
+                f'1 Ponto de {clean_attribute}.'
+            )
         new_value = getattr(self, attribute) + points
         setattr(self, attribute, new_value)
 
@@ -57,7 +60,7 @@ class BaseStats:
         clean_attribute = attribute.split('_')[-1].title()
         print(
             f'Adicionando {value} Ponto(s) '
-            f'ao bônus do atributo {clean_attribute}.'
+            f'de bônus de {clean_attribute}.'
         )
         setattr(self, attribute, value)
 
@@ -261,27 +264,27 @@ class BaseStats:
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
 
-            f'Força: {self.strength} '
+            f'FOR: {self.strength} '
             f'[{self.base_strength}{str_sign}{self.bonus_strength}] '
             f'({self.mod_strength})\n'
 
-            f'Destreza: {self.dexterity} '
+            f'DES: {self.dexterity} '
             f'[{self.base_dexterity}{dex_sign}{self.bonus_dexterity}] '
             f'({self.mod_dexterity})\n'
 
-            f'Constituição: {self.constitution} '
+            f'CON: {self.constitution} '
             f'[{self.base_constitution}{con_sign}{self.bonus_constitution}] '
             f'({self.mod_constitution})\n'
 
-            f'Inteligência: {self.intelligence} '
+            f'INT: {self.intelligence} '
             f'[{self.base_intelligence}{int_sign}{self.bonus_intelligence}] '
             f'({self.mod_intelligence})\n'
 
-            f'Sabedoria: {self.base_wisdom} '
+            f'SAB: {self.base_wisdom} '
             f'[{self.base_wisdom}{wis_sign}{self.bonus_wisdom}] '
             f'({self.mod_wisdom})\n'
 
-            f'Carisma: {self.base_charisma} '
+            f'CAR: {self.base_charisma} '
             f'[{self.base_charisma}{cha_sign}{self.bonus_charisma}] '
             f'({self.mod_charisma})\n'
 
