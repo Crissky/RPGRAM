@@ -1,16 +1,66 @@
-from stats_base import BaseStats
+print(__name__)
+if __name__ in ['__main__', 'stats_combat']:
+    from stats_base import BaseStats
+else:
+    from rpgram.stats_base import BaseStats
 
 
 class CombatStats:
-    def __init__(self, base_stats: BaseStats) -> None:
+    def __init__(
+        self,
+        base_stats: BaseStats = None,
+        level: int = 1,
+        base_strength: int = 0,
+        base_dexterity: int = 0,
+        base_constitution: int = 0,
+        base_intelligence: int = 0,
+        base_wisdom: int = 0,
+        base_charisma: int = 0,
+        bonus_strength: int = 0,
+        bonus_dexterity: int = 0,
+        bonus_constitution: int = 0,
+        bonus_intelligence: int = 0,
+        bonus_wisdom: int = 0,
+        bonus_charisma: int = 0,
+        bonus_physical_attack: int = 0,
+        bonus_magical_attack: int = 0,
+        bonus_physical_defense: int = 0,
+        bonus_magical_defense: int = 0,
+        bonus_hit_points: int = 0,
+        bonus_initiative: int = 0,
+    ) -> None:
+        if not isinstance(base_stats, BaseStats):
+            base_stats = BaseStats(
+                level=level,
+                base_strength=base_strength,
+                base_dexterity=base_dexterity,
+                base_constitution=base_constitution,
+                base_intelligence=base_intelligence,
+                base_wisdom=base_wisdom,
+                base_charisma=base_charisma,
+                bonus_strength=bonus_strength,
+                bonus_dexterity=bonus_dexterity,
+                bonus_constitution=bonus_constitution,
+                bonus_intelligence=bonus_intelligence,
+                bonus_wisdom=bonus_wisdom,
+                bonus_charisma=bonus_charisma,
+            )
         self.__base_stats = base_stats
         self.__damage = 0
+
         self.__bonus_physical_attack = 0
         self.__bonus_magical_attack = 0
         self.__bonus_physical_defense = 0
         self.__bonus_magical_defense = 0
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
+
+        self.bonus_physical_attack = bonus_physical_attack
+        self.bonus_magical_attack = bonus_magical_attack
+        self.bonus_physical_defense = bonus_physical_defense
+        self.bonus_magical_defense = bonus_magical_defense
+        self.bonus_hit_points = bonus_hit_points
+        self.bonus_initiative = bonus_initiative
 
     def set_damage(self, value: int) -> None:
         value = int(value * -1)
@@ -29,8 +79,7 @@ class CombatStats:
         clean_attribute = attribute.split('_CombatStats__bonus_')[-1].title()
         clean_attribute = clean_attribute.replace('_', ' ')
         print(
-            f'Adicionando {value} Ponto(s) '
-            f'de bônus de {clean_attribute}.'
+            f'Bônus de {clean_attribute} definidos para {value}.'
         )
         setattr(self, attribute, value)
 
@@ -145,7 +194,7 @@ class CombatStats:
         )
     )
 
-    def __repr__(self) -> str:
+    def get_sheet(self) -> str:
         init_sign = '+' if self.bonus_initiative >= 0 else ''
         hp_sign = '+' if self.bonus_hit_points >= 0 else ''
         phy_sign = '+' if self.bonus_physical_attack >= 0 else ''
@@ -160,8 +209,6 @@ class CombatStats:
         base_phy_def = self.physical_defense - self.bonus_physical_defense
         base_mag_def = self.magical_defense - self.bonus_magical_defense
         return (
-            f'{self.__base_stats.__repr__()}'
-
             f'\n-ATRIBUTOS DE COMBATE-\n'
 
             f'HP: {self.current_hit_points}/{self.hit_points} '
@@ -186,7 +233,13 @@ class CombatStats:
             f'DEFESA MÁGICA: {self.magical_defense} '
             f'[{base_mag_def}{mag_def_sign}'
             f'{self.bonus_magical_defense}]\n'
+        )
 
+    def __repr__(self) -> str:
+        return (
+            f'########################################\n'
+            f'{self.__base_stats.get_sheet()}'
+            f'{self.get_sheet()}'
             f'########################################\n'
         )
 
