@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "rpgram"
+version = "0.1.0"
+description = "RPG para Telegram"
+authors = ["Edson Cristovam <pg2006pe@hotmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.8.*"
+python-telegram-bot = "20.2"
+pymongo = "4.3.3"
+python-decouple = "3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
