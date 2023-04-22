@@ -3,7 +3,22 @@ class BaseStats:
 
     Fonte: https://i.pinimg.com/originals/ee/9b/0c/ee9b0cd5fc0c94dcfb215ad94c6a6871.jpg'''
 
-    def __init__(self, level: int = 1) -> None:
+    def __init__(
+        self,
+        level: int = 1,
+        base_strength: int = 0,
+        base_dexterity: int = 0,
+        base_constitution: int = 0,
+        base_intelligence: int = 0,
+        base_wisdom: int = 0,
+        base_charisma: int = 0,
+        bonus_strength: int = 0,
+        bonus_dexterity: int = 0,
+        bonus_constitution: int = 0,
+        bonus_intelligence: int = 0,
+        bonus_wisdom: int = 0,
+        bonus_charisma: int = 0,
+    ) -> None:
         if level < 1 and isinstance(level, int):
             raise ValueError('Nível deve ser um inteiro maior que zero.')
         self.__level = int(level)
@@ -22,6 +37,20 @@ class BaseStats:
         self.__bonus_intelligence = 0
         self.__bonus_wisdom = 0
         self.__bonus_charisma = 0
+
+        self.base_strength = base_strength
+        self.base_dexterity = base_dexterity
+        self.base_constitution = base_constitution
+        self.base_intelligence = base_intelligence
+        self.base_wisdom = base_wisdom
+        self.base_charisma = base_charisma
+
+        self.bonus_strength = bonus_strength
+        self.bonus_dexterity = bonus_dexterity
+        self.bonus_constitution = bonus_constitution
+        self.bonus_intelligence = bonus_intelligence
+        self.bonus_wisdom = bonus_wisdom
+        self.bonus_charisma = bonus_charisma
 
     def __get_points(self) -> int:
         max_level_points = self.__level * 3
@@ -47,7 +76,7 @@ class BaseStats:
                 f'Não há Pontos suficientes para adicionar.\n'
                 f'Atualmente você tem {self.points} Ponto(s).'
             )
-        if points <= 0:
+        if points < 0:
             raise ValueError(
                 f'Não é possível adicionar menos que '
                 f'1 Ponto de {clean_attribute}.'
@@ -59,8 +88,7 @@ class BaseStats:
         value = int(value)
         clean_attribute = attribute.split('_')[-1].title()
         print(
-            f'Adicionando {value} Ponto(s) '
-            f'de bônus de {clean_attribute}.'
+            f'Bônus de {clean_attribute} definidos para {value}.'
         )
         setattr(self, attribute, value)
 
@@ -250,7 +278,7 @@ class BaseStats:
         fget=lambda self: self.__get_modifier_stats(self.charisma)
     )
 
-    def __repr__(self) -> str:
+    def get_sheet(self) -> str:
         str_sign = '+' if self.bonus_strength >= 0 else ''
         dex_sign = '+' if self.bonus_dexterity >= 0 else ''
         con_sign = '+' if self.bonus_constitution >= 0 else ''
@@ -258,8 +286,6 @@ class BaseStats:
         wis_sign = '+' if self.bonus_wisdom >= 0 else ''
         cha_sign = '+' if self.bonus_charisma >= 0 else ''
         return (
-            f'########################################\n'
-
             f'Level: {self.level}\n'
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
@@ -291,13 +317,19 @@ class BaseStats:
             f'({self.mod_charisma})\n'
         )
 
+    def __repr__(self) -> str:
+        return (
+            f'########################################\n'
+            f'{self.get_sheet()}'
+            f'########################################\n'
+        )
 
 if __name__ == '__main__':
-    stats = BaseStats(1.50)
+    stats = BaseStats(1.50, 3, 0, 0, 0, 0, 0, 11, 12, 13, 14, 15, 16)
     print(stats)
     stats.xp = 310
     print(stats)
-    stats.base_strength = 2
+    stats.base_strength = 1
     stats.bonus_strength = 5
     print(stats)
     stats.base_dexterity = 1
