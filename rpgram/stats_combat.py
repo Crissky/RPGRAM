@@ -22,12 +22,12 @@ class CombatStats:
         bonus_intelligence: int = 0,
         bonus_wisdom: int = 0,
         bonus_charisma: int = 0,
+        bonus_hit_points: int = 0,
+        bonus_initiative: int = 0,
         bonus_physical_attack: int = 0,
         bonus_magical_attack: int = 0,
         bonus_physical_defense: int = 0,
         bonus_magical_defense: int = 0,
-        bonus_hit_points: int = 0,
-        bonus_initiative: int = 0,
     ) -> None:
         if not isinstance(base_stats, BaseStats):
             base_stats = BaseStats(
@@ -85,6 +85,30 @@ class CombatStats:
 
     # Getters
     @property
+    def hit_points(self) -> int:
+        return int(
+            10 +
+            (self.constitution * 10) +
+            (self.strength * 5) +
+            self.bonus_hit_points
+        )
+
+    @property
+    def current_hit_points(self) -> int:
+        return int(
+            self.hit_points - self.__damage
+        )
+
+    @property
+    def initiative(self) -> int:
+        return int(
+            (self.dexterity * 2) +
+            self.wisdom +
+            self.charisma +
+            self.bonus_initiative
+        )
+
+    @property
     def physical_attack(self) -> int:
         return int(
             (self.strength * 2) +
@@ -116,30 +140,6 @@ class CombatStats:
             self.bonus_magical_defense
         )
 
-    @property
-    def hit_points(self) -> int:
-        return int(
-            10 +
-            (self.constitution * 10) +
-            (self.strength * 5) +
-            self.bonus_hit_points
-        )
-
-    @property
-    def current_hit_points(self) -> int:
-        return int(
-            self.hit_points - self.__damage
-        )
-
-    @property
-    def initiative(self) -> int:
-        return int(
-            (self.dexterity * 2) +
-            self.wisdom +
-            self.charisma +
-            self.bonus_initiative
-        )
-
     # Setters
     @hit_points.setter
     def hit_points(self, value) -> int:
@@ -155,8 +155,14 @@ class CombatStats:
     intelligence = property(fget=lambda self: self.__base_stats.intelligence)
     wisdom = property(fget=lambda self: self.__base_stats.wisdom)
     charisma = property(fget=lambda self: self.__base_stats.charisma)
-    hp = hit_points
 
+    hp = hit_points
+    bonus_initiative = property(
+        fget=lambda self: self.__bonus_initiative,
+        fset=lambda self, value: self.__add_bonus_stats(
+            value, '_CombatStats__bonus_initiative'
+        )
+    )
     bonus_physical_attack = property(
         fget=lambda self: self.__bonus_physical_attack,
         fset=lambda self, value: self.__add_bonus_stats(
@@ -181,16 +187,10 @@ class CombatStats:
             value, '_CombatStats__bonus_magical_defense'
         )
     )
-    bonus_hit_points = property(
+    bonus_hit_points = bonus_hp = property(
         fget=lambda self: self.__bonus_hit_points,
         fset=lambda self, value: self.__add_bonus_stats(
             value, '_CombatStats__bonus_hit_points'
-        )
-    )
-    bonus_initiative = property(
-        fget=lambda self: self.__bonus_initiative,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_initiative'
         )
     )
 
