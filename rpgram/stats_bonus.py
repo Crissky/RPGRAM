@@ -66,7 +66,8 @@ class BonusStats:
         fget=lambda self: self.__bonus_constitution)
     intelligence = bonus_intelligence = property(
         fget=lambda self: self.__bonus_intelligence)
-    wisdom = bonus_wisdom = property(fget=lambda self: self.__bonus_wisdom)
+    wisdom = bonus_wisdom = property(
+        fget=lambda self: self.__bonus_wisdom)
     charisma = bonus_charisma = property(
         fget=lambda self: self.__bonus_charisma)
     physical_attack = bonus_physical_attack = property(

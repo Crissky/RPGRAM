@@ -1,4 +1,3 @@
-print(__name__)
 if __name__ in ['__main__', 'stats_combat']:
     from stats_base import BaseStats
 else:
