@@ -25,12 +25,12 @@ class BaseCharacter:
         bonus_intelligence: int = 0,
         bonus_wisdom: int = 0,
         bonus_charisma: int = 0,
+        bonus_hit_points: int = 0,
+        bonus_initiative: int = 0,
         bonus_physical_attack: int = 0,
         bonus_magical_attack: int = 0,
         bonus_physical_defense: int = 0,
         bonus_magical_defense: int = 0,
-        bonus_hit_points: int = 0,
-        bonus_initiative: int = 0,
     ) -> None:
         self.__name = char_name
         if not isinstance(base_stats, BaseStats):
@@ -53,41 +53,19 @@ class BaseCharacter:
         if not isinstance(combat_stats, CombatStats):
             combat_stats = CombatStats(
                 base_stats=self.__base_stats,
+                bonus_hit_points=bonus_hit_points,
+                bonus_initiative=bonus_initiative,
                 bonus_physical_attack=bonus_physical_attack,
                 bonus_magical_attack=bonus_magical_attack,
                 bonus_physical_defense=bonus_physical_defense,
                 bonus_magical_defense=bonus_magical_defense,
-                bonus_hit_points=bonus_hit_points,
-                bonus_initiative=bonus_initiative,
             )
         self.__combat_stats = combat_stats
 
     # Getters
     name = property(lambda self: self.__name)
-    strength = property(fget=lambda self: self.__base_stats.strength)
-    dexterity = property(fget=lambda self: self.__base_stats.dexterity)
-    constitution = property(fget=lambda self: self.__base_stats.constitution)
-    intelligence = property(fget=lambda self: self.__base_stats.intelligence)
-    wisdom = property(fget=lambda self: self.__base_stats.wisdom)
-    charisma = property(fget=lambda self: self.__base_stats.charisma)
-    hp = hit_points = property(
-        fget=lambda self: self.__combat_stats.hit_points
-    )
-    physical_attack = property(
-        fget=lambda self: self.__combat_stats.physical_attack
-    )
-    magical_attack = property(
-        fget=lambda self: self.__combat_stats.magical_attack
-    )
-    physical_defense = property(
-        fget=lambda self: self.__combat_stats.physical_defense
-    )
-    magical_defense = property(
-        fget=lambda self: self.__combat_stats.magical_defense
-    )
-    initiative = property(
-        fget=lambda self: self.__combat_stats.initiative
-    )
+    base_stats = bs = property(fget=lambda self: self.__base_stats)
+    combat_stats = cs = property(fget=lambda self: self.__combat_stats)
 
     def __repr__(self) -> str:
         return (
@@ -115,11 +93,16 @@ if __name__ == '__main__':
         bonus_intelligence=10,
         bonus_wisdom=10,
         bonus_charisma=10,
+        bonus_hit_points=10,
+        bonus_initiative=10,
         bonus_physical_attack=10,
         bonus_magical_attack=10,
         bonus_physical_defense=10,
         bonus_magical_defense=10,
-        bonus_hit_points=10,
-        bonus_initiative=10,
     )
+    print(base_character)
+    base_character.base_stats.xp = 100
+    base_character.base_stats.base_strength = 1
+    base_character.base_stats.bonus_strength += 2
+    base_character.combat_stats.bonus_hp += 10
     print(base_character)
