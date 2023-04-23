@@ -48,19 +48,19 @@ class CombatStats:
         self.__base_stats = base_stats
         self.__damage = 0
 
+        self.__bonus_hit_points = 0
+        self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
         self.__bonus_magical_attack = 0
         self.__bonus_physical_defense = 0
         self.__bonus_magical_defense = 0
-        self.__bonus_hit_points = 0
-        self.__bonus_initiative = 0
 
+        self.bonus_hit_points = bonus_hit_points
+        self.bonus_initiative = bonus_initiative
         self.bonus_physical_attack = bonus_physical_attack
         self.bonus_magical_attack = bonus_magical_attack
         self.bonus_physical_defense = bonus_physical_defense
         self.bonus_magical_defense = bonus_magical_defense
-        self.bonus_hit_points = bonus_hit_points
-        self.bonus_initiative = bonus_initiative
 
     def set_damage(self, value: int) -> None:
         value = int(value * -1)
