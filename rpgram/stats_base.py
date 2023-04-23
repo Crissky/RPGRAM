@@ -279,12 +279,6 @@ class BaseStats:
     )
 
     def get_sheet(self) -> str:
-        str_sign = '+' if self.bonus_strength >= 0 else ''
-        dex_sign = '+' if self.bonus_dexterity >= 0 else ''
-        con_sign = '+' if self.bonus_constitution >= 0 else ''
-        int_sign = '+' if self.bonus_intelligence >= 0 else ''
-        wis_sign = '+' if self.bonus_wisdom >= 0 else ''
-        cha_sign = '+' if self.bonus_charisma >= 0 else ''
         return (
             f'Level: {self.level}\n'
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
@@ -293,27 +287,27 @@ class BaseStats:
             f'\n-ATRIBUTOS BASE-\n'
 
             f'FOR: {self.strength} '
-            f'[{self.base_strength}{str_sign}{self.bonus_strength}] '
+            f'[{self.base_strength}{self.bonus_strength:+}] '
             f'({self.mod_strength})\n'
 
             f'DES: {self.dexterity} '
-            f'[{self.base_dexterity}{dex_sign}{self.bonus_dexterity}] '
+            f'[{self.base_dexterity}{self.bonus_dexterity:+}] '
             f'({self.mod_dexterity})\n'
 
             f'CON: {self.constitution} '
-            f'[{self.base_constitution}{con_sign}{self.bonus_constitution}] '
+            f'[{self.base_constitution}{self.bonus_constitution:+}] '
             f'({self.mod_constitution})\n'
 
             f'INT: {self.intelligence} '
-            f'[{self.base_intelligence}{int_sign}{self.bonus_intelligence}] '
+            f'[{self.base_intelligence}{self.bonus_intelligence:+}] '
             f'({self.mod_intelligence})\n'
 
             f'SAB: {self.wisdom} '
-            f'[{self.base_wisdom}{wis_sign}{self.bonus_wisdom}] '
+            f'[{self.base_wisdom}{self.bonus_wisdom:+}] '
             f'({self.mod_wisdom})\n'
 
             f'CAR: {self.charisma} '
-            f'[{self.base_charisma}{cha_sign}{self.bonus_charisma}] '
+            f'[{self.base_charisma}{self.bonus_charisma:+}] '
             f'({self.mod_charisma})\n'
         )
 

@@ -195,13 +195,6 @@ class CombatStats:
     )
 
     def get_sheet(self) -> str:
-        init_sign = '+' if self.bonus_initiative >= 0 else ''
-        hp_sign = '+' if self.bonus_hit_points >= 0 else ''
-        phy_sign = '+' if self.bonus_physical_attack >= 0 else ''
-        mag_sign = '+' if self.bonus_magical_attack >= 0 else ''
-        phy_def_sign = '+' if self.bonus_physical_defense >= 0 else ''
-        mag_def_sign = '+' if self.bonus_magical_defense >= 0 else ''
-
         base_init = self.initiative - self.bonus_initiative
         base_hp = self.hit_points - self.bonus_hit_points
         base_phy_atk = self.physical_attack - self.bonus_physical_attack
@@ -212,27 +205,22 @@ class CombatStats:
             f'\n-ATRIBUTOS DE COMBATE-\n'
 
             f'HP: {self.current_hit_points}/{self.hit_points} '
-            f'[{base_hp}{hp_sign}{self.bonus_hit_points}]\n'
+            f'[{base_hp}{self.bonus_hit_points:+}]\n'
 
             f'INICIATIVA: {self.initiative} '
-            f'[{base_init}{init_sign}'
-            f'{self.bonus_initiative}]\n'
+            f'[{base_init}{self.bonus_initiative:+}]\n'
 
             f'ATAQUE FÍSICO: {self.physical_attack} '
-            f'[{base_phy_atk}{phy_sign}'
-            f'{self.bonus_physical_attack}]\n'
+            f'[{base_phy_atk}{self.bonus_physical_attack:+}]\n'
 
             f'ATAQUE MÁGICO: {self.magical_attack} '
-            f'[{base_mag_atk}{mag_sign}'
-            f'{self.bonus_magical_attack}]\n'
+            f'[{base_mag_atk}{self.bonus_magical_attack:+}]\n'
 
             f'DEFESA FÍSICA: {self.physical_defense} '
-            f'[{base_phy_def}{phy_def_sign}'
-            f'{self.bonus_physical_defense}]\n'
+            f'[{base_phy_def}{self.bonus_physical_defense:+}]\n'
 
             f'DEFESA MÁGICA: {self.magical_defense} '
-            f'[{base_mag_def}{mag_def_sign}'
-            f'{self.bonus_magical_defense}]\n'
+            f'[{base_mag_def}{self.bonus_magical_defense:+}]\n'
         )
 
     def __repr__(self) -> str:
