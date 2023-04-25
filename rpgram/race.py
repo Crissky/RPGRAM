@@ -1,10 +1,10 @@
 if __name__ in ['__main__', 'race']:
-    from stats_bonus import BonusStats
+    from stats_booster import BoosterStats
 else:
-    from rpgram.stats_bonus import BonusStats
+    from rpgram.stats_booster import BoosterStats
 
 
-class Race(BonusStats):
+class Race(BoosterStats):
     def __init__(
         self,
         name: str,

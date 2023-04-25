@@ -1,4 +1,4 @@
-class BonusStats:
+class BoosterStats:
     '''Classe Base para ser usada em características que dão bônus aos 
     atributos dos personagens como: Raça, Classe, Taletos, Equipamentos, etc.
 
@@ -85,7 +85,7 @@ class BonusStats:
 
 
 if __name__ == '__main__':
-    bonus_stats = BonusStats(
+    bonus_stats = BoosterStats(
         bonus_strength=10,
         bonus_dexterity=11,
         bonus_constitution=12,

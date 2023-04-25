@@ -1,3 +1,9 @@
+if __name__ in ['__main__', 'stats_base']:
+    from stats_booster import BoosterStats
+else:
+    from rpgram.stats_booster import BoosterStats
+
+
 class BaseStats:
     '''Classe que representa as estatísticas básicas de um personagem.
 
@@ -12,12 +18,7 @@ class BaseStats:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        bonus_strength: int = 0,
-        bonus_dexterity: int = 0,
-        bonus_constitution: int = 0,
-        bonus_intelligence: int = 0,
-        bonus_wisdom: int = 0,
-        bonus_charisma: int = 0,
+        *stats_boosters
     ) -> None:
         if level < 1 and isinstance(level, int):
             raise ValueError('Nível deve ser um inteiro maior que zero.')
@@ -31,13 +32,6 @@ class BaseStats:
         self.__base_wisdom = 0
         self.__base_charisma = 0
 
-        self.__bonus_strength = 0
-        self.__bonus_dexterity = 0
-        self.__bonus_constitution = 0
-        self.__bonus_intelligence = 0
-        self.__bonus_wisdom = 0
-        self.__bonus_charisma = 0
-
         self.base_strength = base_strength
         self.base_dexterity = base_dexterity
         self.base_constitution = base_constitution
@@ -45,12 +39,8 @@ class BaseStats:
         self.base_wisdom = base_wisdom
         self.base_charisma = base_charisma
 
-        self.bonus_strength = bonus_strength
-        self.bonus_dexterity = bonus_dexterity
-        self.bonus_constitution = bonus_constitution
-        self.bonus_intelligence = bonus_intelligence
-        self.bonus_wisdom = bonus_wisdom
-        self.bonus_charisma = bonus_charisma
+        self.__stats_boosters = set(stats_boosters)
+        self.__boost_stats()
 
     def __get_points(self) -> int:
         max_level_points = self.__level * 3
@@ -73,10 +63,10 @@ class BaseStats:
         print(f'Adicionando {points} Ponto(s) de {clean_attribute}.')
         if points > self.points:
             raise ValueError(
-                f'Não há Pontos suficientes para adicionar.\n'
+                f'Não há Pontos({points}) suficientes para adicionar.\n'
                 f'Atualmente você tem {self.points} Ponto(s).'
             )
-        if points < 0:
+        if points < 0:  # Permite 0 por causa do init.
             raise ValueError(
                 f'Não é possível adicionar menos que '
                 f'1 Ponto de {clean_attribute}.'
@@ -84,13 +74,35 @@ class BaseStats:
         new_value = getattr(self, attribute) + points
         setattr(self, attribute, new_value)
 
-    def __add_bonus_stats(self, value: int, attribute: str) -> None:
-        value = int(value)
-        clean_attribute = attribute.split('_')[-1].title()
-        print(
-            f'Bônus de {clean_attribute} definidos para {value}.'
-        )
-        setattr(self, attribute, value)
+    def __boost_stats(self) -> None:
+        self.__bonus_strength = 0
+        self.__bonus_dexterity = 0
+        self.__bonus_constitution = 0
+        self.__bonus_intelligence = 0
+        self.__bonus_wisdom = 0
+        self.__bonus_charisma = 0
+
+        self.__multiplier_strength = 1
+        self.__multiplier_dexterity = 1
+        self.__multiplier_constitution = 1
+        self.__multiplier_intelligence = 1
+        self.__multiplier_wisdom = 1
+        self.__multiplier_charisma = 1
+
+        for sb in self.__stats_boosters:
+            self.__bonus_strength += int(sb.bonus_strength)
+            self.__bonus_dexterity += int(sb.bonus_dexterity)
+            self.__bonus_constitution += int(sb.bonus_constitution)
+            self.__bonus_intelligence += int(sb.bonus_intelligence)
+            self.__bonus_wisdom += int(sb.bonus_wisdom)
+            self.__bonus_charisma += int(sb.bonus_charisma)
+
+            self.__multiplier_strength += float(sb.multiplier_strength)
+            self.__multiplier_dexterity += float(sb.multiplier_dexterity)
+            self.__multiplier_constitution += float(sb.multiplier_constitution)
+            self.__multiplier_intelligence += float(sb.multiplier_intelligence)
+            self.__multiplier_wisdom += float(sb.multiplier_wisdom)
+            self.__multiplier_charisma += float(sb.multiplier_charisma)
 
     # Getters
     @property
@@ -148,27 +160,45 @@ class BaseStats:
     # Attributes
     @property
     def strength(self) -> int:
-        return self.base_strength + self.bonus_strength
+        return int(
+            (self.base_strength + self.bonus_strength) *
+            self.multiplier_strength
+        )
 
     @property
     def dexterity(self) -> int:
-        return self.base_dexterity + self.bonus_dexterity
+        return int(
+            (self.base_dexterity + self.bonus_dexterity) *
+            self.multiplier_dexterity
+        )
 
     @property
     def constitution(self) -> int:
-        return self.base_constitution + self.bonus_constitution
+        return int(
+            (self.base_constitution + self.bonus_constitution) *
+            self.multiplier_constitution
+        )
 
     @property
     def intelligence(self) -> int:
-        return self.base_intelligence + self.bonus_intelligence
+        return int(
+            (self.base_intelligence + self.bonus_intelligence) *
+            self.multiplier_intelligence
+        )
 
     @property
     def wisdom(self) -> int:
-        return self.base_wisdom + self.bonus_wisdom
+        return int(
+            (self.base_wisdom + self.bonus_wisdom) *
+            self.multiplier_wisdom
+        )
 
     @property
     def charisma(self) -> int:
-        return self.base_charisma + self.bonus_charisma
+        return int(
+            (self.base_charisma + self.bonus_charisma) *
+            self.multiplier_charisma
+        )
 
     # Setters
     @xp.setter
@@ -220,63 +250,71 @@ class BaseStats:
 
     # Getters and Setters
     # Attribute Bonus
-    bonus_strength = property(
-        fget=lambda self: self.__bonus_strength,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_BaseStats__bonus_strength'
-        )
-    )
-    bonus_dexterity = property(
-        fget=lambda self: self.__bonus_dexterity,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_BaseStats__bonus_dexterity'
-        )
-    )
-    bonus_constitution = property(
-        fget=lambda self: self.__bonus_constitution,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_BaseStats__bonus_constitution'
-        )
-    )
-    bonus_intelligence = property(
-        fget=lambda self: self.__bonus_intelligence,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_BaseStats__bonus_intelligence'
-        )
-    )
-    bonus_wisdom = property(
-        fget=lambda self: self.__bonus_wisdom,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_BaseStats__bonus_wisdom'
-        )
-    )
-    bonus_charisma = property(
-        fget=lambda self: self.__bonus_charisma,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_BaseStats__bonus_charisma'
-        )
-    )
+    @property
+    def bonus_strength(self) -> int:
+        return self.__bonus_strength
+    @property
+    def bonus_dexterity(self) -> int:
+        return self.__bonus_dexterity
+    @property
+    def bonus_constitution(self) -> int:
+        return self.__bonus_constitution
+    @property
+    def bonus_intelligence(self) -> int:
+        return self.__bonus_intelligence
+    @property
+    def bonus_wisdom(self) -> int:
+        return self.__bonus_wisdom
+    @property
+    def bonus_charisma(self) -> int:
+        return self.__bonus_charisma
+
+    # Getters and Setters
+    # Attribute Bonus
+    @property
+    def multiplier_strength(self) -> float:
+        return self.__multiplier_strength
+    @property
+    def multiplier_dexterity(self) -> float:
+        return self.__multiplier_dexterity
+    @property
+    def multiplier_constitution(self) -> float:
+        return self.__multiplier_constitution
+    @property
+    def multiplier_intelligence(self) -> float:
+        return self.__multiplier_intelligence
+    @property
+    def multiplier_wisdom(self) -> float:
+        return self.__multiplier_wisdom
+    @property
+    def multiplier_charisma(self) -> float:
+        return self.__multiplier_charisma
 
     # Getters and Setters
     # Attribute Modifiers
-    mod_strength = property(
-        fget=lambda self: self.__get_modifier_stats(self.strength)
-    )
-    mod_dexterity = property(
-        fget=lambda self: self.__get_modifier_stats(self.dexterity)
-    )
-    mod_constitution = property(
-        fget=lambda self: self.__get_modifier_stats(self.constitution)
-    )
-    mod_intelligence = property(
-        fget=lambda self: self.__get_modifier_stats(self.intelligence)
-    )
-    mod_wisdom = property(
-        fget=lambda self: self.__get_modifier_stats(self.wisdom)
-    )
-    mod_charisma = property(
-        fget=lambda self: self.__get_modifier_stats(self.charisma)
-    )
+    @property
+    def mod_strength(self) -> int:
+        return self.__get_modifier_stats(self.strength)
+
+    @property
+    def mod_dexterity(self) -> int:
+        return self.__get_modifier_stats(self.dexterity)
+
+    @property
+    def mod_constitution(self) -> int:
+        return self.__get_modifier_stats(self.constitution)
+
+    @property
+    def mod_intelligence(self) -> int:
+        return self.__get_modifier_stats(self.intelligence)
+
+    @property
+    def mod_wisdom(self) -> int:
+        return self.__get_modifier_stats(self.wisdom)
+
+    @property
+    def mod_charisma(self) -> int:
+        return self.__get_modifier_stats(self.charisma)
 
     def get_sheet(self) -> str:
         return (
@@ -287,27 +325,33 @@ class BaseStats:
             f'\n-ATRIBUTOS BASE-\n'
 
             f'FOR: {self.strength} '
-            f'[{self.base_strength}{self.bonus_strength:+}] '
+            f'[{self.base_strength}{self.bonus_strength:+}]'
+            f'x{self.multiplier_strength} '
             f'({self.mod_strength})\n'
 
             f'DES: {self.dexterity} '
-            f'[{self.base_dexterity}{self.bonus_dexterity:+}] '
+            f'[{self.base_dexterity}{self.bonus_dexterity:+}]'
+            f'x{self.multiplier_dexterity} '
             f'({self.mod_dexterity})\n'
 
             f'CON: {self.constitution} '
-            f'[{self.base_constitution}{self.bonus_constitution:+}] '
+            f'[{self.base_constitution}{self.bonus_constitution:+}]'
+            f'x{self.multiplier_constitution} '
             f'({self.mod_constitution})\n'
 
             f'INT: {self.intelligence} '
-            f'[{self.base_intelligence}{self.bonus_intelligence:+}] '
+            f'[{self.base_intelligence}{self.bonus_intelligence:+}]'
+            f'x{self.multiplier_intelligence} '
             f'({self.mod_intelligence})\n'
 
             f'SAB: {self.wisdom} '
-            f'[{self.base_wisdom}{self.bonus_wisdom:+}] '
+            f'[{self.base_wisdom}{self.bonus_wisdom:+}]'
+            f'x{self.multiplier_wisdom} '
             f'({self.mod_wisdom})\n'
 
             f'CAR: {self.charisma} '
-            f'[{self.base_charisma}{self.bonus_charisma:+}] '
+            f'[{self.base_charisma}{self.bonus_charisma:+}]'
+            f'x{self.multiplier_charisma} '
             f'({self.mod_charisma})\n'
         )
 
@@ -318,25 +362,21 @@ class BaseStats:
             f'########################################\n'
         )
 
+
 if __name__ == '__main__':
-    stats = BaseStats(1.50, 3, 0, 0, 0, 0, 0, 11, 12, 13, 14, 15, 16)
+    stats = BaseStats(1.50, 3, 0, 0, 0, 0, 0)
     print(stats)
     stats.xp = 310
     print(stats)
     stats.base_strength = 1
-    stats.bonus_strength = 5
     print(stats)
     stats.base_dexterity = 1
-    stats.bonus_dexterity = 2
     print(stats)
     stats.base_constitution = 1
-    stats.bonus_constitution = 3
     print(stats)
     stats.base_intelligence = 1
-    stats.bonus_intelligence = 10
     print(stats)
     stats.base_wisdom = 1
     print(stats)
     stats.base_charisma = 1
-    stats.bonus_charisma = -5
     print(stats)
