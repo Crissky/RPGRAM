@@ -15,18 +15,7 @@ class CombatStats:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        bonus_strength: int = 0,
-        bonus_dexterity: int = 0,
-        bonus_constitution: int = 0,
-        bonus_intelligence: int = 0,
-        bonus_wisdom: int = 0,
-        bonus_charisma: int = 0,
-        bonus_hit_points: int = 0,
-        bonus_initiative: int = 0,
-        bonus_physical_attack: int = 0,
-        bonus_magical_attack: int = 0,
-        bonus_physical_defense: int = 0,
-        bonus_magical_defense: int = 0,
+        *stats_boosters
     ) -> None:
         if not isinstance(base_stats, BaseStats):
             base_stats = BaseStats(
@@ -37,29 +26,13 @@ class CombatStats:
                 base_intelligence=base_intelligence,
                 base_wisdom=base_wisdom,
                 base_charisma=base_charisma,
-                bonus_strength=bonus_strength,
-                bonus_dexterity=bonus_dexterity,
-                bonus_constitution=bonus_constitution,
-                bonus_intelligence=bonus_intelligence,
-                bonus_wisdom=bonus_wisdom,
-                bonus_charisma=bonus_charisma,
+                *stats_boosters
             )
         self.__base_stats = base_stats
         self.__damage = 0
 
-        self.__bonus_hit_points = 0
-        self.__bonus_initiative = 0
-        self.__bonus_physical_attack = 0
-        self.__bonus_magical_attack = 0
-        self.__bonus_physical_defense = 0
-        self.__bonus_magical_defense = 0
-
-        self.bonus_hit_points = bonus_hit_points
-        self.bonus_initiative = bonus_initiative
-        self.bonus_physical_attack = bonus_physical_attack
-        self.bonus_magical_attack = bonus_magical_attack
-        self.bonus_physical_defense = bonus_physical_defense
-        self.bonus_magical_defense = bonus_magical_defense
+        self.__stats_boosters = set(stats_boosters)
+        self.__boost_stats()
 
     def set_damage(self, value: int) -> None:
         value = int(value * -1)
@@ -73,16 +46,30 @@ class CombatStats:
         elif self.__damage < 0:
             self.__damage = 0
 
-    def __add_bonus_stats(self, value: int, attribute: str) -> None:
-        value = int(value)
-        clean_attribute = attribute.split('_CombatStats__bonus_')[-1].title()
-        clean_attribute = clean_attribute.replace('_', ' ')
-        print(
-            f'Bônus de {clean_attribute} definidos para {value}.'
-        )
-        setattr(self, attribute, value)
+    def __boost_stats(self) -> None:
+        self.__bonus_hit_points = 0
+        self.__bonus_initiative = 0
+        self.__bonus_physical_attack = 0
+        self.__bonus_ranged_attack = 0
+        self.__bonus_magical_attack = 0
+        self.__bonus_physical_defense = 0
+        self.__bonus_magical_defense = 0
+        self.__bonus_hit = 0
+        self.__bonus_evasion = 0
+
+        for sb in self.__stats_boosters:
+            self.__bonus_hit_points += int(sb.bonus_hit_point)
+            self.__bonus_initiative += int(sb.bonus_initiative)
+            self.__bonus_physical_attack += int(sb.bonus_physical_attack)
+            self.__bonus_ranged_attack += int(sb.bonus_ranged_attack)
+            self.__bonus_magical_attack += int(sb.bonus_magical_attack)
+            self.__bonus_physical_defense += int(sb.bonus_physical_defense)
+            self.__bonus_magical_defense += int(sb.bonus_magical_defense)
+            self.__bonus_hit += int(sb.bonus_hit)
+            self.__bonus_evasion += int(sb.bonus_evasion)
 
     # Getters
+    # Combat Attributes
     @property
     def hit_points(self) -> int:
         return int(
@@ -101,9 +88,9 @@ class CombatStats:
     @property
     def initiative(self) -> int:
         return int(
-            (self.dexterity * 2) +
-            self.wisdom +
-            self.charisma +
+            (self.dexterity * 1.5) +
+            (self.wisdom * 1.5) +
+            (self.charisma * 1.5) +
             self.bonus_initiative
         )
 
@@ -113,6 +100,13 @@ class CombatStats:
             (self.strength * 2) +
             self.dexterity +
             self.bonus_physical_attack
+        )
+
+    @property
+    def ranged_attack(self) -> int:
+        return int(
+            (self.dexterity * 2.5) +
+            self.bonus_ranged_attack
         )
 
     @property
@@ -139,15 +133,36 @@ class CombatStats:
             self.bonus_magical_defense
         )
 
+    @property
+    def hit(self) -> int:
+        return int(
+            (self.dexterity * 2) +
+            self.wisdom +
+            self.bonus_hit
+        )
+
+    @property
+    def evasion(self) -> int:
+        return int(
+            (self.dexterity * 2) +
+            self.wisdom +
+            self.bonus_evasion
+        )
+
     # Setters
+    # Combat Attributes
     @hit_points.setter
     def hit_points(self, value) -> int:
         return self.set_damage(value)
+
+    hp = hit_points
 
     @current_hit_points.setter
     def current_hit_points(self, value) -> int:
         return self.set_damage(value)
 
+    # Getters
+    # Base Attributes
     strength = property(fget=lambda self: self.__base_stats.strength)
     dexterity = property(fget=lambda self: self.__base_stats.dexterity)
     constitution = property(fget=lambda self: self.__base_stats.constitution)
@@ -155,53 +170,56 @@ class CombatStats:
     wisdom = property(fget=lambda self: self.__base_stats.wisdom)
     charisma = property(fget=lambda self: self.__base_stats.charisma)
 
-    hp = hit_points
-    bonus_initiative = property(
-        fget=lambda self: self.__bonus_initiative,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_initiative'
-        )
-    )
-    bonus_physical_attack = property(
-        fget=lambda self: self.__bonus_physical_attack,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_physical_attack'
-        )
-    )
-    bonus_magical_attack = property(
-        fget=lambda self: self.__bonus_magical_attack,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_magical_attack'
-        )
-    )
-    bonus_physical_defense = property(
-        fget=lambda self: self.__bonus_physical_defense,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_physical_defense'
-        )
-    )
-    bonus_magical_defense = property(
-        fget=lambda self: self.__bonus_magical_defense,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_magical_defense'
-        )
-    )
-    bonus_hit_points = bonus_hp = property(
-        fget=lambda self: self.__bonus_hit_points,
-        fset=lambda self, value: self.__add_bonus_stats(
-            value, '_CombatStats__bonus_hit_points'
-        )
-    )
+    # Getters
+    # Bonus Combat Attributes
+    @property
+    def bonus_initiative(self) -> int:
+        return self.__bonus_initiative
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.__bonus_physical_attack
+
+    @property
+    def bonus_ranged_attack(self) -> int:
+        return self.__bonus_ranged_attack
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.__bonus_magical_attack
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.__bonus_physical_defense
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.__bonus_magical_defense
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.__bonus_hit_points
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.__bonus_hit
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.__bonus_evasion
 
     def get_sheet(self) -> str:
         base_init = self.initiative - self.bonus_initiative
         base_hp = self.hit_points - self.bonus_hit_points
         base_phy_atk = self.physical_attack - self.bonus_physical_attack
+        base_rgd_atk = self.ranged_attack - self.bonus_ranged_attack
         base_mag_atk = self.magical_attack - self.bonus_magical_attack
         base_phy_def = self.physical_defense - self.bonus_physical_defense
         base_mag_def = self.magical_defense - self.bonus_magical_defense
+        base_hit = self.hit - self.bonus_hit
+        base_evasion = self.evasion - self.bonus_evasion
         return (
-            f'\n-ATRIBUTOS DE COMBATE-\n'
+            f'\n◇── ATRIBUTOS DE COMBATE ──◇\n'
 
             f'HP: {self.current_hit_points}/{self.hit_points} '
             f'[{base_hp}{self.bonus_hit_points:+}]\n'
@@ -212,6 +230,9 @@ class CombatStats:
             f'ATAQUE FÍSICO: {self.physical_attack} '
             f'[{base_phy_atk}{self.bonus_physical_attack:+}]\n'
 
+            f'ATAQUE À DISTÂNCIA: {self.ranged_attack} '
+            f'[{base_rgd_atk}{self.bonus_ranged_attack:+}]\n'
+
             f'ATAQUE MÁGICO: {self.magical_attack} '
             f'[{base_mag_atk}{self.bonus_magical_attack:+}]\n'
 
@@ -220,6 +241,12 @@ class CombatStats:
 
             f'DEFESA MÁGICA: {self.magical_defense} '
             f'[{base_mag_def}{self.bonus_magical_defense:+}]\n'
+
+            f'ACERTO: {self.hit} '
+            f'[{base_hit}{self.bonus_hit:+}]\n'
+
+            f'EVASÃO: {self.evasion} '
+            f'[{base_evasion}{self.bonus_evasion:+}]\n'
         )
 
     def __repr__(self) -> str:
@@ -241,20 +268,6 @@ if __name__ == '__main__':
     base_stats.base_intelligence = 3
     base_stats.base_wisdom = 3
     base_stats.base_charisma = 4
-
-    base_stats.bonus_strength = 10
-    base_stats.bonus_dexterity = 10
-    base_stats.bonus_constitution = 10
-    base_stats.bonus_intelligence = 10
-    base_stats.bonus_wisdom = 10
-    base_stats.bonus_charisma = 10
-
-    combat_stats.bonus_hit_points = 100
-    combat_stats.bonus_initiative = 10
-    combat_stats.bonus_physical_attack = 11
-    combat_stats.bonus_magical_attack = 12
-    combat_stats.bonus_physical_defense = -13
-    combat_stats.bonus_magical_defense = -14
 
     print(combat_stats)
     combat_stats.hit_points = -10
