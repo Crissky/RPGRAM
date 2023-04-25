@@ -322,7 +322,7 @@ class BaseStats:
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
 
-            f'\n-ATRIBUTOS BASE-\n'
+            f'\n◇── ATRIBUTOS BASE ──◇\n'
 
             f'FOR: {self.strength} '
             f'[{self.base_strength}{self.bonus_strength:+}]'
