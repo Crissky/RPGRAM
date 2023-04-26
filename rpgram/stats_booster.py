@@ -1,4 +1,4 @@
-class BoosterStats:
+class StatsBooster:
     '''Classe Base para ser usada em características que dão bônus aos 
     atributos dos personagens como: Raça, Classe, Taletos, Equipamentos, etc.
 
@@ -101,6 +101,18 @@ class BoosterStats:
         fget=lambda self: self.__bonus_wisdom)
     charisma = bonus_charisma = property(
         fget=lambda self: self.__bonus_charisma)
+    multiplier_strength = property(
+        fget=lambda self: self.__multiplier_strength)
+    multiplier_dexterity = property(
+        fget=lambda self: self.__multiplier_dexterity)
+    multiplier_constitution = property(
+        fget=lambda self: self.__multiplier_constitution)
+    multiplier_intelligence = property(
+        fget=lambda self: self.__multiplier_intelligence)
+    multiplier_wisdom = property(
+        fget=lambda self: self.__multiplier_wisdom)
+    multiplier_charisma = property(
+        fget=lambda self: self.__multiplier_charisma)
     hp = hit_points = bonus_hit_points = property(
         fget=lambda self: self.__bonus_hit_points)
     initiative = bonus_initiative = property(
@@ -120,7 +132,7 @@ class BoosterStats:
 
 
 if __name__ == '__main__':
-    bonus_stats = BoosterStats(
+    bonus_stats = StatsBooster(
         bonus_strength=10,
         bonus_dexterity=11,
         bonus_constitution=12,

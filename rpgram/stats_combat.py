@@ -1,7 +1,9 @@
 if __name__ in ['__main__', 'stats_combat']:
     from stats_base import BaseStats
+    from stats_booster import StatsBooster
 else:
     from rpgram.stats_base import BaseStats
+    from rpgram.stats_booster import StatsBooster
 
 
 class CombatStats:
@@ -15,7 +17,7 @@ class CombatStats:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        *stats_boosters
+        *stats_boosters: StatsBooster
     ) -> None:
         if not isinstance(base_stats, BaseStats):
             base_stats = BaseStats(
@@ -32,14 +34,13 @@ class CombatStats:
         self.__damage = 0
 
         self.__stats_boosters = set(stats_boosters)
-        self.__boost_stats()
 
     def set_damage(self, value: int) -> None:
         value = int(value * -1)
         if value > 0:
-            print(f'{value} de Dano!!!')
+            print(f'Recebeu {value} de Dano!!!')
         elif value < 0:
-            print(f'{-value} de Cura.')
+            print(f'Recebeu {-value} de Cura.')
         self.__damage += value
         if self.__damage > self.hit_points:
             self.__damage = self.hit_points
@@ -72,6 +73,7 @@ class CombatStats:
     # Combat Attributes
     @property
     def hit_points(self) -> int:
+        self.__boost_stats()
         return int(
             10 +
             (self.constitution * 10) +
@@ -81,12 +83,14 @@ class CombatStats:
 
     @property
     def current_hit_points(self) -> int:
+        self.__boost_stats()
         return int(
             self.hit_points - self.__damage
         )
 
     @property
     def initiative(self) -> int:
+        self.__boost_stats()
         return int(
             (self.dexterity * 1.5) +
             (self.wisdom * 1.5) +
@@ -96,6 +100,7 @@ class CombatStats:
 
     @property
     def physical_attack(self) -> int:
+        self.__boost_stats()
         return int(
             (self.strength * 2) +
             self.dexterity +
@@ -104,6 +109,7 @@ class CombatStats:
 
     @property
     def ranged_attack(self) -> int:
+        self.__boost_stats()
         return int(
             (self.dexterity * 2.5) +
             self.bonus_ranged_attack
@@ -111,6 +117,7 @@ class CombatStats:
 
     @property
     def magical_attack(self) -> int:
+        self.__boost_stats()
         return int(
             (self.intelligence * 2) +
             self.wisdom +
@@ -119,6 +126,7 @@ class CombatStats:
 
     @property
     def physical_defense(self) -> int:
+        self.__boost_stats()
         return int(
             (self.constitution * 2) +
             self.dexterity +
@@ -127,6 +135,7 @@ class CombatStats:
 
     @property
     def magical_defense(self) -> int:
+        self.__boost_stats()
         return int(
             (self.wisdom * 2) +
             self.constitution +
@@ -135,6 +144,7 @@ class CombatStats:
 
     @property
     def hit(self) -> int:
+        self.__boost_stats()
         return int(
             (self.dexterity * 2) +
             self.wisdom +
@@ -143,6 +153,7 @@ class CombatStats:
 
     @property
     def evasion(self) -> int:
+        self.__boost_stats()
         return int(
             (self.dexterity * 2) +
             self.wisdom +
@@ -270,6 +281,7 @@ if __name__ == '__main__':
     base_stats.base_charisma = 4
 
     print(combat_stats)
+    # Danos e Cura
     combat_stats.hit_points = -10
     combat_stats.current_hit_points = -20
     combat_stats.hp = -30
