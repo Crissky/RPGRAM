@@ -1,11 +1,5 @@
-if __name__ in ['__main__', 'char_base']:
-    from stats_base import BaseStats
-    from stats_combat import CombatStats
-    from race import Race
-else:
-    from rpgram.stats_base import BaseStats
-    from rpgram.stats_combat import CombatStats
-    from rpgram.race import Race
+from rpgram.boosters import Race
+from rpgram.stats import BaseStats, CombatStats
 
 
 class BaseCharacter:

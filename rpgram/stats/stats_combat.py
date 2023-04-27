@@ -1,9 +1,5 @@
-if __name__ in ['__main__', 'stats_combat']:
-    from stats_base import BaseStats
-    from stats_booster import StatsBooster
-else:
-    from rpgram.stats_base import BaseStats
-    from rpgram.stats_booster import StatsBooster
+from rpgram.stats import BaseStats
+from rpgram.boosters import StatsBooster
 
 
 class CombatStats:

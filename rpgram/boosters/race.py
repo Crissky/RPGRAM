@@ -1,7 +1,4 @@
-if __name__ in ['__main__', 'race']:
-    from stats_booster import StatsBooster
-else:
-    from rpgram.stats_booster import StatsBooster
+from rpgram.boosters import StatsBooster
 
 
 class Race(StatsBooster):
