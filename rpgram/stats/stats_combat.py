@@ -43,6 +43,9 @@ class CombatStats:
         elif self.__damage < 0:
             self.__damage = 0
 
+    def update(self) -> None:
+        self.__boost_stats()
+
     def __boost_stats(self) -> None:
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
@@ -55,7 +58,7 @@ class CombatStats:
         self.__bonus_evasion = 0
 
         for sb in self.__stats_boosters:
-            self.__bonus_hit_points += int(sb.bonus_hit_point)
+            self.__bonus_hit_points += int(sb.bonus_hit_points)
             self.__bonus_initiative += int(sb.bonus_initiative)
             self.__bonus_physical_attack += int(sb.bonus_physical_attack)
             self.__bonus_ranged_attack += int(sb.bonus_ranged_attack)

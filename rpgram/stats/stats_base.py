@@ -70,6 +70,9 @@ class BaseStats:
         new_value = getattr(self, attribute) + points
         setattr(self, attribute, new_value)
 
+    def update(self) -> None:
+        self.__boost_stats()
+
     def __boost_stats(self) -> None:
         self.__bonus_strength = 0
         self.__bonus_dexterity = 0
