@@ -7,6 +7,7 @@ class Equipament(StatsBooster):
         name: str,
         equip_type: EquipamentEnum,
         damage_type: DamageEnum,
+        weight: float = 10,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
         bonus_constitution: int = 0,
@@ -55,12 +56,14 @@ class Equipament(StatsBooster):
         self.__name = name
         self.__equip_type = equip_type
         self.__damage_type = damage_type
+        self.__weight = weight
 
     def get_sheet(self) -> str:
         return (
             f'Equipamento: {self.name}\n'
             f'Tipo: {self.equip_type.value}\n'
-            f'Tipo de Dano: {self.damage_type.value}\n'
+            f'Tipo de Dano: {self.damage_type.value}\n' if isinstance(self.damage_type, DamageEnum) else f''
+            f'Peso: {self.weight}\n'
         )
 
     def __repr__(self) -> str:
@@ -74,6 +77,7 @@ class Equipament(StatsBooster):
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_type = property(lambda self: self.__damage_type)
+    weight = property(lambda self: self.__weight)
 
 
 if __name__ == '__main__':
@@ -81,6 +85,7 @@ if __name__ == '__main__':
         name='Espada de Aço',
         equip_type=EquipamentEnum.one_hand,
         damage_type=DamageEnum.slashing,
+        weight=15,
         bonus_strength=0,
         bonus_dexterity=0,
         bonus_constitution=0,
