@@ -57,7 +57,7 @@ class StatsBooster:
 
     def get_sheet(self) -> str:
         return (
-            f'◇── BÔNUS E MULTIPLICADORES ──◇\n\n'
+            f'◇── BÔNUS E MULTIPLICADORES ──◇\n'
             f'FOR: {self.strength:+} '
             f'x({self.__multiplier_strength:+.2f})\n'
             f'DES: {self.dexterity:+} '
@@ -127,8 +127,10 @@ class StatsBooster:
         fget=lambda self: self.__bonus_physical_defense)
     magical_defense = bonus_magical_defense = property(
         fget=lambda self: self.__bonus_magical_defense)
-    hit = bonus_hit = property(fget=lambda self: self.__bonus_hit)
-    evasion = bonus_evasion = property(fget=lambda self: self.__bonus_evasion)
+    hit = bonus_hit = property(
+        fget=lambda self: self.__bonus_hit)
+    evasion = bonus_evasion = property(
+        fget=lambda self: self.__bonus_evasion)
 
 
 if __name__ == '__main__':
