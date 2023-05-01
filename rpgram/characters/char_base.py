@@ -1,3 +1,5 @@
+from datetime import datetime
+from bson import ObjectId
 from rpgram.boosters import Race, Classe
 from rpgram.stats import BaseStats, CombatStats
 
@@ -6,6 +8,7 @@ class BaseCharacter:
     def __init__(
         self,
         char_name: str,
+        _id: ObjectId = None,
         base_stats: BaseStats = None,
         combat_stats: CombatStats = None,
         classe: Classe = None,
@@ -45,8 +48,15 @@ class BaseCharacter:
         classe_multiplier_intelligence: float = 1.0,
         classe_multiplier_wisdom: float = 1.0,
         classe_multiplier_charisma: float = 1.0,
+        created_at: datetime = None,
+        updated_at: datetime = None
     ) -> None:
+        if isinstance(_id, str):
+            _id = ObjectId(_id)
         self.__name = char_name
+        self.__id = _id
+        self.__created_at = created_at
+        self.__updated_at = updated_at
         if not isinstance(race, Race):
             race = Race(
                 name=race_name,
@@ -104,20 +114,72 @@ class BaseCharacter:
 
     # Getters
     name = property(lambda self: self.__name)
+    _id = property(lambda self: self.__id)
     base_stats = bs = property(fget=lambda self: self.__base_stats)
     combat_stats = cs = property(fget=lambda self: self.__combat_stats)
     race = property(fget=lambda self: self.__race)
     classe = property(fget=lambda self: self.__classe)
+    created_at = property(lambda self: self.__created_at)
+    updated_at = property(lambda self: self.__updated_at)
 
-    def __repr__(self) -> str:
+    def get_sheet(self):
         return (
-            f'########################################\n'
-            f'Nome: {self.name}\n'
+            f'Personagem: {self.name}\n'
+            f'ID: {self._id}\n'
             f'{self.race.get_sheet()}'
             f'{self.classe.get_sheet()}'
             f'{self.base_stats.get_sheet()}'
             f'{self.combat_stats.get_sheet()}'
+        )
+
+    def __repr__(self) -> str:
+        return (
             f'########################################\n'
+            f'{self.get_sheet()}'
+            f'########################################\n'
+        )
+
+    def to_dict(self):
+        return dict(
+            char_name=self.name,
+            _id=self._id,
+            level=self.base_stats.level,
+            base_strength=self.base_stats.base_strength,
+            base_dexterity=self.base_stats.base_dexterity,
+            base_constitution=self.base_stats.base_constitution,
+            base_intelligence=self.base_stats.base_intelligence,
+            base_wisdom=self.base_stats.base_wisdom,
+            base_charisma=self.base_stats.base_charisma,
+            race_name=self.race.name,
+            race_description=self.race.description,
+            race_bonus_strength=self.race.bonus_strength,
+            race_bonus_dexterity=self.race.bonus_dexterity,
+            race_bonus_constitution=self.race.bonus_constitution,
+            race_bonus_intelligence=self.race.bonus_intelligence,
+            race_bonus_wisdom=self.race.bonus_wisdom,
+            race_bonus_charisma=self.race.bonus_charisma,
+            race_multiplier_strength=self.race.multiplier_strength,
+            race_multiplier_dexterity=self.race.multiplier_dexterity,
+            race_multiplier_constitution=self.race.multiplier_constitution,
+            race_multiplier_intelligence=self.race.multiplier_intelligence,
+            race_multiplier_wisdom=self.race.multiplier_wisdom,
+            race_multiplier_charisma=self.race.multiplier_charisma,
+            classe_name=self.classe.name,
+            classe_description=self.classe.description,
+            classe_bonus_strength=self.classe.bonus_strength,
+            classe_bonus_dexterity=self.classe.bonus_dexterity,
+            classe_bonus_constitution=self.classe.bonus_constitution,
+            classe_bonus_intelligence=self.classe.bonus_intelligence,
+            classe_bonus_wisdom=self.classe.bonus_wisdom,
+            classe_bonus_charisma=self.classe.bonus_charisma,
+            classe_multiplier_strength=self.classe.multiplier_strength,
+            classe_multiplier_dexterity=self.classe.multiplier_dexterity,
+            classe_multiplier_constitution=self.classe.multiplier_constitution,
+            classe_multiplier_intelligence=self.classe.multiplier_intelligence,
+            classe_multiplier_wisdom=self.classe.multiplier_wisdom,
+            classe_multiplier_charisma=self.classe.multiplier_charisma,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
         )
 
 
