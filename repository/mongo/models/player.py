@@ -9,11 +9,10 @@ class PlayerModel(Model):
 
     _class = property(lambda s: Player)
     collection = property(lambda s: CollectionEnum.PLAYERS.value)
-    database = property(lambda s: Database.get_instance())
 
 
 if __name__ == '__main__':
-    player = Player('Aroldo de Novo','PLAYER_2', '645006f6d8fefae3f4c268f1')
+    player = Player('Aroldo de Novo', 'PLAYER_2', '645006f6d8fefae3f4c268f1')
     player_model = PlayerModel()
     print(f'Collection: {player_model.collection}')
     result = player_model.save(player)
