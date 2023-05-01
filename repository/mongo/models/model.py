@@ -7,6 +7,7 @@ from repository.mongo import Database
 
 
 class Model:
+    '''Classe Base usada para salvar Classes no Banco de Dados MongoDB'''
 
     def get(self, id: Union[str, ObjectId] = None, query: dict = None) -> Any:
         if id:
