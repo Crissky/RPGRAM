@@ -39,7 +39,7 @@ class Race(StatsBooster):
     def get_sheet(self) -> str:
         return (
             f'Raça: {self.name}\n'
-            f'Descrição: {self.description}\n'
+            f'Descrição da Raça: {self.description}\n'
         )
 
     def __repr__(self) -> str:
