@@ -1,0 +1,25 @@
+from decouple import config
+
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes,
+    ConversationHandler,
+    MessageHandler,
+    filters,
+)
+
+TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
+
+def main() -> None:
+    """Run the bot."""
+    # Create the Application and pass it your bot's token.
+    application = Application.builder().token(TELEGRAM_TOKEN).build()
+
+    # Run the bot until the user presses Ctrl-C
+    application.run_polling()
+
+
+if __name__ == "__main__":
+    main()
