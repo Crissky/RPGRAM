@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from bson import ObjectId
-from datetime import datetime, timedelta
 from typing import Union, Any
+from functions.datetime import get_brazil_time_now
 
 from repository.mongo import Database
 
@@ -27,7 +27,7 @@ class Model:
         if (result := self.database.find(self.collection, query)):
             return self._class(**result)
 
-    def save(self, obj: Any):
+    def save(self, obj: Any, alternative_id='player_id'):
         if not isinstance(obj, self._class):
             raise ValueError(
                 f'Objeto inválido. Precisa ser {self._class} não {type(obj)}'
@@ -38,26 +38,21 @@ class Model:
             query['_id'] = obj._id
         else:
             obj_dict.pop('_id', None)
-            if obj_dict.get('player_id'):
-                query['player_id'] = obj.player_id
+            if obj_dict.get(alternative_id, None):
+                query[alternative_id] = obj_dict[alternative_id]
         if query and self.database.find(self.collection, query):
             print('Updating')
-            obj_dict['updated_at'] = self.get_brazil_time_now()
+            obj_dict['updated_at'] = get_brazil_time_now()
             result = self.database.update(
                 self.collection, query, {'$set': obj_dict}
             )
         else:
             print('Inserting')
-            obj_dict['created_at'] = self.get_brazil_time_now()
-            obj_dict['updated_at'] = self.get_brazil_time_now()
+            obj_dict['created_at'] = get_brazil_time_now()
+            obj_dict['updated_at'] = get_brazil_time_now()
             result = self.database.insert(self.collection, obj_dict)
 
         return result
-
-    def get_brazil_time_now(self):
-        delta = timedelta(hours=3)
-        dt = datetime.utcnow() - delta
-        return dt
 
     database = property(lambda self: Database.get_instance())
 
@@ -70,7 +65,3 @@ class Model:
     @abstractmethod
     def _class(self):
         ...
-
-if __name__ == '__main__':
-    model = Model()
-    print(model.get_brazil_time_now())
