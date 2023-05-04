@@ -12,7 +12,7 @@ class Model:
     def get(self, id: Union[str, ObjectId] = None, query: dict = None) -> Any:
         if id:
             if isinstance(id, str):
-                query = {'player_id': id}
+                query = {self.alternative_id: id}
             elif isinstance(id, ObjectId):
                 query = {'_id': id}
             else:
@@ -27,7 +27,7 @@ class Model:
         if (result := self.database.find(self.collection, query)):
             return self._class(**result)
 
-    def save(self, obj: Any, alternative_id='player_id'):
+    def save(self, obj: Any):
         if not isinstance(obj, self._class):
             raise ValueError(
                 f'Objeto inválido. Precisa ser {self._class} não {type(obj)}'
@@ -38,8 +38,8 @@ class Model:
             query['_id'] = obj._id
         else:
             obj_dict.pop('_id', None)
-            if obj_dict.get(alternative_id, None):
-                query[alternative_id] = obj_dict[alternative_id]
+            if obj_dict.get(self.alternative_id, None):
+                query[self.alternative_id] = obj_dict[self.alternative_id]
         if query and self.database.find(self.collection, query):
             print('Updating')
             obj_dict['updated_at'] = get_brazil_time_now()
@@ -55,6 +55,7 @@ class Model:
         return result
 
     database = property(lambda self: Database.get_instance())
+    alternative_id = property(lambda self: 'player_id')
 
     @property
     @abstractmethod
