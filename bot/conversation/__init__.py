@@ -1,0 +1,1 @@
+from bot.conversation.sign_up import SIGNUP_HANDLER
