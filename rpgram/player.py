@@ -7,7 +7,7 @@ class Player:
     def __init__(
         self,
         name: str,
-        player_id: str,
+        player_id: int,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -39,6 +39,6 @@ class Player:
 
 
 if __name__ == '__main__':
-    player = Player('Aroldo', 'TEL2', '98765432101234567890ffff')
+    player = Player('Aroldo', 2, '98765432101234567890ffff')
     print('to_dict:', player.to_dict())
     print('__repr__:', player)

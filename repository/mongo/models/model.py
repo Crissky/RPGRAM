@@ -9,15 +9,15 @@ from repository.mongo import Database
 class Model:
     '''Classe Base usada para salvar Classes no Banco de Dados MongoDB'''
 
-    def get(self, id: Union[str, ObjectId] = None, query: dict = None) -> Any:
+    def get(self, id: Union[int, ObjectId] = None, query: dict = None) -> Any:
         if id:
-            if isinstance(id, str):
+            if isinstance(id, int):
                 query = {self.alternative_id: id}
             elif isinstance(id, ObjectId):
                 query = {'_id': id}
             else:
                 raise ValueError(
-                    'ID inválido. Precisa ser string ou ObjectId não vazio. '
+                    'ID inválido. Precisa ser inteiro ou ObjectId não vazio. '
                     f'ID: {id}, Tipo: {type(id)}'
                 )
         if not query:

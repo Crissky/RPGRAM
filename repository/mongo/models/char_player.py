@@ -11,7 +11,7 @@ class PlayerCharacterModel(Model):
 
 if __name__ == '__main__':
     player_character = PlayerCharacter(
-        player_id='PLAYER-000',
+        player_id=10,
         player_name='Jogador Teste',
         char_name='Personagem Jogador Teste',
         level=21,
@@ -54,5 +54,5 @@ if __name__ == '__main__':
     print(f'Collenction:', player_char_model.collection)
     result = player_char_model.save(player_character)
     print('result:', result)
-    player_character2 = player_char_model.get('PLAYER-000')
+    player_character2 = player_char_model.get(10)
     print(player_character2)

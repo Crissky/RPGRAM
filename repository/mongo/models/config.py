@@ -11,11 +11,11 @@ class GroupConfigurationModel(Model):
 
 if __name__ == '__main__':
     group_config = GroupConfiguration(
-        'chat-1234', _id='ff0123456789ff0123456789'
+        1234, _id='ff0123456789ff0123456789'
     )
     group_config_model = GroupConfigurationModel()
     print(f'Collection: {group_config_model.collection}')
     result = group_config_model.save(group_config)
     print('result:', result)
-    group_config2 = group_config_model.get('chat-1234')
+    group_config2 = group_config_model.get(1234)
     print('player2:', group_config2)

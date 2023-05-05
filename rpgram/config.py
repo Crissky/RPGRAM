@@ -7,7 +7,7 @@ from bson import ObjectId
 class GroupConfiguration:
     def __init__(
         self,
-        chat_id: str,
+        chat_id: int,
         verbose: bool = False,
         spawn_start_time: int = 6,
         spawn_end_time: int = 20,
@@ -51,7 +51,7 @@ class GroupConfiguration:
 
 if __name__ == "__main__":
     group_config = GroupConfiguration(
-        'chat-1234'
+        1234
     )
     print('to_dict:', group_config.to_dict())
     print('__repr__:', group_config)
