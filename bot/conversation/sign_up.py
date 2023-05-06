@@ -26,6 +26,8 @@ START_ROUTES, END_ROUTES = range(2)
 YES = 'yes'
 NO = "no"
 
+COMMANDS = ['createaccount', 'criarconta', 'signup']
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
@@ -35,7 +37,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if (player := player_model.get(player_id)):
         await update.message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
-            f'Vocé já possui uma conta criada.\n\n'
+            f'Vocé já possui uma conta.\n\n'
             f'{player}'
         )
 
@@ -48,11 +50,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    await update.message.reply_text(
+    response = await update.message.reply_text(
         'Seja Bem-vindo, Aventureiro(a).\n'
         'Gostaria de Criar uma Conta?',
         reply_markup=reply_markup,
     )
+    context.user_data['response'] = response
+
     return START_ROUTES
 
 
@@ -75,16 +79,21 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.message:
-        await update.message.reply_text(
-            "Tchau! Você pode criar uma conta mais tarde.",
-            reply_markup=ReplyKeyboardRemove()
+    new_text = "Tchau! Você pode criar uma conta mais tarde."
+    if 'response' in context.user_data:
+        response = context.user_data['response']
+        chat_id = response.chat_id
+        message_id = response.id
+        print(f'chat_id: {chat_id}, message_id: {message_id}')
+        await update.get_bot().edit_message_text(
+            chat_id=chat_id,
+            message_id=message_id,
+            text=new_text,
         )
-    if update.callback_query:
+        del context.user_data['response']
+    elif update.callback_query:
         await update.callback_query.answer()
-        await update.callback_query.edit_message_text(
-            "Tchau! Vocé pode criar uma conta mais tarde."
-        )
+        await update.callback_query.edit_message_text(new_text)
     return ConversationHandler.END
 
 
@@ -92,7 +101,7 @@ SIGNUP_HANDLER = ConversationHandler(
     entry_points=[
         CommandHandler("start", start), CommandHandler("criarconta", start),
         MessageHandler(
-            filters.Regex(r'^!(createaccount|criarconta|signup)$'), start
+            filters.Regex(rf'^!({"|".join(COMMANDS)})$'), start
         )
     ],
     states={
