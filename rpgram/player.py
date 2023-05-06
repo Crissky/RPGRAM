@@ -23,9 +23,11 @@ class Player:
 
     def __repr__(self) -> str:
         return (
-            f'Player(name={self.name}, '
-            f'id={self._id}, player_id={self.player_id}, '
-            f'created_at={self.created_at}, updated_at={self.updated_at})'
+            f'Jogador: {self.name}\n'
+            f'ID: {self._id}\n'
+            f'Player ID: {self.player_id}\n'
+            f'Criado em: {self.created_at}\n'
+            f'Atualizado em: {self.updated_at}'
         )
 
     def to_dict(self) -> dict:
