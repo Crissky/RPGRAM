@@ -2,6 +2,8 @@ from datetime import datetime
 from bson import ObjectId
 from typing import Union
 
+from functions.datetime import datetime_to_string
+
 
 class Player:
     def __init__(
@@ -23,11 +25,12 @@ class Player:
 
     def __repr__(self) -> str:
         return (
+            f'◇── Dados do Jogador ──◇\n\n'
             f'Jogador: {self.name}\n'
             f'ID: {self._id}\n'
             f'Player ID: {self.player_id}\n'
-            f'Criado em: {self.created_at}\n'
-            f'Atualizado em: {self.updated_at}'
+            f'Criado em: {datetime_to_string(self.created_at)}\n'
+            f'Atualizado em: {datetime_to_string(self.updated_at)}'
         )
 
     def to_dict(self) -> dict:
