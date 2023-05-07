@@ -124,6 +124,7 @@ if __name__ == '__main__':
         player_id=10,
         player_name='Jogador Teste',
         char_name='Personagem Jogador Teste',
+        _id='ffffffffffffffffffffffff',
         level=21,
         base_strength=10,
         base_dexterity=10,
@@ -161,3 +162,4 @@ if __name__ == '__main__':
         classe_multiplier_charisma=0.5,
     )
     print(player_character)
+    print(player_character.to_dict())

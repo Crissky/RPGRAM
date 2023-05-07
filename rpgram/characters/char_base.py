@@ -186,6 +186,7 @@ class BaseCharacter:
 if __name__ == '__main__':
     base_character = BaseCharacter(
         char_name='Personagem Teste',
+        _id='ffffffffffffffffffffffff',
         level=21,
         base_strength=10,
         base_dexterity=10,
@@ -228,3 +229,4 @@ if __name__ == '__main__':
     base_character.combat_stats.hp = -100
     base_character.combat_stats.hit_points = 50
     print(base_character)
+    print(base_character.to_dict())
