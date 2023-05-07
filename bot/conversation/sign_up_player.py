@@ -97,7 +97,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-SIGNUP_HANDLER = ConversationHandler(
+SIGNUP_PLAYER_HANDLER = ConversationHandler(
     entry_points=[
         CommandHandler("start", start), CommandHandler("criarconta", start),
         MessageHandler(

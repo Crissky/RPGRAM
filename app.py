@@ -3,7 +3,7 @@ from decouple import config
 from telegram.ext import (
     Application,
 )
-from bot.conversation import SIGNUP_HANDLER
+from bot.conversation import SIGNUP_PLAYER_HANDLER
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 
@@ -12,7 +12,7 @@ def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
     application = Application.builder().token(TELEGRAM_TOKEN).build()
-    application.add_handler(SIGNUP_HANDLER)
+    application.add_handler(SIGNUP_PLAYER_HANDLER)
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
