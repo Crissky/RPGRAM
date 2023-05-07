@@ -5,8 +5,8 @@ from rpgram import Player
 
 class PlayerModel(Model):
 
-    _class = property(lambda s: Player)
-    collection = property(lambda s: CollectionEnum.PLAYERS.value)
+    _class = property(lambda self: Player)
+    collection = property(lambda self: CollectionEnum.PLAYERS.value)
 
 
 if __name__ == '__main__':

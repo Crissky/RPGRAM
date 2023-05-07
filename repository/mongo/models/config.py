@@ -4,9 +4,9 @@ from rpgram import GroupConfiguration
 
 
 class GroupConfigurationModel(Model):
-    _class = property(lambda s: GroupConfiguration)
-    collection = property(lambda s: CollectionEnum.GROUP_CONFIGURATION.value)
-    alternative_id = property(lambda s: 'chat_id')
+    _class = property(lambda self: GroupConfiguration)
+    collection = property(lambda self: CollectionEnum.GROUP_CONFIGURATION.value)
+    alternative_id = property(lambda self: 'chat_id')
 
 
 if __name__ == '__main__':
