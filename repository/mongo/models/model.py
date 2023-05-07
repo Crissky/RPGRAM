@@ -9,16 +9,19 @@ from repository.mongo import Database
 class Model:
     '''Classe Base usada para salvar Classes no Banco de Dados MongoDB'''
 
-    def get(self, id: Union[int, ObjectId] = None, query: dict = None) -> Any:
-        if id:
-            if isinstance(id, int):
-                query = {self.alternative_id: id}
-            elif isinstance(id, ObjectId):
-                query = {'_id': id}
+    def get(self, _id: Union[int, ObjectId] = None, query: dict = None) -> Any:
+        if _id:
+            if isinstance(_id, int):
+                query = {self.alternative_id: _id}
+            elif isinstance(_id, ObjectId):
+                query = {'_id': _id}
+            elif isinstance(_id, str) and len(_id) == 24:
+                query = {'_id': ObjectId(_id)}
             else:
                 raise ValueError(
-                    'ID inválido. Precisa ser inteiro ou ObjectId não vazio. '
-                    f'ID: {id}, Tipo: {type(id)}'
+                    'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
+                    'uma string com 24 caracteres que representa um ObjectId.'
+                    f'ID: {_id}, Tipo: {type(_id)}'
                 )
         if not query:
             raise ValueError('Query esta vazio.')
