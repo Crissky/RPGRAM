@@ -2,7 +2,10 @@ from enum import Enum
 
 
 class CollectionEnum(Enum):
-    PLAYERS = 'players'
     BASE_CHARS = 'base_characters'
-    PLAYER_CHARS = 'player_characters'
+    CLASSES = 'classes'
+    EQUIPAMENTS = 'equipaments'
     GROUP_CONFIGURATION = 'group_configuration'
+    PLAYERS = 'players'
+    PLAYER_CHARS = 'player_characters'
+    RACES = 'races'
