@@ -12,8 +12,8 @@ from telegram.ext import (
     filters,
 )
 
-from repository.mongo import PlayerModel
-from rpgram import Player
+from repository.mongo import GroupConfigurationModel
+from rpgram import GroupConfiguration
 
 
 # Stages
@@ -23,21 +23,31 @@ START_ROUTES, END_ROUTES = range(2)
 YES = 'yes'
 NO = "no"
 
-COMMANDS = ['createaccount', 'criarconta', 'signup']
+COMMANDS = [
+    'creategroupaccount', 'criarcontagrupo', 'signupgroup', 'cadastrargrupo',
+    'creategroup', 'criargrupo'
+]
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('update.effective_chat.id:', update.effective_chat.id)
+    print('update.effective_user.id:', update.effective_user.id)
 
-    player_model = PlayerModel()
+    group_config_model = GroupConfigurationModel()
+    chat_id = update.effective_chat.id
+    chat_name = update.effective_chat.effective_name
     user_name = update.effective_user.name
-    player_id = update.effective_user.id
 
-    if (player := player_model.get(player_id)):
+    if update.effective_chat.type == 'private':
+        await update.message.reply_text(
+            'Use este comando em um grupo para cadastrá-lo.'
+        )
+        return ConversationHandler.END
+    elif (group_config := group_config_model.get(chat_id)):
         await update.message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
-            f'Vocé já possui uma conta.\n\n'
-            f'{player}'
+            f'O grupo "{chat_name}" já está cadastrado.\n\n'
+            f'{group_config}'
         )
         return ConversationHandler.END
 
@@ -50,7 +60,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     response = await update.message.reply_text(
         'Seja Bem-vindo, Aventureiro(a).\n'
-        'Gostaria de Criar uma Conta?',
+        'Gostaria de Cadastrar este Grupo?',
         reply_markup=reply_markup,
     )
     context.user_data['response'] = response
@@ -59,25 +69,31 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_name = update.effective_user.name
-    player_id = update.effective_user.id
-    player_model = PlayerModel()
-    player = Player(user_name, player_id)
-    player_model.save(player)
-    player = player_model.get(player_id)
+    chat_id = update.effective_chat.id
+    chat_name = update.effective_chat.effective_name
+    group_config_model = GroupConfigurationModel()
+
+    if not (group_config := group_config_model.get(chat_id)):
+        group_config = GroupConfiguration(
+            name=chat_name,
+            chat_id=chat_id,
+        )
+        group_config_model.save(group_config)
+        group_config = group_config_model.get(chat_id)
+
     query = update.callback_query
 
     await query.answer('Cadastrado com sucesso!')
     await query.edit_message_text(
-        "Conta criada com sucesso!\n\n"
-        f'{player}',
+        "Grupo cadastrado com sucesso!\n\n"
+        f'{group_config}',
     )
 
     return ConversationHandler.END
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    new_text = "Tchau! Você pode criar uma conta mais tarde."
+    new_text = "Tchau! Você pode criar uma conta para o grupo mais tarde."
 
     if 'response' in context.user_data:
         response = context.user_data['response']
@@ -97,9 +113,10 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-SIGNUP_PLAYER_HANDLER = ConversationHandler(
+SIGNUP_GROUP_HANDLER = ConversationHandler(
     entry_points=[
-        CommandHandler("start", start), CommandHandler("criarconta", start),
+        CommandHandler("startgroup", start),
+        CommandHandler("criargrupo", start),
         MessageHandler(
             filters.Regex(rf'^!({"|".join(COMMANDS)})$'), start
         )
