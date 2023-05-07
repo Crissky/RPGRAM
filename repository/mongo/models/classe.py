@@ -6,6 +6,7 @@ from rpgram.boosters import Classe
 class ClasseModel(Model):
     _class = property(lambda self: Classe)
     collection = property(lambda self: CollectionEnum.CLASSES.value)
+    alternative_id = property(lambda self: 'name')
 
 
 if __name__ == '__main__':
@@ -30,5 +31,5 @@ if __name__ == '__main__':
     print(f'Collection: {classe_model.collection}')
     result = classe_model.save(classe)
     print(f'Result: {result}')
-    classe2 = classe_model.get('ffffffffffffffffffffffff')
+    classe2 = classe_model.get('CLÉRIGO TESTE MODELO')
     print('Classe2:\n', classe2)

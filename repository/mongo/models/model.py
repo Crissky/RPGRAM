@@ -11,12 +11,12 @@ class Model:
 
     def get(self, _id: Union[int, ObjectId] = None, query: dict = None) -> Any:
         if _id:
-            if isinstance(_id, int):
-                query = {self.alternative_id: _id}
-            elif isinstance(_id, ObjectId):
+            if isinstance(_id, ObjectId):
                 query = {'_id': _id}
-            elif isinstance(_id, str) and len(_id) == 24:
+            elif ObjectId.is_valid(_id):
                 query = {'_id': ObjectId(_id)}
+            elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
+                query = {self.alternative_id: _id}
             else:
                 raise ValueError(
                     'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
@@ -29,6 +29,9 @@ class Model:
             raise ValueError('Query precisa ser um dicionário.')
         if (result := self.database.find(self.collection, query)):
             return self._class(**result)
+
+    def __alt_id_is_valid(self):
+        return isinstance(self.alternative_id, str)
 
     def save(self, obj: Any):
         if not isinstance(obj, self._class):

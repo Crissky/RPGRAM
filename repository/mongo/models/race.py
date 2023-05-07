@@ -6,6 +6,7 @@ from rpgram.boosters import Race
 class RaceModel(Model):
     _class = property(lambda self: Race)
     collection = property(lambda self: CollectionEnum.RACES.value)
+    alternative_id = property(lambda self: 'name')
 
 
 if __name__ == '__main__':
@@ -30,5 +31,5 @@ if __name__ == '__main__':
     print(f'Collection: {race_model.collection}')
     result = race_model.save(race)
     print('Result:', result)
-    race2 = race_model.get('ffffffffffffffffffffffff')
+    race2 = race_model.get('HUMANO TESTE MODELO')
     print('Race2:\n', race2)
