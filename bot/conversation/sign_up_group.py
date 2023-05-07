@@ -3,6 +3,7 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
+from telegram.constants import ChatType
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
@@ -38,7 +39,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_name = update.effective_chat.effective_name
     user_name = update.effective_user.name
 
-    if update.effective_chat.type == 'private':
+    if update.effective_chat.type == ChatType.PRIVATE:
         await update.message.reply_text(
             'Use este comando em um grupo para cadastrá-lo.'
         )
