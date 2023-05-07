@@ -1,3 +1,7 @@
+from datetime import datetime
+from typing import Union
+
+from bson import ObjectId
 from rpgram.boosters import StatsBooster
 
 
@@ -6,6 +10,7 @@ class Race(StatsBooster):
         self,
         name: str,
         description: str = '',
+        _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
         bonus_constitution: int = 0,
@@ -18,8 +23,11 @@ class Race(StatsBooster):
         multiplier_intelligence: float = 1.0,
         multiplier_wisdom: float = 1.0,
         multiplier_charisma: float = 1.0,
+        created_at: datetime = None,
+        updated_at: datetime = None
     ) -> None:
         super().__init__(
+            _id=_id,
             bonus_strength=bonus_strength,
             bonus_dexterity=bonus_dexterity,
             bonus_constitution=bonus_constitution,
@@ -32,6 +40,8 @@ class Race(StatsBooster):
             multiplier_intelligence=multiplier_intelligence,
             multiplier_wisdom=multiplier_wisdom,
             multiplier_charisma=multiplier_charisma,
+            created_at=created_at,
+            updated_at=updated_at,
         )
         self.__name = name
         self.__description = description
@@ -50,6 +60,27 @@ class Race(StatsBooster):
             f'########################################\n'
         )
 
+    def to_dict(self):
+        return dict(
+            name=self.name,
+            description=self.description,
+            _id=self._id,
+            bonus_strength=self.bonus_strength,
+            bonus_dexterity=self.bonus_dexterity,
+            bonus_constitution=self.bonus_constitution,
+            bonus_intelligence=self.bonus_intelligence,
+            bonus_wisdom=self.bonus_wisdom,
+            bonus_charisma=self.bonus_charisma,
+            multiplier_strength=self.multiplier_strength,
+            multiplier_dexterity=self.multiplier_dexterity,
+            multiplier_constitution=self.multiplier_constitution,
+            multiplier_intelligence=self.multiplier_intelligence,
+            multiplier_wisdom=self.multiplier_wisdom,
+            multiplier_charisma=self.multiplier_charisma,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )
+
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
 
@@ -58,6 +89,7 @@ if __name__ == '__main__':
     race = Race(
         name='Humano',
         description='Humano Teste',
+        _id='ffffffffffffffffffffffff',
         bonus_strength=10,
         bonus_dexterity=10,
         bonus_constitution=10,
@@ -72,3 +104,4 @@ if __name__ == '__main__':
         multiplier_charisma=1.6,
     )
     print(race)
+    print(race.to_dict())

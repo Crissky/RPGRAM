@@ -1,13 +1,19 @@
+from datetime import datetime
+from typing import Union
+
+from bson import ObjectId
 from rpgram.boosters import StatsBooster
 from rpgram.enums import EquipamentEnum, DamageEnum
+
 
 class Equipament(StatsBooster):
     def __init__(
         self,
         name: str,
-        equip_type: EquipamentEnum,
-        damage_type: DamageEnum,
+        equip_type: Union[str, EquipamentEnum],
+        damage_type: Union[str, DamageEnum],
         weight: float = 10,
+        _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
         bonus_constitution: int = 0,
@@ -29,8 +35,11 @@ class Equipament(StatsBooster):
         bonus_magical_defense: int = 0,
         bonus_hit: int = 0,
         bonus_evasion: int = 0,
+        created_at: datetime = None,
+        updated_at: datetime = None
     ) -> None:
         super().__init__(
+            _id=_id,
             bonus_strength=bonus_strength,
             bonus_dexterity=bonus_dexterity,
             bonus_constitution=bonus_constitution,
@@ -51,8 +60,15 @@ class Equipament(StatsBooster):
             bonus_physical_defense=bonus_physical_defense,
             bonus_magical_defense=bonus_magical_defense,
             bonus_hit=bonus_hit,
-            bonus_evasion=bonus_evasion
+            bonus_evasion=bonus_evasion,
+            created_at=created_at,
+            updated_at=updated_at
         )
+        if isinstance(equip_type, str):
+            equip_type = EquipamentEnum[equip_type]
+        if isinstance(damage_type, str):
+            damage_type = DamageEnum[damage_type]
+
         self.__name = name
         self.__equip_type = equip_type
         self.__damage_type = damage_type
@@ -62,7 +78,8 @@ class Equipament(StatsBooster):
         return (
             f'Equipamento: {self.name}\n'
             f'Tipo: {self.equip_type.value}\n'
-            f'Tipo de Dano: {self.damage_type.value}\n' if isinstance(self.damage_type, DamageEnum) else f''
+            f'Tipo de Dano: {self.damage_type.value}\n' if isinstance(
+                self.damage_type, DamageEnum) else f''
             f'Peso: {self.weight}\n'
         )
 
@@ -73,6 +90,17 @@ class Equipament(StatsBooster):
             f'{super().get_sheet()}'
             f'########################################\n'
         )
+
+    def to_dict(self):
+        _dict = dict(
+            name=self.name,
+            equip_type=self.equip_type.name,
+            damage_type=self.damage_type.name,
+            weight=self.weight,
+        )
+        _dict.update(super().to_dict())
+
+        return _dict
 
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
@@ -86,6 +114,7 @@ if __name__ == '__main__':
         equip_type=EquipamentEnum.one_hand,
         damage_type=DamageEnum.slashing,
         weight=15,
+        _id='ffffffffffffffffffffffff',
         bonus_strength=0,
         bonus_dexterity=0,
         bonus_constitution=0,
@@ -103,3 +132,4 @@ if __name__ == '__main__':
         bonus_evasion=-0,
     )
     print(sword)
+    print(sword.to_dict())

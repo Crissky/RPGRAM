@@ -1,3 +1,9 @@
+from datetime import datetime
+from typing import Union
+
+from bson import ObjectId
+
+
 class StatsBooster:
     '''Classe Base para ser usada em características que dão bônus aos 
     atributos dos personagens como: Raça, Classe, Taletos, Equipamentos, etc.
@@ -9,6 +15,7 @@ class StatsBooster:
 
     def __init__(
         self,
+        _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
         bonus_constitution: int = 0,
@@ -30,7 +37,14 @@ class StatsBooster:
         bonus_magical_defense: int = 0,
         bonus_hit: int = 0,
         bonus_evasion: int = 0,
+        created_at: datetime = None,
+        updated_at: datetime = None
     ) -> None:
+        if isinstance(_id, str):
+            _id = ObjectId(_id)
+
+        self.__id = _id
+
         self.__bonus_strength = int(bonus_strength)
         self.__bonus_dexterity = int(bonus_dexterity)
         self.__bonus_constitution = int(bonus_constitution)
@@ -54,6 +68,9 @@ class StatsBooster:
         self.__bonus_magical_defense = int(bonus_magical_defense)
         self.__bonus_hit = int(bonus_hit)
         self.__bonus_evasion = int(bonus_evasion)
+
+        self.__created_at = created_at
+        self.__updated_at = updated_at
 
     def get_sheet(self) -> str:
         return (
@@ -89,6 +106,33 @@ class StatsBooster:
             f'########################################\n'
         )
 
+    def to_dict(self):
+        return dict(
+            _id=self._id,
+            bonus_strength=self.bonus_strength,
+            bonus_dexterity=self.bonus_dexterity,
+            bonus_constitution=self.bonus_constitution,
+            bonus_intelligence=self.bonus_intelligence,
+            bonus_wisdom=self.bonus_wisdom,
+            bonus_charisma=self.bonus_charisma,
+            multiplier_strength=self.multiplier_strength,
+            multiplier_dexterity=self.multiplier_dexterity,
+            multiplier_constitution=self.multiplier_constitution,
+            multiplier_intelligence=self.multiplier_intelligence,
+            multiplier_wisdom=self.multiplier_wisdom,
+            multiplier_charisma=self.multiplier_charisma,
+            bonus_hit_points=self.bonus_hit_points,
+            bonus_initiative=self.bonus_initiative,
+            bonus_physical_attack=self.bonus_physical_attack,
+            bonus_ranged_attack=self.bonus_ranged_attack,
+            bonus_magical_attack=self.bonus_magical_attack,
+            bonus_physical_defense=self.bonus_physical_defense,
+            bonus_magical_defense=self.bonus_magical_defense,
+            bonus_hit=self.bonus_hit,
+            bonus_evasion=self.bonus_evasion,
+        )
+
+    _id = property(lambda self: self.__id)
     strength = bonus_strength = property(
         fget=lambda self: self.__bonus_strength)
     dexterity = bonus_dexterity = property(
@@ -131,10 +175,13 @@ class StatsBooster:
         fget=lambda self: self.__bonus_hit)
     evasion = bonus_evasion = property(
         fget=lambda self: self.__bonus_evasion)
+    created_at = property(lambda self: self.__created_at)
+    updated_at = property(lambda self: self.__updated_at)
 
 
 if __name__ == '__main__':
     bonus_stats = StatsBooster(
+        _id='ffffffffffffffffffffffff',
         bonus_strength=10,
         bonus_dexterity=11,
         bonus_constitution=12,
@@ -158,3 +205,4 @@ if __name__ == '__main__':
         bonus_evasion=30,
     )
     print(bonus_stats)
+    print(bonus_stats.to_dict())
