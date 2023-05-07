@@ -9,6 +9,7 @@ from functions.datetime import datetime_to_string
 class GroupConfiguration:
     def __init__(
         self,
+        name: str,
         chat_id: int,
         _id: Union[str, ObjectId] = None,
         verbose: bool = False,
@@ -22,6 +23,7 @@ class GroupConfiguration:
         if isinstance(_id, str):
             _id = ObjectId(_id)
 
+        self.name = name
         self.chat_id = chat_id
         self.verbose = verbose
         self.spawn_start_time = spawn_start_time
@@ -35,6 +37,7 @@ class GroupConfiguration:
     def __repr__(self) -> str:
         return (
             f'◇── Configuração do Grupo ──◇\n'
+            f'Grupo: {self.name}\n'
             f'Chat ID: {self.chat_id}\n'
             f'Verbose: {self.verbose}\n'
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
@@ -42,12 +45,13 @@ class GroupConfiguration:
             f'ID: {self._id}\n'
             f'Multiplicador Geral de XP: {self.multiplier_xp}\n'
             f'Multiplicador de XP do Jogador: {self.player_multiplier_xp}\n'
-            f'created_at: {datetime_to_string(self.created_at)}\n'
-            f'updated_at: {datetime_to_string(self.updated_at)}\n'
+            f'Criado em: {datetime_to_string(self.created_at)}\n'
+            f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
         )
 
     def to_dict(self) -> dict:
         return dict(
+            name=self.name,
             chat_id=self.chat_id,
             verbose=self.verbose,
             spawn_start_time=self.spawn_start_time,
@@ -60,6 +64,7 @@ class GroupConfiguration:
 
 if __name__ == "__main__":
     group_config = GroupConfiguration(
+        name='Grupo Teste',
         chat_id=1234,
         _id='ffffffffffffffffffffffff'
     )

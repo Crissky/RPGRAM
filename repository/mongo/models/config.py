@@ -11,6 +11,7 @@ class GroupConfigurationModel(Model):
 
 if __name__ == '__main__':
     group_config = GroupConfiguration(
+        name='GRUPO TESTE MODELO',
         chat_id=1234,
         _id='ffffffffffffffffffffffff',
     )
