@@ -11,7 +11,8 @@ class GroupConfigurationModel(Model):
 
 if __name__ == '__main__':
     group_config = GroupConfiguration(
-        1234, _id='ff0123456789ff0123456789'
+        chat_id=1234,
+        _id='ffffffffffffffffffffffff',
     )
     group_config_model = GroupConfigurationModel()
     print(f'Collection: {group_config_model.collection}')

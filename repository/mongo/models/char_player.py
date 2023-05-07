@@ -12,8 +12,9 @@ class PlayerCharacterModel(Model):
 if __name__ == '__main__':
     player_character = PlayerCharacter(
         player_id=10,
-        player_name='Jogador Teste',
-        char_name='Personagem Jogador Teste',
+        player_name='JOGADOR TESTE MODELO',
+        char_name='PERSONAGEM JOGADOR TESTE MODELO',
+        _id='ffffffffffffffffffffffff',
         level=21,
         base_strength=10,
         base_dexterity=10,
@@ -21,8 +22,8 @@ if __name__ == '__main__':
         base_intelligence=10,
         base_wisdom=10,
         base_charisma=10,
-        race_name='Anão',
-        race_description='Anão Teste do Jogador',
+        race_name='ANÃO TESTE MODELO',
+        race_description='ANÃO TESTE DO JOGADOR TESTE MODELO',
         race_bonus_strength=10,
         race_bonus_dexterity=8,
         race_bonus_constitution=14,
@@ -35,8 +36,8 @@ if __name__ == '__main__':
         race_multiplier_intelligence=1.0,
         race_multiplier_wisdom=1.0,
         race_multiplier_charisma=1.0,
-        classe_name='Bárbaro',
-        classe_description='Bárbaro Teste de jogador',
+        classe_name='BÁRBARO',
+        classe_description='BÁRBARO TESTE DE JOGADOR TESTE MODELO',
         classe_bonus_strength=18,
         classe_bonus_dexterity=12,
         classe_bonus_constitution=15,
@@ -51,8 +52,8 @@ if __name__ == '__main__':
         classe_multiplier_charisma=0.5,
     )
     player_char_model = PlayerCharacterModel()
-    print(f'Collenction:', player_char_model.collection)
+    print(f'Collection:', player_char_model.collection)
     result = player_char_model.save(player_character)
     print('result:', result)
-    player_character2 = player_char_model.get(10)
+    player_character2 = player_char_model.get('ffffffffffffffffffffffff')
     print(player_character2)
