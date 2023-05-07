@@ -44,6 +44,10 @@ class Player:
 
 
 if __name__ == '__main__':
-    player = Player('Aroldo', 2, '98765432101234567890ffff')
-    print('to_dict:', player.to_dict())
+    player = Player(
+        name='Aroldo',
+        player_id=2,
+        _id='ffffffffffffffffffffffff'
+    )
     print('__repr__:', player)
+    print('to_dict:', player.to_dict())

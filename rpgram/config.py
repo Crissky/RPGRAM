@@ -1,4 +1,4 @@
-from datetime import datetime, time
+from datetime import datetime
 from typing import Union
 
 from bson import ObjectId
@@ -60,7 +60,8 @@ class GroupConfiguration:
 
 if __name__ == "__main__":
     group_config = GroupConfiguration(
-        1234
+        chat_id=1234,
+        _id='ffffffffffffffffffffffff'
     )
-    print('to_dict:', group_config.to_dict())
     print('__repr__:\n', group_config)
+    print('to_dict:', group_config.to_dict())
