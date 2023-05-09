@@ -21,3 +21,6 @@ if __name__ == '__main__':
     print('result:', result)
     player2 = player_model.get(2)
     print('player2:', player2)
+    print('get_all len=1:', player_model.get_all(fields='name'))
+    print('get_all len=2', player_model.get_all(fields=['name', 'player_id']))
+    print('get_all None:', player_model.get_all())

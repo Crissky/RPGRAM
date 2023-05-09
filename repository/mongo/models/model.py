@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from bson import ObjectId
-from typing import Union, Any
+from typing import Union, Any, List
 from functions.datetime import get_brazil_time_now
 
 from repository.mongo import Database
@@ -8,6 +8,9 @@ from repository.mongo import Database
 
 class Model:
     '''Classe Base usada para salvar Classes no Banco de Dados MongoDB'''
+
+    def __alt_id_is_valid(self):
+        return isinstance(self.alternative_id, str)
 
     def get(self, _id: Union[int, ObjectId] = None, query: dict = None) -> Any:
         if _id:
@@ -30,8 +33,23 @@ class Model:
         if (result := self.database.find(self.collection, query)):
             return self._class(**result)
 
-    def __alt_id_is_valid(self):
-        return isinstance(self.alternative_id, str)
+    def get_all(
+        self, query: dict = None, fields: Union[dict, list, str] = None
+    ) -> List[Union[dict, str]]:
+
+        if isinstance(fields, str):
+            fields = [fields]
+
+        result = self.database.find_many(self.collection, query, fields)
+
+        if not fields:
+            result = [self._class(**item) for item in result]
+        elif len(fields) == 1:
+            result = [item[fields[0]] for item in result]
+        else:
+            result = list(result)
+
+        return result
 
     def save(self, obj: Any):
         if not isinstance(obj, self._class):
