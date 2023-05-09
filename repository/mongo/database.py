@@ -1,4 +1,8 @@
+from typing import Union
 from pymongo import MongoClient
+from pymongo.cursor import Cursor
+from pymongo.results import InsertOneResult, UpdateResult, DeleteResult
+
 from decouple import config
 
 URL_CONNECTION = config('URL_CONNECTION')
@@ -8,27 +12,33 @@ DATABASE_NAME = config('DATABASE_NAME')
 class Database:
     _instance = None
 
-    def __init__(self, url_connection, database_name):
+    def __init__(self, url_connection: str, database_name: str) -> None:
         self.__client = MongoClient(
             url_connection, serverSelectionTimeoutMS=5000
         )
         self.__server_info = self.__client.server_info()
         self.__database = self.__client[database_name]
 
-    def insert(self, collection, data):
-        return self.database[collection].insert_one(data)
+    def insert(self, collection: str, data: dict) -> InsertOneResult:
+        return self.database[collection].insert_one(document=data)
 
-    def find(self, collection, query):
-        return self.database[collection].find_one(query)
+    def find(
+        self, collection: str, query: dict, fields: Union[list, dict] = None
+    ) -> Union[dict, None]:
+        return self.database[collection].find_one(
+            filter=query, projection=fields
+        )
 
-    def find_many(self, collection, query):
-        return self.database[collection].find(query)
+    def find_many(
+        self, collection: str, query: dict, fields: Union[list, dict] = None
+    ) -> Cursor:
+        return self.database[collection].find(filter=query, projection=fields)
 
-    def update(self, collection, query, data):
-        return self.database[collection].update_one(query, data)
+    def update(self, collection: str, query: dict, data: dict) -> UpdateResult:
+        return self.database[collection].update_one(filter=query, update=data)
 
-    def delete(self, collection, query):
-        return self.database[collection].delete_one(query)
+    def delete(self, collection: str, query: dict) -> DeleteResult:
+        return self.database[collection].delete_one(filter=query)
 
     @classmethod
     def get_instance(cls):
