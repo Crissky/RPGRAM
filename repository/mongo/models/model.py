@@ -12,7 +12,11 @@ class Model:
     def __alt_id_is_valid(self):
         return isinstance(self.alternative_id, str)
 
-    def get(self, _id: Union[int, ObjectId] = None, query: dict = None) -> Any:
+    def delete(
+        self,
+        _id: Union[int, ObjectId, str] = None,
+        query: dict = None
+    ) -> Any:
         if _id:
             if isinstance(_id, ObjectId):
                 query = {'_id': _id}
@@ -27,7 +31,31 @@ class Model:
                     f'ID: {_id}, Tipo: {type(_id)}'
                 )
         if not query:
-            raise ValueError('Query esta vazio.')
+            raise ValueError('Query esta vazia.')
+        if not isinstance(query, dict):
+            raise ValueError('Query precisa ser um dicionário.')
+        return self.database.delete(self.collection, query)
+
+    def get(
+        self,
+        _id: Union[int, ObjectId, str] = None,
+        query: dict = None
+    ) -> Any:
+        if _id:
+            if isinstance(_id, ObjectId):
+                query = {'_id': _id}
+            elif ObjectId.is_valid(_id):
+                query = {'_id': ObjectId(_id)}
+            elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
+                query = {self.alternative_id: _id}
+            else:
+                raise ValueError(
+                    'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
+                    'uma string com 24 caracteres que representa um ObjectId.'
+                    f'ID: {_id}, Tipo: {type(_id)}'
+                )
+        if not query:
+            raise ValueError('Query esta vazia.')
         if not isinstance(query, dict):
             raise ValueError('Query precisa ser um dicionário.')
         if (result := self.database.find(self.collection, query)):
