@@ -118,6 +118,10 @@ class BaseStats:
     @property
     def level(self) -> int:
         return self.__level
+    
+    @property
+    def classe_level(self) -> int:
+        return (self.__level // 10) + 1
 
     @property
     def next_level_xp(self) -> int:
@@ -357,7 +361,7 @@ class BaseStats:
 
     def get_sheet(self) -> str:
         return (
-            f'Level: {self.level}\n'
+            f'Nível: {self.level} (Nível da Classe: {self.classe_level})\n'
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
 
