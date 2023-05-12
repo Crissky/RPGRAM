@@ -49,7 +49,7 @@ class Classe(StatsBooster):
     def get_sheet(self) -> str:
         return (
             f'Classe: {self.name}\n'
-            f'Descrição da Classe: {self.description}\n'
+            # f'Descrição da Classe: {self.description}\n'
         )
 
     def __repr__(self) -> str:
