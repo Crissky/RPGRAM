@@ -4,10 +4,10 @@ from telegram import (
     Update
 )
 from telegram.ext import (
+    CallbackQueryHandler,
     CommandHandler,
     ContextTypes,
     ConversationHandler,
-    CallbackQueryHandler,
     MessageHandler,
     filters,
 )
@@ -16,25 +16,28 @@ from repository.mongo import PlayerModel
 from rpgram import Player
 
 
-# Stages
+# ROUTES
 START_ROUTES, END_ROUTES = range(2)
 
-# Callback Data
-YES = 'yes'
-NO = "no"
+# CALLBACK DATA
+CALLBACK_TEXT_YES = 'yes'
+CALLBACK_TEXT_NO = "no"
 
 COMMANDS = ['createaccount', 'criarconta', 'signup']
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('update.effective_chat.id:', update.effective_chat.id)
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    print(
+        f'sign_up_player.start(): '
+        f'update.effective_chat.id: {update.effective_chat.id}'
+    )
 
     player_model = PlayerModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id
 
     if (player := player_model.get(player_id)):
-        await update.message.reply_text(
+        await update.effective_message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
             f'Vocé já possui uma conta.\n\n'
             f'{player}'
@@ -43,12 +46,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     inline_keyboard = [
         [
-            InlineKeyboardButton("Sim", callback_data=YES),
-            InlineKeyboardButton("Não", callback_data=NO),
+            InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
+            InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    response = await update.message.reply_text(
+    response = await update.effective_message.reply_text(
         'Seja Bem-vindo, Aventureiro(a).\n'
         'Gostaria de Criar uma Conta?',
         reply_markup=reply_markup,
@@ -58,7 +61,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return START_ROUTES
 
 
-async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def create_account(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> int:
     user_name = update.effective_user.name
     player_id = update.effective_user.id
     player_model = PlayerModel()
@@ -76,14 +81,17 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar uma conta mais tarde."
 
     if 'response' in context.user_data:
         response = context.user_data['response']
         chat_id = response.chat_id
         message_id = response.id
-        print(f'chat_id: {chat_id}, message_id: {message_id}')
+        print(
+            f'sign_up_player.cancel(): '
+            f'chat_id: {chat_id}, message_id: {message_id}'
+        )
         await update.get_bot().edit_message_text(
             chat_id=chat_id,
             message_id=message_id,
@@ -91,7 +99,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         del context.user_data['response']
     elif update.callback_query:
-        await update.callback_query.answer()
+        # await update.callback_query.answer()
         await update.callback_query.edit_message_text(new_text)
 
     return ConversationHandler.END
@@ -106,8 +114,10 @@ SIGNUP_PLAYER_HANDLER = ConversationHandler(
     ],
     states={
         START_ROUTES: [
-            CallbackQueryHandler(create_account, pattern=f'^{YES}$'),
-            CallbackQueryHandler(cancel, pattern=f'^{NO}$')
+            CallbackQueryHandler(
+                create_account, pattern=f'^{CALLBACK_TEXT_YES}$'
+            ),
+            CallbackQueryHandler(cancel, pattern=f'^{CALLBACK_TEXT_NO}$')
         ]
     },
     fallbacks=[CommandHandler("cancel", cancel)],

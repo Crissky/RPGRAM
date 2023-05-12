@@ -5,10 +5,10 @@ from telegram import (
 )
 from telegram.constants import ChatType
 from telegram.ext import (
+    CallbackQueryHandler,
     CommandHandler,
     ContextTypes,
     ConversationHandler,
-    CallbackQueryHandler,
     MessageHandler,
     filters,
 )
@@ -17,12 +17,12 @@ from repository.mongo import GroupConfigurationModel
 from rpgram import GroupConfiguration
 
 
-# Stages
+# ROUTES
 START_ROUTES, END_ROUTES = range(2)
 
-# Callback Data
-YES = 'yes'
-NO = "no"
+# CALLBACK DATA
+CALLBACK_TEXT_YES = 'yes'
+CALLBACK_TEXT_NO = "no"
 
 COMMANDS = [
     'creategroupaccount', 'criarcontagrupo', 'signupgroup', 'cadastrargrupo',
@@ -40,12 +40,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_name = update.effective_user.name
 
     if update.effective_chat.type == ChatType.PRIVATE:
-        await update.message.reply_text(
+        await update.effective_message.reply_text(
             'Use este comando em um grupo para cadastrá-lo.'
         )
         return ConversationHandler.END
     elif (group_config := group_config_model.get(chat_id)):
-        await update.message.reply_text(
+        await update.effective_message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
             f'O grupo "{chat_name}" já está cadastrado.\n\n'
             f'{group_config}'
@@ -54,12 +54,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     inline_keyboard = [
         [
-            InlineKeyboardButton("Sim", callback_data=YES),
-            InlineKeyboardButton("Não", callback_data=NO),
+            InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
+            InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    response = await update.message.reply_text(
+    response = await update.effective_message.reply_text(
         'Seja Bem-vindo, Aventureiro(a).\n'
         'Gostaria de Cadastrar este Grupo?',
         reply_markup=reply_markup,
@@ -108,7 +108,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         del context.user_data['response']
     elif update.callback_query:
-        await update.callback_query.answer()
+        # await update.callback_query.answer()
         await update.callback_query.edit_message_text(new_text)
 
     return ConversationHandler.END
@@ -124,8 +124,10 @@ SIGNUP_GROUP_HANDLER = ConversationHandler(
     ],
     states={
         START_ROUTES: [
-            CallbackQueryHandler(create_account, pattern=f'^{YES}$'),
-            CallbackQueryHandler(cancel, pattern=f'^{NO}$')
+            CallbackQueryHandler(
+                create_account, pattern=f'^{CALLBACK_TEXT_YES}$'
+            ),
+            CallbackQueryHandler(cancel, pattern=f'^{CALLBACK_TEXT_NO}$')
         ]
     },
     fallbacks=[CommandHandler("cancel", cancel)],
