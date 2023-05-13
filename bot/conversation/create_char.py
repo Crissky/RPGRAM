@@ -3,7 +3,7 @@ from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     MessageEntity,
-    Update
+    Update,
 )
 from telegram.ext import (
     CallbackQueryHandler,
@@ -11,11 +11,14 @@ from telegram.ext import (
     ContextTypes,
     ConversationHandler,
     MessageHandler,
+    PrefixHandler,
     filters,
 )
+from telegram.constants import ChatAction
 
 from repository.mongo import (
     ClasseModel,
+    PlayerModel,
     PlayerCharacterModel,
     RaceModel,
 )
@@ -35,16 +38,28 @@ from rpgram.characters import PlayerCharacter
 
 # CALLBACK DATA
 CALLBACK_TEXT_YES = 'yes'
-CALLBACK_TEXT_NO = "no"
+CALLBACK_TEXT_NO = 'no'
+CALLBACK_TEXT_RACES = '|'.join(RaceModel().get_all(fields=['name']))
+CALLBACK_TEXT_CLASSES = '|'.join(ClasseModel().get_all(fields=['name']))
 
 COMMANDS = ['createchar', 'criarpersonagem']
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    update.effective_message.reply_chat_action(ChatAction.TYPING)
+    player_model = PlayerModel()
     player_character_model = PlayerCharacterModel()
     race_model = RaceModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id
+
+    if not player_model.get(player_id):
+        response = await update.effective_message.reply_text(
+            f'Você precisa criar um perfil para criar um personagem.\n'
+            f'Para isso, utilize o comando /criarconta.'
+        )
+
+        return ConversationHandler.END
 
     if (player_character := player_character_model.get(player_id)):
         inline_keyboard = [
@@ -55,8 +70,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         ]
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         response = await update.effective_message.reply_text(
-            f'Olá {user_name}, vocé já possui uma personagem criado.'
-            f'Gostaria de deletá-lo?\n'
+            f'Olá {user_name}, vocé já possui uma personagem criado.\n'
+            f'Gostaria de deletá-lo?\n\n'
             f'Personagem:\n'
             f'{player_character}',
             reply_markup=reply_markup,
@@ -72,7 +87,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     response = await update.effective_message.reply_text(
         'Vamos começar a criar o seu personagem.\n'
         'Você pode cancelar a criação a qualquer momento '
-        'usando o comando \cancel.\n\n'
+        'usando o comando /cancel.\n\n'
         'Escolha uma das raças abaixo:',
         reply_markup=reply_markup,
     )
@@ -119,7 +134,9 @@ async def confirm_race(
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     await query.edit_message_text(
         f'Gostaria de criar um personagem com a raça "{race_name}"?\n\n'
-        f'Descrição da Raça: {description}',
+        f'Descrição da Raça:\n'
+        f'{description}\n'
+        f'{race}',
         reply_markup=reply_markup,
     )
 
@@ -170,7 +187,9 @@ async def confirm_classe(
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     await query.edit_message_text(
         f'Gostaria de criar um personagem da classe "{classe_name}"?\n\n'
-        f'Descrição da Raça: {description}',
+        f'Descrição da Raça:\n'
+        f'{description}\n'
+        f'{classe}',
         reply_markup=reply_markup,
     )
 
@@ -186,7 +205,9 @@ async def select_name(
 
     await query.edit_message_text(
         f'Ótimo!!! O seu personagem será um "{classe_name}".\n\n'
-        f'Agora escreva o nome do seu personagem:',
+        f'Agora escreva o nome do seu personagem.\n'
+        f'O nome de personagem deve conter entre 3 e 50 caracteres, '
+        f'apenas letras, números, espaços, e traço "-"'
     )
 
     return CREATE_CHAR_ROUTES
@@ -196,6 +217,16 @@ async def create_char(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ) -> int:
+    character_name = update.effective_message.text.strip()
+    if not is_valid_char_name(character_name):
+        await update.effective_message.reply_text(
+            f'"{character_name}" não é um nome de personagem válido.\n\n'
+            f'O nome de personagem deve conter entre 3 e 50 caracteres, '
+            f'apenas letras, números, espaços, e traço "-"'
+        )
+
+        return CREATE_CHAR_ROUTES
+
     race_model = RaceModel()
     classe_model = ClasseModel()
     player_character_model = PlayerCharacterModel()
@@ -203,7 +234,6 @@ async def create_char(
     player_id = update.effective_user.id
     race_name = context.user_data['race']
     classe_name = context.user_data['classe']
-    character_name = update.effective_message.text
     race = race_model.get(race_name)
     classe = classe_model.get(classe_name)
     player_character = PlayerCharacter(
@@ -235,6 +265,21 @@ async def create_char(
             f'classe:\n{classe}\n'
         )
 
+    if 'response' in context.user_data:
+        response = context.user_data['response']
+        chat_id = response.chat_id
+        message_id = response.id
+        print(
+            f'create_char.create_char(): '
+            f'chat_id: {chat_id}, message_id: {message_id}'
+        )
+        await update.get_bot().delete_message(
+            chat_id=chat_id,
+            message_id=message_id,
+        )
+
+    clean_user_data(context)
+
     return ConversationHandler.END
 
 
@@ -251,6 +296,8 @@ async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             'Tente novamente mais tarde.\n\n'
             'Se o problema persistir, contacte o meu desenvolvedor.'
         )
+
+    clean_user_data(context)
 
     return ConversationHandler.END
 
@@ -287,12 +334,26 @@ def clean_user_data(context: ContextTypes.DEFAULT_TYPE) -> None:
             del context.user_data[key]
 
 
+def is_valid_char_name(text):
+    is_valid = True
+    if len(text) < 3 or len(text) > 50:
+        is_valid = False
+    if re.search(r'[^à-úa-z0-9 -]|^[0-9 -]', text, re.IGNORECASE):
+        is_valid = False
+    return is_valid
+
+
 CREATE_CHAR_HANDLER = ConversationHandler(
     entry_points=[
         CommandHandler("createchar", start),
         CommandHandler("criarpersonagem", start),
         MessageHandler(
-            filters.Regex(rf'^!({"|".join(COMMANDS)})$'), start
+            filters.Regex(rf'^!({"|".join(COMMANDS)})$') &
+            ~filters.FORWARDED &
+            ~filters.UpdateType.EDITED &
+            ~filters.Entity(MessageEntity.URL) &
+            ~filters.Entity(MessageEntity.TEXT_LINK),
+            start
         )
     ],
     states={
@@ -301,7 +362,9 @@ CREATE_CHAR_HANDLER = ConversationHandler(
             CallbackQueryHandler(cancel, pattern=f'^{CALLBACK_TEXT_NO}$')
         ],
         CONFIRM_RACE_ROUTES: [
-            CallbackQueryHandler(confirm_race),
+            CallbackQueryHandler(
+                confirm_race, pattern=f'^{CALLBACK_TEXT_RACES}$'
+            )
         ],
         SELECT_CLASSE_ROUTES: [
             CallbackQueryHandler(
@@ -310,22 +373,27 @@ CREATE_CHAR_HANDLER = ConversationHandler(
             CallbackQueryHandler(start_over, pattern=f'^{CALLBACK_TEXT_NO}$')
         ],
         CONFIRM_CLASSE_ROUTES: [
-            CallbackQueryHandler(confirm_classe)
+            CallbackQueryHandler(
+                confirm_classe, pattern=f'^{CALLBACK_TEXT_CLASSES}$'
+            )
         ],
         SELECT_NAME_ROUTES: [
             CallbackQueryHandler(
                 select_name, pattern=f'^{CALLBACK_TEXT_YES}$'
             ),
             CallbackQueryHandler(
-                select_classe, pattern=f'^{CALLBACK_TEXT_NO}$')
+                select_classe, pattern=f'^{CALLBACK_TEXT_NO}$'
+            )
         ],
         CREATE_CHAR_ROUTES: [
             MessageHandler(
-                filters.TEXT & ~filters.COMMAND &
-                filters.Regex(re.compile(r'^.{3,50}$')) &
+                filters.TEXT &
+                ~filters.COMMAND &
+                ~filters.FORWARDED &
+                ~filters.UpdateType.EDITED &
                 ~filters.Entity(MessageEntity.URL) &
-                ~filters.Entity(MessageEntity.TEXT_LINK) &
-                ~filters.Regex(re.compile(r'^(.{0,2}|.{51,})$', re.IGNORECASE))
+                ~filters.Entity(MessageEntity.TEXT_LINK),
+                create_char
             )
         ]
     },
