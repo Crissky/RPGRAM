@@ -1,6 +1,7 @@
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    MessageEntity,
     Update
 )
 from telegram.constants import ChatType
@@ -119,7 +120,12 @@ SIGNUP_GROUP_HANDLER = ConversationHandler(
         CommandHandler("startgroup", start),
         CommandHandler("criargrupo", start),
         MessageHandler(
-            filters.Regex(rf'^!({"|".join(COMMANDS)})$'), start
+            filters.Regex(rf'^!({"|".join(COMMANDS)})$') &
+            ~filters.FORWARDED &
+            ~filters.UpdateType.EDITED &
+            ~filters.Entity(MessageEntity.URL) &
+            ~filters.Entity(MessageEntity.TEXT_LINK),
+            start
         )
     ],
     states={
