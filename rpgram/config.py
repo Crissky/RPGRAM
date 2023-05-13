@@ -43,8 +43,9 @@ class GroupConfiguration:
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
             f'Hora de Fim de Spawn: {self.spawn_end_time}h\n'
             f'ID: {self._id}\n'
-            f'Multiplicador Geral de XP: {self.multiplier_xp}\n'
-            f'Multiplicador de XP do Jogador: {self.player_multiplier_xp}\n'
+            f'Multiplicador Geral de XP: {self.multiplier_xp:.2f}\n'
+            f'Mult. de XP por Nível: '
+            f'{self.player_multiplier_xp:.2f}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
         )
