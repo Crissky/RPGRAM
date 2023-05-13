@@ -23,11 +23,11 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'Atalhos:\n'
         f'{sign_up_group_cmd}\n\n'
         
-        f'Criar Conta de Jogador: /criargrupo\n'
+        f'Criar Conta de Jogador: /criarconta\n'
         f'Atalhos:\n'
         f'{sign_up_player_cmd}\n\n'
         
-        f'Criar Personagem: /criargrupo\n'
+        f'Criar Personagem: /criarpersonagem\n'
         f'Atalhos:\n'
         f'{create_char_cmd}\n\n'
     )
