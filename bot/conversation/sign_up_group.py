@@ -1,3 +1,8 @@
+'''
+Arquivo responsável por criar a conta de um grupo para armazenar as 
+informações configurações do grupo.
+'''
+
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,

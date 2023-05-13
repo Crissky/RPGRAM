@@ -1,3 +1,7 @@
+'''
+Arquivo principal que executa o telegram-bot.
+'''
+
 from decouple import config
 
 from telegram.ext import (

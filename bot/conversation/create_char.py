@@ -1,3 +1,7 @@
+'''
+Arquivo responsável por criar um personagem.
+'''
+
 import re
 from telegram import (
     InlineKeyboardButton,

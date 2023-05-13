@@ -1,3 +1,7 @@
+'''
+Arquivo responsável por criar uma nova conta de jogador.
+'''
+
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
