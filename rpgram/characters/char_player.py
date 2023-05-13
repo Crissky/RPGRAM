@@ -108,7 +108,7 @@ class PlayerCharacter(BaseCharacter):
     def get_sheet(self):
         return (
             f'Jogador: {self.player_name}\n'
-            f'ID: {self.player_id}\n'
+            f'ID do Jogador: {self.player_id}\n'
             f'{super().get_sheet()}'
         )
 

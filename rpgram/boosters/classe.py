@@ -50,14 +50,26 @@ class Classe(StatsBooster):
         return (
             f'Classe: {self.name}\n'
             # f'Descrição da Classe: {self.description}\n'
+            f'◇── BÔNUS E MULTIPLICADORES ──◇\n'
+            f'FOR: {self.strength:+}'
+            f'x({self.multiplier_strength:+.2f})\n'
+            f'DES: {self.dexterity:+}'
+            f'x({self.multiplier_dexterity:+.2f})\n'
+            f'CON: {self.constitution:+}'
+            f'x({self.multiplier_constitution:+.2f})\n'
+            f'INT: {self.intelligence:+}'
+            f'x({self.multiplier_intelligence:+.2f})\n'
+            f'SAB: {self.wisdom:+}'
+            f'x({self.multiplier_wisdom:+.2f})\n'
+            f'CAR: {self.charisma:+}'
+            f'x({self.multiplier_charisma:+.2f})\n'
         )
 
     def __repr__(self) -> str:
         return (
-            f'########################################\n'
+            f'###################################\n'
             f'{self.get_sheet()}'
-            f'{super().get_sheet()}'
-            f'########################################\n'
+            f'###################################\n'
         )
         
     def to_dict(self):

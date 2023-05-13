@@ -201,10 +201,10 @@ class Equips:
 
     def __repr__(self) -> str:
         return (
-            f'########################################\n'
+            f'###################################\n'
             f'◇── EQUIPAMENTOS ──◇\n'
             f'{self.get_sheet()}'
-            f'########################################\n'
+            f'###################################\n'
         )
 
     helmet = property(lambda self: self.__helmet)

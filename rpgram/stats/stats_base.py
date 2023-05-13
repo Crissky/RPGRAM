@@ -369,40 +369,40 @@ class BaseStats:
 
             f'FOR: {self.strength} '
             f'[{self.base_strength}{self.bonus_strength:+}]'
-            f'x{self.multiplier_strength} '
+            f'x{self.multiplier_strength:.2f} '
             f'({self.mod_strength})\n'
 
             f'DES: {self.dexterity} '
             f'[{self.base_dexterity}{self.bonus_dexterity:+}]'
-            f'x{self.multiplier_dexterity} '
+            f'x{self.multiplier_dexterity:.2f} '
             f'({self.mod_dexterity})\n'
 
             f'CON: {self.constitution} '
             f'[{self.base_constitution}{self.bonus_constitution:+}]'
-            f'x{self.multiplier_constitution} '
+            f'x{self.multiplier_constitution:.2f} '
             f'({self.mod_constitution})\n'
 
             f'INT: {self.intelligence} '
             f'[{self.base_intelligence}{self.bonus_intelligence:+}]'
-            f'x{self.multiplier_intelligence} '
+            f'x{self.multiplier_intelligence:.2f} '
             f'({self.mod_intelligence})\n'
 
             f'SAB: {self.wisdom} '
             f'[{self.base_wisdom}{self.bonus_wisdom:+}]'
-            f'x{self.multiplier_wisdom} '
+            f'x{self.multiplier_wisdom:.2f} '
             f'({self.mod_wisdom})\n'
 
             f'CAR: {self.charisma} '
             f'[{self.base_charisma}{self.bonus_charisma:+}]'
-            f'x{self.multiplier_charisma} '
+            f'x{self.multiplier_charisma:.2f} '
             f'({self.mod_charisma})\n'
         )
 
     def __repr__(self) -> str:
         return (
-            f'########################################\n'
+            f'###################################\n'
             f'{self.get_sheet()}'
-            f'########################################\n'
+            f'###################################\n'
         )
 
 

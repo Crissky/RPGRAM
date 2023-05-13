@@ -125,18 +125,18 @@ class BaseCharacter:
     def get_sheet(self):
         return (
             f'Personagem: {self.name}\n'
-            f'ID: {self._id}\n'
-            f'{self.race.get_sheet()}'
-            f'{self.classe.get_sheet()}'
+            f'ID: {self._id}\n\n'
+            f'{self.race.get_sheet()}\n'
+            f'{self.classe.get_sheet()}\n'
             f'{self.base_stats.get_sheet()}'
             f'{self.combat_stats.get_sheet()}'
         )
 
     def __repr__(self) -> str:
         return (
-            f'########################################\n'
+            f'###################################\n'
             f'{self.get_sheet()}'
-            f'########################################\n'
+            f'###################################\n'
         )
 
     def to_dict(self):
