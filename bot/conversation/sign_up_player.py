@@ -5,7 +5,6 @@ Arquivo responsável por criar uma nova conta de jogador.
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    MessageEntity,
     Update
 )
 from telegram.ext import (
@@ -13,8 +12,11 @@ from telegram.ext import (
     CommandHandler,
     ContextTypes,
     ConversationHandler,
-    MessageHandler,
-    filters,
+    PrefixHandler
+)
+from bot.conversation.constants import (
+    BASIC_COMMAND_FILTER,
+    PREFIX_COMMANDS
 )
 
 from repository.mongo import PlayerModel
@@ -28,12 +30,12 @@ START_ROUTES, END_ROUTES = range(2)
 CALLBACK_TEXT_YES = 'yes'
 CALLBACK_TEXT_NO = "no"
 
-COMMANDS = ['createaccount', 'criarconta', 'signup']
+COMMANDS = ['criarconta', 'start', 'signup']
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     print(
-        f'sign_up_player.start(): '
+        f'{__name__}.start():',
         f'update.effective_chat.id: {update.effective_chat.id}'
     )
 
@@ -94,7 +96,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         chat_id = response.chat_id
         message_id = response.id
         print(
-            f'sign_up_player.cancel(): '
+            f'{__name__}.cancel():',
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
         await update.get_bot().edit_message_text(
@@ -112,15 +114,13 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 SIGNUP_PLAYER_HANDLER = ConversationHandler(
     entry_points=[
-        CommandHandler("start", start), CommandHandler("criarconta", start),
-        MessageHandler(
-            filters.Regex(rf'^!({"|".join(COMMANDS)})$') &
-            ~filters.FORWARDED &
-            ~filters.UpdateType.EDITED &
-            ~filters.Entity(MessageEntity.URL) &
-            ~filters.Entity(MessageEntity.TEXT_LINK),
-            start
-        )
+        PrefixHandler(
+            PREFIX_COMMANDS,
+            COMMANDS,
+            start,
+            BASIC_COMMAND_FILTER
+        ),
+        CommandHandler(COMMANDS, start, BASIC_COMMAND_FILTER),
     ],
     states={
         START_ROUTES: [

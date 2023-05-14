@@ -6,7 +6,6 @@ informações configurações do grupo.
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    MessageEntity,
     Update
 )
 from telegram.constants import ChatType
@@ -15,9 +14,9 @@ from telegram.ext import (
     CommandHandler,
     ContextTypes,
     ConversationHandler,
-    MessageHandler,
-    filters,
+    PrefixHandler,
 )
+from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 
 from repository.mongo import GroupConfigurationModel
 from rpgram import GroupConfiguration
@@ -30,20 +29,18 @@ START_ROUTES, END_ROUTES = range(2)
 CALLBACK_TEXT_YES = 'yes'
 CALLBACK_TEXT_NO = "no"
 
-COMMANDS = [
-    'creategroupaccount', 'criarcontagrupo', 'signupgroup', 'cadastrargrupo',
-    'creategroup', 'criargrupo'
-]
+COMMANDS = ['criargrupo', 'signupgroup']
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('update.effective_chat.id:', update.effective_chat.id)
-    print('update.effective_user.id:', update.effective_user.id)
-
     group_config_model = GroupConfigurationModel()
     chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
     chat_name = update.effective_chat.effective_name
     user_name = update.effective_user.name
+
+    print(f'{__name__}.start', 'chat.id:', chat_id)
+    print(f'{__name__}.start', 'user_id:', user_id)
 
     if update.effective_chat.type == ChatType.PRIVATE:
         await update.effective_message.reply_text(
@@ -106,7 +103,10 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = context.user_data['response']
         chat_id = response.chat_id
         message_id = response.id
-        print(f'chat_id: {chat_id}, message_id: {message_id}')
+        print(
+            f'{__name__}.cancel',
+            f'chat_id: {chat_id}, message_id: {message_id}'
+        )
         await update.get_bot().edit_message_text(
             chat_id=chat_id,
             message_id=message_id,
@@ -122,16 +122,13 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 SIGNUP_GROUP_HANDLER = ConversationHandler(
     entry_points=[
-        CommandHandler("startgroup", start),
-        CommandHandler("criargrupo", start),
-        MessageHandler(
-            filters.Regex(rf'^!({"|".join(COMMANDS)})$') &
-            ~filters.FORWARDED &
-            ~filters.UpdateType.EDITED &
-            ~filters.Entity(MessageEntity.URL) &
-            ~filters.Entity(MessageEntity.TEXT_LINK),
-            start
-        )
+        PrefixHandler(
+            PREFIX_COMMANDS,
+            COMMANDS,
+            start,
+            BASIC_COMMAND_FILTER
+        ),
+        CommandHandler(COMMANDS, start, BASIC_COMMAND_FILTER),
     ],
     states={
         START_ROUTES: [

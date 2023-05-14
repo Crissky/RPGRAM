@@ -19,6 +19,10 @@ from telegram.ext import (
     filters,
 )
 from telegram.constants import ChatAction
+from bot.conversation.constants import (
+    BASIC_COMMAND_FILTER,
+    PREFIX_COMMANDS
+)
 
 from repository.mongo import (
     ClasseModel,
@@ -46,7 +50,7 @@ CALLBACK_TEXT_NO = 'no'
 CALLBACK_TEXT_RACES = '|'.join(RaceModel().get_all(fields=['name']))
 CALLBACK_TEXT_CLASSES = '|'.join(ClasseModel().get_all(fields=['name']))
 
-COMMANDS = ['createchar', 'criarpersonagem']
+COMMANDS = ['criarpersonagem', 'createchar']
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -274,7 +278,7 @@ async def create_char(
         chat_id = response.chat_id
         message_id = response.id
         print(
-            f'create_char.create_char(): '
+            f'{__name__}.create_char(): '
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
         await update.get_bot().delete_message(
@@ -314,7 +318,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         chat_id = response.chat_id
         message_id = response.id
         print(
-            f'create_char.cancel(): '
+            f'{__name__}.cancel():',
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
         await update.get_bot().edit_message_text(
@@ -349,16 +353,13 @@ def is_valid_char_name(text):
 
 CREATE_CHAR_HANDLER = ConversationHandler(
     entry_points=[
-        CommandHandler("createchar", start),
-        CommandHandler("criarpersonagem", start),
-        MessageHandler(
-            filters.Regex(rf'^!({"|".join(COMMANDS)})$') &
-            ~filters.FORWARDED &
-            ~filters.UpdateType.EDITED &
-            ~filters.Entity(MessageEntity.URL) &
-            ~filters.Entity(MessageEntity.TEXT_LINK),
-            start
-        )
+        PrefixHandler(
+            PREFIX_COMMANDS,
+            COMMANDS,
+            start,
+            BASIC_COMMAND_FILTER
+        ),
+        CommandHandler(COMMANDS, start, BASIC_COMMAND_FILTER),
     ],
     states={
         DELETE_ROUTES: [
@@ -393,10 +394,7 @@ CREATE_CHAR_HANDLER = ConversationHandler(
             MessageHandler(
                 filters.TEXT &
                 ~filters.COMMAND &
-                ~filters.FORWARDED &
-                ~filters.UpdateType.EDITED &
-                ~filters.Entity(MessageEntity.URL) &
-                ~filters.Entity(MessageEntity.TEXT_LINK),
+                BASIC_COMMAND_FILTER,
                 create_char
             )
         ]
