@@ -30,7 +30,7 @@ START_ROUTES, END_ROUTES = range(2)
 CALLBACK_TEXT_YES = 'yes'
 CALLBACK_TEXT_NO = "no"
 
-COMMANDS = ['criarconta', 'start', 'signup']
+COMMANDS = ['criarconta', 'signup']
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
