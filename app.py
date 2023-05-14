@@ -9,9 +9,14 @@ from telegram.ext import (
 )
 from bot.conversation import (
     CREATE_CHAR_HANDLER,
-    HELP_HANDLER,
     SIGNUP_GROUP_HANDLER,
     SIGNUP_PLAYER_HANDLER,
+)
+from bot.conversation import (
+    HELP_HANDLERS,
+    VIEW_GROUP_HANDLERS,
+    VIEW_PLAYER_HANDLERS,
+    VIEW_CHAR_HANDLERS
 )
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
@@ -21,10 +26,17 @@ def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
     application = Application.builder().token(TELEGRAM_TOKEN).build()
+
+    # Add Single Handler
     application.add_handler(CREATE_CHAR_HANDLER)
-    application.add_handler(HELP_HANDLER)
     application.add_handler(SIGNUP_GROUP_HANDLER)
     application.add_handler(SIGNUP_PLAYER_HANDLER)
+
+    # Add Multiple Handlers
+    application.add_handlers(HELP_HANDLERS)
+    application.add_handlers(VIEW_GROUP_HANDLERS)
+    application.add_handlers(VIEW_PLAYER_HANDLERS)
+    application.add_handlers(VIEW_CHAR_HANDLERS)
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
