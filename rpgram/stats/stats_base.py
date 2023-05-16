@@ -37,6 +37,7 @@ class BaseStats:
         self.base_charisma = base_charisma
 
         self.__stats_boosters = set(stats_boosters)
+        self.update()
 
     def __get_points(self) -> int:
         max_level_points = self.__level * 3
@@ -118,7 +119,7 @@ class BaseStats:
     @property
     def level(self) -> int:
         return self.__level
-    
+
     @property
     def classe_level(self) -> int:
         return (self.__level // 10) + 1
@@ -163,7 +164,6 @@ class BaseStats:
     # Attributes
     @property
     def strength(self) -> int:
-        self.__boost_stats()
         return int(
             (self.base_strength + self.bonus_strength) *
             self.multiplier_strength
@@ -171,7 +171,6 @@ class BaseStats:
 
     @property
     def dexterity(self) -> int:
-        self.__boost_stats()
         return int(
             (self.base_dexterity + self.bonus_dexterity) *
             self.multiplier_dexterity
@@ -179,7 +178,6 @@ class BaseStats:
 
     @property
     def constitution(self) -> int:
-        self.__boost_stats()
         return int(
             (self.base_constitution + self.bonus_constitution) *
             self.multiplier_constitution
@@ -187,7 +185,6 @@ class BaseStats:
 
     @property
     def intelligence(self) -> int:
-        self.__boost_stats()
         return int(
             (self.base_intelligence + self.bonus_intelligence) *
             self.multiplier_intelligence
@@ -195,7 +192,6 @@ class BaseStats:
 
     @property
     def wisdom(self) -> int:
-        self.__boost_stats()
         return int(
             (self.base_wisdom + self.bonus_wisdom) *
             self.multiplier_wisdom
@@ -203,7 +199,6 @@ class BaseStats:
 
     @property
     def charisma(self) -> int:
-        self.__boost_stats()
         return int(
             (self.base_charisma + self.bonus_charisma) *
             self.multiplier_charisma
@@ -358,6 +353,46 @@ class BaseStats:
     @property
     def mod_charisma(self) -> int:
         return self.__get_modifier_stats(self.charisma)
+
+    def __getitem__(self, key: str) -> int:
+        key = key.upper()
+        if key in ['STR', 'FOR', 'STRENGTH', 'FORCA', 'FORÇA']:
+            return self.strength
+        elif key in ['DEX', 'DES', 'DEXTERITY', 'DESTREZA']:
+            return self.dexterity
+        elif key in ['CON', 'CONSTITUTION', 'CONSTITUICAO', 'CONSTITUIÇÃO']:
+            return self.constitution
+        elif key in ['INT', 'INTELLIGENCE', 'INTELIGENCIA', 'INTELIGÊNCIA']:
+            return self.intelligence
+        elif key in ['WIS', 'SAB', 'WISDOM', 'SABEDORIA']:
+            return self.wisdom
+        elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
+            return self.charisma
+        else:
+            raise KeyError(
+                f'Atributo "{key}" não encontrado.\n'
+                f'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
+            )
+
+    def __setitem__(self, key: str, value: int) -> None:
+        key = key.upper()
+        if key in ['STR', 'FOR', 'STRENGTH', 'FORCA', 'FORÇA']:
+            self.strength = value
+        elif key in ['DEX', 'DES', 'DEXTERITY', 'DESTREZA']:
+            self.dexterity = value
+        elif key in ['CON', 'CONSTITUTION', 'CONSTITUICAO', 'CONSTITUIÇÃO']:
+            self.constitution = value
+        elif key in ['INT', 'INTELLIGENCE', 'INTELIGENCIA', 'INTELIGÊNCIA']:
+            self.intelligence = value
+        elif key in ['WIS', 'SAB', 'WISDOM', 'SABEDORIA']:
+            self.wisdom = value
+        elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
+            self.charisma = value
+        else:
+            raise KeyError(
+                f'Atributo "{key}" não encontrado.\n'
+                f'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
+            )
 
     def get_sheet(self) -> str:
         return (
