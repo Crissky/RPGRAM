@@ -54,7 +54,7 @@ COMMANDS = ['criarpersonagem', 'createchar']
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_model = PlayerModel()
     player_character_model = PlayerCharacterModel()
     race_model = RaceModel()
@@ -79,7 +79,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         response = await update.effective_message.reply_text(
             f'Olá {user_name}, vocé já possui uma personagem criado.\n'
-            f'Gostaria de deletá-lo?\n\n'
+            f'Gostaria de apagá-lo?\n'
+            f'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
             f'Personagem:\n'
             f'{player_character}',
             reply_markup=reply_markup,
