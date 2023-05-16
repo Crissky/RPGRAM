@@ -1,0 +1,1 @@
+from bot.decorators.char import need_have_char
