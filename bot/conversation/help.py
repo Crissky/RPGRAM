@@ -16,18 +16,20 @@ from bot.conversation.create_char import COMMANDS as create_char_commands
 from bot.conversation.view_group import COMMANDS as view_group_commands
 from bot.conversation.view_player import COMMANDS as view_player_commands
 from bot.conversation.view_char import COMMANDS as view_char_commands
+from bot.conversation.add_stats import COMMANDS as add_stats_commands
 
 
 COMMANDS = ['help', 'ajuda']
 
 
-async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     sign_up_group_cmd = command_to_string(sign_up_group_commands)
     sign_up_player_cmd = command_to_string(sign_up_player_commands)
     create_char_cmd = command_to_string(create_char_commands)
     view_group_cmd = command_to_string(view_group_commands)
     view_player_cmd = command_to_string(view_player_commands)
     view_char_cmd = command_to_string(view_char_commands)
+    add_stats_cmd = command_to_string(add_stats_commands)
 
     await update.effective_message.reply_text(
         f'COMANDOS:\n\n'
@@ -54,6 +56,13 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'INFORMAÇÃES DO PERSONAGEM: /{view_char_commands[0]}\n'
         f'Atalhos:\n'
         f'{view_char_cmd}\n\n'
+
+        f'ADICIONAR ESTATISTICAS: /{add_stats_commands[0]}\n'
+        f'Argumentos: [<ATRIBUTO> <VALOR>]\n'
+        f'Exemplo: /{add_stats_commands[0]} FORÇA 10\n'
+        f'OBS: Pode ser usado sem argumentos para exibir as estatísticas\n'
+        f'Atalhos:\n'
+        f'{add_stats_cmd}\n'
     )
 
 
@@ -65,12 +74,12 @@ HELP_HANDLERS = [
     PrefixHandler(
         PREFIX_COMMANDS,
         COMMANDS,
-        help,
+        start,
         BASIC_COMMAND_FILTER
     ),
     CommandHandler(
         COMMANDS,
-        help,
+        start,
         BASIC_COMMAND_FILTER
     )
 ]
