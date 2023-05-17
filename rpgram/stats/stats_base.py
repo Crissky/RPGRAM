@@ -308,27 +308,51 @@ class BaseStats:
     # Attribute Bonus
     @property
     def multiplier_strength(self) -> float:
-        return self.__multiplier_strength
+        return (
+            self.__multiplier_strength
+            if self.__multiplier_strength >= 0.1
+            else 0.1
+        )
 
     @property
     def multiplier_dexterity(self) -> float:
-        return self.__multiplier_dexterity
+        return (
+            self.__multiplier_dexterity
+            if self.__multiplier_dexterity >= 0.1
+            else 0.1
+        )
 
     @property
     def multiplier_constitution(self) -> float:
-        return self.__multiplier_constitution
+        return (
+            self.__multiplier_constitution
+            if self.__multiplier_constitution >= 0.1
+            else 0.1
+        )
 
     @property
     def multiplier_intelligence(self) -> float:
-        return self.__multiplier_intelligence
+        return (
+            self.__multiplier_intelligence
+            if self.__multiplier_intelligence >= 0.1
+            else 0.1
+        )
 
     @property
     def multiplier_wisdom(self) -> float:
-        return self.__multiplier_wisdom
+        return (
+            self.__multiplier_wisdom
+            if self.__multiplier_wisdom >= 0.1
+            else 0.1
+        )
 
     @property
     def multiplier_charisma(self) -> float:
-        return self.__multiplier_charisma
+        return (
+            self.__multiplier_charisma
+            if self.__multiplier_charisma >= 0.1
+            else 0.1
+        )
 
     # Getters
     # Attribute Modifiers
