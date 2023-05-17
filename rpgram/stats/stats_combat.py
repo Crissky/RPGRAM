@@ -1,3 +1,4 @@
+from typing import List
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 
@@ -13,7 +14,8 @@ class CombatStats:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        *stats_boosters: StatsBooster
+        damage: int = 0,
+        stats_boosters: List[StatsBooster] = []
     ) -> None:
         if not isinstance(base_stats, BaseStats):
             base_stats = BaseStats(
@@ -24,10 +26,10 @@ class CombatStats:
                 base_intelligence=base_intelligence,
                 base_wisdom=base_wisdom,
                 base_charisma=base_charisma,
-                *stats_boosters
+                stats_boosters=stats_boosters
             )
         self.__base_stats = base_stats
-        self.__damage = 0
+        self.__damage = int(damage)
 
         self.__stats_boosters = set(base_stats.stats_boosters)
         self.update()
@@ -267,14 +269,16 @@ class CombatStats:
 
 if __name__ == '__main__':
     base_stats = BaseStats(10)
-    combat_stats = CombatStats(base_stats)
-
-    base_stats.base_strength = 6
-    base_stats.base_dexterity = 6
-    base_stats.base_constitution = 6
-    base_stats.base_intelligence = 3
-    base_stats.base_wisdom = 3
-    base_stats.base_charisma = 4
+    combat_stats = CombatStats(
+        level=10,
+        base_strength=6,
+        base_dexterity=6,
+        base_constitution=6,
+        base_intelligence=3,
+        base_wisdom=3,
+        base_charisma=4,
+        damage=0,
+    )
 
     print(combat_stats)
     # Danos e Cura

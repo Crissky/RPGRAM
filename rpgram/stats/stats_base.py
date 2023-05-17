@@ -1,3 +1,4 @@
+from typing import List
 from rpgram.boosters import StatsBooster
 
 
@@ -9,18 +10,19 @@ class BaseStats:
     def __init__(
         self,
         level: int = 1,
+        xp: int = 0,
         base_strength: int = 0,
         base_dexterity: int = 0,
         base_constitution: int = 0,
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        *stats_boosters: StatsBooster
+        stats_boosters: List[StatsBooster] = []
     ) -> None:
         if level < 1 and isinstance(level, int):
             raise ValueError('Nível deve ser um inteiro maior que zero.')
         self.__level = int(level)
-        self.__current_xp = 0
+        self.__current_xp = int(xp)
 
         self.__base_strength = 0
         self.__base_dexterity = 0
@@ -374,6 +376,8 @@ class BaseStats:
             return self.wisdom
         elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
             return self.charisma
+        elif key in ['XP', 'EXPERIENCE', 'EXPERIENCIA', 'EXPERIÊNCIA']:
+            return self.xp
         else:
             raise KeyError(
                 f'Atributo "{key}" não encontrado.\n'
@@ -394,6 +398,8 @@ class BaseStats:
             self.wisdom = value
         elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
             self.charisma = value
+        elif key in ['XP', 'EXPERIENCE', 'EXPERIENCIA', 'EXPERIÊNCIA']:
+            self.xp = value
         else:
             raise KeyError(
                 f'Atributo "{key}" não encontrado.\n'
@@ -448,7 +454,16 @@ class BaseStats:
 
 
 if __name__ == '__main__':
-    stats = BaseStats(1.50, 3, 0, 0, 0, 0, 0)
+    stats = BaseStats(
+        level=1.50,
+        xp=0,
+        base_strength=3,
+        base_dexterity=0,
+        base_constitution=0,
+        base_intelligence=0,
+        base_wisdom=0,
+        base_charisma=0
+    )
     print(stats)
     stats.xp = 310
     print(stats)

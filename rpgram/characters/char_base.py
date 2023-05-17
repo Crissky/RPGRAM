@@ -14,12 +14,14 @@ class BaseCharacter:
         classe: Classe = None,
         race: Race = None,
         level: int = 1,
+        xp: int = 0,
         base_strength: int = 0,
         base_dexterity: int = 0,
         base_constitution: int = 0,
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
+        combat_damage: int = 0,
         race_name: str = '',
         race_description: str = '',
         race_bonus_strength: int = 0,
@@ -95,20 +97,21 @@ class BaseCharacter:
         self.__classe = classe
         if not isinstance(base_stats, BaseStats):
             base_stats = BaseStats(
-                level,
-                base_strength,
-                base_dexterity,
-                base_constitution,
-                base_intelligence,
-                base_wisdom,
-                base_charisma,
-                self.__race,
-                self.__classe,
+                level=level,
+                xp=xp,
+                base_strength=base_strength,
+                base_dexterity=base_dexterity,
+                base_constitution=base_constitution,
+                base_intelligence=base_intelligence,
+                base_wisdom=base_wisdom,
+                base_charisma=base_charisma,
+                stats_boosters=[self.__race, self.__classe]
             )
         self.__base_stats = base_stats
         if not isinstance(combat_stats, CombatStats):
             combat_stats = CombatStats(
                 base_stats=self.__base_stats,
+                damage=combat_damage
             )
         self.__combat_stats = combat_stats
 
@@ -144,12 +147,14 @@ class BaseCharacter:
             char_name=self.name,
             _id=self._id,
             level=self.base_stats.level,
+            xp=self.base_stats.xp,
             base_strength=self.base_stats.base_strength,
             base_dexterity=self.base_stats.base_dexterity,
             base_constitution=self.base_stats.base_constitution,
             base_intelligence=self.base_stats.base_intelligence,
             base_wisdom=self.base_stats.base_wisdom,
             base_charisma=self.base_stats.base_charisma,
+            combat_damage=(self.cs.hit_points - self.cs.current_hit_points),
             race_name=self.race.name,
             race_description=self.race.description,
             race_bonus_strength=self.race.bonus_strength,
@@ -188,12 +193,14 @@ if __name__ == '__main__':
         char_name='Personagem Teste',
         _id='ffffffffffffffffffffffff',
         level=21,
+        xp=0,
         base_strength=10,
         base_dexterity=10,
         base_constitution=10,
         base_intelligence=10,
         base_wisdom=10,
         base_charisma=10,
+        combat_damage=0,
         race_name='Elfo',
         race_description='Elfo Teste',
         race_bonus_strength=8,
