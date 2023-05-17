@@ -29,7 +29,8 @@ class CombatStats:
         self.__base_stats = base_stats
         self.__damage = 0
 
-        self.__stats_boosters = set(stats_boosters)
+        self.__stats_boosters = set(base_stats.stats_boosters)
+        self.update()
 
     def set_damage(self, value: int) -> None:
         value = int(value * -1)
@@ -72,7 +73,6 @@ class CombatStats:
     # Combat Attributes
     @property
     def hit_points(self) -> int:
-        self.__boost_stats()
         return int(
             10 +
             (self.constitution * 10) +
@@ -82,14 +82,12 @@ class CombatStats:
 
     @property
     def current_hit_points(self) -> int:
-        self.__boost_stats()
         return int(
             self.hit_points - self.__damage
         )
 
     @property
     def initiative(self) -> int:
-        self.__boost_stats()
         return int(
             (self.dexterity * 1.5) +
             (self.wisdom * 1.5) +
@@ -99,7 +97,6 @@ class CombatStats:
 
     @property
     def physical_attack(self) -> int:
-        self.__boost_stats()
         return int(
             (self.strength * 2) +
             self.dexterity +
@@ -108,7 +105,6 @@ class CombatStats:
 
     @property
     def ranged_attack(self) -> int:
-        self.__boost_stats()
         return int(
             (self.dexterity * 2.5) +
             self.bonus_ranged_attack
@@ -116,7 +112,6 @@ class CombatStats:
 
     @property
     def magical_attack(self) -> int:
-        self.__boost_stats()
         return int(
             (self.intelligence * 2) +
             self.wisdom +
@@ -125,7 +120,6 @@ class CombatStats:
 
     @property
     def physical_defense(self) -> int:
-        self.__boost_stats()
         return int(
             (self.constitution * 2) +
             self.dexterity +
@@ -134,7 +128,6 @@ class CombatStats:
 
     @property
     def magical_defense(self) -> int:
-        self.__boost_stats()
         return int(
             (self.wisdom * 2) +
             self.constitution +
@@ -143,7 +136,6 @@ class CombatStats:
 
     @property
     def hit(self) -> int:
-        self.__boost_stats()
         return int(
             (self.dexterity * 2) +
             self.wisdom +
@@ -152,7 +144,6 @@ class CombatStats:
 
     @property
     def evasion(self) -> int:
-        self.__boost_stats()
         return int(
             (self.dexterity * 2) +
             self.wisdom +
@@ -217,6 +208,12 @@ class CombatStats:
     @property
     def bonus_evasion(self) -> int:
         return self.__bonus_evasion
+
+    # Getters
+    # Stats Boosters
+    @property
+    def stats_boosters(self) -> set:
+        return set(self.__stats_boosters)
 
     def get_sheet(self) -> str:
         base_init = self.initiative - self.bonus_initiative
@@ -284,5 +281,5 @@ if __name__ == '__main__':
     combat_stats.hit_points = -10
     combat_stats.current_hit_points = -20
     combat_stats.hp = -30
-    combat_stats.hp = 10
+    combat_stats.hp = 10  # Cura
     print(combat_stats)

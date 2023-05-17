@@ -328,7 +328,7 @@ class BaseStats:
     def multiplier_charisma(self) -> float:
         return self.__multiplier_charisma
 
-    # Getters and Setters
+    # Getters
     # Attribute Modifiers
     @property
     def mod_strength(self) -> int:
@@ -353,6 +353,12 @@ class BaseStats:
     @property
     def mod_charisma(self) -> int:
         return self.__get_modifier_stats(self.charisma)
+
+    # Getters
+    # Stats Boosters
+    @property
+    def stats_boosters(self) -> set:
+        return set(self.__stats_boosters)
 
     def __getitem__(self, key: str) -> int:
         key = key.upper()
