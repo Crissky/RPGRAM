@@ -53,7 +53,7 @@ class CombatStats:
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
-        self.__bonus_ranged_attack = 0
+        self.__bonus_precision_attack = 0
         self.__bonus_magical_attack = 0
         self.__bonus_physical_defense = 0
         self.__bonus_magical_defense = 0
@@ -64,7 +64,7 @@ class CombatStats:
             self.__bonus_hit_points += int(sb.bonus_hit_points)
             self.__bonus_initiative += int(sb.bonus_initiative)
             self.__bonus_physical_attack += int(sb.bonus_physical_attack)
-            self.__bonus_ranged_attack += int(sb.bonus_ranged_attack)
+            self.__bonus_precision_attack += int(sb.bonus_precision_attack)
             self.__bonus_magical_attack += int(sb.bonus_magical_attack)
             self.__bonus_physical_defense += int(sb.bonus_physical_defense)
             self.__bonus_magical_defense += int(sb.bonus_magical_defense)
@@ -106,10 +106,10 @@ class CombatStats:
         )
 
     @property
-    def ranged_attack(self) -> int:
+    def precision_attack(self) -> int:
         return int(
             (self.dexterity * 2.5) +
-            self.bonus_ranged_attack
+            self.bonus_precision_attack
         )
 
     @property
@@ -184,8 +184,8 @@ class CombatStats:
         return self.__bonus_physical_attack
 
     @property
-    def bonus_ranged_attack(self) -> int:
-        return self.__bonus_ranged_attack
+    def bonus_precision_attack(self) -> int:
+        return self.__bonus_precision_attack
 
     @property
     def bonus_magical_attack(self) -> int:
@@ -221,7 +221,7 @@ class CombatStats:
         base_init = self.initiative - self.bonus_initiative
         base_hp = self.hit_points - self.bonus_hit_points
         base_phy_atk = self.physical_attack - self.bonus_physical_attack
-        base_rgd_atk = self.ranged_attack - self.bonus_ranged_attack
+        base_pre_atk = self.precision_attack - self.bonus_precision_attack
         base_mag_atk = self.magical_attack - self.bonus_magical_attack
         base_phy_def = self.physical_defense - self.bonus_physical_defense
         base_mag_def = self.magical_defense - self.bonus_magical_defense
@@ -239,8 +239,8 @@ class CombatStats:
             f'ATAQUE FÍSICO: {self.physical_attack} '
             f'[{base_phy_atk}{self.bonus_physical_attack:+}]\n'
 
-            f'ATAQUE À DISTÂNCIA: {self.ranged_attack} '
-            f'[{base_rgd_atk}{self.bonus_ranged_attack:+}]\n'
+            f'ATAQUE DE PRECISÃO: {self.precision_attack} '
+            f'[{base_pre_atk}{self.bonus_precision_attack:+}]\n'
 
             f'ATAQUE MÁGICO: {self.magical_attack} '
             f'[{base_mag_atk}{self.bonus_magical_attack:+}]\n'

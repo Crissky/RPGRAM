@@ -31,7 +31,7 @@ class StatsBooster:
         bonus_hit_points: int = 0,
         bonus_initiative: int = 0,
         bonus_physical_attack: int = 0,
-        bonus_ranged_attack: int = 0,
+        bonus_precision_attack: int = 0,
         bonus_magical_attack: int = 0,
         bonus_physical_defense: int = 0,
         bonus_magical_defense: int = 0,
@@ -62,7 +62,7 @@ class StatsBooster:
         self.__bonus_hit_points = int(bonus_hit_points)
         self.__bonus_initiative = int(bonus_initiative)
         self.__bonus_physical_attack = int(bonus_physical_attack)
-        self.__bonus_ranged_attack = int(bonus_ranged_attack)
+        self.__bonus_precision_attack = int(bonus_precision_attack)
         self.__bonus_magical_attack = int(bonus_magical_attack)
         self.__bonus_physical_defense = int(bonus_physical_defense)
         self.__bonus_magical_defense = int(bonus_magical_defense)
@@ -91,7 +91,7 @@ class StatsBooster:
             f'HP: {self.hp:+}\n'
             f'INICIATIVA: {self.initiative:+}\n'
             f'ATAQUE FÍSICO: {self.physical_attack:+}\n'
-            f'ATAQUE À DISTÂNCIA: {self.ranged_attack:+}\n'
+            f'ATAQUE DE PRECISÃO: {self.precision_attack:+}\n'
             f'ATAQUE MÁGICO: {self.magical_attack:+}\n'
             f'DEFESA FÍSICA: {self.physical_defense:+}\n'
             f'DEFESA MÁGICA: {self.magical_defense:+}\n'
@@ -124,7 +124,7 @@ class StatsBooster:
             bonus_hit_points=self.bonus_hit_points,
             bonus_initiative=self.bonus_initiative,
             bonus_physical_attack=self.bonus_physical_attack,
-            bonus_ranged_attack=self.bonus_ranged_attack,
+            bonus_precision_attack=self.bonus_precision_attack,
             bonus_magical_attack=self.bonus_magical_attack,
             bonus_physical_defense=self.bonus_physical_defense,
             bonus_magical_defense=self.bonus_magical_defense,
@@ -163,8 +163,8 @@ class StatsBooster:
         fget=lambda self: self.__bonus_initiative)
     physical_attack = bonus_physical_attack = property(
         fget=lambda self: self.__bonus_physical_attack)
-    ranged_attack = bonus_ranged_attack = property(
-        fget=lambda self: self.__bonus_ranged_attack)
+    precision_attack = bonus_precision_attack = property(
+        fget=lambda self: self.__bonus_precision_attack)
     magical_attack = bonus_magical_attack = property(
         fget=lambda self: self.__bonus_magical_attack)
     physical_defense = bonus_physical_defense = property(
@@ -197,7 +197,7 @@ if __name__ == '__main__':
         bonus_hit_points=220,
         bonus_initiative=23,
         bonus_physical_attack=24,
-        bonus_ranged_attack=25,
+        bonus_precision_attack=25,
         bonus_magical_attack=-26,
         bonus_physical_defense=27,
         bonus_magical_defense=-28,

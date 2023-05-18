@@ -26,7 +26,7 @@ if __name__ == "__main__":
         bonus_hit_points=0,
         bonus_initiative=0,
         bonus_physical_attack=30,
-        bonus_ranged_attack=0,
+        bonus_precision_attack=0,
         bonus_magical_attack=0,
         bonus_physical_defense=0,
         bonus_magical_defense=0,

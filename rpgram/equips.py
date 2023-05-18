@@ -35,7 +35,7 @@ class Equips:
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
-        self.__bonus_ranged_attack = 0
+        self.__bonus_precision_attack = 0
         self.__bonus_magical_attack = 0
         self.__bonus_physical_defense = 0
         self.__bonus_magical_defense = 0
@@ -120,7 +120,7 @@ class Equips:
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
-        self.__bonus_ranged_attack = 0
+        self.__bonus_precision_attack = 0
         self.__bonus_magical_attack = 0
         self.__bonus_physical_defense = 0
         self.__bonus_magical_defense = 0
@@ -153,7 +153,7 @@ class Equips:
             self.__bonus_hit_points += int(e.bonus_hit_points)
             self.__bonus_initiative += int(e.bonus_initiative)
             self.__bonus_physical_attack += int(e.bonus_physical_attack)
-            self.__bonus_ranged_attack += int(e.bonus_ranged_attack)
+            self.__bonus_precision_attack += int(e.bonus_precision_attack)
             self.__bonus_magical_attack += int(e.bonus_magical_attack)
             self.__bonus_physical_defense += int(e.bonus_physical_defense)
             self.__bonus_magical_defense += int(e.bonus_magical_defense)
@@ -191,7 +191,7 @@ class Equips:
             f'HP: {self.hp:+}\n'
             f'INICIATIVA: {self.initiative:+}\n'
             f'ATAQUE FÍSICO: {self.physical_attack:+}\n'
-            f'ATAQUE À DISTÂNCIA: {self.ranged_attack:+}\n'
+            f'ATAQUE DE PRECISÃO: {self.precision_attack:+}\n'
             f'ATAQUE MÁGICO: {self.magical_attack:+}\n'
             f'DEFESA FÍSICA: {self.physical_defense:+}\n'
             f'DEFESA MÁGICA: {self.magical_defense:+}\n'
@@ -246,8 +246,8 @@ class Equips:
         fget=lambda self: self.__bonus_initiative)
     physical_attack = bonus_physical_attack = property(
         fget=lambda self: self.__bonus_physical_attack)
-    ranged_attack = bonus_ranged_attack = property(
-        fget=lambda self: self.__bonus_ranged_attack)
+    precision_attack = bonus_precision_attack = property(
+        fget=lambda self: self.__bonus_precision_attack)
     magical_attack = bonus_magical_attack = property(
         fget=lambda self: self.__bonus_magical_attack)
     physical_defense = bonus_physical_defense = property(
@@ -314,7 +314,7 @@ if __name__ == '__main__':
         bonus_hit_points=1000,
         bonus_initiative=100,
         bonus_physical_attack=100,
-        bonus_ranged_attack=100,
+        bonus_precision_attack=100,
         bonus_magical_attack=100,
         bonus_physical_defense=100,
         bonus_magical_defense=-100,
