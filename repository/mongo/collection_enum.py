@@ -5,7 +5,7 @@ class CollectionEnum(Enum):
     BASE_CHARS = 'base_characters'
     CLASSES = 'classes'
     EQUIPAMENTS = 'equipaments'
-    GROUP_CONFIGURATION = 'group_configuration'
+    GROUP_CONFIGURATIONS = 'group_configurations'
     PLAYERS = 'players'
     PLAYER_CHARS = 'player_characters'
     RACES = 'races'
