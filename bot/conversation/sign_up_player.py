@@ -18,6 +18,7 @@ from bot.conversation.constants import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.decorators import print_basic_infos
 
 from repository.mongo import PlayerModel
 from rpgram import Player
@@ -33,6 +34,7 @@ CALLBACK_TEXT_NO = "no"
 COMMANDS = ['criarconta', 'signup']
 
 
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     print(
         f'{__name__}.start():',
@@ -68,6 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return START_ROUTES
 
 
+@print_basic_infos
 async def create_account(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> int:
@@ -88,6 +91,7 @@ async def create_account(
     return ConversationHandler.END
 
 
+@print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar uma conta mais tarde."
 

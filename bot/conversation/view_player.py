@@ -12,12 +12,14 @@ from telegram.ext import (
 from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 
 from bot.conversation.sign_up_player import COMMANDS as sign_up_player_commands
+from bot.decorators import print_basic_infos
 from repository.mongo import PlayerModel
 
 
 COMMANDS = ['jogador', 'player']
 
 
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player_model = PlayerModel()
     chat_id = update.effective_chat.id

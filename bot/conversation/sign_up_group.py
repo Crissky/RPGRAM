@@ -17,6 +17,7 @@ from telegram.ext import (
     PrefixHandler,
 )
 from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.decorators import print_basic_infos
 
 from repository.mongo import GroupConfigurationModel
 from rpgram import GroupConfiguration
@@ -32,6 +33,7 @@ CALLBACK_TEXT_NO = "no"
 COMMANDS = ['criargrupo', 'signupgroup']
 
 
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     group_config_model = GroupConfigurationModel()
     chat_id = update.effective_chat.id
@@ -72,6 +74,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return START_ROUTES
 
 
+@print_basic_infos
 async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     chat_name = update.effective_chat.effective_name
@@ -96,6 +99,7 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
+@print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     new_text = "Tchau! Você pode criar uma conta para o grupo mais tarde."
 

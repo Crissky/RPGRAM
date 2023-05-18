@@ -10,13 +10,14 @@ from bot.conversation.constants import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-from bot.decorators import need_have_char
+from bot.decorators import need_have_char, print_basic_infos
 from repository.mongo import PlayerCharacterModel
 
 COMMANDS = ['stats', 'add_stats']
 
 
 @need_have_char
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_char_model = PlayerCharacterModel()

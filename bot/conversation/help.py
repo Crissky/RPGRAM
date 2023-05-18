@@ -17,11 +17,13 @@ from bot.conversation.view_group import COMMANDS as view_group_commands
 from bot.conversation.view_player import COMMANDS as view_player_commands
 from bot.conversation.view_char import COMMANDS as view_char_commands
 from bot.conversation.add_stats import COMMANDS as add_stats_commands
+from bot.decorators import print_basic_infos
 
 
 COMMANDS = ['help', 'ajuda']
 
 
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     sign_up_group_cmd = command_to_string(sign_up_group_commands)
     sign_up_player_cmd = command_to_string(sign_up_player_commands)

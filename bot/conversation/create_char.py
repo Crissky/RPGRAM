@@ -6,7 +6,6 @@ import re
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    MessageEntity,
     Update,
 )
 from telegram.ext import (
@@ -23,6 +22,7 @@ from bot.conversation.constants import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.decorators import print_basic_infos
 
 from repository.mongo import (
     ClasseModel,
@@ -53,6 +53,7 @@ CALLBACK_TEXT_CLASSES = '|'.join(ClasseModel().get_all(fields=['name']))
 COMMANDS = ['criarpersonagem', 'createchar']
 
 
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_model = PlayerModel()
@@ -105,6 +106,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return CONFIRM_RACE_ROUTES
 
 
+@print_basic_infos
 async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     race_model = RaceModel()
     query = update.callback_query
@@ -121,6 +123,7 @@ async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return CONFIRM_RACE_ROUTES
 
 
+@print_basic_infos
 async def confirm_race(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -152,6 +155,7 @@ async def confirm_race(
     return SELECT_CLASSE_ROUTES
 
 
+@print_basic_infos
 async def select_classe(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -174,6 +178,7 @@ async def select_classe(
     return CONFIRM_CLASSE_ROUTES
 
 
+@print_basic_infos
 async def confirm_classe(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -205,6 +210,7 @@ async def confirm_classe(
     return SELECT_NAME_ROUTES
 
 
+@print_basic_infos
 async def select_name(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -222,6 +228,7 @@ async def select_name(
     return CREATE_CHAR_ROUTES
 
 
+@print_basic_infos
 async def create_char(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -292,6 +299,7 @@ async def create_char(
     return ConversationHandler.END
 
 
+@print_basic_infos
 async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     player_character_model = PlayerCharacterModel()
     player_id = update.effective_user.id
@@ -311,6 +319,7 @@ async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
+@print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar um personagem mais tarde."
 

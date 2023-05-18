@@ -13,12 +13,14 @@ from telegram.ext import (
 from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 
 from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
+from bot.decorators import print_basic_infos
 from repository.mongo import GroupConfigurationModel
 
 
 COMMANDS = ['grupo', 'group']
 
 
+@print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     group_config_model = GroupConfigurationModel()
     chat_id = update.effective_chat.id
