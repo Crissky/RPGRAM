@@ -11,6 +11,7 @@ class Player:
         name: str,
         player_id: int,
         _id: Union[str, ObjectId] = None,
+        xp_cooldown: datetime = None,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -20,6 +21,7 @@ class Player:
         self.player_id = player_id
         self.name = name
         self._id = _id
+        self.xp_cooldown = xp_cooldown
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -38,6 +40,7 @@ class Player:
             name=self.name,
             player_id=self.player_id,
             _id=self._id,
+            xp_cooldown=self.xp_cooldown,
             created_at=self.created_at,
             updated_at=self.updated_at
         )

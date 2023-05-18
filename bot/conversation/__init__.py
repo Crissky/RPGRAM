@@ -6,3 +6,4 @@ from bot.conversation.view_group import VIEW_GROUP_HANDLERS
 from bot.conversation.view_player import VIEW_PLAYER_HANDLERS
 from bot.conversation.view_char import VIEW_CHAR_HANDLERS
 from bot.conversation.add_stats import ADD_STATS_HANDLERS
+from bot.conversation.chat_xp import CHAT_XP_HANDLER
