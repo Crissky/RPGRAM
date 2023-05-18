@@ -10,13 +10,13 @@ from bot.conversation.constants import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.conversation.add_stats import COMMANDS as add_stats_commands
+from bot.conversation.create_char import COMMANDS as create_char_commands
 from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
 from bot.conversation.sign_up_player import COMMANDS as sign_up_player_commands
-from bot.conversation.create_char import COMMANDS as create_char_commands
+from bot.conversation.view_char import COMMANDS as view_char_commands
 from bot.conversation.view_group import COMMANDS as view_group_commands
 from bot.conversation.view_player import COMMANDS as view_player_commands
-from bot.conversation.view_char import COMMANDS as view_char_commands
-from bot.conversation.add_stats import COMMANDS as add_stats_commands
 from bot.decorators import print_basic_infos
 
 
@@ -35,6 +35,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.effective_message.reply_text(
         f'COMANDOS:\n\n'
+
         f'CRIAR CONTA DO GRUPO: /{sign_up_group_commands[0]}\n'
         f'Atalhos:\n'
         f'{sign_up_group_cmd}\n\n'
