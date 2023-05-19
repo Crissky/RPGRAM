@@ -15,7 +15,7 @@ def datetime_to_string(dt: datetime) -> str:
 
 
 def add_random_minutes_now() -> datetime:
-    minutes = randint(5, 20)
+    minutes = randint(5, 10)
     print(f"Adding {minutes} minutes")
 
     return get_brazil_time_now() + timedelta(minutes=minutes)
