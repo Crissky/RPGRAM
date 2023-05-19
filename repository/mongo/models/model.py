@@ -106,6 +106,22 @@ class Model:
 
         return result
 
+    def __populate_load(self, dict_obj: dict):
+        for field_name, field_info in self.populate_fields.items():
+            if field_info['id_key'] in dict_obj:
+                key = field_info['id_key']
+                _id = dict_obj[key]
+                model = field_info['model']
+                obj = model.get(_id)
+                dict_obj[field_name] = obj
+            else:
+                raise KeyError(
+                    f'O dicionário da classe {self._class.__name__} '
+                    f'não possui campo {field_info["id_key"]}.'
+                )
+
+        return dict_obj
+
     database = property(lambda self: Database.get_instance())
     alternative_id = property(lambda self: 'player_id')
 
@@ -118,3 +134,32 @@ class Model:
     @abstractmethod
     def _class(self):
         ...
+
+    @property
+    def populate_fields(self):
+        '''
+            Retorna um dicionário com os campos necessários para criar
+            os objetos de outros modelos necessários para o modelo atual.
+
+            field_name: Nome do campo que será populado ao criar o objeto.
+                id_key: caminho do campo usando para buscar o objeto no banco
+                    (aka _id ou alternative_id).
+                model: Modelo usado para carregar o objeto que populará
+                    o objeto do modelo atual.
+
+            populate_fields = {
+                'field_name': {
+                    'id_key': string,
+                    'model': Model,
+                },
+                ...
+            }
+            Exemplo:
+            populate_fields = {
+                'race': {
+                    'id_key': 'race_name',
+                    'model': RaceModel,
+                }
+            }
+        '''
+        return {}
