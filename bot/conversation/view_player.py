@@ -25,9 +25,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
 
-    print(f'{__name__}.start', 'chat.id:', chat_id)
-    print(f'{__name__}.start', 'user_id:', user_id)
-
     if (player := player_model.get(user_id)):
         await update.effective_message.reply_text(f'{player}')
     else:

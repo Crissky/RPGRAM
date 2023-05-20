@@ -22,11 +22,7 @@ COMMANDS = ['personagem', 'char']
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player_char_model = PlayerCharacterModel()
-    chat_id = update.effective_chat.id
     user_id = update.effective_user.id
-
-    print(f'{__name__}.start', 'chat.id:', chat_id)
-    print(f'{__name__}.start', 'user_id:', user_id)
 
     if (player_character := player_char_model.get(user_id)):
         await update.effective_message.reply_text(f'{player_character}')
