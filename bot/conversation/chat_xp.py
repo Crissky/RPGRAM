@@ -12,7 +12,7 @@ from bot.decorators import (
     print_basic_infos
 )
 from functions.datetime import (
-    utc_to_brazil_datetime, 
+    utc_to_brazil_datetime,
     add_random_minutes_now,
     replace_tzinfo
 )
@@ -29,8 +29,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
     player_char_model = PlayerCharacterModel()
     group_config_model = GroupConfigurationModel()
-    user_id = update.effective_user.id
+
     user_name = update.effective_user.name
+    user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     message_date = update.effective_message.date
     message_date = utc_to_brazil_datetime(message_date)
@@ -46,18 +47,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             print('XP em cooldown.')
             return
 
-    group_config = group_config_model.get(chat_id)
     player_char = player_char_model.get(user_id)
+    group_config = group_config_model.get(chat_id)
 
     player.xp_cooldown = add_random_minutes_now(message_date)
     context.user_data[user_id] = player
     player_model.save(player)
 
     level = player_char.base_stats.level
-    level_multiplier_xp = group_config.player_multiplier_xp * level
+    level_bonus = group_config.player_multiplier_xp * level
     multiplier_xp = group_config.multiplier_xp
 
-    add_xp = (randint(1, 5) + level_multiplier_xp) * multiplier_xp
+    add_xp = (randint(1, 10) + level_bonus) * multiplier_xp
 
     player_char.base_stats.xp = add_xp
     player_char_model.save(player_char)
