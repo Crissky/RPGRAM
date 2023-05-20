@@ -1,4 +1,6 @@
 from typing import List
+
+from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 
@@ -228,42 +230,42 @@ class CombatStats:
         base_hit = self.hit - self.bonus_hit
         base_evasion = self.evasion - self.bonus_evasion
         return (
-            f'\n◇── ATRIBUTOS DE COMBATE ──◇\n'
+            SECTION_HEAD.format('ATRIBUTOS DE COMBATE') +
 
             f'HP: {self.current_hit_points}/{self.hit_points} '
             f'[{base_hp}{self.bonus_hit_points:+}]\n'
 
-            f'INICIATIVA: {self.initiative} '
+            f'INICIATIVA: {self.initiative:02} '
             f'[{base_init}{self.bonus_initiative:+}]\n'
 
-            f'ATAQUE FÍSICO: {self.physical_attack} '
+            f'ATAQUE FÍSICO: {self.physical_attack:02} '
             f'[{base_phy_atk}{self.bonus_physical_attack:+}]\n'
 
-            f'ATAQUE DE PRECISÃO: {self.precision_attack} '
+            f'ATAQUE DE PRECISÃO: {self.precision_attack:02} '
             f'[{base_pre_atk}{self.bonus_precision_attack:+}]\n'
 
-            f'ATAQUE MÁGICO: {self.magical_attack} '
+            f'ATAQUE MÁGICO: {self.magical_attack:02} '
             f'[{base_mag_atk}{self.bonus_magical_attack:+}]\n'
 
-            f'DEFESA FÍSICA: {self.physical_defense} '
+            f'DEFESA FÍSICA: {self.physical_defense:02} '
             f'[{base_phy_def}{self.bonus_physical_defense:+}]\n'
 
-            f'DEFESA MÁGICA: {self.magical_defense} '
+            f'DEFESA MÁGICA: {self.magical_defense:02} '
             f'[{base_mag_def}{self.bonus_magical_defense:+}]\n'
 
-            f'ACERTO: {self.hit} '
+            f'ACERTO: {self.hit:02} '
             f'[{base_hit}{self.bonus_hit:+}]\n'
 
-            f'EVASÃO: {self.evasion} '
+            f'EVASÃO: {self.evasion:02} '
             f'[{base_evasion}{self.bonus_evasion:+}]\n'
         )
 
     def __repr__(self) -> str:
         return (
-            f'###################################\n'
+            TEXT_DELIMITER +
             f'{self.__base_stats.get_sheet()}'
             f'{self.get_sheet()}'
-            f'###################################\n'
+            + TEXT_DELIMITER
         )
 
 

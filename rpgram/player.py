@@ -1,7 +1,8 @@
-from datetime import datetime
 from bson import ObjectId
+from datetime import datetime
 from typing import Union
 
+from constants.text import SECTION_HEAD
 from functions.datetime import datetime_to_string
 
 
@@ -27,7 +28,7 @@ class Player:
 
     def __repr__(self) -> str:
         return (
-            f'◇── Dados do Jogador ──◇\n\n'
+            SECTION_HEAD.format('Dados do Jogador') + '\n'
             f'Jogador: {self.name}\n'
             f'ID: {self._id}\n'
             f'Player ID: {self.player_id}\n'
@@ -52,5 +53,5 @@ if __name__ == '__main__':
         player_id=2,
         _id='ffffffffffffffffffffffff'
     )
-    print('__repr__:', player)
+    print('__repr__:\n', player)
     print('to_dict:', player.to_dict())

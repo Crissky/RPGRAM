@@ -1,5 +1,7 @@
-from datetime import datetime
 from bson import ObjectId
+from datetime import datetime
+
+from constants.text import TEXT_DELIMITER
 from rpgram.boosters import Race, Classe
 from rpgram.stats import BaseStats, CombatStats
 
@@ -69,9 +71,9 @@ class BaseCharacter:
 
     def __repr__(self) -> str:
         return (
-            f'###################################\n'
+            TEXT_DELIMITER +
             f'{self.get_sheet()}'
-            f'###################################\n'
+            + TEXT_DELIMITER
         )
 
     def to_dict(self):

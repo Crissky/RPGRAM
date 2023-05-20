@@ -3,6 +3,7 @@ from typing import Union
 
 from bson import ObjectId
 
+from constants.text import SECTION_HEAD
 from functions.datetime import datetime_to_string
 
 
@@ -36,7 +37,7 @@ class GroupConfiguration:
 
     def __repr__(self) -> str:
         return (
-            f'◇── Configuração do Grupo ──◇\n'
+            SECTION_HEAD.format('Configuração do Grupo') +
             f'Grupo: {self.name}\n'
             f'Chat ID: {self.chat_id}\n'
             f'Verbose: {self.verbose}\n'

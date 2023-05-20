@@ -1,6 +1,8 @@
+from typing import List
+
+from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from rpgram.boosters import Equipament
 from rpgram.enums import EquipamentEnum
-from typing import List
 
 if __name__ in ['__main__', 'equip']:
     from rpgram.enums import DamageEnum
@@ -173,7 +175,7 @@ class Equips:
             f'Necklace: {self.necklace.name if self.necklace else ""}\n'
             f'Peso: {self.weight:.2f}\n\n'
 
-            f'◇── BÔNUS E MULTIPLICADORES ──◇\n'
+            + SECTION_HEAD.format('BÔNUS E MULTIPLICADORES') +
 
             f'FOR: {self.strength:+} '
             f'x({self.__multiplier_strength:+.2f})\n'
@@ -201,10 +203,10 @@ class Equips:
 
     def __repr__(self) -> str:
         return (
-            f'###################################\n'
-            f'◇── EQUIPAMENTOS ──◇\n'
+            TEXT_DELIMITER +
+            SECTION_HEAD.format('EQUIPAMENTOS') +
             f'{self.get_sheet()}'
-            f'###################################\n'
+            + TEXT_DELIMITER
         )
 
     helmet = property(lambda self: self.__helmet)

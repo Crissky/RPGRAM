@@ -18,6 +18,7 @@ from bot.conversation.view_char import COMMANDS as view_char_commands
 from bot.conversation.view_group import COMMANDS as view_group_commands
 from bot.conversation.view_player import COMMANDS as view_player_commands
 from bot.decorators import print_basic_infos
+from constants.text import SECTION_HEAD
 
 
 COMMANDS = ['help', 'ajuda']
@@ -34,7 +35,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_stats_cmd = command_to_string(add_stats_commands)
 
     await update.effective_message.reply_text(
-        f'◇── COMANDOS ──◇\n\n'
+        SECTION_HEAD.format('COMANDOS') + '\n'
 
         f'CRIAR CONTA DO GRUPO: /{sign_up_group_commands[0]}\n'
         f'Atalhos:\n'

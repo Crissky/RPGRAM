@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import Union
-
 from bson import ObjectId
+
+from constants.text import TEXT_DELIMITER
 from rpgram.boosters import StatsBooster
 from rpgram.enums import EquipamentEnum, DamageEnum
 
@@ -85,10 +86,10 @@ class Equipament(StatsBooster):
 
     def __repr__(self) -> str:
         return (
-            f'###################################\n'
+            TEXT_DELIMITER +
             f'{self.get_sheet()}'
             f'{super().get_sheet()}'
-            f'###################################\n'
+            + TEXT_DELIMITER
         )
 
     def to_dict(self):

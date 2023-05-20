@@ -1,7 +1,8 @@
+from bson import ObjectId
 from datetime import datetime
 from typing import Union
 
-from bson import ObjectId
+from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from rpgram.boosters import StatsBooster
 
 
@@ -49,8 +50,7 @@ class Race(StatsBooster):
     def get_sheet(self) -> str:
         return (
             f'Raça: {self.name}\n'
-            # f'Descrição da Raça: {self.description}\n'
-            f'◇── BÔNUS E MULTIPLICADORES ──◇\n'
+            + SECTION_HEAD.format('BÔNUS E MULTIPLICADORES') +
             f'FOR: {self.strength:+}'
             f'x({self.multiplier_strength:+.2f})\n'
             f'DES: {self.dexterity:+}'
@@ -67,9 +67,9 @@ class Race(StatsBooster):
 
     def __repr__(self) -> str:
         return (
-            f'###################################\n'
+            TEXT_DELIMITER +
             f'{self.get_sheet()}'
-            f'###################################\n'
+            + TEXT_DELIMITER
         )
 
     def to_dict(self):

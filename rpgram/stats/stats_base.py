@@ -1,4 +1,6 @@
 from typing import List
+
+from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from rpgram.boosters import StatsBooster
 
 
@@ -436,34 +438,34 @@ class BaseStats:
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n'
 
-            f'\n◇── ATRIBUTOS BASE ──◇\n'
+            + SECTION_HEAD.format('ATRIBUTOS BASE') +
 
-            f'FOR: {self.strength} '
+            f'FOR: {self.strength:02} '
             f'[{self.base_strength}{self.bonus_strength:+}]'
             f'x{self.multiplier_strength:.2f} '
             f'({self.mod_strength})\n'
 
-            f'DES: {self.dexterity} '
+            f'DES: {self.dexterity:02} '
             f'[{self.base_dexterity}{self.bonus_dexterity:+}]'
             f'x{self.multiplier_dexterity:.2f} '
             f'({self.mod_dexterity})\n'
 
-            f'CON: {self.constitution} '
+            f'CON: {self.constitution:02} '
             f'[{self.base_constitution}{self.bonus_constitution:+}]'
             f'x{self.multiplier_constitution:.2f} '
             f'({self.mod_constitution})\n'
 
-            f'INT: {self.intelligence} '
+            f'INT: {self.intelligence:02} '
             f'[{self.base_intelligence}{self.bonus_intelligence:+}]'
             f'x{self.multiplier_intelligence:.2f} '
             f'({self.mod_intelligence})\n'
 
-            f'SAB: {self.wisdom} '
+            f'SAB: {self.wisdom:02} '
             f'[{self.base_wisdom}{self.bonus_wisdom:+}]'
             f'x{self.multiplier_wisdom:.2f} '
             f'({self.mod_wisdom})\n'
 
-            f'CAR: {self.charisma} '
+            f'CAR: {self.charisma:02} '
             f'[{self.base_charisma}{self.bonus_charisma:+}]'
             f'x{self.multiplier_charisma:.2f} '
             f'({self.mod_charisma})\n'
@@ -471,9 +473,9 @@ class BaseStats:
 
     def __repr__(self) -> str:
         return (
-            f'###################################\n'
+            TEXT_DELIMITER +
             f'{self.get_sheet()}'
-            f'###################################\n'
+            + TEXT_DELIMITER
         )
 
 
