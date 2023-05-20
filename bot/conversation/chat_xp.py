@@ -6,7 +6,7 @@ from telegram.ext import (
     MessageHandler
 )
 
-from bot.conversation.constants import ALLOW_WRITE_TEXT_IN_GROUP_FILTER
+from bot.conversation.constants import ALLOW_GAIN_XP
 from bot.decorators import (
     skip_if_no_have_char,
     print_basic_infos
@@ -73,6 +73,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 CHAT_XP_HANDLER = MessageHandler(
-    ALLOW_WRITE_TEXT_IN_GROUP_FILTER,
+    ALLOW_GAIN_XP,
     start
 )

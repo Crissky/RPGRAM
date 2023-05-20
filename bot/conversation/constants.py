@@ -16,3 +16,11 @@ ALLOW_WRITE_TEXT_IN_GROUP_FILTER = (
     ~filters.UpdateType.EDITED &
     ~filters.Regex('^!')
 )
+
+ALLOW_GAIN_XP = (
+    filters.ChatType.GROUPS &
+    ~filters.COMMAND &
+    ~filters.FORWARDED &
+    ~filters.UpdateType.EDITED &
+    ~filters.Regex('^!')
+)
