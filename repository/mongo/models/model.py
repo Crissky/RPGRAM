@@ -59,6 +59,7 @@ class Model:
         if not isinstance(query, dict):
             raise ValueError('Query precisa ser um dicionário.')
         if (result := self.database.find(self.collection, query)):
+            result = self.__populate_load(result)
             return self._class(**result)
 
     def get_all(
@@ -71,7 +72,10 @@ class Model:
         result = self.database.find_many(self.collection, query, fields)
 
         if not fields:
-            result = [self._class(**item) for item in result]
+            result = [
+                self._class(**self.__populate_load(item))
+                for item in result
+            ]
         elif len(fields) == 1:
             result = [item[fields[0]] for item in result]
         else:
@@ -122,21 +126,21 @@ class Model:
 
         return dict_obj
 
-    database = property(lambda self: Database.get_instance())
-    alternative_id = property(lambda self: 'player_id')
+    database: Database = property(lambda self: Database.get_instance())
+    alternative_id: str = property(lambda self: 'player_id')
 
     @property
     @abstractmethod
-    def collection(self):
+    def collection(self) -> str:
         ...
 
     @property
     @abstractmethod
-    def _class(self):
+    def _class(self) -> Any:
         ...
 
     @property
-    def populate_fields(self):
+    def populate_fields(self) -> dict:
         '''
             Retorna um dicionário com os campos necessários para criar
             os objetos de outros modelos necessários para o modelo atual.

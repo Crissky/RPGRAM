@@ -1,5 +1,7 @@
 from repository.mongo import CollectionEnum
 from repository.mongo import Model
+from repository.mongo.models.classe import ClasseModel
+from repository.mongo.models.race import RaceModel
 from rpgram.characters import PlayerCharacter
 
 
@@ -7,6 +9,18 @@ class PlayerCharacterModel(Model):
 
     _class = property(lambda self: PlayerCharacter)
     collection = property(lambda self: CollectionEnum.PLAYER_CHARS.value)
+    populate_fields = property(
+        lambda self: {
+            'classe': {
+                'id_key': 'classe_name',
+                'model': ClasseModel()
+            },
+            'race': {
+                'id_key': 'race_name',
+                'model': RaceModel()
+            }
+        }
+    )
 
 
 if __name__ == '__main__':
