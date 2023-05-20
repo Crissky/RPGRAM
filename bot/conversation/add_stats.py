@@ -52,7 +52,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.effective_message.reply_text(
         f'{text}'
-        f'{player_char.base_stats}'
+        f'{player_char.combat_stats}'
     )
 
 

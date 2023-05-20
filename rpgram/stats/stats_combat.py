@@ -230,7 +230,7 @@ class CombatStats:
         base_hit = self.hit - self.bonus_hit
         base_evasion = self.evasion - self.bonus_evasion
         return (
-            SECTION_HEAD.format('ATRIBUTOS DE COMBATE') +
+            '\n' + SECTION_HEAD.format('ATRIBUTOS DE COMBATE') +
 
             f'HP: {self.current_hit_points}/{self.hit_points} '
             f'[{base_hp}{self.bonus_hit_points:+}]\n'

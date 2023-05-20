@@ -26,22 +26,17 @@ class BaseStats:
         self.__level = int(level)
         self.__current_xp = int(xp)
 
-        self.__base_strength = 0
-        self.__base_dexterity = 0
-        self.__base_constitution = 0
-        self.__base_intelligence = 0
-        self.__base_wisdom = 0
-        self.__base_charisma = 0
-
-        self.base_strength = base_strength
-        self.base_dexterity = base_dexterity
-        self.base_constitution = base_constitution
-        self.base_intelligence = base_intelligence
-        self.base_wisdom = base_wisdom
-        self.base_charisma = base_charisma
+        self.__base_strength = int(base_strength)
+        self.__base_dexterity = int(base_dexterity)
+        self.__base_constitution = int(base_constitution)
+        self.__base_intelligence = int(base_intelligence)
+        self.__base_wisdom = int(base_wisdom)
+        self.__base_charisma = int(base_charisma)
 
         self.__stats_boosters = set(stats_boosters)
+
         self.update()
+        self.check_attributes()
 
     def __get_points(self) -> int:
         max_level_points = self.__level * 3
@@ -67,7 +62,7 @@ class BaseStats:
                 f'Não há Pontos({points}) suficientes para adicionar.\n'
                 f'Atualmente você tem {self.points} Ponto(s).'
             )
-        if points < 0:  # Permite 0 por causa do init.
+        if points <= 0:
             raise ValueError(
                 f'Não é possível adicionar menos que '
                 f'1 Ponto de {clean_attribute}.'
@@ -77,6 +72,9 @@ class BaseStats:
 
     def update(self) -> None:
         self.__boost_stats()
+    
+    def check_attributes(self) -> None:
+        self.__get_points()
 
     def __boost_stats(self) -> None:
         self.__bonus_strength = 0
@@ -436,7 +434,7 @@ class BaseStats:
         return (
             f'Nível: {self.level} (Nível da Classe: {self.classe_level})\n'
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
-            f'Pontos: {self.points}\n'
+            f'Pontos: {self.points}\n\n'
 
             + SECTION_HEAD.format('ATRIBUTOS BASE') +
 
