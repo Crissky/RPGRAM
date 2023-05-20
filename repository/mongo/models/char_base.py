@@ -24,18 +24,24 @@ class BaseCharacterModel(Model):
 
 
 if __name__ == '__main__':
+    from repository.mongo import ClasseModel, RaceModel
+    classe_model = ClasseModel()
+    race_model = RaceModel()
+    guerreiro = classe_model.get('Guerreiro')
+    elfo = race_model.get('Elfo')
     base_character = BaseCharacter(
         char_name='PERSONAGEM TESTE MODELO',
-        _id='ffffffffffffffffffffffff',
+        classe=guerreiro,
+        race=elfo,
         level=21,
+        xp=30,
         base_strength=10,
         base_dexterity=10,
         base_constitution=10,
         base_intelligence=10,
         base_wisdom=10,
         base_charisma=10,
-        race_name='Elfo',
-        classe_name='Guerreiro',
+        _id='ffffffffffffffffffffffff',
     )
     base_char_model = BaseCharacterModel()
     print(f'Collection: {base_char_model.collection}')
