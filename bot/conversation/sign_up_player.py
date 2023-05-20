@@ -36,11 +36,6 @@ COMMANDS = ['criarconta', 'signup']
 
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    print(
-        f'{__name__}.start():',
-        f'update.effective_chat.id: {update.effective_chat.id}'
-    )
-
     player_model = PlayerModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id

@@ -37,12 +37,8 @@ COMMANDS = ['criargrupo', 'signupgroup']
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     group_config_model = GroupConfigurationModel()
     chat_id = update.effective_chat.id
-    user_id = update.effective_user.id
     chat_name = update.effective_chat.effective_name
     user_name = update.effective_user.name
-
-    print(f'{__name__}.start', 'chat.id:', chat_id)
-    print(f'{__name__}.start', 'user_id:', user_id)
 
     if update.effective_chat.type == ChatType.PRIVATE:
         await update.effective_message.reply_text(
@@ -108,7 +104,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = response.chat_id
         message_id = response.id
         print(
-            f'{__name__}.cancel',
+            f'{__name__}.cancel()',
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
         await update.get_bot().edit_message_text(

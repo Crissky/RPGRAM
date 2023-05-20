@@ -24,9 +24,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
 
-    print(f'{__name__}.start', 'chat.id:', chat_id)
-    print(f'{__name__}.start', 'user_id:', user_id)
-
     args = context.args
     player_char = player_char_model.get(user_id)
     text = ''
