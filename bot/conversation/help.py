@@ -34,7 +34,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_stats_cmd = command_to_string(add_stats_commands)
 
     await update.effective_message.reply_text(
-        f'COMANDOS:\n\n'
+        f'◇── COMANDOS ──◇\n\n'
 
         f'CRIAR CONTA DO GRUPO: /{sign_up_group_commands[0]}\n'
         f'Atalhos:\n'
@@ -62,8 +62,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         f'ADICIONAR ESTATISTICAS: /{add_stats_commands[0]}\n'
         f'Argumentos: [<ATRIBUTO> <VALOR>]\n'
-        f'Exemplo: /{add_stats_commands[0]} FORÇA 10\n'
-        f'OBS: Pode ser usado sem argumentos para exibir as estatísticas\n'
+        f'Exemplo: "/{add_stats_commands[0]} FOR 10" '
+        f'(Adiciona 10 pontos em FORÇA).\n'
+        f'OBS: Pode ser usado sem argumentos para exibir as estatísticas.\n'
         f'Atalhos:\n'
         f'{add_stats_cmd}\n'
     )
