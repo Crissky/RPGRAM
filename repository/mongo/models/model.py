@@ -6,6 +6,19 @@ from functions.datetime import get_brazil_time_now
 from repository.mongo import Database
 
 
+def singleton(cls):
+    class ClassWrapper(cls):
+        _instance = None
+
+        def __new__(c, *args, **kwargs):
+            if type(c._instance) != c:
+                c._instance = cls.__new__(c, *args, **kwargs)
+            return c._instance
+    ClassWrapper.__name__ = cls.__name__
+    return ClassWrapper
+
+
+@singleton
 class Model:
     '''Classe Base usada para salvar Classes no Banco de Dados MongoDB'''
 
@@ -114,7 +127,7 @@ class Model:
         for field_name, field_info in self.populate_fields.items():
             if field_info['id_key'] in dict_obj:
                 key = field_info['id_key']
-                _id = dict_obj[key]
+                _id = dict_obj.pop(key)
                 model = field_info['model']
                 obj = model.get(_id)
                 dict_obj[field_name] = obj
