@@ -11,7 +11,11 @@ from bot.decorators import (
     skip_if_no_have_char,
     print_basic_infos
 )
-from functions.datetime import get_brazil_time_now, add_random_minutes_now
+from functions.datetime import (
+    utc_to_brazil_datetime, 
+    add_random_minutes_now,
+    replace_tzinfo
+)
 from repository.mongo import (
     GroupConfigurationModel,
     PlayerCharacterModel,
@@ -28,7 +32,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user_name = update.effective_user.name
     chat_id = update.effective_chat.id
-    now = get_brazil_time_now()
+    message_date = update.effective_message.date
+    message_date = utc_to_brazil_datetime(message_date)
 
     if user_id in context.user_data:
         player = context.user_data[user_id]
@@ -36,14 +41,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         player = player_model.get(user_id)
 
     if (xp_cooldown := player.xp_cooldown):
-        if now < xp_cooldown:
+        xp_cooldown = replace_tzinfo(xp_cooldown)
+        if message_date < xp_cooldown:
             print('XP em cooldown.')
             return
 
     group_config = group_config_model.get(chat_id)
     player_char = player_char_model.get(user_id)
 
-    player.xp_cooldown = add_random_minutes_now()
+    player.xp_cooldown = add_random_minutes_now(message_date)
     context.user_data[user_id] = player
     player_model.save(player)
 
