@@ -12,6 +12,7 @@ def need_have_char(callback):
         user_id = update.effective_user.id
 
         if player_char_model.get(user_id):
+            print('\tAUTORIZADO')
             return await callback(update, context)
         else:
             await update.effective_message.reply_text(

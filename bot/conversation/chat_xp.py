@@ -55,7 +55,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model.save(player)
 
     level = player_char.base_stats.level
-    level_bonus = group_config.player_multiplier_xp * level
+    level_bonus = group_config.character_multiplier_xp * level
     multiplier_xp = group_config.multiplier_xp
 
     add_xp = (randint(1, 10) + level_bonus) * multiplier_xp

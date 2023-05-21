@@ -18,7 +18,8 @@ from bot.conversation import (
     VIEW_GROUP_HANDLERS,
     VIEW_PLAYER_HANDLERS,
     VIEW_CHAR_HANDLERS,
-    ADD_STATS_HANDLERS
+    ADD_STATS_HANDLERS,
+    CONFIG_GROUP_HANDLERS
 )
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
@@ -41,6 +42,7 @@ def main() -> None:
     application.add_handlers(VIEW_PLAYER_HANDLERS)
     application.add_handlers(VIEW_CHAR_HANDLERS)
     application.add_handlers(ADD_STATS_HANDLERS)
+    application.add_handlers(CONFIG_GROUP_HANDLERS)
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()

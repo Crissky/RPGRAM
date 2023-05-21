@@ -17,7 +17,7 @@ class GroupConfiguration:
         spawn_start_time: int = 6,
         spawn_end_time: int = 20,
         multiplier_xp: float = 1.0,
-        player_multiplier_xp: float = 1.0,
+        character_multiplier_xp: float = 1.0,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -26,14 +26,39 @@ class GroupConfiguration:
 
         self.name = name
         self.chat_id = chat_id
+        self._id = _id
         self.verbose = verbose
         self.spawn_start_time = spawn_start_time
         self.spawn_end_time = spawn_end_time
-        self._id = _id
         self.multiplier_xp = float(multiplier_xp)
-        self.player_multiplier_xp = float(player_multiplier_xp)
+        self.character_multiplier_xp = float(character_multiplier_xp)
         self.created_at = created_at
         self.updated_at = updated_at
+
+    def __setitem__(self, key, value):
+        key = key.upper()
+
+        if key in ['VERBOSE']:
+            value = value.upper()
+            if value in ['FALSE', 'NO', '0']:
+                value = False
+            elif value in ['TRUE', 'YES', '1']:
+                value = True
+            else:
+                return
+            self.verbose = value
+        elif key in ['SPAWN_START_TIME', 'START_TIME']:
+            value = abs(int(value))
+            self.spawn_start_time = value if 0 <= value <= 24 else 6
+        elif key in ['SPAWN_END_TIME', 'END_TIME']:
+            value = abs(int(value))
+            self.spawn_end_time = value if 0 <= value <= 24 else 20
+        elif key in ['MULTIPLIER_XP', 'XP']:
+            value = abs(float(value))
+            self.multiplier_xp = value if 1 <= value <= 5 else 1.0
+        elif key in ['CHAR_MULTIPLIER_XP', 'CHAR_XP']:
+            value = abs(float(value))
+            self.character_multiplier_xp = value if 1 <= value <= 10 else 1.0
 
     def __repr__(self) -> str:
         return (
@@ -44,9 +69,9 @@ class GroupConfiguration:
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
             f'Hora de Fim de Spawn: {self.spawn_end_time}h\n'
             f'ID: {self._id}\n'
-            f'Multiplicador Geral de XP: {self.multiplier_xp:.2f}\n'
+            f'Multiplicador de XP: {self.multiplier_xp:.2f}\n'
             f'Mult. de XP por Nível: '
-            f'{self.player_multiplier_xp:.2f}\n'
+            f'{self.character_multiplier_xp:.2f}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
         )
@@ -55,10 +80,12 @@ class GroupConfiguration:
         return dict(
             name=self.name,
             chat_id=self.chat_id,
+            _id=self._id,
             verbose=self.verbose,
             spawn_start_time=self.spawn_start_time,
             spawn_end_time=self.spawn_end_time,
-            _id=self._id,
+            multiplier_xp=self.multiplier_xp,
+            character_multiplier_xp=self.character_multiplier_xp,
             created_at=self.created_at,
             updated_at=self.updated_at
         )

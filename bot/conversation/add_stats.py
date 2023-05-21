@@ -21,7 +21,6 @@ COMMANDS = ['stats', 'add_stats']
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_char_model = PlayerCharacterModel()
-    chat_id = update.effective_chat.id
     user_id = update.effective_user.id
 
     args = context.args
@@ -34,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             player_char.base_stats[attribute] = value
             player_char_model.save(player_char)
             text = (
-                f'Adicionado {value} ponto(s) no atributo "{attribute}".\n\n'
+                f'Adicionado "{value}" ponto(s) no atributo "{attribute}".\n\n'
             )
         except (KeyError, ValueError) as error:
             await update.effective_message.reply_text(

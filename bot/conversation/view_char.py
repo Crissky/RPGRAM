@@ -4,6 +4,7 @@ informações dos jogadores.
 '''
 
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
@@ -21,6 +22,7 @@ COMMANDS = ['personagem', 'char']
 
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_char_model = PlayerCharacterModel()
     user_id = update.effective_user.id
 
