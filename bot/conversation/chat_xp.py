@@ -48,17 +48,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
     player_char = player_char_model.get(user_id)
-    group_config = group_config_model.get(chat_id)
+    group = group_config_model.get(chat_id)
 
     player.xp_cooldown = add_random_minutes_now(message_date)
     context.user_data[user_id] = player
     player_model.save(player)
 
     level = player_char.base_stats.level
-    level_bonus = group_config.character_multiplier_xp * level
-    multiplier_xp = group_config.multiplier_xp
+    level_bonus = group.character_multiplier_xp * level
+    multiplier_xp = group.multiplier_xp
 
-    add_xp = (randint(1, 10) + level_bonus) * multiplier_xp
+    add_xp = int((randint(1, 10) + level_bonus) * multiplier_xp)
 
     player_char.base_stats.xp = add_xp
     player_char_model.save(player_char)
@@ -69,6 +69,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'Parabéns!!!\n'
             f'{user_name} passou de nível! '
             f'Seu personagem agora está no nível {new_level}.'
+        )
+    elif group.verbose:
+        await update.effective_user.send_message(
+            f'Vocé recebeu {add_xp} XP.',
+            disable_notification=True
         )
 
 
