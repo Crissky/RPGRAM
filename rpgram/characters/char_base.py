@@ -50,14 +50,16 @@ class BaseCharacter:
         self.__updated_at = updated_at
 
     # Getters
-    name = property(lambda self: self.__name)
-    _id = property(lambda self: self.__id)
-    base_stats = bs = property(fget=lambda self: self.__base_stats)
-    combat_stats = cs = property(fget=lambda self: self.__combat_stats)
-    classe = property(fget=lambda self: self.__classe)
-    race = property(fget=lambda self: self.__race)
-    created_at = property(lambda self: self.__created_at)
-    updated_at = property(lambda self: self.__updated_at)
+    name: str = property(lambda self: self.__name)
+    _id: ObjectId = property(lambda self: self.__id)
+    base_stats: BaseStats = property(fget=lambda self: self.__base_stats)
+    combat_stats: CombatStats = property(fget=lambda self: self.__combat_stats)
+    classe: Classe = property(fget=lambda self: self.__classe)
+    race: Race = property(fget=lambda self: self.__race)
+    created_at: datetime = property(lambda self: self.__created_at)
+    updated_at: datetime = property(lambda self: self.__updated_at)
+    bs = base_stats
+    cs = combat_stats
 
     def get_sheet(self):
         return (
@@ -69,11 +71,19 @@ class BaseCharacter:
             f'{self.classe.get_sheet()}'
         )
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return (
             TEXT_DELIMITER +
             f'{self.get_sheet()}'
             + TEXT_DELIMITER
+        )
+
+    def __repr__(self) -> str:
+        return (
+            f'<Personagem: "{self.name}", '
+            f'HP: {self.cs.current_hit_points}/{self.cs.hit_points}, '
+            f'Classe: "{self.classe.name}", '
+            f'Raça: "{self.race.name}">'
         )
 
     def to_dict(self):
@@ -94,6 +104,10 @@ class BaseCharacter:
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
+
+    def __eq__(self, __value: object) -> bool:
+        if isinstance(__value, BaseCharacter):
+            return self._id == __value._id
 
 
 if __name__ == '__main__':

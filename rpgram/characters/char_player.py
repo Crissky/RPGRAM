@@ -2,7 +2,6 @@ from datetime import datetime
 from bson import ObjectId
 from rpgram.boosters import Race, Classe
 from rpgram.characters import BaseCharacter
-from rpgram.stats import BaseStats, CombatStats
 
 
 class PlayerCharacter(BaseCharacter):
@@ -112,8 +111,6 @@ if __name__ == '__main__':
         base_wisdom=10,
         base_charisma=10,
         combat_damage=300,
-        
-        
     )
     print(player_character)
     print(player_character.to_dict())
