@@ -72,7 +72,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     elif group.verbose:
         await update.effective_user.send_message(
-            f'Vocé recebeu {add_xp} XP.',
+            f'Vocé recebeu {add_xp} de XP.',
             disable_notification=True
         )
 
