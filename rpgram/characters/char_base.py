@@ -73,9 +73,9 @@ class BaseCharacter:
 
     def __str__(self) -> str:
         return (
-            TEXT_DELIMITER +
+            f'{TEXT_DELIMITER}\n'
             f'{self.get_sheet()}'
-            + TEXT_DELIMITER
+            f'{TEXT_DELIMITER}\n'
         )
 
     def __repr__(self) -> str:

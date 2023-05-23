@@ -175,7 +175,7 @@ class Equips:
             f'Necklace: {self.necklace.name if self.necklace else ""}\n'
             f'Peso: {self.weight:.2f}\n\n'
 
-            + SECTION_HEAD.format('BÔNUS E MULTIPLICADORES') +
+            f'{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}\n'
 
             f'FOR: {self.strength:+} '
             f'x({self.__multiplier_strength:+.2f})\n'
@@ -203,10 +203,10 @@ class Equips:
 
     def __repr__(self) -> str:
         return (
-            TEXT_DELIMITER +
-            SECTION_HEAD.format('EQUIPAMENTOS') +
+            f'{TEXT_DELIMITER}'
+            f'{SECTION_HEAD.format("EQUIPAMENTOS")}\n'
             f'{self.get_sheet()}'
-            + TEXT_DELIMITER
+            f'{TEXT_DELIMITER}'
         )
 
     helmet = property(lambda self: self.__helmet)

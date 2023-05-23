@@ -1,6 +1,7 @@
 from typing import List
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 
@@ -219,7 +220,7 @@ class CombatStats:
     def stats_boosters(self) -> set:
         return set(self.__stats_boosters)
 
-    def get_sheet(self) -> str:
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         base_init = self.initiative - self.bonus_initiative
         base_hp = self.hit_points - self.bonus_hit_points
         base_phy_atk = self.physical_attack - self.bonus_physical_attack
@@ -229,43 +230,80 @@ class CombatStats:
         base_mag_def = self.magical_defense - self.bonus_magical_defense
         base_hit = self.hit - self.bonus_hit
         base_evasion = self.evasion - self.bonus_evasion
-        return (
-            '\n' + SECTION_HEAD.format('ATRIBUTOS DE COMBATE') +
 
-            f'HP: {self.current_hit_points}/{self.hit_points} '
-            f'[{base_hp}{self.bonus_hit_points:+}]\n'
+        text = f'*{SECTION_HEAD.format("ATRIBUTOS DE COMBATE")}*\n'
 
-            f'INICIATIVA: {self.initiative:02} '
-            f'[{base_init}{self.bonus_initiative:+}]\n'
+        text += f'`HP: {self.current_hit_points}/{self.hit_points} '
+        if verbose:
+            text += f'[{base_hp}{self.bonus_hit_points:+}]'
+        text += f'`\n'
 
-            f'ATAQUE FÍSICO: {self.physical_attack:02} '
-            f'[{base_phy_atk}{self.bonus_physical_attack:+}]\n'
+        text += f'`INICIATIVA: {self.initiative:02} '
+        if verbose:
+            text += f'[{base_init}{self.bonus_initiative:+}]'
+        text += f'`\n'
 
-            f'ATAQUE DE PRECISÃO: {self.precision_attack:02} '
-            f'[{base_pre_atk}{self.bonus_precision_attack:+}]\n'
+        text += f'`ATAQUE FÍSICO: {self.physical_attack:02} '
+        if verbose:
+            text += f'[{base_phy_atk}{self.bonus_physical_attack:+}]'
+        text += f'`\n'
 
-            f'ATAQUE MÁGICO: {self.magical_attack:02} '
-            f'[{base_mag_atk}{self.bonus_magical_attack:+}]\n'
+        text += f'`ATAQUE DE PRECISÃO: {self.precision_attack:02} '
+        if verbose:
+            text += f'[{base_pre_atk}{self.bonus_precision_attack:+}]'
+        text += f'`\n'
 
-            f'DEFESA FÍSICA: {self.physical_defense:02} '
-            f'[{base_phy_def}{self.bonus_physical_defense:+}]\n'
+        text += f'`ATAQUE MÁGICO: {self.magical_attack:02} '
+        if verbose:
+            text += f'[{base_mag_atk}{self.bonus_magical_attack:+}]'
+        text += f'`\n'
 
-            f'DEFESA MÁGICA: {self.magical_defense:02} '
-            f'[{base_mag_def}{self.bonus_magical_defense:+}]\n'
+        text += f'`DEFESA FÍSICA: {self.physical_defense:02} '
+        if verbose:
+            text += f'[{base_phy_def}{self.bonus_physical_defense:+}]'
+        text += f'`\n'
 
-            f'ACERTO: {self.hit:02} '
-            f'[{base_hit}{self.bonus_hit:+}]\n'
+        text += f'`DEFESA MÁGICA: {self.magical_defense:02} '
+        if verbose:
+            text += f'[{base_mag_def}{self.bonus_magical_defense:+}]'
+        text += f'`\n'
 
-            f'EVASÃO: {self.evasion:02} '
-            f'[{base_evasion}{self.bonus_evasion:+}]\n'
-        )
+        text += f'`ACERTO: {self.hit:02} '
+        if verbose:
+            text += f'[{base_hit}{self.bonus_hit:+}]'
+        text += f'`\n'
+
+        text += f'`EVASÃO: {self.evasion:02} '
+        if verbose:
+            text += f'[{base_evasion}{self.bonus_evasion:+}]'
+        text += f'`\n'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        return text
 
     def __repr__(self) -> str:
         return (
-            TEXT_DELIMITER +
-            f'{self.__base_stats.get_sheet()}'
-            f'{self.get_sheet()}'
-            + TEXT_DELIMITER
+            f'{TEXT_DELIMITER}\n'
+            f'{self.__base_stats.get_sheet(True)}\n'
+            f'{self.get_sheet(True)}'
+            f'{TEXT_DELIMITER}\n'
+        )
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        base_stats_sheet = self.__base_stats.get_sheet(
+            verbose=verbose, markdown=markdown
+        )
+        combat_stats_sheet = self.get_sheet(verbose=verbose, markdown=markdown)
+        return (
+            f'{base_stats_sheet}\n'
+            f'{combat_stats_sheet}'
         )
 
 

@@ -28,7 +28,7 @@ class Player:
 
     def __repr__(self) -> str:
         return (
-            SECTION_HEAD.format('Dados do Jogador') + '\n'
+            f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
             f'ID: {self._id}\n'
             f'Player ID: {self.player_id}\n'

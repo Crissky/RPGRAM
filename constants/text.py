@@ -1,2 +1,2 @@
-TEXT_DELIMITER = '##############################\n'
-SECTION_HEAD = '◇── {} ──◇\n'
+TEXT_DELIMITER = '##############################'
+SECTION_HEAD = '◇── {} ──◇'

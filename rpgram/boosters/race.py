@@ -50,7 +50,7 @@ class Race(StatsBooster):
     def get_sheet(self) -> str:
         return (
             f'Raça: {self.name}\n'
-            + SECTION_HEAD.format('BÔNUS E MULTIPLICADORES') +
+            f'{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}\n'
             f'FOR: {self.strength:+}'
             f'x({self.multiplier_strength:+.2f})\n'
             f'DES: {self.dexterity:+}'
@@ -67,9 +67,9 @@ class Race(StatsBooster):
 
     def __repr__(self) -> str:
         return (
-            TEXT_DELIMITER +
+            f'{TEXT_DELIMITER}\n'
             f'{self.get_sheet()}'
-            + TEXT_DELIMITER
+            f'{TEXT_DELIMITER}\n'
         )
 
     def to_dict(self):

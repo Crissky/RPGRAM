@@ -1,6 +1,7 @@
 from typing import List
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 
 
@@ -72,7 +73,7 @@ class BaseStats:
 
     def update(self) -> None:
         self.__boost_stats()
-    
+
     def check_attributes(self) -> None:
         self.__get_points()
 
@@ -426,55 +427,86 @@ class BaseStats:
             self.xp = value
         else:
             raise KeyError(
-                f'Atributo "{key}" não encontrado.\n'
+                f'Atributo "{key}" não encontrado. '
                 f'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
             )
 
-    def get_sheet(self) -> str:
-        return (
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        text = (
             f'Nível: {self.level} (Nível da Classe: {self.classe_level})\n'
             f'Experiência: {self.xp}/{self.next_level_xp}\n'
             f'Pontos: {self.points}\n\n'
-
-            + SECTION_HEAD.format('ATRIBUTOS BASE') +
-
-            f'FOR: {self.strength:02} '
-            f'[{self.base_strength}{self.bonus_strength:+}]'
-            f'x{self.multiplier_strength:.2f} '
-            f'({self.mod_strength})\n'
-
-            f'DES: {self.dexterity:02} '
-            f'[{self.base_dexterity}{self.bonus_dexterity:+}]'
-            f'x{self.multiplier_dexterity:.2f} '
-            f'({self.mod_dexterity})\n'
-
-            f'CON: {self.constitution:02} '
-            f'[{self.base_constitution}{self.bonus_constitution:+}]'
-            f'x{self.multiplier_constitution:.2f} '
-            f'({self.mod_constitution})\n'
-
-            f'INT: {self.intelligence:02} '
-            f'[{self.base_intelligence}{self.bonus_intelligence:+}]'
-            f'x{self.multiplier_intelligence:.2f} '
-            f'({self.mod_intelligence})\n'
-
-            f'SAB: {self.wisdom:02} '
-            f'[{self.base_wisdom}{self.bonus_wisdom:+}]'
-            f'x{self.multiplier_wisdom:.2f} '
-            f'({self.mod_wisdom})\n'
-
-            f'CAR: {self.charisma:02} '
-            f'[{self.base_charisma}{self.bonus_charisma:+}]'
-            f'x{self.multiplier_charisma:.2f} '
-            f'({self.mod_charisma})\n'
         )
+
+        text += f"*{SECTION_HEAD.format('ATRIBUTOS BASE')}*\n"
+
+        text += f'`FOR: {self.strength:02} '
+        if verbose:
+            text += (
+                f'[{self.base_strength}{self.bonus_strength:+}]'
+                f'x{self.multiplier_strength:.2f} '
+            )
+        text += f'({self.mod_strength:+})`\n'
+
+        text += f'`DES: {self.dexterity:02} '
+        if verbose:
+            text += (
+                f'[{self.base_dexterity}{self.bonus_dexterity:+}]'
+                f'x{self.multiplier_dexterity:.2f} '
+            )
+        text += f'({self.mod_dexterity:+})`\n'
+
+        text += f'`CON: {self.constitution:02} '
+        if verbose:
+            text += (
+                f'[{self.base_constitution}{self.bonus_constitution:+}]'
+                f'x{self.multiplier_constitution:.2f} '
+            )
+        text += f'({self.mod_constitution:+})`\n'
+
+        text += f'`INT: {self.intelligence:02} '
+        if verbose:
+            text += (
+                f'[{self.base_intelligence}{self.bonus_intelligence:+}]'
+                f'x{self.multiplier_intelligence:.2f} '
+            )
+        text += f'({self.mod_intelligence:+})`\n'
+
+        text += f'`SAB: {self.wisdom:02} '
+        if verbose:
+            text += (
+                f'[{self.base_wisdom}{self.bonus_wisdom:+}]'
+                f'x{self.multiplier_wisdom:.2f} '
+            )
+        text += f'({self.mod_wisdom:+})`\n'
+
+        text += f'`CAR: {self.charisma:02} '
+        if verbose:
+            text += (
+                f'[{self.base_charisma}{self.bonus_charisma:+}]'
+                f'x{self.multiplier_charisma:.2f} '
+            )
+        text += f'({self.mod_charisma:+})`\n'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        return text
 
     def __repr__(self) -> str:
         return (
-            TEXT_DELIMITER +
-            f'{self.get_sheet()}'
-            + TEXT_DELIMITER
+            f'{TEXT_DELIMITER}\n'
+            f'{self.get_sheet(True)}'
+            f'{TEXT_DELIMITER}\n'
         )
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
 
 
 if __name__ == '__main__':

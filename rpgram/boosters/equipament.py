@@ -86,10 +86,10 @@ class Equipament(StatsBooster):
 
     def __repr__(self) -> str:
         return (
-            TEXT_DELIMITER +
+            f'{TEXT_DELIMITER}\n'
             f'{self.get_sheet()}'
             f'{super().get_sheet()}'
-            + TEXT_DELIMITER
+            f'{TEXT_DELIMITER}\n'
         )
 
     def to_dict(self):

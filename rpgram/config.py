@@ -62,7 +62,7 @@ class GroupConfiguration:
 
     def __repr__(self) -> str:
         return (
-            SECTION_HEAD.format('Configuração do Grupo') +
+            f'{SECTION_HEAD.format("Configuração do Grupo")}\n'
             f'Grupo: {self.name}\n'
             f'Chat ID: {self.chat_id}\n'
             f'Verbose: {self.verbose}\n'

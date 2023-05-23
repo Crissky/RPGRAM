@@ -20,6 +20,7 @@ from bot.conversation.view_group import COMMANDS as view_group_commands
 from bot.conversation.view_player import COMMANDS as view_player_commands
 from bot.decorators import print_basic_infos
 from constants.text import SECTION_HEAD
+from functions.text import escape_basic_markdown_v2
 
 
 COMMANDS = ['help', 'ajuda']
@@ -36,8 +37,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_stats_cmd = command_to_string(add_stats_commands)
     config_group_cmd = command_to_string(config_group_commands)
 
-    await update.effective_message.reply_text(
-        SECTION_HEAD.format('COMANDOS') + '\n'
+    text = escape_basic_markdown_v2(
+        f'{SECTION_HEAD.format("COMANDOS")}\n\n'
 
         f'CRIAR CONTA DO GRUPO: /{sign_up_group_commands[0]}\n'
         f'Atalhos: {sign_up_group_cmd}\n\n'
@@ -61,7 +62,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'Argumentos: [<ATRIBUTO> <VALOR>]\n'
         f'Exemplo: "/{add_stats_commands[0]} FOR 10" '
         f'(Adiciona 10 pontos em FORÇA).\n'
-        f'OBS: Pode ser usado sem argumentos para exibir as estatísticas.\n'
+        f'OBS: Pode ser usado sem argumentos para exibir as estatísticas. '
+        f'Use o argumento "verbose" ou "v" para exibir com mais detalhes\n'
         f'Atalhos: {add_stats_cmd}\n\n'
         
         f'CONFIGURAÇÃO DO GRUPO: /{config_group_commands[0]}\n'
@@ -75,10 +77,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'XP baseado no nível do personagem.\n'
         f'Atalhos: {config_group_cmd}\n'
     )
+    print(text)
+    await update.effective_message.reply_markdown_v2(text)
 
 
-def command_to_string(command: Iterable) -> str:
-    return ', '.join([f'!{cmd}'for cmd in command])
+def command_to_string(commands: Iterable) -> str:
+    return ', '.join([f'`!{cmd}`'for cmd in commands])
 
 
 HELP_HANDLERS = [
