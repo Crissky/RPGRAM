@@ -48,12 +48,17 @@ class PlayerCharacter(BaseCharacter):
     player_id = property(lambda self: self.__player_id)
     player_name = property(lambda self: self.__player_name)
 
-    def get_sheet(self):
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         return (
             f'Jogador: {self.player_name}\n'
-            f'ID do Jogador: {self.player_id}\n'
-            f'{super().get_sheet()}'
+            f'ID do Jogador: {self.player_id}\n\n'
+            f'{super().get_sheet(verbose, markdown)}'
         )
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return f'{super().get_all_sheets(verbose, markdown)}'
 
     def to_dict(self):
         _dict = {'player_id': self.player_id, 'player_name': self.player_name}

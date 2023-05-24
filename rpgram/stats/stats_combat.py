@@ -286,24 +286,22 @@ class CombatStats:
 
         return text
 
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        base_stats_sheet = self.__base_stats.get_sheet(verbose, markdown)
+        combat_stats_sheet = self.get_sheet(verbose, markdown)
+        return (
+            f'{base_stats_sheet}\n'
+            f'{combat_stats_sheet}'
+        )
+
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
             f'{self.__base_stats.get_sheet(True)}\n'
             f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}\n'
-        )
-
-    def get_all_sheets(
-        self, verbose: bool = False, markdown: bool = False
-    ) -> str:
-        base_stats_sheet = self.__base_stats.get_sheet(
-            verbose=verbose, markdown=markdown
-        )
-        combat_stats_sheet = self.get_sheet(verbose=verbose, markdown=markdown)
-        return (
-            f'{base_stats_sheet}\n'
-            f'{combat_stats_sheet}'
         )
 
 

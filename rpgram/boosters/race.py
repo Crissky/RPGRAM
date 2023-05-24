@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Union
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 
 
@@ -47,28 +48,58 @@ class Race(StatsBooster):
         self.__name = name
         self.__description = description
 
-    def get_sheet(self) -> str:
-        return (
-            f'Raça: {self.name}\n'
-            f'{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}\n'
-            f'FOR: {self.strength:+}'
-            f'x({self.multiplier_strength:+.2f})\n'
-            f'DES: {self.dexterity:+}'
-            f'x({self.multiplier_dexterity:+.2f})\n'
-            f'CON: {self.constitution:+}'
-            f'x({self.multiplier_constitution:+.2f})\n'
-            f'INT: {self.intelligence:+}'
-            f'x({self.multiplier_intelligence:+.2f})\n'
-            f'SAB: {self.wisdom:+}'
-            f'x({self.multiplier_wisdom:+.2f})\n'
-            f'CAR: {self.charisma:+}'
-            f'x({self.multiplier_charisma:+.2f})\n'
-        )
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        text = f'*Raça*: {self.name}\n'.upper()
+
+        text += f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
+
+        text += f'`FOR: {self.strength:+}'
+        if verbose:
+            text += f'x({self.multiplier_strength:+.2f})'
+        text += f'`\n'
+
+        text += f'`DES: {self.dexterity:+}'
+        if verbose:
+            text += f'x({self.multiplier_dexterity:+.2f})'
+        text += f'`\n'
+
+        text += f'`CON: {self.constitution:+}'
+        if verbose:
+            text += f'x({self.multiplier_constitution:+.2f})'
+        text += f'`\n'
+
+        text += f'`INT: {self.intelligence:+}'
+        if verbose:
+            text += f'x({self.multiplier_intelligence:+.2f})'
+        text += f'`\n'
+
+        text += f'`SAB: {self.wisdom:+}'
+        if verbose:
+            text += f'x({self.multiplier_wisdom:+.2f})'
+        text += f'`\n'
+
+        text += f'`CAR: {self.charisma:+}'
+        if verbose:
+            text += f'x({self.multiplier_charisma:+.2f})'
+        text += f'`\n'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        return text
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
 
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
-            f'{self.get_sheet()}'
+            f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}\n'
         )
 

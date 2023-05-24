@@ -496,17 +496,17 @@ class BaseStats:
 
         return text
 
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
+
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
             f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}\n'
         )
-
-    def get_all_sheets(
-        self, verbose: bool = False, markdown: bool = False
-    ) -> str:
-        return self.get_sheet(verbose=verbose, markdown=markdown)
 
 
 if __name__ == '__main__':

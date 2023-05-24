@@ -61,20 +61,38 @@ class BaseCharacter:
     bs = base_stats
     cs = combat_stats
 
-    def get_sheet(self):
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         return (
             f'Personagem: {self.name}\n'
-            f'ID: {self._id}\n'
-            f'{self.base_stats.get_sheet()}'
-            f'{self.combat_stats.get_sheet()}\n'
-            f'{self.race.get_sheet()}\n'
-            f'{self.classe.get_sheet()}'
+            f'ID Personagem: {self._id}\n'
         )
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        if verbose:
+            text = (
+                f'{self.get_sheet(verbose, markdown)}'
+                f'{self.base_stats.get_sheet(verbose, markdown)}\n'
+                f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
+                f'{self.race.get_sheet(verbose, markdown)}\n'
+                f'{self.classe.get_sheet(verbose, markdown)}'
+            )
+        else:
+            text = (
+                f'{self.get_sheet(verbose, markdown)}'
+                f'Raça: {self.race.name}\n'
+                f'Classe: {self.classe.name}\n'
+                f'{self.base_stats.get_sheet(verbose, markdown)}\n'
+                f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
+            )
+
+        return text
 
     def __str__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
-            f'{self.get_sheet()}'
+            f'{self.get_all_sheets(True)}'
             f'{TEXT_DELIMITER}\n'
         )
 
