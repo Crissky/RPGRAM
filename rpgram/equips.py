@@ -1,6 +1,7 @@
 from typing import List
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import Equipament
 from rpgram.enums import EquipamentEnum
 
@@ -164,48 +165,64 @@ class Equips:
 
         self.notify_observers()
 
-    def get_sheet(self) -> str:
-        return (
-            f'Capacete: {self.helmet.name if self.helmet else ""}\n'
-            f'Mão esquerda: {self.left_hand.name if self.left_hand else ""}\n'
-            f'Mão direita: {self.right_hand.name if self.right_hand else ""}\n'
-            f'Armadura: {self.armor.name if self.armor else ""}\n'
-            f'Botas: {self.boots.name if self.boots else ""}\n'
-            f'Anel: {self.ring.name if self.ring else ""}\n'
-            f'Necklace: {self.necklace.name if self.necklace else ""}\n'
-            f'Peso: {self.weight:.2f}\n\n'
-
-            f'{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}\n'
-
-            f'FOR: {self.strength:+} '
-            f'x({self.__multiplier_strength:+.2f})\n'
-            f'DES: {self.dexterity:+} '
-            f'x({self.__multiplier_dexterity:+.2f})\n'
-            f'CON: {self.constitution:+} '
-            f'x({self.__multiplier_constitution:+.2f})\n'
-            f'INT: {self.intelligence:+} '
-            f'x({self.__multiplier_intelligence:+.2f})\n'
-            f'SAB: {self.wisdom:+} '
-            f'x({self.__multiplier_wisdom:+.2f})\n'
-            f'CAR: {self.charisma:+} '
-            f'x({self.__multiplier_charisma:+.2f})\n\n'
-
-            f'HP: {self.hp:+}\n'
-            f'INICIATIVA: {self.initiative:+}\n'
-            f'ATAQUE FÍSICO: {self.physical_attack:+}\n'
-            f'ATAQUE DE PRECISÃO: {self.precision_attack:+}\n'
-            f'ATAQUE MÁGICO: {self.magical_attack:+}\n'
-            f'DEFESA FÍSICA: {self.physical_defense:+}\n'
-            f'DEFESA MÁGICA: {self.magical_defense:+}\n'
-            f'ACERTO: {self.hit:+}\n'
-            f'EVASÃO: {self.evasion:+}\n'
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        text = (
+            f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
+            f'*Capacete*: {self.helmet.name if self.helmet else ""}\n'
+            f'*Mão* esquerda: {self.left_hand.name if self.left_hand else ""}\n'
+            f'*Mão* direita: {self.right_hand.name if self.right_hand else ""}\n'
+            f'*Armadura*: {self.armor.name if self.armor else ""}\n'
+            f'*Botas*: {self.boots.name if self.boots else ""}\n'
+            f'*Anel*: {self.ring.name if self.ring else ""}\n'
+            f'*Necklace*: {self.necklace.name if self.necklace else ""}\n'
+            f'*Peso*: {self.weight:.2f}\n\n'
         )
+
+        if verbose:
+            text += (
+                f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
+
+                f'`FOR: {self.strength:+} '
+                f'x({self.__multiplier_strength:+.2f})`\n'
+                f'`DES: {self.dexterity:+} '
+                f'x({self.__multiplier_dexterity:+.2f})`\n'
+                f'`CON: {self.constitution:+} '
+                f'x({self.__multiplier_constitution:+.2f})`\n'
+                f'`INT: {self.intelligence:+} '
+                f'x({self.__multiplier_intelligence:+.2f})`\n'
+                f'`SAB: {self.wisdom:+} '
+                f'x({self.__multiplier_wisdom:+.2f})`\n'
+                f'`CAR: {self.charisma:+} '
+                f'x({self.__multiplier_charisma:+.2f})`\n\n'
+
+                f'`HP: {self.hp:+}`\n'
+                f'`INICIATIVA: {self.initiative:+}`\n'
+                f'`ATAQUE FÍSICO: {self.physical_attack:+}`\n'
+                f'`ATAQUE DE PRECISÃO: {self.precision_attack:+}`\n'
+                f'`ATAQUE MÁGICO: {self.magical_attack:+}`\n'
+                f'`DEFESA FÍSICA: {self.physical_defense:+}`\n'
+                f'`DEFESA MÁGICA: {self.magical_defense:+}`\n'
+                f'`ACERTO: {self.hit:+}`\n'
+                f'`EVASÃO: {self.evasion:+}`\n'
+            )
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        return text
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
 
     def __repr__(self) -> str:
         return (
-            f'{TEXT_DELIMITER}'
-            f'{SECTION_HEAD.format("EQUIPAMENTOS")}\n'
-            f'{self.get_sheet()}'
+            f'{TEXT_DELIMITER}\n'
+            f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}'
         )
 

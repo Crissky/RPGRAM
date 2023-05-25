@@ -4,9 +4,7 @@ Arquivo principal que executa o telegram-bot.
 
 from decouple import config
 
-from telegram.ext import (
-    Application,
-)
+from telegram.ext import Application
 from bot.conversation import (
     CREATE_CHAR_HANDLER,
     SIGNUP_GROUP_HANDLER,

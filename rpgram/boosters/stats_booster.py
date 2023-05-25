@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Union
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 
 class StatsBooster:
@@ -73,37 +74,53 @@ class StatsBooster:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
-    def get_sheet(self) -> str:
-        return (
-            f'{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}\n'
-            f'FOR: {self.strength:+}'
-            f'x({self.multiplier_strength:+.2f})\n'
-            f'DES: {self.dexterity:+}'
-            f'x({self.multiplier_dexterity:+.2f})\n'
-            f'CON: {self.constitution:+}'
-            f'x({self.multiplier_constitution:+.2f})\n'
-            f'INT: {self.intelligence:+}'
-            f'x({self.multiplier_intelligence:+.2f})\n'
-            f'SAB: {self.wisdom:+}'
-            f'x({self.multiplier_wisdom:+.2f})\n'
-            f'CAR: {self.charisma:+}'
-            f'x({self.multiplier_charisma:+.2f})\n\n'
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        text = ''
 
-            f'HP: {self.hp:+}\n'
-            f'INICIATIVA: {self.initiative:+}\n'
-            f'ATAQUE FÍSICO: {self.physical_attack:+}\n'
-            f'ATAQUE DE PRECISÃO: {self.precision_attack:+}\n'
-            f'ATAQUE MÁGICO: {self.magical_attack:+}\n'
-            f'DEFESA FÍSICA: {self.physical_defense:+}\n'
-            f'DEFESA MÁGICA: {self.magical_defense:+}\n'
-            f'ACERTO: {self.hit:+}\n'
-            f'EVASÃO: {self.evasion:+}\n'
-        )
+        if verbose:
+            text += (
+                f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
+
+                f'`FOR: {self.strength:+}'
+                f'x({self.multiplier_strength:+.2f})`\n'
+                f'`DES: {self.dexterity:+}'
+                f'x({self.multiplier_dexterity:+.2f})`\n'
+                f'`CON: {self.constitution:+}'
+                f'x({self.multiplier_constitution:+.2f})`\n'
+                f'`INT: {self.intelligence:+}'
+                f'x({self.multiplier_intelligence:+.2f})`\n'
+                f'`SAB: {self.wisdom:+}'
+                f'x({self.multiplier_wisdom:+.2f})`\n'
+                f'`CAR: {self.charisma:+}'
+                f'x({self.multiplier_charisma:+.2f})`\n\n'
+
+                f'`HP: {self.hp:+}`\n'
+                f'`INICIATIVA: {self.initiative:+}`\n'
+                f'`ATAQUE FÍSICO: {self.physical_attack:+}`\n'
+                f'`ATAQUE DE PRECISÃO: {self.precision_attack:+}`\n'
+                f'`ATAQUE MÁGICO: {self.magical_attack:+}`\n'
+                f'`DEFESA FÍSICA: {self.physical_defense:+}`\n'
+                f'`DEFESA MÁGICA: {self.magical_defense:+}`\n'
+                f'`ACERTO: {self.hit:+}`\n'
+                f'`EVASÃO: {self.evasion:+}`\n'
+            )
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        return text
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
 
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
-            f'{self.get_sheet()}'
+            f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}\n'
         )
 

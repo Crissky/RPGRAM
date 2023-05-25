@@ -433,9 +433,9 @@ class BaseStats:
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
-            f'Nível: {self.level} (Nível da Classe: {self.classe_level})\n'
-            f'Experiência: {self.xp}/{self.next_level_xp}\n'
-            f'Pontos: {self.points}\n\n'
+            f'*Nível*: {self.level} (*Nível da Classe*: {self.classe_level})\n'
+            f'*Experiência*: {self.xp}/{self.next_level_xp}\n'
+            f'*Pontos*: {self.points}\n\n'
         )
 
         text += f"*{SECTION_HEAD.format('ATRIBUTOS BASE')}*\n"

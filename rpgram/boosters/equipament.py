@@ -3,6 +3,7 @@ from typing import Union
 from bson import ObjectId
 
 from constants.text import TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 from rpgram.enums import EquipamentEnum, DamageEnum
 
@@ -75,20 +76,34 @@ class Equipament(StatsBooster):
         self.__damage_type = damage_type
         self.__weight = weight
 
-    def get_sheet(self) -> str:
-        return (
-            f'Equipamento: {self.name}\n'
-            f'Tipo: {self.equip_type.value}\n'
-            f'Tipo de Dano: {self.damage_type.value}\n' if isinstance(
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        text = (
+            f'*Equipamento*: {self.name}\n'
+            f'*Tipo*: {self.equip_type.value}\n'
+            f'*Tipo de Dano*: {self.damage_type.value}\n' if isinstance(
                 self.damage_type, DamageEnum) else f''
-            f'Peso: {self.weight}\n'
+            f'*Peso*: {self.weight}\n'
         )
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        text += f'{super().get_sheet(verbose, markdown)}'
+
+        return text
+
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
 
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
-            f'{self.get_sheet()}'
-            f'{super().get_sheet()}'
+            f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}\n'
         )
 

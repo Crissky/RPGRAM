@@ -55,32 +55,32 @@ class Race(StatsBooster):
 
         text += f'`FOR: {self.strength:+}'
         if verbose:
-            text += f'x({self.multiplier_strength:+.2f})'
+            text += f' x({self.multiplier_strength:+.2f})'
         text += f'`\n'
 
         text += f'`DES: {self.dexterity:+}'
         if verbose:
-            text += f'x({self.multiplier_dexterity:+.2f})'
+            text += f' x({self.multiplier_dexterity:+.2f})'
         text += f'`\n'
 
         text += f'`CON: {self.constitution:+}'
         if verbose:
-            text += f'x({self.multiplier_constitution:+.2f})'
+            text += f' x({self.multiplier_constitution:+.2f})'
         text += f'`\n'
 
         text += f'`INT: {self.intelligence:+}'
         if verbose:
-            text += f'x({self.multiplier_intelligence:+.2f})'
+            text += f' x({self.multiplier_intelligence:+.2f})'
         text += f'`\n'
 
         text += f'`SAB: {self.wisdom:+}'
         if verbose:
-            text += f'x({self.multiplier_wisdom:+.2f})'
+            text += f' x({self.multiplier_wisdom:+.2f})'
         text += f'`\n'
 
         text += f'`CAR: {self.charisma:+}'
         if verbose:
-            text += f'x({self.multiplier_charisma:+.2f})'
+            text += f' x({self.multiplier_charisma:+.2f})'
         text += f'`\n'
 
         if not markdown:

@@ -2,6 +2,7 @@ from bson import ObjectId
 from datetime import datetime
 
 from constants.text import TEXT_DELIMITER
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import Race, Classe
 from rpgram.stats import BaseStats, CombatStats
 
@@ -62,9 +63,15 @@ class BaseCharacter:
     cs = combat_stats
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'Personagem: {self.name}\n'
+        text = f'*Personagem*: {self.name}\n'
         if verbose:
-            text += f'ID Personagem: {self._id}\n'
+            text += f'*ID Personagem*: {self._id}\n'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
 
         return text
 
@@ -80,10 +87,21 @@ class BaseCharacter:
                 f'{self.classe.get_sheet(verbose, markdown)}'
             )
         else:
+            # Trecho feito dessa forma para o escape_basic_markdown_v2 não ser 
+            # usado duas vezes nos textos que vez dos outros get_sheet, pois
+            # o esperado seria somente uma \ e não duas.
+            race_classe_text = (
+                f'*Raça*: {self.race.name}\n'
+                f'*Classe*: {self.classe.name}\n'
+            )
+            if not markdown:
+                race_classe_text = remove_bold(race_classe_text)
+                race_classe_text = remove_code(race_classe_text)
+            else:
+                race_classe_text = escape_basic_markdown_v2(race_classe_text)
             text = (
                 f'{self.get_sheet(verbose, markdown)}'
-                f'Raça: {self.race.name}\n'
-                f'Classe: {self.classe.name}\n'
+                f'{race_classe_text}'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
             )
