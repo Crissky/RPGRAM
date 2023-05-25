@@ -62,10 +62,11 @@ class BaseCharacter:
     cs = combat_stats
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        return (
-            f'Personagem: {self.name}\n'
-            f'ID Personagem: {self._id}\n'
-        )
+        text = f'Personagem: {self.name}\n'
+        if verbose:
+            text += f'ID Personagem: {self._id}\n'
+
+        return text
 
     def get_all_sheets(
         self, verbose: bool = False, markdown: bool = False

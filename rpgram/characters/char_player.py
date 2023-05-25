@@ -49,11 +49,12 @@ class PlayerCharacter(BaseCharacter):
     player_name = property(lambda self: self.__player_name)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        return (
-            f'Jogador: {self.player_name}\n'
-            f'ID do Jogador: {self.player_id}\n\n'
-            f'{super().get_sheet(verbose, markdown)}'
-        )
+        text = f'Jogador: {self.player_name}\n'
+        if verbose:
+            text += f'ID do Jogador: {self.player_id}\n\n'
+        text += f'{super().get_sheet(verbose, markdown)}'
+
+        return text
 
     def get_all_sheets(
         self, verbose: bool = False, markdown: bool = False
