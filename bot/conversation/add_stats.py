@@ -30,7 +30,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = ''
     verbose = False
     if len(args) == 2:
-        attribute = args[0]
+        attribute = args[0].upper()
         value = args[1]
         try:
             player_char.base_stats[attribute] = value
