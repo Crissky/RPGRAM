@@ -1,6 +1,7 @@
 from random import randint
 
 from telegram import Update
+from telegram.error import Forbidden
 from telegram.ext import (
     ContextTypes,
     MessageHandler
@@ -71,10 +72,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'Seu personagem agora está no nível {new_level}.'
         )
     elif group.verbose:
-        await update.effective_user.send_message(
-            f'Você ganhou {add_xp} de XP.',
-            disable_notification=True
-        )
+        try:
+            await update.effective_user.send_message(
+                f'Você ganhou {add_xp} de XP.',
+                disable_notification=True
+            )
+        except Forbidden as Error:
+            print(
+                'Usuário não pode receber mensagens privadas. '
+                'Ele precisa iniciar uma conversa com o bot. '
+                f'(Erro: {Error})'
+            )
 
 
 CHAT_XP_HANDLER = MessageHandler(
