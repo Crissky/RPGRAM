@@ -27,11 +27,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
     args = context.args
 
+    player_character = player_char_model.get(user_id)
     verbose = False
-    if len(args) == 1:
-        verbose = 'verbose' == args[0] or 'v' == args[0]
+    if len(args) in [1, 2]:
+        if args[0].startswith('@'):
+            player_name = args[0]
+            query = {'player_name': player_name}
+            new_player_character = player_char_model.get(query=query)
+            if not new_player_character:
+                await update.effective_message.reply_text(
+                    f'{player_name} não possui um personamgem.'
+                )
+                return
+            player_character = new_player_character
+            verbose = 'verbose' in args[1:2] or 'v' in args[1:2]
+        else:
+            verbose = 'verbose' in args[0] or 'v' in args[0]
 
-    if (player_character := player_char_model.get(user_id)):
+    if (player_character):
         markdown_player_sheet = player_character.get_all_sheets(
             verbose=verbose, markdown=True
         )
