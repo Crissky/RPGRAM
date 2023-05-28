@@ -8,9 +8,11 @@ from telegram.ext import (
     CommandHandler,
     ContextTypes,
     PrefixHandler,
-    filters,
 )
-from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.conversation.constants import (
+    BASIC_COMMAND_IN_GROUP_FILTER,
+    PREFIX_COMMANDS
+)
 
 from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
 from bot.decorators import print_basic_infos
@@ -39,11 +41,11 @@ VIEW_GROUP_HANDLERS = [
         PREFIX_COMMANDS,
         COMMANDS,
         start,
-        filters.ChatType.GROUPS & BASIC_COMMAND_FILTER
+        BASIC_COMMAND_IN_GROUP_FILTER
     ),
     CommandHandler(
         COMMANDS,
         start,
-        filters.ChatType.GROUPS & BASIC_COMMAND_FILTER
+        BASIC_COMMAND_IN_GROUP_FILTER
     )
 ]

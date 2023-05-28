@@ -1,8 +1,8 @@
 from telegram import Update
 from telegram.constants import ChatAction
-from telegram.ext import CommandHandler, ContextTypes, PrefixHandler, filters
+from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
-from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.conversation.constants import BASIC_COMMAND_IN_GROUP_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos, need_are_admin
 from repository.mongo import GroupConfigurationModel
 
@@ -52,11 +52,11 @@ CONFIG_GROUP_HANDLERS = [
         PREFIX_COMMANDS,
         COMMANDS,
         start,
-        filters.ChatType.GROUPS & BASIC_COMMAND_FILTER
+        BASIC_COMMAND_IN_GROUP_FILTER
     ),
     CommandHandler(
         COMMANDS,
         start,
-        filters.ChatType.GROUPS & BASIC_COMMAND_FILTER
+        BASIC_COMMAND_IN_GROUP_FILTER
     )
 ]

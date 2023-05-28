@@ -8,7 +8,11 @@ BASIC_COMMAND_FILTER = (
     ~filters.Entity(MessageEntity.URL) &
     ~filters.Entity(MessageEntity.TEXT_LINK)
 )
-ALLOW_WRITE_TEXT_IN_GROUP_FILTER = (
+BASIC_COMMAND_IN_GROUP_FILTER = (
+    filters.ChatType.GROUPS &
+    BASIC_COMMAND_FILTER
+)
+ALLOW_WRITE_TEXT_ONLY_IN_GROUP_FILTER = (
     filters.TEXT &
     filters.ChatType.GROUPS &
     ~filters.COMMAND &
@@ -16,11 +20,13 @@ ALLOW_WRITE_TEXT_IN_GROUP_FILTER = (
     ~filters.UpdateType.EDITED &
     ~filters.Regex('^!')
 )
-
-ALLOW_GAIN_XP = (
+ALLOW_GAIN_XP_FILTER = (
     filters.ChatType.GROUPS &
     ~filters.COMMAND &
     ~filters.FORWARDED &
     ~filters.UpdateType.EDITED &
     ~filters.Regex('^!')
 )
+
+print('BASIC_COMMAND_FILTER', BASIC_COMMAND_FILTER)
+print('BASIC_COMMAND_IN_GROUP_FILTER', BASIC_COMMAND_IN_GROUP_FILTER)
