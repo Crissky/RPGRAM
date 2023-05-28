@@ -10,6 +10,7 @@ from bot.conversation import (
     SIGNUP_GROUP_HANDLER,
     SIGNUP_PLAYER_HANDLER,
     CHAT_XP_HANDLER,
+    BATTLE_HANDLER
 )
 from bot.conversation import (
     HELP_HANDLERS,
@@ -33,6 +34,7 @@ def main() -> None:
     application.add_handler(SIGNUP_GROUP_HANDLER)
     application.add_handler(SIGNUP_PLAYER_HANDLER)
     application.add_handler(CHAT_XP_HANDLER)
+    application.add_handler(BATTLE_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)

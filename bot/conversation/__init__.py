@@ -8,3 +8,4 @@ from bot.conversation.view_char import VIEW_CHAR_HANDLERS
 from bot.conversation.add_stats import ADD_STATS_HANDLERS
 from bot.conversation.chat_xp import CHAT_XP_HANDLER
 from bot.conversation.config_group import CONFIG_GROUP_HANDLERS
+from bot.conversation.battle import BATTLE_HANDLER
