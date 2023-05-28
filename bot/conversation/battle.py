@@ -11,11 +11,13 @@ from bot.conversation.constants import (
     PREFIX_COMMANDS
 )
 from bot.decorators import need_have_char
+from bot.decorators import print_basic_infos
 
 COMMANDS = ['duel', 'duelo']
 
 
 @need_have_char
+@print_basic_infos
 async def battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Comando no implementado.")
 

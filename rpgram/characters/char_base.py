@@ -50,6 +50,12 @@ class BaseCharacter:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
+    def is_alive(self) -> bool:
+        return self.combat_stats.current_hp > 0
+
+    def is_dead(self) -> bool:
+        return not self.is_alive()
+
     # Getters
     name: str = property(lambda self: self.__name)
     _id: ObjectId = property(lambda self: self.__id)
@@ -87,7 +93,7 @@ class BaseCharacter:
                 f'{self.classe.get_sheet(verbose, markdown)}'
             )
         else:
-            # Trecho feito dessa forma para o escape_basic_markdown_v2 não ser 
+            # Trecho feito dessa forma para o escape_basic_markdown_v2 não ser
             # usado duas vezes nos textos que vez dos outros get_sheet, pois
             # o esperado seria somente uma \ e não duas.
             race_classe_text = (
@@ -117,10 +123,9 @@ class BaseCharacter:
 
     def __repr__(self) -> str:
         return (
-            f'<Personagem: "{self.name}", '
-            f'HP: {self.cs.current_hit_points}/{self.cs.hit_points}, '
-            f'Classe: "{self.classe.name}", '
-            f'Raça: "{self.race.name}">'
+            f'<Personagem: "{self.name} '
+            f'({self.classe.name}/{self.race.name})", '
+            f'HP: {self.cs.current_hit_points}/{self.cs.hit_points}>'
         )
 
     def to_dict(self):

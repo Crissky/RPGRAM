@@ -158,14 +158,16 @@ class CombatStats:
     # Setters
     # Combat Attributes
     @hit_points.setter
-    def hit_points(self, value) -> int:
-        return self.set_damage(value)
+    def hit_points(self, value) -> None:
+        self.set_damage(value)
 
     hp = hit_points
 
     @current_hit_points.setter
-    def current_hit_points(self, value) -> int:
-        return self.set_damage(value)
+    def current_hit_points(self, value) -> None:
+        self.set_damage(value)
+
+    current_hp = current_hit_points
 
     # Getters
     # Base Attributes
