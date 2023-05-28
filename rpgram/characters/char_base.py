@@ -144,7 +144,10 @@ class BaseCharacter:
 
     def __eq__(self, __value: object) -> bool:
         if isinstance(__value, BaseCharacter):
-            return self._id == __value._id
+            return all((
+                self._id == __value._id,
+                self.name == __value.name,
+            ))
 
 
 if __name__ == '__main__':
