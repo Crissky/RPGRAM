@@ -23,7 +23,6 @@ class Battle:
         self.__turn_order = []
         self.started = False
         self.__populate_turn_order(current_player)
-        print(f'Turno: {self.__turn_count}')
 
     def __populate_turn_order(
         self,
@@ -83,18 +82,17 @@ class Battle:
         self.pass_turn()
 
     def action(
-        self,
-        character: BaseCharacter,
-        action: str = 'attack',
-        target: str = 'self',
-        char_dice: int = 1,
-        target_dice: int = 1,
+        self, character: BaseCharacter = None,
+        action: str = 'attack', target: str = 'self',
+        char_dice: int = 1, target_dice: int = 1,
     ) -> None:
         if not self.started:
             self.started = True
 
-        current_player = self.current_player
-        if character != current_player:
+        if not character:
+            character = self.current_player
+
+        if character != self.current_player:
             raise CurrentPlayerTurnError(
                 f'Não é o turno de "{character.name}".'
             )
@@ -158,12 +156,12 @@ class Battle:
         damage = min(damage, 0)
         target.combat_stats.hp = damage
         report = (
-            f'Ação: {action} = atk: {atk} ({total_atk}) - def: {deff} ({total_deff}) = {abs(damage)}\n'
-            f'{attacker.name} causou {abs(damage)} de dano em '
-            f'{target.name}.\n'
+            f'Ação: {action} = atk: {atk} ({total_atk}) - '
+            f'def: {deff} ({total_deff}) = {abs(damage)}\n'
+
+            f'{attacker.name} causou {abs(damage)} de dano em {target.name}.'
         )
 
-        print(report)
         return report
 
     def get_winner(self) -> str:
@@ -173,9 +171,9 @@ class Battle:
 
         if not blue_team_alive and not red_team_alive:
             winner = 'EMPATE'
-        elif blue_team_alive:
+        elif blue_team_alive and not red_team_alive:
             winner = 'BLUE'
-        elif red_team_alive:
+        elif red_team_alive and not blue_team_alive:
             winner = 'RED'
         return winner
 
@@ -235,17 +233,24 @@ if __name__ == '__main__':
         red_team=[gandalf],
         current_player=gandalf
     )
+    print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    current_player = battle.current_player
-    battle.action(current_player, 'magical_attack', 'enemy 1')
+    report = battle.action(action='magical_attack', target='enemy 1')
+    print(report)
+    print(f'O vencedor é o time "{battle.get_winner()}"\n')
 
+    print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    current_player = battle.current_player
-    battle.action(current_player, 'precision_attack', 'enemy 0')
+    report = battle.action(action='precision_attack', target='enemy 0')
+    print(report)
+    print(f'O vencedor é o time "{battle.get_winner()}"\n')
 
+    print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    current_player = battle.current_player
-    battle.action(current_player, 'physical_attack', 'enemy 0')
+    report = battle.action(action='physical_attack', target='enemy 0')
+    print(report)
+    print(f'O vencedor é o time "{battle.get_winner()}"\n')
 
+    print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    print(f'O vencedor é o time "{battle.get_winner()}"')
+    print(f'O vencedor é o time "{battle.get_winner()}"\n')
