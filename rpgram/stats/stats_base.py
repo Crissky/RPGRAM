@@ -107,6 +107,14 @@ class BaseStats:
             self.__multiplier_wisdom += sb.multiplier_wisdom - 1.0
             self.__multiplier_charisma += sb.multiplier_charisma - 1.0
 
+    def reset_stats(self) -> None:
+        self.__base_strength = 0
+        self.__base_dexterity = 0
+        self.__base_constitution = 0
+        self.__base_intelligence = 0
+        self.__base_wisdom = 0
+        self.__base_charisma = 0
+
     # Getters
     @property
     def total_base_stats(self) -> int:
