@@ -27,7 +27,7 @@ from bot.decorators import print_basic_infos
 from repository.mongo import (
     ClasseModel,
     PlayerModel,
-    PlayerCharacterModel,
+    CharacterModel,
     RaceModel,
 )
 from rpgram.characters import PlayerCharacter
@@ -57,7 +57,7 @@ COMMANDS = ['criarpersonagem', 'createchar']
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_model = PlayerModel()
-    player_character_model = PlayerCharacterModel()
+    char_model = CharacterModel()
     race_model = RaceModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id
@@ -70,7 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
         return ConversationHandler.END
 
-    if (player_character := player_character_model.get(player_id)):
+    if (player_character := char_model.get(player_id)):
         inline_keyboard = [
             [
                 InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
@@ -245,7 +245,7 @@ async def create_char(
 
     race_model = RaceModel()
     classe_model = ClasseModel()
-    player_character_model = PlayerCharacterModel()
+    char_model = CharacterModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id
     race_name = context.user_data['race']
@@ -259,8 +259,8 @@ async def create_char(
         classe=classe,
         race=race,
     )
-    player_character_model.save(player_character)
-    player_character = player_character_model.get(player_id)
+    char_model.save(player_character)
+    player_character = char_model.get(player_id)
 
     if player_character:
         await update.effective_message.reply_text(
@@ -301,11 +301,11 @@ async def create_char(
 
 @print_basic_infos
 async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    player_character_model = PlayerCharacterModel()
+    char_model = CharacterModel()
     player_id = update.effective_user.id
     query = update.callback_query
 
-    if (player_character_model.delete(player_id)):
+    if (char_model.delete(player_id)):
         await query.edit_message_text('Personagem deletado com sucesso!')
     else:
         await query.edit_message_text(

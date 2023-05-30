@@ -1,17 +1,17 @@
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from repository.mongo import PlayerCharacterModel
+from repository.mongo import CharacterModel
 from bot.conversation.create_char import COMMANDS
 
 
 def need_have_char(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@NEED_HAVE_CHAR')
-        player_char_model = PlayerCharacterModel()
+        char_model = CharacterModel()
         user_id = update.effective_user.id
 
-        if player_char_model.get(user_id):
+        if char_model.get(user_id):
             print('\tAUTORIZADO')
             return await callback(update, context)
         else:
@@ -26,11 +26,11 @@ def need_have_char(callback):
 def skip_if_no_have_char(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f'@SKIP_IF_NO_HAVE_CHAR')
-        player_char_model = PlayerCharacterModel()
+        char_model = CharacterModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
 
-        if player_char_model.get(user_id):
+        if char_model.get(user_id):
             return await callback(update, context)
         else:
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - NO CHAR')

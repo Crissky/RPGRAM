@@ -4,6 +4,17 @@ from typing import Union, Any, List
 from functions.datetime import get_brazil_time_now
 
 from repository.mongo import Database
+from rpgram import (
+    Equips,
+    GroupConfiguration,
+    Player,
+)
+from rpgram.boosters import (
+    Classe,
+    Equipament,
+    Race,
+)
+from rpgram.characters import BaseCharacter, PlayerCharacter
 
 
 def singleton(cls):
@@ -72,8 +83,8 @@ class Model:
         if not isinstance(query, dict):
             raise ValueError('Query precisa ser um dicionário.')
         if (result := self.database.find(self.collection, query)):
-            result = self.__populate_load(result)
-            return self._class(**result)
+            populate_result = self.__populate_load(result)
+            return self.instanciate_class(populate_result)
 
     def get_all(
         self, query: dict = None, fields: Union[dict, list, str] = None
@@ -86,7 +97,7 @@ class Model:
 
         if not fields:
             result = [
-                self._class(**self.__populate_load(item))
+                self.instanciate_class(self.__populate_load(item))
                 for item in result
             ]
         elif len(fields) == 1:
@@ -102,6 +113,7 @@ class Model:
                 f'Objeto inválido. Precisa ser {self._class} não {type(obj)}'
             )
         obj_dict = obj.to_dict()
+        obj_dict['_class'] = obj.__class__.__name__
         query = {}
         if isinstance(obj._id, ObjectId):
             query['_id'] = obj._id
@@ -129,7 +141,12 @@ class Model:
                 key = field_info['id_key']
                 _id = dict_obj.pop(key)
                 model = field_info['model']
-                obj = model.get(_id)
+
+                if isinstance(_id, list):
+                    obj = [model.get(item) for item in _id]
+                else:
+                    obj = model.get(_id)
+
                 dict_obj[field_name] = obj
             else:
                 raise KeyError(
@@ -138,6 +155,10 @@ class Model:
                 )
 
         return dict_obj
+
+    def instanciate_class(self, populate_result: dict):
+        _class = eval(populate_result.pop('_class'))
+        return _class(**populate_result)
 
     database: Database = property(lambda self: Database.get_instance())
     alternative_id: str = property(lambda self: 'player_id')

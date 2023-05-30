@@ -13,12 +13,12 @@ from rpgram.characters import PlayerCharacter
 if __name__ == "__main__":
     race_model = RaceModel()
     classe_model = ClasseModel()
-    player_char_model = CharacterModel()
-    player_chars = player_char_model.get_all()
+    char_model = CharacterModel()
+    player_chars = char_model.get_all()
 
     for player_char in player_chars:
         player_char.base_stats.reset_stats()
         dict_char = player_char.to_dict()
 
         new_player_char = PlayerCharacter(**dict_char)
-        player_char_model.save(new_player_char)
+        char_model.save(new_player_char)

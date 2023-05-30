@@ -14,7 +14,7 @@ from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 
 from bot.conversation.create_char import COMMANDS as create_char_commands
 from bot.decorators import print_basic_infos
-from repository.mongo import PlayerCharacterModel
+from repository.mongo import CharacterModel
 
 
 COMMANDS = ['personagem', 'char']
@@ -23,17 +23,17 @@ COMMANDS = ['personagem', 'char']
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
-    player_char_model = PlayerCharacterModel()
+    char_model = CharacterModel()
     user_id = update.effective_user.id
     args = context.args
 
-    player_character = player_char_model.get(user_id)
+    player_character = char_model.get(user_id)
     verbose = False
     if len(args) in [1, 2]:
         if args[0].startswith('@'):
             player_name = args[0]
             query = {'player_name': player_name}
-            new_player_character = player_char_model.get(query=query)
+            new_player_character = char_model.get(query=query)
             if not new_player_character:
                 await update.effective_message.reply_text(
                     f'{player_name} não possui um personamgem.'

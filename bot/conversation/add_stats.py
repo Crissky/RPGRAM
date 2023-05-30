@@ -12,7 +12,7 @@ from bot.conversation.constants import (
 )
 from bot.decorators import need_have_char, print_basic_infos
 from functions.text import escape_markdown_v2
-from repository.mongo import PlayerCharacterModel
+from repository.mongo import CharacterModel
 
 
 COMMANDS = ['stats', 'add_stats']
@@ -22,11 +22,11 @@ COMMANDS = ['stats', 'add_stats']
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
-    player_char_model = PlayerCharacterModel()
+    char_model = CharacterModel()
     user_id = update.effective_user.id
 
     args = context.args
-    player_char = player_char_model.get(user_id)
+    player_char = char_model.get(user_id)
     text = ''
     verbose = False
     if len(args) == 2:
@@ -34,7 +34,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         value = args[1]
         try:
             player_char.base_stats[attribute] = value
-            player_char_model.save(player_char)
+            char_model.save(player_char)
             text = escape_markdown_v2(
                 f'Adicionado "{value}" ponto(s) no atributo "{attribute}".\n\n'
             )

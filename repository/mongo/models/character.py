@@ -2,13 +2,13 @@ from repository.mongo import CollectionEnum
 from repository.mongo import Model
 from repository.mongo.models.classe import ClasseModel
 from repository.mongo.models.race import RaceModel
-from rpgram.characters import BaseCharacter
+from rpgram.characters import BaseCharacter, PlayerCharacter
 
 
-class BaseCharacterModel(Model):
+class CharacterModel(Model):
 
     _class = property(lambda self: BaseCharacter)
-    collection = property(lambda self: CollectionEnum.BASE_CHARS.value)
+    collection = property(lambda self: CollectionEnum.CHARACTERS.value)
     populate_fields = property(
         lambda self: {
             'classe': {
@@ -25,14 +25,16 @@ class BaseCharacterModel(Model):
 
 if __name__ == '__main__':
     from repository.mongo import ClasseModel, RaceModel
-    classe_model = ClasseModel()
-    race_model = RaceModel()
-    guerreiro = classe_model.get('Guerreiro')
-    elfo = race_model.get('Elfo')
-    base_character = BaseCharacter(
-        char_name='PERSONAGEM TESTE MODELO',
-        classe=guerreiro,
-        race=elfo,
+    classe = ClasseModel()
+    race = RaceModel()
+    barbaro = classe.get('Bárbaro')
+    anao = race.get('Anão')
+    player_character = PlayerCharacter(
+        player_id=10,
+        player_name='JOGADOR TESTE MODELO',
+        char_name='PERSONAGEM JOGADOR TESTE MODELO',
+        classe=barbaro,
+        race=anao,
         level=21,
         xp=30,
         base_strength=10,
@@ -43,9 +45,9 @@ if __name__ == '__main__':
         base_charisma=10,
         _id='ffffffffffffffffffffffff',
     )
-    base_char_model = BaseCharacterModel()
-    print(f'Collection: {base_char_model.collection}')
-    result = base_char_model.save(base_character)
+    char_model = CharacterModel()
+    print(f'Collection:', char_model.collection)
+    result = char_model.save(player_character)
     print('result:', result)
-    base_character2 = base_char_model.get('ffffffffffffffffffffffff')
-    print(base_character2)
+    player_character2 = char_model.get('ffffffffffffffffffffffff')
+    print(player_character2)

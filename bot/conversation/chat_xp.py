@@ -19,7 +19,7 @@ from functions.datetime import (
 )
 from repository.mongo import (
     GroupConfigurationModel,
-    PlayerCharacterModel,
+    CharacterModel,
     PlayerModel
 )
 
@@ -28,7 +28,7 @@ from repository.mongo import (
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
-    player_char_model = PlayerCharacterModel()
+    char_model = CharacterModel()
     group_config_model = GroupConfigurationModel()
 
     user_name = update.effective_user.name
@@ -48,7 +48,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             print('XP em cooldown.')
             return
 
-    player_char = player_char_model.get(user_id)
+    player_char = char_model.get(user_id)
     group = group_config_model.get(chat_id)
 
     player.xp_cooldown = add_random_minutes_now(message_date)
@@ -62,7 +62,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_xp = int((randint(1, 10) + level_bonus) * multiplier_xp)
 
     player_char.base_stats.xp = add_xp
-    player_char_model.save(player_char)
+    char_model.save(player_char)
     new_level = player_char.base_stats.level
 
     if new_level > level:
