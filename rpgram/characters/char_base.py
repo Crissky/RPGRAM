@@ -71,7 +71,7 @@ class BaseCharacter:
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*Personagem*: {self.name}\n'
         if verbose:
-            text += f'*ID Personagem*: {self._id}\n'
+            text += f'*ID Personagem*: {self.__id}\n'
 
         if not markdown:
             text = remove_bold(text)
@@ -131,7 +131,7 @@ class BaseCharacter:
     def to_dict(self):
         return dict(
             char_name=self.name,
-            _id=self._id,
+            _id=self.__id,
             level=self.base_stats.level,
             xp=self.base_stats.xp,
             base_strength=self.base_stats.base_strength,
@@ -150,7 +150,7 @@ class BaseCharacter:
     def __eq__(self, __value: object) -> bool:
         if isinstance(__value, BaseCharacter):
             return all((
-                self._id == __value._id,
+                self.__id == __value.__id,
                 self.name == __value.name,
             ))
 

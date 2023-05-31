@@ -126,7 +126,7 @@ class StatsBooster:
 
     def to_dict(self):
         return dict(
-            _id=self._id,
+            _id=self.__id,
             bonus_strength=self.bonus_strength,
             bonus_dexterity=self.bonus_dexterity,
             bonus_constitution=self.bonus_constitution,
@@ -150,6 +150,7 @@ class StatsBooster:
             bonus_evasion=self.bonus_evasion,
         )
 
+    # Getters
     _id = property(lambda self: self.__id)
     strength = bonus_strength = property(
         fget=lambda self: self.__bonus_strength)

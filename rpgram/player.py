@@ -21,16 +21,19 @@ class Player:
 
         self.player_id = player_id
         self.name = name
-        self._id = _id
+        self.__id = _id
         self.xp_cooldown = xp_cooldown
         self.created_at = created_at
         self.updated_at = updated_at
+
+    # Getters
+    _id = property(lambda self: self.__id)
 
     def __repr__(self) -> str:
         return (
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
-            f'ID: {self._id}\n'
+            f'ID: {self.__id}\n'
             f'Player ID: {self.player_id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
@@ -40,7 +43,7 @@ class Player:
         return dict(
             name=self.name,
             player_id=self.player_id,
-            _id=self._id,
+            _id=self.__id,
             xp_cooldown=self.xp_cooldown,
             created_at=self.created_at,
             updated_at=self.updated_at

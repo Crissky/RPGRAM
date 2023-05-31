@@ -226,6 +226,7 @@ class Equips:
             f'{TEXT_DELIMITER}'
         )
 
+    # Getters
     helmet = property(lambda self: self.__helmet)
     left_hand = property(lambda self: self.__left_hand)
     right_hand = property(lambda self: self.__right_hand)

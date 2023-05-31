@@ -46,6 +46,7 @@ class PlayerCharacter(BaseCharacter):
         self.__player_id = player_id
         self.__player_name = player_name
 
+    # Getters
     player_id = property(lambda self: self.__player_id)
     player_name = property(lambda self: self.__player_name)
 

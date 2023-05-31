@@ -118,6 +118,7 @@ class Equipament(StatsBooster):
 
         return _dict
 
+    # Getters
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_type = property(lambda self: self.__damage_type)

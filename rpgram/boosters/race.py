@@ -107,7 +107,7 @@ class Race(StatsBooster):
         return dict(
             name=self.name,
             description=self.description,
-            _id=self._id,
+            _id=self.__id,
             bonus_strength=self.bonus_strength,
             bonus_dexterity=self.bonus_dexterity,
             bonus_constitution=self.bonus_constitution,
@@ -124,6 +124,7 @@ class Race(StatsBooster):
             updated_at=self.updated_at,
         )
 
+    # Getters
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
 

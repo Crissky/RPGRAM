@@ -26,7 +26,7 @@ class GroupConfiguration:
 
         self.name = name
         self.chat_id = chat_id
-        self._id = _id
+        self.__id = _id
         self.verbose = verbose
         self.spawn_start_time = spawn_start_time
         self.spawn_end_time = spawn_end_time
@@ -34,6 +34,9 @@ class GroupConfiguration:
         self.character_multiplier_xp = float(character_multiplier_xp)
         self.created_at = created_at
         self.updated_at = updated_at
+
+    # Getters
+    _id = property(lambda self: self.__id)
 
     def __setitem__(self, key, value):
         key = key.upper()
@@ -68,7 +71,7 @@ class GroupConfiguration:
             f'Verbose: {self.verbose}\n'
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
             f'Hora de Fim de Spawn: {self.spawn_end_time}h\n'
-            f'ID: {self._id}\n'
+            f'ID: {self.__id}\n'
             f'Multiplicador de XP: {self.multiplier_xp:.2f}\n'
             f'Mult. de XP por Nível: '
             f'{self.character_multiplier_xp:.2f}\n'
@@ -80,7 +83,7 @@ class GroupConfiguration:
         return dict(
             name=self.name,
             chat_id=self.chat_id,
-            _id=self._id,
+            _id=self.__id,
             verbose=self.verbose,
             spawn_start_time=self.spawn_start_time,
             spawn_end_time=self.spawn_end_time,
