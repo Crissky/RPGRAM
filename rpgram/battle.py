@@ -2,8 +2,11 @@
 Classe responsável por gerenciar a Batalha
 '''
 from copy import deepcopy
+from datetime import datetime
 from operator import attrgetter
-from typing import List
+from typing import List, Union
+
+from bson import ObjectId
 
 from rpgram.characters import BaseCharacter
 from rpgram.errors import CurrentPlayerTurnError
@@ -15,13 +18,27 @@ class Battle:
         blue_team: List[BaseCharacter],
         red_team: List[BaseCharacter],
         turn_count: int = 1,
-        current_player: BaseCharacter = None
+        current_player: BaseCharacter = None,
+        started: bool = False,
+        _id: Union[str, ObjectId] = None,
+        created_at: datetime = None,
+        updated_at: datetime = None,
     ) -> None:
+        if isinstance(blue_team, BaseCharacter):
+            blue_team = [blue_team]
+        if isinstance(red_team, BaseCharacter):
+            red_team = [red_team]
+        if isinstance(_id, str):
+            _id = ObjectId(_id)
+
         self.__blue_team = blue_team
         self.__red_team = red_team
         self.__turn_count = int(turn_count)
         self.__turn_order = []
-        self.started = False
+        self.started = started
+        self.__id = _id
+        self.__created_at = created_at
+        self.__updated_at = updated_at
         self.__populate_turn_order(current_player)
 
     def __populate_turn_order(
@@ -198,13 +215,35 @@ class Battle:
     def current_player(self) -> BaseCharacter:
         return self.__turn_order[0]
 
+    _id: ObjectId = property(lambda self: self.__id)
+
     def to_dict(self) -> dict:
         return dict(
             blue_team=[char._id for char in self.__blue_team],
             red_team=[char._id for char in self.__red_team],
             turn_count=self.turn_count,
-            current_player_turn=self.current_player._id
+            current_player=self.current_player._id,
+            started=self.started,
+            _id=self.__id,
+            created_at=self.__created_at,
+            updated_at=self.__updated_at,
         )
+
+    def get_sheet(self) -> str:
+        turn_order = "\n".join(
+            [f"\t{i+1} {char.name}" for i, char in enumerate(self.turn_order)]
+        )
+        return (
+            f'Turno: {self.turn_count}\n'
+            f'Ordem de Jogadores:\n'
+            f'{turn_order}'
+        )
+
+    def get_sheets(self) -> str:
+        return self.get_sheet()
+
+    def __repr__(self) -> str:
+        return self.get_sheet()
 
 
 if __name__ == '__main__':

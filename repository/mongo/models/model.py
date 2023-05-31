@@ -5,6 +5,7 @@ from functions.datetime import get_brazil_time_now
 
 from repository.mongo import Database
 from rpgram import (
+    Battle,
     Equips,
     GroupConfiguration,
     Player,
