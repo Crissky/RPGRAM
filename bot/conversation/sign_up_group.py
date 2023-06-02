@@ -24,7 +24,7 @@ from rpgram import GroupConfiguration
 
 
 # ROUTES
-START_ROUTES, END_ROUTES = range(2)
+START_ROUTES = range(1)
 
 # CALLBACK DATA
 CALLBACK_TEXT_YES = 'yes'

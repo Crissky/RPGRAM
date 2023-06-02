@@ -229,10 +229,29 @@ class Battle:
             updated_at=self.__updated_at,
         )
 
-    def get_sheet(self) -> str:
-        turn_order = "\n".join(
-            [f"\t{i+1} {char.name}" for i, char in enumerate(self.turn_order)]
+    def get_teams_sheet(self) -> str:
+        blue_team = "\n".join([
+            (f"    {i+1}: {char.name} "
+            f'HP: {char.cs.current_hit_points}/{char.cs.hit_points}')
+            for i, char in enumerate(self.__blue_team)
+        ])
+        red_team = "\n".join([
+            (f"    {i+1}: {char.name} "
+            f'HP: {char.cs.current_hit_points}/{char.cs.hit_points}')
+            for i, char in enumerate(self.__red_team)
+        ])
+        return (
+            f'BLUE TEAM:\n'
+            f'{blue_team}\n\n'
+            f'RED TEAM:\n'
+            f'{red_team}'
         )
+
+    def get_sheet(self) -> str:
+        turn_order = "\n".join([
+            f"    {i+1}: {char.name}"
+            for i, char in enumerate(self.turn_order)
+        ])
         return (
             f'Turno: {self.turn_count}\n'
             f'Ordem de Jogadores:\n'
