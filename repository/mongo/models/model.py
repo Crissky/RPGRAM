@@ -64,7 +64,8 @@ class Model:
     def get(
         self,
         _id: Union[int, ObjectId, str] = None,
-        query: dict = None
+        query: dict = None,
+        fields: Union[list, dict] = None
     ) -> Any:
         if _id:
             if isinstance(_id, ObjectId):
@@ -83,7 +84,9 @@ class Model:
             raise ValueError('Query esta vazia.')
         if not isinstance(query, dict):
             raise ValueError('Query precisa ser um dicionário.')
-        if (result := self.database.find(self.collection, query)):
+        if (result := self.database.find(self.collection, query, fields)):
+            if fields:
+                return result
             populate_result = self.__populate_load(result)
             return self.instanciate_class(populate_result)
 
