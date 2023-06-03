@@ -75,6 +75,10 @@ class Battle:
     def enter_battle(
         self, player: BaseCharacter, team: str, reorder: bool = False
     ) -> None:
+        if player in self.turn_order:
+            raise ValueError(
+                f'O jogador "{player.name}" já está na batalha.'
+            )
         if team in ['blue', 'azul']:
             self.__blue_team.append(player)
         elif team in ['red', 'vermelho']:
