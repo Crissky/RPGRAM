@@ -64,7 +64,6 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         context.chat_data['battle_response'] = response
         context.chat_data['battle_id'] = battle_id
-        print('battle_id', battle_id)
         return ENTER_BATTLE_ROUTES
 
     await update.message.reply_text("Você já está em uma batalha.")
@@ -73,15 +72,12 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def entering_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    print(query.data)
     battle_model = BattleModel()
     character_model = CharacterModel()
     user_id = update.effective_user.id
     battle_id = context.chat_data['battle_id']
     character = character_model.get(user_id)
     battle = battle_model.get(battle_id)
-    print('battle_id', battle_id)
-    print('battle', battle)
 
     if query.data == CALLBACK_START_BATTLE:
         await query.edit_message_text(

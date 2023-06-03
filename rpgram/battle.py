@@ -245,9 +245,9 @@ class Battle:
             for i, char in enumerate(self.__red_team)
         ])
         return (
-            f'BLUE TEAM:\n'
+            f'TIME AZUL:\n'
             f'{blue_team}\n\n'
-            f'RED TEAM:\n'
+            f'TIME VERMELHO:\n'
             f'{red_team}'
         )
 
