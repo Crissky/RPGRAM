@@ -65,6 +65,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return START_ROUTES
 
 
+# START_ROUTES
 @print_basic_infos
 async def create_account(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -86,6 +87,7 @@ async def create_account(
     return ConversationHandler.END
 
 
+# START_ROUTES
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar uma conta mais tarde."

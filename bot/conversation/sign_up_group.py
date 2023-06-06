@@ -70,6 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return START_ROUTES
 
 
+# START_ROUTES
 @print_basic_infos
 async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -95,6 +96,7 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
+# START_ROUTES
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     new_text = "Tchau! Você pode criar uma conta para o grupo mais tarde."

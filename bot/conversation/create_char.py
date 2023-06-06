@@ -106,6 +106,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return CONFIRM_RACE_ROUTES
 
 
+# SELECT_CLASSE_ROUTES
 @print_basic_infos
 async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     race_model = RaceModel()
@@ -123,6 +124,7 @@ async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return CONFIRM_RACE_ROUTES
 
 
+# CONFIRM_RACE_ROUTES
 @print_basic_infos
 async def confirm_race(
     update: Update,
@@ -155,6 +157,7 @@ async def confirm_race(
     return SELECT_CLASSE_ROUTES
 
 
+# SELECT_CLASSE_ROUTES, SELECT_NAME_ROUTES
 @print_basic_infos
 async def select_classe(
     update: Update,
@@ -178,6 +181,7 @@ async def select_classe(
     return CONFIRM_CLASSE_ROUTES
 
 
+# CONFIRM_CLASSE_ROUTES
 @print_basic_infos
 async def confirm_classe(
     update: Update,
@@ -210,6 +214,7 @@ async def confirm_classe(
     return SELECT_NAME_ROUTES
 
 
+# SELECT_NAME_ROUTES
 @print_basic_infos
 async def select_name(
     update: Update,
@@ -228,6 +233,7 @@ async def select_name(
     return CREATE_CHAR_ROUTES
 
 
+# CREATE_CHAR_ROUTES
 @print_basic_infos
 async def create_char(
     update: Update,
@@ -299,6 +305,7 @@ async def create_char(
     return ConversationHandler.END
 
 
+# DELETE_ROUTES
 @print_basic_infos
 async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     char_model = CharacterModel()
@@ -319,6 +326,7 @@ async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
 
 
+# DELETE_ROUTES
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar um personagem mais tarde."
