@@ -19,16 +19,31 @@ from rpgram import Battle
 # ROUTES
 (
     ENTER_BATTLE_ROUTES,
-    START_BATTLE_ROUTES,
-    END_ROUTES
-) = range(3)
+    ACTION_ROUTES,
+    REACTION_ROUTES,
+    SELECT_TARGET_ROUTES,
+    END_ROUTES,
+) = range(5)
+
 
 # CALLBACK DATA
-
-CALLBACK_ENTER_BLUE = 'enter_blue'
-CALLBACK_ENTER_RED = 'enter_red'
+# ENTER IN BATTLE
+CALLBACK_ENTER_BLUE_TEAM = 'blue'
+CALLBACK_ENTER_RED_TEAM = 'red'
 CALLBACK_START_BATTLE = 'start_battle'
 
+# ACTIONS
+CALLBACK_PHYSICAL_ATTACK = 'physical_attack'
+CALLBACK_PRECISION_ATTACK = 'precision_attack'
+CALLBACK_MAGICAL_ATTACK = 'magical_attack'
+
+ACTIONS = {
+    CALLBACK_PHYSICAL_ATTACK: 'Ataque Físico',
+    CALLBACK_PRECISION_ATTACK: 'Ataque de Precisão',
+    CALLBACK_MAGICAL_ATTACK: 'Ataque Mágico',
+}
+
+# REACTIONS
 
 COMMANDS = ['duel', 'duelo']
 
@@ -54,7 +69,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         battle_id = battle_result.inserted_id
         inline_keyboard = [[
             InlineKeyboardButton(
-                "ENTRAR", callback_data=CALLBACK_ENTER_RED
+                "ENTRAR", callback_data=CALLBACK_ENTER_RED_TEAM
             )
         ]]
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
@@ -70,43 +85,66 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-async def entering_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
+# ENTER_BATTLE_ROUTES
+async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     character_model = CharacterModel()
+    query = update.callback_query
     user_id = update.effective_user.id
     battle_id = context.chat_data['battle_id']
     character = character_model.get(user_id)
     battle = battle_model.get(battle_id)
 
     if query.data == CALLBACK_START_BATTLE:
+        inline_keyboard = [
+            [
+                InlineKeyboardButton(
+                    "ATAQUE FÍSICO", callback_data=CALLBACK_PHYSICAL_ATTACK
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "ATAQUE DE PRECISÃO",
+                    callback_data=CALLBACK_PRECISION_ATTACK
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "ATAQUE MÁGICO", callback_data=CALLBACK_MAGICAL_ATTACK
+                )
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        await query.answer('A BATALHA COMEÇOU!!!')
         await query.edit_message_text(
             f'A batalha começou!\n'
-            f'{battle.get_sheet()}\n'
+            f'Escolha sua ação.\n\n'
+            f'{battle.get_sheet()}\n',
+            reply_markup=reply_markup
         )
-        return START_BATTLE_ROUTES
+        return ACTION_ROUTES
+
     if character not in battle.turn_order:
-        team = ''
-        if query.data == CALLBACK_ENTER_BLUE:
-            team = 'blue'
-        elif query.data == CALLBACK_ENTER_RED:
-            team = 'red'
+        team = query.data
         battle.enter_battle(character, team)
         battle_model.save(battle)
         inline_keyboard = [
             [
                 InlineKeyboardButton(
-                    "ENTRAR NO TIME AZUL", callback_data=CALLBACK_ENTER_BLUE
+                    "ENTRAR NO TIME AZUL",
+                    callback_data=CALLBACK_ENTER_BLUE_TEAM
                 )
             ],
             [
                 InlineKeyboardButton(
-                    "ENTRAR NO TIME VERMELHO", callback_data=CALLBACK_ENTER_RED
+                    "ENTRAR NO TIME VERMELHO",
+                    callback_data=CALLBACK_ENTER_RED_TEAM
                 )
             ],
             [
                 InlineKeyboardButton(
-                    "COMEÇAR BATALHA", callback_data=CALLBACK_START_BATTLE
+                    "COMEÇAR BATALHA",
+                    callback_data=CALLBACK_START_BATTLE
                 )
             ]
         ]
@@ -118,7 +156,45 @@ async def entering_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ENTER_BATTLE_ROUTES
     else:
-        await query.answer('Você já está em uma batalha!')
+        await query.answer('Você já está na batalha!', show_alert=True)
+
+
+# ACTION_ROUTES
+async def action_choice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('action_choice')
+    battle_model = BattleModel()
+    character_model = CharacterModel()
+    query = update.callback_query
+    action = query.data
+    user_id = update.effective_user.id
+    battle_id = context.chat_data['battle_id']
+    battle = battle_model.get(battle_id)
+    character = character_model.get(user_id)
+
+    if character == battle.current_player:
+        context.chat_data['action'] = action
+        inline_keyboard = []
+        for i, char in enumerate(battle.turn_order):
+            inline_keyboard.append(
+                [InlineKeyboardButton(char.name, callback_data=i)]
+            )
+        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        await query.answer(f'Selecionou: "{ACTIONS[action]}"')
+        await query.edit_message_text(
+            f'Selecione o alvo para "{ACTIONS[action]}".\n\n'
+            f'{battle.get_sheet()}\n',
+            reply_markup=reply_markup
+        )
+        return SELECT_TARGET_ROUTES
+    else:
+        await query.answer('Ainda não é o seu turno!!', show_alert=True)
+        return ACTION_ROUTES
+
+
+# SELECT_TARGET_ROUTES
+
+
+# REACTION_ROUTES
 
 
 async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -138,13 +214,24 @@ BATTLE_HANDLER = ConversationHandler(
     states={
         ENTER_BATTLE_ROUTES: [
             CallbackQueryHandler(
-                entering_battle, pattern=(
-                    f'^{CALLBACK_ENTER_BLUE}|'
-                    f'{CALLBACK_ENTER_RED}|'
+                enter_battle, pattern=(
+                    f'^{CALLBACK_ENTER_BLUE_TEAM}|'
+                    f'{CALLBACK_ENTER_RED_TEAM}|'
                     f'{CALLBACK_START_BATTLE}$'
                 )
             ),
-        ]
+        ],
+        ACTION_ROUTES: [
+            CallbackQueryHandler(
+                action_choice, pattern=(
+                    f'^{CALLBACK_PHYSICAL_ATTACK}|'
+                    f'{CALLBACK_PRECISION_ATTACK}|'
+                    f'{CALLBACK_MAGICAL_ATTACK}$'
+                )
+            )
+        ],
+        SELECT_TARGET_ROUTES: [],
+        REACTION_ROUTES: []
     },
     fallbacks=[CommandHandler("battle_cancel", battle_cancel)],
     per_user=False
