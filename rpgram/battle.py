@@ -86,6 +86,8 @@ class Battle:
         else:
             raise ValueError(f'"{team}" não é um time inválido.')
 
+        self.__turn_order.append(player)
+
         if reorder or not self.started:
             self.reorder_turn()
 
