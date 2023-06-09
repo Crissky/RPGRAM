@@ -126,13 +126,13 @@ class Model:
             if obj_dict.get(self.alternative_id, None):
                 query[self.alternative_id] = obj_dict[self.alternative_id]
         if query and self.database.find(self.collection, query):
-            print('Updating')
+            print(f'Updating: {self.__class__.__name__}')
             obj_dict['updated_at'] = get_brazil_time_now()
             result = self.database.update(
                 self.collection, query, {'$set': obj_dict}
             )
         else:
-            print('Inserting')
+            print(f'Inserting: {self.__class__.__name__}')
             obj_dict['created_at'] = get_brazil_time_now()
             obj_dict['updated_at'] = get_brazil_time_now()
             result = self.database.insert(self.collection, obj_dict)
