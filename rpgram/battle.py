@@ -48,7 +48,9 @@ class Battle:
         ''' Função que irá montar a order dos jogadores somente quando a 
         classe for instanciada.
         '''
-        self.__turn_order = self.__blue_team + self.__red_team
+        for char in (self.__blue_team + self.__red_team):
+            if char not in self.__turn_order:
+                self.__turn_order.append(char)
 
         self.reorder_turn()
 
