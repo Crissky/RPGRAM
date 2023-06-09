@@ -1,4 +1,5 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.constants import ChatAction
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -19,9 +20,9 @@ from rpgram import Battle
 # ROUTES
 (
     ENTER_BATTLE_ROUTES,
-    ACTION_ROUTES,
-    REACTION_ROUTES,
+    SELECT_ACTION_ROUTES,
     SELECT_TARGET_ROUTES,
+    SELECT_REACTION_ROUTES,
     END_ROUTES,
 ) = range(5)
 
@@ -44,6 +45,13 @@ ACTIONS = {
 }
 
 # REACTIONS
+CALLBACK_DODGE = 'dodge'
+CALLBACK_DEFEND = 'defend'
+
+REACTIONS = {
+    CALLBACK_DODGE: 'Esquivar',
+    CALLBACK_DEFEND: 'Defender'
+}
 
 COMMANDS = ['duel', 'duelo']
 
@@ -51,6 +59,8 @@ COMMANDS = ['duel', 'duelo']
 @need_have_char
 @print_basic_infos
 async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('battle_start')
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     user_id = update.effective_user.id
@@ -87,6 +97,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ENTER_BATTLE_ROUTES
 async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('enter_battle')
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
@@ -96,6 +108,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle = battle_model.get(battle_id)
 
     if query.data == CALLBACK_START_BATTLE:
+        user_name = battle.current_player.player_name
         inline_keyboard = [
             [
                 InlineKeyboardButton(
@@ -118,11 +131,11 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer('A BATALHA COMEÇOU!!!')
         await query.edit_message_text(
             f'A batalha começou!\n'
-            f'Escolha sua ação.\n\n'
+            f'{user_name}, escolha sua ação.\n\n'
             f'{battle.get_sheet()}\n',
             reply_markup=reply_markup
         )
-        return ACTION_ROUTES
+        return SELECT_ACTION_ROUTES
 
     if character not in battle.turn_order:
         team = query.data
@@ -159,45 +172,90 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer('Você já está na batalha!', show_alert=True)
 
 
-# ACTION_ROUTES
-async def action_choice(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('action_choice')
+# SELECT_ACTION_ROUTES
+async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('select_action')
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
-    action = query.data
     user_id = update.effective_user.id
     battle_id = context.chat_data['battle_id']
     battle = battle_model.get(battle_id)
     character = character_model.get(user_id)
 
     if character == battle.current_player:
+        action = query.data
         context.chat_data['action'] = action
+        user_name = update.effective_user.name
         inline_keyboard = []
         for i, char in enumerate(battle.turn_order):
             inline_keyboard.append(
                 [InlineKeyboardButton(char.name, callback_data=i)]
             )
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        await query.answer(f'Selecionou: "{ACTIONS[action]}"')
+        await query.answer(f'Você selecionou: "{ACTIONS[action]}"')
         await query.edit_message_text(
-            f'Selecione o alvo para "{ACTIONS[action]}".\n\n'
+            f'{user_name}, selecione o alvo para "{ACTIONS[action]}".\n\n'
             f'{battle.get_sheet()}\n',
             reply_markup=reply_markup
         )
         return SELECT_TARGET_ROUTES
     else:
         await query.answer('Ainda não é o seu turno!!', show_alert=True)
-        return ACTION_ROUTES
+        return SELECT_ACTION_ROUTES
 
 
 # SELECT_TARGET_ROUTES
+async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('select_target')
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    battle_model = BattleModel()
+    character_model = CharacterModel()
+    query = update.callback_query
+    user_id = update.effective_user.id
+    battle_id = context.chat_data['battle_id']
+    battle = battle_model.get(battle_id)
+    character = character_model.get(user_id)
+
+    if character == battle.current_player:
+        target_index = int(query.data)
+        context.chat_data['target_index'] = target_index
+        target = battle.turn_order[target_index]
+        target_user_name = target.player_name
+        action = context.chat_data['action']
+        inline_keyboard = [
+            [
+                InlineKeyboardButton("DEFENDER", callback_data=CALLBACK_DEFEND)
+            ],
+            [
+                InlineKeyboardButton("ESQUIVAR", callback_data=CALLBACK_DODGE)
+            ],
+        ]
+        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        await query.answer(f'Você selecionou: "{target.name}"')
+        await query.edit_message_text(
+            f'{target.name} ({target_user_name}), '
+            f'você foi alvo de "{ACTIONS[action]}".\n'
+            f'Selecione sua reação.\n\n'
+            f'{battle.get_teams_sheet()}',
+            reply_markup=reply_markup,
+        )
+        return SELECT_REACTION_ROUTES
+    else:
+        await query.answer('Ainda não é o seu turno!!', show_alert=True)
+        return SELECT_TARGET_ROUTES
 
 
-# REACTION_ROUTES
+# SELECT_REACTION_ROUTES
 
 
 async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    battle_model = BattleModel()
+    response = context.chat_data['battle_response']
+    battle_id = context.chat_data['battle_id']
+    battle_model.delete(battle_id)
+    await response.delete()
 
     return ConversationHandler.END
 
@@ -221,17 +279,22 @@ BATTLE_HANDLER = ConversationHandler(
                 )
             ),
         ],
-        ACTION_ROUTES: [
+        SELECT_ACTION_ROUTES: [
             CallbackQueryHandler(
-                action_choice, pattern=(
+                select_action, pattern=(
                     f'^{CALLBACK_PHYSICAL_ATTACK}|'
                     f'{CALLBACK_PRECISION_ATTACK}|'
                     f'{CALLBACK_MAGICAL_ATTACK}$'
                 )
             )
         ],
-        SELECT_TARGET_ROUTES: [],
-        REACTION_ROUTES: []
+        SELECT_TARGET_ROUTES: [
+            CallbackQueryHandler(
+                select_target, pattern=(
+                    f'^\d\d?$'
+                )
+            )],
+        SELECT_REACTION_ROUTES: []
     },
     fallbacks=[CommandHandler("battle_cancel", battle_cancel)],
     per_user=False
