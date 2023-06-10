@@ -33,6 +33,7 @@ if __name__ == '__main__':
     battle = Battle(
         blue_team=blue_char,
         red_team=red_char,
+        chat_id=-987654321,
         _id='ffffffffffffffffffffffff'
     )
     print(f'battle: {battle}')

@@ -28,7 +28,7 @@ from repository.mongo import (
     CharacterModel,
     GroupConfigurationModel
 )
-from rpgram import Battle
+from rpgram import Battle, Dice
 from rpgram.characters import PlayerCharacter
 from random import randint
 
@@ -53,19 +53,39 @@ CALLBACK_PHYSICAL_ATTACK = 'physical_attack'
 CALLBACK_PRECISION_ATTACK = 'precision_attack'
 CALLBACK_MAGICAL_ATTACK = 'magical_attack'
 
+ATTACK_TYPE = {
+    CALLBACK_PHYSICAL_ATTACK: '💥',
+    CALLBACK_PRECISION_ATTACK: '💫',
+    CALLBACK_MAGICAL_ATTACK: '✨',
+}
 ACTIONS = {
     CALLBACK_PHYSICAL_ATTACK: 'Ataque Físico',
     CALLBACK_PRECISION_ATTACK: 'Ataque de Precisão',
     CALLBACK_MAGICAL_ATTACK: 'Ataque Mágico',
 }
+ACTIONS_LABELS = {
+    CALLBACK_PHYSICAL_ATTACK: f'ATAQUE FÍSICO 💥',
+    CALLBACK_PRECISION_ATTACK: f'ATAQUE DE PRECISÃO 💫',
+    CALLBACK_MAGICAL_ATTACK: f'ATAQUE MÁGICO ✨',
+}
+
 
 # REACTIONS
 CALLBACK_DODGE = 'dodge'
 CALLBACK_DEFEND = 'defend'
 
+DEFENSE_TYPE = {
+    CALLBACK_PHYSICAL_ATTACK: '🛡',
+    CALLBACK_PRECISION_ATTACK: '🛡',
+    CALLBACK_MAGICAL_ATTACK: '🔮',
+}
 REACTIONS = {
     CALLBACK_DODGE: 'Esquivar',
     CALLBACK_DEFEND: 'Defender'
+}
+REACTIONS_LABELS = {
+    CALLBACK_DODGE: f'ESQUIVAR 🥾',
+    CALLBACK_DEFEND: f'DEFENDER 🛡'
 }
 
 # TEAMS
@@ -74,19 +94,7 @@ TEAMS = {
     CALLBACK_ENTER_RED_TEAM: 'Vermelho'
 }
 
-# ATTACK TYPE
-ATTACK_TYPE = {
-    CALLBACK_PHYSICAL_ATTACK: '💥',
-    CALLBACK_PRECISION_ATTACK: '💫',
-    CALLBACK_MAGICAL_ATTACK: '✨',
-}
-DEFENSE_TYPE = {
-    CALLBACK_PHYSICAL_ATTACK: '🛡',
-    CALLBACK_PRECISION_ATTACK: '🛡',
-    CALLBACK_MAGICAL_ATTACK: '🔮',
-}
-
-
+# COMMANDS
 COMMANDS = ['duel', 'duelo']
 
 
@@ -97,6 +105,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     character_model = CharacterModel()
     user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
     character_id = character_model.get(user_id, fields={'_id': 1})
     battle = battle_model.get(
         query={'$or': [
@@ -107,7 +116,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not battle:
         character = character_model.get(user_id)
-        battle = Battle(blue_team=[character], red_team=[])
+        battle = Battle(blue_team=[character], red_team=[], chat_id=chat_id)
         battle_result = battle_model.save(battle)
         battle_id = battle_result.inserted_id
         inline_keyboard = [[
@@ -141,25 +150,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == CALLBACK_START_BATTLE:
         user_name = battle.current_player.player_name
-        inline_keyboard = [
-            [
-                InlineKeyboardButton(
-                    "ATAQUE FÍSICO", callback_data=CALLBACK_PHYSICAL_ATTACK
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "ATAQUE DE PRECISÃO",
-                    callback_data=CALLBACK_PRECISION_ATTACK
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "ATAQUE MÁGICO", callback_data=CALLBACK_MAGICAL_ATTACK
-                )
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        reply_markup = get_action_inline_keyboard()
         await query.answer('A BATALHA COMEÇOU!!!')
         await query.edit_message_text(
             f'A batalha começou!\n'
@@ -254,15 +245,8 @@ async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
         target = battle.turn_order[target_index]
         target_user_name = target.player_name
         action = context.chat_data['action']
-        inline_keyboard = [
-            [
-                InlineKeyboardButton("DEFENDER", callback_data=CALLBACK_DEFEND)
-            ],
-            [
-                InlineKeyboardButton("ESQUIVAR", callback_data=CALLBACK_DODGE)
-            ],
-        ]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+
+        reply_markup = get_reaction_inline_keyboard()
         await query.answer(f'Você selecionou: "{target.name}"')
         await query.edit_message_text(
             f'{target.name} ({target_user_name}), '
@@ -296,8 +280,8 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         action = context.chat_data['action']
         acao = ACTIONS[action]
         reaction = query.data
-        attacker_dice = throw_dice()
-        target_dice = throw_dice()
+        attacker_dice = Dice(20)
+        target_dice = Dice(20)
         report = battle.action(
             attacker_char=attacker_char,
             target=target_char,
@@ -309,38 +293,50 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         battle_model.save(battle)
         character_model.save(report['attacker'])
         character_model.save(report['target'])
-        attacker_dice = report['attack']['dice']
-        target_dice = report['defense']['dice']
 
-        if report['is_miss']:
-            hit = report['attack']['hit']
-            total_hit = report['attack']['total_hit']
-            evasion = report['defense']['evasion']
-            total_evasion = report['defense']['total_evasion']
+        attacker_dice = report['attack']['dice']
+        hit = report['attack']['hit']
+        total_hit = report['attack']['total_hit']
+        accuracy = report['attack']['accuracy']
+        atk = report['attack']['atk']
+        total_atk = report['attack']['total_atk']
+        atk_type = ATTACK_TYPE[report['attack']['action']]
+
+        target_dice = report['defense']['dice']
+        evasion = report['defense']['evasion']
+        total_evasion = report['defense']['total_evasion']
+        dodge_score = report['defense']['dodge_score']
+        _def = report['defense']['def']
+        total_def = report['defense']['total_def']
+        damage = report['defense']['damage']
+        def_type = DEFENSE_TYPE[report['attack']['action']]
+
+        if report['defense']['is_miss']:
             text += f'{target_char.name} esquivou do "{acao}"!\n\n'
             text += (
                 f'{attacker_char.name} {total_hit} ({hit})🎯 '
                 f'pontos de ACERTO.\n'
+                f'Chance de ACERTO: {accuracy:.2f}%.\n'
             )
             text += (
                 f'{target_char.name} {total_evasion} ({evasion})🥾 '
                 f'pontos de EVASÃO.\n'
+                f'Valor da EVASÃO: {dodge_score:.2f}%.\n'
             )
-        elif report["damage"] >= 0:
-            total_atk = report['attack']['total_atk']
-            atk = report['attack']['atk']
-            total_def = report['defense']['total_def']
-            _def = report['defense']['def']
-            atk_type = ATTACK_TYPE[report['attack']['action']]
-            def_type = DEFENSE_TYPE[report['attack']['action']]
+        elif damage >= 0:
             if report['defense']['reaction'] == 'dodge':
+                half_def = _def // 2
                 text += (
                     f'{target_char.name} falhou em esquivar '
-                    f'e recebeu o dano completo. '
+                    f'e como penalidade bloqueou somente com '
+                    f'50% ({half_def}){def_type} da defesa.\n\n'
+                    f'Chance de ACERTO: {accuracy:.2f}% [{total_hit}]🎯.\n'
+                    f'Valor da EVASÃO: '
+                    f'{dodge_score:.2f}% [{total_evasion}]🥾.\n\n'
                 )
             text += (
                 f'{attacker_char.name} causou '
-                f'{report["damage"]} {atk_type} de dano '
+                f'{damage}{atk_type} de dano '
                 f'em {target_char.name} com o "{acao}".\n\n'
             )
             text += (
@@ -352,44 +348,26 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f'{target_char.name} defendeu com {total_def} '
                     f'({_def}){def_type} pontos.\n'
                 )
-        elif report["damage"] < 0:
+        elif damage < 0:
             text += (
                 f'{attacker_char.name} curou '
-                f'{-report["damage"]}💞 pontos de vida '
+                f'{-damage}💞 pontos de vida '
                 f'de {target_char.name}.\n'
             )
 
-        text += f'\nO dado 🎲 de {attacker_char.name} foi {attacker_dice}.\n'
-        text += f'O dado 🎲 de {target_char.name} foi {target_dice}.\n'
+        text += f'\n{attacker_char.name}(🎲): {attacker_dice}.\n'
+        text += f'{target_char.name}(🎲): {target_dice}.\n'
 
-        inline_keyboard = [
-            [
-                InlineKeyboardButton(
-                    "ATAQUE FÍSICO", callback_data=CALLBACK_PHYSICAL_ATTACK
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "ATAQUE DE PRECISÃO",
-                    callback_data=CALLBACK_PRECISION_ATTACK
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "ATAQUE MÁGICO", callback_data=CALLBACK_MAGICAL_ATTACK
-                )
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        reply_markup = get_action_inline_keyboard()
         callback = SELECT_ACTION_ROUTES
 
         winner = battle.get_winner()
         if winner:
             if winner in TEAMS.keys():
                 text += (
-                    f'\nA BATALHA TERMINOU! '
+                    f'\nA batalha terminou!\n'
                     f'O vencedor foi o Time {TEAMS[winner]}!!!\n\n'
-                )
+                ).upper()
             elif winner == 'draw':
                 text += '\nA BATALHA TERMINOU EMPATADA!\n\n'
             group_config_model = GroupConfigurationModel()
@@ -430,8 +408,44 @@ async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-def throw_dice(dice_type: int = 20) -> int:
-    return randint(1, dice_type)
+def get_action_inline_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                ACTIONS_LABELS[CALLBACK_PHYSICAL_ATTACK],
+                callback_data=CALLBACK_PHYSICAL_ATTACK
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                ACTIONS_LABELS[CALLBACK_PRECISION_ATTACK],
+                callback_data=CALLBACK_PRECISION_ATTACK
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                ACTIONS_LABELS[CALLBACK_MAGICAL_ATTACK],
+                callback_data=CALLBACK_MAGICAL_ATTACK
+            )
+        ]
+    ])
+
+
+def get_reaction_inline_keyboard():
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                REACTIONS_LABELS[CALLBACK_DEFEND],
+                callback_data=CALLBACK_DEFEND
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                REACTIONS_LABELS[CALLBACK_DODGE],
+                callback_data=CALLBACK_DODGE
+            )
+        ],
+    ])
 
 
 BATTLE_HANDLER = ConversationHandler(

@@ -8,10 +8,13 @@ from typing import List, Union
 
 from bson import ObjectId
 
+from rpgram import Dice
 from rpgram.characters import BaseCharacter
 from rpgram.errors import CurrentPlayerTurnError, BattleNotEndError
+import random
 
 ACTION_LIST = ['physical_attack', 'precision_attack', 'magical_attack']
+REACTION_LIST = ['defend', 'dodge']
 
 
 class Battle:
@@ -19,6 +22,7 @@ class Battle:
         self,
         blue_team: List[BaseCharacter],
         red_team: List[BaseCharacter],
+        chat_id: int,
         turn_count: int = 1,
         current_player: BaseCharacter = None,
         started: bool = False,
@@ -38,6 +42,7 @@ class Battle:
         self.__turn_count = int(turn_count)
         self.__turn_order = []
         self.started = started
+        self.__chat_id = chat_id
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
@@ -113,7 +118,7 @@ class Battle:
         self, attacker_char: BaseCharacter = None,
         target: Union[str, BaseCharacter] = 'self',
         action: str = 'attack', reaction: str = 'defend',
-        attacker_dice: int = 1, target_dice: int = 1,
+        attacker_dice: Dice = None, target_dice: Dice = None,
     ) -> None:
         if not self.started:
             self.started = True
@@ -138,6 +143,11 @@ class Battle:
                 f'Deve ser uma string ou um objeto do tipo BaseCharacter.'
                 f'target fornecido: {target}.'
             )
+
+        if attacker_dice is None:
+            attacker_dice = Dice(1)
+        if target_dice is None:
+            target_dice = Dice(1)
 
         # Executando Ação
         if action in ACTION_LIST:
@@ -188,8 +198,8 @@ class Battle:
         target_char: BaseCharacter,
         action: str,
         reaction: str,
-        attacker_dice: int,
-        target_dice: int,
+        attacker_dice: Dice,
+        target_dice: Dice,
     ) -> str:
         if action == 'physical_attack':
             atk = attacker_char.combat_stats.physical_attack
@@ -200,41 +210,46 @@ class Battle:
         elif action == 'magical_attack':
             atk = attacker_char.combat_stats.magical_attack
             _def = target_char.combat_stats.magical_defense
+        else:
+            raise ValueError(
+                f'"{action}" não é uma ação válida. '
+                f'Use uma das seguintes ações: "{ACTION_LIST}".'
+            )
 
         hit = attacker_char.combat_stats.hit
         evasion = target_char.combat_stats.evasion
-        attacker_multiplier = (1 + (attacker_dice * 0.025))
-        target_multiplier = (1 + (target_dice * 0.025))
-        total_atk = int(atk * attacker_multiplier)
-        total_hit = int(hit * attacker_multiplier)
-        total_def = int(_def * target_multiplier)
-        total_evasion = int(evasion * target_multiplier)
 
-        total_atk = total_atk if (
-            total_atk - atk) > attacker_dice else atk + attacker_dice
-        total_hit = total_hit if (
-            total_hit - hit) > attacker_dice else hit + attacker_dice
-        total_def = total_def if (
-            total_def - _def) > target_dice else _def + target_dice
-        total_evasion = total_evasion if (
-            total_evasion - evasion) > target_dice else evasion + target_dice
+        attacker_dice.throw()
+        target_dice.throw()
+
+        total_atk = self.get_total_value(atk, attacker_dice)
+        total_hit = self.get_total_value(hit, attacker_dice)
+        total_def = self.get_total_value(_def, target_dice)
+        total_evasion = self.get_total_value(evasion, target_dice)
+
         is_miss = False
-
+        dodge_score = random.random()
+        accuracy = self.get_accuracy(
+            hit=total_hit,
+            evasion=total_evasion,
+            attacker_dice=attacker_dice,
+            target_dice=target_dice
+        )
         if reaction == 'dodge':
-            if total_hit >= total_evasion:
-                damage = total_atk * -1
-            else:
-                damage = 0
+            if dodge_score >= accuracy:
                 is_miss = True
+                damage = 0
+            else:
+                damage = (_def // 2) - total_atk
         elif reaction == 'defend':
             damage = total_def - total_atk
-            damage = min(damage, 0)
         else:
             raise ValueError(
-                f'Essa reação não existe.'
-                f'Use uma das seguintes reações: "defend, dodge".'
+                f'"{reaction}" não é uma reação válida. '
+                f'Use uma das seguintes reações: "{REACTION_LIST}".'
             )
 
+        damage = min(damage, 0)
         damage = damage
         target_char.combat_stats.hp = damage
 
@@ -243,7 +258,9 @@ class Battle:
             'attacker_char': attacker_char,
             'attack': {
                 'action': action,
-                'dice': attacker_dice,
+                'accuracy': (accuracy * 100),
+                'dice': attacker_dice.value,
+                'is_critical': attacker_dice.is_critical,
                 'atk': atk,
                 'hit': hit,
                 'total_atk': total_atk,
@@ -253,17 +270,48 @@ class Battle:
             'target_char': target_char,
             'defense': {
                 'reaction': reaction,
-                'dice': target_dice,
+                'dodge_score': (dodge_score * 100),
+                'dice': target_dice.value,
+                'is_critical': target_dice.is_critical,
                 'def': _def,
                 'evasion': evasion,
                 'total_def': total_def,
                 'total_evasion': total_evasion,
+                'damage': (damage * -1),
+                'is_miss': is_miss
             },
-            'damage': (damage * -1),
-            'is_miss': is_miss
         }
 
         return self.report[self.turn_count]
+
+    def get_total_value(self, base_value: int, dice: Dice) -> int:
+        multiplier = (1 + (dice.value * 0.025))
+        boosted_value = int(base_value * multiplier)
+        if (boosted_value - base_value) >= dice.value:
+            result = boosted_value
+        else:
+            result = base_value + dice.value
+
+        if dice.is_critical:
+            result = result * 2
+
+        return result
+
+    def get_accuracy(
+        self,
+        hit: int,
+        evasion: int,
+        attacker_dice: Dice,
+        target_dice: Dice
+    ) -> float:
+        accuracy = hit / evasion
+        accuracy = min(accuracy, 1.0)
+        dice_bonus = (attacker_dice.value - target_dice.value) / 100
+        accuracy = accuracy + dice_bonus
+        accuracy = min(accuracy, 1.0)
+        accuracy = max(accuracy, 0.0)
+
+        return accuracy
 
     def get_winner(self) -> str:
         blue_team_alive = any([char.is_alive() for char in self.__blue_team])
@@ -320,6 +368,10 @@ class Battle:
         return deepcopy(self.__red_team)
 
     @property
+    def chat_id(self) -> int:
+        return self.__chat_id
+
+    @property
     def turn_count(self) -> int:
         return self.__turn_count
 
@@ -337,6 +389,7 @@ class Battle:
         return dict(
             blue_team=[char._id for char in self.__blue_team],
             red_team=[char._id for char in self.__red_team],
+            chat_id=self.chat_id,
             turn_count=self.turn_count,
             current_player=self.current_player._id,
             started=self.started,
@@ -409,6 +462,7 @@ if __name__ == '__main__':
     battle = Battle(
         blue_team=[aragorn, frodo],
         red_team=[gandalf],
+        chat_id=-123456789,
         current_player=gandalf
     )
     print(f'Turno: {battle.turn_count}')
