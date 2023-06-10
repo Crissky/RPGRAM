@@ -16,6 +16,7 @@ from bot.conversation.constants import (
     PREFIX_COMMANDS
 )
 from bot.conversation.add_stats import COMMANDS as add_stats_commands
+from bot.conversation.battle import COMMANDS as battle_commands
 from bot.conversation.config_group import COMMANDS as config_group_commands
 from bot.conversation.create_char import COMMANDS as create_char_commands
 from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
@@ -41,6 +42,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     view_char_cmd = command_to_string(view_char_commands)
     add_stats_cmd = command_to_string(add_stats_commands)
     config_group_cmd = command_to_string(config_group_commands)
+    battle_cmd = command_to_string(battle_commands)
 
     text = escape_basic_markdown_v2(
         f'{SECTION_HEAD.format("COMANDOS")}\n\n'
@@ -80,9 +82,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'    "multiplier_xp": decimal[0-5]. Multiplicador de XP.\n'
         f'    "char_multiplier_xp": decimal[0-10]. Multiplicador do bônus de '
         f'XP baseado no nível do personagem.\n'
-        f'Atalhos: {config_group_cmd}\n'
+        f'Atalhos: {config_group_cmd}\n\n'
+        
+        f'CRIAR BATALHA: /{battle_commands[0]}\n'
+        f'Atalhos: {battle_cmd}\n'
     )
-    print(text)
     await update.effective_message.reply_markdown_v2(text)
 
 
