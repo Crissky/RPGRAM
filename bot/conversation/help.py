@@ -56,13 +56,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'CRIAR PERSONAGEM: /{create_char_commands[0]}\n'
         f'Atalhos: {create_char_cmd}\n\n'
 
-        f'INFORMAÇÃES DO GRUPO: /{view_group_commands[0]}\n'
+        f'INFORMAÇÕES DO GRUPO: /{view_group_commands[0]}\n'
         f'Atalhos: {view_group_cmd}\n\n'
 
-        f'INFORMAÇÃES DO JOGADOR: /{view_player_commands[0]}\n'
+        f'INFORMAÇÕES DO JOGADOR: /{view_player_commands[0]}\n'
         f'Atalhos: {view_player_cmd}\n\n'
 
-        f'INFORMAÇÃES DO PERSONAGEM: /{view_char_commands[0]}\n'
+        f'INFORMAÇÕES DO PERSONAGEM: /{view_char_commands[0]}\n'
         f'Atalhos: {view_char_cmd}\n\n'
 
         f'ADICIONAR ESTATISTICAS: /{add_stats_commands[0]}\n'
