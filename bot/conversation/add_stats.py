@@ -1,3 +1,8 @@
+'''
+Módulo responsável por exibir e adicionar pontos de stats dos personagens.
+'''
+
+
 from telegram import Update
 from telegram.constants import ChatAction, ParseMode
 from telegram.ext import (

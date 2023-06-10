@@ -1,3 +1,8 @@
+'''
+Módulo responsável por gerenciar os comandos de ajuda.
+'''
+
+
 from typing import Iterable
 from telegram import Update
 from telegram.ext import (

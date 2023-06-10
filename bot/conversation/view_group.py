@@ -1,7 +1,8 @@
 '''
-Arquivo responsável por gerenciar as requisiçães de visualização de 
+Módulo responsável por gerenciar as requisiçães de visualização de 
 informações dos grupos.
 '''
+
 
 from telegram import Update
 from telegram.ext import (

@@ -1,3 +1,9 @@
+'''
+Módulo responsável por gerenciar o ganho de xp dos jogadores ao enviarem 
+mensagens nos grupos.
+'''
+
+
 from random import randint
 
 from telegram import Update

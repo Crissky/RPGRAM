@@ -1,6 +1,7 @@
 '''
-Arquivo responsável por criar um personagem.
+Módulo responsável pela criação de personagens.
 '''
+
 
 import re
 from telegram import (

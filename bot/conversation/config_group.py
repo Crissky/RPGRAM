@@ -1,3 +1,8 @@
+'''
+Módulo responsável por gerenciar o comando de configuração de grupo.
+'''
+
+
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
