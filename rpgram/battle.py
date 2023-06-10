@@ -9,7 +9,9 @@ from typing import List, Union
 from bson import ObjectId
 
 from rpgram.characters import BaseCharacter
-from rpgram.errors import CurrentPlayerTurnError
+from rpgram.errors import CurrentPlayerTurnError, BattleNotEndError
+
+ACTION_LIST = ['physical_attack', 'precision_attack', 'magical_attack']
 
 
 class Battle:
@@ -39,6 +41,7 @@ class Battle:
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
+        self.report = {}
         self.__populate_turn_order(current_player)
 
     def __populate_turn_order(
@@ -77,7 +80,7 @@ class Battle:
     def enter_battle(
         self, player: BaseCharacter, team: str, reorder: bool = False
     ) -> None:
-        if player in self.turn_order:
+        if player in self.__turn_order:
             raise ValueError(
                 f'O jogador "{player.name}" já está na batalha.'
             )
@@ -107,27 +110,49 @@ class Battle:
         self.pass_turn()
 
     def action(
-        self, character: BaseCharacter = None,
-        action: str = 'attack', target: str = 'self',
-        char_dice: int = 1, target_dice: int = 1,
+        self, attacker_char: BaseCharacter = None,
+        target: Union[str, BaseCharacter] = 'self',
+        action: str = 'attack', reaction: str = 'defend',
+        attacker_dice: int = 1, target_dice: int = 1,
     ) -> None:
         if not self.started:
             self.started = True
 
-        if not character:
-            character = self.current_player
-
-        if character != self.current_player:
+        # Definindo o atacante
+        if not attacker_char or attacker_char == self.current_player:
+            attacker_char = self.current_player
+        if attacker_char != self.current_player:
             raise CurrentPlayerTurnError(
-                f'Não é o turno de "{character.name}".'
+                f'Não é o turno de "{attacker_char.name}".'
             )
 
-        target_char = self.get_target(character, target)
+        # Definindo o alvo
+        if isinstance(target, str):
+            target_char = self.get_target(attacker_char, target)
+        elif isinstance(target, BaseCharacter):
+            index = self.__turn_order.index(target)
+            target_char = self.__turn_order[index]
+        else:
+            raise TypeError(
+                f'target não é um tipo válido.'
+                f'Deve ser uma string ou um objeto do tipo BaseCharacter.'
+                f'target fornecido: {target}.'
+            )
 
         # Executando Ação
-        if action in ['physical_attack', 'precision_attack', 'magical_attack']:
+        if action in ACTION_LIST:
             report = self.basic_attack(
-                character, target_char, action, char_dice, target_dice
+                attacker_char=attacker_char,
+                target_char=target_char,
+                action=action,
+                reaction=reaction,
+                attacker_dice=attacker_dice,
+                target_dice=target_dice
+            )
+        else:
+            raise ValueError(
+                f'Ataque básico "{action}" não existe.'
+                f'Use um dos seguintes valores: {ACTION_LIST}.'
             )
 
         self.next_turn()
@@ -159,35 +184,86 @@ class Battle:
 
     def basic_attack(
         self,
-        attacker: BaseCharacter,
-        target: BaseCharacter,
+        attacker_char: BaseCharacter,
+        target_char: BaseCharacter,
         action: str,
-        char_dice: int,
+        reaction: str,
+        attacker_dice: int,
         target_dice: int,
     ) -> str:
         if action == 'physical_attack':
-            atk = attacker.combat_stats.physical_attack
-            deff = target.combat_stats.physical_defense
+            atk = attacker_char.combat_stats.physical_attack
+            _def = target_char.combat_stats.physical_defense
         elif action == 'precision_attack':
-            atk = attacker.combat_stats.precision_attack
-            deff = target.combat_stats.physical_defense
+            atk = attacker_char.combat_stats.precision_attack
+            _def = target_char.combat_stats.physical_defense
         elif action == 'magical_attack':
-            atk = attacker.combat_stats.magical_attack
-            deff = target.combat_stats.magical_defense
+            atk = attacker_char.combat_stats.magical_attack
+            _def = target_char.combat_stats.magical_defense
 
-        total_atk = atk * (1 + (char_dice * 0.05))
-        total_deff = deff * (1 + (target_dice * 0.05))
-        damage = int(total_deff - total_atk)
-        damage = min(damage, 0)
-        target.combat_stats.hp = damage
-        report = (
-            f'Ação: {action} = atk: {atk} ({total_atk}) - '
-            f'def: {deff} ({total_deff}) = {abs(damage)}\n'
+        hit = attacker_char.combat_stats.hit
+        evasion = target_char.combat_stats.evasion
+        attacker_multiplier = (1 + (attacker_dice * 0.025))
+        target_multiplier = (1 + (target_dice * 0.025))
+        total_atk = int(atk * attacker_multiplier)
+        total_hit = int(hit * attacker_multiplier)
+        total_def = int(_def * target_multiplier)
+        total_evasion = int(evasion * target_multiplier)
 
-            f'{attacker.name} causou {abs(damage)} de dano em {target.name}.'
-        )
+        total_atk = total_atk if (
+            total_atk - atk) > attacker_dice else atk + attacker_dice
+        total_hit = total_hit if (
+            total_hit - hit) > attacker_dice else hit + attacker_dice
+        total_def = total_def if (
+            total_def - _def) > target_dice else _def + target_dice
+        total_evasion = total_evasion if (
+            total_evasion - evasion) > target_dice else evasion + target_dice
+        is_miss = False
 
-        return report
+        if reaction == 'dodge':
+            if total_hit >= total_evasion:
+                damage = total_atk * -1
+            else:
+                damage = 0
+                is_miss = True
+        elif reaction == 'defend':
+            damage = total_def - total_atk
+            damage = min(damage, 0)
+        else:
+            raise ValueError(
+                f'Essa reação não existe.'
+                f'Use uma das seguintes reações: "defend, dodge".'
+            )
+
+        damage = damage
+        target_char.combat_stats.hp = damage
+
+        self.report[self.turn_count] = {
+            'attacker': attacker_char,
+            'attacker_char': attacker_char,
+            'attack': {
+                'action': action,
+                'dice': attacker_dice,
+                'atk': atk,
+                'hit': hit,
+                'total_atk': total_atk,
+                'total_hit': total_hit,
+            },
+            'target': target_char,
+            'target_char': target_char,
+            'defense': {
+                'reaction': reaction,
+                'dice': target_dice,
+                'def': _def,
+                'evasion': evasion,
+                'total_def': total_def,
+                'total_evasion': total_evasion,
+            },
+            'damage': (damage * -1),
+            'is_miss': is_miss
+        }
+
+        return self.report[self.turn_count]
 
     def get_winner(self) -> str:
         blue_team_alive = any([char.is_alive() for char in self.__blue_team])
@@ -195,12 +271,44 @@ class Battle:
         winner = None
 
         if not blue_team_alive and not red_team_alive:
-            winner = 'EMPATE'
+            winner = 'draw'
         elif blue_team_alive and not red_team_alive:
-            winner = 'BLUE'
+            winner = 'blue'
         elif red_team_alive and not blue_team_alive:
-            winner = 'RED'
+            winner = 'red'
         return winner
+
+    def share_xp(self, multiplier: float = 1.0) -> dict:
+        winner = self.get_winner()
+        if not winner:
+            raise BattleNotEndError(
+                'Não é possível dividir XP em um combate não finalizado.'
+            )
+
+        blue_xp = int(sum([
+            char.base_stats.level for char in self.__red_team
+        ]) * 5 * multiplier // len(self.__blue_team)) + 10 + self.turn_count
+        red_xp = int(sum([
+            char.base_stats.level for char in self.__blue_team
+        ]) * 5 * multiplier // len(self.__red_team)) + 10 + self.turn_count
+
+        if winner == 'draw':
+            blue_xp = blue_xp // 2
+            red_xp = red_xp // 2
+        elif winner == 'blue':
+            red_xp = red_xp // 2
+        elif winner == 'red':
+            blue_xp = blue_xp // 2
+
+        for char in self.__blue_team:
+            char.base_stats.xp = blue_xp
+        for char in self.__red_team:
+            char.base_stats.xp = red_xp
+
+        return {
+            'blue': blue_xp,
+            'red': red_xp
+        }
 
     # Getters
     @property
@@ -239,13 +347,17 @@ class Battle:
 
     def get_teams_sheet(self) -> str:
         blue_team = "\n".join([
-            (f"    {i+1}: {char.name} "
-            f'HP: {char.cs.current_hit_points}/{char.cs.hit_points}')
+            (
+                f"    {i+1}: {char.name} "
+                f'HP: {char.cs.show_hp}'
+            )
             for i, char in enumerate(self.__blue_team)
         ])
         red_team = "\n".join([
-            (f"    {i+1}: {char.name} "
-            f'HP: {char.cs.current_hit_points}/{char.cs.hit_points}')
+            (
+                f"    {i+1}: {char.name} "
+                f'HP: {char.cs.show_hp}'
+            )
             for i, char in enumerate(self.__red_team)
         ])
         return (
@@ -257,8 +369,8 @@ class Battle:
 
     def get_sheet(self) -> str:
         turn_order = "\n".join([
-            f"    {i+1}: {char.name}"
-            for i, char in enumerate(self.turn_order)
+            f"    {i+1}: {char.name} HP: {char.cs.show_hp}"
+            for i, char in enumerate(self.__turn_order)
         ])
         return (
             f'Turno: {self.turn_count}\n'

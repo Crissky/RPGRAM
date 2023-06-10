@@ -1,5 +1,14 @@
+'''
+Módulo responsável por gerenciar as batalhas
+
+context.chat_data['battle_response'] -> Message que exibe informações da luta
+context.chat_data['battle_id'] -> _id da batalha
+context.chat_data['action'] -> Ação do atacante
+context.chat_data['target_index'] -> Índice do alvo na lista "turn_order"
+'''
+
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ChatAction
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -14,8 +23,14 @@ from bot.conversation.constants import (
 )
 from bot.decorators import need_have_char
 from bot.decorators import print_basic_infos
-from repository.mongo import BattleModel, CharacterModel
+from repository.mongo import (
+    BattleModel,
+    CharacterModel,
+    GroupConfigurationModel
+)
 from rpgram import Battle
+from rpgram.characters import PlayerCharacter
+from random import randint
 
 # ROUTES
 (
@@ -53,6 +68,25 @@ REACTIONS = {
     CALLBACK_DEFEND: 'Defender'
 }
 
+# TEAMS
+TEAMS = {
+    CALLBACK_ENTER_BLUE_TEAM: 'Azul',
+    CALLBACK_ENTER_RED_TEAM: 'Vermelho'
+}
+
+# ATTACK TYPE
+ATTACK_TYPE = {
+    CALLBACK_PHYSICAL_ATTACK: '💥',
+    CALLBACK_PRECISION_ATTACK: '💫',
+    CALLBACK_MAGICAL_ATTACK: '✨',
+}
+DEFENSE_TYPE = {
+    CALLBACK_PHYSICAL_ATTACK: '🛡',
+    CALLBACK_PRECISION_ATTACK: '🛡',
+    CALLBACK_MAGICAL_ATTACK: '🔮',
+}
+
+
 COMMANDS = ['duel', 'duelo']
 
 
@@ -60,7 +94,6 @@ COMMANDS = ['duel', 'duelo']
 @print_basic_infos
 async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('battle_start')
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     user_id = update.effective_user.id
@@ -98,7 +131,6 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ENTER_BATTLE_ROUTES
 async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('enter_battle')
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
@@ -175,7 +207,6 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # SELECT_ACTION_ROUTES
 async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('select_action')
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
@@ -209,7 +240,6 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # SELECT_TARGET_ROUTES
 async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('select_target')
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
@@ -238,7 +268,7 @@ async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{target.name} ({target_user_name}), '
             f'você foi alvo de "{ACTIONS[action]}".\n'
             f'Selecione sua reação.\n\n'
-            f'{battle.get_teams_sheet()}',
+            f'{battle.get_sheet()}\n',
             reply_markup=reply_markup,
         )
         return SELECT_REACTION_ROUTES
@@ -248,6 +278,146 @@ async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # SELECT_REACTION_ROUTES
+async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('select_reaction')
+    battle_model = BattleModel()
+    character_model = CharacterModel()
+    query = update.callback_query
+    user_id = update.effective_user.id
+    battle_id = context.chat_data['battle_id']
+    battle = battle_model.get(battle_id)
+    character = character_model.get(user_id)
+    target_index = context.chat_data['target_index']
+
+    if character == battle.turn_order[target_index]:
+        text = ''
+        attacker_char = battle.current_player
+        target_char = character
+        action = context.chat_data['action']
+        acao = ACTIONS[action]
+        reaction = query.data
+        attacker_dice = throw_dice()
+        target_dice = throw_dice()
+        report = battle.action(
+            attacker_char=attacker_char,
+            target=target_char,
+            action=action,
+            reaction=reaction,
+            attacker_dice=attacker_dice,
+            target_dice=target_dice,
+        )
+        battle_model.save(battle)
+        character_model.save(report['attacker'])
+        character_model.save(report['target'])
+        attacker_dice = report['attack']['dice']
+        target_dice = report['defense']['dice']
+
+        if report['is_miss']:
+            hit = report['attack']['hit']
+            total_hit = report['attack']['total_hit']
+            evasion = report['defense']['evasion']
+            total_evasion = report['defense']['total_evasion']
+            text += f'{target_char.name} esquivou do "{acao}"!\n\n'
+            text += (
+                f'{attacker_char.name} {total_hit} ({hit})🎯 '
+                f'pontos de ACERTO.\n'
+            )
+            text += (
+                f'{target_char.name} {total_evasion} ({evasion})🥾 '
+                f'pontos de EVASÃO.\n'
+            )
+        elif report["damage"] >= 0:
+            total_atk = report['attack']['total_atk']
+            atk = report['attack']['atk']
+            total_def = report['defense']['total_def']
+            _def = report['defense']['def']
+            atk_type = ATTACK_TYPE[report['attack']['action']]
+            def_type = DEFENSE_TYPE[report['attack']['action']]
+            if report['defense']['reaction'] == 'dodge':
+                text += (
+                    f'{target_char.name} falhou em esquivar '
+                    f'e recebeu o dano completo. '
+                )
+            text += (
+                f'{attacker_char.name} causou '
+                f'{report["damage"]} {atk_type} de dano '
+                f'em {target_char.name} com o "{acao}".\n\n'
+            )
+            text += (
+                f'{attacker_char.name} atacou com {total_atk} '
+                f'({atk}){atk_type} pontos.\n'
+            )
+            if report['defense']['reaction'] != 'dodge':
+                text += (
+                    f'{target_char.name} defendeu com {total_def} '
+                    f'({_def}){def_type} pontos.\n'
+                )
+        elif report["damage"] < 0:
+            text += (
+                f'{attacker_char.name} curou '
+                f'{-report["damage"]}💞 pontos de vida '
+                f'de {target_char.name}.\n'
+            )
+
+        text += f'\nO dado 🎲 de {attacker_char.name} foi {attacker_dice}.\n'
+        text += f'O dado 🎲 de {target_char.name} foi {target_dice}.\n'
+
+        inline_keyboard = [
+            [
+                InlineKeyboardButton(
+                    "ATAQUE FÍSICO", callback_data=CALLBACK_PHYSICAL_ATTACK
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "ATAQUE DE PRECISÃO",
+                    callback_data=CALLBACK_PRECISION_ATTACK
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "ATAQUE MÁGICO", callback_data=CALLBACK_MAGICAL_ATTACK
+                )
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        callback = SELECT_ACTION_ROUTES
+
+        winner = battle.get_winner()
+        if winner:
+            if winner in TEAMS.keys():
+                text += (
+                    f'\nA BATALHA TERMINOU! '
+                    f'O vencedor foi o Time {TEAMS[winner]}!!!\n\n'
+                )
+            elif winner == 'draw':
+                text += '\nA BATALHA TERMINOU EMPATADA!\n\n'
+            group_config_model = GroupConfigurationModel()
+            chat_id = update.effective_chat.id
+            group = group_config_model.get(chat_id)
+            multiplier_xp = group.multiplier_xp
+            report_xp = battle.share_xp(multiplier_xp)
+            reply_markup = None
+            battle_model.delete(battle_id)
+            callback = ConversationHandler.END
+            text += (
+                f'O Time Azul recebeu {report_xp["blue"]} de XP e o '
+                f'Time Vermelho recebeu {report_xp["red"]} de XP.\n'
+            )
+            for char in battle.turn_order:
+                if isinstance(char, PlayerCharacter):
+                    character_model.save(char)
+
+        await query.edit_message_text(
+            f'{text}\n'
+            f'{battle.get_sheet()}\n',
+            reply_markup=reply_markup,
+        )
+
+        return callback
+    else:
+        await query.answer('Você não é alvo do ataque!!', show_alert=True)
+        return SELECT_REACTION_ROUTES
 
 
 async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -258,6 +428,11 @@ async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await response.delete()
 
     return ConversationHandler.END
+
+
+def throw_dice(dice_type: int = 20) -> int:
+    return randint(1, dice_type)
+
 
 BATTLE_HANDLER = ConversationHandler(
     entry_points=[
@@ -293,9 +468,19 @@ BATTLE_HANDLER = ConversationHandler(
                 select_target, pattern=(
                     f'^\d\d?$'
                 )
-            )],
-        SELECT_REACTION_ROUTES: []
+            )
+        ],
+        SELECT_REACTION_ROUTES: [
+            CallbackQueryHandler(
+                select_reaction, pattern=(
+                    f'^{CALLBACK_DODGE}|{CALLBACK_DEFEND}$'
+                )
+            )
+        ]
     },
-    fallbacks=[CommandHandler("battle_cancel", battle_cancel)],
+    fallbacks=[
+        CommandHandler(
+            ['battle_cancel', 'cancel_battle'], battle_cancel)
+    ],
     per_user=False
 )
