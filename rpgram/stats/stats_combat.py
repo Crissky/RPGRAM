@@ -92,6 +92,12 @@ class CombatStats:
         )
 
     @property
+    def show_hit_points(self) -> str:
+        return f'{self.current_hit_points}/{self.hit_points}'
+
+    show_hp = show_hit_points
+
+    @property
     def initiative(self) -> int:
         return int(
             (self.dexterity * 1.5) +
