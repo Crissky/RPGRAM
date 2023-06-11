@@ -20,8 +20,8 @@ REACTION_LIST = ['defend', 'dodge']
 class Battle:
     def __init__(
         self,
-        blue_team: List[BaseCharacter],
-        red_team: List[BaseCharacter],
+        blue_team: Union[BaseCharacter, List[BaseCharacter]],
+        red_team: Union[BaseCharacter, List[BaseCharacter]],
         chat_id: int,
         turn_count: int = 1,
         current_player: BaseCharacter = None,
@@ -101,6 +101,19 @@ class Battle:
         if reorder or not self.started:
             self.reorder_turn()
 
+    def start_battle(self):
+        if self.blue_team_empty():
+            raise ValueError(
+                'A batalha não pode começar porque a '
+                'equipe azul está vazia.'
+            )
+        elif self.red_team_empty():
+            raise ValueError(
+                'A batalha não pode começar porque a '
+                'equipe vermelha está vazia.'
+            )
+        self.started = True
+
     def skip_player(self):
         self.__turn_order.append(self.__turn_order.pop(0))
 
@@ -121,7 +134,7 @@ class Battle:
         attacker_dice: Dice = None, target_dice: Dice = None,
     ) -> None:
         if not self.started:
-            self.started = True
+            self.start_battle()
 
         # Definindo o atacante
         if not attacker_char or attacker_char == self.current_player:
@@ -358,6 +371,40 @@ class Battle:
             'red': red_xp
         }
 
+    def in_battle(self, character: BaseCharacter) -> bool:
+        return character in self.__turn_order
+
+    def in_blue_team(self, character: BaseCharacter) -> bool:
+        return character in self.__blue_team
+
+    def in_red_team(self, character: BaseCharacter) -> bool:
+        return character in self.__red_team
+
+    def blue_team_empty(self) -> bool:
+        return len(self.__blue_team) == 0
+
+    def red_team_empty(self) -> bool:
+        return len(self.__red_team) == 0
+
+    in_blue = in_blue_team
+    in_red = in_red_team
+    blue_empty = blue_team_empty
+    red_empty = red_team_empty
+
+    def get_char_emojis(self, character: BaseCharacter) -> str:
+        text = ''
+        if self.in_blue_team(character):
+            text = '🔵'
+        elif self.in_red_team(character):
+            text = '🔴'
+        else:
+            text = '🔘'
+
+        if character.is_dead():
+            text += '☠️'
+
+        return text
+
     # Getters
     @property
     def blue_team(self) -> List[BaseCharacter]:
@@ -401,14 +448,14 @@ class Battle:
     def get_teams_sheet(self) -> str:
         blue_team = "\n".join([
             (
-                f"    {i+1}: {char.name} "
+                f"    {self.get_char_emojis(char)}{i+1}: {char.name} "
                 f'HP: {char.cs.show_hp}'
             )
             for i, char in enumerate(self.__blue_team)
         ])
         red_team = "\n".join([
             (
-                f"    {i+1}: {char.name} "
+                f"    {self.get_char_emojis(char)}{i+1}: {char.name} "
                 f'HP: {char.cs.show_hp}'
             )
             for i, char in enumerate(self.__red_team)
@@ -422,7 +469,7 @@ class Battle:
 
     def get_sheet(self) -> str:
         turn_order = "\n".join([
-            f"    {i+1}: {char.name} HP: {char.cs.show_hp}"
+            f"    {self.get_char_emojis(char)}{i+1}: {char.name} HP: {char.cs.show_hp}"
             for i, char in enumerate(self.__turn_order)
         ])
         return (
@@ -436,6 +483,9 @@ class Battle:
 
     def __repr__(self) -> str:
         return self.get_sheet()
+
+    def __eq__(self, other: 'Battle') -> bool:
+        return self.__id == other.__id
 
 
 if __name__ == '__main__':

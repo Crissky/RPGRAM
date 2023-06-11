@@ -9,6 +9,7 @@ context.chat_data['target_index'] -> Índice do alvo na lista "turn_order"
 
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.error import Forbidden
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -90,12 +91,13 @@ REACTIONS_LABELS = {
 
 # TEAMS
 TEAMS = {
-    CALLBACK_ENTER_BLUE_TEAM: 'Azul',
-    CALLBACK_ENTER_RED_TEAM: 'Vermelho'
+    CALLBACK_ENTER_BLUE_TEAM: '🔵Azul',
+    CALLBACK_ENTER_RED_TEAM: '🔴Vermelho'
 }
 
 # COMMANDS
 COMMANDS = ['duel', 'duelo']
+CANCEL_COMMANDS = ['cancel_battle', 'cancel_duel']
 
 
 @need_have_char
@@ -106,16 +108,75 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     character_model = CharacterModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
-    character_id = character_model.get(user_id, fields={'_id': 1})
-    battle = battle_model.get(
-        query={'$or': [
-            {'blue_team': character_id['_id']},
-            {'red_team': character_id['_id']}
+    character = character_model.get(user_id)
+    character_id = character._id
+    chat_battle = battle_model.get(query={'chat_id': chat_id})
+    other_battle = battle_model.get(
+        query={'$and': [
+            {'$or': [{'blue_team': character_id}, {'red_team': character_id}]},
+            {'chat_id': {'$ne': chat_id}}
         ]}
     )
 
-    if not battle:
-        character = character_model.get(user_id)
+    if character.is_dead():
+        await update.message.reply_text(
+            'Seu personagem não pode entrar em batalha com 0 de HP.'
+        )
+    elif chat_battle and not other_battle:
+        battle_id = chat_battle._id
+        if chat_battle.started is True:  # Continua batalha se o bot caiu.
+            user_name = chat_battle.current_player.player_name
+            reply_markup = get_action_inline_keyboard()
+            response = await update.effective_message.reply_text(
+                f'Batalha em retomada!\n'
+                f'{user_name}, escolha sua ação.\n\n'
+                f'{chat_battle.get_sheet()}\n',
+                reply_markup=reply_markup
+            )
+            context.chat_data['battle_response'] = response
+            context.chat_data['battle_id'] = battle_id
+            return SELECT_ACTION_ROUTES
+        else:
+            if (
+                not chat_battle.in_blue_team(character) and
+                chat_battle.red_team_empty()
+            ):
+                team = CALLBACK_ENTER_RED_TEAM
+                chat_battle.enter_battle(character, team)
+                battle_model.save(chat_battle)
+
+            if chat_battle.red_team_empty():
+                inline_keyboard = [[
+                    InlineKeyboardButton(
+                        "ENTRAR", callback_data=CALLBACK_ENTER_RED_TEAM
+                    )
+                ]]
+                reply_markup = InlineKeyboardMarkup(inline_keyboard)
+            else:
+                reply_markup = get_enter_battle_inline_keyboard()
+
+            response = await update.effective_message.reply_text(
+                chat_battle.get_teams_sheet(),
+                reply_markup=reply_markup,
+            )
+            context.chat_data['battle_response'] = response
+            context.chat_data['battle_id'] = battle_id
+            return ENTER_BATTLE_ROUTES
+    elif other_battle:
+        group_config_model = GroupConfigurationModel()
+        chat_id = other_battle.chat_id
+        group = group_config_model.get(chat_id)
+        user = update.effective_user
+        text = f'Seu personagem já em uma batalha no grupo "{group.name}"!'
+        try:
+            await user.send_message(text)
+        except Forbidden as Error:
+            print(
+                'Usuário não pode receber mensagens privadas. '
+                'Ele precisa iniciar uma conversa com o bot. '
+                f'(Erro: {Error})'
+            )
+    elif not chat_battle and not other_battle:
         battle = Battle(blue_team=[character], red_team=[], chat_id=chat_id)
         battle_result = battle_model.save(battle)
         battle_id = battle_result.inserted_id
@@ -133,7 +194,6 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.chat_data['battle_id'] = battle_id
         return ENTER_BATTLE_ROUTES
 
-    await update.message.reply_text("Você já está em uma batalha.")
     return ConversationHandler.END
 
 
@@ -144,13 +204,23 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     character_model = CharacterModel()
     query = update.callback_query
     user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
     battle_id = context.chat_data['battle_id']
     character = character_model.get(user_id)
+    character_id = character._id
     battle = battle_model.get(battle_id)
+    other_battle = battle_model.get(
+        query={'$and': [
+            {'$or': [{'blue_team': character_id}, {'red_team': character_id}]},
+            {'chat_id': {'$ne': chat_id}}
+        ]}
+    )
 
     if query.data == CALLBACK_START_BATTLE:
         user_name = battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
+        battle.start_battle()
+        battle_model.save(battle)
         await query.answer('A BATALHA COMEÇOU!!!')
         await query.edit_message_text(
             f'A batalha começou!\n'
@@ -160,39 +230,36 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return SELECT_ACTION_ROUTES
 
-    if character not in battle.turn_order:
+    if all((
+        not battle.in_battle(character),
+        not other_battle,
+        character.is_alive()
+    )):
         team = query.data
         battle.enter_battle(character, team)
         battle_model.save(battle)
-        inline_keyboard = [
-            [
-                InlineKeyboardButton(
-                    "ENTRAR NO TIME AZUL",
-                    callback_data=CALLBACK_ENTER_BLUE_TEAM
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "ENTRAR NO TIME VERMELHO",
-                    callback_data=CALLBACK_ENTER_RED_TEAM
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "COMEÇAR BATALHA",
-                    callback_data=CALLBACK_START_BATTLE
-                )
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        await query.answer('Você entrou na batalha!')
+        reply_markup = get_enter_battle_inline_keyboard()
+        await query.answer('Seu personagem entrou na batalha!')
         await query.edit_message_text(
             battle.get_teams_sheet(),
             reply_markup=reply_markup,
         )
         return ENTER_BATTLE_ROUTES
+    elif character.is_dead():
+        await query.answer(
+            'Seu personagem não pode entrar em batalha com 0 de HP.',
+            show_alert=True
+        )
     else:
-        await query.answer('Você já está na batalha!', show_alert=True)
+        if battle.in_battle(character):
+            text = 'Seu personagem já está na batalha!'
+        elif other_battle:
+            group_config_model = GroupConfigurationModel()
+            chat_id = other_battle.chat_id
+            group = group_config_model.get(chat_id)
+            text = f'Seu personagem já em uma batalha no grupo "{group.name}"!'
+
+        await query.answer(text, show_alert=True)
 
 
 # SELECT_ACTION_ROUTES
@@ -213,7 +280,10 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         inline_keyboard = []
         for i, char in enumerate(battle.turn_order):
             inline_keyboard.append(
-                [InlineKeyboardButton(char.name, callback_data=i)]
+                [InlineKeyboardButton(
+                    f'{battle.get_char_emojis(char)} {char.name}',
+                    callback_data=i
+                )]
             )
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         await query.answer(f'Você selecionou: "{ACTIONS[action]}"')
@@ -250,7 +320,7 @@ async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer(f'Você selecionou: "{target.name}"')
         await query.edit_message_text(
             f'{target.name} ({target_user_name}), '
-            f'você foi alvo de "{ACTIONS[action]}".\n'
+            f'seu personagem foi alvo de "{ACTIONS[action]}".\n'
             f'Selecione sua reação.\n\n'
             f'{battle.get_sheet()}\n',
             reply_markup=reply_markup,
@@ -329,7 +399,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 text += (
                     f'{target_char.name} falhou em esquivar '
                     f'e como penalidade bloqueou somente com '
-                    f'50% ({half_def}){def_type} da defesa.\n\n'
+                    f'50% ({half_def}){def_type} de defesa.\n\n'
                     f'Chance de ACERTO: {accuracy:.2f}% [{total_hit}]🎯.\n'
                     f'Valor da EVASÃO: '
                     f'{dodge_score:.2f}% [{total_evasion}]🥾.\n\n'
@@ -378,9 +448,11 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup = None
             battle_model.delete(battle_id)
             callback = ConversationHandler.END
+            blue = TEAMS[CALLBACK_ENTER_BLUE_TEAM]
+            red = TEAMS[CALLBACK_ENTER_RED_TEAM]
             text += (
-                f'O Time Azul recebeu {report_xp["blue"]} de XP e o '
-                f'Time Vermelho recebeu {report_xp["red"]} de XP.\n'
+                f'O Time {blue} recebeu {report_xp["blue"]} de XP e o '
+                f'Time {red} recebeu {report_xp["red"]} de XP.\n'
             )
             for char in battle.turn_order:
                 if isinstance(char, PlayerCharacter):
@@ -394,7 +466,9 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return callback
     else:
-        await query.answer('Você não é alvo do ataque!!', show_alert=True)
+        await query.answer(
+            'Seu personagem não é alvo do ataque!', show_alert=True
+        )
         return SELECT_REACTION_ROUTES
 
 
@@ -404,8 +478,33 @@ async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_id = context.chat_data['battle_id']
     battle_model.delete(battle_id)
     await response.delete()
+    del context.chat_data['battle_response']
+    del context.chat_data['battle_id']
 
     return ConversationHandler.END
+
+
+def get_enter_battle_inline_keyboard():
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(
+                "ENTRAR NO TIME AZUL",
+                callback_data=CALLBACK_ENTER_BLUE_TEAM
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "ENTRAR NO TIME VERMELHO",
+                callback_data=CALLBACK_ENTER_RED_TEAM
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "COMEÇAR BATALHA",
+                callback_data=CALLBACK_START_BATTLE
+            )
+        ]
+    ])
 
 
 def get_action_inline_keyboard() -> InlineKeyboardMarkup:
@@ -494,7 +593,7 @@ BATTLE_HANDLER = ConversationHandler(
     },
     fallbacks=[
         CommandHandler(
-            ['battle_cancel', 'cancel_battle'], battle_cancel)
+            CANCEL_COMMANDS, battle_cancel)
     ],
     per_user=False
 )
