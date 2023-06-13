@@ -15,24 +15,20 @@ from telegram.ext import (
     ConversationHandler,
     PrefixHandler
 )
-from bot.conversation.constants import (
-    BASIC_COMMAND_FILTER,
-    PREFIX_COMMANDS
-)
+
+from bot.constants.sign_up_player import COMMANDS
+from bot.constants.sign_up_player import CALLBACK_TEXT_YES
+from bot.constants.sign_up_player import CALLBACK_TEXT_NO
+from bot.conversation.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
 from repository.mongo import PlayerModel
+
 from rpgram import Player
 
 
 # ROUTES
 START_ROUTES, END_ROUTES = range(2)
-
-# CALLBACK DATA
-CALLBACK_TEXT_YES = 'yes'
-CALLBACK_TEXT_NO = "no"
-
-COMMANDS = ['criarconta', 'signup']
 
 
 @print_basic_infos

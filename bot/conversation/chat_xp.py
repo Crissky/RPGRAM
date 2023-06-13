@@ -13,17 +13,20 @@ from telegram.ext import (
     MessageHandler
 )
 
-from bot.conversation.constants import ALLOW_GAIN_XP_FILTER
+from bot.conversation.filters import ALLOW_GAIN_XP_FILTER
 from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_group,
+    skip_if_no_singup_player,
     print_basic_infos
 )
+
 from functions.datetime import (
     utc_to_brazil_datetime,
     add_random_minutes_now,
     replace_tzinfo
 )
+
 from repository.mongo import (
     GroupConfigurationModel,
     CharacterModel,
@@ -32,6 +35,7 @@ from repository.mongo import (
 
 
 @skip_if_no_singup_group
+@skip_if_no_singup_player
 @skip_if_no_have_char
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):

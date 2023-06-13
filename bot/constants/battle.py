@@ -1,0 +1,57 @@
+# COMMANDS
+COMMANDS = ['duelo', 'duel']
+CANCEL_COMMANDS = [
+    'cancelar_batalha',
+    'cancelar_duelo',
+    'cancel_battle',
+    'cancel_duel'
+]
+
+# CALLBACK DATA
+# ENTER IN BATTLE
+CALLBACK_ENTER_BLUE_TEAM = 'blue'
+CALLBACK_ENTER_RED_TEAM = 'red'
+CALLBACK_START_BATTLE = 'start_battle'
+
+# ACTIONS
+CALLBACK_PHYSICAL_ATTACK = 'physical_attack'
+CALLBACK_PRECISION_ATTACK = 'precision_attack'
+CALLBACK_MAGICAL_ATTACK = 'magical_attack'
+ATTACK_TYPE = {
+    CALLBACK_PHYSICAL_ATTACK: '💥',
+    CALLBACK_PRECISION_ATTACK: '💫',
+    CALLBACK_MAGICAL_ATTACK: '✨',
+}
+ACTIONS = {
+    CALLBACK_PHYSICAL_ATTACK: 'Ataque Físico',
+    CALLBACK_PRECISION_ATTACK: 'Ataque de Precisão',
+    CALLBACK_MAGICAL_ATTACK: 'Ataque Mágico',
+}
+ACTIONS_LABELS = {
+    CALLBACK_PHYSICAL_ATTACK: f'ATAQUE FÍSICO 💥',
+    CALLBACK_PRECISION_ATTACK: f'ATAQUE DE PRECISÃO 💫',
+    CALLBACK_MAGICAL_ATTACK: f'ATAQUE MÁGICO ✨',
+}
+
+# REACTIONS
+CALLBACK_DODGE = 'dodge'
+CALLBACK_DEFEND = 'defend'
+DEFENSE_TYPE = {
+    CALLBACK_PHYSICAL_ATTACK: '🛡',
+    CALLBACK_PRECISION_ATTACK: '🛡',
+    CALLBACK_MAGICAL_ATTACK: '🔮',
+}
+REACTIONS = {
+    CALLBACK_DODGE: 'Esquivar',
+    CALLBACK_DEFEND: 'Defender'
+}
+REACTIONS_LABELS = {
+    CALLBACK_DODGE: f'ESQUIVAR 🥾',
+    CALLBACK_DEFEND: f'DEFENDER 🛡'
+}
+
+# TEAMS
+TEAMS = {
+    CALLBACK_ENTER_BLUE_TEAM: '🔵Azul',
+    CALLBACK_ENTER_RED_TEAM: '🔴Vermelho'
+}

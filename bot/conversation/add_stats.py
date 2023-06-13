@@ -11,16 +11,16 @@ from telegram.ext import (
     PrefixHandler
 )
 
-from bot.conversation.constants import (
+from bot.constants.add_stats import COMMANDS
+from bot.conversation.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
 from bot.decorators import need_have_char, print_basic_infos
+
 from functions.text import escape_markdown_v2
+
 from repository.mongo import CharacterModel
-
-
-COMMANDS = ['stats', 'add_stats']
 
 
 @need_have_char

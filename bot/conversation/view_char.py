@@ -11,14 +11,13 @@ from telegram.ext import (
     ContextTypes,
     PrefixHandler,
 )
-from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 
-from bot.conversation.create_char import COMMANDS as create_char_commands
+from bot.constants.view_char import COMMANDS
+from bot.constants.create_char import COMMANDS as create_char_commands
+from bot.conversation.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
+
 from repository.mongo import CharacterModel
-
-
-COMMANDS = ['personagem', 'char']
 
 
 @print_basic_infos

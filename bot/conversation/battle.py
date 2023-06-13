@@ -18,16 +18,36 @@ from telegram.ext import (
     PrefixHandler
 )
 
-from bot.conversation.constants import (
+from bot.constants.battle import (
+    COMMANDS,
+    CANCEL_COMMANDS,
+    CALLBACK_ENTER_BLUE_TEAM,
+    CALLBACK_ENTER_RED_TEAM,
+    CALLBACK_START_BATTLE,
+    CALLBACK_PHYSICAL_ATTACK,
+    CALLBACK_PRECISION_ATTACK,
+    CALLBACK_MAGICAL_ATTACK,
+    ATTACK_TYPE,
+    ACTIONS,
+    ACTIONS_LABELS,
+    CALLBACK_DODGE,
+    CALLBACK_DEFEND,
+    DEFENSE_TYPE,
+    REACTIONS_LABELS,
+    TEAMS,
+)
+from bot.conversation.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos, need_have_char, need_singup_group
+
 from repository.mongo import (
     BattleModel,
     CharacterModel,
     GroupConfigurationModel
 )
+
 from rpgram import Battle, Dice
 from rpgram.characters import PlayerCharacter
 from rpgram.errors import EmptyTeamError
@@ -41,68 +61,6 @@ from rpgram.errors import EmptyTeamError
     SELECT_REACTION_ROUTES,
     END_ROUTES,
 ) = range(5)
-
-
-# CALLBACK DATA
-# ENTER IN BATTLE
-CALLBACK_ENTER_BLUE_TEAM = 'blue'
-CALLBACK_ENTER_RED_TEAM = 'red'
-CALLBACK_START_BATTLE = 'start_battle'
-
-# ACTIONS
-CALLBACK_PHYSICAL_ATTACK = 'physical_attack'
-CALLBACK_PRECISION_ATTACK = 'precision_attack'
-CALLBACK_MAGICAL_ATTACK = 'magical_attack'
-
-ATTACK_TYPE = {
-    CALLBACK_PHYSICAL_ATTACK: '💥',
-    CALLBACK_PRECISION_ATTACK: '💫',
-    CALLBACK_MAGICAL_ATTACK: '✨',
-}
-ACTIONS = {
-    CALLBACK_PHYSICAL_ATTACK: 'Ataque Físico',
-    CALLBACK_PRECISION_ATTACK: 'Ataque de Precisão',
-    CALLBACK_MAGICAL_ATTACK: 'Ataque Mágico',
-}
-ACTIONS_LABELS = {
-    CALLBACK_PHYSICAL_ATTACK: f'ATAQUE FÍSICO 💥',
-    CALLBACK_PRECISION_ATTACK: f'ATAQUE DE PRECISÃO 💫',
-    CALLBACK_MAGICAL_ATTACK: f'ATAQUE MÁGICO ✨',
-}
-
-
-# REACTIONS
-CALLBACK_DODGE = 'dodge'
-CALLBACK_DEFEND = 'defend'
-
-DEFENSE_TYPE = {
-    CALLBACK_PHYSICAL_ATTACK: '🛡',
-    CALLBACK_PRECISION_ATTACK: '🛡',
-    CALLBACK_MAGICAL_ATTACK: '🔮',
-}
-REACTIONS = {
-    CALLBACK_DODGE: 'Esquivar',
-    CALLBACK_DEFEND: 'Defender'
-}
-REACTIONS_LABELS = {
-    CALLBACK_DODGE: f'ESQUIVAR 🥾',
-    CALLBACK_DEFEND: f'DEFENDER 🛡'
-}
-
-# TEAMS
-TEAMS = {
-    CALLBACK_ENTER_BLUE_TEAM: '🔵Azul',
-    CALLBACK_ENTER_RED_TEAM: '🔴Vermelho'
-}
-
-# COMMANDS
-COMMANDS = ['duelo', 'duel']
-CANCEL_COMMANDS = [
-    'cancelar_batalha',
-    'cancelar_duelo',
-    'cancel_battle',
-    'cancel_duel'
-]
 
 
 @need_singup_group

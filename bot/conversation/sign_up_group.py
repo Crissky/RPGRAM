@@ -17,21 +17,22 @@ from telegram.ext import (
     ConversationHandler,
     PrefixHandler,
 )
-from bot.conversation.constants import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+
+from bot.constants.sign_up_group import (
+    COMMANDS,
+    CALLBACK_TEXT_YES,
+    CALLBACK_TEXT_NO,
+)
+from bot.conversation.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
 from repository.mongo import GroupConfigurationModel
+
 from rpgram import GroupConfiguration
 
 
 # ROUTES
 START_ROUTES = range(1)
-
-# CALLBACK DATA
-CALLBACK_TEXT_YES = 'yes'
-CALLBACK_TEXT_NO = "no"
-
-COMMANDS = ['criargrupo', 'signupgroup']
 
 
 @print_basic_infos

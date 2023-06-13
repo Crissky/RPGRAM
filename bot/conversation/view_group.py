@@ -10,17 +10,16 @@ from telegram.ext import (
     ContextTypes,
     PrefixHandler,
 )
-from bot.conversation.constants import (
+
+from bot.constants.sign_up_group import COMMANDS as sign_up_group_commands
+from bot.constants.view_group import COMMANDS
+from bot.conversation.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
-
-from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
 from bot.decorators import print_basic_infos, need_singup_group
+
 from repository.mongo import GroupConfigurationModel
-
-
-COMMANDS = ['grupo', 'group']
 
 
 @print_basic_infos

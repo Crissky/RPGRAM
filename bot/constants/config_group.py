@@ -1,0 +1,1 @@
+COMMANDS = ['config', 'configgroup', 'configroup']

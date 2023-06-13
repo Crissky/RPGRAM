@@ -1,0 +1,1 @@
+COMMANDS = ['personagem', 'char']

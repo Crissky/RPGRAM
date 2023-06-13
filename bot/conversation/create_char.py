@@ -4,6 +4,7 @@ Módulo responsável pela criação de personagens.
 
 
 import re
+
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -19,7 +20,15 @@ from telegram.ext import (
     filters,
 )
 from telegram.constants import ChatAction
-from bot.conversation.constants import (
+
+from bot.constants.create_char import (
+    COMMANDS,
+    CALLBACK_TEXT_YES,
+    CALLBACK_TEXT_NO,
+    CALLBACK_TEXT_RACES,
+    CALLBACK_TEXT_CLASSES,
+)
+from bot.conversation.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
@@ -31,6 +40,7 @@ from repository.mongo import (
     CharacterModel,
     RaceModel,
 )
+
 from rpgram.characters import PlayerCharacter
 
 
@@ -44,14 +54,6 @@ from rpgram.characters import PlayerCharacter
     SELECT_NAME_ROUTES,
     CREATE_CHAR_ROUTES,
 ) = range(7)
-
-# CALLBACK DATA
-CALLBACK_TEXT_YES = 'yes'
-CALLBACK_TEXT_NO = 'no'
-CALLBACK_TEXT_RACES = '|'.join(RaceModel().get_all(fields=['name']))
-CALLBACK_TEXT_CLASSES = '|'.join(ClasseModel().get_all(fields=['name']))
-
-COMMANDS = ['criarpersonagem', 'createchar']
 
 
 @print_basic_infos

@@ -4,6 +4,7 @@ Módulo responsável por gerenciar os comandos de ajuda.
 
 
 from typing import Iterable
+
 from telegram import Update
 from telegram.ext import (
     CommandHandler,
@@ -11,25 +12,25 @@ from telegram.ext import (
     PrefixHandler,
 )
 
-from bot.conversation.constants import (
+from bot.constants.help import COMMANDS
+from bot.constants.add_stats import COMMANDS as add_stats_commands
+from bot.constants.battle import COMMANDS as battle_commands
+from bot.constants.config_group import COMMANDS as config_group_commands
+from bot.constants.create_char import COMMANDS as create_char_commands
+from bot.constants.sign_up_group import COMMANDS as sign_up_group_commands
+from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
+from bot.constants.view_char import COMMANDS as view_char_commands
+from bot.constants.view_group import COMMANDS as view_group_commands
+from bot.constants.view_player import COMMANDS as view_player_commands
+from bot.conversation.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
-from bot.conversation.add_stats import COMMANDS as add_stats_commands
-from bot.conversation.battle import COMMANDS as battle_commands
-from bot.conversation.config_group import COMMANDS as config_group_commands
-from bot.conversation.create_char import COMMANDS as create_char_commands
-from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
-from bot.conversation.sign_up_player import COMMANDS as sign_up_player_commands
-from bot.conversation.view_char import COMMANDS as view_char_commands
-from bot.conversation.view_group import COMMANDS as view_group_commands
-from bot.conversation.view_player import COMMANDS as view_player_commands
 from bot.decorators import print_basic_infos
+
 from constants.text import SECTION_HEAD
+
 from functions.text import escape_basic_markdown_v2
-
-
-COMMANDS = ['help', 'ajuda']
 
 
 @print_basic_infos
@@ -72,7 +73,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'OBS: Pode ser usado sem argumentos para exibir as estatísticas. '
         f'Use o argumento "verbose" ou "v" para exibir com mais detalhes\n'
         f'Atalhos: {add_stats_cmd}\n\n'
-        
+
         f'CONFIGURAÇÃO DO GRUPO: /{config_group_commands[0]}\n'
         f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n'
         f'Configurações:\n'
@@ -83,7 +84,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'    "char_multiplier_xp": decimal[0-10]. Multiplicador do bônus de '
         f'XP baseado no nível do personagem.\n'
         f'Atalhos: {config_group_cmd}\n\n'
-        
+
         f'CRIAR BATALHA: /{battle_commands[0]}\n'
         f'Atalhos: {battle_cmd}\n'
     )

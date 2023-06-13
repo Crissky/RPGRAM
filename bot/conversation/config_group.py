@@ -7,11 +7,14 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
-from bot.conversation.constants import BASIC_COMMAND_IN_GROUP_FILTER, PREFIX_COMMANDS
+from bot.constants.config_group import COMMANDS
+from bot.conversation.filters import (
+    BASIC_COMMAND_IN_GROUP_FILTER,
+    PREFIX_COMMANDS
+)
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
-from repository.mongo import GroupConfigurationModel
 
-COMMANDS = ['config', 'configgroup', 'configroup']
+from repository.mongo import GroupConfigurationModel
 
 
 @print_basic_infos

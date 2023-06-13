@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from bot.conversation.sign_up_group import COMMANDS
+from bot.constants.sign_up_group import COMMANDS
 from repository.mongo import GroupConfigurationModel
 
 
@@ -25,13 +25,13 @@ def need_singup_group(callback):
 
 def skip_if_no_singup_group(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_NO_HAVE_CHAR')
+        print(f'@SKIP_IF_NO_SINGUP_GROUP')
         group_config_model = GroupConfigurationModel()
         chat_id = update.effective_chat.id
 
         if group_config_model.get(chat_id):
             return await callback(update, context)
         else:
-            print(f'\tSKIPPED in CHAT: {chat_id} - NO CONFIG GROUP.')
+            print(f'\tSKIPPED in CHAT: {chat_id} - NO ACCOUNT GROUP')
             return ConversationHandler.END
     return wrapper
