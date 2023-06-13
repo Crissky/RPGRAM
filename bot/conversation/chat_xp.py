@@ -16,6 +16,7 @@ from telegram.ext import (
 from bot.conversation.constants import ALLOW_GAIN_XP_FILTER
 from bot.decorators import (
     skip_if_no_have_char,
+    skip_if_no_singup_group,
     print_basic_infos
 )
 from functions.datetime import (
@@ -30,6 +31,7 @@ from repository.mongo import (
 )
 
 
+@skip_if_no_singup_group
 @skip_if_no_have_char
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):

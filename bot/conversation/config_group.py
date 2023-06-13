@@ -8,13 +8,14 @@ from telegram.constants import ChatAction
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.conversation.constants import BASIC_COMMAND_IN_GROUP_FILTER, PREFIX_COMMANDS
-from bot.decorators import print_basic_infos, need_are_admin
+from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
 from repository.mongo import GroupConfigurationModel
 
-COMMANDS = ['config']
+COMMANDS = ['config', 'configgroup', 'configroup']
 
 
 @print_basic_infos
+@need_singup_group
 @need_are_admin
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)

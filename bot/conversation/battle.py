@@ -22,8 +22,7 @@ from bot.conversation.constants import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
-from bot.decorators import need_have_char
-from bot.decorators import print_basic_infos
+from bot.decorators import print_basic_infos, need_have_char, need_singup_group
 from repository.mongo import (
     BattleModel,
     CharacterModel,
@@ -97,10 +96,16 @@ TEAMS = {
 }
 
 # COMMANDS
-COMMANDS = ['duel', 'duelo']
-CANCEL_COMMANDS = ['cancel_battle', 'cancel_duel']
+COMMANDS = ['duelo', 'duel']
+CANCEL_COMMANDS = [
+    'cancelar_batalha',
+    'cancelar_duelo',
+    'cancel_battle',
+    'cancel_duel'
+]
 
 
+@need_singup_group
 @need_have_char
 @print_basic_infos
 async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -123,6 +128,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             'Seu personagem não pode entrar em batalha com 0 de HP.'
         )
+    # Se o personagem não está em uma batalha em outro grupo e existe uma
+    # batalha criada no em que o comando foi usado.
     elif chat_battle and not other_battle:
         battle_id = chat_battle._id
         if chat_battle.started is True:  # Continua batalha se o bot caiu.
@@ -138,6 +145,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.chat_data['battle_id'] = battle_id
             return SELECT_ACTION_ROUTES
         else:
+            # Se o personagem não está no time de Azul e o
+            # time de Vermelho está vazio. Ele entrará no time Vermelho.
             if (
                 not chat_battle.in_blue_team(character) and
                 chat_battle.red_team_empty()
@@ -146,6 +155,9 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 chat_battle.enter_battle(character, team)
                 battle_model.save(chat_battle)
 
+            # Se o time Vermelho ainda está vazio, quer dizer que o jogador
+            # já está no time Azul. Então um botão de entrar no time Vermelho
+            # será criado.
             if chat_battle.red_team_empty():
                 inline_keyboard = [[
                     InlineKeyboardButton(
@@ -153,6 +165,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     )
                 ]]
                 reply_markup = InlineKeyboardMarkup(inline_keyboard)
+            # Há personagens nos dois times. Será criado botões de entrar
+            # em qualquer time ou iniciar a batalha.
             else:
                 reply_markup = get_enter_battle_inline_keyboard()
 
@@ -163,6 +177,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.chat_data['battle_response'] = response
             context.chat_data['battle_id'] = battle_id
             return ENTER_BATTLE_ROUTES
+    # O personagem está em uma batalha em outro grupo.
     elif other_battle:
         group_config_model = GroupConfigurationModel()
         chat_id = other_battle.chat_id
@@ -177,6 +192,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 'Ele precisa iniciar uma conversa com o bot. '
                 f'(Erro: {error})'
             )
+    # Jogador não está uma batalha em outro grupo e não tem uma batalha criada
+    # no grupo em que o comando foi usado.
     elif not chat_battle and not other_battle:
         battle = Battle(blue_team=[character], red_team=[], chat_id=chat_id)
         battle_result = battle_model.save(battle)
@@ -254,16 +271,19 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'Seu personagem não pode entrar em batalha com 0 de HP.',
             show_alert=True
         )
-    else:
-        if battle.in_battle(character):
-            text = 'Seu personagem já está na batalha!'
-        elif other_battle:
-            group_config_model = GroupConfigurationModel()
-            chat_id = other_battle.chat_id
-            group = group_config_model.get(chat_id)
-            text = f'Seu personagem já em uma batalha no grupo "{group.name}"!'
-
-        await query.answer(text, show_alert=True)
+    elif battle.in_battle(character):
+        await query.answer(
+            'Seu personagem já está na batalha!',
+            show_alert=True
+        )
+    elif other_battle:
+        group_config_model = GroupConfigurationModel()
+        chat_id = other_battle.chat_id
+        group = group_config_model.get(chat_id)
+        await query.answer(
+            f'Seu personagem já em uma batalha no grupo "{group.name}"!',
+            show_alert=True
+        )
 
 
 # SELECT_ACTION_ROUTES

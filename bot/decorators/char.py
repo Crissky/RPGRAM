@@ -1,8 +1,8 @@
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
-from repository.mongo import CharacterModel
 from bot.conversation.create_char import COMMANDS
+from repository.mongo import CharacterModel
 
 
 def need_have_char(callback):
@@ -12,7 +12,7 @@ def need_have_char(callback):
         user_id = update.effective_user.id
 
         if char_model.get(user_id):
-            print('\tAUTORIZADO')
+            print('\tAUTORIZADO - USUÁRIO POSSUI PERSONAGEM.')
             return await callback(update, context)
         else:
             await update.effective_message.reply_text(

@@ -16,7 +16,7 @@ from bot.conversation.constants import (
 )
 
 from bot.conversation.sign_up_group import COMMANDS as sign_up_group_commands
-from bot.decorators import print_basic_infos
+from bot.decorators import print_basic_infos, need_singup_group
 from repository.mongo import GroupConfigurationModel
 
 
@@ -24,6 +24,7 @@ COMMANDS = ['grupo', 'group']
 
 
 @print_basic_infos
+@need_singup_group
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     group_config_model = GroupConfigurationModel()
     chat_id = update.effective_chat.id
@@ -31,11 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if (group := group_config_model.get(chat_id)):
         await update.effective_message.reply_text(f'{group}')
-    else:
-        await update.effective_message.reply_text(
-            f'Grupo não Cadastrado!\n'
-            f'Cadastre o grupo com o comando /{sign_up_group_commands[0]}.'
-        )
+
 
 VIEW_GROUP_HANDLERS = [
     PrefixHandler(
