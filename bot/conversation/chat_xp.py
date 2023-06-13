@@ -83,11 +83,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'Você ganhou {add_xp} de XP.',
                 disable_notification=True
             )
-        except Forbidden as Error:
+        except Forbidden as error:
             print(
                 'Usuário não pode receber mensagens privadas. '
                 'Ele precisa iniciar uma conversa com o bot. '
-                f'(Erro: {Error})'
+                f'(Erro: {error})'
             )
 
 

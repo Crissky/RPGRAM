@@ -10,7 +10,11 @@ from bson import ObjectId
 
 from rpgram import Dice
 from rpgram.characters import BaseCharacter
-from rpgram.errors import CurrentPlayerTurnError, BattleNotEndError
+from rpgram.errors import (
+    BattleIsNotOverError,
+    CurrentPlayerTurnError,
+    EmptyTeamError
+)
 import random
 
 ACTION_LIST = ['physical_attack', 'precision_attack', 'magical_attack']
@@ -103,12 +107,12 @@ class Battle:
 
     def start_battle(self):
         if self.blue_team_empty():
-            raise ValueError(
+            raise EmptyTeamError(
                 'A batalha não pode começar porque a '
                 'equipe azul está vazia.'
             )
         elif self.red_team_empty():
-            raise ValueError(
+            raise EmptyTeamError(
                 'A batalha não pode começar porque a '
                 'equipe vermelha está vazia.'
             )
@@ -342,7 +346,7 @@ class Battle:
     def share_xp(self, multiplier: float = 1.0) -> dict:
         winner = self.get_winner()
         if not winner:
-            raise BattleNotEndError(
+            raise BattleIsNotOverError(
                 'Não é possível dividir XP em um combate não finalizado.'
             )
 

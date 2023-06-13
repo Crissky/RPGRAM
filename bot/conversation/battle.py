@@ -31,7 +31,8 @@ from repository.mongo import (
 )
 from rpgram import Battle, Dice
 from rpgram.characters import PlayerCharacter
-from random import randint
+from rpgram.errors import EmptyTeamError
+
 
 # ROUTES
 (
@@ -170,11 +171,11 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = f'Seu personagem já em uma batalha no grupo "{group.name}"!'
         try:
             await user.send_message(text)
-        except Forbidden as Error:
+        except Forbidden as error:
             print(
                 'Usuário não pode receber mensagens privadas. '
                 'Ele precisa iniciar uma conversa com o bot. '
-                f'(Erro: {Error})'
+                f'(Erro: {error})'
             )
     elif not chat_battle and not other_battle:
         battle = Battle(blue_team=[character], red_team=[], chat_id=chat_id)
@@ -219,16 +220,20 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == CALLBACK_START_BATTLE:
         user_name = battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
-        battle.start_battle()
-        battle_model.save(battle)
-        await query.answer('A BATALHA COMEÇOU!!!')
-        await query.edit_message_text(
-            f'A batalha começou!\n'
-            f'{user_name}, escolha sua ação.\n\n'
-            f'{battle.get_sheet()}\n',
-            reply_markup=reply_markup
-        )
-        return SELECT_ACTION_ROUTES
+        try:
+            battle.start_battle()
+            battle_model.save(battle)
+            await query.answer('A BATALHA COMEÇOU!!!')
+            await query.edit_message_text(
+                f'A batalha começou!\n'
+                f'{user_name}, escolha sua ação.\n\n'
+                f'{battle.get_sheet()}\n',
+                reply_markup=reply_markup
+            )
+            return SELECT_ACTION_ROUTES
+        except EmptyTeamError as error:
+            await query.answer(f'{error}')
+            return ENTER_BATTLE_ROUTES
 
     if all((
         not battle.in_battle(character),
@@ -244,7 +249,6 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             battle.get_teams_sheet(),
             reply_markup=reply_markup,
         )
-        return ENTER_BATTLE_ROUTES
     elif character.is_dead():
         await query.answer(
             'Seu personagem não pode entrar em batalha com 0 de HP.',
