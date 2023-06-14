@@ -23,8 +23,8 @@ from functions.text import escape_markdown_v2
 from repository.mongo import CharacterModel
 
 
-@need_have_char
 @print_basic_infos
+@need_have_char
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
