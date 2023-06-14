@@ -51,7 +51,8 @@ class Battle:
         self.__created_at = created_at
         self.__updated_at = updated_at
         self.report = {}
-        self.__populate_turn_order(current_player)
+        if current_player:
+            self.__populate_turn_order(current_player)
 
     def __populate_turn_order(
         self,
@@ -89,10 +90,14 @@ class Battle:
     def enter_battle(
         self, player: BaseCharacter, team: str, reorder: bool = False
     ) -> None:
+        if player in self.__blue_team:
+            self.__blue_team.remove(player)
+        elif player in self.__red_team:
+            self.__red_team.remove(player)
+
         if player in self.__turn_order:
-            raise ValueError(
-                f'O jogador "{player.name}" já está na batalha.'
-            )
+            self.__turn_order.remove(player)
+
         if team in ['blue', 'azul']:
             self.__blue_team.append(player)
         elif team in ['red', 'vermelho']:
@@ -432,17 +437,21 @@ class Battle:
 
     @property
     def current_player(self) -> BaseCharacter:
-        return self.__turn_order[0]
+        if self.__turn_order:
+            return self.__turn_order[0]
 
     _id: ObjectId = property(lambda self: self.__id)
 
     def to_dict(self) -> dict:
+        current_player_id = None
+        if self.current_player:
+            current_player_id = self.current_player._id
         return dict(
             blue_team=[char._id for char in self.__blue_team],
             red_team=[char._id for char in self.__red_team],
             chat_id=self.chat_id,
             turn_count=self.turn_count,
-            current_player=self.current_player._id,
+            current_player=current_player_id,
             started=self.started,
             _id=self.__id,
             created_at=self.__created_at,

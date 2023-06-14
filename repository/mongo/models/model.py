@@ -145,10 +145,11 @@ class Model:
                 key = field_info['id_key']
                 _id = dict_obj.pop(key)
                 model = field_info['model']
-
+                
+                obj = None
                 if isinstance(_id, list):
                     obj = [model.get(item) for item in _id]
-                else:
+                elif _id is not None:
                     obj = model.get(_id)
 
                 dict_obj[field_name] = obj

@@ -49,7 +49,7 @@ from repository.mongo import (
 )
 
 from rpgram import Battle, Dice
-from rpgram.characters import PlayerCharacter
+from rpgram.characters import BaseCharacter, PlayerCharacter
 from rpgram.errors import EmptyTeamError
 
 
@@ -63,117 +63,49 @@ from rpgram.errors import EmptyTeamError
 ) = range(5)
 
 
+@print_basic_infos
 @need_singup_group
 @need_have_char
-@print_basic_infos
 async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('battle_start')
     battle_model = BattleModel()
-    character_model = CharacterModel()
-    user_id = update.effective_user.id
     chat_id = update.effective_chat.id
-    character = character_model.get(user_id)
-    character_id = character._id
     chat_battle = battle_model.get(query={'chat_id': chat_id})
-    other_battle = battle_model.get(
-        query={'$and': [
-            {'$or': [{'blue_team': character_id}, {'red_team': character_id}]},
-            {'chat_id': {'$ne': chat_id}}
-        ]}
-    )
 
-    if character.is_dead():
-        await update.message.reply_text(
-            'Seu personagem não pode entrar em batalha com 0 de HP.'
-        )
-    # Se o personagem não está em uma batalha em outro grupo e existe uma
-    # batalha criada no em que o comando foi usado.
-    elif chat_battle and not other_battle:
+    if not chat_battle:
+        battle = Battle(blue_team=[], red_team=[], chat_id=chat_id)
+        battle_result = battle_model.save(battle)
+        battle_id = battle_result.inserted_id
+    elif chat_battle.started is True:
         battle_id = chat_battle._id
-        if chat_battle.started is True:  # Continua batalha se o bot caiu.
-            user_name = chat_battle.current_player.player_name
-            reply_markup = get_action_inline_keyboard()
-            response = await update.effective_message.reply_text(
-                f'Batalha em retomada!\n'
+        user_name = chat_battle.current_player.player_name
+        reply_markup = get_action_inline_keyboard()
+        response = await update.effective_message.reply_text(
+                f'A batalha retomada!\n'
                 f'{user_name}, escolha sua ação.\n\n'
                 f'{chat_battle.get_sheet()}\n',
                 reply_markup=reply_markup
             )
-            context.chat_data['battle_response'] = response
-            context.chat_data['battle_id'] = battle_id
-            return SELECT_ACTION_ROUTES
-        else:
-            # Se o personagem não está no time de Azul e o
-            # time de Vermelho está vazio. Ele entrará no time Vermelho.
-            if (
-                not chat_battle.in_blue_team(character) and
-                chat_battle.red_team_empty()
-            ):
-                team = CALLBACK_ENTER_RED_TEAM
-                chat_battle.enter_battle(character, team)
-                battle_model.save(chat_battle)
-
-            # Se o time Vermelho ainda está vazio, quer dizer que o jogador
-            # já está no time Azul. Então um botão de entrar no time Vermelho
-            # será criado.
-            if chat_battle.red_team_empty():
-                inline_keyboard = [[
-                    InlineKeyboardButton(
-                        "ENTRAR", callback_data=CALLBACK_ENTER_RED_TEAM
-                    )
-                ]]
-                reply_markup = InlineKeyboardMarkup(inline_keyboard)
-            # Há personagens nos dois times. Será criado botões de entrar
-            # em qualquer time ou iniciar a batalha.
-            else:
-                reply_markup = get_enter_battle_inline_keyboard()
-
-            response = await update.effective_message.reply_text(
-                chat_battle.get_teams_sheet(),
-                reply_markup=reply_markup,
-            )
-            context.chat_data['battle_response'] = response
-            context.chat_data['battle_id'] = battle_id
-            return ENTER_BATTLE_ROUTES
-    # O personagem está em uma batalha em outro grupo.
-    elif other_battle:
-        group_config_model = GroupConfigurationModel()
-        chat_id = other_battle.chat_id
-        group = group_config_model.get(chat_id)
-        user = update.effective_user
-        text = f'Seu personagem já em uma batalha no grupo "{group.name}"!'
-        try:
-            await user.send_message(text)
-        except Forbidden as error:
-            print(
-                'Usuário não pode receber mensagens privadas. '
-                'Ele precisa iniciar uma conversa com o bot. '
-                f'(Erro: {error})'
-            )
-    # Jogador não está uma batalha em outro grupo e não tem uma batalha criada
-    # no grupo em que o comando foi usado.
-    elif not chat_battle and not other_battle:
-        battle = Battle(blue_team=[character], red_team=[], chat_id=chat_id)
-        battle_result = battle_model.save(battle)
-        battle_id = battle_result.inserted_id
-        inline_keyboard = [[
-            InlineKeyboardButton(
-                "ENTRAR", callback_data=CALLBACK_ENTER_RED_TEAM
-            )
-        ]]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        response = await update.effective_message.reply_text(
-            battle.get_teams_sheet(),
-            reply_markup=reply_markup,
-        )
         context.chat_data['battle_response'] = response
         context.chat_data['battle_id'] = battle_id
-        return ENTER_BATTLE_ROUTES
+        return SELECT_ACTION_ROUTES
+    elif chat_battle:
+        battle = chat_battle
+        battle_id = chat_battle._id
 
-    return ConversationHandler.END
+    reply_markup = get_enter_battle_inline_keyboard()
+    response = await update.effective_message.reply_text(
+        battle.get_teams_sheet(),
+        reply_markup=reply_markup,
+    )
+    context.chat_data['battle_response'] = response
+    context.chat_data['battle_id'] = battle_id
+    return ENTER_BATTLE_ROUTES
 
 
 # ENTER_BATTLE_ROUTES
+@print_basic_infos
+@need_have_char
 async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('enter_battle')
     battle_model = BattleModel()
@@ -193,6 +125,13 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if query.data == CALLBACK_START_BATTLE:
+        if not battle.in_battle(character):
+            await query.answer(
+                'Você não pode iniciar a batalha, '
+                'pois seu personagem não está participando dela.',
+                show_alert=True
+            )
+            return ENTER_BATTLE_ROUTES
         user_name = battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
         try:
@@ -207,19 +146,19 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             return SELECT_ACTION_ROUTES
         except EmptyTeamError as error:
-            await query.answer(f'{error}')
+            await query.answer(f'{error}', show_alert=True)
             return ENTER_BATTLE_ROUTES
 
-    if all((
-        not battle.in_battle(character),
-        not other_battle,
-        character.is_alive()
-    )):
+    if not other_battle and character.is_alive():
         team = query.data
+        time = TEAMS[team]
+        if check_if_change_for_same_team(team, character, battle):
+            await query.answer(f'Seu personagem já está no Time {time}!')
+            return ENTER_BATTLE_ROUTES
         battle.enter_battle(character, team)
         battle_model.save(battle)
         reply_markup = get_enter_battle_inline_keyboard()
-        await query.answer('Seu personagem entrou na batalha!')
+        await query.answer(f'Seu personagem entrou no Time {time}!')
         await query.edit_message_text(
             battle.get_teams_sheet(),
             reply_markup=reply_markup,
@@ -227,11 +166,6 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif character.is_dead():
         await query.answer(
             'Seu personagem não pode entrar em batalha com 0 de HP.',
-            show_alert=True
-        )
-    elif battle.in_battle(character):
-        await query.answer(
-            'Seu personagem já está na batalha!',
             show_alert=True
         )
     elif other_battle:
@@ -464,6 +398,23 @@ async def battle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     del context.chat_data['battle_id']
 
     return ConversationHandler.END
+
+
+def check_if_change_for_same_team(
+    team_name: str,
+    character: BaseCharacter,
+    battle: Battle,
+) -> bool:
+    return any((
+        (
+            CALLBACK_ENTER_BLUE_TEAM == team_name and
+            battle.in_blue_team(character)
+        ),
+        (
+            CALLBACK_ENTER_RED_TEAM == team_name and
+            battle.in_red_team(character)
+        )
+    ))
 
 
 def get_enter_battle_inline_keyboard():
