@@ -421,13 +421,13 @@ def get_enter_battle_inline_keyboard():
     return InlineKeyboardMarkup([
         [
             InlineKeyboardButton(
-                "ENTRAR NO TIME AZUL",
+                "🔵ENTRAR NO TIME AZUL",
                 callback_data=CALLBACK_ENTER_BLUE_TEAM
             )
         ],
         [
             InlineKeyboardButton(
-                "ENTRAR NO TIME VERMELHO",
+                "🔴ENTRAR NO TIME VERMELHO",
                 callback_data=CALLBACK_ENTER_RED_TEAM
             )
         ],
