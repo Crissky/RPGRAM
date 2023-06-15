@@ -1,0 +1,1 @@
+COMMANDS = ['configplayer', 'cplayer']

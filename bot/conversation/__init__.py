@@ -2,6 +2,7 @@ from bot.conversation.add_stats import ADD_STATS_HANDLERS
 from bot.conversation.battle import BATTLE_HANDLER
 from bot.conversation.chat_xp import CHAT_XP_HANDLER
 from bot.conversation.config_group import CONFIG_GROUP_HANDLERS
+from bot.conversation.config_player import CONFIG_PLAYER_HANDLERS
 from bot.conversation.create_char import CREATE_CHAR_HANDLER
 from bot.conversation.help import HELP_HANDLERS
 from bot.conversation.sign_up_group import SIGNUP_GROUP_HANDLER

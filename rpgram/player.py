@@ -12,6 +12,7 @@ class Player:
         name: str,
         player_id: int,
         _id: Union[str, ObjectId] = None,
+        verbose: bool = False,
         xp_cooldown: datetime = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -22,6 +23,7 @@ class Player:
         self.player_id = player_id
         self.name = name
         self.__id = _id
+        self.verbose = verbose
         self.xp_cooldown = xp_cooldown
         self.created_at = created_at
         self.updated_at = updated_at
@@ -29,11 +31,25 @@ class Player:
     # Getters
     _id = property(lambda self: self.__id)
 
+    def __setitem__(self, key, value):
+        key = key.upper()
+
+        if key in ['VERBOSE']:
+            value = value.upper()
+            if value in ['FALSE', 'NO', '0']:
+                value = False
+            elif value in ['TRUE', 'YES', '1']:
+                value = True
+            else:
+                raise ValueError(f'Forneça o valor "True" ou "False"')
+            self.verbose = value
+
     def __repr__(self) -> str:
         return (
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
             f'ID: {self.__id}\n'
+            f'Verbose: {self.verbose}\n'
             f'Player ID: {self.player_id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
@@ -44,6 +60,7 @@ class Player:
             name=self.name,
             player_id=self.player_id,
             _id=self.__id,
+            verbose=self.verbose,
             xp_cooldown=self.xp_cooldown,
             created_at=self.created_at,
             updated_at=self.updated_at
