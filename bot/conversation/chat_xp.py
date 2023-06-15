@@ -83,7 +83,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{user_name} passou de nível! '
             f'Seu personagem agora está no nível {new_level}.'
         )
-    elif group.verbose:
+    elif player.verbose:
         try:
             await update.effective_user.send_message(
                 f'Você ganhou {add_xp} de XP.',
