@@ -16,6 +16,7 @@ from bot.constants.help import COMMANDS
 from bot.constants.add_stats import COMMANDS as add_stats_commands
 from bot.constants.battle import COMMANDS as battle_commands
 from bot.constants.config_group import COMMANDS as config_group_commands
+from bot.constants.config_player import COMMANDS as config_player_commands
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.sign_up_group import COMMANDS as sign_up_group_commands
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
@@ -43,6 +44,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     view_char_cmd = command_to_string(view_char_commands)
     add_stats_cmd = command_to_string(add_stats_commands)
     config_group_cmd = command_to_string(config_group_commands)
+    config_player_cmd = command_to_string(config_player_commands)
     battle_cmd = command_to_string(battle_commands)
 
     text = escape_basic_markdown_v2(
@@ -84,6 +86,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'    "char_multiplier_xp": decimal[0-10]. Multiplicador do bônus de '
         f'XP baseado no nível do personagem.\n'
         f'Atalhos: {config_group_cmd}\n\n'
+
+        f'CONFIGURAÇÃO DO JOGADOR: /{config_player_commands[0]}\n'
+        f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n'
+        f'Configurações:\n'
+        f'    "verbose": [true/false]. Configura se o bot vai envia mensagens '
+        f'privadas.\n'
+        f'Atalhos: {config_player_cmd}\n\n'
 
         f'CRIAR BATALHA: /{battle_commands[0]}\n'
         f'Atalhos: {battle_cmd}\n'
