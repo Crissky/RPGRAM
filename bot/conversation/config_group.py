@@ -34,7 +34,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             group[attribute] = value
             group_config_model.save(group)
             await update.effective_message.reply_text(
-                f'Configurado "{attribute}" para "{value}".'
+                f'Configurado "{attribute}" para "{value}".\n\n'
+                f'{group}'
             )
         except (KeyError, ValueError) as error:
             await update.effective_message.reply_text(
@@ -45,10 +46,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         group['START_TIME'] = '6'
         group['END_TIME'] = '20'
         group['MULTIPLIER_XP'] = '1'
-        group['PLAYER_XP'] = '1'
+        group['CHAR_MULTIPLIER_XP'] = '1'
         group_config_model.save(group)
         await update.effective_message.reply_text(
-            f'Configurado para os valores padrões.'
+            f'Configurado para os valores padrões.\n\n'
+            f'{group}'
         )
     elif len(args) != 2:
         await update.effective_message.reply_text(

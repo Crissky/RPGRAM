@@ -48,20 +48,30 @@ class GroupConfiguration:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                return
+                raise ValueError(f'Forneça o valor "True" ou "False"')
             self.verbose = value
         elif key in ['SPAWN_START_TIME', 'START_TIME']:
-            value = abs(int(value))
-            self.spawn_start_time = value if 0 <= value <= 24 else 6
+            value = int(value)
+            if value > 24 or value < 0:
+                raise ValueError(f'Forneça um valor entre 0 e 24')
+            self.spawn_start_time = value
         elif key in ['SPAWN_END_TIME', 'END_TIME']:
-            value = abs(int(value))
-            self.spawn_end_time = value if 0 <= value <= 24 else 20
+            value = int(value)
+            if value > 24 or value < 0:
+                raise ValueError(f'Forneça um valor entre 0 e 24')
+            self.spawn_end_time = value
         elif key in ['MULTIPLIER_XP', 'XP']:
-            value = abs(float(value))
-            self.multiplier_xp = value if 1 <= value <= 5 else 1.0
+            value = float(value)
+            if value < 0.0:
+                raise ValueError(f'Forneça um valor maior que zero.')
+            self.multiplier_xp = value
         elif key in ['CHAR_MULTIPLIER_XP', 'CHAR_XP']:
-            value = abs(float(value))
-            self.character_multiplier_xp = value if 1 <= value <= 10 else 1.0
+            value = float(value)
+            if value < 0.0:
+                raise ValueError(f'Forneça um valor maior que zero.')
+            self.character_multiplier_xp = value
+        else:
+            raise KeyError(f'"{key}" não é uma chave válida.')
 
     def __repr__(self) -> str:
         return (
