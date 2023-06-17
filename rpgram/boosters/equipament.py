@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union
+from typing import Any, Dict, List, Union
 from bson import ObjectId
 
 from constants.text import TEXT_DELIMITER
@@ -13,8 +13,9 @@ class Equipament(StatsBooster):
         self,
         name: str,
         equip_type: Union[str, EquipamentEnum],
-        damage_type: Union[str, DamageEnum],
+        damage_types: List[Union[str, DamageEnum]],
         weight: float = 10,
+        requirements: Dict[str, Any] = {},
         _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
@@ -68,21 +69,33 @@ class Equipament(StatsBooster):
         )
         if isinstance(equip_type, str):
             equip_type = EquipamentEnum[equip_type]
-        if isinstance(damage_type, str):
-            damage_type = DamageEnum[damage_type]
+        if isinstance(damage_types, str):
+            damage_types = [DamageEnum[damage_types]]
+        elif isinstance(damage_types, DamageEnum):
+            damage_types = [damage_types]
+        elif isinstance(damage_types, list):
+            for index, damage_type in enumerate(damage_types):
+                if isinstance(damage_type, str):
+                    damage_type = DamageEnum[damage_type]
+                damage_types[index] = damage_type
 
         self.__name = name
         self.__equip_type = equip_type
-        self.__damage_type = damage_type
+        self.__damage_types = damage_types
         self.__weight = weight
+        self.__requirements = requirements
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        damage_types = '/'.join([d.value for d in self.damage_types])
+        requirements = '\n'.join(
+            [f'  {k}: {v}' for k, v in self.requirements.items()]
+        )
         text = (
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
-            f'*Tipo de Dano*: {self.damage_type.value}\n' if isinstance(
-                self.damage_type, DamageEnum) else f''
+            f'*Tipo de Dano*: {damage_types}\n'
             f'*Peso*: {self.weight}\n'
+            f'*Requisitos*:\n{requirements}\n'
         )
 
         if not markdown:
@@ -108,10 +121,12 @@ class Equipament(StatsBooster):
         )
 
     def to_dict(self):
+        damage_types = [d.name for d in self.damage_types]
         _dict = dict(
             name=self.name,
             equip_type=self.equip_type.name,
-            damage_type=self.damage_type.name,
+            damage_types=damage_types,
+            requirements=self.requirements,
             weight=self.weight,
         )
         _dict.update(super().to_dict())
@@ -121,7 +136,8 @@ class Equipament(StatsBooster):
     # Getters
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
-    damage_type = property(lambda self: self.__damage_type)
+    damage_types = property(lambda self: self.__damage_types)
+    requirements = property(lambda self: self.__requirements)
     weight = property(lambda self: self.__weight)
 
 
@@ -129,8 +145,9 @@ if __name__ == '__main__':
     sword = Equipament(
         name='Espada de Aço',
         equip_type=EquipamentEnum.one_hand,
-        damage_type=DamageEnum.slashing,
+        damage_types=[DamageEnum.slashing, 'fire'],
         weight=15,
+        requirements={'Nível': 1, 'FOR': 12},
         _id='ffffffffffffffffffffffff',
         bonus_strength=0,
         bonus_dexterity=0,

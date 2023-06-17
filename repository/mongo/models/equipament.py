@@ -14,8 +14,9 @@ if __name__ == "__main__":
     sword = Equipament(
         name='ESPADA DE AÇO TESTE MODELO',
         equip_type=EquipamentEnum.one_hand.name,
-        damage_type=DamageEnum.slashing.name,
+        damage_types=DamageEnum.slashing.name,
         weight=15,
+        requirements={},
         _id='ffffffffffffffffffffffff',
         bonus_strength=0,
         bonus_dexterity=0,

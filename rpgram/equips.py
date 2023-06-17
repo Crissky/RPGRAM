@@ -283,7 +283,7 @@ if __name__ == '__main__':
     helmet = Equipament(
         name='Capacete de Aço',
         equip_type=EquipamentEnum.helmet,
-        damage_type=None,
+        damage_types=None,
         weight=10,
         bonus_physical_defense=30,
         bonus_evasion=-5,
@@ -291,7 +291,7 @@ if __name__ == '__main__':
     sword = Equipament(
         name='Espada Gigante de Aço',
         equip_type=EquipamentEnum.two_hands,
-        damage_type=DamageEnum.slashing,
+        damage_types=DamageEnum.slashing,
         weight=40,
         bonus_physical_attack=30,
         bonus_hit=15,
@@ -300,7 +300,7 @@ if __name__ == '__main__':
     armor = Equipament(
         name='Armadura de Aço',
         equip_type=EquipamentEnum.armor,
-        damage_type=None,
+        damage_types=None,
         weight=60,
         bonus_physical_defense=80,
         bonus_evasion=-25,
@@ -308,7 +308,7 @@ if __name__ == '__main__':
     boots = Equipament(
         name='Botas de Couro',
         equip_type=EquipamentEnum.boots,
-        damage_type=None,
+        damage_types=None,
         weight=10,
         bonus_physical_defense=10,
         bonus_magical_defense=10,
@@ -317,7 +317,7 @@ if __name__ == '__main__':
     any_ring = Equipament(
         name='Algum Anel',
         equip_type=EquipamentEnum.ring,
-        damage_type=None,
+        damage_types=None,
         weight=0.1,
         bonus_strength=100,
         bonus_dexterity=100,
@@ -344,7 +344,7 @@ if __name__ == '__main__':
     necklace = Equipament(
         name='Colar Brilhante',
         equip_type=EquipamentEnum.necklace,
-        damage_type=None,
+        damage_types=None,
         weight=0.2,
         bonus_charisma=150,
     )
