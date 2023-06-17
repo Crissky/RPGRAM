@@ -230,7 +230,7 @@ async def select_name(
         f'Ótimo!!! O seu personagem será um "{classe_name}".\n\n'
         f'Agora escreva o nome do seu personagem.\n'
         f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-        f'apenas letras, números, espaços, e traço "-"'
+        f'apenas letras, números, espaços, e traço "-".'
     )
 
     return CREATE_CHAR_ROUTES
@@ -247,7 +247,7 @@ async def create_char(
         await update.effective_message.reply_text(
             f'"{character_name}" não é um nome de personagem válido.\n\n'
             f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-            f'apenas letras, números, espaços, e traço "-"'
+            f'apenas letras, números, espaços, e traço "-".'
         )
 
         return CREATE_CHAR_ROUTES
