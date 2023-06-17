@@ -4,6 +4,8 @@ from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import Equipment
 from rpgram.enums import EquipmentEnum
+from rpgram.errors import EquipmentRequirementError
+from rpgram.stats import BaseStats
 
 if __name__ in ['__main__', 'equip']:
     from rpgram.enums import DamageEnum
@@ -12,86 +14,115 @@ if __name__ in ['__main__', 'equip']:
 class Equips:
     '''Classe responsável por armazenar os equipamentos do jogador'''
 
-    def __init__(self) -> None:
-        self.__helmet = None
-        self.__left_hand = None
-        self.__right_hand = None
-        self.__armor = None
-        self.__boots = None
-        self.__ring = None
-        self.__necklace = None
-        self.__weight = 0
-        self.__observers = []
-
-        self.__bonus_strength = 0
-        self.__bonus_dexterity = 0
-        self.__bonus_constitution = 0
-        self.__bonus_intelligence = 0
-        self.__bonus_wisdom = 0
-        self.__bonus_charisma = 0
-        self.__multiplier_strength = 1
-        self.__multiplier_dexterity = 1
-        self.__multiplier_constitution = 1
-        self.__multiplier_intelligence = 1
-        self.__multiplier_wisdom = 1
-        self.__multiplier_charisma = 1
-        self.__bonus_hit_points = 0
-        self.__bonus_initiative = 0
-        self.__bonus_physical_attack = 0
-        self.__bonus_precision_attack = 0
-        self.__bonus_magical_attack = 0
-        self.__bonus_physical_defense = 0
-        self.__bonus_magical_defense = 0
-        self.__bonus_hit = 0
-        self.__bonus_evasion = 0
-
-    def equip(self, new_equipament: Equipment) -> List[Equipment]:
-        equip_type = new_equipament.equip_type.name
-        old_equipaments = []
-
-        if equip_type == 'helmet':
-            if self.__helmet is not None:
-                old_equipaments.append(self.__helmet)
-            self.__helmet = new_equipament
-        elif equip_type == 'one_hand':
-            if self.__left_hand is None:
-                self.__left_hand = new_equipament
-            elif self.__right_hand is None:
-                self.__right_hand = new_equipament
-            else:
-                old_equipaments.append(self.__left_hand)
-                old_equipaments.append(self.__right_hand)
-                self.__left_hand = new_equipament
-        elif equip_type == 'two_hands':
-            if self.__left_hand is not None:
-                old_equipaments.append(self.__left_hand)
-            elif self.__right_hand is not None:
-                old_equipaments.append(self.__right_hand)
-            self.__left_hand = new_equipament
-            self.__right_hand = new_equipament
-        elif equip_type == 'armor':
-            if self.__armor is not None:
-                old_equipaments.append(self.__armor)
-            self.__armor = new_equipament
-        elif equip_type == 'boots':
-            if self.__boots is not None:
-                old_equipaments.append(self.__boots)
-            self.__boots = new_equipament
-        elif equip_type == 'ring':
-            if self.__ring is not None:
-                old_equipaments.append(self.__ring)
-            self.__ring = new_equipament
-        elif equip_type == 'necklace':
-            if self.__necklace is not None:
-                old_equipaments.append(self.__necklace)
-            self.__necklace = new_equipament
+    def __init__(
+        self,
+        helmet: Equipment = None,
+        left_hand: Equipment = None,
+        right_hand: Equipment = None,
+        armor: Equipment = None,
+        boots: Equipment = None,
+        ring: Equipment = None,
+        necklace: Equipment = None,
+        equipments_weight: int = 0,
+        observers: List[object] = []
+    ) -> None:
+        self.__helmet = helmet
+        self.__left_hand = left_hand
+        self.__right_hand = right_hand
+        self.__armor = armor
+        self.__boots = boots
+        self.__ring = ring
+        self.__necklace = necklace
+        self.__equipments_weight = equipments_weight
+        self.__observers = observers
 
         self.__update_stats()
-        return old_equipaments
+
+    def equip(self, new_equipment: Equipment) -> List[Equipment]:
+        equip_type = new_equipment.equip_type
+        requirements = new_equipment.requirements
+        old_equipments = []
+        for attribute, value in requirements.items():
+            if self.base_stats[attribute] < value:
+                raise EquipmentRequirementError(
+                    f'O personagem possui "{self.base_stats[attribute]}" '
+                    f'pontos de "{attribute}" e o requerido é "{value}".'
+                )
+
+        if equip_type == EquipmentEnum['helmet']:
+            if self.__helmet is not None:
+                old_equipments.append(self.__helmet)
+            self.__helmet = new_equipment
+        elif equip_type == EquipmentEnum['one_hand']:
+            if self.__left_hand is None:
+                self.__left_hand = new_equipment
+            elif self.__right_hand is None:
+                self.__right_hand = new_equipment
+            else:
+                old_equipments.append(self.__left_hand)
+                old_equipments.append(self.__right_hand)
+                self.__left_hand = new_equipment
+        elif equip_type == EquipmentEnum['two_hands']:
+            if self.__left_hand is not None:
+                old_equipments.append(self.__left_hand)
+            elif self.__right_hand is not None:
+                old_equipments.append(self.__right_hand)
+            self.__left_hand = new_equipment
+            self.__right_hand = new_equipment
+        elif equip_type == EquipmentEnum['armor']:
+            if self.__armor is not None:
+                old_equipments.append(self.__armor)
+            self.__armor = new_equipment
+        elif equip_type == EquipmentEnum['boots']:
+            if self.__boots is not None:
+                old_equipments.append(self.__boots)
+            self.__boots = new_equipment
+        elif equip_type == EquipmentEnum['ring']:
+            if self.__ring is not None:
+                old_equipments.append(self.__ring)
+            self.__ring = new_equipment
+        elif equip_type == EquipmentEnum['necklace']:
+            if self.__necklace is not None:
+                old_equipments.append(self.__necklace)
+            self.__necklace = new_equipment
+
+        self.__update_stats()
+        return old_equipments
 
     # TODO: Implementar uma função para remover equipamentos
-    def unequip(self, equip_type: str):
-        ...
+    def unequip(self, equipment: Equipment) -> Equipment:
+        equip_type = equipment.equip_type
+
+        if self.helmet == equipment:
+            equipment = self.__helmet
+            self.__helmet = None
+        elif self.left_hand == equipment:
+            equipment = self.__left_hand
+            self.__left_hand = None
+        elif self.right_hand == equipment:
+            equipment = self.__right_hand
+            self.__right_hand = None
+        elif self.armor == equipment:
+            equipment = self.__armor
+            self.__armor = None
+        elif self.boots == equipment:
+            equipment = self.__boots
+            self.__boots = None
+        elif self.ring == equipment:
+            equipment = self.__ring
+            self.__ring = None
+        elif self.necklace == equipment:
+            equipment = self.__necklace
+            self.__necklace = None
+        else:
+            raise ValueError(f'"{equipment}" não está equipado.')
+
+        if equip_type == EquipmentEnum['two_hands']:
+            self.__left_hand = None
+            self.__right_hand = None
+
+        self.__update_stats()
+        return equipment
 
     def attach_observer(self, observer):
         self.__observers.append(observer)
@@ -104,7 +135,7 @@ class Equips:
             observer.update()
 
     def __update_stats(self):
-        self.__weight = 0
+        self.__equipments_weight = 0
 
         self.__bonus_strength = 0
         self.__bonus_dexterity = 0
@@ -137,7 +168,7 @@ class Equips:
             ]
         ) - set([None])
         for e in equips:
-            self.__weight += float(e.weight)
+            self.__equipments_weight += float(e.weight)
 
             self.__bonus_strength += int(e.bonus_strength)
             self.__bonus_dexterity += int(e.bonus_dexterity)
@@ -175,7 +206,7 @@ class Equips:
             f'*Botas*: {self.boots.name if self.boots else ""}\n'
             f'*Anel*: {self.ring.name if self.ring else ""}\n'
             f'*Necklace*: {self.necklace.name if self.necklace else ""}\n'
-            f'*Peso*: {self.weight:.2f}\n\n'
+            f'*Peso*: {self.equipments_weight:.2f}\n\n'
         )
 
         if verbose:
@@ -227,6 +258,13 @@ class Equips:
         )
 
     # Getters
+    @property
+    def base_stats(self):
+        for observer in self.__observers:
+            if isinstance(observer, BaseStats):
+                return observer
+        raise NameError('Não foi encontrado um observer do tipo BaseStats.')
+
     helmet = property(lambda self: self.__helmet)
     left_hand = property(lambda self: self.__left_hand)
     right_hand = property(lambda self: self.__right_hand)
@@ -234,7 +272,7 @@ class Equips:
     boots = property(lambda self: self.__boots)
     ring = property(lambda self: self.__ring)
     necklace = property(lambda self: self.__necklace)
-    weight = property(lambda self: self.__weight)
+    equipments_weight = property(lambda self: self.__equipments_weight)
 
     strength = bonus_strength = property(
         fget=lambda self: self.__bonus_strength)
