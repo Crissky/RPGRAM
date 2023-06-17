@@ -411,6 +411,10 @@ class BaseStats:
             return self.charisma
         elif key in ['XP', 'EXPERIENCE', 'EXPERIENCIA', 'EXPERIÊNCIA']:
             return self.xp
+        elif key in ['LEVEL', 'NÍVEL', 'NIVEL']:
+            return self.level
+        elif key in ['CLASSE_LEVEL', 'NIVEL_DA_CLASSE', 'NIVEL_DA_CLASSE']:
+            return self.classe_level
         else:
             raise KeyError(
                 f'Atributo "{key}" não encontrado.\n'
