@@ -2,8 +2,8 @@ from typing import List
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.boosters import Equipament
-from rpgram.enums import EquipamentEnum
+from rpgram.boosters import Equipment
+from rpgram.enums import EquipmentEnum
 
 if __name__ in ['__main__', 'equip']:
     from rpgram.enums import DamageEnum
@@ -45,7 +45,7 @@ class Equips:
         self.__bonus_hit = 0
         self.__bonus_evasion = 0
 
-    def equip(self, new_equipament: Equipament) -> List[Equipament]:
+    def equip(self, new_equipament: Equipment) -> List[Equipment]:
         equip_type = new_equipament.equip_type.name
         old_equipaments = []
 
@@ -280,43 +280,43 @@ class Equips:
 
 if __name__ == '__main__':
     equip = Equips()
-    helmet = Equipament(
+    helmet = Equipment(
         name='Capacete de Aço',
-        equip_type=EquipamentEnum.helmet,
+        equip_type=EquipmentEnum.helmet,
         damage_types=None,
         weight=10,
         bonus_physical_defense=30,
         bonus_evasion=-5,
     )
-    sword = Equipament(
+    sword = Equipment(
         name='Espada Gigante de Aço',
-        equip_type=EquipamentEnum.two_hands,
+        equip_type=EquipmentEnum.two_hands,
         damage_types=DamageEnum.slashing,
         weight=40,
         bonus_physical_attack=30,
         bonus_hit=15,
         bonus_evasion=-10,
     )
-    armor = Equipament(
+    armor = Equipment(
         name='Armadura de Aço',
-        equip_type=EquipamentEnum.armor,
+        equip_type=EquipmentEnum.armor,
         damage_types=None,
         weight=60,
         bonus_physical_defense=80,
         bonus_evasion=-25,
     )
-    boots = Equipament(
+    boots = Equipment(
         name='Botas de Couro',
-        equip_type=EquipamentEnum.boots,
+        equip_type=EquipmentEnum.boots,
         damage_types=None,
         weight=10,
         bonus_physical_defense=10,
         bonus_magical_defense=10,
         bonus_evasion=30,
     )
-    any_ring = Equipament(
+    any_ring = Equipment(
         name='Algum Anel',
-        equip_type=EquipamentEnum.ring,
+        equip_type=EquipmentEnum.ring,
         damage_types=None,
         weight=0.1,
         bonus_strength=100,
@@ -341,9 +341,9 @@ if __name__ == '__main__':
         bonus_hit=100,
         bonus_evasion=100,
     )
-    necklace = Equipament(
+    necklace = Equipment(
         name='Colar Brilhante',
-        equip_type=EquipamentEnum.necklace,
+        equip_type=EquipmentEnum.necklace,
         damage_types=None,
         weight=0.2,
         bonus_charisma=150,

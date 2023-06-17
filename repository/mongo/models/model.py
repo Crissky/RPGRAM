@@ -12,7 +12,7 @@ from rpgram import (
 )
 from rpgram.boosters import (
     Classe,
-    Equipament,
+    Equipment,
     Race,
 )
 from rpgram.characters import BaseCharacter, PlayerCharacter

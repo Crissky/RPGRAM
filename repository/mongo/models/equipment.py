@@ -1,19 +1,19 @@
 from repository.mongo import Model
 from repository.mongo import CollectionEnum
-from rpgram.boosters import Equipament
+from rpgram.boosters import Equipment
 from rpgram.enums import DamageEnum
-from rpgram.enums import EquipamentEnum
+from rpgram.enums import EquipmentEnum
 
 
-class EquipamentModel(Model):
-    _class = property(lambda self: Equipament)
-    collection = property(lambda self: CollectionEnum.EQUIPAMENTS.value)
+class EquipmentModel(Model):
+    _class = property(lambda self: Equipment)
+    collection = property(lambda self: CollectionEnum.EQUIPMENTS.value)
 
 
 if __name__ == "__main__":
-    sword = Equipament(
+    sword = Equipment(
         name='ESPADA DE AÇO TESTE MODELO',
-        equip_type=EquipamentEnum.one_hand.name,
+        equip_type=EquipmentEnum.one_hand.name,
         damage_types=DamageEnum.slashing.name,
         weight=15,
         requirements={},
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         bonus_hit=15,
         bonus_evasion=-0,
     )
-    equipament_model = EquipamentModel()
+    equipament_model = EquipmentModel()
     print('Collection:', equipament_model.collection)
     result = equipament_model.save(sword)
     print('Result:', result)

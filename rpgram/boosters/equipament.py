@@ -5,14 +5,14 @@ from bson import ObjectId
 from constants.text import TEXT_DELIMITER
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
-from rpgram.enums import EquipamentEnum, DamageEnum
+from rpgram.enums import EquipmentEnum, DamageEnum
 
 
-class Equipament(StatsBooster):
+class Equipment(StatsBooster):
     def __init__(
         self,
         name: str,
-        equip_type: Union[str, EquipamentEnum],
+        equip_type: Union[str, EquipmentEnum],
         damage_types: List[Union[str, DamageEnum]],
         weight: float = 10,
         requirements: Dict[str, Any] = {},
@@ -68,7 +68,7 @@ class Equipament(StatsBooster):
             updated_at=updated_at
         )
         if isinstance(equip_type, str):
-            equip_type = EquipamentEnum[equip_type]
+            equip_type = EquipmentEnum[equip_type]
         if isinstance(damage_types, str):
             damage_types = [DamageEnum[damage_types]]
         elif isinstance(damage_types, DamageEnum):
@@ -142,9 +142,9 @@ class Equipament(StatsBooster):
 
 
 if __name__ == '__main__':
-    sword = Equipament(
+    sword = Equipment(
         name='Espada de Aço',
-        equip_type=EquipamentEnum.one_hand,
+        equip_type=EquipmentEnum.one_hand,
         damage_types=[DamageEnum.slashing, 'fire'],
         weight=15,
         requirements={'Nível': 1, 'FOR': 12},

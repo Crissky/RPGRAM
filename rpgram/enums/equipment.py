@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class EquipamentEnum(Enum):
+class EquipmentEnum(Enum):
     helmet = 'Capacete'
     one_hand = 'Uma Mão'
     two_hands = 'Duas Mãos'
