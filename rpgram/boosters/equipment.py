@@ -5,7 +5,7 @@ from bson import ObjectId
 from constants.text import TEXT_DELIMITER
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
-from rpgram.enums import EquipmentEnum, DamageEnum
+from rpgram.enums import DamageEnum, EquipmentEnum, RarityEnum
 
 
 class Equipment(StatsBooster):
@@ -16,6 +16,7 @@ class Equipment(StatsBooster):
         damage_types: List[Union[str, DamageEnum]],
         weight: float = 10,
         requirements: Dict[str, Any] = {},
+        rarity: Union[RarityEnum, str] = 'COMMON',
         _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
@@ -38,6 +39,28 @@ class Equipment(StatsBooster):
         bonus_magical_defense: int = 0,
         bonus_hit: int = 0,
         bonus_evasion: int = 0,
+        secret_bonus_strength: int = 0,
+        secret_bonus_dexterity: int = 0,
+        secret_bonus_constitution: int = 0,
+        secret_bonus_intelligence: int = 0,
+        secret_bonus_wisdom: int = 0,
+        secret_bonus_charisma: int = 0,
+        secret_multiplier_strength: float = 0.0,
+        secret_multiplier_dexterity: float = 0.0,
+        secret_multiplier_constitution: float = 0.0,
+        secret_multiplier_intelligence: float = 0.0,
+        secret_multiplier_wisdom: float = 0.0,
+        secret_multiplier_charisma: float = 0.0,
+        secret_bonus_hit_points: int = 0,
+        secret_bonus_initiative: int = 0,
+        secret_bonus_physical_attack: int = 0,
+        secret_bonus_precision_attack: int = 0,
+        secret_bonus_magical_attack: int = 0,
+        secret_bonus_physical_defense: int = 0,
+        secret_bonus_magical_defense: int = 0,
+        secret_bonus_hit: int = 0,
+        secret_bonus_evasion: int = 0,
+        identified: bool = False,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -64,6 +87,28 @@ class Equipment(StatsBooster):
             bonus_magical_defense=bonus_magical_defense,
             bonus_hit=bonus_hit,
             bonus_evasion=bonus_evasion,
+            secret_bonus_strength=secret_bonus_strength,
+            secret_bonus_dexterity=secret_bonus_dexterity,
+            secret_bonus_constitution=secret_bonus_constitution,
+            secret_bonus_intelligence=secret_bonus_intelligence,
+            secret_bonus_wisdom=secret_bonus_wisdom,
+            secret_bonus_charisma=secret_bonus_charisma,
+            secret_multiplier_strength=secret_multiplier_strength,
+            secret_multiplier_dexterity=secret_multiplier_dexterity,
+            secret_multiplier_constitution=secret_multiplier_constitution,
+            secret_multiplier_intelligence=secret_multiplier_intelligence,
+            secret_multiplier_wisdom=secret_multiplier_wisdom,
+            secret_multiplier_charisma=secret_multiplier_charisma,
+            secret_bonus_hit_points=secret_bonus_hit_points,
+            secret_bonus_initiative=secret_bonus_initiative,
+            secret_bonus_physical_attack=secret_bonus_physical_attack,
+            secret_bonus_precision_attack=secret_bonus_precision_attack,
+            secret_bonus_magical_attack=secret_bonus_magical_attack,
+            secret_bonus_physical_defense=secret_bonus_physical_defense,
+            secret_bonus_magical_defense=secret_bonus_magical_defense,
+            secret_bonus_hit=secret_bonus_hit,
+            secret_bonus_evasion=secret_bonus_evasion,
+            identified=identified,
             created_at=created_at,
             updated_at=updated_at
         )
@@ -79,11 +124,16 @@ class Equipment(StatsBooster):
                     damage_type = DamageEnum[damage_type]
                 damage_types[index] = damage_type
 
+        if isinstance(rarity, str):
+            rarity = RarityEnum[rarity]
+
         self.__name = name
         self.__equip_type = equip_type
         self.__damage_types = damage_types
         self.__weight = weight
         self.__requirements = requirements
+        self.__rarity = rarity
+
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         damage_types = '/'.join([d.value for d in self.damage_types])
@@ -121,13 +171,14 @@ class Equipment(StatsBooster):
         )
 
     def to_dict(self):
-        damage_types = [d.name for d in self.damage_types]
+        damage_types = [d.name for d in self.__damage_types]
         _dict = dict(
-            name=self.name,
-            equip_type=self.equip_type.name,
+            name=self.__name,
+            equip_type=self.__equip_type.name,
             damage_types=damage_types,
-            requirements=self.requirements,
-            weight=self.weight,
+            requirements=self.__requirements,
+            weight=self.__weight,
+            rarity=self.__rarity.name,
         )
         _dict.update(super().to_dict())
 
@@ -144,10 +195,11 @@ class Equipment(StatsBooster):
 if __name__ == '__main__':
     sword = Equipment(
         name='Espada de Aço',
-        equip_type=EquipmentEnum.one_hand,
-        damage_types=[DamageEnum.slashing, 'fire'],
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=[DamageEnum.SLASHING, 'FIRE'],
         weight=15,
         requirements={'Nível': 1, 'FOR': 12},
+        rarity='RARE',
         _id='ffffffffffffffffffffffff',
         bonus_strength=0,
         bonus_dexterity=0,
@@ -164,6 +216,28 @@ if __name__ == '__main__':
         bonus_magical_defense=0,
         bonus_hit=15,
         bonus_evasion=-0,
+        secret_bonus_strength=10,
+        secret_bonus_dexterity=10,
+        secret_bonus_constitution=10,
+        secret_bonus_intelligence=10,
+        secret_bonus_wisdom=10,
+        secret_bonus_charisma=10,
+        secret_multiplier_strength=1,
+        secret_multiplier_dexterity=1,
+        secret_multiplier_constitution=1,
+        secret_multiplier_intelligence=1,
+        secret_multiplier_wisdom=1,
+        secret_multiplier_charisma=1,
+        secret_bonus_hit_points=100,
+        secret_bonus_initiative=10,
+        secret_bonus_physical_attack=10,
+        secret_bonus_precision_attack=10,
+        secret_bonus_magical_attack=10,
+        secret_bonus_physical_defense=10,
+        secret_bonus_magical_defense=10,
+        secret_bonus_hit=10,
+        secret_bonus_evasion=10,
+        identified=True,
     )
     print(sword)
     print(sword.to_dict())

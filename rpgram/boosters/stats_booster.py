@@ -39,6 +39,28 @@ class StatsBooster:
         bonus_magical_defense: int = 0,
         bonus_hit: int = 0,
         bonus_evasion: int = 0,
+        secret_bonus_strength: int = 0,
+        secret_bonus_dexterity: int = 0,
+        secret_bonus_constitution: int = 0,
+        secret_bonus_intelligence: int = 0,
+        secret_bonus_wisdom: int = 0,
+        secret_bonus_charisma: int = 0,
+        secret_multiplier_strength: float = 0.0,
+        secret_multiplier_dexterity: float = 0.0,
+        secret_multiplier_constitution: float = 0.0,
+        secret_multiplier_intelligence: float = 0.0,
+        secret_multiplier_wisdom: float = 0.0,
+        secret_multiplier_charisma: float = 0.0,
+        secret_bonus_hit_points: int = 0,
+        secret_bonus_initiative: int = 0,
+        secret_bonus_physical_attack: int = 0,
+        secret_bonus_precision_attack: int = 0,
+        secret_bonus_magical_attack: int = 0,
+        secret_bonus_physical_defense: int = 0,
+        secret_bonus_magical_defense: int = 0,
+        secret_bonus_hit: int = 0,
+        secret_bonus_evasion: int = 0,
+        identified: bool = None,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -71,6 +93,61 @@ class StatsBooster:
         self.__bonus_hit = int(bonus_hit)
         self.__bonus_evasion = int(bonus_evasion)
 
+        self.__secret_bonus_strength = int(secret_bonus_strength)
+        self.__secret_bonus_dexterity = int(secret_bonus_dexterity)
+        self.__secret_bonus_constitution = int(secret_bonus_constitution)
+        self.__secret_bonus_intelligence = int(secret_bonus_intelligence)
+        self.__secret_bonus_wisdom = int(secret_bonus_wisdom)
+        self.__secret_bonus_charisma = int(secret_bonus_charisma)
+
+        self.__secret_multiplier_strength = float(
+            secret_multiplier_strength
+        )
+        self.__secret_multiplier_dexterity = float(
+            secret_multiplier_dexterity
+        )
+        self.__secret_multiplier_constitution = float(
+            secret_multiplier_constitution
+        )
+        self.__secret_multiplier_intelligence = float(
+            secret_multiplier_intelligence
+        )
+        self.__secret_multiplier_wisdom = float(
+            secret_multiplier_wisdom
+        )
+        self.__secret_multiplier_charisma = float(
+            secret_multiplier_charisma
+        )
+
+        self.__secret_bonus_hit_points = int(
+            secret_bonus_hit_points
+        )
+        self.__secret_bonus_initiative = int(
+            secret_bonus_initiative
+        )
+        self.__secret_bonus_physical_attack = int(
+            secret_bonus_physical_attack
+        )
+        self.__secret_bonus_precision_attack = int(
+            secret_bonus_precision_attack
+        )
+        self.__secret_bonus_magical_attack = int(
+            secret_bonus_magical_attack
+        )
+        self.__secret_bonus_physical_defense = int(
+            secret_bonus_physical_defense
+        )
+        self.__secret_bonus_magical_defense = int(
+            secret_bonus_magical_defense
+        )
+        self.__secret_bonus_hit = int(
+            secret_bonus_hit
+        )
+        self.__secret_bonus_evasion = int(
+            secret_bonus_evasion
+        )
+
+        self.__identified = identified
         self.__created_at = created_at
         self.__updated_at = updated_at
 
@@ -104,6 +181,95 @@ class StatsBooster:
                 f'`ACERTO: {self.hit:+}`\n'
                 f'`EVASÃO: {self.evasion:+}`\n'
             )
+            if self.__identified:
+                text += (
+                    f'*\n{SECTION_HEAD.format("BÔNUS IDENTIFICADOS")}*\n'
+                )
+                if self.__secret_bonus_strength:
+                    text += f'`FOR: {self.__secret_bonus_strength:+}'
+                    if self.__secret_multiplier_strength:
+                        text += (
+                            f'x('
+                            f'{self.__secret_multiplier_strength:+.2f})'
+                        )
+                    text += f'`\n'
+                if self.__secret_bonus_dexterity:
+                    text += f'`DES: {self.__secret_bonus_dexterity:+}'
+                    if self.__secret_multiplier_dexterity:
+                        text += (
+                            f'x('
+                            f'{self.__secret_multiplier_dexterity:+.2f})'
+                        )
+                    text += '`\n'
+                if self.__secret_bonus_constitution:
+                    text += f'`CON: {self.__secret_bonus_constitution:+}'
+                    if self.__secret_multiplier_constitution:
+                        text += (
+                            f'x('
+                            f'{self.__secret_multiplier_constitution:+.2f})'
+                        )
+                    text += '`\n'
+                if self.__secret_bonus_intelligence:
+                    text += f'`INT: {self.__secret_bonus_intelligence:+}'
+                    if self.__secret_multiplier_intelligence:
+                        text += (
+                            f'x('
+                            f'{self.__secret_multiplier_intelligence:+.2f})'
+                        )
+                    text += '`\n'
+                if self.__secret_bonus_wisdom:
+                    text += f'`SAB: {self.__secret_bonus_wisdom:+}'
+                    if self.__secret_multiplier_wisdom:
+                        text += (
+                            f'x('
+                            f'{self.__secret_multiplier_wisdom:+.2f})'
+                        )
+                    text += '`\n'
+                if self.__secret_bonus_charisma:
+                    text += f'`CAR: {self.__secret_bonus_charisma:+}'
+                    if self.__secret_multiplier_charisma:
+                        text += (
+                            f'x('
+                            f'{self.__secret_multiplier_charisma:+.2f})'
+                        )
+                    text += '`\n\n'
+                
+                if self.__secret_bonus_hit_points:
+                    text += f'`HP: {self.__secret_bonus_hit_points:+}`\n'
+                if self.__secret_bonus_initiative:
+                    text += (
+                        f'`INICIATIVA: {self.__secret_bonus_initiative:+}`\n'
+                    )
+                if self.__secret_bonus_physical_attack:
+                    text += (
+                        f'`ATAQUE FÍSICO: '
+                        f'{self.__secret_bonus_physical_attack:+}`\n'
+                    )
+                if self.__secret_bonus_precision_attack:
+                    text += (
+                        f'`ATAQUE DE PRECISÃO: '
+                        f'{self.__secret_bonus_precision_attack:+}`\n'
+                    )
+                if self.__secret_bonus_magical_attack:
+                    text += (
+                        f'`ATAQUE MÁGICO: '
+                        f'{self.__secret_bonus_magical_attack:+}`\n'
+                    )
+                if self.__secret_bonus_physical_defense:
+                    text += (
+                        f'`DEFESA FÍSICA: '
+                        f'{self.__secret_bonus_physical_defense:+}`\n'
+                    )
+                if self.__secret_bonus_magical_defense:
+                    text += (
+                        f'`DEFESA MÁGICA: '
+                        f'{self.__secret_bonus_magical_defense:+}`\n'
+                    )
+                if self.__secret_bonus_hit:
+                    text += f'`ACERTO: {self.__secret_bonus_hit:+}`\n'
+                if self.__secret_bonus_evasion:
+                    text += f'`EVASÃO: {self.__secret_bonus_evasion:+}`\n'
+
         if not markdown:
             text = remove_bold(text)
             text = remove_code(text)
@@ -127,73 +293,217 @@ class StatsBooster:
     def to_dict(self):
         return dict(
             _id=self.__id,
-            bonus_strength=self.bonus_strength,
-            bonus_dexterity=self.bonus_dexterity,
-            bonus_constitution=self.bonus_constitution,
-            bonus_intelligence=self.bonus_intelligence,
-            bonus_wisdom=self.bonus_wisdom,
-            bonus_charisma=self.bonus_charisma,
-            multiplier_strength=self.multiplier_strength,
-            multiplier_dexterity=self.multiplier_dexterity,
-            multiplier_constitution=self.multiplier_constitution,
-            multiplier_intelligence=self.multiplier_intelligence,
-            multiplier_wisdom=self.multiplier_wisdom,
-            multiplier_charisma=self.multiplier_charisma,
-            bonus_hit_points=self.bonus_hit_points,
-            bonus_initiative=self.bonus_initiative,
-            bonus_physical_attack=self.bonus_physical_attack,
-            bonus_precision_attack=self.bonus_precision_attack,
-            bonus_magical_attack=self.bonus_magical_attack,
-            bonus_physical_defense=self.bonus_physical_defense,
-            bonus_magical_defense=self.bonus_magical_defense,
-            bonus_hit=self.bonus_hit,
-            bonus_evasion=self.bonus_evasion,
+            bonus_strength=self.__bonus_strength,
+            bonus_dexterity=self.__bonus_dexterity,
+            bonus_constitution=self.__bonus_constitution,
+            bonus_intelligence=self.__bonus_intelligence,
+            bonus_wisdom=self.__bonus_wisdom,
+            bonus_charisma=self.__bonus_charisma,
+            multiplier_strength=self.__multiplier_strength,
+            multiplier_dexterity=self.__multiplier_dexterity,
+            multiplier_constitution=self.__multiplier_constitution,
+            multiplier_intelligence=self.__multiplier_intelligence,
+            multiplier_wisdom=self.__multiplier_wisdom,
+            multiplier_charisma=self.__multiplier_charisma,
+            bonus_hit_points=self.__bonus_hit_points,
+            bonus_initiative=self.__bonus_initiative,
+            bonus_physical_attack=self.__bonus_physical_attack,
+            bonus_precision_attack=self.__bonus_precision_attack,
+            bonus_magical_attack=self.__bonus_magical_attack,
+            bonus_physical_defense=self.__bonus_physical_defense,
+            bonus_magical_defense=self.__bonus_magical_defense,
+            bonus_hit=self.__bonus_hit,
+            bonus_evasion=self.__bonus_evasion,
+            secret_bonus_strength=self.__secret_bonus_strength,
+            secret_bonus_dexterity=self.__secret_bonus_dexterity,
+            secret_bonus_constitution=self.__secret_bonus_constitution,
+            secret_bonus_intelligence=self.__secret_bonus_intelligence,
+            secret_bonus_wisdom=self.__secret_bonus_wisdom,
+            secret_bonus_charisma=self.__secret_bonus_charisma,
+            secret_multiplier_strength=self.__secret_multiplier_strength,
+            secret_multiplier_dexterity=self.__secret_multiplier_dexterity,
+            secret_multiplier_constitution=self.__secret_multiplier_constitution,
+            secret_multiplier_intelligence=self.__secret_multiplier_intelligence,
+            secret_multiplier_wisdom=self.__secret_multiplier_wisdom,
+            secret_multiplier_charisma=self.__secret_multiplier_charisma,
+            secret_bonus_hit_points=self.__secret_bonus_hit_points,
+            secret_bonus_initiative=self.__secret_bonus_initiative,
+            secret_bonus_physical_attack=self.__secret_bonus_physical_attack,
+            secret_bonus_precision_attack=self.__secret_bonus_precision_attack,
+            secret_bonus_magical_attack=self.__secret_bonus_magical_attack,
+            secret_bonus_physical_defense=self.__secret_bonus_physical_defense,
+            secret_bonus_magical_defense=self.__secret_bonus_magical_defense,
+            secret_bonus_hit=self.__secret_bonus_hit,
+            secret_bonus_evasion=self.__secret_bonus_evasion,
+            identified=self.__identified,
+            created_at=self.__created_at,
+            updated_at=self.__updated_at,
         )
 
     # Getters
+    @property
+    def bonus_strength(self):
+        value = self.__bonus_strength
+        if self.__identified:
+            value += self.__secret_bonus_strength
+        return value
+
+    @property
+    def bonus_dexterity(self):
+        value = self.__bonus_dexterity
+        if self.__identified:
+            value += self.__secret_bonus_dexterity
+        return value
+
+    @property
+    def bonus_constitution(self):
+        value = self.__bonus_constitution
+        if self.__identified:
+            value += self.__secret_bonus_constitution
+        return value
+
+    @property
+    def bonus_intelligence(self):
+        value = self.__bonus_intelligence
+        if self.__identified:
+            value += self.__secret_bonus_intelligence
+        return value
+
+    @property
+    def bonus_wisdom(self):
+        value = self.__bonus_wisdom
+        if self.__identified:
+            value += self.__secret_bonus_wisdom
+        return value
+
+    @property
+    def bonus_charisma(self):
+        value = self.__bonus_charisma
+        if self.__identified:
+            value += self.__secret_bonus_charisma
+        return value
+
+    @property
+    def multiplier_strength(self):
+        value = self.__multiplier_strength
+        if self.__identified:
+            value += self.__secret_multiplier_strength
+        return value
+
+    @property
+    def multiplier_dexterity(self):
+        value = self.__multiplier_dexterity
+        if self.__identified:
+            value += self.__secret_multiplier_dexterity
+        return value
+
+    @property
+    def multiplier_constitution(self):
+        value = self.__multiplier_constitution
+        if self.__identified:
+            value += self.__secret_multiplier_constitution
+        return value
+
+    @property
+    def multiplier_intelligence(self):
+        value = self.__multiplier_intelligence
+        if self.__identified:
+            value += self.__secret_multiplier_intelligence
+        return value
+
+    @property
+    def multiplier_wisdom(self):
+        value = self.__multiplier_wisdom
+        if self.__identified:
+            value += self.__secret_multiplier_wisdom
+        return value
+
+    @property
+    def multiplier_charisma(self):
+        value = self.__multiplier_charisma
+        if self.__identified:
+            value += self.__secret_multiplier_charisma
+        return value
+
+    @property
+    def bonus_hit_points(self):
+        value = self.__bonus_hit_points
+        if self.__identified:
+            value += self.__secret_bonus_hit_points
+        return value
+
+    @property
+    def bonus_initiative(self):
+        value = self.__bonus_initiative
+        if self.__identified:
+            value += self.__secret_bonus_initiative
+        return value
+
+    @property
+    def bonus_physical_attack(self):
+        value = self.__bonus_physical_attack
+        if self.__identified:
+            value += self.__secret_bonus_physical_attack
+        return value
+
+    @property
+    def bonus_precision_attack(self):
+        value = self.__bonus_precision_attack
+        if self.__identified:
+            value += self.__secret_bonus_precision_attack
+        return value
+
+    @property
+    def bonus_magical_attack(self):
+        value = self.__bonus_magical_attack
+        if self.__identified:
+            value += self.__secret_bonus_magical_attack
+        return value
+
+    @property
+    def bonus_physical_defense(self):
+        value = self.__bonus_physical_defense
+        if self.__identified:
+            value += self.__secret_bonus_physical_defense
+        return value
+
+    @property
+    def bonus_magical_defense(self):
+        value = self.__bonus_magical_defense
+        if self.__identified:
+            value += self.__secret_bonus_magical_defense
+        return value
+
+    @property
+    def bonus_hit(self):
+        value = self.__bonus_hit
+        if self.__identified:
+            value += self.__secret_bonus_hit
+        return value
+
+    @property
+    def bonus_evasion(self):
+        value = self.__bonus_evasion
+        if self.__identified:
+            value += self.__secret_bonus_evasion
+        return value
+
     _id = property(lambda self: self.__id)
-    strength = bonus_strength = property(
-        fget=lambda self: self.__bonus_strength)
-    dexterity = bonus_dexterity = property(
-        fget=lambda self: self.__bonus_dexterity)
-    constitution = bonus_constitution = property(
-        fget=lambda self: self.__bonus_constitution)
-    intelligence = bonus_intelligence = property(
-        fget=lambda self: self.__bonus_intelligence)
-    wisdom = bonus_wisdom = property(
-        fget=lambda self: self.__bonus_wisdom)
-    charisma = bonus_charisma = property(
-        fget=lambda self: self.__bonus_charisma)
-    multiplier_strength = property(
-        fget=lambda self: self.__multiplier_strength)
-    multiplier_dexterity = property(
-        fget=lambda self: self.__multiplier_dexterity)
-    multiplier_constitution = property(
-        fget=lambda self: self.__multiplier_constitution)
-    multiplier_intelligence = property(
-        fget=lambda self: self.__multiplier_intelligence)
-    multiplier_wisdom = property(
-        fget=lambda self: self.__multiplier_wisdom)
-    multiplier_charisma = property(
-        fget=lambda self: self.__multiplier_charisma)
-    hp = hit_points = bonus_hit_points = property(
-        fget=lambda self: self.__bonus_hit_points)
-    initiative = bonus_initiative = property(
-        fget=lambda self: self.__bonus_initiative)
-    physical_attack = bonus_physical_attack = property(
-        fget=lambda self: self.__bonus_physical_attack)
-    precision_attack = bonus_precision_attack = property(
-        fget=lambda self: self.__bonus_precision_attack)
-    magical_attack = bonus_magical_attack = property(
-        fget=lambda self: self.__bonus_magical_attack)
-    physical_defense = bonus_physical_defense = property(
-        fget=lambda self: self.__bonus_physical_defense)
-    magical_defense = bonus_magical_defense = property(
-        fget=lambda self: self.__bonus_magical_defense)
-    hit = bonus_hit = property(
-        fget=lambda self: self.__bonus_hit)
-    evasion = bonus_evasion = property(
-        fget=lambda self: self.__bonus_evasion)
+    strength = bonus_strength
+    dexterity = bonus_dexterity
+    constitution = bonus_constitution
+    intelligence = bonus_intelligence
+    wisdom = bonus_wisdom
+    charisma = bonus_charisma
+    hp = hit_points = bonus_hit_points
+    initiative = bonus_initiative
+    physical_attack = bonus_physical_attack
+    precision_attack = bonus_precision_attack
+    magical_attack = bonus_magical_attack
+    physical_defense = bonus_physical_defense
+    magical_defense = bonus_magical_defense
+    hit = bonus_hit
+    evasion = bonus_evasion
     created_at = property(lambda self: self.__created_at)
     updated_at = property(lambda self: self.__updated_at)
 
@@ -222,6 +532,28 @@ if __name__ == '__main__':
         bonus_magical_defense=-28,
         bonus_hit=29,
         bonus_evasion=30,
+        identified=True,
+        secret_bonus_strength=31,
+        secret_bonus_dexterity=32,
+        secret_bonus_constitution=33,
+        secret_bonus_intelligence=34,
+        secret_bonus_wisdom=35,
+        secret_bonus_charisma=-36,
+        secret_multiplier_strength=37,
+        secret_multiplier_dexterity=38,
+        secret_multiplier_constitution=39,
+        secret_multiplier_intelligence=40,
+        secret_multiplier_wisdom=41,
+        secret_multiplier_charisma=42,
+        secret_bonus_hit_points=143,
+        secret_bonus_initiative=44,
+        secret_bonus_physical_attack=45,
+        secret_bonus_precision_attack=46,
+        secret_bonus_magical_attack=47,
+        secret_bonus_physical_defense=48,
+        secret_bonus_magical_defense=49,
+        secret_bonus_hit=50,
+        secret_bonus_evasion=51,
     )
     print(bonus_stats)
     print(bonus_stats.to_dict())
