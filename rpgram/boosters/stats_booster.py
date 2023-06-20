@@ -233,7 +233,7 @@ class StatsBooster:
                             f'{self.__secret_multiplier_charisma:+.2f})'
                         )
                     text += '`\n\n'
-                
+
                 if self.__secret_bonus_hit_points:
                     text += f'`HP: {self.__secret_bonus_hit_points:+}`\n'
                 if self.__secret_bonus_initiative:
@@ -487,6 +487,15 @@ class StatsBooster:
         if self.__identified:
             value += self.__secret_bonus_evasion
         return value
+
+    @property
+    def identifiable(self):
+        '''Retorna True se o objeto puder ser identificado.
+        Retorna False se o objeto não puder (ou já foi) ser identificado'''
+        if self.__identified is None or self.__identified is True:
+            return False
+        elif self.__identified is False:
+            return True
 
     _id = property(lambda self: self.__id)
     strength = bonus_strength
