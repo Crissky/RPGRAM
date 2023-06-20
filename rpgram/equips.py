@@ -49,11 +49,11 @@ class Equips:
                     f'pontos de "{attribute}" e o requerido é "{value}".'
                 )
 
-        if equip_type == EquipmentEnum['helmet']:
+        if equip_type == EquipmentEnum.HELMET:
             if self.__helmet is not None:
                 old_equipments.append(self.__helmet)
             self.__helmet = new_equipment
-        elif equip_type == EquipmentEnum['one_hand']:
+        elif equip_type == EquipmentEnum.ONE_HAND:
             if self.__left_hand is None:
                 self.__left_hand = new_equipment
             elif self.__right_hand is None:
@@ -62,26 +62,26 @@ class Equips:
                 old_equipments.append(self.__left_hand)
                 old_equipments.append(self.__right_hand)
                 self.__left_hand = new_equipment
-        elif equip_type == EquipmentEnum['two_hands']:
+        elif equip_type == EquipmentEnum.TWO_HANDS:
             if self.__left_hand is not None:
                 old_equipments.append(self.__left_hand)
             elif self.__right_hand is not None:
                 old_equipments.append(self.__right_hand)
             self.__left_hand = new_equipment
             self.__right_hand = new_equipment
-        elif equip_type == EquipmentEnum['armor']:
+        elif equip_type == EquipmentEnum.ARMOR:
             if self.__armor is not None:
                 old_equipments.append(self.__armor)
             self.__armor = new_equipment
-        elif equip_type == EquipmentEnum['boots']:
+        elif equip_type == EquipmentEnum.BOOTS:
             if self.__boots is not None:
                 old_equipments.append(self.__boots)
             self.__boots = new_equipment
-        elif equip_type == EquipmentEnum['ring']:
+        elif equip_type == EquipmentEnum.RING:
             if self.__ring is not None:
                 old_equipments.append(self.__ring)
             self.__ring = new_equipment
-        elif equip_type == EquipmentEnum['necklace']:
+        elif equip_type == EquipmentEnum.NECKLACE:
             if self.__necklace is not None:
                 old_equipments.append(self.__necklace)
             self.__necklace = new_equipment
@@ -320,7 +320,7 @@ if __name__ == '__main__':
     equip = Equips()
     helmet = Equipment(
         name='Capacete de Aço',
-        equip_type=EquipmentEnum.helmet,
+        equip_type=EquipmentEnum.HELMET,
         damage_types=None,
         weight=10,
         bonus_physical_defense=30,
@@ -328,8 +328,8 @@ if __name__ == '__main__':
     )
     sword = Equipment(
         name='Espada Gigante de Aço',
-        equip_type=EquipmentEnum.two_hands,
-        damage_types=DamageEnum.slashing,
+        equip_type=EquipmentEnum.TWO_HANDS,
+        damage_types=DamageEnum.SLASHING,
         weight=40,
         bonus_physical_attack=30,
         bonus_hit=15,
@@ -337,7 +337,7 @@ if __name__ == '__main__':
     )
     armor = Equipment(
         name='Armadura de Aço',
-        equip_type=EquipmentEnum.armor,
+        equip_type=EquipmentEnum.ARMOR,
         damage_types=None,
         weight=60,
         bonus_physical_defense=80,
@@ -345,7 +345,7 @@ if __name__ == '__main__':
     )
     boots = Equipment(
         name='Botas de Couro',
-        equip_type=EquipmentEnum.boots,
+        equip_type=EquipmentEnum.BOOTS,
         damage_types=None,
         weight=10,
         bonus_physical_defense=10,
@@ -354,7 +354,7 @@ if __name__ == '__main__':
     )
     any_ring = Equipment(
         name='Algum Anel',
-        equip_type=EquipmentEnum.ring,
+        equip_type=EquipmentEnum.RING,
         damage_types=None,
         weight=0.1,
         bonus_strength=100,
@@ -381,7 +381,7 @@ if __name__ == '__main__':
     )
     necklace = Equipment(
         name='Colar Brilhante',
-        equip_type=EquipmentEnum.necklace,
+        equip_type=EquipmentEnum.NECKLACE,
         damage_types=None,
         weight=0.2,
         bonus_charisma=150,

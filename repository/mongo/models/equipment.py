@@ -13,8 +13,8 @@ class EquipmentModel(Model):
 if __name__ == "__main__":
     sword = Equipment(
         name='ESPADA DE AÇO TESTE MODELO',
-        equip_type=EquipmentEnum.one_hand.name,
-        damage_types=DamageEnum.slashing.name,
+        equip_type=EquipmentEnum.ONE_HAND.name,
+        damage_types=DamageEnum.SLASHING.name,
         weight=15,
         requirements={},
         _id='ffffffffffffffffffffffff',

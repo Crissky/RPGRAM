@@ -2,10 +2,10 @@ from enum import Enum
 
 
 class EquipmentEnum(Enum):
-    helmet = 'Capacete'
-    one_hand = 'Uma Mão'
-    two_hands = 'Duas Mãos'
-    armor = 'Armadura'
-    boots = 'Botas'
-    ring = 'Anel'
-    necklace = 'Colar'
+    HELMET = 'Capacete'
+    ONE_HAND = 'Uma Mão'
+    TWO_HANDS = 'Duas Mãos'
+    ARMOR = 'Armadura'
+    BOOTS = 'Botas'
+    RING = 'Anel'
+    NECKLACE = 'Colar'
