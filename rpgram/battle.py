@@ -330,8 +330,8 @@ class Battle:
         accuracy = min(accuracy, 1.0)
         dice_bonus = (attacker_dice.value - target_dice.value) / 100
         accuracy = accuracy + dice_bonus
-        accuracy = min(accuracy, 1.0)
-        accuracy = max(accuracy, 0.0)
+        accuracy = min(accuracy, 0.95)
+        accuracy = max(accuracy, 0.1)
 
         return accuracy
 
