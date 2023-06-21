@@ -13,6 +13,9 @@ class Bag:
         self, items: List[Items_Types],
         _id: Union[str, ObjectId] = None,
     ):
+        if isinstance(_id, str):
+            _id = ObjectId(_id)
+
         self.__items = items
         self.__id = _id
 
@@ -30,7 +33,7 @@ class Bag:
             self.__items.pop(slot)
         elif slot:
             self.__items.remove(item)
-    
+
     def to_dict(self):
         return dict(
             items=[item._id for item in self.__items],

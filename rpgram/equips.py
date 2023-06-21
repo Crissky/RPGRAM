@@ -32,6 +32,9 @@ class Equips:
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
+        if isinstance(_id, str):
+            _id = ObjectId(_id)
+
         self.__id = _id
 
         self.__helmet = helmet
