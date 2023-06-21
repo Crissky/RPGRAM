@@ -1,4 +1,7 @@
-from typing import List
+from datetime import datetime
+from typing import List, Union
+
+from bson import ObjectId
 
 from constants.text import SECTION_HEAD, TEXT_DELIMITER
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
@@ -16,6 +19,7 @@ class Equips:
 
     def __init__(
         self,
+        _id: Union[str, ObjectId] = None,
         helmet: Equipment = None,
         left_hand: Equipment = None,
         right_hand: Equipment = None,
@@ -24,8 +28,12 @@ class Equips:
         ring: Equipment = None,
         necklace: Equipment = None,
         equipments_weight: int = 0,
-        observers: List[object] = []
+        observers: List[object] = [],
+        created_at: datetime = None,
+        updated_at: datetime = None
     ) -> None:
+        self.__id = _id
+
         self.__helmet = helmet
         self.__left_hand = left_hand
         self.__right_hand = right_hand
@@ -33,8 +41,12 @@ class Equips:
         self.__boots = boots
         self.__ring = ring
         self.__necklace = necklace
+
         self.__equipments_weight = equipments_weight
         self.__observers = observers
+
+        self.__created_at = created_at
+        self.__updated_at = updated_at
 
         self.__update_stats()
 
@@ -255,6 +267,22 @@ class Equips:
             f'{TEXT_DELIMITER}\n'
             f'{self.get_sheet(True)}'
             f'{TEXT_DELIMITER}'
+        )
+
+    def to_dict(self):
+        return dict(
+            _id=self.__id,
+            helmet=self.__helmet._id,
+            left_hand=self.__left_hand._id,
+            right_hand=self.__right_hand._id,
+            armor=self.__armor._id,
+            boots=self.__boots._id,
+            ring=self.__ring._id,
+            necklace=self.__necklace._id,
+            equipments_weight=self.__equipments_weight,
+            observers=[o._id for o in self.__observers],
+            created_at=self.__created_at,
+            updated_at=self.__updated_at,
         )
 
     # Getters
