@@ -7,13 +7,14 @@ from constants.text import SECTION_HEAD
 from functions.datetime import datetime_to_string
 
 
-class GroupConfiguration:
+class Group:
     def __init__(
         self,
         name: str,
         chat_id: int,
         _id: Union[str, ObjectId] = None,
         verbose: bool = False,
+        silent: bool = False,
         spawn_start_time: int = 6,
         spawn_end_time: int = 20,
         multiplier_xp: float = 1.0,
@@ -28,6 +29,7 @@ class GroupConfiguration:
         self.chat_id = chat_id
         self.__id = _id
         self.verbose = verbose
+        self.silent = silent
         self.spawn_start_time = spawn_start_time
         self.spawn_end_time = spawn_end_time
         self.multiplier_xp = float(multiplier_xp)
@@ -50,6 +52,15 @@ class GroupConfiguration:
             else:
                 raise ValueError(f'Forneça o valor "True" ou "False"')
             self.verbose = value
+        elif key in ['SILENT', 'SILENCIOSO']:
+            value = value.upper()
+            if value in ['FALSE', 'NO', '0']:
+                value = False
+            elif value in ['TRUE', 'YES', '1']:
+                value = True
+            else:
+                raise ValueError(f'Forneça o valor "True" ou "False"')
+            self.silent = value
         elif key in ['SPAWN_START_TIME', 'START_TIME']:
             value = int(value)
             if value > 24 or value < 0:
@@ -79,6 +90,7 @@ class GroupConfiguration:
             f'Grupo: {self.name}\n'
             f'Chat ID: {self.chat_id}\n'
             f'Verbose: {self.verbose}\n'
+            f'Silencioso: {self.silent}\n'
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
             f'Hora de Fim de Spawn: {self.spawn_end_time}h\n'
             f'ID: {self.__id}\n'
@@ -95,6 +107,7 @@ class GroupConfiguration:
             chat_id=self.chat_id,
             _id=self.__id,
             verbose=self.verbose,
+            silent=self.silent,
             spawn_start_time=self.spawn_start_time,
             spawn_end_time=self.spawn_end_time,
             multiplier_xp=self.multiplier_xp,
@@ -105,7 +118,7 @@ class GroupConfiguration:
 
 
 if __name__ == "__main__":
-    group_config = GroupConfiguration(
+    group_config = Group(
         name='Grupo Teste',
         chat_id=1234,
         _id='ffffffffffffffffffffffff'

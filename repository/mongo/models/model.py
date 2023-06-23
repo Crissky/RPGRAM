@@ -7,7 +7,7 @@ from repository.mongo import Database
 from rpgram import (
     Battle,
     Equips,
-    GroupConfiguration,
+    Group,
     Player,
 )
 from rpgram.boosters import (

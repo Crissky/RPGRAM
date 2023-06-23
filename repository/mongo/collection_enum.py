@@ -6,6 +6,6 @@ class CollectionEnum(Enum):
     CHARACTERS = 'characters'
     CLASSES = 'classes'
     EQUIPMENTS = 'equipments'
-    GROUP_CONFIGURATIONS = 'group_configurations'
+    GROUP = 'groups'
     PLAYERS = 'players'
     RACES = 'races'

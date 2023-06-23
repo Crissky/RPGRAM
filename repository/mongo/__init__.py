@@ -3,7 +3,7 @@ from repository.mongo.database import Database
 from repository.mongo.models.model import Model
 from repository.mongo.models.character import CharacterModel
 from repository.mongo.models.classe import ClasseModel
-from repository.mongo.models.config import GroupConfigurationModel
+from repository.mongo.models.config import GroupModel
 from repository.mongo.models.equipment import EquipmentModel
 from repository.mongo.models.player import PlayerModel
 from repository.mongo.models.race import RaceModel

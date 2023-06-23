@@ -26,9 +26,9 @@ from bot.constants.sign_up_group import (
 from bot.conversation.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
-from repository.mongo import GroupConfigurationModel
+from repository.mongo import GroupModel
 
-from rpgram import GroupConfiguration
+from rpgram import Group
 
 
 # ROUTES
@@ -37,7 +37,7 @@ START_ROUTES = range(1)
 
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    group_config_model = GroupConfigurationModel()
+    group_model = GroupModel()
     chat_id = update.effective_chat.id
     chat_name = update.effective_chat.effective_name
     user_name = update.effective_user.name
@@ -47,7 +47,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             'Use este comando em um grupo para cadastrá-lo.'
         )
         return ConversationHandler.END
-    elif (group_config := group_config_model.get(chat_id)):
+    elif (group_config := group_model.get(chat_id)):
         await update.effective_message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
             f'O grupo "{chat_name}" já está cadastrado.\n\n'
@@ -77,15 +77,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     chat_name = update.effective_chat.effective_name
-    group_config_model = GroupConfigurationModel()
+    group_model = GroupModel()
 
-    if not (group_config := group_config_model.get(chat_id)):
-        group_config = GroupConfiguration(
+    if not (group_config := group_model.get(chat_id)):
+        group_config = Group(
             name=chat_name,
             chat_id=chat_id,
         )
-        group_config_model.save(group_config)
-        group_config = group_config_model.get(chat_id)
+        group_model.save(group_config)
+        group_config = group_model.get(chat_id)
 
     query = update.callback_query
 

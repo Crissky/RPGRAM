@@ -28,7 +28,7 @@ from functions.datetime import (
 )
 
 from repository.mongo import (
-    GroupConfigurationModel,
+    GroupModel,
     CharacterModel,
     PlayerModel
 )
@@ -41,7 +41,7 @@ from repository.mongo import (
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
     char_model = CharacterModel()
-    group_config_model = GroupConfigurationModel()
+    group_model = GroupModel()
 
     user_name = update.effective_user.name
     user_id = update.effective_user.id
@@ -61,7 +61,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
     player_char = char_model.get(user_id)
-    group = group_config_model.get(chat_id)
+    group = group_model.get(chat_id)
 
     player.xp_cooldown = add_random_minutes_now(message_date)
     context.user_data[user_id] = player

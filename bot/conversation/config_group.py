@@ -14,7 +14,7 @@ from bot.conversation.filters import (
 )
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
 
-from repository.mongo import GroupConfigurationModel
+from repository.mongo import GroupModel
 
 
 @print_basic_infos
@@ -22,17 +22,17 @@ from repository.mongo import GroupConfigurationModel
 @need_are_admin
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
-    group_config_model = GroupConfigurationModel()
+    group_model = GroupModel()
     chat_id = update.effective_chat.id
     args = context.args
-    group = group_config_model.get(chat_id)
+    group = group_model.get(chat_id)
 
     if len(args) == 2:
         attribute = args[0]
         value = args[1]
         try:
             group[attribute] = value
-            group_config_model.save(group)
+            group_model.save(group)
             await update.effective_message.reply_text(
                 f'Configurado "{attribute}" para "{value}".\n\n'
                 f'{group}'
@@ -47,7 +47,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         group['END_TIME'] = '20'
         group['MULTIPLIER_XP'] = '1'
         group['CHAR_MULTIPLIER_XP'] = '1'
-        group_config_model.save(group)
+        group_model.save(group)
         await update.effective_message.reply_text(
             f'Configurado para os valores padrões.\n\n'
             f'{group}'

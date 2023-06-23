@@ -13,6 +13,7 @@ class Player:
         player_id: int,
         _id: Union[str, ObjectId] = None,
         verbose: bool = False,
+        silent: bool = False,
         xp_cooldown: datetime = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -24,6 +25,7 @@ class Player:
         self.name = name
         self.__id = _id
         self.verbose = verbose
+        self.silent = silent
         self.xp_cooldown = xp_cooldown
         self.created_at = created_at
         self.updated_at = updated_at
@@ -50,6 +52,7 @@ class Player:
             f'Jogador: {self.name}\n'
             f'ID: {self.__id}\n'
             f'Verbose: {self.verbose}\n'
+            f'Silencioso: {self.silent}\n'
             f'Player ID: {self.player_id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
@@ -61,6 +64,7 @@ class Player:
             player_id=self.player_id,
             _id=self.__id,
             verbose=self.verbose,
+            silent=self.silent,
             xp_cooldown=self.xp_cooldown,
             created_at=self.created_at,
             updated_at=self.updated_at

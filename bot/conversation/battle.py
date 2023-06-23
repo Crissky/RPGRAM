@@ -45,7 +45,7 @@ from bot.decorators import print_basic_infos, need_have_char, need_singup_group
 from repository.mongo import (
     BattleModel,
     CharacterModel,
-    GroupConfigurationModel
+    GroupModel
 )
 
 from rpgram import Battle, Dice
@@ -169,9 +169,9 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             show_alert=True
         )
     elif other_battle:
-        group_config_model = GroupConfigurationModel()
+        group_model = GroupModel()
         chat_id = other_battle.chat_id
-        group = group_config_model.get(chat_id)
+        group = group_model.get(chat_id)
         await query.answer(
             f'Seu personagem já em uma batalha no grupo "{group.name}"!',
             show_alert=True
@@ -356,9 +356,9 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 ).upper()
             elif winner == 'draw':
                 text += '\nA BATALHA TERMINOU EMPATADA!\n\n'
-            group_config_model = GroupConfigurationModel()
+            group_model = GroupModel()
             chat_id = update.effective_chat.id
-            group = group_config_model.get(chat_id)
+            group = group_model.get(chat_id)
             multiplier_xp = group.multiplier_xp
             report_xp = battle.share_xp(multiplier_xp)
             reply_markup = None

@@ -19,17 +19,17 @@ from bot.conversation.filters import (
 )
 from bot.decorators import print_basic_infos, need_singup_group
 
-from repository.mongo import GroupConfigurationModel
+from repository.mongo import GroupModel
 
 
 @print_basic_infos
 @need_singup_group
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    group_config_model = GroupConfigurationModel()
+    group_model = GroupModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
 
-    if (group := group_config_model.get(chat_id)):
+    if (group := group_model.get(chat_id)):
         await update.effective_message.reply_text(f'{group}')
 
 
