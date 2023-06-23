@@ -22,7 +22,7 @@ class Consumable:
 
     def use(self, target):
         self.__quantity -= 1
-        result = eval(self.__function)
+        result = exec(self.__function)
         return result
     
     def to_dict(self):
