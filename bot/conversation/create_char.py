@@ -28,11 +28,12 @@ from bot.constants.create_char import (
     CALLBACK_TEXT_RACES,
     CALLBACK_TEXT_CLASSES,
 )
-from bot.conversation.filters import (
+from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos
+from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import (
     ClasseModel,
@@ -64,11 +65,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     race_model = RaceModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if not player_model.get(player_id):
         response = await update.effective_message.reply_text(
             f'Você precisa criar um perfil para criar um personagem.\n'
-            f'Para isso, utilize o comando /criarconta.'
+            f'Para isso, utilize o comando /criarconta.',
+            disable_notification=silent
         )
 
         return ConversationHandler.END
@@ -88,6 +92,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             f'Personagem:\n'
             f'{player_character}',
             reply_markup=reply_markup,
+            disable_notification=silent
         )
         context.user_data['response'] = response
         return DELETE_ROUTES
@@ -103,6 +108,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         'usando o comando /cancel.\n\n'
         'Escolha uma das raças abaixo:',
         reply_markup=reply_markup,
+        disable_notification=silent
     )
     context.user_data['response'] = response
 
@@ -243,11 +249,14 @@ async def create_char(
     context: ContextTypes.DEFAULT_TYPE
 ) -> int:
     character_name = update.effective_message.text.strip()
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     if not is_valid_char_name(character_name):
         await update.effective_message.reply_text(
             f'"{character_name}" não é um nome de personagem válido.\n\n'
             f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-            f'apenas letras, números, espaços, e traço "-".'
+            f'apenas letras, números, espaços, e traço "-".',
+            disable_notification=silent
         )
 
         return CREATE_CHAR_ROUTES
@@ -274,7 +283,8 @@ async def create_char(
     if player_character:
         await update.effective_message.reply_text(
             f'Personagem Criado com sucesso!!!\n\n'
-            f'{player_character}'
+            f'{player_character}',
+            disable_notification=silent
         )
     else:
         await update.effective_message.reply_text(
@@ -287,7 +297,8 @@ async def create_char(
             f'classe_name: {classe_name}\n'
             f'character_name: {character_name}\n'
             f'race:\n{race}\n'
-            f'classe:\n{classe}\n'
+            f'classe:\n{classe}\n',
+            disable_notification=silent
         )
 
     if 'response' in context.user_data:
@@ -348,7 +359,6 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             text=new_text,
         )
     elif update.callback_query:
-        # await update.callback_query.answer()
         await update.callback_query.edit_message_text(new_text)
 
     clean_user_data(context)

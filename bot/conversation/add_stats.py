@@ -12,11 +12,12 @@ from telegram.ext import (
 )
 
 from bot.constants.add_stats import COMMANDS
-from bot.conversation.filters import (
+from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
 from bot.decorators import need_have_char, print_basic_infos
+from bot.functions.general import get_attribute_group_or_player
 
 from functions.text import escape_markdown_v2
 
@@ -29,6 +30,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
 
     args = context.args
     player_char = char_model.get(user_id)
@@ -44,11 +47,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'Adicionado "{value}" ponto(s) no atributo "{attribute}".\n\n'
             )
         except (KeyError, ValueError) as error:
-            await update.effective_message.reply_text(str(error))
+            await update.effective_message.reply_text(
+                str(error),
+                disable_notification=silent
+            )
             return
     elif len(args) > 2:
         await update.effective_message.reply_text(
-            'Envie somente o ATRIBUTO e o VALOR que deseja adicionar.'
+            'Envie somente o ATRIBUTO e o VALOR que deseja adicionar.',
+            disable_notification=silent
         )
         return
     elif len(args) == 1:
@@ -57,7 +64,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_text(
         f'{text}'
         f'{player_char.cs.get_all_sheets(verbose=verbose, markdown=True)}',
-        parse_mode=ParseMode.MARKDOWN_V2
+        parse_mode=ParseMode.MARKDOWN_V2,
+        disable_notification=silent
     )
 
 

@@ -13,13 +13,14 @@ from telegram.ext import (
     MessageHandler
 )
 
-from bot.conversation.filters import ALLOW_GAIN_XP_FILTER
+from bot.constants.filters import ALLOW_GAIN_XP_FILTER
 from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_group,
     skip_if_no_singup_player,
     print_basic_infos
 )
+from bot.functions.general import get_attribute_group_or_player
 
 from functions.datetime import (
     utc_to_brazil_datetime,
@@ -48,6 +49,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     message_date = update.effective_message.date
     message_date = utc_to_brazil_datetime(message_date)
+    silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if user_id in context.user_data:
         player = context.user_data[user_id]
@@ -81,13 +83,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.effective_message.reply_text(
             f'Parabéns!!!\n'
             f'{user_name} passou de nível! '
-            f'Seu personagem agora está no nível {new_level}.'
+            f'Seu personagem agora está no nível {new_level}.',
+            disable_notification=silent
         )
     elif player.verbose:
         try:
             await update.effective_user.send_message(
                 f'Você ganhou {add_xp} de XP.',
-                disable_notification=True
+                disable_notification=silent
             )
         except Forbidden as error:
             print(

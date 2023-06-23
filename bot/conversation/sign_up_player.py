@@ -19,7 +19,7 @@ from telegram.ext import (
 from bot.constants.sign_up_player import COMMANDS
 from bot.constants.sign_up_player import CALLBACK_TEXT_YES
 from bot.constants.sign_up_player import CALLBACK_TEXT_NO
-from bot.conversation.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
 from repository.mongo import PlayerModel

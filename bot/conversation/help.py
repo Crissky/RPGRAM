@@ -23,7 +23,7 @@ from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
 from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
-from bot.conversation.filters import (
+from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )

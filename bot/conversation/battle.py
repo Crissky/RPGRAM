@@ -36,11 +36,12 @@ from bot.constants.battle import (
     REACTIONS_LABELS,
     TEAMS,
 )
-from bot.conversation.filters import (
+from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos, need_have_char, need_singup_group
+from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import (
     BattleModel,
@@ -70,6 +71,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('battle_start')
     battle_model = BattleModel()
     chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     chat_battle = battle_model.get(query={'chat_id': chat_id})
 
     if not chat_battle:
@@ -84,7 +86,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'A batalha retomada!\n'
                 f'{user_name}, escolha sua ação.\n\n'
                 f'{chat_battle.get_sheet()}\n',
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
+                disable_notification=silent
             )
         context.chat_data['battle_response'] = response
         context.chat_data['battle_id'] = battle_id
@@ -97,6 +100,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     response = await update.effective_message.reply_text(
         battle.get_teams_sheet(),
         reply_markup=reply_markup,
+        disable_notification=silent
     )
     context.chat_data['battle_response'] = response
     context.chat_data['battle_id'] = battle_id

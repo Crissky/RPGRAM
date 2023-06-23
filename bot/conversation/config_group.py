@@ -8,11 +8,12 @@ from telegram.constants import ChatAction
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_group import COMMANDS
-from bot.conversation.filters import (
+from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
+from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import GroupModel
 
@@ -24,6 +25,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     group_model = GroupModel()
     chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
     group = group_model.get(chat_id)
 
@@ -35,11 +37,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             group_model.save(group)
             await update.effective_message.reply_text(
                 f'Configurado "{attribute}" para "{value}".\n\n'
-                f'{group}'
+                f'{group}',
+                disable_notification=silent
             )
         except (KeyError, ValueError) as error:
             await update.effective_message.reply_text(
-                str(error)
+                str(error),
+                disable_notification=silent
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         group['VERBOSE'] = 'false'
@@ -50,11 +54,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         group_model.save(group)
         await update.effective_message.reply_text(
             f'Configurado para os valores padrões.\n\n'
-            f'{group}'
+            f'{group}',
+            disable_notification=silent
         )
     elif len(args) != 2:
         await update.effective_message.reply_text(
-            'Envie o ATRIBUTO e o VALOR que deseja configurar.'
+            'Envie o ATRIBUTO e o VALOR que deseja configurar.',
+            disable_notification=silent
         )
 
 

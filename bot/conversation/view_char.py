@@ -14,8 +14,9 @@ from telegram.ext import (
 
 from bot.constants.view_char import COMMANDS
 from bot.constants.create_char import COMMANDS as create_char_commands
-from bot.conversation.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
+from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import CharacterModel
 
@@ -25,6 +26,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
 
     player_character = char_model.get(user_id)
@@ -36,7 +39,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             new_player_character = char_model.get(query=query)
             if not new_player_character:
                 await update.effective_message.reply_text(
-                    f'{player_name} não possui um personamgem.'
+                    f'{player_name} não possui um personamgem.',
+                    disable_notification=silent
                 )
                 return
             player_character = new_player_character
@@ -50,12 +54,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         await update.effective_message.reply_text(
             f'{markdown_player_sheet}',
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
+            disable_notification=silent
         )
     else:
         await update.effective_message.reply_text(
             f'Você ainda não criou um personagem!\n'
-            f'Crie o seu personagem com o comando /{create_char_commands[0]}.'
+            f'Crie o seu personagem com o comando /{create_char_commands[0]}.',
+            disable_notification=silent
         )
 
 VIEW_CHAR_HANDLERS = [

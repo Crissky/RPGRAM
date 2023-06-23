@@ -45,6 +45,17 @@ class Player:
             else:
                 raise ValueError(f'Forneça o valor "True" ou "False"')
             self.verbose = value
+        elif key in ['SILENT', 'SILENCIOSO']:
+            value = value.upper()
+            if value in ['FALSE', 'NO', '0']:
+                value = False
+            elif value in ['TRUE', 'YES', '1']:
+                value = True
+            else:
+                raise ValueError(f'Forneça o valor "True" ou "False"')
+            self.silent = value
+        else:
+            raise KeyError(f'"{key}" não é uma chave válida.')
 
     def __repr__(self) -> str:
         return (
