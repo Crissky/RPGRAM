@@ -28,6 +28,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos
+from bot.functions.general import get_attribute_group_or_player
 
 from constants.text import SECTION_HEAD
 
@@ -36,6 +37,8 @@ from functions.text import escape_basic_markdown_v2
 
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     sign_up_group_cmd = command_to_string(sign_up_group_commands)
     sign_up_player_cmd = command_to_string(sign_up_player_commands)
     create_char_cmd = command_to_string(create_char_commands)
@@ -80,6 +83,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n'
         f'Configurações:\n'
         f'    "verbose": [true/false]. Configura se o bot vai falar muito.\n'
+        f'    "silent": [true/false]. Configura se as notificações do bot no '
+        f'grupo terão som.\n'
         f'    "spawn_start_time": inteiro[0-24]. Hora de início do spawn.\n'
         f'    "spawn_end_time": inteiro[0-24]. Hora de fim do spawn.\n'
         f'    "multiplier_xp": decimal[0-5]. Multiplicador de XP.\n'
@@ -91,13 +96,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n'
         f'Configurações:\n'
         f'    "verbose": [true/false]. Configura se o bot vai envia mensagens '
-        f'privadas.\n'
+        f'privadas para o jogador.\n'
+        f'    "silent": [true/false]. Configura se as notificações do bot no '
+        f'chat privado terão som.\n'
         f'Atalhos: {config_player_cmd}\n\n'
 
         f'CRIAR BATALHA: /{battle_commands[0]}\n'
         f'Atalhos: {battle_cmd}\n'
     )
-    await update.effective_message.reply_markdown_v2(text)
+    await update.effective_message.reply_markdown_v2(
+        text, disable_notification=silent
+    )
 
 
 def command_to_string(commands: Iterable) -> str:
