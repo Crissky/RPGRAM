@@ -98,6 +98,14 @@ class CombatStats:
     show_hp = show_hit_points
 
     @property
+    def damaged(self) -> bool:
+        return self.__damage > 0
+
+    @property
+    def healed(self) -> bool:
+        return not self.damaged
+
+    @property
     def initiative(self) -> int:
         return int(
             (self.dexterity * 1.5) +

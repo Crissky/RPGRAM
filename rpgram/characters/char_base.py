@@ -55,6 +55,13 @@ class BaseCharacter:
 
     def is_dead(self) -> bool:
         return not self.is_alive()
+    
+    def is_damaged(self) -> bool:
+        return self.combat_stats.damaged
+
+    def is_healed(self) -> bool:
+        return self.combat_stats.healed
+
 
     # Getters
     name: str = property(lambda self: self.__name)

@@ -10,3 +10,4 @@ from bot.conversation.sign_up_player import SIGNUP_PLAYER_HANDLER
 from bot.conversation.view_group import VIEW_GROUP_HANDLERS
 from bot.conversation.view_player import VIEW_PLAYER_HANDLERS
 from bot.conversation.view_char import VIEW_CHAR_HANDLERS
+from bot.conversation.rest import REST_HANDLERS

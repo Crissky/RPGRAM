@@ -23,6 +23,7 @@ from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
 from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
+from bot.constants.rest import COMMANDS as rest_commands
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -49,29 +50,30 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     config_group_cmd = command_to_string(config_group_commands)
     config_player_cmd = command_to_string(config_player_commands)
     battle_cmd = command_to_string(battle_commands)
+    rest_cmd = command_to_string(rest_commands)
 
     text = escape_basic_markdown_v2(
         f'{SECTION_HEAD.format("COMANDOS")}\n\n'
 
-        f'CRIAR CONTA DO GRUPO: /{sign_up_group_commands[0]}\n'
+        f'*CRIAR CONTA DO GRUPO*: /{sign_up_group_commands[0]}\n'
         f'Atalhos: {sign_up_group_cmd}\n\n'
 
-        f'CRIAR CONTA DE JOGADOR: /{sign_up_player_commands[0]}\n'
+        f'*CRIAR CONTA DE JOGADOR*: /{sign_up_player_commands[0]}\n'
         f'Atalhos: {sign_up_player_cmd}\n\n'
 
-        f'CRIAR PERSONAGEM: /{create_char_commands[0]}\n'
+        f'*CRIAR PERSONAGEM*: /{create_char_commands[0]}\n'
         f'Atalhos: {create_char_cmd}\n\n'
 
-        f'INFORMAÇÕES DO GRUPO: /{view_group_commands[0]}\n'
+        f'*INFORMAÇÕES DO GRUPO*: /{view_group_commands[0]}\n'
         f'Atalhos: {view_group_cmd}\n\n'
 
-        f'INFORMAÇÕES DO JOGADOR: /{view_player_commands[0]}\n'
+        f'*INFORMAÇÕES DO JOGADOR*: /{view_player_commands[0]}\n'
         f'Atalhos: {view_player_cmd}\n\n'
 
-        f'INFORMAÇÕES DO PERSONAGEM: /{view_char_commands[0]}\n'
+        f'*INFORMAÇÕES DO PERSONAGEM*: /{view_char_commands[0]}\n'
         f'Atalhos: {view_char_cmd}\n\n'
 
-        f'ADICIONAR ESTATISTICAS: /{add_stats_commands[0]}\n'
+        f'*ADICIONAR ESTATISTICAS*: /{add_stats_commands[0]}\n'
         f'Argumentos: [<ATRIBUTO> <VALOR>]\n'
         f'Exemplo: "/{add_stats_commands[0]} FOR 10" '
         f'(Adiciona 10 pontos em FORÇA).\n'
@@ -79,7 +81,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'Use o argumento "verbose" ou "v" para exibir com mais detalhes\n'
         f'Atalhos: {add_stats_cmd}\n\n'
 
-        f'CONFIGURAÇÃO DO GRUPO: /{config_group_commands[0]}\n'
+        f'*CONFIGURAÇÃO DO GRUPO*: /{config_group_commands[0]}\n'
         f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n'
         f'Configurações:\n'
         f'    "verbose": [true/false]. Configura se o bot vai falar muito.\n'
@@ -92,7 +94,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'XP baseado no nível do personagem.\n'
         f'Atalhos: {config_group_cmd}\n\n'
 
-        f'CONFIGURAÇÃO DO JOGADOR: /{config_player_commands[0]}\n'
+        f'*CONFIGURAÇÃO DO JOGADOR*: /{config_player_commands[0]}\n'
         f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n'
         f'Configurações:\n'
         f'    "verbose": [true/false]. Configura se o bot vai envia mensagens '
@@ -101,8 +103,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'chat privado terão som.\n'
         f'Atalhos: {config_player_cmd}\n\n'
 
-        f'CRIAR BATALHA: /{battle_commands[0]}\n'
-        f'Atalhos: {battle_cmd}\n'
+        f'*CRIAR BATALHA*: /{battle_commands[0]}\n'
+        f'INFO: Inicia uma batalha no grupo.\n'
+        f'Atalhos: {battle_cmd}\n\n'
+        
+        f'*INICIAR DESCANSO*: /{rest_commands[0]}\n'
+        f'INFO: Recupera HP do personagem a cada hora.\n'
+        f'Atalhos: {rest_cmd}\n\n'
     )
     await update.effective_message.reply_markdown_v2(
         text, disable_notification=silent

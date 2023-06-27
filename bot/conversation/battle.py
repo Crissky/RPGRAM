@@ -40,6 +40,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
+from bot.conversation.rest import stop_resting
 from bot.decorators import print_basic_infos, need_have_char, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 
@@ -83,12 +84,12 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_name = chat_battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
         response = await update.effective_message.reply_text(
-                f'A batalha retomada!\n'
-                f'{user_name}, escolha sua ação.\n\n'
-                f'{chat_battle.get_sheet()}\n',
-                reply_markup=reply_markup,
-                disable_notification=silent
-            )
+            f'A batalha retomada!\n'
+            f'{user_name}, escolha sua ação.\n\n'
+            f'{chat_battle.get_sheet()}\n',
+            reply_markup=reply_markup,
+            disable_notification=silent
+        )
         context.chat_data['battle_response'] = response
         context.chat_data['battle_id'] = battle_id
         return SELECT_ACTION_ROUTES
@@ -156,13 +157,18 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not other_battle and character.is_alive():
         team = query.data
         time = TEAMS[team]
+        resting_status = ''
         if check_if_change_for_same_team(team, character, battle):
             await query.answer(f'Seu personagem já está no Time {time}!')
             return ENTER_BATTLE_ROUTES
         battle.enter_battle(character, team)
         battle_model.save(battle)
+        if stop_resting(user_id, context):
+            resting_status = '\nVocê parou de descansar!'
         reply_markup = get_enter_battle_inline_keyboard()
-        await query.answer(f'Seu personagem entrou no Time {time}!')
+        await query.answer(
+            f'Seu personagem entrou no Time {time}! {resting_status}'
+        )
         await query.edit_message_text(
             battle.get_teams_sheet(),
             reply_markup=reply_markup,
