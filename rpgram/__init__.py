@@ -5,3 +5,4 @@ from rpgram.group import Group
 from rpgram.battle import Battle
 from rpgram.consumable import Consumable
 from rpgram.bag import Bag
+from rpgram.item import Item
