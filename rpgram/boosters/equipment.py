@@ -184,6 +184,11 @@ class Equipment(StatsBooster):
 
         return _dict
 
+    def __eq__(self, other):
+        if isinstance(other, Equipment):
+            return self._id == other._id
+        return False
+
     # Getters
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
