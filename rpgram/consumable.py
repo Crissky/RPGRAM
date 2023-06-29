@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Any, Union
 
 from bson import ObjectId
 
@@ -32,6 +32,17 @@ class Consumable:
             _id=self.__id,
         )
 
+    def __call__(self, target):
+        return self.use(target)
+
+    def __repr__(self) -> str:
+        return (
+            f'Item: {self.__name}\n'
+            f'Peso: {self.__weight}\n'
+            f'Descrição: {self.__description}\n'
+            f'Função: {self.__function}\n'
+        )
+
     def __eq__(self, other):
         if isinstance(other, Consumable):
             return self._id == other._id
@@ -43,3 +54,67 @@ class Consumable:
     description = property(lambda self: self.__description)
     weight = property(lambda self: self.__weight * self.__quantity)
     function = property(lambda self: self.__function)
+
+
+if __name__ == '__main__':
+    from rpgram.boosters import Classe, Race
+    from rpgram.characters import BaseCharacter
+    classe = Classe(
+        name='Arqueiro',
+        description='Arqueiro Teste',
+        bonus_strength=5,
+        bonus_dexterity=15,
+        bonus_constitution=10,
+        bonus_intelligence=10,
+        bonus_wisdom=10,
+        bonus_charisma=10,
+        multiplier_strength=1,
+        multiplier_dexterity=1.5,
+        multiplier_constitution=1,
+        multiplier_intelligence=1,
+        multiplier_wisdom=1,
+        multiplier_charisma=1,
+    )
+    race = Race(
+        name='Elfo',
+        description='Elfo Teste',
+        bonus_strength=8,
+        bonus_dexterity=12,
+        bonus_constitution=8,
+        bonus_intelligence=10,
+        bonus_wisdom=12,
+        bonus_charisma=10,
+        multiplier_strength=1.0,
+        multiplier_dexterity=1.0,
+        multiplier_constitution=1.0,
+        multiplier_intelligence=1.2,
+        multiplier_wisdom=1.2,
+        multiplier_charisma=1.0,
+    )
+    base_character = BaseCharacter(
+        char_name='Personagem Teste',
+        classe=classe,
+        race=race,
+        _id='ffffffffffffffffffffffff',
+        level=21,
+        xp=0,
+        base_strength=10,
+        base_dexterity=10,
+        base_constitution=10,
+        base_intelligence=10,
+        base_wisdom=10,
+        base_charisma=10,
+        combat_damage=0,
+    )
+    potion = Consumable(
+        'Potion',
+        'Cura 100 de HP.',
+        0.1,
+        'target.combat_stats.hp = 100'
+    )
+    print(potion)
+    print('HP:', base_character.cs.show_hit_points)
+    base_character.cs.hp = -300
+    potion(base_character)
+    base_character.cs.hp = -300
+    potion(base_character)
