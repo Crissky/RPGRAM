@@ -36,3 +36,19 @@ def skip_if_no_have_char(callback):
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - NO CHAR')
             return ConversationHandler.END
     return wrapper
+
+
+def skip_if_dead_char(callback):
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        print(f'@SKIP_IF_DEAD_CHAR')
+        char_model = CharacterModel()
+        chat_id = update.effective_chat.id
+        user_id = update.effective_user.id
+        char = char_model.get(user_id)
+
+        if char and char.is_alive():
+            return await callback(update, context)
+        else:
+            print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - DEAD CHAR')
+            return ConversationHandler.END
+    return wrapper
