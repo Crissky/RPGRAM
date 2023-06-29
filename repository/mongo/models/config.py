@@ -5,9 +5,7 @@ from rpgram import Group
 
 class GroupModel(Model):
     _class = property(lambda self: Group)
-    collection = property(
-        lambda self: CollectionEnum.GROUP.value
-    )
+    collection = property(lambda self: CollectionEnum.GROUP.value)
     alternative_id = property(lambda self: 'chat_id')
 
 
