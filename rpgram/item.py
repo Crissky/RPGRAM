@@ -12,6 +12,10 @@ class Item:
         self.__quantity = quantity
 
     @property
+    def name(self):
+        return self.item.name
+
+    @property
     def quantity(self):
         return self.__quantity
 
