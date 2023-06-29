@@ -90,11 +90,17 @@ async def rest_cure(context: ContextTypes.DEFAULT_TYPE):
     player = player_model.get(user_id)
     max_hp = player_character.cs.hp
     current_hp = player_character.cs.show_hit_points
-    heal = int(max_hp * 0.13)
-    player_character.cs.hp = heal
+    revive_reporting = ''
+    if player_character.is_dead():
+        player_character.cs.revive()
+        revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
+    else:
+        heal = int(max_hp * 0.13)
+        player_character.cs.hp = heal
     new_current_hp = player_character.cs.show_hit_points
     char_model.save(player_character)
     hp_reporting = (
+        f'{revive_reporting}'
         f'Seu personagem curou HP❤️‍🩹 descansando!\n\n'
         f'HP: {current_hp} ››› {new_current_hp}\n\n'
     )
