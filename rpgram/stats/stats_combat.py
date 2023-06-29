@@ -40,14 +40,32 @@ class CombatStats:
     def set_damage(self, value: int) -> None:
         value = int(value * -1)
         if value > 0:
-            print(f'Recebeu {value} de Dano!!!')
+            print(f'Recebeu {value} de Dano!!!', end=' ')
         elif value < 0:
-            print(f'Recebeu {-value} de Cura.')
+            if self.dead:
+                print(f'Não pode curar um personagem morto.')
+                return
+            print(f'Recebeu {-value} de Cura.', end=' ')
         self.__damage += value
         if self.__damage > self.hit_points:
             self.__damage = self.hit_points
         elif self.__damage < 0:
             self.__damage = 0
+        print(f'HP: {self.show_hp}')
+
+    def revive(self, value: int = 1) -> None:
+        value = int(value * -1)
+        if self.alive:
+            print(f'Não pode reviver um personagem vivo.')
+            return
+        elif value < 0:
+            print(f'Reviveu restaurando {-value} de HP.', end=' ')
+        self.__damage += value
+        if self.__damage > self.hit_points:
+            self.__damage = self.hit_points
+        elif self.__damage < 0:
+            self.__damage = 0
+        print(f'HP: {self.show_hp}')
 
     def update(self) -> None:
         self.__boost_stats()
@@ -104,6 +122,14 @@ class CombatStats:
     @property
     def healed(self) -> bool:
         return not self.damaged
+
+    @property
+    def alive(self) -> bool:
+        return self.current_hit_points > 0
+
+    @property
+    def dead(self) -> bool:
+        return not self.alive
 
     @property
     def initiative(self) -> int:

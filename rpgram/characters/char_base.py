@@ -50,18 +50,17 @@ class BaseCharacter:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
-    def is_alive(self) -> bool:
-        return self.combat_stats.current_hp > 0
-
-    def is_dead(self) -> bool:
-        return not self.is_alive()
-    
     def is_damaged(self) -> bool:
         return self.combat_stats.damaged
 
     def is_healed(self) -> bool:
         return self.combat_stats.healed
 
+    def is_alive(self) -> bool:
+        return self.combat_stats.alive
+
+    def is_dead(self) -> bool:
+        return self.combat_stats.dead
 
     # Getters
     name: str = property(lambda self: self.__name)
