@@ -1,4 +1,5 @@
-from typing import Any, Union
+from datetime import datetime
+from typing import Union
 
 from bson import ObjectId
 
@@ -11,12 +12,19 @@ class Consumable:
         weight: float,
         function: str,
         _id: Union[str, ObjectId] = None,
+        created_at: datetime = None,
+        updated_at: datetime = None,
     ) -> None:
+        if isinstance(_id, str):
+            _id = ObjectId(_id)
+
         self.__name = name
         self.__description = description
         self.__weight = weight
         self.__function = function
         self.__id = _id
+        self.__created_at = created_at
+        self.__updated_at = updated_at
 
     def use(self, target):
         result = exec(self.__function)
@@ -26,10 +34,11 @@ class Consumable:
         return dict(
             name=self.__name,
             description=self.__description,
-            quantity=self.__quantity,
             weight=self.__weight,
             function=self.__function,
             _id=self.__id,
+            created_at=self.__created_at,
+            updated_at=self.__updated_at,
         )
 
     def __call__(self, target):
@@ -52,7 +61,7 @@ class Consumable:
     _id = property(lambda self: self.__id)
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
-    weight = property(lambda self: self.__weight * self.__quantity)
+    weight = property(lambda self: self.__weight)
     function = property(lambda self: self.__function)
 
 
@@ -107,10 +116,10 @@ if __name__ == '__main__':
         combat_damage=0,
     )
     potion = Consumable(
-        'Potion',
-        'Cura 100 de HP.',
-        0.1,
-        'target.combat_stats.hp = 100'
+        name='Potion',
+        description='Cura 100 de HP.',
+        weight=0.1,
+        function='target.combat_stats.hp = 100'
     )
     print(potion)
     print('HP:', base_character.cs.show_hit_points)
