@@ -16,7 +16,7 @@ if __name__ == "__main__":
         equip_type=EquipmentEnum.ONE_HAND.name,
         damage_types=DamageEnum.SLASHING.name,
         weight=15,
-        requirements={},
+        requirements={'Nível': 1, 'FOR': 12},
         _id='ffffffffffffffffffffffff',
         bonus_strength=0,
         bonus_dexterity=0,

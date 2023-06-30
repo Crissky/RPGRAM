@@ -114,15 +114,19 @@ class Equipment(StatsBooster):
         )
         if isinstance(equip_type, str):
             equip_type = EquipmentEnum[equip_type]
-        if isinstance(damage_types, str):
-            damage_types = [DamageEnum[damage_types]]
-        elif isinstance(damage_types, DamageEnum):
+        if isinstance(damage_types, (DamageEnum, str)):
             damage_types = [damage_types]
-        elif isinstance(damage_types, list):
-            for index, damage_type in enumerate(damage_types):
-                if isinstance(damage_type, str):
-                    damage_type = DamageEnum[damage_type]
+        for index, damage_type in enumerate(damage_types):
+            if isinstance(damage_type, str):
+                damage_type = DamageEnum[damage_type]
+            if isinstance(damage_type, DamageEnum):
                 damage_types[index] = damage_type
+            else:
+                raise ValueError(
+                    f'damage_types precisa ser uma string ou DamageEnum ou '
+                    f'uma lista de strings ou DamageEnums. '
+                    f'"{type(damage_type)}" não é válido.'
+                )
 
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
@@ -137,15 +141,18 @@ class Equipment(StatsBooster):
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         damage_types = '/'.join([d.value for d in self.damage_types])
-        requirements = '\n'.join(
-            [f'  {k}: {v}' for k, v in self.requirements.items()]
-        )
+        requirements = '\n'
+        if self.__requirements:
+            requirements = '\n'.join(
+                [f'  {k}: {v}' for k, v in self.__requirements.items()]
+            )
+            requirements = f'*Requisitos*:\n{requirements}\n'
         text = (
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
             f'*Tipo de Dano*: {damage_types}\n'
             f'*Peso*: {self.weight}\n'
-            f'*Requisitos*:\n{requirements}\n'
+            f'{requirements}'
         )
 
         if not markdown:
