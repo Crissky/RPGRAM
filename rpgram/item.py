@@ -11,9 +11,14 @@ class Item:
         self.item = item
         self.__quantity = quantity
 
+    # Getters
     @property
     def name(self):
         return self.item.name
+
+    @property
+    def weight(self):
+        return self.item.weight * self.quantity
 
     @property
     def quantity(self):
