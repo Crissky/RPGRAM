@@ -90,7 +90,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             await update.effective_user.send_message(
                 f'Você ganhou {add_xp} de XP.\n'
-                f'Experiência: {player_char.show_xp}',
+                f'Experiência: {player_char.bs.show_xp}',
                 disable_notification=silent
             )
         except Forbidden as error:
