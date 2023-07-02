@@ -147,6 +147,10 @@ class BaseStats:
     def xp(self) -> int:
         return self.__current_xp
 
+    @property
+    def show_xp(self) -> str:
+        return f'{self.xp}/{self.next_level_xp}'
+
     # Base Attributes
     @property
     def base_strength(self) -> int:
@@ -446,7 +450,7 @@ class BaseStats:
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
             f'*Nível*: {self.level} (*Nível da Classe*: {self.classe_level})\n'
-            f'*Experiência*: {self.xp}/{self.next_level_xp}\n'
+            f'*Experiência*: {self.show_xp}\n'
             f'*Pontos*: {self.points}\n\n'
         )
 
