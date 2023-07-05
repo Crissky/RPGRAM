@@ -27,7 +27,6 @@ class Equips:
         boots: Equipment = None,
         ring: Equipment = None,
         necklace: Equipment = None,
-        observers: List[object] = [],
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -45,7 +44,7 @@ class Equips:
         self.__necklace = necklace
 
         self.__equipments_weight = 0
-        self.__observers = observers
+        self.__observers = []
 
         self.__created_at = created_at
         self.__updated_at = updated_at
@@ -282,15 +281,14 @@ class Equips:
     def to_dict(self):
         return dict(
             _id=self.__id,
-            helmet=self.__helmet._id,
-            left_hand=self.__left_hand._id,
-            right_hand=self.__right_hand._id,
-            armor=self.__armor._id,
-            boots=self.__boots._id,
-            ring=self.__ring._id,
-            necklace=self.__necklace._id,
-            equipments_weight=self.__equipments_weight,
-            observers=[o._id for o in self.__observers],
+            helmet=self.__helmet._id if self.__helmet else None,
+            left_hand=self.__left_hand._id if self.__left_hand else None,
+            right_hand=self.__right_hand._id if self.__right_hand else None,
+            armor=self.__armor._id if self.__armor else None,
+            boots=self.__boots._id if self.__boots else None,
+            ring=self.__ring._id if self.__ring else None,
+            necklace=self.__necklace._id if self.__necklace else None,
+            # observers=[o._id for o in self.__observers],
             created_at=self.__created_at,
             updated_at=self.__updated_at,
         )
@@ -432,3 +430,4 @@ if __name__ == '__main__':
     equip.equip(any_ring)
     equip.equip(necklace)
     print(equip)
+    print(equip.to_dict())
