@@ -27,7 +27,6 @@ class Equips:
         boots: Equipment = None,
         ring: Equipment = None,
         necklace: Equipment = None,
-        equipments_weight: int = 0,
         observers: List[object] = [],
         created_at: datetime = None,
         updated_at: datetime = None
@@ -45,7 +44,7 @@ class Equips:
         self.__ring = ring
         self.__necklace = necklace
 
-        self.__equipments_weight = equipments_weight
+        self.__equipments_weight = 0
         self.__observers = observers
 
         self.__created_at = created_at
@@ -132,7 +131,7 @@ class Equips:
         else:
             raise ValueError(f'"{equipment}" não está equipado.')
 
-        if equip_type == EquipmentEnum['two_hands']:
+        if equip_type == EquipmentEnum.TWO_HANDS:
             self.__left_hand = None
             self.__right_hand = None
 
@@ -176,12 +175,20 @@ class Equips:
         self.__bonus_hit = 0
         self.__bonus_evasion = 0
 
-        equips = set(
-            [
+        if (
+            self.left_hand is not None and
+            self.left_hand.equip_type == EquipmentEnum.TWO_HANDS
+        ):
+            equips = [
+                self.helmet, self.left_hand, self.armor,
+                self.boots, self.ring, self.necklace
+            ]
+        else:
+            equips = [
                 self.helmet, self.left_hand, self.right_hand, self.armor,
                 self.boots, self.ring, self.necklace
             ]
-        ) - set([None])
+        equips = [e for e in equips if e is not None]
         for e in equips:
             self.__equipments_weight += float(e.weight)
 

@@ -116,17 +116,18 @@ class Equipment(StatsBooster):
             equip_type = EquipmentEnum[equip_type]
         if isinstance(damage_types, (DamageEnum, str)):
             damage_types = [damage_types]
-        for index, damage_type in enumerate(damage_types):
-            if isinstance(damage_type, str):
-                damage_type = DamageEnum[damage_type]
-            if isinstance(damage_type, DamageEnum):
-                damage_types[index] = damage_type
-            else:
-                raise ValueError(
-                    f'damage_types precisa ser uma string ou DamageEnum ou '
-                    f'uma lista de strings ou DamageEnums. '
-                    f'"{type(damage_type)}" não é válido.'
-                )
+        if damage_types is not None:
+            for index, damage_type in enumerate(damage_types):
+                if isinstance(damage_type, str):
+                    damage_type = DamageEnum[damage_type]
+                if isinstance(damage_type, DamageEnum):
+                    damage_types[index] = damage_type
+                else:
+                    raise ValueError(
+                        f'damage_types precisa ser uma string ou DamageEnum ou '
+                        f'uma lista de strings ou DamageEnums. '
+                        f'"{type(damage_type)}" não é válido.'
+                    )
 
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
