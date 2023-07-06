@@ -1,8 +1,6 @@
 from repository.mongo import Model
 from repository.mongo import CollectionEnum
 from rpgram.boosters import Equipment
-from rpgram.enums import DamageEnum
-from rpgram.enums import EquipmentEnum
 
 
 class EquipmentModel(Model):
@@ -11,32 +9,75 @@ class EquipmentModel(Model):
 
 
 if __name__ == "__main__":
+    from rpgram.enums import DamageEnum, EquipmentEnum
+    helmet = Equipment(
+        name='Capacete de Aço TESTE MODELO',
+        equip_type=EquipmentEnum.HELMET,
+        damage_types=None,
+        _id='eeeeeeeeeeeeeeeeeeeeeeee'
+    )
     sword = Equipment(
         name='ESPADA DE AÇO TESTE MODELO',
-        equip_type=EquipmentEnum.ONE_HAND.name,
-        damage_types=DamageEnum.SLASHING.name,
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=DamageEnum.SLASHING,
         weight=15,
         requirements={'Nível': 1, 'FOR': 12},
         _id='ffffffffffffffffffffffff',
-        bonus_strength=0,
-        bonus_dexterity=0,
-        bonus_constitution=0,
-        bonus_intelligence=0,
-        bonus_wisdom=0,
-        bonus_charisma=0,
-        bonus_hit_points=0,
-        bonus_initiative=0,
+        bonus_strength=1,
+        bonus_dexterity=1,
+        bonus_constitution=1,
+        bonus_intelligence=1,
+        bonus_wisdom=1,
+        bonus_charisma=1,
+        bonus_hit_points=1,
+        bonus_initiative=1,
         bonus_physical_attack=30,
-        bonus_precision_attack=0,
-        bonus_magical_attack=0,
-        bonus_physical_defense=0,
-        bonus_magical_defense=0,
+        bonus_precision_attack=1,
+        bonus_magical_attack=1,
+        bonus_physical_defense=1,
+        bonus_magical_defense=1,
         bonus_hit=15,
-        bonus_evasion=-0,
+        bonus_evasion=-1,
+    )
+    shield = Equipment(
+        name='Escudo de Aço TESTE MODELO',
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=None,
+        _id='dddddddddddddddddddddddd'
+    )
+    armor = Equipment(
+        name='Escudo de Aço TESTE MODELO',
+        equip_type=EquipmentEnum.ARMOR,
+        damage_types=None,
+        _id='cccccccccccccccccccccccc'
+    )
+    boots = Equipment(
+        name='Botas de Couro TESTE MODELO',
+        equip_type=EquipmentEnum.BOOTS,
+        damage_types=None,
+        _id='bbbbbbbbbbbbbbbbbbbbbbbb'
+    )
+    ring = Equipment(
+        name='Anel Mágico TESTE MODELO',
+        equip_type=EquipmentEnum.RING,
+        damage_types=None,
+        _id='aaaaaaaaaaaaaaaaaaaaaaaa'
+    )
+    necklace = Equipment(
+        name='Colar Bonito TESTE MODELO',
+        equip_type=EquipmentEnum.NECKLACE,
+        damage_types=None,
+        _id='999999999999999999999999'
     )
     equipament_model = EquipmentModel()
     print('Collection:', equipament_model.collection)
+    equipament_model.save(helmet)
     result = equipament_model.save(sword)
+    equipament_model.save(shield)
+    equipament_model.save(armor)
+    equipament_model.save(boots)
+    equipament_model.save(ring)
+    equipament_model.save(necklace)
     print('Result:', result)
     equipament2 = equipament_model.get('ffffffffffffffffffffffff')
     print('Equipament2:\n', equipament2)

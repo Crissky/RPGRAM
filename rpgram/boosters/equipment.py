@@ -114,6 +114,11 @@ class Equipment(StatsBooster):
         )
         if isinstance(equip_type, str):
             equip_type = EquipmentEnum[equip_type]
+        elif not isinstance(equip_type, EquipmentEnum):
+            raise ValueError(
+                f'equip_type precisa ser uma string ou EquipmentEnum.'
+            )
+
         if isinstance(damage_types, (DamageEnum, str)):
             damage_types = [damage_types]
         if damage_types is not None:
@@ -138,7 +143,6 @@ class Equipment(StatsBooster):
         self.__weight = weight
         self.__requirements = requirements
         self.__rarity = rarity
-
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         damage_types = '/'.join([d.value for d in self.damage_types])
@@ -179,7 +183,9 @@ class Equipment(StatsBooster):
         )
 
     def to_dict(self):
-        damage_types = [d.name for d in self.__damage_types]
+        damage_types = None
+        if self.__damage_types:
+            damage_types = [d.name for d in self.__damage_types]
         _dict = dict(
             name=self.__name,
             equip_type=self.__equip_type.name,
