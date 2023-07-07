@@ -281,13 +281,13 @@ class Equips:
     def to_dict(self):
         return dict(
             _id=self.__id,
-            helmet=self.__helmet._id if self.__helmet else None,
-            left_hand=self.__left_hand._id if self.__left_hand else None,
-            right_hand=self.__right_hand._id if self.__right_hand else None,
-            armor=self.__armor._id if self.__armor else None,
-            boots=self.__boots._id if self.__boots else None,
-            ring=self.__ring._id if self.__ring else None,
-            necklace=self.__necklace._id if self.__necklace else None,
+            helmet_id=self.__helmet._id if self.__helmet else None,
+            left_hand_id=self.__left_hand._id if self.__left_hand else None,
+            right_hand_id=self.__right_hand._id if self.__right_hand else None,
+            armor_id=self.__armor._id if self.__armor else None,
+            boots_id=self.__boots._id if self.__boots else None,
+            ring_id=self.__ring._id if self.__ring else None,
+            necklace_id=self.__necklace._id if self.__necklace else None,
             # observers=[o._id for o in self.__observers],
             created_at=self.__created_at,
             updated_at=self.__updated_at,
@@ -301,6 +301,7 @@ class Equips:
                 return observer
         raise NameError('Não foi encontrado um observer do tipo BaseStats.')
 
+    _id = property(lambda self: self.__id)
     helmet = property(lambda self: self.__helmet)
     left_hand = property(lambda self: self.__left_hand)
     right_hand = property(lambda self: self.__right_hand)
