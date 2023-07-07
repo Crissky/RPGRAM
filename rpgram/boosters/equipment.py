@@ -13,7 +13,7 @@ class Equipment(StatsBooster):
         self,
         name: str,
         equip_type: Union[str, EquipmentEnum],
-        damage_types: List[Union[str, DamageEnum]],
+        damage_types: List[Union[str, DamageEnum]] = None,
         weight: float = 10,
         requirements: Dict[str, Any] = {},
         rarity: Union[RarityEnum, str] = 'COMMON',
@@ -145,8 +145,11 @@ class Equipment(StatsBooster):
         self.__rarity = rarity
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        damage_types = '/'.join([d.value for d in self.damage_types])
+        damage_types = ''
         requirements = '\n'
+        if self.damage_types:
+            damage_types = '/'.join([d.value for d in self.damage_types])
+            damage_types = f'*Tipo de Dano*: {damage_types}\n'
         if self.__requirements:
             requirements = '\n'.join(
                 [f'  {k}: {v}' for k, v in self.__requirements.items()]
@@ -155,7 +158,7 @@ class Equipment(StatsBooster):
         text = (
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
-            f'*Tipo de Dano*: {damage_types}\n'
+            f'{damage_types}'
             f'*Peso*: {self.weight}\n'
             f'{requirements}'
         )

@@ -11,7 +11,7 @@ class EquipmentModel(Model):
 if __name__ == "__main__":
     from rpgram.enums import DamageEnum, EquipmentEnum
     helmet = Equipment(
-        name='Capacete de Aço TESTE MODELO',
+        name='CAPACETE DE AÇO TESTE MODELO',
         equip_type=EquipmentEnum.HELMET,
         damage_types=None,
         _id='eeeeeeeeeeeeeeeeeeeeeeee'
@@ -40,31 +40,31 @@ if __name__ == "__main__":
         bonus_evasion=-1,
     )
     shield = Equipment(
-        name='Escudo de Aço TESTE MODELO',
+        name='ESCUDO DE AÇO TESTE MODELO',
         equip_type=EquipmentEnum.ONE_HAND,
         damage_types=None,
         _id='dddddddddddddddddddddddd'
     )
     armor = Equipment(
-        name='Escudo de Aço TESTE MODELO',
+        name='ARMADURA DE AÇO TESTE MODELO',
         equip_type=EquipmentEnum.ARMOR,
         damage_types=None,
         _id='cccccccccccccccccccccccc'
     )
     boots = Equipment(
-        name='Botas de Couro TESTE MODELO',
+        name='BOTAS DE COURO TESTE MODELO',
         equip_type=EquipmentEnum.BOOTS,
         damage_types=None,
         _id='bbbbbbbbbbbbbbbbbbbbbbbb'
     )
     ring = Equipment(
-        name='Anel Mágico TESTE MODELO',
+        name='ANEL MÁGICO TESTE MODELO',
         equip_type=EquipmentEnum.RING,
         damage_types=None,
         _id='aaaaaaaaaaaaaaaaaaaaaaaa'
     )
     necklace = Equipment(
-        name='Colar Bonito TESTE MODELO',
+        name='COLAR BONITO TESTE MODELO',
         equip_type=EquipmentEnum.NECKLACE,
         damage_types=None,
         _id='999999999999999999999999'
