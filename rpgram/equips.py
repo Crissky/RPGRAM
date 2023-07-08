@@ -102,7 +102,6 @@ class Equips:
         self.__update_stats()
         return old_equipments
 
-    # TODO: Implementar uma função para remover equipamentos
     def unequip(self, equipment: Equipment) -> Equipment:
         equip_type = equipment.equip_type
 
@@ -354,7 +353,7 @@ class Equips:
 
 
 if __name__ == '__main__':
-    equip = Equips()
+    equips = Equips()
     helmet = Equipment(
         name='Capacete de Aço',
         equip_type=EquipmentEnum.HELMET,
@@ -424,11 +423,11 @@ if __name__ == '__main__':
         bonus_charisma=150,
     )
 
-    equip.equip(helmet)
-    equip.equip(sword)
-    equip.equip(armor)
-    equip.equip(boots)
-    equip.equip(any_ring)
-    equip.equip(necklace)
-    print(equip)
-    print(equip.to_dict())
+    equips.equip(helmet)
+    equips.equip(sword)
+    equips.equip(armor)
+    equips.equip(boots)
+    equips.equip(any_ring)
+    equips.equip(necklace)
+    print(equips)
+    print(equips.to_dict())
