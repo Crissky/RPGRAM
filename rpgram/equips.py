@@ -226,7 +226,7 @@ class Equips:
             f'*Botas*: {self.boots.name if self.boots else ""}\n'
             f'*Anel*: {self.ring.name if self.ring else ""}\n'
             f'*Necklace*: {self.necklace.name if self.necklace else ""}\n'
-            f'*Peso*: {self.equipments_weight:.2f}\n\n'
+            f'*Peso*: {self.equipments_weight:.2f}w\n\n'
         )
 
         if verbose:

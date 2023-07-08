@@ -3,6 +3,8 @@ from typing import Union
 
 from bson import ObjectId
 
+from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+
 
 class Consumable:
     def __init__(
@@ -44,13 +46,26 @@ class Consumable:
     def __call__(self, target):
         return self.use(target)
 
-    def __repr__(self) -> str:
-        return (
-            f'Item: {self.__name}\n'
-            f'Peso: {self.__weight}\n'
-            f'Descrição: {self.__description}\n'
-            f'Função: {self.__function}\n'
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        text = f'*Item*: {self.__name}\n'
+
+        if verbose:
+            text += (
+            f'*Peso*: {self.__weight}w\n'
+            f'*Descrição*: {self.__description}\n'
+            f'*Função*: {self.__function}\n'
         )
+        
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
+        return text
+
+    def __repr__(self) -> str:
+        return self.get_sheet(True)
 
     def __eq__(self, other):
         if isinstance(other, Consumable):
