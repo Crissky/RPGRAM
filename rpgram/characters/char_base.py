@@ -3,6 +3,7 @@ from datetime import datetime
 
 from constants.text import TEXT_DELIMITER
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram import Equips
 from rpgram.boosters import Race, Classe
 from rpgram.stats import BaseStats, CombatStats
 
@@ -13,6 +14,7 @@ class BaseCharacter:
         char_name: str,
         classe: Classe,
         race: Race,
+        equips: Equips = None,
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -28,10 +30,14 @@ class BaseCharacter:
     ) -> None:
         if isinstance(_id, str):
             _id = ObjectId(_id)
+        if equips is None:
+            equips = Equips(_id=ObjectId())
+
         self.__name = char_name
         self.__id = _id
         self.__classe = classe
         self.__race = race
+        self.__equips = equips
         self.__base_stats = BaseStats(
             level=level,
             xp=xp,
@@ -41,12 +47,14 @@ class BaseCharacter:
             base_intelligence=base_intelligence,
             base_wisdom=base_wisdom,
             base_charisma=base_charisma,
-            stats_boosters=[self.__race, self.__classe]
+            stats_boosters=[self.__race, self.__classe, self.__equips]
         )
         self.__combat_stats = CombatStats(
             base_stats=self.__base_stats,
             damage=combat_damage
         )
+        self.__equips.attach_observer(self.__base_stats)
+        self.__equips.attach_observer(self.__combat_stats)
         self.__created_at = created_at
         self.__updated_at = updated_at
 
@@ -69,6 +77,7 @@ class BaseCharacter:
     combat_stats: CombatStats = property(fget=lambda self: self.__combat_stats)
     classe: Classe = property(fget=lambda self: self.__classe)
     race: Race = property(fget=lambda self: self.__race)
+    equips: Equips = property(fget=lambda self: self.__equips)
     created_at: datetime = property(lambda self: self.__created_at)
     updated_at: datetime = property(lambda self: self.__updated_at)
     bs = base_stats
@@ -96,11 +105,12 @@ class BaseCharacter:
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.race.get_sheet(verbose, markdown)}\n'
-                f'{self.classe.get_sheet(verbose, markdown)}'
+                f'{self.classe.get_sheet(verbose, markdown)}\n'
+                f'{self.equips.get_sheet(verbose, markdown)}\n'
             )
         else:
             # Trecho feito dessa forma para o escape_basic_markdown_v2 não ser
-            # usado duas vezes nos textos que vez dos outros get_sheet, pois
+            # usado duas vezes nos textos que vem dos outros get_sheet, pois
             # o esperado seria somente uma \ e não duas.
             race_classe_text = (
                 f'*Raça*: {self.race.name}\n'
@@ -116,6 +126,7 @@ class BaseCharacter:
                 f'{race_classe_text}'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
+                f'{self.equips.get_sheet(verbose, markdown)}'
             )
 
         return text
@@ -149,6 +160,7 @@ class BaseCharacter:
             combat_damage=(self.cs.hit_points - self.cs.current_hit_points),
             race_name=self.race.name,
             classe_name=self.classe.name,
+            equips_id=self.equips._id,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
@@ -162,6 +174,64 @@ class BaseCharacter:
 
 
 if __name__ == '__main__':
+    from rpgram.boosters import Equipment
+    from rpgram.enums import DamageEnum, EquipmentEnum
+    helmet = Equipment(
+        name='Capacete de Aço',
+        equip_type=EquipmentEnum.HELMET,
+        damage_types=None,
+        weight=10,
+        bonus_physical_defense=30,
+        bonus_evasion=-5,
+    )
+    sword = Equipment(
+        name='Espada Gigante de Aço',
+        equip_type=EquipmentEnum.TWO_HANDS,
+        damage_types=DamageEnum.SLASHING,
+        weight=40,
+        bonus_physical_attack=30,
+        bonus_hit=15,
+        bonus_evasion=-10,
+    )
+    armor = Equipment(
+        name='Armadura de Aço',
+        equip_type=EquipmentEnum.ARMOR,
+        damage_types=None,
+        weight=60,
+        bonus_physical_defense=80,
+        bonus_evasion=-25,
+    )
+    boots = Equipment(
+        name='Botas de Couro',
+        equip_type=EquipmentEnum.BOOTS,
+        damage_types=None,
+        weight=10,
+        bonus_physical_defense=10,
+        bonus_magical_defense=10,
+        bonus_evasion=30,
+    )
+    ring = Equipment(
+        name='Algum Anel',
+        equip_type=EquipmentEnum.RING,
+        damage_types=None,
+        weight=0.1,
+        bonus_evasion=100,
+    )
+    necklace = Equipment(
+        name='Colar Brilhante',
+        equip_type=EquipmentEnum.NECKLACE,
+        damage_types=None,
+        weight=0.2,
+        bonus_charisma=150,
+    )
+    equips = Equips(
+        helmet=helmet,
+        left_hand=sword,
+        armor=armor,
+        boots=boots,
+        ring=ring,
+        necklace=necklace,
+    )
     classe = Classe(
         name='Arqueiro',
         description='Arqueiro Teste',
@@ -198,6 +268,7 @@ if __name__ == '__main__':
         char_name='Personagem Teste',
         classe=classe,
         race=race,
+        equips=equips,
         _id='ffffffffffffffffffffffff',
         level=21,
         xp=0,

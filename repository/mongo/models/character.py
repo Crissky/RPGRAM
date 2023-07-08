@@ -2,6 +2,7 @@ from repository.mongo import CollectionEnum
 from repository.mongo import Model
 from repository.mongo.models.classe import ClasseModel
 from repository.mongo.models.race import RaceModel
+from repository.mongo.models.equips import EquipsModel
 from rpgram.characters import BaseCharacter, PlayerCharacter
 
 
@@ -18,6 +19,10 @@ class CharacterModel(Model):
             'race': {
                 'id_key': 'race_name',
                 'model': RaceModel()
+            },
+            'equips': {
+                'id_key': 'equips_id',
+                'model': EquipsModel()
             }
         }
     )

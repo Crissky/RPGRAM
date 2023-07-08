@@ -1,6 +1,7 @@
 from datetime import datetime
 from bson import ObjectId
 from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram import Equips
 from rpgram.boosters import Race, Classe
 from rpgram.characters import BaseCharacter
 
@@ -13,6 +14,7 @@ class PlayerCharacter(BaseCharacter):
         char_name: str,
         classe: Classe,
         race: Race,
+        equips: Equips = None,
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -30,6 +32,7 @@ class PlayerCharacter(BaseCharacter):
             char_name=char_name,
             classe=classe,
             race=race,
+            equips=equips,
             level=level,
             xp=xp,
             base_strength=base_strength,
