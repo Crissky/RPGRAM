@@ -8,3 +8,4 @@ from repository.mongo.models.equipment import EquipmentModel
 from repository.mongo.models.player import PlayerModel
 from repository.mongo.models.race import RaceModel
 from repository.mongo.models.battle import BattleModel
+from repository.mongo.models.equips import EquipsModel

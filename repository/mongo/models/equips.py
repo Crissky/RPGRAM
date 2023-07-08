@@ -1,4 +1,5 @@
-from repository.mongo import CollectionEnum, Model, EquipmentModel
+from repository.mongo import CollectionEnum, Model
+from repository.mongo.models.equipment import EquipmentModel
 from rpgram import Equips
 
 
