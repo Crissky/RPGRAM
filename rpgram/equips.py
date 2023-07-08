@@ -220,8 +220,8 @@ class Equips:
         text = (
             f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
             f'*Capacete*: {self.helmet.name if self.helmet else ""}\n'
-            f'*Mão* esquerda: {self.left_hand.name if self.left_hand else ""}\n'
-            f'*Mão* direita: {self.right_hand.name if self.right_hand else ""}\n'
+            f'*Mão Esquerda*: {self.left_hand.name if self.left_hand else ""}\n'
+            f'*Mão Direita*: {self.right_hand.name if self.right_hand else ""}\n'
             f'*Armadura*: {self.armor.name if self.armor else ""}\n'
             f'*Botas*: {self.boots.name if self.boots else ""}\n'
             f'*Anel*: {self.ring.name if self.ring else ""}\n'
