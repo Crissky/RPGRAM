@@ -107,7 +107,7 @@ class Race(StatsBooster):
         return dict(
             name=self.name,
             description=self.description,
-            _id=self.__id,
+            _id=self._id,
             bonus_strength=self.bonus_strength,
             bonus_dexterity=self.bonus_dexterity,
             bonus_constitution=self.bonus_constitution,
