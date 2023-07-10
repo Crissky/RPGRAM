@@ -35,6 +35,8 @@ from bot.constants.filters import (
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
+from constants.time import TEN_MINUTES_IN_SECONDS
+
 from repository.mongo import (
     ClasseModel,
     PlayerModel,
@@ -431,6 +433,8 @@ CREATE_CHAR_HANDLER = ConversationHandler(
         ]
     },
     fallbacks=[CommandHandler("cancel", cancel)],
+    conversation_timeout=TEN_MINUTES_IN_SECONDS,
+    allow_reentry=True
 )
 
 if __name__ == '__main__':

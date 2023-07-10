@@ -26,6 +26,8 @@ from bot.constants.sign_up_group import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
+from constants.time import TEN_MINUTES_IN_SECONDS
+
 from repository.mongo import GroupModel
 
 from rpgram import Group
@@ -143,4 +145,6 @@ SIGNUP_GROUP_HANDLER = ConversationHandler(
         ]
     },
     fallbacks=[CommandHandler("cancel", cancel)],
+    conversation_timeout=TEN_MINUTES_IN_SECONDS,
+    allow_reentry=True
 )
