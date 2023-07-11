@@ -1,6 +1,5 @@
 '''
-Módulo responsável por criar a conta de um grupo para armazenar as 
-informações configurações do grupo.
+Módulo responsável por criar uma nova conta de jogador.
 '''
 
 
@@ -9,51 +8,42 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
-from telegram.constants import ChatType
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
     ContextTypes,
     ConversationHandler,
-    PrefixHandler,
+    PrefixHandler
 )
 
-from bot.constants.sign_up_group import (
-    COMMANDS,
-    CALLBACK_TEXT_YES,
-    CALLBACK_TEXT_NO,
-)
+from bot.constants.sign_up_player import COMMANDS
+from bot.constants.sign_up_player import CALLBACK_TEXT_YES
+from bot.constants.sign_up_player import CALLBACK_TEXT_NO
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
-from constants.time import TEN_MINUTES_IN_SECONDS
+from constant.time import TEN_MINUTES_IN_SECONDS
 
-from repository.mongo import GroupModel
+from repository.mongo import PlayerModel
 
-from rpgram import Group
+from rpgram import Player
 
 
 # ROUTES
-START_ROUTES = range(1)
+START_ROUTES, END_ROUTES = range(2)
 
 
 @print_basic_infos
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    group_model = GroupModel()
-    chat_id = update.effective_chat.id
-    chat_name = update.effective_chat.effective_name
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    player_model = PlayerModel()
     user_name = update.effective_user.name
+    player_id = update.effective_user.id
 
-    if update.effective_chat.type == ChatType.PRIVATE:
-        await update.effective_message.reply_text(
-            'Use este comando em um grupo para cadastrá-lo.'
-        )
-        return ConversationHandler.END
-    elif (group_config := group_model.get(chat_id)):
+    if (player := player_model.get(player_id)):
         await update.effective_message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
-            f'O grupo "{chat_name}" já está cadastrado.\n\n'
-            f'{group_config}'
+            f'Vocé já possui uma conta.\n\n'
+            f'{player}'
         )
         return ConversationHandler.END
 
@@ -66,7 +56,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     response = await update.effective_message.reply_text(
         'Seja Bem-vindo, Aventureiro(a).\n'
-        'Gostaria de Cadastrar este Grupo?',
+        'Gostaria de Criar uma Conta?',
         reply_markup=reply_markup,
     )
     context.user_data['response'] = response
@@ -76,25 +66,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # START_ROUTES
 @print_basic_infos
-async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    chat_id = update.effective_chat.id
-    chat_name = update.effective_chat.effective_name
-    group_model = GroupModel()
-
-    if not (group_config := group_model.get(chat_id)):
-        group_config = Group(
-            name=chat_name,
-            chat_id=chat_id,
-        )
-        group_model.save(group_config)
-        group_config = group_model.get(chat_id)
-
+async def create_account(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> int:
+    user_name = update.effective_user.name
+    player_id = update.effective_user.id
+    player_model = PlayerModel()
+    player = Player(user_name, player_id)
+    player_model.save(player)
+    player = player_model.get(player_id)
     query = update.callback_query
 
     await query.answer('Cadastrado com sucesso!')
     await query.edit_message_text(
-        "Grupo cadastrado com sucesso!\n\n"
-        f'{group_config}',
+        "Conta criada com sucesso!\n\n"
+        f'{player}',
     )
 
     return ConversationHandler.END
@@ -102,15 +88,15 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # START_ROUTES
 @print_basic_infos
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    new_text = "Tchau! Você pode criar uma conta para o grupo mais tarde."
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    new_text = "Tchau! Você pode criar uma conta mais tarde."
 
     if 'response' in context.user_data:
         response = context.user_data['response']
         chat_id = response.chat_id
         message_id = response.id
         print(
-            f'{__name__}.cancel()',
+            f'{__name__}.cancel():',
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
         await update.get_bot().edit_message_text(
@@ -126,7 +112,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-SIGNUP_GROUP_HANDLER = ConversationHandler(
+SIGNUP_PLAYER_HANDLER = ConversationHandler(
     entry_points=[
         PrefixHandler(
             PREFIX_COMMANDS,

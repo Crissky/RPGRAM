@@ -1,6 +1,6 @@
 from datetime import datetime
 from bson import ObjectId
-from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram import Equips
 from rpgram.boosters import Race, Classe
 from rpgram.characters import BaseCharacter

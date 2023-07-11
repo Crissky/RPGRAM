@@ -3,8 +3,8 @@ from typing import List, Union
 
 from bson import ObjectId
 
-from constants.text import SECTION_HEAD, TEXT_DELIMITER
-from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from constant.text import SECTION_HEAD, TEXT_DELIMITER
+from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import Equipment
 from rpgram.enums import EquipmentEnum
 from rpgram.errors import EquipmentRequirementError
@@ -35,19 +35,35 @@ class Equips:
 
         self.__id = _id
 
-        self.__helmet = helmet
-        self.__left_hand = left_hand
-        self.__right_hand = right_hand
-        self.__armor = armor
-        self.__boots = boots
-        self.__ring = ring
-        self.__necklace = necklace
+        self.__helmet = None
+        self.__left_hand = None
+        self.__right_hand = None
+        self.__armor = None
+        self.__boots = None
+        self.__ring = None
+        self.__necklace = None
 
         self.__equipments_weight = 0
         self.__observers = []
 
         self.__created_at = created_at
         self.__updated_at = updated_at
+
+        if isinstance(helmet, Equipment):
+            self.equip(helmet)
+        if isinstance(left_hand, Equipment):
+            self.equip(left_hand)
+        if isinstance(right_hand, Equipment):
+            if right_hand.equip_type != EquipmentEnum.TWO_HANDS:
+                self.equip(right_hand)
+        if isinstance(armor, Equipment):
+            self.equip(armor)
+        if isinstance(boots, Equipment):
+            self.equip(boots)
+        if isinstance(ring, Equipment):
+            self.equip(ring)
+        if isinstance(necklace, Equipment):
+            self.equip(necklace)
 
         self.__update_stats()
 
@@ -174,7 +190,7 @@ class Equips:
         self.__bonus_evasion = 0
 
         if (
-            self.left_hand is not None and
+            isinstance(self.left_hand, Equipment) and
             self.left_hand.equip_type == EquipmentEnum.TWO_HANDS
         ):
             equips = [

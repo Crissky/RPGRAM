@@ -35,7 +35,7 @@ from bot.constants.filters import (
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
-from constants.time import TEN_MINUTES_IN_SECONDS
+from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import (
     ClasseModel,

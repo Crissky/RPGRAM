@@ -19,7 +19,7 @@ from bot.constants.filters import (
 from bot.decorators import need_have_char, print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
-from functions.text import escape_markdown_v2
+from function.text import escape_markdown_v2
 
 from repository.mongo import CharacterModel
 

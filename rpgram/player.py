@@ -2,8 +2,8 @@ from bson import ObjectId
 from datetime import datetime
 from typing import Union
 
-from constants.text import SECTION_HEAD
-from functions.datetime import datetime_to_string
+from constant.text import SECTION_HEAD
+from function.datetime import datetime_to_string
 
 
 class Player:

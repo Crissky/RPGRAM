@@ -3,7 +3,7 @@ from typing import Union
 
 from bson import ObjectId
 
-from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 
 class Consumable:

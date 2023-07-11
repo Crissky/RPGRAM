@@ -2,8 +2,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Union
 from bson import ObjectId
 
-from constants.text import TEXT_DELIMITER
-from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from constant.text import TEXT_DELIMITER
+from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 from rpgram.enums import DamageEnum, EquipmentEnum, RarityEnum
 

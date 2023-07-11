@@ -5,14 +5,14 @@ Arquivo principal que executa o telegram-bot.
 from decouple import config
 
 from telegram.ext import Application
-from bot.conversation import (
+from bot.conversations import (
     CREATE_CHAR_HANDLER,
     SIGNUP_GROUP_HANDLER,
     SIGNUP_PLAYER_HANDLER,
     CHAT_XP_HANDLER,
     BATTLE_HANDLER
 )
-from bot.conversation import (
+from bot.conversations import (
     HELP_HANDLERS,
     VIEW_GROUP_HANDLERS,
     VIEW_PLAYER_HANDLERS,

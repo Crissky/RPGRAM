@@ -3,8 +3,8 @@ from typing import Union
 
 from bson import ObjectId
 
-from constants.text import SECTION_HEAD, TEXT_DELIMITER
-from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from constant.text import SECTION_HEAD, TEXT_DELIMITER
+from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 
 

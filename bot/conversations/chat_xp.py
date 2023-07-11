@@ -22,7 +22,7 @@ from bot.decorators import (
 )
 from bot.functions.general import get_attribute_group_or_player
 
-from functions.datetime import (
+from function.datetime import (
     utc_to_brazil_datetime,
     add_random_minutes_now,
     replace_tzinfo

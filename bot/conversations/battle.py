@@ -40,11 +40,11 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
-from bot.conversation.rest import stop_resting
+from bot.conversations.rest import stop_resting
 from bot.decorators import print_basic_infos, need_have_char, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 
-from constants.time import TEN_MINUTES_IN_SECONDS
+from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import (
     BattleModel,

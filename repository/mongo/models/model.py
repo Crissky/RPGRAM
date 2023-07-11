@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from bson import ObjectId
 from typing import Union, Any, List
-from functions.datetime import get_brazil_time_now
+from function.datetime import get_brazil_time_now
 
 from repository.mongo import Database
 from rpgram import (

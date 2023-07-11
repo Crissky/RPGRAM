@@ -1,8 +1,8 @@
 from bson import ObjectId
 from datetime import datetime
 
-from constants.text import TEXT_DELIMITER
-from functions.text import escape_basic_markdown_v2, remove_bold, remove_code
+from constant.text import TEXT_DELIMITER
+from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram import Equips
 from rpgram.boosters import Race, Classe
 from rpgram.stats import BaseStats, CombatStats

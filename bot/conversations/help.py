@@ -31,9 +31,9 @@ from bot.constants.filters import (
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
-from constants.text import SECTION_HEAD
+from constant.text import SECTION_HEAD
 
-from functions.text import escape_basic_markdown_v2
+from function.text import escape_basic_markdown_v2
 
 
 @print_basic_infos
