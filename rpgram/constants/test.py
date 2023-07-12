@@ -2,6 +2,7 @@ from rpgram.boosters.classe import Classe
 from rpgram.boosters.equipment import Equipment
 from rpgram.boosters.race import Race
 from rpgram.characters.char_base import BaseCharacter
+from rpgram.consumable import Consumable
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.equips import Equips
@@ -111,6 +112,17 @@ BASE_CHARACTER = BaseCharacter(
     base_charisma=10,
     combat_damage=0,
 )
+POTION = Consumable(
+    name='Potion',
+    description='Cura 100 de HP.',
+    weight=0.1,
+    function='target.combat_stats.hp = 100'
+)
 
 if __name__ == '__main__':
     print(f'BASE_CHARACTER: {BASE_CHARACTER}')
+    print('HP:', BASE_CHARACTER.cs.show_hit_points)
+    BASE_CHARACTER.cs.hp = -300
+    POTION(BASE_CHARACTER)
+    BASE_CHARACTER.cs.hp = -600
+    POTION(BASE_CHARACTER)
