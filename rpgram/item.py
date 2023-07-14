@@ -16,6 +16,10 @@ class Item:
 
     # Getters
     @property
+    def _id(self):
+        return self.item._id
+
+    @property
     def name(self):
         return self.item.name
 
@@ -61,9 +65,9 @@ class Item:
     def __repr__(self) -> str:
         return f'{self.get_sheet(True)}'
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return dict(
-            item=self.item._id,
+            item=self._id,
             quantity=self.quantity
         )
 
