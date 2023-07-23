@@ -155,8 +155,12 @@ class Model:
 
                 dict_obj[field_name] = obj
             else:
+                if isinstance(self._class, tuple):
+                    class_name = ', '.join([c.__name__ for c in self._class])
+                else:
+                    class_name = self._class.__name__
                 raise KeyError(
-                    f'O dicionário da classe {self._class.__name__} '
+                    f'O dicionário da(s) classe(s) {class_name} '
                     f'não possui campo {field_info["id_key"]}.'
                 )
 
