@@ -44,7 +44,7 @@ from bot.conversations.rest import stop_resting
 from bot.decorators import print_basic_infos, need_have_char, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 
-from constant.time import TEN_MINUTES_IN_SECONDS
+from constant.time import ONE_HOUR_IN_SECONDS
 
 from repository.mongo import (
     BattleModel,
@@ -541,5 +541,5 @@ BATTLE_HANDLER = ConversationHandler(
             CANCEL_COMMANDS, battle_cancel)
     ],
     per_user=False,
-    conversation_timeout=TEN_MINUTES_IN_SECONDS
+    conversation_timeout=ONE_HOUR_IN_SECONDS
 )
