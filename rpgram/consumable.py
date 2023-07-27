@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Union
 
 from bson import ObjectId
+from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
@@ -51,11 +52,11 @@ class Consumable:
 
         if verbose:
             text += (
-            f'*Peso*: {self.__weight}w\n'
-            f'*Descrição*: {self.__description}\n'
-            f'*Função*: {self.__function}\n'
-        )
-        
+                f'*Peso*: {self.__weight}w\n'
+                f'*Descrição*: {self.__description}\n'
+                f'*Função*: {self.__function}\n'
+            )
+
         if not markdown:
             text = remove_bold(text)
             text = remove_code(text)
@@ -64,8 +65,17 @@ class Consumable:
 
         return text
 
+    def get_all_sheets(
+        self, verbose: bool = False, markdown: bool = False
+    ) -> str:
+        return self.get_sheet(verbose=verbose, markdown=markdown)
+
     def __repr__(self) -> str:
-        return self.get_sheet(True)
+        return (
+            f'{TEXT_DELIMITER}\n'
+            f'{self.get_sheet(True)}'
+            f'{TEXT_DELIMITER}\n'
+        )
 
     def __eq__(self, other):
         if isinstance(other, Consumable):

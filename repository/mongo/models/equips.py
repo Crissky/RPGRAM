@@ -1,5 +1,5 @@
 from repository.mongo import CollectionEnum, Model
-from repository.mongo.models.equipment import EquipmentModel
+from repository.mongo.models.item import ItemModel
 from rpgram import Equips
 
 
@@ -10,31 +10,31 @@ class EquipsModel(Model):
         lambda self: {
             'helmet': {
                 'id_key': 'helmet_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
             'left_hand': {
                 'id_key': 'left_hand_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
             'right_hand': {
                 'id_key': 'right_hand_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
             'armor': {
                 'id_key': 'armor_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
             'boots': {
                 'id_key': 'boots_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
             'ring': {
                 'id_key': 'ring_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
             'necklace': {
                 'id_key': 'necklace_id',
-                'model': EquipmentModel()
+                'model': ItemModel()
             },
         }
     )
@@ -42,7 +42,7 @@ class EquipsModel(Model):
 
 if __name__ == '__main__':
     equips_model = EquipsModel()
-    equipment_model = EquipmentModel()
+    equipment_model = ItemModel()
     helmet = equipment_model.get('eeeeeeeeeeeeeeeeeeeeeeee')
     print(helmet)
     sword = equipment_model.get('ffffffffffffffffffffffff')

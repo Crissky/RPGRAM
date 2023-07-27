@@ -6,7 +6,7 @@ class CollectionEnum(Enum):
     CHARACTERS = 'characters'
     CLASSES = 'classes'
     CONSUMABLES = 'consumables'
-    EQUIPMENTS = 'equipments'
+    ITEMS = 'items'
     EQUIPS = 'equips'
     GROUP = 'groups'
     PLAYERS = 'players'

@@ -1,11 +1,12 @@
 from repository.mongo import Model
 from repository.mongo import CollectionEnum
 from rpgram.boosters import Equipment
+from rpgram import Consumable
 
 
-class EquipmentModel(Model):
-    _class = property(lambda self: Equipment)
-    collection = property(lambda self: CollectionEnum.EQUIPMENTS.value)
+class ItemModel(Model):
+    _class = property(lambda self: (Equipment, Consumable))
+    collection = property(lambda self: CollectionEnum.ITEMS.value)
 
 
 if __name__ == "__main__":
@@ -69,15 +70,25 @@ if __name__ == "__main__":
         damage_types=None,
         _id='999999999999999999999999'
     )
-    equipament_model = EquipmentModel()
-    print('Collection:', equipament_model.collection)
-    equipament_model.save(helmet)
-    result = equipament_model.save(sword)
-    equipament_model.save(shield)
-    equipament_model.save(armor)
-    equipament_model.save(boots)
-    equipament_model.save(ring)
-    equipament_model.save(necklace)
+    potion = Consumable(
+        name='Potion',
+        description='Cura 100 de HP.',
+        weight=0.1,
+        function='target.combat_stats.hp = 100',
+        _id='888888888888888888888888'
+    )
+    items_model = ItemModel()
+    print('Collection:', items_model.collection)
+    items_model.save(helmet)
+    result = items_model.save(sword)
+    items_model.save(shield)
+    items_model.save(armor)
+    items_model.save(boots)
+    items_model.save(ring)
+    items_model.save(necklace)
+    items_model.save(potion)
     print('Result:', result)
-    equipament2 = equipament_model.get('ffffffffffffffffffffffff')
-    print('Equipament2:\n', equipament2)
+    equipament2 = items_model.get('ffffffffffffffffffffffff')
+    potion2 = items_model.get('888888888888888888888888')
+    print(f'Equipament2:\n{equipament2}')
+    print(f'potion2:\n{potion2}')
