@@ -27,7 +27,7 @@ class Bag:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
-    def pack_item(item: ItemTypes) -> Item:
+    def pack_item(self, item: ItemTypes) -> Item:
         if isinstance(item, (Consumable, Equipment)):
             item = Item(item)
         if isinstance(item, Item):
@@ -66,7 +66,7 @@ class Bag:
 
     def to_dict(self):
         return dict(
-            items=[item.to_dict() for item in self.__items],
+            items_ids=[item.to_dict() for item in self.__items],
             player_id=self.__player_id,
             _id=self.__id,
             created_at=self.__created_at,
@@ -77,3 +77,5 @@ class Bag:
     @property
     def weight(self):
         return sum([item.item.weight for item in self.__items])
+    
+    _id = property(lambda self: self.__id)
