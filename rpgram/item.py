@@ -63,7 +63,11 @@ class Item:
         return self.item.get_sheet(verbose=verbose, markdown=markdown)
 
     def __repr__(self) -> str:
-        return f'{self.get_sheet(True)}'
+        return (
+            f'{TEXT_DELIMITER}\n'
+            f'{self.get_sheet(True)}'
+            f'{TEXT_DELIMITER}\n'
+        )
 
     def to_dict(self) -> dict:
         return dict(
