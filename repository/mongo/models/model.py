@@ -5,6 +5,7 @@ from function.datetime import get_brazil_time_now
 
 from repository.mongo import Database
 from rpgram import (
+    Bag,
     Battle,
     Consumable,
     Equips,
@@ -149,7 +150,19 @@ class Model:
 
                 obj = None
                 if isinstance(_id, list):
-                    obj = [model.get(item) for item in _id]
+                    obj = []
+                    for item in _id:
+                        if isinstance(item, dict):
+                            obj.append(model.get(item['_id']))
+                        elif isinstance(item, (ObjectId, str)):
+                            obj.append(model.get(item))
+                        else:
+                            raise KeyError(
+                                f'O valor da id_key "{key}" no "dict_obj" '
+                                f'é uma lista e um elemento dessa lista não é '
+                                f'um dict com o campo "_id", str ou ObjectId. '
+                                f'item: {item}.'
+                            )
                 elif _id is not None:
                     obj = model.get(_id)
 

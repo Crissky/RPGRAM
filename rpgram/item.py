@@ -71,7 +71,7 @@ class Item:
 
     def to_dict(self) -> dict:
         return dict(
-            item=self._id,
+            _id=self._id,
             quantity=self.quantity
         )
 
