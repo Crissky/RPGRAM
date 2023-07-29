@@ -142,20 +142,32 @@ class Model:
         return result
 
     def __populate_load(self, dict_obj: dict):
+        '''Função que popula os campos do objeto que são outras classes e que 
+        no banco são salvos somente a sua chave. Esses campo que serão 
+        populados pertencem a outra tabela e por conta disso
+        devem possuir sua própria classe Model.
+
+        Quando o campo a ser populado é uma lista, todos os elementos da lista 
+        serão populados, porém todos eles devem pertencer a mesma tabela.'''
         for field_name, field_info in self.populate_fields.items():
-            if field_info['id_key'] in dict_obj:
+            if field_info['id_key'] in dict_obj.keys():
                 key = field_info['id_key']
-                _id = dict_obj.pop(key)
+                dict_field = dict_obj.pop(key)
                 model = field_info['model']
 
-                obj = None
-                if isinstance(_id, list):
-                    obj = []
-                    for item in _id:
+                object = None
+                if isinstance(dict_field, list):
+                    object = []
+                    for item in dict_field:
                         if isinstance(item, dict):
-                            obj.append(model.get(item['_id']))
+                            object_id = item.pop('_id')
+                            object_loaded = model.get(object_id)
+                            if 'subclass' in field_info.keys():
+                                subclass = field_info['subclass']
+                                object_loaded = subclass(object_loaded, **item)
+                            object.append(object_loaded)
                         elif isinstance(item, (ObjectId, str)):
-                            obj.append(model.get(item))
+                            object.append(model.get(item))
                         else:
                             raise KeyError(
                                 f'O valor da id_key "{key}" no "dict_obj" '
@@ -163,10 +175,10 @@ class Model:
                                 f'um dict com o campo "_id", str ou ObjectId. '
                                 f'item: {item}.'
                             )
-                elif _id is not None:
-                    obj = model.get(_id)
+                elif dict_field is not None:  # esperado que dict_field seja um _id
+                    object = model.get(dict_field)
 
-                dict_obj[field_name] = obj
+                dict_obj[field_name] = object
             else:
                 if isinstance(self._class, tuple):
                     class_name = ', '.join([c.__name__ for c in self._class])
@@ -207,11 +219,15 @@ class Model:
                     (aka _id ou alternative_id).
                 model: Modelo usado para carregar o objeto que populará
                     o objeto do modelo atual.
+                subclass: Class que será usada para instanciar o novo objeto
+                    que usará o objeto carregado pelo `model` quando campo é
+                    salvo no banco do objeto pai com o tipo lista.
 
             populate_fields = {
                 'field_name': {
                     'id_key': string,
                     'model': Model,
+                    'subclass': Any Class,
                 },
                 ...
             }
@@ -222,5 +238,14 @@ class Model:
                     'model': RaceModel,
                 }
             }
+            Exemplo2:
+            populate_fields = {
+                'items': {
+                    'id_key': 'items_ids',
+                    'model': ItemModel(),  # Carrega equipamentos e consumíveis
+                    'subclass': Item
+                }
+           }
+    )
         '''
         return {}

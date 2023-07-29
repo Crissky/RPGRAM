@@ -1,7 +1,7 @@
 from repository.mongo import Model
 from repository.mongo import CollectionEnum
 from repository.mongo.models.item import ItemModel
-from rpgram import Bag
+from rpgram import Bag, Item
 
 
 class BagModel(Model):
@@ -11,7 +11,8 @@ class BagModel(Model):
         lambda self: {
             'items': {
                 'id_key': 'items_ids',
-                'model': ItemModel()
+                'model': ItemModel(),
+                'subclass': Item
             }
         }
     )
@@ -27,11 +28,12 @@ if __name__ == '__main__':
         _id='888888888888888888888888'
     )
     bag = Bag(
-        items=[potion],
+        items=[potion, potion, potion],
         player_id='ffffffffffffffffffffffff',
         _id='ffffffffffffffffffffffff'
     )
+    print(f'bag:\n{bag}')
     bag_model = BagModel()
     bag_model.save(bag)
     bag2 = bag_model.get('ffffffffffffffffffffffff')
-    print(f'bag2: {bag2}')
+    print(f'bag2:\n{bag2}')
