@@ -159,7 +159,7 @@ class Equipment(StatsBooster):
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
             f'{damage_types}'
-            f'*Peso*: {self.weight}w\n'
+            f'*Peso*: {self.weight:.2f}w\n'
             f'{requirements}'
         )
 

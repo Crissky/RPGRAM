@@ -46,7 +46,7 @@ class Item:
         text = f'{self.quantity:02}x *{self.name}*'
 
         if verbose:
-            text += f' ({self.weight}w)'
+            text += f' ({self.weight:.2f}w)'
         # text += f'\n'
 
         if not markdown:
