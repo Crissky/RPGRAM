@@ -26,11 +26,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
     player_id = update.effective_user.id
     bag = bag_model.get(player_id)
-    if not bag:
+    if bag:
+        ...
+    else:
         bag = Bag(
             items=[],
             player_id=player_id
         )
+        bag_model.save(bag)
+
 
 BAG_HANDLERS = [
     PrefixHandler(
