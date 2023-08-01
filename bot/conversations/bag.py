@@ -24,6 +24,7 @@ from rpgram import Bag
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
+    query = update.callback_query
     player_id = update.effective_user.id
     bag = bag_model.get(player_id)
     if bag:
