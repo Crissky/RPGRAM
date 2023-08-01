@@ -117,10 +117,15 @@ class Bag:
 
     # Getters
     @property
-    def weight(self):
+    def weight(self) -> float:
         return sum([item.item.weight for item in self.__items])
 
+    @property
+    def total_slots(self) -> int:
+        return len(self.__items)
+
     _id = property(lambda self: self.__id)
+    slots = total_slots
 
 
 if __name__ == '__main__':
