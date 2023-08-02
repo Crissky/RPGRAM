@@ -17,9 +17,10 @@ from bot.constants.rest import (
     REPLY_TEXTS_STARTING_REST
 )
 from bot.decorators import (
+    need_not_in_battle,
+    print_basic_infos,
     skip_if_no_have_char,
     skip_if_no_singup_player,
-    print_basic_infos
 )
 from bot.functions.general import get_attribute_group_or_player
 
@@ -28,6 +29,7 @@ from repository.mongo import BattleModel, CharacterModel, PlayerModel
 
 @skip_if_no_singup_player
 @skip_if_no_have_char
+@need_not_in_battle
 @print_basic_infos
 async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()

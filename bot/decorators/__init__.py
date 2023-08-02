@@ -7,3 +7,4 @@ from bot.decorators.group import skip_if_no_singup_group
 from bot.decorators.player import need_singup_player
 from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
+from bot.decorators.battle import need_not_in_battle

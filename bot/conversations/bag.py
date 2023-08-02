@@ -11,9 +11,10 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.decorators import (
+    need_not_in_battle,
+    print_basic_infos,
     skip_if_no_have_char,
     skip_if_no_singup_player,
-    print_basic_infos,
 )
 from bot.functions.general import get_attribute_group_or_player
 from repository.mongo import BagModel
@@ -22,6 +23,7 @@ from rpgram import Bag
 
 @skip_if_no_singup_player
 @skip_if_no_have_char
+@need_not_in_battle
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()

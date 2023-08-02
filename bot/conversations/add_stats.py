@@ -16,7 +16,11 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-from bot.decorators import need_have_char, print_basic_infos
+from bot.decorators import (
+    need_have_char,
+    need_not_in_battle,
+    print_basic_infos,
+)
 from bot.functions.general import get_attribute_group_or_player
 
 from function.text import escape_markdown_v2
@@ -26,6 +30,7 @@ from repository.mongo import CharacterModel
 
 @print_basic_infos
 @need_have_char
+@need_not_in_battle
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
