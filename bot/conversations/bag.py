@@ -15,6 +15,7 @@ from bot.decorators import (
     skip_if_no_singup_player,
     print_basic_infos,
 )
+from bot.functions.general import get_attribute_group_or_player
 from repository.mongo import BagModel
 from rpgram import Bag
 
@@ -24,8 +25,10 @@ from rpgram import Bag
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
-    query = update.callback_query
+    chat_id = update.effective_chat.id
     player_id = update.effective_user.id
+    query = update.callback_query
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     bag = bag_model.get(player_id)
     if bag:
         ...
