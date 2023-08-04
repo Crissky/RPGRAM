@@ -115,6 +115,10 @@ class Bag:
             updated_at=self.__updated_at,
         )
 
+    def __getitem__(self, items: Union[int, slice]):
+        if isinstance(items, (int, slice)):
+            return self.__items[items]
+
     # Getters
     @property
     def weight(self) -> float:
