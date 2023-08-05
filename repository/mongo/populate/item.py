@@ -12,15 +12,28 @@ def weighted_choice(**items):
     return choices(population, weights=weights)[0]
 
 
+def choice_type_item():
+    types_item = {
+        'consumable': 150,
+        'helmet': 100,
+        'one_hand': 100,
+        'two_hands': 100,
+        'armor': 100,
+        'boots': 100,
+        'ring': 25,
+        'necklace': 25,
+    }
+    return weighted_choice(**types_item)
+
 def choice_rarity():
-    items = {
+    rarities = {
         'common': 100,
         'uncommon': 50,
         'rare': 25,
         'epic': 12.5,
         'legendary': 6.25,
     }
-    return weighted_choice(**items)
+    return weighted_choice(**rarities)
 
 
 if __name__ == '__main__':
