@@ -18,7 +18,8 @@ class Group:
         spawn_start_time: int = 6,
         spawn_end_time: int = 20,
         multiplier_xp: float = 1.0,
-        character_multiplier_xp: float = 1.0,
+        character_multiplier_xp: float = 1.0,  # multiplicador do bônus de xp pelo nível do Personagem
+        higher_level: int = 1,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -34,6 +35,7 @@ class Group:
         self.spawn_end_time = spawn_end_time
         self.multiplier_xp = float(multiplier_xp)
         self.character_multiplier_xp = float(character_multiplier_xp)
+        self.higher_level = int(higher_level)
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -112,6 +114,7 @@ class Group:
             spawn_end_time=self.spawn_end_time,
             multiplier_xp=self.multiplier_xp,
             character_multiplier_xp=self.character_multiplier_xp,
+            higher_level=self.higher_level,
             created_at=self.created_at,
             updated_at=self.updated_at
         )

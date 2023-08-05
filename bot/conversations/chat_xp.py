@@ -86,6 +86,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'Seu personagem agora está no nível {new_level}.',
             disable_notification=silent
         )
+        if new_level > group.higher_level:
+            group.higher_level = new_level
+            group_model.save(group)
     elif player.verbose:
         try:
             await update.effective_user.send_message(
