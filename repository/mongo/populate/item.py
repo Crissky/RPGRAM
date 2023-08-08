@@ -25,6 +25,7 @@ def choice_type_item():
     }
     return weighted_choice(**types_item)
 
+
 def choice_rarity():
     rarities = {
         'common': 100,
@@ -34,6 +35,32 @@ def choice_rarity():
         'legendary': 6.25,
     }
     return weighted_choice(**rarities)
+
+
+def choice_weapon_material():
+    materials = {
+        'wood': 320,
+        'iron': 160,
+        'steel': 80,
+        'obsidian': 40,
+        'runite': 20,
+        'mithril': 10,
+        'adamantium': 5,
+    }
+    return weighted_choice(**materials)
+
+
+def choice_armor_material():
+    materials = {
+        'cloth': 320,
+        'leather': 160,
+        'iron': 80,
+        'steel': 40,
+        'runite': 20,
+        'mithril': 10,
+        'adamantium': 5,
+    }
+    return weighted_choice(**materials)
 
 
 if __name__ == '__main__':
@@ -46,4 +73,15 @@ if __name__ == '__main__':
         f"rare: {items.count('rare')}",
         f"epic: {items.count('epic')}",
         f"legendary: {items.count('legendary')}",
+    )
+    for i in range(1000):
+        items.append(choice_armor_material())
+    print(
+        f"cloth: {items.count('cloth')}",
+        f"leather: {items.count('leather')}",
+        f"iron: {items.count('iron')}",
+        f"steel: {items.count('steel')}",
+        f"runite: {items.count('runite')}",
+        f"mithril: {items.count('mithril')}",
+        f"adamantium: {items.count('adamantium')}",
     )
