@@ -1,4 +1,4 @@
-from random import choices
+from random import choice, choices
 
 
 def weighted_choice(**items):
@@ -33,6 +33,7 @@ def choice_rarity():
         'rare': 25,
         'epic': 12.5,
         'legendary': 6.25,
+        'mythic': 3.125,
     }
     return weighted_choice(**rarities)
 
@@ -63,6 +64,23 @@ def choice_armor_material():
     return weighted_choice(**materials)
 
 
+def get_consumable():
+    ...
+
+
+def get_equipment():
+    ...
+
+
+def choice_item():
+    items = ['consumable', 'equipment']
+    choiced_item = choice(items)
+    if choiced_item == 'consumable':
+        get_consumable()
+    elif choiced_item == 'equipment':
+        get_equipment()
+
+
 if __name__ == '__main__':
     items = []
     for i in range(1000):
@@ -73,6 +91,7 @@ if __name__ == '__main__':
         f"rare: {items.count('rare')}",
         f"epic: {items.count('epic')}",
         f"legendary: {items.count('legendary')}",
+        f"mythic: {items.count('mythic')}",
     )
     for i in range(1000):
         items.append(choice_armor_material())
