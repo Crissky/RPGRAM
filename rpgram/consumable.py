@@ -5,6 +5,7 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram.enums.rarity import RarityEnum
 
 
 class Consumable:
@@ -14,17 +15,23 @@ class Consumable:
         description: str,
         weight: float,
         function: str,
+        rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
     ) -> None:
         if isinstance(_id, str):
             _id = ObjectId(_id)
+        if isinstance(rarity, str):
+            rarity = RarityEnum[rarity]
+        elif not isinstance(rarity, RarityEnum):
+            raise TypeError(f'rarity precisa ser uma string ou RarityEnum')
 
         self.__name = name
         self.__description = description
         self.__weight = weight
         self.__function = function
+        self.__rarity = rarity
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
@@ -39,6 +46,7 @@ class Consumable:
             description=self.__description,
             weight=self.__weight,
             function=self.__function,
+            rarity=self.__rarity.name,
             _id=self.__id,
             created_at=self.__created_at,
             updated_at=self.__updated_at,
@@ -55,6 +63,7 @@ class Consumable:
                 f'*Peso*: {self.__weight}w\n'
                 f'*Descrição*: {self.__description}\n'
                 f'*Função*: {self.__function}\n'
+                f'*Raridade*: {self.__rarity.value}\n'
             )
 
         if not markdown:
@@ -88,6 +97,7 @@ class Consumable:
     description = property(lambda self: self.__description)
     weight = property(lambda self: self.__weight)
     function = property(lambda self: self.__function)
+    rarity = property(lambda self: self.__rarity)
 
 
 if __name__ == '__main__':
