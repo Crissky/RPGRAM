@@ -105,15 +105,15 @@ def choice_item():
 
 
 if __name__ == '__main__':
+    from collections import Counter
+
     def test_count(func):
         print(func.__name__)
         items = []
-        result = []
         for i in range(1000):
             items.append(func())
-        for item in sorted(set(items)):
-            result.append((item, items.count(item)))
-        for item in sorted(result, key=lambda x: x[1], reverse=True):
+        result = Counter(items)
+        for item in result.most_common():
             print(f'{item[0]}: {item[1]},', end=' ')
         print()
     test_count(choice_type_item)
