@@ -2,6 +2,42 @@ from random import choice, choices
 from rpgram.enums import EquipmentEnum
 
 
+BONUS_RARITY = {
+    'common': 1,
+    'uncommon': 2,
+    'rare': 3,
+    'epic': 4,
+    'legendary': 5,
+    'mythic': 6,
+}
+WEAPON_BONUS_MATERIAL = {
+    'wood': 1,
+    'iron': 2,
+    'steel': 3,
+    'obsidian': 4,
+    'runite': 5,
+    'mithril': 6,
+    'adamantium': 7,
+}
+ARMOR_BONUS_MATERIAL = {
+    'cloth': 1,
+    'leather': 2,
+    'iron': 3,
+    'steel': 4,
+    'runite': 5,
+    'mithril': 6,
+    'adamantium': 7,
+}
+ACCESSORY_BONUS_MATERIAL = {
+    'bronze': 1,
+    'silver': 2,
+    'gold': 3,
+    'pearl': 4,
+    'platinum': 5,
+    'diamond': 6,
+}
+
+
 def weighted_choice(**items):
     '''Função que retorna um item escolhido de forma aleatória.
     O item é escolhido de forma aleatória, baseado em sua probabilidade.
@@ -81,7 +117,7 @@ def get_consumable():
     ...
 
 
-def get_equipment(equip_type: str):
+def get_equipment(equip_type: str, group_level: int):
     rarity = choice_rarity()
     if equip_type in ['one_hand', 'two_hands']:
         material = choice_weapon_material()
@@ -95,13 +131,22 @@ def get_equipment(equip_type: str):
         )
 
 
-def choice_item():
+def random_group_level(level):
+    min_level = int(level * 0.75)
+    max_level = int(level * 1.25) + 1
+    new_level = choice(range(min_level, max_level))
+    return max(new_level, 1)
+
+
+def choice_item(group_level):
+    '''Função que retorna um item escolhido de forma aleatória.'''
+    group_level = random_group_level(group_level)
     choiced_item = choice_type_item()
     equipment_types = [e.name.lower() for e in EquipmentEnum]
     if choiced_item == 'consumable':
         get_consumable()
     elif choiced_item in equipment_types:
-        get_equipment(choiced_item)
+        get_equipment(choiced_item, group_level)
 
 
 if __name__ == '__main__':
