@@ -119,8 +119,13 @@ def get_consumable():
 
 def get_equipment(equip_type: str, group_level: int):
     rarity = choice_rarity()
+    weapon = None
     if equip_type in ['one_hand', 'two_hands']:
         material = choice_weapon_material()
+        if equip_type == 'one_hand':
+            weapon = choice(['sword', 'dagger', 'wand'])
+        elif equip_type == 'two_hands':
+            weapon = choice(['great sword', 'bow', 'staff'])
     elif equip_type == ['helmet', 'armor', 'boots']:
         material = choice_armor_material()
     elif equip_type == ['ring', 'necklace']:
