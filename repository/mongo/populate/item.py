@@ -2,42 +2,26 @@ from random import choice, choices
 from rpgram.enums import EquipmentEnum
 
 
+# CONSTANTS
 BONUS_RARITY = {
-    'common': 1,
-    'uncommon': 2,
-    'rare': 3,
-    'epic': 4,
-    'legendary': 5,
-    'mythic': 6,
+    'common': 1, 'uncommon': 2, 'rare': 3,
+    'epic': 4, 'legendary': 5, 'mythic': 6,
 }
 WEAPON_BONUS_MATERIAL = {
-    'wood': 1,
-    'iron': 2,
-    'steel': 3,
-    'obsidian': 4,
-    'runite': 5,
-    'mithril': 6,
-    'adamantium': 7,
+    'wood': 1, 'iron': 2, 'steel': 3, 'obsidian': 4,
+    'runite': 5, 'mithril': 6, 'adamantium': 7,
 }
 ARMOR_BONUS_MATERIAL = {
-    'cloth': 1,
-    'leather': 2,
-    'iron': 3,
-    'steel': 4,
-    'runite': 5,
-    'mithril': 6,
-    'adamantium': 7,
+    'cloth': 1, 'leather': 2, 'iron': 3, 'steel': 4,
+    'runite': 5, 'mithril': 6, 'adamantium': 7,
 }
 ACCESSORY_BONUS_MATERIAL = {
-    'bronze': 1,
-    'silver': 2,
-    'gold': 3,
-    'pearl': 4,
-    'platinum': 5,
-    'diamond': 6,
+    'bronze': 1, 'silver': 2, 'gold': 3,
+    'pearl': 4, 'platinum': 5, 'diamond': 6,
 }
 
 
+# FUNCTIONS
 def weighted_choice(**items):
     '''Função que retorna um item escolhido de forma aleatória.
     O item é escolhido de forma aleatória, baseado em sua probabilidade.
@@ -51,66 +35,71 @@ def weighted_choice(**items):
 
 def choice_type_item():
     types_item = {
-        'consumable': 150,
-        'helmet': 100,
-        'one_hand': 100,
-        'two_hands': 100,
-        'armor': 100,
-        'boots': 100,
-        'ring': 25,
-        'necklace': 25,
+        'consumable': 150, 'helmet': 100, 'one_hand': 100,
+        'two_hands': 100, 'armor': 100, 'boots': 100,
+        'ring': 25, 'necklace': 25,
     }
     return weighted_choice(**types_item)
 
 
 def choice_rarity():
     rarities = {
-        'common': 100,
-        'uncommon': 50,
-        'rare': 25,
-        'epic': 12.5,
-        'legendary': 6.25,
-        'mythic': 3.125,
+        'common': 100, 'uncommon': 50, 'rare': 25,
+        'epic': 12.5, 'legendary': 6.25, 'mythic': 3.125,
     }
     return weighted_choice(**rarities)
 
 
 def choice_weapon_material():
     materials = {
-        'wood': 320,
-        'iron': 160,
-        'steel': 80,
-        'obsidian': 40,
-        'runite': 20,
-        'mithril': 10,
-        'adamantium': 5,
+        'wood': 320, 'iron': 160, 'steel': 80, 'obsidian': 40,
+        'runite': 20, 'mithril': 10, 'adamantium': 5,
     }
     return weighted_choice(**materials)
 
 
 def choice_armor_material():
     materials = {
-        'cloth': 320,
-        'leather': 160,
-        'iron': 80,
-        'steel': 40,
-        'runite': 20,
-        'mithril': 10,
-        'adamantium': 5,
+        'cloth': 320, 'leather': 160, 'iron': 80, 'steel': 40,
+        'runite': 20, 'mithril': 10, 'adamantium': 5,
     }
     return weighted_choice(**materials)
 
 
 def choice_accessory_material():
     materials = {
-        'bronze': 100,
-        'silver': 50,
-        'gold': 25,
-        'pearl': 12.5,
-        'platinum': 6.25,
-        'diamond': 3.125,
+        'bronze': 100, 'silver': 50, 'gold': 25,
+        'pearl': 12.5, 'platinum': 6.25, 'diamond': 3.125,
     }
     return weighted_choice(**materials)
+
+
+def get_total_bonus(equip_type: str, rarity: str, material: str, group_level: int):
+    rarity_bonus = BONUS_RARITY[rarity]
+    if equip_type in ['two_hands', 'armor']:
+        equip_type_bonus = 2
+    elif equip_type in ['one_hand']:
+        equip_type_bonus = 1
+    elif equip_type in ['helmet', 'boots']:
+        equip_type_bonus = 0.5
+    elif equip_type in ['ring', 'necklace']:
+        equip_type_bonus = 0.25
+
+    if equip_type in ['one_hand', 'two_hands']:
+        material_bonus = WEAPON_BONUS_MATERIAL[material]
+    elif equip_type == ['helmet', 'armor', 'boots']:
+        material_bonus = ARMOR_BONUS_MATERIAL[material]
+    elif equip_type == ['ring', 'necklace']:
+        material_bonus = ACCESSORY_BONUS_MATERIAL[material]
+
+    bonus = (
+        (group_level * equip_type_bonus) +
+        (group_level * rarity_bonus) +
+        (group_level * material_bonus)
+    )
+    penality = random_group_level(group_level)
+
+    return bonus, penality
 
 
 def get_consumable():
@@ -134,6 +123,9 @@ def get_equipment(equip_type: str, group_level: int):
         raise ValueError(
             f'Material do equipamento "{equip_type}" não encontrado.'
         )
+    bonus, penality = get_total_bonus(
+        equip_type, rarity, material, group_level
+    )
 
 
 def random_group_level(level):
