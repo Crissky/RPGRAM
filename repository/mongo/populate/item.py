@@ -1,4 +1,8 @@
 from random import choice, choices
+from typing import Union
+
+from rpgram.boosters import Equipment
+from rpgram import Consumable
 from rpgram.enums import EquipmentEnum
 
 
@@ -31,6 +35,13 @@ def weighted_choice(**items):
     population = list(items.keys())
     weights = items.values()
     return choices(population, weights=weights)[0]
+
+
+def random_group_level(level):
+    min_level = int(level * 0.75)
+    max_level = int(level * 1.25) + 1
+    new_level = choice(range(min_level, max_level))
+    return max(new_level, 1)
 
 
 def choice_type_item():
@@ -106,6 +117,10 @@ def get_consumable():
     ...
 
 
+def create_equipment():
+    ...
+
+
 def get_equipment(equip_type: str, group_level: int):
     rarity = choice_rarity()
     weapon = None
@@ -126,24 +141,20 @@ def get_equipment(equip_type: str, group_level: int):
     bonus, penality = get_total_bonus(
         equip_type, rarity, material, group_level
     )
+    equipment = create_equipment()
 
 
-def random_group_level(level):
-    min_level = int(level * 0.75)
-    max_level = int(level * 1.25) + 1
-    new_level = choice(range(min_level, max_level))
-    return max(new_level, 1)
-
-
-def choice_item(group_level):
+def choice_item(group_level: int) -> Union[Consumable, Equipment]:
     '''Função que retorna um item escolhido de forma aleatória.'''
     group_level = random_group_level(group_level)
     choiced_item = choice_type_item()
     equipment_types = [e.name.lower() for e in EquipmentEnum]
     if choiced_item == 'consumable':
-        get_consumable()
+        item = get_consumable()
     elif choiced_item in equipment_types:
-        get_equipment(choiced_item, group_level)
+        item = get_equipment(choiced_item, group_level)
+
+    return item
 
 
 if __name__ == '__main__':
