@@ -1,3 +1,4 @@
+from collections import defaultdict
 from random import choice, choices
 from typing import Union
 
@@ -103,7 +104,7 @@ def get_total_bonus(equip_type: str, rarity: str, material: str, group_level: in
     elif equip_type == ['ring', 'necklace']:
         material_bonus = ACCESSORY_BONUS_MATERIAL[material]
 
-    bonus = (
+    bonus = int(
         (group_level * equip_type_bonus) +
         (group_level * rarity_bonus) +
         (group_level * material_bonus)
@@ -117,8 +118,38 @@ def get_consumable():
     ...
 
 
-def create_equipment():
-    ...
+def get_attribute_probability(equip_type: str):
+    if equip_type in ['sword']:
+        attr_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 5, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 2, 'bonus_physical_defense': 2,
+            'bonus_magical_defense': 2, 'bonus_hit': 5,
+            'bonus_evasion': 5,
+        }
+
+    return attr_prob
+
+
+def create_equipment(bonus: int, penality: int, equip_type: str, rarity: str, material: str, group_level: int):
+    attr_prob = get_attribute_probability(equip_type)
+    equipment_dict = defaultdict(int)
+    for i in range(bonus):
+        attribute = weighted_choice(**attr_prob)
+        equipment_dict[attribute] += 1
+
+    for i in range(penality):
+        attribute = weighted_choice(**attr_prob)
+        equipment_dict[attribute] -= 1
+    
+    name = f'{rarity.title()} {material.title()} {equip_type.title()} '
+    return Equipment(
+        name=name,
+        equip_type=equip_type,
+        requirements={'level': group_level},
+        rarity=rarity,
+        **equipment_dict
+    )
 
 
 def get_equipment(equip_type: str, group_level: int):
@@ -141,7 +172,10 @@ def get_equipment(equip_type: str, group_level: int):
     bonus, penality = get_total_bonus(
         equip_type, rarity, material, group_level
     )
-    equipment = create_equipment()
+    if weapon:
+        equip_type = weapon
+    equipment = create_equipment(
+        bonus, penality, equip_type, rarity, material, group_level)
 
 
 def choice_item(group_level: int) -> Union[Consumable, Equipment]:
