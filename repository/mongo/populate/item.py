@@ -1,10 +1,10 @@
 from collections import defaultdict
-from random import choice, choices
-from typing import Union
+from random import choice, choices, random
+from typing import Dict, Hashable, Tuple, Union
 
 from rpgram.boosters import Equipment
 from rpgram import Consumable
-from rpgram.enums import EquipmentEnum
+from rpgram.enums import EquipmentEnum, DamageEnum
 
 
 # CONSTANTS
@@ -27,7 +27,7 @@ ACCESSORY_BONUS_MATERIAL = {
 
 
 # FUNCTIONS
-def weighted_choice(**items):
+def weighted_choice(**items) -> Hashable:
     '''Função que retorna um item escolhido de forma aleatória.
     O item é escolhido de forma aleatória, baseado em sua probabilidade.
     O parâmetro items deve ser um dicionário, em que a chave é o item
@@ -38,23 +38,23 @@ def weighted_choice(**items):
     return choices(population, weights=weights)[0]
 
 
-def random_group_level(level):
+def random_group_level(level: int) -> int:
     min_level = int(level * 0.75)
     max_level = int(level * 1.25) + 1
     new_level = choice(range(min_level, max_level))
     return max(new_level, 1)
 
 
-def choice_type_item():
+def choice_type_item() -> str:
     types_item = {
-        'CONSUMABLE': 150, 'HELMET': 100, 'ONE_HAND': 100,
-        'TWO_HANDS': 100, 'ARMOR': 100, 'BOOTS': 100,
+        'CONSUMABLE': 0, 'HELMET': 100, 'ONE_HAND': 120,
+        'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
         'RING': 25, 'NECKLACE': 25,
     }
     return weighted_choice(**types_item)
 
 
-def choice_rarity():
+def choice_rarity() -> str:
     rarities = {
         'COMMON': 100, 'UNCOMMON': 50, 'RARE': 25,
         'EPIC': 12.5, 'LEGENDARY': 6.25, 'MYTHIC': 3.125,
@@ -62,7 +62,7 @@ def choice_rarity():
     return weighted_choice(**rarities)
 
 
-def choice_weapon_material():
+def choice_weapon_material() -> str:
     materials = {
         'WOOD': 320, 'IRON': 160, 'STEEL': 80, 'OBSIDIAN': 40,
         'RUNITE': 20, 'MITHRIL': 10, 'ADAMANTIUM': 5,
@@ -70,7 +70,7 @@ def choice_weapon_material():
     return weighted_choice(**materials)
 
 
-def choice_armor_material():
+def choice_armor_material() -> str:
     materials = {
         'CLOTH': 320, 'LEATHER': 160, 'IRON': 80, 'STEEL': 40,
         'RUNITE': 20, 'MITHRIL': 10, 'ADAMANTIUM': 5,
@@ -78,7 +78,7 @@ def choice_armor_material():
     return weighted_choice(**materials)
 
 
-def choice_accessory_material():
+def choice_accessory_material() -> str:
     materials = {
         'BRONZE': 100, 'SILVER': 50, 'GOLD': 25,
         'PEARL': 12.5, 'PLATINUM': 6.25, 'DIAMOND': 3.125,
@@ -86,10 +86,30 @@ def choice_accessory_material():
     return weighted_choice(**materials)
 
 
-def get_total_bonus(equip_type: str, rarity: str, material: str, group_level: int):
+def get_weapon_material(equip_type: str) -> Tuple[str, str]:
+    weapon = None
+    if equip_type in ['ONE_HAND', 'TWO_HANDS']:
+        material = choice_weapon_material()
+        if equip_type == 'ONE_HAND':
+            weapon = choice(['SWORD', 'DAGGER', 'WAND', 'SHIELD'])
+        elif equip_type == 'TWO_HANDS':
+            weapon = choice(['GREAT_SWORD', 'BOW', 'STAFF'])
+    elif equip_type in ['HELMET', 'ARMOR', 'BOOTS']:
+        material = choice_armor_material()
+    elif equip_type in ['RING', 'NECKLACE']:
+        material = choice_accessory_material()
+    else:
+        raise ValueError(
+            f'Material do equipamento "{equip_type}" não encontrado.'
+        )
+
+    return weapon, material
+
+
+def get_bonus_penality(equip_type: str, rarity: str, material: str, group_level: int, verbose: bool = False) -> Tuple[int, int]:
     rarity_bonus = BONUS_RARITY[rarity]
     if equip_type in ['TWO_HANDS', 'ARMOR']:
-        equip_type_bonus = 2
+        equip_type_bonus = 2.5
     elif equip_type in ['ONE_HAND']:
         equip_type_bonus = 1
     elif equip_type in ['HELMET', 'BOOTS']:
@@ -99,9 +119,9 @@ def get_total_bonus(equip_type: str, rarity: str, material: str, group_level: in
 
     if equip_type in ['ONE_HAND', 'TWO_HANDS']:
         material_bonus = WEAPON_BONUS_MATERIAL[material]
-    elif equip_type == ['HELMET', 'ARMOR', 'BOOTS']:
+    elif equip_type in ['HELMET', 'ARMOR', 'BOOTS']:
         material_bonus = ARMOR_BONUS_MATERIAL[material]
-    elif equip_type == ['RING', 'NECKLACE']:
+    elif equip_type in ['RING', 'NECKLACE']:
         material_bonus = ACCESSORY_BONUS_MATERIAL[material]
 
     bonus = int(
@@ -110,81 +130,296 @@ def get_total_bonus(equip_type: str, rarity: str, material: str, group_level: in
         (group_level * material_bonus)
     )
     penality = random_group_level(group_level)
+    if verbose:
+        print(
+            f'Level: {group_level}, '
+            f'Equipamento: {equip_type}({equip_type_bonus}), '
+            f'Raridade: {rarity}({rarity_bonus}), '
+            f'Material: {material}({material_bonus}), '
+            f'Bônus: {bonus}, Penalidade: {penality}'
+        )
 
     return bonus, penality
 
 
-def get_consumable():
+def create_random_consumable():
     ...
 
 
-def get_attribute_probability(weapon: str):
-    if weapon in ['SWORD']:
-        attr_prob = {
+def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
+    if weapon == 'SWORD':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 3,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 3,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 5,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 3,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 5, 'bonus_hit': 1,
+            'bonus_evasion': 10,
+        }
+    elif weapon == 'DAGGER':
+        attr_bonus_prob = {
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 5, 'bonus_precision_attack': 10,
-            'bonus_magical_attack': 2, 'bonus_physical_defense': 2,
-            'bonus_magical_defense': 2, 'bonus_hit': 5,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 7,
+            'bonus_evasion': 1,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 3,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 5, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    elif weapon == 'WAND':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 10, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 5, 'bonus_hit': 5,
+            'bonus_evasion': 2,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 3, 'bonus_precision_attack': 3,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 5,
         }
+    elif weapon == 'SHIELD':
+        attr_bonus_prob = {
+            'bonus_hit_points': 5, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 7, 'bonus_hit': 1,
+            'bonus_evasion': 5,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 10,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 1,
+        }
+    elif weapon == 'GREAT_SWORD':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 10,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 5,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 5, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        }
+    elif weapon == 'BOW':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 5,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 1,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 5, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 5, 'bonus_hit': 1,
+            'bonus_evasion': 3,
+        }
+    elif weapon == 'STAFF':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 3, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 10, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 5, 'bonus_hit': 5,
+            'bonus_evasion': 5,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 3,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 5,
+        }
+    elif weapon == 'HELMET':
+        attr_bonus_prob = {
+            'bonus_hit_points': 5, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 7, 'bonus_hit': 1,
+            'bonus_evasion': 3,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 10,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        }
+    elif weapon == 'ARMOR':
+        attr_bonus_prob = {
+            'bonus_hit_points': 10, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 10,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        }
+    elif weapon == 'BOOTS':
+        attr_bonus_prob = {
+            'bonus_hit_points': 3, 'bonus_initiative': 10,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 3, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    elif weapon == 'RING':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    elif weapon == 'NECKLACE':
+        attr_bonus_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+        attr_panality_prob = {
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    else:
+        raise ValueError(f'"{weapon}" não é um tipo de equipamento válido.')
 
-    return attr_prob
+    return attr_bonus_prob, attr_panality_prob
 
 
-def create_equipment(bonus: int, penality: int, equip_type: str, weapon: str, rarity: str, material: str, group_level: int):
-    attr_prob = get_attribute_probability(weapon)
+def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
+    weight, _ = get_bonus_penality(equip_type, rarity, material, 5)
+    if weapon in ['GREAT_SWORD', 'SHIELD']:
+        weight *= 2
+    elif equip_type in ['ARMOR']:
+        weight *= 3
+    elif equip_type in ['RING', 'NECKLACE']:
+        weight /= 10
+
+    return weight
+
+
+def get_equipment_damage_type(weapon: str, rarity: str, material: str):
+    damage_types = None
+    if weapon:
+        chance = .5
+        turns = BONUS_RARITY[rarity] - 1
+        damages_list = [
+            e.name for e in DamageEnum
+            if e not in [DamageEnum.SLASHING, DamageEnum.BLUDGEONING,
+                         DamageEnum.HITTING, DamageEnum.PIERCING]
+        ]
+        if weapon in ['SWORD', 'DAGGER', 'GREAT_SWORD']:
+            damage_types = [DamageEnum.SLASHING]
+        elif weapon in ['SHIELD', 'STAFF']:
+            damage_types = [DamageEnum.BLUDGEONING]
+        elif weapon in ['BOW']:
+            damage_types = [DamageEnum.PIERCING]
+
+        if weapon in ['WAND', 'STAFF']:
+            turns += 1
+            chance = .9
+
+        for _ in range(turns):
+            if random() <= chance:
+                new_damage = choice(damages_list)
+                damages_list.remove(new_damage)
+                damage_types.append(new_damage)
+                chance /= 2
+
+    return damage_types
+
+
+def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
+    rarity = choice_rarity()
+    weapon, material = get_weapon_material(equip_type)
+
+    equip_name = weapon if weapon else equip_type
+    bonus, penality = get_bonus_penality(
+        equip_type, rarity, material, group_level, True
+    )
+    attr_bonus_prob, attr_panality_prob = get_attribute_probabilities(
+        equip_name
+    )
     equipment_dict = defaultdict(int)
     for _ in range(bonus):
-        attribute = weighted_choice(**attr_prob)
+        attribute = weighted_choice(**attr_bonus_prob)
         equipment_dict[attribute] += 1
 
     for _ in range(penality):
-        attribute = weighted_choice(**attr_prob)
+        attribute = weighted_choice(**attr_panality_prob)
         equipment_dict[attribute] -= 1
 
-    name = f'{rarity.title()} {material.title()} {equip_type.title()} '
+    equip_name = equip_name.replace('_', ' ')
+    name = f'{rarity.title()} {material.title()} {equip_name.title()}'
+    weight = get_equipment_weight(equip_type, rarity, material, weapon)
+    damage_types = get_equipment_damage_type(weapon, rarity, material)
     return Equipment(
         name=name,
         equip_type=equip_type,
+        damage_types=damage_types,
+        weight=weight,
         requirements={'level': group_level},
         rarity=rarity,
         **equipment_dict
     )
 
 
-def get_equipment(equip_type: str, group_level: int):
-    rarity = choice_rarity()
-    weapon = None
-    if equip_type in ['ONE_HAND', 'TWO_HANDS']:
-        material = choice_weapon_material()
-        if equip_type == 'ONE_HAND':
-            weapon = choice(['SWORD', 'DAGGER', 'WAND'])
-        elif equip_type == 'TWO_HANDS':
-            weapon = choice(['GREAT_SWORD', 'BOW', 'STAFF'])
-    elif equip_type == ['HELMET', 'ARMOR', 'BOOTS']:
-        material = choice_armor_material()
-    elif equip_type == ['RING', 'NECKLACE']:
-        material = choice_accessory_material()
-    else:
-        raise ValueError(
-            f'Material do equipamento "{equip_type}" não encontrado.'
-        )
-    bonus, penality = get_total_bonus(
-        equip_type, rarity, material, group_level
-    )
-    equipment = create_equipment(
-        bonus, penality, equip_type, weapon, rarity, material, group_level)
-
-
-def choice_item(group_level: int) -> Union[Consumable, Equipment]:
+def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
     '''Função que retorna um item escolhido de forma aleatória.'''
     group_level = random_group_level(group_level)
     choiced_item = choice_type_item()
-    equipment_types = [e.name.lower() for e in EquipmentEnum]
+    equipment_types = [e.name for e in EquipmentEnum]
     if choiced_item == 'CONSUMABLE':
-        item = get_consumable()
+        item = create_random_consumable()
     elif choiced_item in equipment_types:
-        item = get_equipment(choiced_item, group_level)
+        item = create_random_equipment(choiced_item, group_level)
 
     return item
 
@@ -201,8 +436,13 @@ if __name__ == '__main__':
         for item in result.most_common():
             print(f'{item[0]}: {item[1]},', end=' ')
         print()
-    test_count(choice_type_item)
-    test_count(choice_rarity)
-    test_count(choice_weapon_material)
-    test_count(choice_armor_material)
-    test_count(choice_accessory_material)
+    # test_count(choice_type_item)
+    # test_count(choice_rarity)
+    # test_count(choice_weapon_material)
+    # test_count(choice_armor_material)
+    # test_count(choice_accessory_material)
+
+    print(create_random_item(1))
+
+    # for _ in range(1000):
+    #     create_random_item(50)
