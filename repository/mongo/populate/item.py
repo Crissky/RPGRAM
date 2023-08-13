@@ -134,14 +134,14 @@ def get_attribute_probability(equip_type: str):
 def create_equipment(bonus: int, penality: int, equip_type: str, rarity: str, material: str, group_level: int):
     attr_prob = get_attribute_probability(equip_type)
     equipment_dict = defaultdict(int)
-    for i in range(bonus):
+    for _ in range(bonus):
         attribute = weighted_choice(**attr_prob)
         equipment_dict[attribute] += 1
 
-    for i in range(penality):
+    for _ in range(penality):
         attribute = weighted_choice(**attr_prob)
         equipment_dict[attribute] -= 1
-    
+
     name = f'{rarity.title()} {material.title()} {equip_type.title()} '
     return Equipment(
         name=name,
