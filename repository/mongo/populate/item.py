@@ -345,7 +345,7 @@ def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
     return weight
 
 
-def get_equipment_damage_type(weapon: str, rarity: str, material: str):
+def get_equipment_damage_type(weapon: str, rarity: str):
     damage_types = None
     if weapon:
         chance = .5
@@ -376,6 +376,10 @@ def get_equipment_damage_type(weapon: str, rarity: str, material: str):
     return damage_types
 
 
+def add_secret_stats(equipment_dict: dict, rarity: str):
+    return equipment_dict
+
+
 def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     rarity = choice_rarity()
     weapon, material = get_weapon_material(equip_type)
@@ -400,6 +404,7 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     name = f'{rarity.title()} {material.title()} {equip_name.title()}'
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
     damage_types = get_equipment_damage_type(weapon, rarity, material)
+    equipment_dict = add_secret_stats(equipment_dict, rarity)
     return Equipment(
         name=name,
         equip_type=equip_type,
