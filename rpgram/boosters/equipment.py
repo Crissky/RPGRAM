@@ -60,7 +60,7 @@ class Equipment(StatsBooster):
         secret_bonus_magical_defense: int = 0,
         secret_bonus_hit: int = 0,
         secret_bonus_evasion: int = 0,
-        identified: bool = False,
+        identified: bool = None,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
