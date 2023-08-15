@@ -1,5 +1,5 @@
 from collections import defaultdict
-from random import choice, choices, random
+from random import choice, choices, random, randint
 from typing import Dict, Hashable, Tuple, Union
 
 from rpgram.boosters import Equipment
@@ -362,6 +362,9 @@ def get_equipment_damage_type(weapon: str, rarity: str):
             damage_types = [DamageEnum.BLUDGEONING]
         elif weapon in ['BOW']:
             damage_types = [DamageEnum.PIERCING]
+        elif weapon in ['WAND']:
+            damage_types = [DamageEnum.MAGIC]
+            damages_list.remove(DamageEnum.MAGIC.name)
 
         if weapon in ['WAND', 'STAFF']:
             turns += 1
@@ -380,30 +383,13 @@ def get_equipment_damage_type(weapon: str, rarity: str):
 def add_secret_stats(equipment_dict: dict, rarity: str, group_level: int):
     secret_stats = defaultdict(int)
     bonus = BONUS_RARITY[rarity] - 2
-    bonus = max(bonus, 0) * group_level
-    attr_probs = {
-        'secret_bonus_strength': 100,
-        'secret_bonus_dexterity': 100,
-        'secret_bonus_constitution': 100,
-        'secret_bonus_intelligence': 100,
-        'secret_bonus_wisdom': 100,
-        'secret_bonus_charisma': 100,
-        'secret_multiplier_strength': 1,
-        'secret_multiplier_dexterity': 1,
-        'secret_multiplier_constitution': 1,
-        'secret_multiplier_intelligence': 1,
-        'secret_multiplier_wisdom': 1,
-        'secret_multiplier_charisma': 1,
-        'secret_bonus_hit_points': 50,
-        'secret_bonus_initiative': 50,
-        'secret_bonus_physical_attack': 50,
-        'secret_bonus_precision_attack': 50,
-        'secret_bonus_magical_attack': 50,
-        'secret_bonus_physical_defense': 50,
-        'secret_bonus_magical_defense': 50,
-        'secret_bonus_hit': 50,
-        'secret_bonus_evasion': 50,
-    }
+    bonus = max(bonus, 0) * (group_level // 2)
+    attr_probs = {}
+    secret_base_stats = [
+        'secret_bonus_strength', 'secret_bonus_dexterity',
+        'secret_bonus_constitution', 'secret_bonus_intelligence',
+        'secret_bonus_wisdom', 'secret_bonus_charisma',
+    ]
     secret_mutiplier_base_stats = [
         'secret_multiplier_strength', 'secret_multiplier_dexterity',
         'secret_multiplier_constitution', 'secret_multiplier_intelligence',
@@ -416,17 +402,41 @@ def add_secret_stats(equipment_dict: dict, rarity: str, group_level: int):
         'secret_bonus_magical_defense', 'secret_bonus_hit',
         'secret_bonus_evasion'
     ]
+
+    # Limita a quantidade de atributos que receberão os bonus.
+    for _ in range(len(secret_base_stats) // 2):
+        attribute = choice(secret_base_stats)
+        attr_probs[attribute] = 100
+    for _ in range(len(secret_mutiplier_base_stats) // 2):
+        attribute = choice(secret_mutiplier_base_stats)
+        attr_probs[attribute] = 1
+    for _ in range(len(secret_combat_stats)):
+        attribute = choice(secret_combat_stats)
+        attr_probs[attribute] = 50
+
+    count_multiplier = 0
     for _ in range(bonus):
         attribute = weighted_choice(**attr_probs)
 
-        if attribute in secret_combat_stats:
-            secret_stats[attribute] += choice(range(1, 10))
+        if count_multiplier > 3:
+            print('Foi atingido o limite de multiplicadores.')
+            break
         elif attribute in secret_mutiplier_base_stats:
-            secret_stats[attribute] += .5
+            secret_stats[attribute] += choice([.1, .25, .5, .75, 1.0])
+            count_multiplier += 1
+        elif attribute in secret_combat_stats:
+            secret_stats[attribute] += randint(1, 10)
+            attr_probs[attribute] += 15
         else:
             secret_stats[attribute] += 1
-    # if len(secret_stats) > 0:
-    secret_stats['identified'] = True
+            attr_probs[attribute] += 10
+
+    if 'secret_bonus_hit_points' in secret_stats:
+        secret_stats['secret_bonus_hit_points'] *= randint(2, 5)
+
+    if len(secret_stats) > 0:
+        secret_stats['identified'] = False
+
     return secret_stats
 
 
