@@ -348,6 +348,7 @@ def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
 def get_equipment_damage_type(weapon: str, rarity: str):
     damage_types = None
     if weapon:
+        damage_types = []
         chance = .5
         turns = BONUS_RARITY[rarity] - 1
         damages_list = [
@@ -376,8 +377,57 @@ def get_equipment_damage_type(weapon: str, rarity: str):
     return damage_types
 
 
-def add_secret_stats(equipment_dict: dict, rarity: str):
-    return equipment_dict
+def add_secret_stats(equipment_dict: dict, rarity: str, group_level: int):
+    secret_stats = defaultdict(int)
+    bonus = BONUS_RARITY[rarity] - 2
+    bonus = max(bonus, 0) * group_level
+    attr_probs = {
+        'secret_bonus_strength': 100,
+        'secret_bonus_dexterity': 100,
+        'secret_bonus_constitution': 100,
+        'secret_bonus_intelligence': 100,
+        'secret_bonus_wisdom': 100,
+        'secret_bonus_charisma': 100,
+        'secret_multiplier_strength': 1,
+        'secret_multiplier_dexterity': 1,
+        'secret_multiplier_constitution': 1,
+        'secret_multiplier_intelligence': 1,
+        'secret_multiplier_wisdom': 1,
+        'secret_multiplier_charisma': 1,
+        'secret_bonus_hit_points': 50,
+        'secret_bonus_initiative': 50,
+        'secret_bonus_physical_attack': 50,
+        'secret_bonus_precision_attack': 50,
+        'secret_bonus_magical_attack': 50,
+        'secret_bonus_physical_defense': 50,
+        'secret_bonus_magical_defense': 50,
+        'secret_bonus_hit': 50,
+        'secret_bonus_evasion': 50,
+    }
+    secret_mutiplier_base_stats = [
+        'secret_multiplier_strength', 'secret_multiplier_dexterity',
+        'secret_multiplier_constitution', 'secret_multiplier_intelligence',
+        'secret_multiplier_wisdom', 'secret_multiplier_charisma',
+    ]
+    secret_combat_stats = [
+        'secret_bonus_hit_points', 'secret_bonus_initiative',
+        'secret_bonus_physical_attack', 'secret_bonus_precision_attack',
+        'secret_bonus_magical_attack', 'secret_bonus_physical_defense',
+        'secret_bonus_magical_defense', 'secret_bonus_hit',
+        'secret_bonus_evasion'
+    ]
+    for _ in range(bonus):
+        attribute = weighted_choice(**attr_probs)
+
+        if attribute in secret_combat_stats:
+            secret_stats[attribute] += choice(range(1, 10))
+        elif attribute in secret_mutiplier_base_stats:
+            secret_stats[attribute] += .5
+        else:
+            secret_stats[attribute] += 1
+    # if len(secret_stats) > 0:
+    secret_stats['identified'] = True
+    return secret_stats
 
 
 def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
@@ -403,8 +453,9 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     equip_name = equip_name.replace('_', ' ')
     name = f'{rarity.title()} {material.title()} {equip_name.title()}'
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
-    damage_types = get_equipment_damage_type(weapon, rarity, material)
-    equipment_dict = add_secret_stats(equipment_dict, rarity)
+    damage_types = get_equipment_damage_type(weapon, rarity)
+    secret_stats = add_secret_stats(equipment_dict, rarity, group_level)
+    equipment_dict.update(secret_stats)
     return Equipment(
         name=name,
         equip_type=equip_type,
@@ -447,7 +498,7 @@ if __name__ == '__main__':
     # test_count(choice_armor_material)
     # test_count(choice_accessory_material)
 
-    print(create_random_item(1))
+    print(create_random_item(100))
 
     # for _ in range(1000):
     #     create_random_item(50)
