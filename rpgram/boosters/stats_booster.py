@@ -234,6 +234,9 @@ class StatsBooster:
                         )
                     text += '`\n\n'
 
+                if text[-3:] != '`\n\n' and text[-2:] != '*\n':
+                    text += '\n'
+
                 if self.__secret_bonus_hit_points:
                     text += f'`HP: {self.__secret_bonus_hit_points:+}`\n'
                 if self.__secret_bonus_initiative:
