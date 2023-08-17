@@ -7,7 +7,7 @@
 from repository.mongo import RaceModel
 from rpgram.boosters import Race
 
-races = {
+RACES = {
     'dwarf': {
         'name': 'Anão',
         'description': (
@@ -256,6 +256,6 @@ races = {
 if __name__ == '__main__':
     race_model = RaceModel()
 
-    for race_definition in races.values():
+    for race_definition in RACES.values():
         race = Race(**race_definition)
         race_model.save(race)
