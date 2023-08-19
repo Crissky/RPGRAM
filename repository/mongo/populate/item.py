@@ -1,6 +1,7 @@
 from collections import defaultdict
 from random import choice, choices, random, randint
 from typing import Dict, Hashable, Tuple, Union
+from repository.mongo import ItemModel
 
 from rpgram.boosters import Equipment
 from rpgram import Consumable
@@ -47,14 +48,14 @@ def random_group_level(level: int) -> int:
 
 def choice_type_item() -> str:
     types_item = {
-        'CONSUMABLE': 0, 'HELMET': 100, 'ONE_HAND': 120,
+        'CONSUMABLE': 500, 'HELMET': 100, 'ONE_HAND': 120,
         'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
         'RING': 25, 'NECKLACE': 25,
     }
     return weighted_choice(**types_item)
 
 
-def choice_rarity() -> str:
+def choice_rarity(multiplier=1.0) -> str:
     rarities = {
         'COMMON': 100, 'UNCOMMON': 50, 'RARE': 25,
         'EPIC': 12.5, 'LEGENDARY': 6.25, 'MYTHIC': 3.125,
@@ -143,7 +144,12 @@ def get_bonus_penality(equip_type: str, rarity: str, material: str, group_level:
 
 
 def create_random_consumable():
-    ...
+    item_model = ItemModel()
+    rarity = choice_rarity()
+    query = dict(rarity=rarity, _class='Consumable')
+    item_list = item_model.get_all(query=query)
+
+    return choice(item_list)
 
 
 def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
