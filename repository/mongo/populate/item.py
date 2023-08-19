@@ -15,16 +15,25 @@ BONUS_RARITY = {
     'EPIC': 4, 'LEGENDARY': 5, 'MYTHIC': 6,
 }
 WEAPON_BONUS_MATERIAL = {
-    'WOOD': 1, 'IRON': 2, 'STEEL': 3, 'OBSIDIAN': 4,
-    'RUNITE': 5, 'MITHRIL': 6, 'ADAMANTIUM': 7,
+    material: multiplier+1
+    for multiplier, material in enumerate([
+        'WOOD', 'BONE', 'COPPER', 'IRON', 'STEEL', 'OBSIDIAN',
+        'RUNITE', 'MITHRIL', 'ADAMANTIUM',
+    ])
 }
 ARMOR_BONUS_MATERIAL = {
-    'CLOTH': 1, 'LEATHER': 2, 'IRON': 3, 'STEEL': 4,
-    'RUNITE': 5, 'MITHRIL': 6, 'ADAMANTIUM': 7,
+    material: multiplier+1
+    for multiplier, material in enumerate([
+        'CLOTH', 'LEATHER', 'BONE', 'COPPER', 'IRON', 'STEEL',
+        'RUNITE', 'MITHRIL', 'ADAMANTIUM',
+    ])
 }
 ACCESSORY_BONUS_MATERIAL = {
-    'BRONZE': 1, 'SILVER': 2, 'GOLD': 3,
-    'PEARL': 4, 'PLATINUM': 5, 'DIAMOND': 6,
+    material: multiplier+1
+    for multiplier, material in enumerate([
+        'BRONZE', 'SILVER', 'GOLD',
+        'PEARL', 'PLATINUM', 'DIAMOND',
+    ])
 }
 
 
@@ -56,50 +65,71 @@ def choice_type_item() -> str:
     return weighted_choice(**types_item)
 
 
-def choice_rarity() -> str:
-    rarities = {
-        'COMMON': 100, 'UNCOMMON': 50, 'RARE': 25,
-        'EPIC': 12.5, 'LEGENDARY': 6.25, 'MYTHIC': 3.125,
-    }
+def choice_rarity(group_level: int) -> str:
+    rarities = {'COMMON': 100, 'UNCOMMON': 50}
+    if group_level >= 100:
+        rarities['RARE'] = 25
+    if group_level >= 250:
+        rarities['EPIC'] = 12.5
+    if group_level >= 500:
+        rarities['LEGENDARY'] = 6.25
+    if group_level >= 1000:
+        rarities['MYTHIC'] = 3.125
+
     return weighted_choice(**rarities)
 
 
-def choice_weapon_material() -> str:
-    materials = {
-        'WOOD': 320, 'IRON': 160, 'STEEL': 80, 'OBSIDIAN': 40,
-        'RUNITE': 20, 'MITHRIL': 10, 'ADAMANTIUM': 5,
-    }
+def choice_weapon_material(group_level: int) -> str:
+    materials = {}
+    level_base = 25
+    chance = 100 + (len(WEAPON_BONUS_MATERIAL) * 25)
+    for material, multiplier in WEAPON_BONUS_MATERIAL.items():
+        level_threshold = level_base * multiplier
+        if group_level >= level_threshold or not materials:
+            materials[material] = chance
+            chance -= 25
+
     return weighted_choice(**materials)
 
 
-def choice_armor_material() -> str:
-    materials = {
-        'CLOTH': 320, 'LEATHER': 160, 'IRON': 80, 'STEEL': 40,
-        'RUNITE': 20, 'MITHRIL': 10, 'ADAMANTIUM': 5,
-    }
+def choice_armor_material(group_level: int) -> str:
+    materials = {}
+    level_base = 25
+    chance = 100 + (len(ARMOR_BONUS_MATERIAL) * 25)
+    for material, multiplier in ARMOR_BONUS_MATERIAL.items():
+        level_threshold = level_base * multiplier
+        if group_level >= level_threshold or not materials:
+            materials[material] = chance
+            chance -= 25
+
     return weighted_choice(**materials)
 
 
-def choice_accessory_material() -> str:
-    materials = {
-        'BRONZE': 100, 'SILVER': 50, 'GOLD': 25,
-        'PEARL': 12.5, 'PLATINUM': 6.25, 'DIAMOND': 3.125,
-    }
+def choice_accessory_material(group_level: int) -> str:
+    materials = {}
+    level_base = 50
+    chance = 100 + (len(ACCESSORY_BONUS_MATERIAL) * 25)
+    for material, multiplier in ACCESSORY_BONUS_MATERIAL.items():
+        level_threshold = level_base * multiplier
+        if group_level >= level_threshold or not materials:
+            materials[material] = chance
+            chance -= 25
+
     return weighted_choice(**materials)
 
 
-def get_weapon_material(equip_type: str) -> Tuple[str, str]:
+def get_weapon_material(equip_type: str, group_level: int) -> Tuple[str, str]:
     weapon = None
     if equip_type in ['ONE_HAND', 'TWO_HANDS']:
-        material = choice_weapon_material()
+        material = choice_weapon_material(group_level)
         if equip_type == 'ONE_HAND':
             weapon = choice(['SWORD', 'DAGGER', 'WAND', 'SHIELD'])
         elif equip_type == 'TWO_HANDS':
             weapon = choice(['GREAT_SWORD', 'BOW', 'STAFF'])
     elif equip_type in ['HELMET', 'ARMOR', 'BOOTS']:
-        material = choice_armor_material()
+        material = choice_armor_material(group_level)
     elif equip_type in ['RING', 'NECKLACE']:
-        material = choice_accessory_material()
+        material = choice_accessory_material(group_level)
     else:
         raise ValueError(
             f'Material do equipamento "{equip_type}" não encontrado.'
@@ -144,9 +174,9 @@ def get_bonus_penality(equip_type: str, rarity: str, material: str, group_level:
     return bonus, penality
 
 
-def create_random_consumable():
+def create_random_consumable(group_level: int):
     item_model = ItemModel()
-    rarity = choice_rarity()
+    rarity = choice_rarity(group_level)
     query = dict(rarity=rarity, _class='Consumable')
     item_list = item_model.get_all(query=query)
     quantity = randint(1, 5)
@@ -451,8 +481,8 @@ def add_secret_stats(equipment_dict: dict, rarity: str, group_level: int):
 
 
 def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
-    rarity = choice_rarity()
-    weapon, material = get_weapon_material(equip_type)
+    rarity = choice_rarity(group_level)
+    weapon, material = get_weapon_material(equip_type, group_level)
 
     equip_name = weapon if weapon else equip_type
     bonus, penality = get_bonus_penality(
@@ -493,7 +523,7 @@ def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
     choiced_item = choice_type_item()
     equipment_types = [e.name for e in EquipmentEnum]
     if choiced_item == 'CONSUMABLE':
-        item = create_random_consumable()
+        item = create_random_consumable(group_level)
     elif choiced_item in equipment_types:
         item = create_random_equipment(choiced_item, group_level)
 
@@ -518,7 +548,7 @@ if __name__ == '__main__':
     # test_count(choice_armor_material)
     # test_count(choice_accessory_material)
 
-    print(create_random_item(100))
+    # print(create_random_item(100))
 
-    # for _ in range(1000):
-    #     create_random_item(50)
+    for _ in range(1000):
+        create_random_item(1001)
