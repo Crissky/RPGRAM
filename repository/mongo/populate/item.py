@@ -6,6 +6,7 @@ from repository.mongo import ItemModel
 from rpgram.boosters import Equipment
 from rpgram import Consumable
 from rpgram.enums import EquipmentEnum, DamageEnum
+from rpgram import Item
 
 
 # CONSTANTS
@@ -48,14 +49,14 @@ def random_group_level(level: int) -> int:
 
 def choice_type_item() -> str:
     types_item = {
-        'CONSUMABLE': 500, 'HELMET': 100, 'ONE_HAND': 120,
+        'CONSUMABLE': 1000, 'HELMET': 100, 'ONE_HAND': 120,
         'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
         'RING': 25, 'NECKLACE': 25,
     }
     return weighted_choice(**types_item)
 
 
-def choice_rarity(multiplier=1.0) -> str:
+def choice_rarity() -> str:
     rarities = {
         'COMMON': 100, 'UNCOMMON': 50, 'RARE': 25,
         'EPIC': 12.5, 'LEGENDARY': 6.25, 'MYTHIC': 3.125,
@@ -148,8 +149,11 @@ def create_random_consumable():
     rarity = choice_rarity()
     query = dict(rarity=rarity, _class='Consumable')
     item_list = item_model.get_all(query=query)
+    quantity = randint(1, 5)
+    item = choice(item_list)
+    item = Item(item, quantity)
 
-    return choice(item_list)
+    return item
 
 
 def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
