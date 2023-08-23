@@ -5,6 +5,7 @@ import pytz
 
 UTC = pytz.UTC
 
+
 def get_brazil_time_now():
     delta = timedelta(hours=3)
     dt = datetime.utcnow()
@@ -34,5 +35,13 @@ def add_random_minutes_now(dt: datetime = None) -> datetime:
 
     return dt + timedelta(minutes=minutes)
 
+
 def replace_tzinfo(dt: datetime) -> datetime:
     return dt.replace(tzinfo=UTC)
+
+
+def get_next_hour() -> datetime:
+    now = datetime.now()
+    next_hour = now.replace(microsecond=0, second=0, minute=0)
+    next_hour = next_hour + timedelta(hours=1)
+    return next_hour

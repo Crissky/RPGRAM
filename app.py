@@ -2,6 +2,7 @@
 Arquivo principal que executa o telegram-bot.
 '''
 
+from datetime import timedelta
 from decouple import config
 
 from telegram.ext import Application
@@ -22,8 +23,11 @@ from bot.conversations import (
     CONFIG_PLAYER_HANDLERS,
     REST_HANDLERS
 )
+from bot.conversations.item import job_find_treasure
+from function.datetime import get_next_hour
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
+MY_GROUP_ID = config('MY_GROUP_ID')
 
 
 def main() -> None:
@@ -48,6 +52,14 @@ def main() -> None:
     application.add_handlers(CONFIG_PLAYER_HANDLERS)
     application.add_handlers(REST_HANDLERS)
 
+    # Add Jobs
+    application.job_queue.run_repeating(
+        callback=job_find_treasure,
+        interval=timedelta(hours=1),
+        first=get_next_hour(),
+        chat_id=MY_GROUP_ID,
+        name='JOB_DROP_ITEM',
+    )
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
