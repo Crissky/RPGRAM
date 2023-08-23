@@ -59,8 +59,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     inline_keyboard = [
         [
-            InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
-            InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
+            InlineKeyboardButton('Sim', callback_data=CALLBACK_TEXT_YES),
+            InlineKeyboardButton('Não', callback_data=CALLBACK_TEXT_NO),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
@@ -93,7 +93,7 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.answer('Cadastrado com sucesso!')
     await query.edit_message_text(
-        "Grupo cadastrado com sucesso!\n\n"
+        'Grupo cadastrado com sucesso!\n\n'
         f'{group_config}',
     )
 
@@ -103,7 +103,7 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # START_ROUTES
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    new_text = "Tchau! Você pode criar uma conta para o grupo mais tarde."
+    new_text = 'Tchau! Você pode criar uma conta para o grupo mais tarde.'
 
     if 'response' in context.user_data:
         response = context.user_data['response']
@@ -144,7 +144,7 @@ SIGNUP_GROUP_HANDLER = ConversationHandler(
             CallbackQueryHandler(cancel, pattern=f'^{CALLBACK_TEXT_NO}$')
         ]
     },
-    fallbacks=[CommandHandler("cancel", cancel)],
+    fallbacks=[CommandHandler('cancel', cancel)],
     conversation_timeout=TEN_MINUTES_IN_SECONDS,
     allow_reentry=True
 )
