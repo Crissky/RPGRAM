@@ -36,7 +36,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
-    job_name = get_restjob_name(user_id)
+    job_name = get_rest_jobname(user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     silent = get_attribute_group_or_player(chat_id, 'silent')
     player_character = char_model.get(user_id)
@@ -62,7 +62,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     else:
         context.job_queue.run_repeating(
-            callback=rest_cure,
+            callback=job_rest_cure,
             interval=timedelta(hours=1),
             chat_id=chat_id,
             user_id=user_id,
@@ -81,7 +81,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def rest_cure(context: ContextTypes.DEFAULT_TYPE):
+async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     player_model = PlayerModel()
     job = context.job
@@ -134,7 +134,7 @@ async def rest_cure(context: ContextTypes.DEFAULT_TYPE):
 
 
 def stop_resting(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
-    job_name = get_restjob_name(user_id)
+    job_name = get_rest_jobname(user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
     if not current_jobs:
@@ -144,7 +144,7 @@ def stop_resting(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
     return True
 
 
-def get_restjob_name(user_id):
+def get_rest_jobname(user_id):
     return f'REST-{user_id}'
 
 
