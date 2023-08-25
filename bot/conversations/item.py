@@ -1,6 +1,6 @@
 import re
 
-from random import choice
+from random import choice, randint
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
@@ -35,6 +35,18 @@ CALLBACK_TEXT_YES = '$get_item'
 CALLBACK_TEXT_NO = '$drop_item'
 ESCAPED_CALLBACK_TEXT_YES = re.escape(CALLBACK_TEXT_YES)
 ESCAPED_CALLBACK_TEXT_NO = re.escape(CALLBACK_TEXT_NO)
+
+
+async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
+    job = context.job
+    chat_id = job.chat_id
+    minutes_in_seconds = randint(1, 29) * 60
+    context.job_queue.run_once(
+        callback=job_find_treasure,
+        when=minutes_in_seconds,
+        name='JOB_CREATE_EVENTE_TREASURE',
+        chat_id=chat_id,
+    )
 
 
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):

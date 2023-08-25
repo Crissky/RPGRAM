@@ -24,7 +24,7 @@ from bot.conversations import (
     REST_HANDLERS,
     TREASURE_HANDLERS
 )
-from bot.conversations.item import job_find_treasure
+from bot.conversations.item import job_create_find_treasure
 from function.datetime import get_last_hour
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
@@ -56,11 +56,11 @@ def main() -> None:
 
     # Add Jobs
     application.job_queue.run_repeating(
-        callback=job_find_treasure,
+        callback=job_create_find_treasure,
         interval=timedelta(minutes=30),
         first=get_last_hour(),
         chat_id=MY_GROUP_ID,
-        name='JOB_DROP_ITEM',
+        name='JOB_EVENT_TREASURE',
     )
 
     # Run the bot until the user presses Ctrl-C
