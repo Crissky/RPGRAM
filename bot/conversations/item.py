@@ -12,6 +12,9 @@ from bot.constants.item import (
     REPLY_TEXTS_FIND_TREASURE_START,
     REPLY_TEXTS_FIND_TREASURE_MIDDLE,
     REPLY_TEXTS_FIND_TREASURE_END,
+    REPLY_TEXTS_FIND_TREASURE_OPEN,
+    REPLY_TEXTS_FIND_TREASURE_FINDING,
+    REPLY_TEXTS_IGNORE_TREASURE,
 )
 from bot.decorators import (
     need_have_char,
@@ -41,13 +44,11 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     text = choice(REPLY_TEXTS_FIND_TREASURE_START)
     text += choice(REPLY_TEXTS_FIND_TREASURE_MIDDLE)
     text += choice(REPLY_TEXTS_FIND_TREASURE_END)
-    inline_keyboard = [
-        [
-            InlineKeyboardButton(
-                'Investigar', callback_data=CALLBACK_TEXT_YES),
-            InlineKeyboardButton('Ignorar', callback_data=CALLBACK_TEXT_NO),
-        ]
-    ]
+    inline_keyboard = [[
+        InlineKeyboardButton(
+            'Investigar', callback_data=CALLBACK_TEXT_YES),
+        InlineKeyboardButton('Ignorar', callback_data=CALLBACK_TEXT_NO),
+    ]]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
 
     await context.bot.send_message(
@@ -66,6 +67,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query:
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
+        user_name = update.effective_user.name
         group_level = get_attribute_group_or_player(chat_id, 'higher_level')
         bag_model = BagModel()
         items_model = ItemModel()
@@ -93,7 +95,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(markdown_item_sheet)
         await query.edit_message_text(
             text=(
-                f'Você encontrou um item\.\n\n'
+                f'{choice(REPLY_TEXTS_FIND_TREASURE_OPEN)}\n\n'
+                f'{choice(REPLY_TEXTS_FIND_TREASURE_FINDING).format(user_name=user_name)}\n'
                 f'{markdown_item_sheet}'
             ),
             parse_mode=ParseMode.MARKDOWN_V2
@@ -107,8 +110,9 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if query:
+        text = choice(REPLY_TEXTS_IGNORE_TREASURE)
         await query.edit_message_text(
-            text='Ignorado.'
+            text=text
         )
     return ConversationHandler.END
 
