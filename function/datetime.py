@@ -40,8 +40,8 @@ def replace_tzinfo(dt: datetime) -> datetime:
     return dt.replace(tzinfo=UTC)
 
 
-def get_next_hour() -> datetime:
+def get_last_hour() -> datetime:
     now = datetime.now()
     next_hour = now.replace(microsecond=0, second=0, minute=0)
-    next_hour = next_hour + timedelta(hours=1)
+
     return next_hour

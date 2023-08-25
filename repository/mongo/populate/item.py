@@ -1,3 +1,4 @@
+from bson import ObjectId
 from collections import defaultdict
 from random import choice, choices, random, randint
 from typing import Dict, Hashable, Tuple, Union
@@ -506,15 +507,19 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     damage_types = get_equipment_damage_type(weapon, rarity)
     secret_stats = add_secret_stats(equipment_dict, rarity, group_level)
     equipment_dict.update(secret_stats)
-    return Equipment(
+    equipment = Equipment(
         name=name,
         equip_type=equip_type,
         damage_types=damage_types,
         weight=weight,
         requirements={'level': group_level},
         rarity=rarity,
+        _id=ObjectId(),
         **equipment_dict
     )
+    item = Item(equipment)
+
+    return item
 
 
 def create_random_item(group_level: int) -> Union[Consumable, Equipment]:

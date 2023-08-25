@@ -21,10 +21,11 @@ from bot.conversations import (
     ADD_STATS_HANDLERS,
     CONFIG_GROUP_HANDLERS,
     CONFIG_PLAYER_HANDLERS,
-    REST_HANDLERS
+    REST_HANDLERS,
+    TREASURE_HANDLERS
 )
 from bot.conversations.item import job_find_treasure
-from function.datetime import get_next_hour
+from function.datetime import get_last_hour
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 MY_GROUP_ID = config('MY_GROUP_ID')
@@ -51,12 +52,13 @@ def main() -> None:
     application.add_handlers(CONFIG_GROUP_HANDLERS)
     application.add_handlers(CONFIG_PLAYER_HANDLERS)
     application.add_handlers(REST_HANDLERS)
+    application.add_handlers(TREASURE_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(
         callback=job_find_treasure,
-        interval=timedelta(hours=1),
-        first=get_next_hour(),
+        interval=timedelta(minutes=30),
+        first=get_last_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_DROP_ITEM',
     )
