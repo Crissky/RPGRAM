@@ -14,6 +14,7 @@ from telegram.ext import (
 
 from bot.constants.help import COMMANDS
 from bot.constants.add_stats import COMMANDS as add_stats_commands
+from bot.constants.bag import COMMANDS as bag_commands
 from bot.constants.battle import COMMANDS as battle_commands
 from bot.constants.config_group import COMMANDS as config_group_commands
 from bot.constants.config_player import COMMANDS as config_player_commands
@@ -51,6 +52,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     config_player_cmd = command_to_string(config_player_commands)
     battle_cmd = command_to_string(battle_commands)
     rest_cmd = command_to_string(rest_commands)
+    bag_cmd = command_to_string(bag_commands)
 
     text = escape_basic_markdown_v2(
         f'{SECTION_HEAD.format("COMANDOS")}\n\n'
@@ -110,6 +112,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'*INICIAR DESCANSO*: /{rest_commands[0]}\n'
         f'INFO: Recupera HP do personagem a cada hora.\n'
         f'Atalhos: {rest_cmd}\n\n'
+        
+        f'*BOLSA*: /{bag_commands[0]}\n'
+        f'INFO: Mostra o conteúdo da bolsa.\n'
+        f'Atalhos: {bag_cmd}\n\n'
     )
     await update.effective_message.reply_markdown_v2(
         text, disable_notification=silent
