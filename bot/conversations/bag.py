@@ -29,6 +29,7 @@ from bot.decorators import (
 )
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
+from constant.time import TEN_MINUTES_IN_SECONDS
 from repository.mongo import BagModel
 from rpgram import Bag
 from rpgram.boosters import Equipment
@@ -209,5 +210,5 @@ BAG_HANDLER = ConversationHandler(
     fallbacks=[
         CommandHandler(CANCEL_COMMANDS, cancel)
     ],
-    per_user=True,
+    conversation_timeout=TEN_MINUTES_IN_SECONDS,
 )
