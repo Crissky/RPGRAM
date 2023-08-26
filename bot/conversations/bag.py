@@ -161,11 +161,8 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         fields={'items_ids': {'$slice': [item_index, 1]}},
         partial=False
     )
-    print(data)
-    print(player_bag)
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
-    print(type(item))
     if isinstance(item.item, Equipment):
         use_text = 'Equipar (TO DO)'
     elif isinstance(item.item, Consumable):
