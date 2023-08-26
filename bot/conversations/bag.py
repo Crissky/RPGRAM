@@ -75,6 +75,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if len(items) > ITEMS_PER_PAGE:
         items = player_bag[:-1]
         have_next_page = True
+    elif len(items) == 0 and not query:
+        await update.effective_message.reply_text(
+            text='Você não tem items na sua bolsa.',
+            disable_notification=silent,
+        )
+        return ConversationHandler.END
 
     for item in items:
         markdown_text += item.get_sheet(verbose=True, markdown=True)
