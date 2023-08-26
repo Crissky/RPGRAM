@@ -12,3 +12,4 @@ from bot.conversations.view_player import VIEW_PLAYER_HANDLERS
 from bot.conversations.view_char import VIEW_CHAR_HANDLERS
 from bot.conversations.rest import REST_HANDLERS
 from bot.conversations.item import TREASURE_HANDLERS
+from bot.conversations.bag import BAG_HANDLER

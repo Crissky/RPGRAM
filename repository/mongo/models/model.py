@@ -67,7 +67,8 @@ class Model:
         self,
         _id: Union[int, ObjectId, str] = None,
         query: dict = None,
-        fields: Union[list, dict] = None
+        fields: Union[list, dict] = None,
+        partial: bool = True
     ) -> Any:
         if _id:
             if isinstance(_id, ObjectId):
@@ -87,7 +88,7 @@ class Model:
         if not isinstance(query, dict):
             raise ValueError('Query precisa ser um dicionário.')
         if (result := self.database.find(self.collection, query, fields)):
-            if fields:
+            if fields and partial:
                 return result
             populate_result = self.__populate_load(result)
             return self.instanciate_class(populate_result)
