@@ -105,7 +105,7 @@ REPLY_TEXTS_FIND_TREASURE_START = [
 REPLY_TEXTS_FIND_TREASURE_MIDDLE = [
     'e investigando vocês notam ',
     'e observando com atenção vocês percebem ',
-    'e ao olhar com mais detalhes vocês se deparam ',
+    'e ao olhar com mais detalhe vocês se deparam com',
     'e examinando cuidadosamente vocês descobrem ',
     'e inspecionando minuciosamente vocês avistam ',
     'e ao analisar com mais profundidade vocês constatam ',
@@ -368,7 +368,7 @@ REPLY_TEXTS_FIND_TREASURE_OPEN = [
     'Desprendendo os grampos, você revela o que estava resguardado\.',
     'Ao erguer, uma revelação aguarda dentro\.',
     'Com um toque delicado, você abre e descobre o que estava escondido\.',
-    'Ao destravar, uma descoberta aguarda você dentro\.',
+    'Ao destravar, dentro, uma descoberta te aguarda\.',
     'Com um deslize, você abre o objeto e revela algo especial\.',
     'Desatando o lacre, você se depara com algo intrigante dentro\.',
     'Ao retirar a capa, a revelação do interior é emocionante\.',
