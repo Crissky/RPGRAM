@@ -68,13 +68,13 @@ def choice_type_item() -> str:
 
 def choice_rarity(group_level: int) -> str:
     rarities = {'COMMON': 100, 'UNCOMMON': 50}
-    if group_level >= 100:
+    if group_level >= 50:
         rarities['RARE'] = 25
-    if group_level >= 250:
+    if group_level >= 100:
         rarities['EPIC'] = 12.5
-    if group_level >= 500:
+    if group_level >= 250:
         rarities['LEGENDARY'] = 6.25
-    if group_level >= 1000:
+    if group_level >= 500:
         rarities['MYTHIC'] = 3.125
 
     return weighted_choice(**rarities)
