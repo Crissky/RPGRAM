@@ -11,6 +11,7 @@ from telegram.ext import (
 )
 
 from bot.constants.bag import (
+    ACCESS_DENIED,
     CALLBACK_CLOSE_BAG,
     CANCEL_COMMANDS,
     COMMANDS,
@@ -53,7 +54,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if query:
-        page = int(query.data)  # starts zero
+        data = eval(query.data)
+        page = data['page']  # starts zero
+        data_user_id = data['user_id']
+        if data_user_id != user_id:
+            await query.answer(text=ACCESS_DENIED, show_alert=True)
+            return ITEM_ROUTES
+
         skip_slice = ITEMS_PER_PAGE * page
         size_slice = ITEMS_PER_PAGE + 1
     else:
@@ -97,7 +104,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         markdown_text += '\n'
         items_buttons.append(InlineKeyboardButton(
             text=f'Item {index + 1}',
-            callback_data=f'item={index},page={page}'
+            callback_data=(
+                f'{{"item":{index},"page":{page},"user_id":{user_id}}}'
+            )
         ))
 
     reshaped_items_buttons = []
@@ -112,20 +121,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         navigation_keyboard.append(
             InlineKeyboardButton(
                 text='⬅ Anterior',
-                callback_data=str(page - 1)
+                callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
             )
         )
     if have_next_page:
         navigation_keyboard.append(
             InlineKeyboardButton(
                 text='Próxima ➡',
-                callback_data=str(page + 1)
+                callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
             )
         )
 
     cancel_button = [InlineKeyboardButton(
         text='🎒Fechar Bolsa',
-        callback_data=CALLBACK_CLOSE_BAG
+        callback_data=(
+            f'{{"command":"{CALLBACK_CLOSE_BAG}","user_id":{user_id}}}'
+        )
     )]
     reply_markup = InlineKeyboardMarkup(
         reshaped_items_buttons + [navigation_keyboard] + [cancel_button]
@@ -153,9 +164,15 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     bag_model = BagModel()
     user_id = update.effective_user.id
     query = update.callback_query
-    data = query.data.split(',')
-    item = int(data[0].split('=')[1])
-    page = int(data[1].split('=')[1])
+    data = eval(query.data)
+    item = data['item']
+    page = data['page']
+    data_user_id = data['user_id']
+
+    if data_user_id != user_id:
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        return ITEM_ROUTES
+
     item_index = (ITEMS_PER_PAGE * page) + item
     player_bag = bag_model.get(
         query={'player_id': user_id},
@@ -171,7 +188,11 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(text=use_text, callback_data='TO DO')],
-        [InlineKeyboardButton(text='Voltar', callback_data=str(page))]
+        [InlineKeyboardButton(
+            text='Voltar', callback_data=(
+                f'{{"page":{page},"user_id":{user_id}}}'
+            )
+        )]
     ])
     await query.edit_message_text(
         text=markdown_text,
@@ -182,12 +203,20 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.effective_user.id
     query = update.callback_query
     if query:
+        data = eval(query.data)
+        data_user_id = data['user_id']
+        if data_user_id != user_id:
+            await query.answer(text=ACCESS_DENIED, show_alert=True)
+            return ITEM_ROUTES
         await query.answer('Fechando Bolsa...')
         await query.delete_message()
 
-    return ConversationHandler.END
+        return ConversationHandler.END
+
+    return ITEM_ROUTES
 
 
 BAG_HANDLER = ConversationHandler(
@@ -202,13 +231,15 @@ BAG_HANDLER = ConversationHandler(
     ],
     states={
         ITEM_ROUTES: [
-            CallbackQueryHandler(start, pattern=f'^\d\d?\d?$'),
-            CallbackQueryHandler(check_item, pattern=f'^item='),
-            CallbackQueryHandler(cancel, pattern=f'^{CALLBACK_CLOSE_BAG}$'),
+            CallbackQueryHandler(start, pattern=r'^{"page":'),
+            CallbackQueryHandler(check_item, pattern=r'^{"item":'),
+            CallbackQueryHandler(
+                cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'),
         ]
     },
     fallbacks=[
         CommandHandler(CANCEL_COMMANDS, cancel)
     ],
+    allow_reentry=True,
     conversation_timeout=TEN_MINUTES_IN_SECONDS,
 )
