@@ -46,7 +46,7 @@ class Bag:
         if item and item in self.__items:
             item_index = self.__items.index(item)
             return self.__items[item_index]
-        elif slot:
+        elif isinstance(slot, int):
             return self.__items[slot]
 
     def add(self, item: ItemTypes) -> None:
@@ -63,7 +63,8 @@ class Bag:
         slot: int = None,
         quantity: int = 1
     ):
-        item = self.pack_item(item)
+        if item:
+            item = self.pack_item(item)
         bag_item = self.get_item(item, slot)
         if bag_item:
             bag_item.quantity -= quantity
