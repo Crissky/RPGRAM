@@ -58,6 +58,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         data = eval(query.data)
         page = data['page']  # starts zero
         data_user_id = data['user_id']
+
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
@@ -165,7 +166,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Edita a mensagem com as informações do item escolhido.'''
+    '''Edita a mensagem com as informações do item escolhido.
+    '''
     bag_model = BagModel()
     user_id = update.effective_user.id
     query = update.callback_query
@@ -174,8 +176,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     page = data['page']
     data_user_id = data['user_id']
 
-    # Não executa se outro usuário mexer na bolsa
-    if data_user_id != user_id:
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         return ITEM_ROUTES
 
@@ -216,7 +217,8 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
 
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Usa ou equipa o item do jogador.'''
+    '''Usa ou equipa o item do jogador.
+    '''
     bag_model = BagModel()
     char_model = CharacterModel()
     equips_model = EquipsModel()
@@ -227,8 +229,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     page = data['page']
     data_user_id = data['user_id']
 
-    # Não executa se outro usuário mexer na bolsa
-    if data_user_id != user_id:
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         return ITEM_ROUTES
 
@@ -310,14 +311,20 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Apaga a mensagem quando o jogador dono da bolsa 
+    clica em Fechar A Bolsa.
+    '''
     user_id = update.effective_user.id
     query = update.callback_query
     if query:
         data = eval(query.data)
         data_user_id = data['user_id']
+
+        # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return ITEM_ROUTES
+
         await query.answer('Fechando Bolsa...')
         await query.delete_message()
 
