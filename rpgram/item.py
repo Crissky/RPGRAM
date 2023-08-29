@@ -1,4 +1,6 @@
 from typing import Union
+
+from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
@@ -16,19 +18,19 @@ class Item:
 
     # Getters
     @property
-    def _id(self):
+    def _id(self) -> ObjectId:
         return self.item._id
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.item.name
 
     @property
-    def weight(self):
+    def weight(self) -> float:
         return self.item.weight * self.quantity
 
     @property
-    def quantity(self):
+    def quantity(self) -> int:
         return self.__quantity
 
     @quantity.setter
