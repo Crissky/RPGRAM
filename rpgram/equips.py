@@ -49,6 +49,8 @@ class Equips:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
+        self.__init = True
+
         if isinstance(helmet, Equipment):
             self.equip(helmet)
         if isinstance(left_hand, Equipment):
@@ -65,18 +67,21 @@ class Equips:
         if isinstance(necklace, Equipment):
             self.equip(necklace)
 
+        self.__init = False
+
         self.__update_stats()
 
     def equip(self, new_equipment: Equipment) -> List[Equipment]:
         equip_type = new_equipment.equip_type
         requirements = new_equipment.requirements
         old_equipments = []
-        for attribute, value in requirements.items():
-            if self.base_stats[attribute] < value:
-                raise EquipmentRequirementError(
-                    f'O personagem possui "{self.base_stats[attribute]}" '
-                    f'pontos de "{attribute}" e o requerido é "{value}".'
-                )
+        if not self.__init:
+            for attribute, value in requirements.items():
+                if self.base_stats[attribute] < value:
+                    raise EquipmentRequirementError(
+                        f'O personagem possui "{self.base_stats[attribute]}" '
+                        f'pontos de "{attribute}" e o requerido é "{value}".'
+                    )
 
         if equip_type == EquipmentEnum.HELMET:
             if self.__helmet is not None:
@@ -369,12 +374,13 @@ class Equips:
 
 
 if __name__ == '__main__':
-    equips = Equips()
+    
     helmet = Equipment(
         name='Capacete de Aço',
         equip_type=EquipmentEnum.HELMET,
         damage_types=None,
         weight=10,
+        requirements={'level': 10},
         bonus_physical_defense=30,
         bonus_evasion=-5,
     )
@@ -439,7 +445,7 @@ if __name__ == '__main__':
         bonus_charisma=150,
     )
 
-    equips.equip(helmet)
+    equips = Equips(helmet=helmet)
     equips.equip(sword)
     equips.equip(armor)
     equips.equip(boots)
