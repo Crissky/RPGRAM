@@ -51,6 +51,9 @@ def weighted_choice(**items) -> Hashable:
 
 
 def random_group_level(level: int) -> int:
+    '''Função que retorna um valor inteiro aleatório entre 75% e 125% do 
+    level passado. No entando, o menor valor retornado sempre será 1.
+    '''
     min_level = int(level * 0.75)
     max_level = int(level * 1.25) + 1
     new_level = choice(range(min_level, max_level))
@@ -58,6 +61,9 @@ def random_group_level(level: int) -> int:
 
 
 def choice_type_item() -> str:
+    '''Função que retorna um tipo de item aleatório.
+    O tipo do item é retornado com base em sua propabilidade.
+    '''
     types_item = {
         'CONSUMABLE': 1000, 'HELMET': 100, 'ONE_HAND': 120,
         'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
@@ -67,25 +73,41 @@ def choice_type_item() -> str:
 
 
 def choice_rarity(group_level: int) -> str:
+    '''Retorna uma raridade de maneira aleatória.
+    A raridade é retornada com base em sua propabilidade e no nível do grupo.
+    Um nível de grupo maior libera mais tipos de raridades.
+    As raridades opcionais (que estão nos IFs) aumentam a sua probabilidade de 
+    acordo com o nível do grupo com um valor máximo de 50, recebendo um bônus 
+    entre 1/100 à 1/5 do nível de grupo.
+    '''
+    rare_probs = 25 + (group_level // randint(20, 100))
+    epic_probs = 12.5 + (group_level // randint(20, 100))
+    legendary_probs = 6.25 + (group_level // randint(20, 100))
+    mythic_probs = 3.125 + (group_level // randint(20, 100))
     rarities = {'COMMON': 100, 'UNCOMMON': 50}
     if group_level >= 50:
-        rarities['RARE'] = 25
+        rarities['RARE'] = min(rare_probs, 50)
     if group_level >= 100:
-        rarities['EPIC'] = 12.5
+        rarities['EPIC'] = min(epic_probs, 50)
     if group_level >= 250:
-        rarities['LEGENDARY'] = 6.25
+        rarities['LEGENDARY'] = min(legendary_probs, 50)
     if group_level >= 500:
-        rarities['MYTHIC'] = 3.125
+        rarities['MYTHIC'] = min(mythic_probs, 50)
 
     return weighted_choice(**rarities)
 
 
 def choice_weapon_material(group_level: int) -> str:
+    '''Retorna um material de arma de maneira aleatória.
+    Quanto maior o nível de grupo, maior a diversidade de materiais.
+    Um novo material entrará na lista de escolha (materials) 
+    a cada 25 pontos de nível de grupo.
+    '''
     materials = {}
     level_base = 25
     chance = 100 + (len(WEAPON_BONUS_MATERIAL) * 25)
     for material, multiplier in WEAPON_BONUS_MATERIAL.items():
-        level_threshold = level_base * multiplier
+        level_threshold = level_base * (multiplier - 1)
         if group_level >= level_threshold or not materials:
             materials[material] = chance
             chance -= 25
@@ -94,11 +116,16 @@ def choice_weapon_material(group_level: int) -> str:
 
 
 def choice_armor_material(group_level: int) -> str:
+    '''Retorna um material de armadura de maneira aleatória.
+    Quanto maior o nível de grupo, maior a diversidade de materiais.
+    Um novo material entrará na lista de escolha (materials) 
+    a cada 25 pontos de nível de grupo.
+    '''
     materials = {}
     level_base = 25
     chance = 100 + (len(ARMOR_BONUS_MATERIAL) * 25)
     for material, multiplier in ARMOR_BONUS_MATERIAL.items():
-        level_threshold = level_base * multiplier
+        level_threshold = level_base * (multiplier - 1)
         if group_level >= level_threshold or not materials:
             materials[material] = chance
             chance -= 25
@@ -107,11 +134,16 @@ def choice_armor_material(group_level: int) -> str:
 
 
 def choice_accessory_material(group_level: int) -> str:
+    '''Retorna um material de acessórios de maneira aleatória.
+    Quanto maior o nível de grupo, maior a diversidade de materiais.
+    Um novo material entrará na lista de escolha (materials) 
+    a cada 50 pontos de nível de grupo.
+    '''
     materials = {}
     level_base = 50
     chance = 100 + (len(ACCESSORY_BONUS_MATERIAL) * 25)
     for material, multiplier in ACCESSORY_BONUS_MATERIAL.items():
-        level_threshold = level_base * multiplier
+        level_threshold = level_base * (multiplier - 1)
         if group_level >= level_threshold or not materials:
             materials[material] = chance
             chance -= 25
@@ -119,7 +151,15 @@ def choice_accessory_material(group_level: int) -> str:
     return weighted_choice(**materials)
 
 
-def get_weapon_material(equip_type: str, group_level: int) -> Tuple[str, str]:
+def get_equipment_material(
+    equip_type: str,
+    group_level: int
+) -> Tuple[str, str]:
+    '''Retorna uma tupla com o nome da arma na primeira posição, 
+    caso o tipo do equipamento seja de UMA ou de DUAS MÃOS
+    ou None caso contrário. 
+    Na segunda posição será retornado o material do equipamento
+    '''
     weapon = None
     if equip_type in ['ONE_HAND', 'TWO_HANDS']:
         material = choice_weapon_material(group_level)
@@ -139,7 +179,18 @@ def get_weapon_material(equip_type: str, group_level: int) -> Tuple[str, str]:
     return weapon, material
 
 
-def get_bonus_penality(equip_type: str, rarity: str, material: str, group_level: int, verbose: bool = False) -> Tuple[int, int]:
+def get_bonus_penality(
+    equip_type: str,
+    rarity: str,
+    material: str,
+    group_level: int,
+    verbose: bool = False
+) -> Tuple[int, int]:
+    '''Retorna um tupla com os valores totais de BÔNUS e PENALIDADE 
+    do equipamento. Os bônus são escolhidos com base do tipo de equipamento, 
+    raridade, material level e nível de grupo. A penalidade é escolhida 
+    somente com base no nível de grupo.
+    '''
     rarity_bonus = BONUS_RARITY[rarity]
     if equip_type in ['TWO_HANDS', 'ARMOR']:
         equip_type_bonus = 2.5
@@ -175,19 +226,11 @@ def get_bonus_penality(equip_type: str, rarity: str, material: str, group_level:
     return bonus, penality
 
 
-def create_random_consumable(group_level: int):
-    item_model = ItemModel()
-    rarity = choice_rarity(group_level)
-    query = dict(rarity=rarity, _class='Consumable')
-    item_list = item_model.get_all(query=query)
-    quantity = randint(1, 5)
-    item = choice(item_list)
-    item = Item(item, quantity)
-
-    return item
-
-
 def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
+    '''Retorna uma tupla contendo dois dicionários com as probabilidades 
+    de distribuição dos bônus e penalidades dos atributos de um equipamento, 
+    respectivamente.
+    '''
     if weapon == 'SWORD':
         attr_bonus_prob = {
             'bonus_hit_points': 1, 'bonus_initiative': 1,
@@ -375,6 +418,9 @@ def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
 
 
 def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
+    '''Retorna o peso do equipamento com base no seu bônus e 
+    no tipo de equipamento.
+    '''
     weight, _ = get_bonus_penality(equip_type, rarity, material, 5)
     if weapon in ['GREAT_SWORD', 'SHIELD']:
         weight *= 2
@@ -387,6 +433,8 @@ def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
 
 
 def get_equipment_damage_type(weapon: str, rarity: str):
+    '''Retorna uma lista com os tipos de dano de uma arma.
+    '''
     damage_types = None
     if weapon:
         damage_types = []
@@ -421,7 +469,13 @@ def get_equipment_damage_type(weapon: str, rarity: str):
     return damage_types
 
 
-def add_secret_stats(equipment_dict: dict, rarity: str, group_level: int):
+def add_secret_stats(rarity: str, group_level: int):
+    '''Retorna os atributos bônus do equipamento. 
+    Esses atributos estarão disponíveis para o personagem quando 
+    o item for identificado.
+    Os bônus são selecionado de maneira aleatórios. O total de bônus é baseado 
+    na raridade do item em na metade do nível de grupo.
+    '''
     secret_stats = defaultdict(int)
     bonus = BONUS_RARITY[rarity] - 2
     bonus = max(bonus, 0) * (group_level // 2)
@@ -482,8 +536,10 @@ def add_secret_stats(equipment_dict: dict, rarity: str, group_level: int):
 
 
 def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
+    '''Retorna um equipamento aleatório.
+    '''
     rarity = choice_rarity(group_level)
-    weapon, material = get_weapon_material(equip_type, group_level)
+    weapon, material = get_equipment_material(equip_type, group_level)
 
     equip_name = weapon if weapon else equip_type
     bonus, penality = get_bonus_penality(
@@ -505,7 +561,7 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     name = f'{rarity.title()} {material.title()} {equip_name.title()}'
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
     damage_types = get_equipment_damage_type(weapon, rarity)
-    secret_stats = add_secret_stats(equipment_dict, rarity, group_level)
+    secret_stats = add_secret_stats(rarity, group_level)
     equipment_dict.update(secret_stats)
     equipment = Equipment(
         name=name,
@@ -522,8 +578,23 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     return item
 
 
+def create_random_consumable(group_level: int):
+    '''Retorna um item consumível aleatório.
+    '''
+    item_model = ItemModel()
+    rarity = choice_rarity(group_level)
+    query = dict(rarity=rarity, _class='Consumable')
+    item_list = item_model.get_all(query=query)
+    quantity = randint(1, 3)
+    item = choice(item_list)
+    item = Item(item, quantity)
+
+    return item
+
+
 def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
-    '''Função que retorna um item escolhido de forma aleatória.'''
+    '''Função que retorna um item escolhido de maneira aleatória.
+    '''
     group_level = random_group_level(group_level)
     choiced_item = choice_type_item()
     equipment_types = [e.name for e in EquipmentEnum]
