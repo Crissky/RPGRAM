@@ -104,7 +104,6 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         player_bag.add(item)
         bag_model.save(player_bag)
-        print(markdown_item_sheet)
         await query.edit_message_text(
             text=(
                 f'{choice(REPLY_TEXTS_FIND_TREASURE_OPEN)}\n\n'
