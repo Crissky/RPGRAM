@@ -46,6 +46,7 @@ ITEM_ROUTES = 1
 @need_not_in_battle
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Envia ou edita mensagem contendo uma página dos itens do jogador'''
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
@@ -57,6 +58,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         data = eval(query.data)
         page = data['page']  # starts zero
         data_user_id = data['user_id']
+        # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return ITEM_ROUTES
@@ -73,7 +75,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         fields={'items_ids': {'$slice': [skip_slice, size_slice]}},
         partial=False
     )
-    if not player_bag:
+    if not player_bag:  # Cria uma bolsa caso o jogador não tenha uma.
         player_bag = Bag(
             items=[],
             player_id=user_id
@@ -98,6 +100,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return ConversationHandler.END
 
     items_buttons = []
+    # Criando texto e botões dos itens
     for index, item in enumerate(items):
         markdown_text += f'*Ⅰ{(index + 1)}:* '
         markdown_text += item.get_sheet(verbose=True, markdown=True)
@@ -110,6 +113,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         ))
 
     reshaped_items_buttons = []
+    # Colocando dois botões de itens por linha
     for item1, item2 in zip_longest(items_buttons[0::2], items_buttons[1::2]):
         new_line = [item1, item2]
         if None in new_line:
@@ -117,14 +121,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         reshaped_items_buttons.append(new_line)
 
     navigation_keyboard = []
-    if have_back_page:
+    if have_back_page:  # Cria botão de Voltar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
                 text='⬅ Anterior',
                 callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
             )
         )
-    if have_next_page:
+    if have_next_page:  # Cria botão de Avançar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
                 text='Próxima ➡',
@@ -143,14 +147,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     markdown_text = TITLE_HEAD.format(markdown_text)
-    if not query:
+    if not query:  # Envia Resposta com o texto da tabela de itens e botões
         await update.effective_message.reply_text(
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
         )
-    else:
+    else:  # Edita Resposta com o texto da tabela de itens e botões
         await query.edit_message_text(
             text=markdown_text,
             reply_markup=reply_markup,
@@ -161,6 +165,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Edita a mensagem com as informações do item escolhido.'''
     bag_model = BagModel()
     user_id = update.effective_user.id
     query = update.callback_query
@@ -169,6 +174,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     page = data['page']
     data_user_id = data['user_id']
 
+    # Não executa se outro usuário mexer na bolsa
     if data_user_id != user_id:
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         return ITEM_ROUTES
@@ -200,6 +206,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
             )
         )]
     ])
+    # Edita mensagem com as informações do item escolhido
     await query.edit_message_text(
         text=markdown_text,
         reply_markup=reply_markup,
@@ -209,6 +216,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
 
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Usa ou equipa o item do jogador.'''
     bag_model = BagModel()
     char_model = CharacterModel()
     equips_model = EquipsModel()
@@ -219,6 +227,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     page = data['page']
     data_user_id = data['user_id']
 
+    # Não executa se outro usuário mexer na bolsa
     if data_user_id != user_id:
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         return ITEM_ROUTES
@@ -233,7 +242,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player_character = char_model.get(user_id)
 
     old_equipments = []
-    if isinstance(item.item, Equipment):
+    if isinstance(item.item, Equipment):  # Tenta equipar o item
         equipment = item.item
         try:
             old_equipments = player_character.equips.equip(equipment)
@@ -249,7 +258,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 show_alert=True
             )
             return ITEM_ROUTES
-    elif isinstance(item.item, Consumable):
+    elif isinstance(item.item, Consumable):  # Tenta usar o item
         consumable = item.item
         try:
             consumable.use(player_character)
@@ -267,12 +276,15 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
             return ITEM_ROUTES
 
+    # Carrega a bolsa com todos os itens
     player_bag = bag_model.get(query={'player_id': user_id})
-    player_bag.remove(slot=item_index)
+    player_bag.remove(slot=item_index)  # Remove o item usado/equipado da bolsa
     markdown_player_sheet = player_character.get_all_sheets(
         verbose=False, markdown=True
     )
 
+    # Adiciona na bolsa os equipamentos que já estavam equipados
+    # e que foram substituídos
     for old_equipment in old_equipments:
         player_bag.add(old_equipment)
 
@@ -287,6 +299,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
         )]
     ])
+    # Edita mensagem com as informações do personagem do jogador
     await query.edit_message_text(
         text=markdown_player_sheet,
         reply_markup=reply_markup,
