@@ -38,6 +38,9 @@ ESCAPED_CALLBACK_TEXT_NO = re.escape(CALLBACK_TEXT_NO)
 
 
 async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
+    '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
+    Está função é chamada em cada 00 e 30 minutos de cada hora.
+    '''
     job = context.job
     chat_id = job.chat_id
     minutes_in_seconds = randint(1, 29) * 60
@@ -50,6 +53,9 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
+    '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR 
+    uma busca por tesouro. A mensagem é gerada de maneira aleatória.
+    '''
     job = context.job
     chat_id = job.chat_id
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -75,6 +81,9 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 @need_singup_group
 @need_have_char
 async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador 
+    que clicou no botão de investigar e salva o item em sua bolsa.
+    '''
     query = update.callback_query
     if query:
         chat_id = update.effective_chat.id
@@ -119,6 +128,9 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @need_singup_group
 @need_have_char
 async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    '''Apaga a mensagem de busca de tesouro quando um jogador 
+    clica em IGNORAR.
+    '''
     query = update.callback_query
     if query:
         text = choice(REPLY_TEXTS_IGNORE_TREASURE)
