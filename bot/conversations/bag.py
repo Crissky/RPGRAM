@@ -31,7 +31,7 @@ from bot.decorators import (
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
-from repository.mongo import BagModel
+from repository.mongo import BagModel, CharacterModel, EquipsModel
 from rpgram import Bag
 from rpgram.boosters import Equipment
 from rpgram import Consumable
@@ -165,7 +165,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     user_id = update.effective_user.id
     query = update.callback_query
     data = eval(query.data)
-    item = data['item']
+    item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
 
@@ -173,7 +173,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         return ITEM_ROUTES
 
-    item_index = (ITEMS_PER_PAGE * page) + item
+    item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
         query={'player_id': user_id},
         fields={'items_ids': {'$slice': [item_index, 1]}},
@@ -182,12 +182,18 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
     if isinstance(item.item, Equipment):
-        use_text = 'Equipar (TO DO)'
+        use_text = '🗡️Equipar'
     elif isinstance(item.item, Consumable):
-        use_text = 'Usar (TO DO)'
+        use_text = '🧪Usar'
 
     reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(text=use_text, callback_data='TO DO')],
+        [InlineKeyboardButton(
+            text=use_text,
+            callback_data=(
+                f'{{"use":1,"item":{item_pos},'
+                f'"page":{page},"user_id":{user_id}}}'
+            )
+        )],
         [InlineKeyboardButton(
             text='Voltar', callback_data=(
                 f'{{"page":{page},"user_id":{user_id}}}'
@@ -199,6 +205,94 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         reply_markup=reply_markup,
         parse_mode=ParseMode.MARKDOWN_V2
     )
+    return ITEM_ROUTES
+
+
+async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    bag_model = BagModel()
+    char_model = CharacterModel()
+    equips_model = EquipsModel()
+    user_id = update.effective_user.id
+    query = update.callback_query
+    data = eval(query.data)
+    item_pos = data['item']
+    page = data['page']
+    data_user_id = data['user_id']
+
+    if data_user_id != user_id:
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        return ITEM_ROUTES
+
+    item_index = (ITEMS_PER_PAGE * page) + item_pos
+    player_bag = bag_model.get(
+        query={'player_id': user_id},
+        fields={'items_ids': {'$slice': [item_index, 1]}},
+        partial=False
+    )
+    item = player_bag[0]
+    player_character = char_model.get(user_id)
+
+    old_equipments = []
+    if isinstance(item.item, Equipment):
+        equipment = item.item
+        try:
+            old_equipments = player_character.equips.equip(equipment)
+            print('old_equipments', old_equipments)
+            await query.answer(text=f'Você equipou "{equipment.name}".\n\n')
+        except Exception as error:
+            print(error)
+            await query.answer(
+                text=(
+                    f'Equipamento "{equipment.name}" não pode ser equipado.'
+                    f'\n\n{error}'
+                ),
+                show_alert=True
+            )
+            return ITEM_ROUTES
+    elif isinstance(item.item, Consumable):
+        consumable = item.item
+        try:
+            consumable.use(player_character)
+            await query.answer(text=(
+                f'Você usou o item "{consumable.name}"\n'
+                f'Descrição: "{consumable.description}"'
+            ))
+        except Exception as error:
+            print(error)
+            await query.answer(
+                text=(
+                    f'Item "{consumable.name}" não pode ser usado.\n\n{error}'
+                ),
+                show_alert=True
+            )
+            return ITEM_ROUTES
+
+    player_bag = bag_model.get(query={'player_id': user_id})
+    player_bag.remove(slot=item_index)
+    markdown_player_sheet = player_character.get_all_sheets(
+        verbose=False, markdown=True
+    )
+
+    for old_equipment in old_equipments:
+        player_bag.add(old_equipment)
+
+    bag_model.save(player_bag)
+    char_model.save(player_character)
+    equips_model.save(player_character.equips)
+
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton(
+            text='Voltar', callback_data=(
+                f'{{"page":{page},"user_id":{user_id}}}'
+            )
+        )]
+    ])
+    await query.edit_message_text(
+        text=markdown_player_sheet,
+        reply_markup=reply_markup,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
+
     return ITEM_ROUTES
 
 
@@ -233,6 +327,7 @@ BAG_HANDLER = ConversationHandler(
         ITEM_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(check_item, pattern=r'^{"item":'),
+            CallbackQueryHandler(use_item, pattern=r'^{"use":1'),
             CallbackQueryHandler(
                 cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'),
         ]
