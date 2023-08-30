@@ -236,7 +236,7 @@ REPLY_TEXTS_FIND_TREASURE_END = [
     'um baú de madeira envernizada está empoleirado no topo de um pedestal.',
     'uma sacola de linho bordada está caída perto da porta.',
     'um pequeno estojo de couro está preso ao lado de uma estante, com fechos intricados.',
-    'uma caixa esculpida está em exibição em um nicho na parede.',
+    'uma caixa esculpida que está em exibição em um nicho na parede.',
     'um baú de metal polido está embutido no chão, com um símbolo gravado.',
     'uma bolsa de veludo está jogada despretensiosamente sobre uma cadeira.',
     'uma urna finamente trabalhada repousa sobre uma almofada de seda.',
