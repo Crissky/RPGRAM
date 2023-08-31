@@ -135,8 +135,8 @@ class CombatStats:
     def initiative(self) -> int:
         return int(
             (self.dexterity * 1.5) +
-            (self.wisdom * 1.5) +
-            (self.charisma * 1.5) +
+            (self.wisdom * 2) +
+            (self.charisma * 2) +
             self.bonus_initiative
         )
 
@@ -158,7 +158,7 @@ class CombatStats:
     @property
     def magical_attack(self) -> int:
         return int(
-            (self.intelligence * 2) +
+            (self.intelligence * 3) +
             self.wisdom +
             self.bonus_magical_attack
         )
@@ -183,7 +183,7 @@ class CombatStats:
     def hit(self) -> int:
         return int(
             (self.dexterity * 2) +
-            self.wisdom +
+            self.wisdom + self.charisma +
             self.bonus_hit
         )
 
