@@ -147,6 +147,7 @@ class Equipment(StatsBooster):
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         damage_types = ''
         requirements = '\n'
+        power_multiplier = ''
         if self.damage_types:
             damage_types = '/'.join([d.value for d in self.damage_types])
             damage_types = f'*Tipo de Dano*: {damage_types}\n'
@@ -155,10 +156,14 @@ class Equipment(StatsBooster):
                 [f'  {k}: {v}' for k, v in self.__requirements.items()]
             )
             requirements = f'*Requisitos*:\n{requirements}\n'
+        if self.power_multiplier > 0:
+            power_multiplier = f' +[x{self.power_multiplier:.2f}]'
+
         text = (
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
             f'{damage_types}'
+            f'*Poder*: {self.power}{power_multiplier}\n'
             f'*Peso*: {self.weight:.2f}w\n'
             f'{requirements}'
         )
@@ -207,6 +212,39 @@ class Equipment(StatsBooster):
         return False
 
     # Getters
+    @property
+    def power(self) -> int:
+        return (
+            (self.bonus_strength * 7) +
+            (self.bonus_dexterity * 10) +
+            (self.bonus_constitution * 13) +
+            (self.bonus_intelligence * 3) +
+            (self.bonus_wisdom * 7) +
+            (self.bonus_charisma * 3) +
+            sum([
+                self.bonus_hit_points,
+                self.bonus_initiative,
+                self.bonus_physical_attack,
+                self.bonus_precision_attack,
+                self.bonus_magical_attack,
+                self.bonus_physical_defense,
+                self.bonus_magical_defense,
+                self.bonus_hit,
+                self.bonus_evasion,
+            ])
+        )
+
+    @property
+    def power_multiplier(self) -> float:
+        return (
+            self.multiplier_strength +
+            self.multiplier_dexterity +
+            self.multiplier_constitution +
+            self.multiplier_intelligence +
+            self.multiplier_wisdom +
+            self.multiplier_charisma
+        ) - 6
+
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_types = property(lambda self: self.__damage_types)
