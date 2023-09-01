@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Union
 from bson import ObjectId
 
-from constant.text import TEXT_DELIMITER
+from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 from rpgram.enums import DamageEnum, EquipmentEnum, RarityEnum
@@ -144,20 +144,157 @@ class Equipment(StatsBooster):
         self.__requirements = requirements
         self.__rarity = rarity
 
-    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+    def compare(self, other_equipment) -> str:
+        if self.equip_type != other_equipment.equip_type:
+            equip_hand = [EquipmentEnum.ONE_HAND, EquipmentEnum.TWO_HANDS]
+            if (
+                self.equip_type not in equip_hand or
+                other_equipment.equip_type not in equip_hand
+            ):
+                raise TypeError(
+                    f'Equipamentos são de tipos diferentes.'
+                    f'("{self.equip_type.name}" e '
+                    f'"{other_equipment.equip_type.name}")'
+                )
+
+        # DIFFs
+        power_diff = (self.power - other_equipment.power)
+        
+        strength_diff = (self.strength - other_equipment.strength)
+        dexterity_diff = (self.dexterity - other_equipment.dexterity)
+        constitution_diff = (self.constitution - other_equipment.constitution)
+        intelligence_diff = (self.intelligence - other_equipment.intelligence)
+        wisdom_diff = (self.wisdom - other_equipment.wisdom)
+        charisma_diff = (self.charisma - other_equipment.charisma)
+
+        multiplier_strength_diff = (
+            self.multiplier_strength - other_equipment.multiplier_strength
+        )
+        multiplier_dexterity_diff = (
+            self.multiplier_dexterity - other_equipment.multiplier_dexterity
+        )
+        multiplier_constitution_diff = (
+            self.multiplier_constitution -
+            other_equipment.multiplier_constitution
+        )
+        multiplier_intelligence_diff = (
+            self.multiplier_intelligence -
+            other_equipment.multiplier_intelligence
+        )
+        multiplier_wisdom_diff = (
+            self.multiplier_wisdom - other_equipment.multiplier_wisdom
+        )
+        multiplier_charisma_diff = (
+            self.multiplier_charisma - other_equipment.multiplier_charisma
+        )
+
+        hp_diff = (self.hp - other_equipment.hp)
+        initiative_diff = (self.initiative - other_equipment.initiative)
+        physical_attack_diff = (
+            self.physical_attack - other_equipment.physical_attack
+        )
+        precision_attack_diff = (
+            self.precision_attack - other_equipment.precision_attack
+        )
+        magical_attack_diff = (
+            self.magical_attack - other_equipment.magical_attack
+        )
+        physical_defense_diff = (
+            self.physical_defense - other_equipment.physical_defense
+        )
+        magical_defense_diff = (
+            self.magical_defense - other_equipment.magical_defense
+        )
+        hit_diff = (self.hit - other_equipment.hit)
+        evasion_diff = (self.evasion - other_equipment.evasion)
+
+        damage_types = self.sheet_damage_types()
+        power_multiplier = self.sheet_power_multiplier()
+        requirements = self.sheet_requirements()
+
+        text = (
+            f'*Equipamento*: {self.name}\n'
+            f'*Tipo*: {self.equip_type.value}\n'
+            f'{damage_types}'
+            f'*Poder*: {self.power} {{{power_diff:+}}}{power_multiplier}\n'
+            f'*Peso*: {self.weight:.2f}w\n'
+            f'{requirements}'
+        )
+        text += (
+            f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
+
+            f'`FOR: {self.strength:+} {{{strength_diff:+}}}'
+            f' x({self.multiplier_strength:+.2f} '
+            f'{{{multiplier_strength_diff:+.2f}}})`\n'
+
+            f'`DES: {self.dexterity:+} {{{dexterity_diff:+}}}'
+            f' x({self.multiplier_dexterity:+.2f} '
+            f'{{{multiplier_dexterity_diff:+.2f}}})`\n'
+
+            f'`CON: {self.constitution:+} {{{constitution_diff:+}}}'
+            f' x({self.multiplier_constitution:+.2f} '
+            f'{{{multiplier_constitution_diff:+.2f}}})`\n'
+
+            f'`INT: {self.intelligence:+} {{{intelligence_diff:+}}}'
+            f' x({self.multiplier_intelligence:+.2f} '
+            f'{{{multiplier_intelligence_diff:+.2f}}})`\n'
+
+            f'`SAB: {self.wisdom:+} {{{wisdom_diff:+}}}'
+            f' x({self.multiplier_wisdom:+.2f} '
+            f'{{{multiplier_wisdom_diff:+.2f}}})`\n'
+
+            f'`CAR: {self.charisma:+} {{{charisma_diff:+}}}'
+            f' x({self.multiplier_charisma:+.2f} '
+            f'{{{multiplier_charisma_diff:+.2f}}})`\n\n'
+
+            f'`HP: {self.hp:+} '
+            f'{{{hp_diff:+}}}`\n'
+            f'`INICIATIVA: {self.initiative:+} '
+            f'{{{initiative_diff:+}}}`\n'
+            f'`ATAQUE FÍSICO: {self.physical_attack:+} '
+            f'{{{physical_attack_diff:+}}}`\n'
+            f'`ATAQUE DE PRECISÃO: {self.precision_attack:+} '
+            f'{{{precision_attack_diff:+}}}`\n'
+            f'`ATAQUE MÁGICO: {self.magical_attack:+} '
+            f'{{{magical_attack_diff:+}}}`\n'
+            f'`DEFESA FÍSICA: {self.physical_defense:+} '
+            f'{{{physical_defense_diff:+}}}`\n'
+            f'`DEFESA MÁGICA: {self.magical_defense:+} '
+            f'{{{magical_defense_diff:+}}}`\n'
+            f'`ACERTO: {self.hit:+} '
+            f'{{{hit_diff:+}}}`\n'
+            f'`EVASÃO: {self.evasion:+} '
+            f'{{{evasion_diff:+}}}`\n'
+        )
+
+        return escape_basic_markdown_v2(text)
+
+    def sheet_damage_types(self):
         damage_types = ''
-        requirements = '\n'
-        power_multiplier = ''
         if self.damage_types:
             damage_types = '/'.join([d.value for d in self.damage_types])
             damage_types = f'*Tipo de Dano*: {damage_types}\n'
+        return damage_types
+
+    def sheet_power_multiplier(self):
+        power_multiplier = ''
+        if self.power_multiplier > 0:
+            power_multiplier = f' +[x{self.power_multiplier:.2f}]'
+        return power_multiplier
+
+    def sheet_requirements(self):
+        requirements = '\n'
         if self.__requirements:
             requirements = '\n'.join(
                 [f'  {k}: {v}' for k, v in self.__requirements.items()]
             )
             requirements = f'*Requisitos*:\n{requirements}\n'
-        if self.power_multiplier > 0:
-            power_multiplier = f' +[x{self.power_multiplier:.2f}]'
+        return requirements
+
+    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        damage_types = self.sheet_damage_types()
+        power_multiplier = self.sheet_power_multiplier()
+        requirements = self.sheet_requirements()
 
         text = (
             f'*Equipamento*: {self.name}\n'
@@ -301,3 +438,53 @@ if __name__ == '__main__':
     )
     print(sword)
     print(sword.to_dict())
+
+    sword = Equipment(
+        name='Espada Comparativa de Aço',
+        equip_type=EquipmentEnum.TWO_HANDS,
+        damage_types=[DamageEnum.SLASHING, 'FIRE'],
+        weight=15,
+        requirements={'Nível': 10, 'FOR': 13},
+        rarity='RARE',
+        _id='ffffffffffffffffffffffff',
+        bonus_strength=1,
+        bonus_dexterity=2,
+        bonus_constitution=3,
+        bonus_intelligence=4,
+        bonus_wisdom=5,
+        bonus_charisma=6,
+        bonus_hit_points=1,
+        bonus_initiative=2,
+        bonus_physical_attack=3,
+        bonus_precision_attack=4,
+        bonus_magical_attack=5,
+        bonus_physical_defense=6,
+        bonus_magical_defense=7,
+        bonus_hit=8,
+        bonus_evasion=9,
+    )
+    shield = Equipment(
+        name='Escudo Comparativo de Madeira',
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=[DamageEnum.SLASHING, 'FIRE'],
+        weight=15,
+        requirements={'Nível': 10, 'FOR': 13},
+        rarity='RARE',
+        _id='ffffffffffffffffffffffff',
+        bonus_strength=11,
+        bonus_dexterity=12,
+        bonus_constitution=13,
+        bonus_intelligence=14,
+        bonus_wisdom=15,
+        bonus_charisma=16,
+        bonus_hit_points=101,
+        bonus_initiative=102,
+        bonus_physical_attack=103,
+        bonus_precision_attack=104,
+        bonus_magical_attack=105,
+        bonus_physical_defense=106,
+        bonus_magical_defense=107,
+        bonus_hit=108,
+        bonus_evasion=109,
+    )
+    print('COMPARE:\n', sword.compare(shield))
