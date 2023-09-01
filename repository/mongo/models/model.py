@@ -67,7 +67,7 @@ class Model:
         self,
         _id: Union[int, ObjectId, str] = None,
         query: dict = None,
-        fields: Union[list, dict] = None,
+        fields: Union[dict, list, str] = None,
         partial: bool = True
     ) -> Any:
         if _id:
@@ -87,6 +87,8 @@ class Model:
             raise ValueError('Query esta vazia.')
         if not isinstance(query, dict):
             raise ValueError('Query precisa ser um dicionário.')
+        if isinstance(fields, str):
+            fields = [fields]
         if (result := self.database.find(self.collection, query, fields)):
             if fields and partial:
                 return result
