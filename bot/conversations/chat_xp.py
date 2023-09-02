@@ -20,6 +20,7 @@ from bot.decorators import (
     skip_if_no_singup_player,
     print_basic_infos
 )
+from bot.functions.char import add_xp
 from bot.functions.general import get_attribute_group_or_player
 
 from function.datetime import (
@@ -41,7 +42,6 @@ from repository.mongo import (
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
-    char_model = CharacterModel()
     group_model = GroupModel()
 
     user_name = update.effective_user.name
@@ -62,24 +62,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             print('XP em cooldown.')
             return
 
-    player_char = char_model.get(user_id)
-    group = group_model.get(chat_id)
-
     player.xp_cooldown = add_random_minutes_now(message_date)
     context.user_data[user_id] = player
     player_model.save(player)
 
-    level = player_char.base_stats.level
-    level_bonus = group.character_multiplier_xp * level
-    multiplier_xp = group.multiplier_xp
+    report_xp = add_xp(chat_id, user_id)
+    level_up = report_xp['level_up']
 
-    add_xp = int((randint(1, 10) + level_bonus) * multiplier_xp)
-
-    player_char.base_stats.xp = add_xp
-    char_model.save(player_char)
-    new_level = player_char.base_stats.level
-
-    if new_level > level:
+    if level_up:
+        group = report_xp['group']
+        new_level = report_xp['level']
         await update.effective_message.reply_text(
             f'Parabéns!!!\n'
             f'{user_name} passou de nível! '
@@ -90,9 +82,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             group.higher_level = new_level
             group_model.save(group)
     elif player.verbose:
+        xp = report_xp['xp']
+        player_char = report_xp['char']
         try:
             await update.effective_user.send_message(
-                f'Você ganhou {add_xp} de XP.\n'
+                f'Você ganhou {xp} de XP.\n'
                 f'Experiência: {player_char.bs.show_xp}',
                 disable_notification=silent
             )
