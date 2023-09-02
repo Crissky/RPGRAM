@@ -144,6 +144,23 @@ class Model:
 
         return result
 
+    def exists(self, _id: Union[int, ObjectId, str]) -> bool:
+        if _id:
+            if isinstance(_id, ObjectId):
+                query = {'_id': _id}
+            elif ObjectId.is_valid(_id):
+                query = {'_id': ObjectId(_id)}
+            elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
+                query = {self.alternative_id: _id}
+            else:
+                raise ValueError(
+                    'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
+                    'uma string com 24 caracteres que representa um ObjectId.'
+                    f'ID: {_id}, Tipo: {type(_id)}'
+                )
+
+        return bool(self.database.count(self.collection, query))
+
     def __populate_load(self, dict_obj: dict):
         '''Função que popula os campos do objeto que são outras classes e que 
         no banco são salvos somente a sua chave. Esses campo que serão 
