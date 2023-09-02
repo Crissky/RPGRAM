@@ -21,6 +21,7 @@ from bot.decorators import (
     need_singup_group,
     print_basic_infos
 )
+from bot.functions.char import add_xp
 
 from bot.functions.general import get_attribute_group_or_player
 from telegram.ext import ConversationHandler
@@ -53,7 +54,10 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     now = get_brazil_time_now()
 
     if now.hour >= spawn_start_time and now.hour < spawn_end_time:
-        print(f'Evento de item inicia em {minutes_in_seconds // 60} minutos.')
+        print(
+            f'{now}: '
+            f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
+        )
         context.job_queue.run_once(
             callback=job_find_treasure,
             when=minutes_in_seconds,
@@ -129,12 +133,37 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         player_bag.add(item)
         bag_model.save(player_bag)
+
+        text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN)
+        text_find_treasure_finding = choice(
+            REPLY_TEXTS_FIND_TREASURE_FINDING
+        ).format(user_name=user_name)
+
+        text = f'{text_find_treasure_open}\n\n'
+        text += f'{text_find_treasure_finding}\n'
+        text += f'{markdown_item_sheet}\n\n'
+
+        min_xp = group_level
+        max_xp = int(group_level * 1.5)
+        report_xp = add_xp(chat_id, user_id, min_xp=min_xp, max_xp=max_xp)
+        level_up = report_xp['level_up']
+        if level_up:
+            new_level = report_xp['level']
+            text += (
+                f'Parabéns!!!\n'
+                f'Você passou de nível! '
+                f'Seu personagem agora está no nível {new_level}\.'
+            )
+        else:
+            xp = report_xp['xp']
+            player_char = report_xp['char']
+            text += (
+                f'Você ganhou {xp} de XP\.\n'
+                f'Experiência: {player_char.bs.show_xp}'
+            )
+
         await query.edit_message_text(
-            text=(
-                f'{choice(REPLY_TEXTS_FIND_TREASURE_OPEN)}\n\n'
-                f'{choice(REPLY_TEXTS_FIND_TREASURE_FINDING).format(user_name=user_name)}\n'
-                f'{markdown_item_sheet}'
-            ),
+            text=text,
             parse_mode=ParseMode.MARKDOWN_V2
         )
     return ConversationHandler.END
