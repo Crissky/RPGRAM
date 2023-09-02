@@ -159,7 +159,7 @@ class Equipment(StatsBooster):
 
         # DIFFs
         power_diff = (self.power - other_equipment.power)
-        
+
         strength_diff = (self.strength - other_equipment.strength)
         dexterity_diff = (self.dexterity - other_equipment.dexterity)
         constitution_diff = (self.constitution - other_equipment.constitution)
