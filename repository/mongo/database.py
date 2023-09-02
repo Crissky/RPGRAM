@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Any, Union
 from pymongo import MongoClient
 from pymongo.cursor import Cursor
 from pymongo.results import InsertOneResult, UpdateResult, DeleteResult
@@ -39,9 +39,9 @@ class Database:
 
     def delete(self, collection: str, query: dict) -> DeleteResult:
         return self.database[collection].delete_one(filter=query)
-    
-    def count(self, collection: str, query: dict) -> int:
-        return self.database[collection].count_documents(filter=query)
+
+    def count(self, collection: str, query: dict, **kwargs: Any) -> int:
+        return self.db[collection].count_documents(filter=query, **kwargs)
 
     @classmethod
     def get_instance(cls):
