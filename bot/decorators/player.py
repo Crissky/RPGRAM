@@ -11,7 +11,7 @@ def need_singup_player(callback):
         player_model = PlayerModel()
         user_id = update.effective_user.id
 
-        if player_model.get(user_id):
+        if player_model.exists(user_id):
             print('\tAUTORIZADO - USUÁRIO POSSUI CONTA.')
             return await callback(update, context)
         else:
@@ -30,7 +30,7 @@ def skip_if_no_singup_player(callback):
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
 
-        if player_model.get(user_id):
+        if player_model.exists(user_id):
             return await callback(update, context)
         else:
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - NO ACCOUNT')

@@ -11,7 +11,7 @@ def need_have_char(callback):
         char_model = CharacterModel()
         user_id = update.effective_user.id
 
-        if char_model.get(user_id):
+        if char_model.exists(user_id):
             print('\tAUTORIZADO - USUÁRIO POSSUI PERSONAGEM.')
             return await callback(update, context)
         else:
@@ -30,7 +30,7 @@ def skip_if_no_have_char(callback):
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
 
-        if char_model.get(user_id):
+        if char_model.exists(user_id):
             return await callback(update, context)
         else:
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - NO CHAR')

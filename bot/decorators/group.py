@@ -11,7 +11,7 @@ def need_singup_group(callback):
         group_model = GroupModel()
         chat_id = update.effective_chat.id
 
-        if group_model.get(chat_id):
+        if group_model.exists(chat_id):
             print('\tAUTORIZADO - GRUPO POSSUI CADASTRO.')
             return await callback(update, context)
         else:
@@ -29,7 +29,7 @@ def skip_if_no_singup_group(callback):
         group_model = GroupModel()
         chat_id = update.effective_chat.id
 
-        if group_model.get(chat_id):
+        if group_model.exists(chat_id):
             return await callback(update, context)
         else:
             print(f'\tSKIPPED in CHAT: {chat_id} - NO ACCOUNT GROUP')
