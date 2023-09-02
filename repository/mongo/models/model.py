@@ -159,7 +159,7 @@ class Model:
                     f'ID: {_id}, Tipo: {type(_id)}'
                 )
 
-        return bool(self.database.count(self.collection, query))
+        return bool(self.database.count(self.collection, query, limit=1))
 
     def __populate_load(self, dict_obj: dict):
         '''Função que popula os campos do objeto que são outras classes e que 
