@@ -55,7 +55,7 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 
     if now.hour >= spawn_start_time and now.hour < spawn_end_time:
         print(
-            f'{now}: '
+            f'JOB_CREATE_FIND_TREASURE() - {now}: '
             f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
         )
         context.job_queue.run_once(
