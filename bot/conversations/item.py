@@ -24,8 +24,10 @@ from bot.decorators import (
 
 from bot.functions.general import get_attribute_group_or_player
 from telegram.ext import ConversationHandler
+from function.datetime import get_brazil_time_now
 
 from repository.mongo import BagModel, ItemModel
+from repository.mongo import GroupModel
 from repository.mongo.populate.item import create_random_item
 from rpgram import Bag, Consumable
 from rpgram.boosters import Equipment
@@ -41,15 +43,29 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
     Está função é chamada em cada 00 e 30 minutos de cada hora.
     '''
+    group_model = GroupModel()
     job = context.job
-    chat_id = job.chat_id
+    chat_id = job.chat_id  # chat_id vem como string
     minutes_in_seconds = randint(1, 29) * 60
-    context.job_queue.run_once(
-        callback=job_find_treasure,
-        when=minutes_in_seconds,
-        name='JOB_CREATE_EVENTE_TREASURE',
-        chat_id=chat_id,
-    )
+    group = group_model.get(int(chat_id))
+    spawn_start_time = group.spawn_start_time
+    spawn_end_time = group.spawn_end_time
+    now = get_brazil_time_now()
+
+    if now.hour >= spawn_start_time and now.hour < spawn_end_time:
+        print(f'Evento de item inicia em {minutes_in_seconds // 60} minutos.')
+        context.job_queue.run_once(
+            callback=job_find_treasure,
+            when=minutes_in_seconds,
+            name='JOB_CREATE_EVENTE_TREASURE',
+            chat_id=chat_id,
+        )
+    else:
+        print(
+            f'Evento skipado, pois está fora do horário de spawn do grupo\n'
+            f'[{chat_id}] {group.name}: Hora: {now.hour}:{now.minute}\n'
+            f'Horário de spawn: {spawn_start_time}H - {spawn_end_time}H.'
+        )
 
 
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
