@@ -4,7 +4,7 @@ Módulo responsável por gerenciar o comando de configuração de grupo.
 
 
 from telegram import Update
-from telegram.constants import ChatAction
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_group import COMMANDS
@@ -47,6 +47,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         group['VERBOSE'] = 'false'
+        group['SILENT'] = 'false'
         group['START_TIME'] = '6'
         group['END_TIME'] = '20'
         group['MULTIPLIER_XP'] = '1'
@@ -59,8 +60,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
     elif len(args) != 2:
         await update.effective_message.reply_text(
-            'Envie o ATRIBUTO e o VALOR que deseja configurar.',
-            disable_notification=silent
+            'Envie o ATRIBUTO e o VALOR que deseja configurar\.\n'
+            'Atributos: `VERBOSE`, `SILENT`, `START_TIME`, `END_TIME`, '
+            '`MULTIPLIER_XP`, `CHAR_MULTIPLIER_XP`\.',
+            disable_notification=silent,
+            parse_mode=ParseMode.MARKDOWN_V2
         )
 
 
