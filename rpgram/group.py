@@ -18,7 +18,8 @@ class Group:
         spawn_start_time: int = 6,
         spawn_end_time: int = 20,
         multiplier_xp: float = 1.0,
-        character_multiplier_xp: float = 1.0,  # multiplicador do bônus de xp pelo nível do Personagem
+        # multiplicador do bônus de xp pelo nível do Personagem
+        character_multiplier_xp: float = 1.0,
         higher_level: int = 1,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -72,6 +73,11 @@ class Group:
             value = int(value)
             if value > 24 or value < 0:
                 raise ValueError(f'Forneça um valor entre 0 e 24')
+            elif value < self.spawn_start_time:
+                raise ValueError(
+                    f'Forneça um valor maior que o start_time: '
+                    f'"{self.spawn_start_time}".'
+                )
             self.spawn_end_time = value
         elif key in ['MULTIPLIER_XP', 'XP']:
             value = float(value)
@@ -95,10 +101,10 @@ class Group:
             f'Silencioso: {self.silent}\n'
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
             f'Hora de Fim de Spawn: {self.spawn_end_time}h\n'
-            f'ID: {self.__id}\n'
             f'Multiplicador de XP: {self.multiplier_xp:.2f}\n'
             f'Mult. de XP por Nível: '
             f'{self.character_multiplier_xp:.2f}\n'
+            f'ID: {self.__id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
         )
