@@ -39,6 +39,9 @@ class Database:
 
     def delete(self, collection: str, query: dict) -> DeleteResult:
         return self.database[collection].delete_one(filter=query)
+    
+    def count(self, collection: str, query: dict) -> int:
+        return self.database[collection].count_documents(filter=query)
 
     @classmethod
     def get_instance(cls):
