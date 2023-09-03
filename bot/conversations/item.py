@@ -32,6 +32,7 @@ from bot.decorators import (
 from bot.functions.char import add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
 from telegram.ext import ConversationHandler
+from constant.text import TEXT_SEPARATOR
 from function.datetime import get_brazil_time_now
 
 from repository.mongo import BagModel, GroupModel, ItemModel
@@ -126,20 +127,37 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 player_id=user_id,
             )
 
-        item = create_random_item(group_level)
-        if isinstance(item, int):
-            return await activated_trap(item, user_id, user_name, query)
-        elif isinstance(item.item, Equipment):
-            items_model.save(item.item)
-            markdown_item_sheet = item.get_all_sheets(
-                verbose=True, markdown=True
-            )
-        elif isinstance(item.item, Consumable):
-            markdown_item_sheet = item.get_sheet(
-                verbose=True, markdown=True
+        items = create_random_item(group_level)
+        if isinstance(items, int):
+            return await activated_trap(items, user_id, user_name, query)
+        elif isinstance(items, list):
+            markdown_item_sheet = ''
+            for item in items:
+                if isinstance(item.item, Equipment):
+                    items_model.save(item.item)
+                    markdown_item_sheet += item.get_all_sheets(
+                        verbose=True, markdown=True
+                    )
+                elif isinstance(item.item, Consumable):
+                    markdown_item_sheet += item.get_sheet(
+                        verbose=True, markdown=True
+                    )
+                else:
+                    raise TypeError(
+                        f'Variável item é do tipo "{type(item)}", mas precisa '
+                        f'ser do tipo "Equipment" ou "Consumable".\n'
+                        f'Item: {item}'
+                    )
+                markdown_item_sheet += f'\n{TEXT_SEPARATOR}\n'
+                player_bag.add(item)
+        else:
+            raise TypeError(
+                f'Variável items é do tipo "{type(items)}", mas precisar ser '
+                f'do tipo "int" para dano de armadilhas ou do tipo "list" '
+                f'para uma lista de itens que o jogador encontrou no baú.\n'
+                f'Items: {items}.'
             )
 
-        player_bag.add(item)
         bag_model.save(player_bag)
 
         text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN)

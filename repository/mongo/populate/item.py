@@ -60,7 +60,7 @@ def random_group_level(level: int) -> int:
     return max(new_level, 1)
 
 
-def choice_type_item() -> str:
+def choice_type_item(no_trap: bool = False) -> str:
     '''Função que retorna um tipo de item aleatório.
     O tipo do item é retornado com base em sua propabilidade.
     '''
@@ -69,7 +69,35 @@ def choice_type_item() -> str:
         'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
         'RING': 25, 'NECKLACE': 25, 'TRAP': 10,
     }
+
+    if no_trap:
+        types_item.pop('TRAP')
+
     return weighted_choice(**types_item)
+
+
+def choice_total_times(min_times: int = 1, max_times: int = 5) -> int:
+    '''Função que retorna um valor inteiro aleatério entre 
+    min_times e max_times de maneira poderada, em que os valores mais próximos 
+    de min_times tem maior chance de ocorrer.
+    Não funciona para um número grande de elementos. 
+    Acima de 19 elementos, haverão elementos que terão probabildiade zero de 
+    ser escolhido.
+
+    '''
+    if min_times == max_times:
+        return min_times
+    elif min_times > max_times:
+        raise ValueError('"min_times" deve ser menor ou igual a "max_times".')
+
+    total_numbers = max_times - min_times + 1
+    base_prob = total_numbers * 100 * 2
+    numbers_probs = {
+        str(n): int(base_prob := base_prob // 1.5)
+        for n in range(min_times, max_times+1)
+    }
+
+    return int(weighted_choice(**numbers_probs))
 
 
 def choice_rarity(group_level: int) -> str:
@@ -605,14 +633,24 @@ def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
     group_level = random_group_level(group_level)
     choiced_item = choice_type_item()
     equipment_types = [e.name for e in EquipmentEnum]
-    if choiced_item == 'CONSUMABLE':
-        item = create_random_consumable(group_level)
-    elif choiced_item == 'TRAP':
-        item = create_random_trap(group_level)
-    elif choiced_item in equipment_types:
-        item = create_random_equipment(choiced_item, group_level)
+    if choiced_item == 'TRAP':
+        items = create_random_trap(group_level)
+    else:
+        times = choice_total_times()
+        items = []
+        for _ in range(times):
+            choiced_item = choice_type_item(no_trap=True)
+            if choiced_item == 'CONSUMABLE':
+                item = create_random_consumable(group_level)
+            elif choiced_item in equipment_types:
+                item = create_random_equipment(choiced_item, group_level)
+            else:
+                raise ValueError(
+                    f'O item "{choiced_item}" não foi encontrado.'
+                )
+            items.append(item)
 
-    return item
+    return items
 
 
 if __name__ == '__main__':
