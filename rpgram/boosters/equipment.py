@@ -288,7 +288,7 @@ class Equipment(StatsBooster):
             requirements = '\n'.join(
                 [f'  {k}: {v}' for k, v in self.__requirements.items()]
             )
-            requirements = f'*Requisitos*:\n{requirements}\n'
+            requirements = f'*Requisitos*:\n{requirements}\n\n'
         return requirements
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
