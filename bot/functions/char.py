@@ -57,6 +57,11 @@ def add_xp(
     char_model.save(char)
     new_level = char.base_stats.level
 
+    if new_level > group.higher_level:
+        group.higher_level = new_level
+        group_model = GroupModel()
+        group_model.save(group)
+
     return dict(
         level_up=new_level > level,
         level=new_level,
@@ -78,10 +83,10 @@ def add_damage(damage: int, user_id: int = None, char: BaseCharacter = None):
     char_model = CharacterModel()
     if user_id and char is None:
         char = char_model.get(user_id)
-    
+
     char.combat_stats.hp = -(damage)
     char_model.save(char)
-    
+
     return dict(
         char=char,
         damage=damage,
