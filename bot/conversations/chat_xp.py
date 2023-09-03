@@ -4,7 +4,6 @@ mensagens nos grupos.
 '''
 
 
-from random import randint
 
 from telegram import Update
 from telegram.error import Forbidden
@@ -30,8 +29,6 @@ from function.datetime import (
 )
 
 from repository.mongo import (
-    GroupModel,
-    CharacterModel,
     PlayerModel
 )
 
@@ -42,7 +39,6 @@ from repository.mongo import (
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
-    group_model = GroupModel()
 
     user_name = update.effective_user.name
     user_id = update.effective_user.id
@@ -70,7 +66,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     level_up = report_xp['level_up']
 
     if level_up:
-        group = report_xp['group']
         new_level = report_xp['level']
         await update.effective_message.reply_text(
             f'Parabéns!!!\n'
