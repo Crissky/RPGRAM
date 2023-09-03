@@ -10,6 +10,7 @@ from bson import ObjectId
 
 from rpgram import Dice
 from rpgram.characters import BaseCharacter
+from rpgram.enums import EmojiEnum
 from rpgram.errors import (
     BattleIsNotOverError,
     CurrentPlayerTurnError,
@@ -403,14 +404,14 @@ class Battle:
     def get_char_emojis(self, character: BaseCharacter) -> str:
         text = ''
         if self.in_blue_team(character):
-            text = '🔵'
+            text = EmojiEnum.TEAM_BLUE.value
         elif self.in_red_team(character):
-            text = '🔴'
+            text = EmojiEnum.TEAM_RED.value
         else:
-            text = '🔘'
+            text = EmojiEnum.TEAM_WHITE.value
 
         if character.is_dead():
-            text += '☠️'
+            text += EmojiEnum.DEAD.value
 
         return text
 

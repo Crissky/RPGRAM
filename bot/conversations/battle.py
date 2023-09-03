@@ -36,6 +36,7 @@ from bot.constants.battle import (
     REACTIONS_LABELS,
     TEAMS,
 )
+from rpgram.enums import EmojiEnum
 from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
@@ -312,12 +313,14 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if report['defense']['is_miss']:
             text += f'{target_char.name} esquivou do "{acao}"!\n\n'
             text += (
-                f'{attacker_char.name} {total_hit} ({hit})🎯 '
+                f'{attacker_char.name} {total_hit} '
+                f'({hit}){EmojiEnum.HIT.value} '
                 f'pontos de ACERTO.\n'
                 f'Chance de ACERTO: {accuracy:.2f}%.\n'
             )
             text += (
-                f'{target_char.name} {total_evasion} ({evasion})🥾 '
+                f'{target_char.name} {total_evasion} '
+                f'({evasion}){EmojiEnum.EVASION.value} '
                 f'pontos de EVASÃO.\n'
                 f'Valor da EVASÃO: {dodge_score:.2f}%.\n'
             )
@@ -328,9 +331,12 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f'{target_char.name} falhou em esquivar '
                     f'e como penalidade bloqueou somente com '
                     f'50% ({half_def}){def_type} de defesa.\n\n'
-                    f'Chance de ACERTO: {accuracy:.2f}% [{total_hit}]🎯.\n'
+                    f'Chance de ACERTO: {accuracy:.2f}% [{total_hit}]'
+                    f'{EmojiEnum.HIT.value}.\n'
                     f'Valor da EVASÃO: '
-                    f'{dodge_score:.2f}% [{total_evasion}]🥾.\n\n'
+                    f'{dodge_score:.2f}% [{total_evasion}]'
+                    f'{EmojiEnum.EVASION.value}.'
+                    f'\n\n'
                 )
             text += (
                 f'{attacker_char.name} causou '
@@ -349,12 +355,15 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         elif damage < 0:
             text += (
                 f'{attacker_char.name} curou '
-                f'{-damage}💞 pontos de vida '
+                f'{-damage}{EmojiEnum.HEALING.value} pontos de vida '
                 f'de {target_char.name}.\n'
             )
 
-        text += f'\n{attacker_char.name}(🎲): {attacker_dice}.\n'
-        text += f'{target_char.name}(🎲): {target_dice}.\n'
+        text += (
+            f'\n{attacker_char.name}({EmojiEnum.DICE.value}): '
+            f'{attacker_dice}.\n'
+        )
+        text += f'{target_char.name}({EmojiEnum.DICE.value}): {target_dice}.\n'
 
         reply_markup = get_action_inline_keyboard()
         callback = SELECT_ACTION_ROUTES
@@ -433,13 +442,13 @@ def get_enter_battle_inline_keyboard():
     return InlineKeyboardMarkup([
         [
             InlineKeyboardButton(
-                "🔵ENTRAR NO TIME AZUL",
+                f'{EmojiEnum.TEAM_BLUE.value}ENTRAR NO TIME AZUL',
                 callback_data=CALLBACK_ENTER_BLUE_TEAM
             )
         ],
         [
             InlineKeyboardButton(
-                "🔴ENTRAR NO TIME VERMELHO",
+                f'{EmojiEnum.TEAM_RED.value}ENTRAR NO TIME VERMELHO',
                 callback_data=CALLBACK_ENTER_RED_TEAM
             )
         ],
