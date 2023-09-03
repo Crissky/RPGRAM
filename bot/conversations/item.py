@@ -2,13 +2,20 @@ import re
 
 from random import choice, randint
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Update
+)
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
 )
 from bot.constants.item import (
+    REPLY_TEXTS_FIND_TRAP_DAMAGE,
+    REPLY_TEXTS_FIND_TRAP_OPEN,
     REPLY_TEXTS_FIND_TREASURE_START,
     REPLY_TEXTS_FIND_TREASURE_MIDDLE,
     REPLY_TEXTS_FIND_TREASURE_END,
@@ -16,19 +23,18 @@ from bot.constants.item import (
     REPLY_TEXTS_FIND_TREASURE_FINDING,
     REPLY_TEXTS_IGNORE_TREASURE,
 )
+from bot.constants.rest import COMMANDS as rest_commands
 from bot.decorators import (
     need_have_char,
     need_singup_group,
     print_basic_infos
 )
-from bot.functions.char import add_xp
-
+from bot.functions.char import add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
 from telegram.ext import ConversationHandler
 from function.datetime import get_brazil_time_now
 
-from repository.mongo import BagModel, ItemModel
-from repository.mongo import GroupModel
+from repository.mongo import BagModel, GroupModel, ItemModel
 from repository.mongo.populate.item import create_random_item
 from rpgram import Bag, Consumable
 from rpgram.boosters import Equipment
@@ -121,7 +127,9 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
         item = create_random_item(group_level)
-        if isinstance(item.item, Equipment):
+        if isinstance(item, int):
+            return await activated_trap(item, user_id, user_name, query)
+        elif isinstance(item.item, Equipment):
             items_model.save(item.item)
             markdown_item_sheet = item.get_all_sheets(
                 verbose=True, markdown=True
@@ -166,6 +174,34 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text=text,
             parse_mode=ParseMode.MARKDOWN_V2
         )
+    return ConversationHandler.END
+
+
+async def activated_trap(
+    damage: int,
+    user_id: int,
+    user_name: str,
+    query: CallbackQuery
+):
+    damage_report = add_damage(damage, user_id=user_id)
+    char = damage_report['char']
+    text_find_trap_open = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
+    text_find_trap_damage = choice(REPLY_TEXTS_FIND_TRAP_DAMAGE).format(
+        user_name=user_name
+    )
+    text = (
+        f'{text_find_trap_open}\n\n'
+        f'{text_find_trap_damage} "{damage}" pontos de dano.\n\n'
+    )
+    if damage_report['dead']:
+        text += 'Seus pontos de vida chegaram a zero.\n'
+        text += (
+            f'Use o comando /{rest_commands[0]} '
+            f'para descansar e poder continuar a sua jornada.\n\n'
+        )
+    text += f'HP: {char.combat_stats.show_hit_points}'
+    await query.edit_message_text(text=text)
+
     return ConversationHandler.END
 
 

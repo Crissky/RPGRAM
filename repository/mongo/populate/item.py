@@ -67,7 +67,7 @@ def choice_type_item() -> str:
     types_item = {
         'CONSUMABLE': 1000, 'HELMET': 100, 'ONE_HAND': 120,
         'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
-        'RING': 25, 'NECKLACE': 25,
+        'RING': 25, 'NECKLACE': 25, 'TRAP': 10,
     }
     return weighted_choice(**types_item)
 
@@ -592,6 +592,13 @@ def create_random_consumable(group_level: int):
     return item
 
 
+def create_random_trap(group_level: int) -> int:
+    trap_level = random_group_level(group_level)
+    trap_degree = randint(5, 15)
+
+    return trap_level * trap_degree
+
+
 def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
@@ -600,6 +607,8 @@ def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
     equipment_types = [e.name for e in EquipmentEnum]
     if choiced_item == 'CONSUMABLE':
         item = create_random_consumable(group_level)
+    elif choiced_item == 'TRAP':
+        item = create_random_trap(group_level)
     elif choiced_item in equipment_types:
         item = create_random_equipment(choiced_item, group_level)
 

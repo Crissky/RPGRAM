@@ -64,3 +64,26 @@ def add_xp(
         group=group,
         xp=xp
     )
+
+
+def add_damage(damage: int, user_id: int = None, char: BaseCharacter = None):
+    '''Função que adiciona dano ao personagem.
+    '''
+    if all((user_id is None, char is None)):
+        raise ValueError(
+            'Forneça um "user_id" ou "char". '
+            'Ao menos um dos dois não podem ser None.'
+        )
+
+    char_model = CharacterModel()
+    if user_id and char is None:
+        char = char_model.get(user_id)
+    
+    char.combat_stats.hp = -(damage)
+    char_model.save(char)
+    
+    return dict(
+        char=char,
+        damage=damage,
+        dead=char.is_dead()
+    )
