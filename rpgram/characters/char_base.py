@@ -14,6 +14,7 @@ class BaseCharacter:
         char_name: str,
         classe: Classe,
         race: Race,
+        player_id: int = None,
         equips: Equips = None,
         level: int = 1,
         xp: int = 0,
@@ -31,7 +32,7 @@ class BaseCharacter:
         if isinstance(_id, str):
             _id = ObjectId(_id)
         if equips is None:
-            equips = Equips(_id=ObjectId())
+            equips = Equips(player_id=player_id, _id=ObjectId())
 
         self.__name = char_name
         self.__id = _id
@@ -225,6 +226,7 @@ if __name__ == '__main__':
         bonus_charisma=150,
     )
     equips = Equips(
+        player_id=123,
         helmet=helmet,
         left_hand=sword,
         armor=armor,

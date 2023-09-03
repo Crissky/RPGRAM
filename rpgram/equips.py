@@ -19,6 +19,7 @@ class Equips:
 
     def __init__(
         self,
+        player_id: int,
         _id: Union[str, ObjectId] = None,
         helmet: Equipment = None,
         left_hand: Equipment = None,
@@ -33,6 +34,7 @@ class Equips:
         if isinstance(_id, str):
             _id = ObjectId(_id)
 
+        self.__player_id = player_id
         self.__id = _id
 
         self.__helmet = None
@@ -300,6 +302,7 @@ class Equips:
 
     def to_dict(self):
         return dict(
+            player_id=self.__player_id,
             _id=self.__id,
             helmet_id=self.__helmet._id if self.__helmet else None,
             left_hand_id=self.__left_hand._id if self.__left_hand else None,
@@ -445,7 +448,7 @@ if __name__ == '__main__':
         bonus_charisma=150,
     )
 
-    equips = Equips(helmet=helmet)
+    equips = Equips(player_id=123, helmet=helmet)
     equips.equip(sword)
     equips.equip(armor)
     equips.equip(boots)
