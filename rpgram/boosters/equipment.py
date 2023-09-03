@@ -6,6 +6,7 @@ from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 from rpgram.enums import DamageEnum, EquipmentEnum, RarityEnum
+from rpgram.enums import EmojiEnum
 
 
 class Equipment(StatsBooster):
@@ -216,7 +217,8 @@ class Equipment(StatsBooster):
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
             f'{damage_types}'
-            f'*Poder*: {self.power} {{{power_diff:+}}}{power_multiplier}\n'
+            f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
+            f'{{{power_diff:+}}}{power_multiplier}\n'
             f'*Peso*: {self.weight:.2f}w\n'
             f'{requirements}'
         )
@@ -300,7 +302,8 @@ class Equipment(StatsBooster):
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
             f'{damage_types}'
-            f'*Poder*: {self.power}{power_multiplier}\n'
+            f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
+            f'{power_multiplier}\n'
             f'*Peso*: {self.weight:.2f}w\n'
             f'{requirements}'
         )

@@ -6,6 +6,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters import Equipment
 from rpgram import Consumable
+from rpgram.enums import EmojiEnum
 
 ItemsTypes = Union[Equipment, Consumable]
 
@@ -48,7 +49,10 @@ class Item:
         text = f'{self.quantity:02}x *{self.name}*'
 
         if verbose:
-            text += f' ({self.weight:.2f}w)'
+            if isinstance(self.item, Equipment):
+                text += f' ({self.item.power}{EmojiEnum.EQUIPMENT_POWER.value})'
+            elif isinstance(self.item, Consumable):
+                text += f' ({self.weight:.2f}w)'
         # text += f'\n'
 
         if not markdown:
