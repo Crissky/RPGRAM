@@ -274,7 +274,9 @@ class Equipment(StatsBooster):
     def sheet_damage_types(self):
         damage_types = ''
         if self.damage_types:
-            damage_types = '/'.join([d.value for d in self.damage_types])
+            damage_types = '/'.join(
+                [d.value.title() for d in self.damage_types]
+            )
             damage_types = f'*Tipo de Dano*: {damage_types}\n'
         return damage_types
 
