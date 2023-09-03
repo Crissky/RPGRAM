@@ -57,6 +57,7 @@ BRIGHT_NECKLACE = Equipment(
     bonus_charisma=150,
 )
 EQUIPS = Equips(
+    player_id=123,
     helmet=STEEL_HELMET,
     left_hand=STEEL_GIANT_SWORD,
     armor=STEEL_ARMOR,

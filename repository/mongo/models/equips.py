@@ -58,6 +58,7 @@ if __name__ == '__main__':
     necklace = equipment_model.get('999999999999999999999999')
     print(necklace)
     equips = Equips(
+        player_id=123,
         _id='ffffffffffffffffffffffff',
         helmet=helmet,
         left_hand=sword,

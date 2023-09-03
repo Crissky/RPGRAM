@@ -32,6 +32,7 @@ class PlayerCharacter(BaseCharacter):
             char_name=char_name,
             classe=classe,
             race=race,
+            player_id=player_id,
             equips=equips,
             level=level,
             xp=xp,
