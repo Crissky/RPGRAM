@@ -105,7 +105,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     for index, item in enumerate(items):
         markdown_text += f'*Ⅰ{(index + 1)}:* '
         markdown_text += item.get_sheet(verbose=True, markdown=True)
-        markdown_text += '\n'
         items_buttons.append(InlineKeyboardButton(
             text=f'Item {index + 1}',
             callback_data=(

@@ -53,7 +53,7 @@ class Item:
                 text += f' ({self.item.power}{EmojiEnum.EQUIPMENT_POWER.value})'
             elif isinstance(self.item, Consumable):
                 text += f' ({self.weight:.2f}w)'
-        # text += f'\n'
+        text += f'\n'
 
         if not markdown:
             text = remove_bold(text)

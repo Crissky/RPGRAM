@@ -148,7 +148,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         f'ser do tipo "Equipment" ou "Consumable".\n'
                         f'Item: {item}'
                     )
-                markdown_item_sheet += f'\n{TEXT_SEPARATOR}\n'
+                markdown_item_sheet += f'{TEXT_SEPARATOR}\n'
                 player_bag.add(item)
         else:
             raise TypeError(
