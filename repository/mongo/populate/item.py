@@ -1,7 +1,7 @@
 from bson import ObjectId
 from collections import defaultdict
 from random import choice, choices, random, randint
-from typing import Dict, Hashable, Tuple, Union
+from typing import Dict, Hashable, List, Tuple, Union
 from repository.mongo import ItemModel
 
 from rpgram.boosters import Equipment
@@ -469,7 +469,7 @@ def get_equipment_damage_type(weapon: str, rarity: str):
         chance = .5
         turns = BONUS_RARITY[rarity] - 1
         damages_list = [
-            e.name for e in DamageEnum
+            e for e in DamageEnum
             if e not in [DamageEnum.SLASHING, DamageEnum.BLUDGEONING,
                          DamageEnum.HITTING, DamageEnum.PIERCING]
         ]
@@ -481,7 +481,7 @@ def get_equipment_damage_type(weapon: str, rarity: str):
             damage_types = [DamageEnum.PIERCING]
         elif weapon in ['WAND']:
             damage_types = [DamageEnum.MAGIC]
-            damages_list.remove(DamageEnum.MAGIC.name)
+            damages_list.remove(DamageEnum.MAGIC)
 
         if weapon in ['WAND', 'STAFF']:
             turns += 1
@@ -495,6 +495,32 @@ def get_equipment_damage_type(weapon: str, rarity: str):
                 chance /= 2
 
     return damage_types
+
+
+def get_equipment_damage_type_name(damage_types: List[DamageEnum]) -> str:
+    '''Retorna os nomes dos tipos de dano de uma arma. para ser usado
+    como parte do nome do equipamento.
+    '''
+    text = ''
+    if isinstance(damage_types, list):
+        damage_list = sorted([
+            e.name.title()
+            for e in damage_types
+            if e not in [DamageEnum.SLASHING, DamageEnum.BLUDGEONING,
+                         DamageEnum.HITTING, DamageEnum.PIERCING]
+        ])
+        if damage_list:
+            priority_damage_enums = [
+                DamageEnum.MAGIC, DamageEnum.BLESSING, DamageEnum.DIVINE
+            ]
+            for damage_enum in priority_damage_enums:
+                damage_enum = damage_enum.name.title()
+                if damage_enum in damage_list:
+                    damage_list.remove(damage_enum)
+                    damage_list.insert(0, damage_enum)
+            text = f' of {" and ".join(damage_list)} '
+
+    return text
 
 
 def add_secret_stats(rarity: str, group_level: int):
@@ -586,9 +612,13 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
         equipment_dict[attribute] -= 1
 
     equip_name = equip_name.replace('_', ' ')
-    name = f'{rarity.title()} {material.title()} {equip_name.title()}'
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
     damage_types = get_equipment_damage_type(weapon, rarity)
+    damage_type_name = get_equipment_damage_type_name(damage_types)
+    name = (
+        f'{rarity.title()} {material.title()} {equip_name.title()}'
+        f'{damage_type_name}'
+    )
     secret_stats = add_secret_stats(rarity, group_level)
     equipment_dict.update(secret_stats)
     equipment = Equipment(
