@@ -4,7 +4,7 @@ Módulo responsável por gerenciar o comando de configuração de grupo.
 
 
 from telegram import Update
-from telegram.constants import ChatAction
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_player import COMMANDS
@@ -51,10 +51,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             f'{player}',
             disable_notification=silent
         )
+    elif len(args) == 1 and ('update' in args or 'atualizar' in args):
+        user_name = update.effective_user.name
+        player.name = user_name
+        player_model.save(player)
+        await update.effective_message.reply_text(
+            f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
+            f'{player}',
+            disable_notification=silent
+        )
     elif len(args) != 2:
         await update.effective_message.reply_text(
-            'Envie o ATRIBUTO e o VALOR que deseja configurar.',
-            disable_notification=silent
+            'Envie o ATRIBUTO e o VALOR que deseja configurar\.\n'
+            'Atributos: `VERBOSE`, `SILENT`\.',
+            disable_notification=silent,
+            parse_mode=ParseMode.MARKDOWN_V2
         )
 
 

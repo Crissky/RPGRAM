@@ -58,6 +58,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             f'{group}',
             disable_notification=silent
         )
+    elif len(args) == 1 and ('update' in args or 'atualizar' in args):
+        chat_name = update.effective_chat.effective_name
+        group.name = chat_name
+        group_model.save(group)
+        await update.effective_message.reply_text(
+            f'Informações do grupo "{chat_name}" foram atualizadas.\n\n'
+            f'{group}',
+            disable_notification=silent
+        )
     elif len(args) != 2:
         await update.effective_message.reply_text(
             'Envie o ATRIBUTO e o VALOR que deseja configurar\.\n'

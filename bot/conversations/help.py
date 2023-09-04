@@ -94,6 +94,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'    "multiplier_xp": decimal[0-5]. Multiplicador de XP.\n'
         f'    "char_multiplier_xp": decimal[0-10]. Multiplicador do bônus de '
         f'XP baseado no nível do personagem.\n'
+        f'Argumentos: [default]\n'
+        f'    Retorna a configuração do grupo para o padrão.\n'
+        f'Argumentos: [update]\n'
+        f'    Atualiza as informações do grupo.\n'
         f'Atalhos: {config_group_cmd}\n\n'
 
         f'*CONFIGURAÇÃO DO JOGADOR*: /{config_player_commands[0]}\n'
@@ -103,16 +107,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'privadas para o jogador.\n'
         f'    "silent": [true/false]. Configura se as notificações do bot no '
         f'chat privado terão som.\n'
+        f'Argumentos: [default]\n'
+        f'    Retorna a configuração do jogador para o padrão.\n'
+        f'Argumentos: [update]\n'
+        f'    Atualiza as informações do jogador.\n'
         f'Atalhos: {config_player_cmd}\n\n'
 
         f'*CRIAR BATALHA*: /{battle_commands[0]}\n'
         f'INFO: Inicia uma batalha no grupo.\n'
         f'Atalhos: {battle_cmd}\n\n'
-        
+
         f'*INICIAR DESCANSO*: /{rest_commands[0]}\n'
         f'INFO: Recupera HP do personagem a cada hora.\n'
         f'Atalhos: {rest_cmd}\n\n'
-        
+
         f'*BOLSA*: /{bag_commands[0]}\n'
         f'INFO: Mostra o conteúdo da bolsa.\n'
         f'Atalhos: {bag_cmd}\n\n'
