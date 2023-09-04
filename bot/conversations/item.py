@@ -8,7 +8,7 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
-from telegram.constants import ParseMode
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
@@ -111,6 +111,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador 
     que clicou no botão de investigar e salva o item em sua bolsa.
     '''
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     query = update.callback_query
     if query:
         chat_id = update.effective_chat.id
