@@ -176,8 +176,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if level_up:
             new_level = report_xp['level']
             text += (
-                f'Parabéns!!!\n'
-                f'Você passou de nível! '
+                f'Parabéns\!\!\!\n'
+                f'Você passou de nível\! '
                 f'Seu personagem agora está no nível {new_level}\.'
             )
         else:
