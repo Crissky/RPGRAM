@@ -86,6 +86,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     chat_id = job.chat_id
     silent = get_attribute_group_or_player(chat_id, 'silent')
+    print('job_find_treasure() - silent:', silent)
     text = choice(REPLY_TEXTS_FIND_TREASURE_START)
     text += choice(REPLY_TEXTS_FIND_TREASURE_MIDDLE)
     text += choice(REPLY_TEXTS_FIND_TREASURE_END)
