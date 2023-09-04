@@ -242,13 +242,20 @@ class Equips:
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
             f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
-            f'*Capacete*: {self.helmet.name if self.helmet else ""}\n'
-            f'*Mão Esquerda*: {self.left_hand.name if self.left_hand else ""}\n'
-            f'*Mão Direita*: {self.right_hand.name if self.right_hand else ""}\n'
-            f'*Armadura*: {self.armor.name if self.armor else ""}\n'
-            f'*Botas*: {self.boots.name if self.boots else ""}\n'
-            f'*Anel*: {self.ring.name if self.ring else ""}\n'
-            f'*Necklace*: {self.necklace.name if self.necklace else ""}\n'
+            f'*Capacete*: '
+            f'{self.helmet.name_and_power if self.helmet else ""}\n'
+            f'*Mão Esq.*: '
+            f'{self.left_hand.name_and_power if self.left_hand else ""}\n'
+            f'*Mão Dir.*: '
+            f'{self.right_hand.name_and_power if self.right_hand else ""}\n'
+            f'*Armadura*: '
+            f'{self.armor.name_and_power if self.armor else ""}\n'
+            f'*Botas*: '
+            f'{self.boots.name_and_power if self.boots else ""}\n'
+            f'*Anel*: '
+            f'{self.ring.name_and_power if self.ring else ""}\n'
+            f'*Necklace*: '
+            f'{self.necklace.name_and_power if self.necklace else ""}\n'
             f'*Peso*: {self.equipments_weight:.2f}w\n\n'
         )
 
