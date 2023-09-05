@@ -67,7 +67,7 @@ def choice_type_item(no_trap: bool = False) -> str:
     types_item = {
         'CONSUMABLE': 1000, 'HELMET': 100, 'ONE_HAND': 120,
         'TWO_HANDS': 120, 'ARMOR': 100, 'BOOTS': 100,
-        'RING': 25, 'NECKLACE': 25, 'TRAP': 10,
+        'RING': 25, 'NECKLACE': 25, 'TRAP': 100,
     }
 
     if no_trap:

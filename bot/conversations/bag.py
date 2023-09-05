@@ -246,7 +246,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         equipment = item.item
         try:
             old_equipments = player_character.equips.equip(equipment)
-            print('old_equipments', old_equipments)
             await query.answer(text=f'Você equipou "{equipment.name}".\n\n')
         except Exception as error:
             print(error)
