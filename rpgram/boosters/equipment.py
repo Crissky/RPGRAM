@@ -386,6 +386,10 @@ class Equipment(StatsBooster):
             self.multiplier_wisdom +
             self.multiplier_charisma
         ) - 6
+    
+    @property
+    def name_and_power(self) -> str:
+        return f'{self.name} ({self.power}{EmojiEnum.EQUIPMENT_POWER.value})'
 
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
