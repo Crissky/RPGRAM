@@ -168,6 +168,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     '''Edita a mensagem com as informações do item escolhido.
     '''
     bag_model = BagModel()
+    equips_model = EquipsModel()
     user_id = update.effective_user.id
     query = update.callback_query
     data = eval(query.data)
@@ -188,6 +189,8 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
     if isinstance(item.item, Equipment):
+        equips = equips_model.get(user_id)
+        markdown_text = equips.compare(item.item)
         use_text = '🗡️Equipar'
     elif isinstance(item.item, Consumable):
         use_text = '🧪Usar'
@@ -263,11 +266,14 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             old_hp = player_character.cs.show_hit_points
             consumable.use(player_character)
             new_hp = player_character.cs.show_hit_points
-            await query.answer(text=(
-                f'Você usou o item "{consumable.name}".\n'
-                f'Descrição: "{consumable.description}".\n\n'
-                f'HP: {old_hp} ››› {new_hp}.'
-            ), show_alert=True)
+            await query.answer(
+                text=(
+                    f'Você usou o item "{consumable.name}".\n'
+                    f'Descrição: "{consumable.description}".\n\n'
+                    f'HP: {old_hp} ››› {new_hp}.'
+                ),
+                show_alert=True
+            )
         except Exception as error:
             print(error)
             await query.answer(

@@ -90,14 +90,15 @@ class Equips:
                 old_equipments.append(self.__helmet)
             self.__helmet = new_equipment
         elif equip_type == EquipmentEnum.ONE_HAND:
-            if self.__left_hand is None:
-                self.__left_hand = new_equipment
-            elif self.__right_hand is None:
+            if self.__right_hand is None:
                 self.__right_hand = new_equipment
-            else:
-                old_equipments.append(self.__left_hand)
-                old_equipments.append(self.__right_hand)
+            elif self.__left_hand is None:
                 self.__left_hand = new_equipment
+            else:
+                old_equipments.append(self.__right_hand)
+                old_equipments.append(self.__left_hand)
+                self.__right_hand = new_equipment
+                self.__left_hand = None
         elif equip_type == EquipmentEnum.TWO_HANDS:
             if self.__left_hand is not None:
                 old_equipments.append(self.__left_hand)
@@ -238,6 +239,30 @@ class Equips:
             self.__bonus_evasion += int(e.bonus_evasion)
 
         self.notify_observers()
+
+    def compare(self, equipment: Equipment) -> str:
+        other_equipment = []
+        if equipment.equip_type == EquipmentEnum.HELMET:
+            other_equipment.append(self.helmet)
+        elif equipment.equip_type == EquipmentEnum.ONE_HAND:
+            other_equipment.append(self.right_hand)
+        elif equipment.equip_type == EquipmentEnum.TWO_HANDS:
+            other_equipment.extend([self.right_hand, self.left_hand])
+        elif equipment.equip_type == EquipmentEnum.ARMOR:
+            other_equipment.append(self.armor)
+        elif equipment.equip_type == EquipmentEnum.BOOTS:
+            other_equipment.append(self.boots)
+        elif equipment.equip_type == EquipmentEnum.RING:
+            other_equipment.append(self.ring)
+        elif equipment.equip_type == EquipmentEnum.NECKLACE:
+            other_equipment.append(self.necklace)
+
+        other_equipment = [e for e in other_equipment if e is not None]
+
+        if not other_equipment:
+            return equipment.get_sheet(True, True)
+        else:
+            return equipment.compare(*other_equipment)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
@@ -384,7 +409,6 @@ class Equips:
 
 
 if __name__ == '__main__':
-    
     helmet = Equipment(
         name='Capacete de Aço',
         equip_type=EquipmentEnum.HELMET,
@@ -399,9 +423,9 @@ if __name__ == '__main__':
         equip_type=EquipmentEnum.TWO_HANDS,
         damage_types=DamageEnum.SLASHING,
         weight=40,
-        bonus_physical_attack=30,
+        bonus_physical_attack=60,
         bonus_hit=15,
-        bonus_evasion=-10,
+        bonus_evasion=-20,
     )
     armor = Equipment(
         name='Armadura de Aço',
@@ -454,12 +478,34 @@ if __name__ == '__main__':
         weight=0.2,
         bonus_charisma=150,
     )
+    dagger = Equipment(
+        name='Adaga de Aço',
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=DamageEnum.SLASHING,
+        weight=40,
+        bonus_physical_attack=30,
+        bonus_hit=15,
+        bonus_evasion=-10,
+    )
+    shield = Equipment(
+        name='Escudo de Aço',
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=DamageEnum.BLUDGEONING,
+        weight=40,
+        bonus_physical_defense=30,
+        bonus_hit=15,
+        bonus_evasion=-10,
+    )
 
     equips = Equips(player_id=123, helmet=helmet)
-    equips.equip(sword)
+    equips.equip(dagger)
+    equips.equip(shield)
+    # equips.equip(dagger)
+    # equips.equip(sword)
     equips.equip(armor)
     equips.equip(boots)
     equips.equip(any_ring)
     equips.equip(necklace)
-    print(equips)
-    print(equips.to_dict())
+    print(equips.compare(sword))
+    # print(equips.get_sheet(True))
+    # print(equips.to_dict())
