@@ -145,75 +145,134 @@ class Equipment(StatsBooster):
         self.__requirements = requirements
         self.__rarity = rarity
 
-    def compare(self, other_equipment) -> str:
-        if self.equip_type != other_equipment.equip_type:
-            equip_hand = [EquipmentEnum.ONE_HAND, EquipmentEnum.TWO_HANDS]
-            if (
-                self.equip_type not in equip_hand or
-                other_equipment.equip_type not in equip_hand
-            ):
-                raise TypeError(
-                    f'Equipamentos são de tipos diferentes.'
-                    f'("{self.equip_type.name}" e '
-                    f'"{other_equipment.equip_type.name}")'
-                )
+    def compare(self, *others_equipment: List[StatsBooster]) -> str:
+        if isinstance(others_equipment, StatsBooster):
+            others_equipment = [others_equipment]
+
+        for other_equipment in others_equipment:
+            if self.equip_type != other_equipment.equip_type:
+                equips_hand = [EquipmentEnum.ONE_HAND, EquipmentEnum.TWO_HANDS]
+                if (
+                    self.equip_type not in equips_hand or
+                    other_equipment.equip_type not in equips_hand
+                ):
+                    raise TypeError(
+                        f'Equipamentos são de tipos diferentes.'
+                        f'("{self.equip_type.name}" e '
+                        f'"{other_equipment.equip_type.name}")'
+                    )
 
         # DIFFs
-        power_diff = (self.power - other_equipment.power)
+        other_names = []
+        other_power = 0
+        other_strength = 0
+        other_dexterity = 0
+        other_constitution = 0
+        other_intelligence = 0
+        other_wisdom = 0
+        other_charisma = 0
+        other_multiplier_strength = 1
+        other_multiplier_dexterity = 1
+        other_multiplier_constitution = 1
+        other_multiplier_intelligence = 1
+        other_multiplier_wisdom = 1
+        other_multiplier_charisma = 1
+        other_hp = 0
+        other_initiative = 0
+        other_physical_attack = 0
+        other_precision_attack = 0
+        other_magical_attack = 0
+        other_physical_defense = 0
+        other_magical_defense = 0
+        other_hit = 0
+        other_evasion = 0
 
-        strength_diff = (self.strength - other_equipment.strength)
-        dexterity_diff = (self.dexterity - other_equipment.dexterity)
-        constitution_diff = (self.constitution - other_equipment.constitution)
-        intelligence_diff = (self.intelligence - other_equipment.intelligence)
-        wisdom_diff = (self.wisdom - other_equipment.wisdom)
-        charisma_diff = (self.charisma - other_equipment.charisma)
+        for other_equipment in others_equipment:
+            other_names.append(other_equipment.name_and_power)
+            other_power += other_equipment.power
+            other_strength += other_equipment.strength
+            other_dexterity += other_equipment.dexterity
+            other_constitution += other_equipment.constitution
+            other_intelligence += other_equipment.intelligence
+            other_wisdom += other_equipment.wisdom
+            other_charisma += other_equipment.charisma
+            other_multiplier_strength += (
+                other_equipment.multiplier_strength - 1
+            )
+            other_multiplier_dexterity += (
+                other_equipment.multiplier_dexterity - 1
+            )
+            other_multiplier_constitution += (
+                other_equipment.multiplier_constitution - 1
+            )
+            other_multiplier_intelligence += (
+                other_equipment.multiplier_intelligence - 1
+            )
+            other_multiplier_wisdom += (
+                other_equipment.multiplier_wisdom - 1
+            )
+            other_multiplier_charisma += (
+                other_equipment.multiplier_charisma - 1
+            )
+            other_hp += other_equipment.hp
+            other_initiative += other_equipment.initiative
+            other_physical_attack += other_equipment.physical_attack
+            other_precision_attack += other_equipment.precision_attack
+            other_magical_attack += other_equipment.magical_attack
+            other_physical_defense += other_equipment.physical_defense
+            other_magical_defense += other_equipment.magical_defense
+            other_hit += other_equipment.hit
+            other_evasion += other_equipment.evasion
+
+        other_names = ' e '.join(other_names)
+        power_diff = (self.power - other_power)
+
+        strength_diff = (self.strength - other_strength)
+        dexterity_diff = (self.dexterity - other_dexterity)
+        constitution_diff = (self.constitution - other_constitution)
+        intelligence_diff = (self.intelligence - other_intelligence)
+        wisdom_diff = (self.wisdom - other_wisdom)
+        charisma_diff = (self.charisma - other_charisma)
 
         multiplier_strength_diff = (
-            self.multiplier_strength - other_equipment.multiplier_strength
+            self.multiplier_strength - other_multiplier_strength
         )
         multiplier_dexterity_diff = (
-            self.multiplier_dexterity - other_equipment.multiplier_dexterity
+            self.multiplier_dexterity - other_multiplier_dexterity
         )
         multiplier_constitution_diff = (
-            self.multiplier_constitution -
-            other_equipment.multiplier_constitution
+            self.multiplier_constitution - other_multiplier_constitution
         )
         multiplier_intelligence_diff = (
-            self.multiplier_intelligence -
-            other_equipment.multiplier_intelligence
+            self.multiplier_intelligence - other_multiplier_intelligence
         )
         multiplier_wisdom_diff = (
-            self.multiplier_wisdom - other_equipment.multiplier_wisdom
+            self.multiplier_wisdom - other_multiplier_wisdom
         )
         multiplier_charisma_diff = (
-            self.multiplier_charisma - other_equipment.multiplier_charisma
+            self.multiplier_charisma - other_multiplier_charisma
         )
 
-        hp_diff = (self.hp - other_equipment.hp)
-        initiative_diff = (self.initiative - other_equipment.initiative)
-        physical_attack_diff = (
-            self.physical_attack - other_equipment.physical_attack
-        )
+        hp_diff = (self.hp - other_hp)
+        initiative_diff = (self.initiative - other_initiative)
+        physical_attack_diff = (self.physical_attack - other_physical_attack)
         precision_attack_diff = (
-            self.precision_attack - other_equipment.precision_attack
+            self.precision_attack - other_precision_attack
         )
-        magical_attack_diff = (
-            self.magical_attack - other_equipment.magical_attack
-        )
+        magical_attack_diff = (self.magical_attack - other_magical_attack)
         physical_defense_diff = (
-            self.physical_defense - other_equipment.physical_defense
+            self.physical_defense - other_physical_defense
         )
-        magical_defense_diff = (
-            self.magical_defense - other_equipment.magical_defense
-        )
-        hit_diff = (self.hit - other_equipment.hit)
-        evasion_diff = (self.evasion - other_equipment.evasion)
+        magical_defense_diff = (self.magical_defense - other_magical_defense)
+        hit_diff = (self.hit - other_hit)
+        evasion_diff = (self.evasion - other_evasion)
 
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
 
         text = (
+            f'COMPARANDO COM: {other_names}\n\n'
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}\n'
             f'{damage_types}'
@@ -386,7 +445,7 @@ class Equipment(StatsBooster):
             self.multiplier_wisdom +
             self.multiplier_charisma
         ) - 6
-    
+
     @property
     def name_and_power(self) -> str:
         return f'{self.name} ({self.power}{EmojiEnum.EQUIPMENT_POWER.value})'

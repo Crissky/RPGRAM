@@ -53,9 +53,9 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''
     group_model = GroupModel()
     job = context.job
-    chat_id = job.chat_id  # chat_id vem como string
+    chat_id = int(job.chat_id)  # chat_id vem como string
     minutes_in_seconds = randint(1, 29) * 60
-    group = group_model.get(int(chat_id))
+    group = group_model.get(chat_id)
     spawn_start_time = group.spawn_start_time
     spawn_end_time = group.spawn_end_time
     now = get_brazil_time_now()
@@ -84,7 +84,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
     '''
     job = context.job
-    chat_id = job.chat_id
+    chat_id = int(job.chat_id)  # chat_id vem como string
     silent = get_attribute_group_or_player(chat_id, 'silent')
     print('job_find_treasure() - silent:', silent)
     text = choice(REPLY_TEXTS_FIND_TREASURE_START)
