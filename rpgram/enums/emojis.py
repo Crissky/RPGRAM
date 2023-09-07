@@ -27,3 +27,4 @@ class EmojiEnum(Enum):
     NEXT = '➡'
     UP = '📈'
     DOWN = '📉'
+    WEIGHT = '⚖'

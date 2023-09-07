@@ -268,7 +268,7 @@ class Equips:
         text = (
             f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
             f'*Poder*: {self.power:}{EmojiEnum.EQUIPMENT_POWER.value}\n'
-            f'*Peso*: {self.equipments_weight:.2f}w\n\n'
+            f'*Peso*: {self.equipments_weight:.2f}{EmojiEnum.WEIGHT.value}\n\n'
             
             f'*Capacete*: '
             f'{self.helmet.name_and_power if self.helmet else ""}\n'

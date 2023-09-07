@@ -278,7 +278,7 @@ class Equipment(StatsBooster):
             f'{damage_types}'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{{{power_diff:+}}}{power_multiplier}\n'
-            f'*Peso*: {self.weight:.2f}w\n'
+            f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
         )
         text += (
@@ -365,7 +365,7 @@ class Equipment(StatsBooster):
             f'{damage_types}'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
-            f'*Peso*: {self.weight:.2f}w\n'
+            f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
         )
 
