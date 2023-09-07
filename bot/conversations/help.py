@@ -25,6 +25,7 @@ from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
 from bot.constants.rest import COMMANDS as rest_commands
+from bot.constants.view_equips import COMMANDS as view_equips_commands
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -53,6 +54,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_cmd = command_to_string(battle_commands)
     rest_cmd = command_to_string(rest_commands)
     bag_cmd = command_to_string(bag_commands)
+    equips_cmd = command_to_string(view_equips_commands)
 
     text = escape_basic_markdown_v2(
         f'{SECTION_HEAD.format("COMANDOS")}\n\n'
@@ -124,6 +126,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'*BOLSA*: /{bag_commands[0]}\n'
         f'INFO: Mostra o conteúdo da bolsa.\n'
         f'Atalhos: {bag_cmd}\n\n'
+
+        f'*EQUIPAMENTOS*: /{view_equips_commands[0]}\n'
+        f'INFO: Mostra os equipamentos do personagem.\n'
+        f'Use o argumento "verbose" ou "v" para exibir com mais detalhes\n'
+        f'Atalhos: {equips_cmd}\n\n'
     )
     await update.effective_message.reply_markdown_v2(
         text, disable_notification=silent

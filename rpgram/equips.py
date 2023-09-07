@@ -6,7 +6,7 @@ from bson import ObjectId
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import Equipment
-from rpgram.enums import EquipmentEnum
+from rpgram.enums import EmojiEnum, EquipmentEnum
 from rpgram.errors import EquipmentRequirementError
 from rpgram.stats import BaseStats
 
@@ -267,6 +267,9 @@ class Equips:
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
             f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
+            f'*Poder*: {self.power:}{EmojiEnum.EQUIPMENT_POWER.value}\n'
+            f'*Peso*: {self.equipments_weight:.2f}w\n\n'
+            
             f'*Capacete*: '
             f'{self.helmet.name_and_power if self.helmet else ""}\n'
             f'*Mão Esq.*: '
@@ -280,8 +283,7 @@ class Equips:
             f'*Anel*: '
             f'{self.ring.name_and_power if self.ring else ""}\n'
             f'*Necklace*: '
-            f'{self.necklace.name_and_power if self.necklace else ""}\n'
-            f'*Peso*: {self.equipments_weight:.2f}w\n\n'
+            f'{self.necklace.name_and_power if self.necklace else ""}\n\n'
         )
 
         if verbose:
@@ -348,6 +350,18 @@ class Equips:
             updated_at=self.__updated_at,
         )
 
+    def __iter__(self):
+        equips = [
+            self.__helmet, self.__left_hand, self.__right_hand,
+            self.__armor, self.__boots, self.__ring, self.__necklace
+        ]
+        if self.__left_hand.equip_type == EquipmentEnum.TWO_HANDS:
+            equips.remove(self.__left_hand)
+
+        for equip in equips:
+            if equip:
+                yield equip
+
     # Getters
     @property
     def base_stats(self):
@@ -355,6 +369,14 @@ class Equips:
             if isinstance(observer, BaseStats):
                 return observer
         raise NameError('Não foi encontrado um observer do tipo BaseStats.')
+
+    @property
+    def power(self):
+        power = 0
+        for equip in self:
+            power += equip.power
+
+        return power
 
     _id = property(lambda self: self.__id)
     helmet = property(lambda self: self.__helmet)
@@ -507,5 +529,5 @@ if __name__ == '__main__':
     equips.equip(any_ring)
     equips.equip(necklace)
     print(equips.compare(sword))
-    # print(equips.get_sheet(True))
-    # print(equips.to_dict())
+    print(equips.get_sheet(True))
+    print(equips.to_dict())
