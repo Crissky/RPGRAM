@@ -150,7 +150,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     markdown_text = TITLE_HEAD.format(markdown_text)
-    print(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
         await update.effective_message.reply_text(
             text=markdown_text,
