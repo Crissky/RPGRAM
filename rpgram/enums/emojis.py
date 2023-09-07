@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class EmojiEnum(Enum):
+    CLOSE_BAG = '🎒'
     DEAD = '☠️'
     DEFEND = '🛡'
     DICE = '🎲'
@@ -16,8 +17,13 @@ class EmojiEnum(Enum):
     PHYSICAL_DEFENSE = '🛡'
     PRECISION_ATTACK = '💫'
     PRECISION_DEFENSE = '🛡'
+    PAGE = '📜'
     TEAM_BLUE = '🔵'
     TEAM_RED = '🔴'
     TEAM_WHITE = '🔘'
+    TO_EQUIP = '🗡️'
+    USE_POTION = '🧪'
+    PREVIOUS = '⬅'
+    NEXT = '➡'
     UP = '📈'
     DOWN = '📉'
