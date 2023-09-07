@@ -35,6 +35,7 @@ from repository.mongo import BagModel, CharacterModel, EquipsModel
 from rpgram import Bag
 from rpgram.boosters import Equipment
 from rpgram import Consumable
+from rpgram.enums import EmojiEnum
 
 
 # ROUTES
@@ -83,7 +84,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         bag_model.save(player_bag)
 
-    markdown_text = f'\n*Bolsa de {user_name}* \(*Página* {page + 1}\)\n\n'
+    markdown_text = (
+        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n\n'
+    )
 
     items = player_bag[:]
     have_back_page = False
@@ -124,20 +127,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if have_back_page:  # Cria botão de Voltar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
-                text='⬅ Anterior',
+                text=f'{EmojiEnum.PREVIOUS.value} Anterior',
                 callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
             )
         )
     if have_next_page:  # Cria botão de Avançar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
-                text='Próxima ➡',
+                text=f'Próxima {EmojiEnum.NEXT.value}',
                 callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
             )
         )
 
     cancel_button = [InlineKeyboardButton(
-        text='🎒Fechar Bolsa',
+        text=f'{EmojiEnum.CLOSE_BAG.value}Fechar Bolsa',
         callback_data=(
             f'{{"command":"{CALLBACK_CLOSE_BAG}","user_id":{user_id}}}'
         )
@@ -147,6 +150,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     markdown_text = TITLE_HEAD.format(markdown_text)
+    print(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
         await update.effective_message.reply_text(
             text=markdown_text,
@@ -191,9 +195,9 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
         markdown_text = equips.compare(item.item)
-        use_text = '🗡️Equipar'
+        use_text = f'{EmojiEnum.TO_EQUIP.value}Equipar'
     elif isinstance(item.item, Consumable):
-        use_text = '🧪Usar'
+        use_text = f'{EmojiEnum.USE_POTION.value}Usar'
 
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(

@@ -5,7 +5,7 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.enums.rarity import RarityEnum
+from rpgram.enums import EmojiEnum, RarityEnum
 
 
 class Consumable:
@@ -60,7 +60,7 @@ class Consumable:
 
         if verbose:
             text += (
-                f'*Peso*: {self.__weight}w\n'
+                f'*Peso*: {self.__weight}{EmojiEnum.WEIGHT.value}\n'
                 f'*Descrição*: {self.__description}\n'
                 f'*Função*: {self.__function}\n'
                 f'*Raridade*: {self.__rarity.value}\n'

@@ -7,6 +7,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters import Equipment
 from rpgram import Consumable, Item
+from rpgram.enums import EmojiEnum
 
 
 ItemTypes = Union[Consumable, Equipment, Item]
@@ -77,7 +78,8 @@ class Bag:
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         if verbose:
             text = '\n'.join([
-                f'{item.quantity:02}x *{item.name}* ({self.weight:.2f}w)'
+                f'{item.quantity:02}x *{item.name}* '
+                f'({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
                 for item in self.__items
             ])
         else:

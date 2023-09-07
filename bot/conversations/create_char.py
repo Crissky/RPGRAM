@@ -42,6 +42,7 @@ from repository.mongo import (
     PlayerModel,
     CharacterModel,
     RaceModel,
+    EquipsModel
 )
 
 from rpgram.characters import PlayerCharacter
@@ -266,6 +267,7 @@ async def create_char(
     race_model = RaceModel()
     classe_model = ClasseModel()
     char_model = CharacterModel()
+    equips_model = EquipsModel()
     user_name = update.effective_user.name
     player_id = update.effective_user.id
     race_name = context.user_data['race']
@@ -280,6 +282,7 @@ async def create_char(
         race=race,
     )
     char_model.save(player_character)
+    equips_model.save(player_character.equips)
     player_character = char_model.get(player_id)
 
     if player_character:
