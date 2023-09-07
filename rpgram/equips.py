@@ -269,7 +269,7 @@ class Equips:
             f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
             f'*Poder*: {self.power:}{EmojiEnum.EQUIPMENT_POWER.value}\n'
             f'*Peso*: {self.equipments_weight:.2f}{EmojiEnum.WEIGHT.value}\n\n'
-            
+
             f'*Capacete*: '
             f'{self.helmet.name_and_power if self.helmet else ""}\n'
             f'*Mão Esq.*: '
@@ -355,7 +355,10 @@ class Equips:
             self.__helmet, self.__left_hand, self.__right_hand,
             self.__armor, self.__boots, self.__ring, self.__necklace
         ]
-        if self.__left_hand.equip_type == EquipmentEnum.TWO_HANDS:
+        if (
+            self.__left_hand and
+            self.__left_hand.equip_type == EquipmentEnum.TWO_HANDS
+        ):
             equips.remove(self.__left_hand)
 
         for equip in equips:
