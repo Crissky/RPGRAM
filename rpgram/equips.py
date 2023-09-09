@@ -56,10 +56,10 @@ class Equips:
         if isinstance(helmet, Equipment):
             self.equip(helmet)
         if isinstance(left_hand, Equipment):
-            self.equip(left_hand)
+            self.equip(left_hand, 'LEFT')
         if isinstance(right_hand, Equipment):
             if right_hand.equip_type != EquipmentEnum.TWO_HANDS:
-                self.equip(right_hand)
+                self.equip(right_hand, 'RIGHT')
         if isinstance(armor, Equipment):
             self.equip(armor)
         if isinstance(boots, Equipment):
@@ -73,36 +73,67 @@ class Equips:
 
         self.__update_stats()
 
-    def equip(self, new_equipment: Equipment) -> List[Equipment]:
+    def equip(
+        self, new_equipment: Equipment, hand: str = None
+    ) -> List[Equipment]:
         equip_type = new_equipment.equip_type
         requirements = new_equipment.requirements
         old_equipments = []
+        errors = []
         if not self.__init:
             for attribute, value in requirements.items():
-                if self.base_stats[attribute] < value:
-                    raise EquipmentRequirementError(
-                        f'O personagem possui "{self.base_stats[attribute]}" '
-                        f'pontos de "{attribute}" e o requerido é "{value}".'
+                if value > self.base_stats[attribute]:
+                    errors.append(
+                        f'    {attribute}: '
+                        f'"{value}" ({self.base_stats[attribute]}).'
                     )
+
+        if errors:
+            errors = "\n".join(errors)
+            raise EquipmentRequirementError(
+                f'Não foi possível equipar o item "{new_equipment.name}".\n'
+                f'O personagem não possui os requisitos:\n'
+                f'{errors}'
+            )
 
         if equip_type == EquipmentEnum.HELMET:
             if self.__helmet is not None:
                 old_equipments.append(self.__helmet)
             self.__helmet = new_equipment
         elif equip_type == EquipmentEnum.ONE_HAND:
-            if self.__right_hand is None:
+            if not isinstance(hand, str):
+                raise ValueError(
+                    f'É necessário indicar em qual das mãos o '
+                    f'item será equipado usando "LEFT" ou "RIGHT".\n'
+                    f'Valor de hand, "{hand}", não é uma string.'
+                )
+
+            if (
+                self.__right_hand and
+                self.__right_hand.equip_type == EquipmentEnum.TWO_HANDS
+            ):
+                old_equipments.append(self.__right_hand)
+                self.__right_hand = None
+                self.__left_hand = None
+
+            if hand.upper() in ['R', 'RIGHT']:
+                if self.__right_hand is not None:
+                    old_equipments.append(self.__right_hand)
                 self.__right_hand = new_equipment
-            elif self.__left_hand is None:
+            elif hand.upper() in ['L', 'LEFT']:
+                if self.__left_hand is not None:
+                    old_equipments.append(self.__left_hand)
                 self.__left_hand = new_equipment
             else:
-                old_equipments.append(self.__right_hand)
-                old_equipments.append(self.__left_hand)
-                self.__right_hand = new_equipment
-                self.__left_hand = None
+                raise ValueError(
+                    f'Valor de hand, "{hand}", não é uma string válida. '
+                    f'Use LEFT ou RIGHT para a mão ESQUERDA ou DIREITA.'
+                )
+
         elif equip_type == EquipmentEnum.TWO_HANDS:
             if self.__left_hand is not None:
                 old_equipments.append(self.__left_hand)
-            elif self.__right_hand is not None:
+            if self.__right_hand is not None:
                 old_equipments.append(self.__right_hand)
             self.__left_hand = new_equipment
             self.__right_hand = new_equipment
@@ -523,10 +554,10 @@ if __name__ == '__main__':
     )
 
     equips = Equips(player_id=123, helmet=helmet)
-    equips.equip(dagger)
-    equips.equip(shield)
+    equips.equip(sword)
+    equips.equip(shield, 'LEFT')
+    equips.equip(dagger, 'RIGHT')
     # equips.equip(dagger)
-    # equips.equip(sword)
     equips.equip(armor)
     equips.equip(boots)
     equips.equip(any_ring)
