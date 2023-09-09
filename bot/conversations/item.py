@@ -63,11 +63,11 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         weekend = [5, 6]
         times = randint(1, 3) if now.weekday() in weekend else 1
         for i in range(times):
+            minutes_in_seconds = randint(1, 29) * 60
             print(
                 f'JOB_CREATE_FIND_TREASURE() - {now}: '
                 f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
             )
-            minutes_in_seconds = randint(1, 29) * 60
             context.job_queue.run_once(
                 callback=job_find_treasure,
                 when=minutes_in_seconds,
