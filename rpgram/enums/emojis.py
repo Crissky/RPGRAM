@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class EmojiEnum(Enum):
+    BACK = '↪️'
     CLOSE_BAG = '🎒'
     DEAD = '☠️'
     DEFEND = '🛡'
@@ -28,3 +29,5 @@ class EmojiEnum(Enum):
     UP = '📈'
     DOWN = '📉'
     WEIGHT = '⚖'
+    LEFT = '👈'
+    RIGHT = '👉'

@@ -54,27 +54,30 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     group_model = GroupModel()
     job = context.job
     chat_id = int(job.chat_id)  # chat_id vem como string
-    minutes_in_seconds = randint(1, 29) * 60
     group = group_model.get(chat_id)
     spawn_start_time = group.spawn_start_time
     spawn_end_time = group.spawn_end_time
     now = get_brazil_time_now()
 
     if now.hour >= spawn_start_time and now.hour < spawn_end_time:
-        print(
-            f'JOB_CREATE_FIND_TREASURE() - {now}: '
-            f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
-        )
-        context.job_queue.run_once(
-            callback=job_find_treasure,
-            when=minutes_in_seconds,
-            name='JOB_CREATE_EVENTE_TREASURE',
-            chat_id=chat_id,
-        )
+        weekend = [5, 6]
+        times = randint(1, 3) if now.weekday() in weekend else 1
+        for i in range(times):
+            minutes_in_seconds = randint(1, 29) * 60
+            print(
+                f'JOB_CREATE_FIND_TREASURE() - {now}: '
+                f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
+            )
+            context.job_queue.run_once(
+                callback=job_find_treasure,
+                when=minutes_in_seconds,
+                name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
+                chat_id=chat_id,
+            )
     else:
         print(
-            f'Evento skipado, pois está fora do horário de spawn do grupo\n'
-            f'[{chat_id}] {group.name}: Hora: {now.hour}:{now.minute}\n'
+            f'Evento skipado, pois está fora do horário de spawn do grupo.\n'
+            f'[{chat_id}] {group.name}: Hora: {now.hour}:{now.minute}.\n'
             f'Horário de spawn: {spawn_start_time}H - {spawn_end_time}H.'
         )
 
@@ -235,9 +238,7 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if query:
         text = choice(REPLY_TEXTS_IGNORE_TREASURE)
-        await query.edit_message_text(
-            text=text
-        )
+        await query.edit_message_text(text=text)
     return ConversationHandler.END
 
 

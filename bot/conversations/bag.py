@@ -1,7 +1,7 @@
 from itertools import zip_longest
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ParseMode
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -35,11 +35,15 @@ from repository.mongo import BagModel, CharacterModel, EquipsModel
 from rpgram import Bag
 from rpgram.boosters import Equipment
 from rpgram import Consumable
-from rpgram.enums import EmojiEnum
+from rpgram.enums import EmojiEnum, EquipmentEnum
 
 
 # ROUTES
-ITEM_ROUTES = 1
+(
+    START_ROUTES,
+    CHECK_ROUTES,
+    USE_ROUTES,
+) = range(3)
 
 
 @skip_if_no_singup_player
@@ -47,7 +51,9 @@ ITEM_ROUTES = 1
 @need_not_in_battle
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Envia ou edita mensagem contendo uma página dos itens do jogador'''
+    '''Envia ou edita mensagem contendo uma página dos itens do jogador
+    '''
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
@@ -63,7 +69,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return ITEM_ROUTES
+            return CHECK_ROUTES
 
         skip_slice = ITEMS_PER_PAGE * page
         size_slice = ITEMS_PER_PAGE + 1
@@ -164,12 +170,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             parse_mode=ParseMode.MARKDOWN_V2
         )
 
-    return ITEM_ROUTES
+    return CHECK_ROUTES
 
 
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Edita a mensagem com as informações do item escolhido.
     '''
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
@@ -181,7 +188,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
-        return ITEM_ROUTES
+        return USE_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
@@ -194,23 +201,57 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
         markdown_text = equips.compare(item.item)
-        use_text = f'{EmojiEnum.TO_EQUIP.value}Equipar'
+        if item.item.equip_type == EquipmentEnum.ONE_HAND:
+            use_text_left = f'{EmojiEnum.LEFT.value}Equipar'
+            use_text_right = f'Equipar{EmojiEnum.RIGHT.value}'
+            equip_or_use = [
+                InlineKeyboardButton(
+                    text=use_text_left,
+                    callback_data=(
+                        f'{{"use":1,"item":{item_pos},"hand":"L",'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
+                ),
+                InlineKeyboardButton(
+                    text=use_text_right,
+                    callback_data=(
+                        f'{{"use":1,"item":{item_pos},"hand":"R",'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
+                )
+            ]
+        else:
+            use_text = f'{EmojiEnum.TO_EQUIP.value}Equipar'
+            equip_or_use = [
+                InlineKeyboardButton(
+                    text=use_text,
+                    callback_data=(
+                        f'{{"use":1,"item":{item_pos},'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
+                )
+            ]
     elif isinstance(item.item, Consumable):
         use_text = f'{EmojiEnum.USE_POTION.value}Usar'
+        equip_or_use = [
+            InlineKeyboardButton(
+                text=use_text,
+                callback_data=(
+                    f'{{"use":1,"item":{item_pos},'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            )
+        ]
 
     reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(
-            text=use_text,
-            callback_data=(
-                f'{{"use":1,"item":{item_pos},'
-                f'"page":{page},"user_id":{user_id}}}'
+        equip_or_use,
+        [
+            InlineKeyboardButton(
+                text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
+                    f'{{"page":{page},"user_id":{user_id}}}'
+                )
             )
-        )],
-        [InlineKeyboardButton(
-            text='Voltar', callback_data=(
-                f'{{"page":{page},"user_id":{user_id}}}'
-            )
-        )]
+        ]
     ])
     # Edita mensagem com as informações do item escolhido
     await query.edit_message_text(
@@ -218,12 +259,13 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         reply_markup=reply_markup,
         parse_mode=ParseMode.MARKDOWN_V2
     )
-    return ITEM_ROUTES
+    return USE_ROUTES
 
 
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Usa ou equipa o item do jogador.
     '''
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     char_model = CharacterModel()
     equips_model = EquipsModel()
@@ -233,10 +275,11 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
+    hand = data.get('hand', None)
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
-        return ITEM_ROUTES
+        return START_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
@@ -251,18 +294,15 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if isinstance(item.item, Equipment):  # Tenta equipar o item
         equipment = item.item
         try:
-            old_equipments = player_character.equips.equip(equipment)
+            old_equipments = player_character.equips.equip(equipment, hand)
             await query.answer(text=f'Você equipou "{equipment.name}".\n\n')
         except Exception as error:
             print(error)
             await query.answer(
-                text=(
-                    f'Equipamento "{equipment.name}" não pode ser equipado.'
-                    f'\n\n{error}'
-                ),
+                text=(f'{error}'),
                 show_alert=True
             )
-            return ITEM_ROUTES
+            return START_ROUTES
     elif isinstance(item.item, Consumable):  # Tenta usar o item
         consumable = item.item
         try:
@@ -285,7 +325,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 ),
                 show_alert=True
             )
-            return ITEM_ROUTES
+            return START_ROUTES
 
     # Carrega a bolsa com todos os itens
     player_bag = bag_model.get(query={'player_id': user_id})
@@ -305,7 +345,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(
-            text='Voltar', callback_data=(
+            text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
                 f'{{"page":{page},"user_id":{user_id}}}'
             )
         )]
@@ -317,13 +357,14 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         parse_mode=ParseMode.MARKDOWN_V2
     )
 
-    return ITEM_ROUTES
+    return START_ROUTES
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Apaga a mensagem quando o jogador dono da bolsa 
     clica em Fechar A Bolsa.
     '''
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     user_id = update.effective_user.id
     query = update.callback_query
     if query:
@@ -333,14 +374,14 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return ITEM_ROUTES
+            return START_ROUTES
 
         await query.answer('Fechando Bolsa...')
         await query.delete_message()
 
         return ConversationHandler.END
 
-    return ITEM_ROUTES
+    return START_ROUTES
 
 
 BAG_HANDLER = ConversationHandler(
@@ -354,13 +395,20 @@ BAG_HANDLER = ConversationHandler(
         CommandHandler(COMMANDS, start, BASIC_COMMAND_FILTER)
     ],
     states={
-        ITEM_ROUTES: [
+        START_ROUTES: [
+            CallbackQueryHandler(start, pattern=r'^{"page":'),
+        ],
+        CHECK_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(check_item, pattern=r'^{"item":'),
-            CallbackQueryHandler(use_item, pattern=r'^{"use":1'),
             CallbackQueryHandler(
-                cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'),
-        ]
+                cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'
+            ),
+        ],
+        USE_ROUTES: [
+            CallbackQueryHandler(start, pattern=r'^{"page":'),
+            CallbackQueryHandler(use_item, pattern=r'^{"use":1'),
+        ],
     },
     fallbacks=[
         CommandHandler(CANCEL_COMMANDS, cancel)
