@@ -61,7 +61,7 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 
     if now.hour >= spawn_start_time and now.hour < spawn_end_time:
         weekend = [5, 6]
-        times = randint(2, 5) if now.weekday() in weekend else 1
+        times = randint(1, 3) if now.weekday() in weekend else 1
         for i in range(times):
             print(
                 f'JOB_CREATE_FIND_TREASURE() - {now}: '
