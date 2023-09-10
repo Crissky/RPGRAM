@@ -27,7 +27,7 @@ class Equips:
         armor: Equipment = None,
         boots: Equipment = None,
         ring: Equipment = None,
-        necklace: Equipment = None,
+        amulet: Equipment = None,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -43,7 +43,7 @@ class Equips:
         self.__armor = None
         self.__boots = None
         self.__ring = None
-        self.__necklace = None
+        self.__amulet = None
 
         self.__equipments_weight = 0
         self.__observers = []
@@ -66,8 +66,8 @@ class Equips:
             self.equip(boots)
         if isinstance(ring, Equipment):
             self.equip(ring)
-        if isinstance(necklace, Equipment):
-            self.equip(necklace)
+        if isinstance(amulet, Equipment):
+            self.equip(amulet)
 
         self.__init = False
 
@@ -149,10 +149,10 @@ class Equips:
             if self.__ring is not None:
                 old_equipments.append(self.__ring)
             self.__ring = new_equipment
-        elif equip_type == EquipmentEnum.NECKLACE:
-            if self.__necklace is not None:
-                old_equipments.append(self.__necklace)
-            self.__necklace = new_equipment
+        elif equip_type == EquipmentEnum.AMULET:
+            if self.__amulet is not None:
+                old_equipments.append(self.__amulet)
+            self.__amulet = new_equipment
 
         self.__update_stats()
         return old_equipments
@@ -178,9 +178,9 @@ class Equips:
         elif self.ring == equipment:
             equipment = self.__ring
             self.__ring = None
-        elif self.necklace == equipment:
-            equipment = self.__necklace
-            self.__necklace = None
+        elif self.amulet == equipment:
+            equipment = self.__amulet
+            self.__amulet = None
         else:
             raise ValueError(f'"{equipment}" não está equipado.')
 
@@ -234,12 +234,12 @@ class Equips:
         ):
             equips = [
                 self.helmet, self.left_hand, self.armor,
-                self.boots, self.ring, self.necklace
+                self.boots, self.ring, self.amulet
             ]
         else:
             equips = [
                 self.helmet, self.left_hand, self.right_hand, self.armor,
-                self.boots, self.ring, self.necklace
+                self.boots, self.ring, self.amulet
             ]
         equips = [e for e in equips if e is not None]
         for e in equips:
@@ -285,8 +285,8 @@ class Equips:
             other_equipment.append(self.boots)
         elif equipment.equip_type == EquipmentEnum.RING:
             other_equipment.append(self.ring)
-        elif equipment.equip_type == EquipmentEnum.NECKLACE:
-            other_equipment.append(self.necklace)
+        elif equipment.equip_type == EquipmentEnum.AMULET:
+            other_equipment.append(self.amulet)
 
         other_equipment = [e for e in other_equipment if e is not None]
 
@@ -313,8 +313,8 @@ class Equips:
             f'{self.boots.name_and_power if self.boots else ""}\n'
             f'*Anel*: '
             f'{self.ring.name_and_power if self.ring else ""}\n'
-            f'*Necklace*: '
-            f'{self.necklace.name_and_power if self.necklace else ""}\n\n'
+            f'*Amuleto*: '
+            f'{self.amulet.name_and_power if self.amulet else ""}\n\n'
         )
 
         if verbose:
@@ -375,7 +375,7 @@ class Equips:
             armor_id=self.__armor._id if self.__armor else None,
             boots_id=self.__boots._id if self.__boots else None,
             ring_id=self.__ring._id if self.__ring else None,
-            necklace_id=self.__necklace._id if self.__necklace else None,
+            amulet_id=self.__amulet._id if self.__amulet else None,
             # observers=[o._id for o in self.__observers],
             created_at=self.__created_at,
             updated_at=self.__updated_at,
@@ -384,7 +384,7 @@ class Equips:
     def __iter__(self):
         equips = [
             self.__helmet, self.__left_hand, self.__right_hand,
-            self.__armor, self.__boots, self.__ring, self.__necklace
+            self.__armor, self.__boots, self.__ring, self.__amulet
         ]
         if (
             self.__left_hand and
@@ -419,7 +419,7 @@ class Equips:
     armor = property(lambda self: self.__armor)
     boots = property(lambda self: self.__boots)
     ring = property(lambda self: self.__ring)
-    necklace = property(lambda self: self.__necklace)
+    amulet = property(lambda self: self.__amulet)
     equipments_weight = property(lambda self: self.__equipments_weight)
 
     strength = bonus_strength = property(
@@ -527,9 +527,9 @@ if __name__ == '__main__':
         bonus_hit=100,
         bonus_evasion=100,
     )
-    necklace = Equipment(
+    amulet = Equipment(
         name='Colar Brilhante',
-        equip_type=EquipmentEnum.NECKLACE,
+        equip_type=EquipmentEnum.AMULET,
         damage_types=None,
         weight=0.2,
         bonus_charisma=150,
@@ -561,7 +561,7 @@ if __name__ == '__main__':
     equips.equip(armor)
     equips.equip(boots)
     equips.equip(any_ring)
-    equips.equip(necklace)
+    equips.equip(amulet)
     print(equips.compare(sword))
     print(equips.get_sheet(True))
     print(equips.to_dict())

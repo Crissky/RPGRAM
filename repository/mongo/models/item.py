@@ -64,9 +64,9 @@ if __name__ == "__main__":
         damage_types=None,
         _id='aaaaaaaaaaaaaaaaaaaaaaaa'
     )
-    necklace = Equipment(
+    amulet = Equipment(
         name='COLAR BONITO TESTE MODELO',
-        equip_type=EquipmentEnum.NECKLACE,
+        equip_type=EquipmentEnum.AMULET,
         damage_types=None,
         _id='999999999999999999999999'
     )
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     items_model.save(armor)
     items_model.save(boots)
     items_model.save(ring)
-    items_model.save(necklace)
+    items_model.save(amulet)
     items_model.save(potion)
     print('Result:', result)
     equipament2 = items_model.get('ffffffffffffffffffffffff')

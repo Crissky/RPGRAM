@@ -49,9 +49,9 @@ ANY_RING = Equipment(
     weight=0.1,
     bonus_evasion=100,
 )
-BRIGHT_NECKLACE = Equipment(
+BRIGHT_AMULET = Equipment(
     name='Colar Brilhante',
-    equip_type=EquipmentEnum.NECKLACE,
+    equip_type=EquipmentEnum.AMULET,
     damage_types=None,
     weight=0.2,
     bonus_charisma=150,
@@ -63,7 +63,7 @@ EQUIPS = Equips(
     armor=STEEL_ARMOR,
     boots=LEATHER_BOOTS,
     ring=ANY_RING,
-    necklace=BRIGHT_NECKLACE,
+    amulet=BRIGHT_AMULET,
 )
 WARRIOR_CLASSE = Classe(
     name='GUERREIRO',

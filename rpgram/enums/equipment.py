@@ -8,4 +8,4 @@ class EquipmentEnum(Enum):
     ARMOR = 'Armadura'
     BOOTS = 'Botas'
     RING = 'Anel'
-    NECKLACE = 'Colar'
+    AMULET = 'Amuleto'
