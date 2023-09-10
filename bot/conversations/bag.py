@@ -179,6 +179,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     query = update.callback_query
 
     try:
+        old_reply_markup = query.message.reply_markup
         await query.edit_message_reply_markup()
     except Exception as e:
         print(type(e), e)
@@ -195,6 +196,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
@@ -290,6 +292,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
 
     try:
+        old_reply_markup = query.message.reply_markup
         await query.edit_message_reply_markup()
     except Exception as e:
         print(type(e), e)
@@ -308,6 +311,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return START_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
@@ -331,6 +335,9 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 text=(f'{error}'),
                 show_alert=True
             )
+            await query.edit_message_reply_markup(
+                reply_markup=old_reply_markup
+            )
             return START_ROUTES
     elif isinstance(item.item, Consumable):  # Tenta usar o item
         consumable = item.item
@@ -353,6 +360,9 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                     f'Item "{consumable.name}" não pode ser usado.\n\n{error}'
                 ),
                 show_alert=True
+            )
+            await query.edit_message_reply_markup(
+                reply_markup=old_reply_markup
             )
             return START_ROUTES
 
@@ -393,6 +403,7 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
 
     try:
+        old_reply_markup = query.message.reply_markup
         await query.edit_message_reply_markup()
     except Exception as e:
         print(type(e), e)
@@ -412,6 +423,7 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return START_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
