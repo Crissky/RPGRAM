@@ -39,6 +39,7 @@ from repository.mongo import BagModel, GroupModel, ItemModel
 from repository.mongo.populate.item import create_random_item
 from rpgram import Bag, Consumable
 from rpgram.boosters import Equipment
+from rpgram.enums import EmojiEnum
 
 
 CALLBACK_TEXT_YES = '$get_item'
@@ -95,8 +96,13 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     text += choice(REPLY_TEXTS_FIND_TREASURE_END)
     inline_keyboard = [[
         InlineKeyboardButton(
-            'Investigar', callback_data=CALLBACK_TEXT_YES),
-        InlineKeyboardButton('Ignorar', callback_data=CALLBACK_TEXT_NO),
+            f'{EmojiEnum.INSPECT.value}Investigar',
+            callback_data=CALLBACK_TEXT_YES
+        ),
+        InlineKeyboardButton(
+            f'Ignorar{EmojiEnum.IGNORE.value}',
+            callback_data=CALLBACK_TEXT_NO
+        ),
     ]]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
 
@@ -124,13 +130,14 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         group_level = get_attribute_group_or_player(chat_id, 'higher_level')
         bag_model = BagModel()
         items_model = ItemModel()
-        player_bag = bag_model.get(query={'player_id': user_id})
+        bag_exists = bag_model.exists(user_id)
 
-        if not player_bag:
+        if not bag_exists:
             player_bag = Bag(
                 items=[],
                 player_id=user_id,
             )
+            bag_model.save(player_bag)
 
         items = create_random_item(group_level)
         if isinstance(items, int):
@@ -154,7 +161,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         f'Item: {item}'
                     )
                 markdown_item_sheet += f'{TEXT_SEPARATOR}\n'
-                player_bag.add(item)
+                bag_model.add(item, user_id)
         else:
             raise TypeError(
                 f'Variável items é do tipo "{type(items)}", mas precisar ser '
@@ -162,8 +169,6 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'para uma lista de itens que o jogador encontrou no baú.\n'
                 f'Items: {items}.'
             )
-
-        bag_model.save(player_bag)
 
         text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN)
         text_find_treasure_finding = choice(

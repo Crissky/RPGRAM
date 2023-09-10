@@ -1,3 +1,4 @@
+from typing import Any
 from repository.mongo import Model
 from repository.mongo import CollectionEnum
 from repository.mongo.models.item import ItemModel
@@ -5,6 +6,81 @@ from rpgram import Bag, Item
 
 
 class BagModel(Model):
+    def add(self, item: Item, player_id: int) -> Any:
+        query = {'player_id': player_id, 'items_ids._id': item._id}
+        exists = bool(self.database.count(self.collection, query, limit=1))
+
+        if item.quantity <= 0:
+            raise ValueError(
+                f'Quantidade inválida. Não pode adicionar uma quantidade '
+                f'menor ou igual a zero. Quantidade: {item.quantity}.'
+            )
+
+        if exists:  # incrementa se existir na bag
+            result = self.database.update(
+                collection=self.collection,
+                query=query,
+                data={
+                    '$inc': {
+                        'items_ids.$.quantity': item.quantity
+                    }
+                }
+            )
+        else:  # adicione se não existir na bag
+            result = self.database.update(
+                collection=self.collection,
+                query={'player_id': player_id},
+                data={
+                    '$push': {
+                        'items_ids': {
+                            '_id': item._id,
+                            'quantity': item.quantity
+                        }
+                    }
+                }
+            )
+
+        return result
+
+    def sub(self, item: Item, player_id: int, quantity: int = -1) -> Any:
+        query = {'player_id': player_id, 'items_ids._id': item._id}
+        exists = bool(self.database.count(self.collection, query, limit=1))
+
+        if quantity >= 0:
+            raise ValueError(
+                f'Quantidade inválida. A quantidade deve ser um valor menor '
+                f'que zero. Quantidade: {quantity}.'
+            )
+        if exists:  # decrementa se existir na bag
+            result1 = self.database.update(
+                collection=self.collection,
+                query=query,
+                data={
+                    '$inc': {
+                        'items_ids.$.quantity': quantity
+                    }
+                }
+            )
+            # Remove todos os items com quantidade menor ou igual a zero
+            result2 = self.database.update(
+                collection=self.collection,
+                query={'player_id': player_id},
+                data={
+                    '$pull': {
+                        'items_ids': {
+                            'quantity': {'$lte': 0}
+                        }
+                    }
+                }
+            )
+        else:
+            raise ValueError(
+                f'Item não encontrado no bag. Não foi possível decrementar '
+                f'a quantidade {quantity}.'
+            )
+
+        return result1, result2
+
     _class = property(lambda self: Bag)
     collection = property(lambda self: CollectionEnum.BAGS.value)
     populate_fields = property(
