@@ -12,7 +12,9 @@ def retry_after(callback):
         try:
             return await callback(update, context)
         except RetryAfter as error:
-            sleep(error.retry_after + 1)
+            sleep_time = error.retry_after + 5
+            print(f'RetryAfter: Retrying in {sleep_time} seconds...')
+            sleep(sleep_time)
             return await callback(update, context)
 
     return wrapper
