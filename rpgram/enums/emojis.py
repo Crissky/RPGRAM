@@ -11,7 +11,7 @@ class EmojiEnum(Enum):
     DODGE = '🥾'
     EQUIPMENT_POWER = '🔸'
     INSPECT = '🕵️'
-    IGNORE = '🙄'
+    IGNORE = '🙅'  # 🙄💁‍♂️🙅
     HEALING = '💞'
     HIT = '🎯'
     EVASION = '🥾'
@@ -22,7 +22,7 @@ class EmojiEnum(Enum):
     PRECISION_ATTACK = '💫'
     PRECISION_DEFENSE = '🛡'
     PAGE = '📜'
-    TAKE = '👐'
+    TAKE = '🖐'  # 👐🖐
     TEAM_BLUE = '🔵'
     TEAM_RED = '🔴'
     TEAM_WHITE = '🔘'
