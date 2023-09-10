@@ -496,13 +496,23 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     drop = data['drop']
 
     item = items_model.get(item_id)
-    item = Item(item, quantity=drop)
-    bag_model.add(item, user_id)
+    if item:
+        item = Item(item, quantity=drop)
+        bag_model.add(item, user_id)
 
-    await query.answer(
-        f'Você pegou "{drop}x {item.name}".',
-        show_alert=True
-    )
+        await query.answer(
+            f'Você pegou "{drop}x {item.name}".',
+            show_alert=True
+        )
+    else:
+        print(
+            f'get_drop() - Item não existe mais: _id: {item_id} item: {item}.'
+        )
+        await query.answer(
+            f'Este item não existe mais.',
+            show_alert=True
+        )
+
     await query.delete_message()
 
     return ConversationHandler.END
