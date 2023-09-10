@@ -35,3 +35,11 @@ class EmojiEnum(Enum):
     WEIGHT = '⚖'
     LEFT = '👈'
     RIGHT = '👉'
+    HELMET = '🪖'
+    ONE_HAND = '🗡'
+    TWO_HANDS = '⚔️'
+    ARMOR = '🧥'
+    BOOTS = '🥾'
+    RING = '💍'
+    NECKLACE = '📿'
+    CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️

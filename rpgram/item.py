@@ -53,7 +53,7 @@ class Item:
             )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'{self.quantity:02}x *{self.name}*'
+        text = f'{self.quantity:02}x {self.item.emoji_type}*{self.name}*'
 
         if verbose:
             if isinstance(self.item, Equipment):

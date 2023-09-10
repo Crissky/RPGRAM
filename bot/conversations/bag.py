@@ -112,7 +112,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     items_buttons = []
     # Criando texto e botões dos itens
     for index, item in enumerate(items):
-        markdown_text += f'*Ⅰ{(index + 1)}:* '
+        markdown_text += f'*Ⅰ{(index + 1):02}:* '
         markdown_text += item.get_sheet(verbose=True, markdown=True)
         items_buttons.append(InlineKeyboardButton(
             text=f'Item {index + 1}',
