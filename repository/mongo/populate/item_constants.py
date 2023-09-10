@@ -211,12 +211,28 @@ RING_EQUIPMENTS = {
     ),
 }
 AMULET_EQUIPMENTS = {
-    'AMULET': dict(
+    'NECKLACE': dict(
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        },
+        attr_panality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'AMULET': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 10, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
         attr_panality_prob={
