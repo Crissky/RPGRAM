@@ -27,6 +27,7 @@ from bot.decorators import (
     print_basic_infos,
     skip_if_no_have_char,
     skip_if_no_singup_player,
+    retry_after,
 )
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
@@ -50,6 +51,7 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
 @skip_if_no_have_char
 @need_not_in_battle
 @print_basic_infos
+@retry_after
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Envia ou edita mensagem contendo uma página dos itens do jogador
     '''
@@ -174,6 +176,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return CHECK_ROUTES
 
 
+@retry_after
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Edita a mensagem com as informações do item escolhido.
     '''
@@ -288,6 +291,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
 
 @print_basic_infos
+@retry_after
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Usa ou equipa o item do jogador.
     '''
@@ -400,6 +404,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return START_ROUTES
 
 
+@retry_after
 async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''drop o item do jogador.
     '''
