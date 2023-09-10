@@ -65,11 +65,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         data = eval(query.data)
         page = data['page']  # starts zero
         data_user_id = data['user_id']
+        retry_state = data.get('retry_state', None)
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return CHECK_ROUTES
+            return retry_state
 
         skip_slice = ITEMS_PER_PAGE * page
         size_slice = ITEMS_PER_PAGE + 1
@@ -197,7 +198,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
-        return USE_ROUTES
+        return CHECK_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
@@ -271,7 +272,8 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         [
             InlineKeyboardButton(
                 text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
-                    f'{{"page":{page},"user_id":{user_id}}}'
+                    f'{{"page":{page},"user_id":{user_id},'
+                    f'"retry_state":{USE_ROUTES}}}'
                 )
             )
         ]
@@ -312,7 +314,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
-        return START_ROUTES
+        return USE_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
@@ -338,7 +340,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.edit_message_reply_markup(
                 reply_markup=old_reply_markup
             )
-            return START_ROUTES
+            return USE_ROUTES
     elif isinstance(item.item, Consumable):  # Tenta usar o item
         consumable = item.item
         try:
@@ -364,7 +366,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.edit_message_reply_markup(
                 reply_markup=old_reply_markup
             )
-            return START_ROUTES
+            return USE_ROUTES
 
     markdown_player_sheet = player_character.get_all_sheets(
         verbose=False, markdown=True
@@ -383,7 +385,8 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(
             text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
-                f'{{"page":{page},"user_id":{user_id}}}'
+                f'{{"page":{page},"user_id":{user_id},'
+                f'"retry_state":{START_ROUTES}}}'
             )
         )]
     ])
@@ -424,7 +427,7 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
-        return START_ROUTES
+        return USE_ROUTES
 
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
@@ -441,7 +444,8 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(
             text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
-                f'{{"page":{page},"user_id":{user_id}}}'
+                f'{{"page":{page},"user_id":{user_id},'
+                f'"retry_state":{START_ROUTES}}}'
             )
         )]
     ])
@@ -518,7 +522,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return START_ROUTES
+            return CHECK_ROUTES
 
         await query.answer('Fechando Bolsa...')
         await query.delete_message()
