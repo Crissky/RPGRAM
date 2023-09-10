@@ -57,8 +57,9 @@ def add_xp(
     char_model.save(char)
     new_level = char.base_stats.level
 
-    if new_level > group.higher_level:
-        group.higher_level = new_level
+    if new_level > level:
+        player_id = char.player_id
+        group.add_tier(player_id, new_level)
         group_model = GroupModel()
         group_model.save(group)
 

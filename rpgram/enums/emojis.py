@@ -7,8 +7,11 @@ class EmojiEnum(Enum):
     DEAD = '☠️'
     DEFEND = '🛡'
     DICE = '🎲'
+    DISCARD = '🗑️'
     DODGE = '🥾'
     EQUIPMENT_POWER = '🔸'
+    INSPECT = '🕵️'
+    IGNORE = '🙅'  # 🙄💁‍♂️🙅
     HEALING = '💞'
     HIT = '🎯'
     EVASION = '🥾'
@@ -19,6 +22,7 @@ class EmojiEnum(Enum):
     PRECISION_ATTACK = '💫'
     PRECISION_DEFENSE = '🛡'
     PAGE = '📜'
+    TAKE = '🖐'  # 👐🖐
     TEAM_BLUE = '🔵'
     TEAM_RED = '🔴'
     TEAM_WHITE = '🔘'
@@ -31,3 +35,11 @@ class EmojiEnum(Enum):
     WEIGHT = '⚖'
     LEFT = '👈'
     RIGHT = '👉'
+    HELMET = '🪖'
+    ONE_HAND = '🗡'
+    TWO_HANDS = '⚔️'
+    ARMOR = '🧥'
+    BOOTS = '🥾'
+    RING = '💍'
+    NECKLACE = '📿'
+    CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️

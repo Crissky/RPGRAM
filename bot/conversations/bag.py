@@ -31,10 +31,10 @@ from bot.decorators import (
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
-from repository.mongo import BagModel, CharacterModel, EquipsModel
+from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
 from rpgram import Bag
 from rpgram.boosters import Equipment
-from rpgram import Consumable
+from rpgram import Consumable, Item
 from rpgram.enums import EmojiEnum, EquipmentEnum
 
 
@@ -112,7 +112,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     items_buttons = []
     # Criando texto e botões dos itens
     for index, item in enumerate(items):
-        markdown_text += f'*Ⅰ{(index + 1)}:* '
+        markdown_text += f'*Ⅰ{(index + 1):02}:* '
         markdown_text += item.get_sheet(verbose=True, markdown=True)
         items_buttons.append(InlineKeyboardButton(
             text=f'Item {index + 1}',
@@ -176,11 +176,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Edita a mensagem com as informações do item escolhido.
     '''
+    query = update.callback_query
+
+    try:
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
-    query = update.callback_query
     data = eval(query.data)
     item_pos = data['item']
     page = data['page']
@@ -247,6 +254,20 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         equip_or_use,
         [
             InlineKeyboardButton(
+                text=f'{EmojiEnum.DISCARD.value}Descartar', callback_data=(
+                    f'{{"drop":1,"item":{item_pos},'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+            InlineKeyboardButton(
+                text=f'{EmojiEnum.DISCARD.value}Descartar x10', callback_data=(
+                    f'{{"drop":10,"item":{item_pos},'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            )
+        ],
+        [
+            InlineKeyboardButton(
                 text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
                     f'{{"page":{page},"user_id":{user_id}}}'
                 )
@@ -262,15 +283,23 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     return USE_ROUTES
 
 
+@print_basic_infos
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Usa ou equipa o item do jogador.
     '''
+    query = update.callback_query
+
+    try:
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     char_model = CharacterModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
-    query = update.callback_query
     data = eval(query.data)
     item_pos = data['item']
     page = data['page']
@@ -327,19 +356,17 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
             return START_ROUTES
 
-    # Carrega a bolsa com todos os itens
-    player_bag = bag_model.get(query={'player_id': user_id})
-    player_bag.remove(slot=item_index)  # Remove o item usado/equipado da bolsa
     markdown_player_sheet = player_character.get_all_sheets(
         verbose=False, markdown=True
     )
 
+    bag_model.sub(item, user_id)
     # Adiciona na bolsa os equipamentos que já estavam equipados
     # e que foram substituídos
     for old_equipment in old_equipments:
-        player_bag.add(old_equipment)
+        old_equipment_item = Item(old_equipment)
+        bag_model.add(old_equipment_item, user_id)
 
-    bag_model.save(player_bag)
     char_model.save(player_character)
     equips_model.save(player_character.equips)
 
@@ -358,6 +385,111 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     return START_ROUTES
+
+
+async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''drop o item do jogador.
+    '''
+    query = update.callback_query
+
+    try:
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    bag_model = BagModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    user_name = update.effective_user.name
+    data = eval(query.data)
+    item_pos = data['item']
+    page = data['page']
+    data_user_id = data['user_id']
+    drop = data['drop']
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        return START_ROUTES
+
+    item_index = (ITEMS_PER_PAGE * page) + item_pos
+    player_bag = bag_model.get(
+        query={'player_id': user_id},
+        fields={'items_ids': {'$slice': [item_index, 1]}},
+        partial=False
+    )
+    item = player_bag[0]
+    drop = min(drop, item.quantity)
+    markdown_text = item.get_all_sheets(verbose=True, markdown=True)
+
+    bag_model.sub(item, user_id, quantity=-(drop))
+
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton(
+            text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
+                f'{{"page":{page},"user_id":{user_id}}}'
+            )
+        )]
+    ])
+    await query.edit_message_text(
+        text=f'Você dropou o item "{drop}x {item.name}"\.',
+        reply_markup=reply_markup,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
+
+    # Envia mensagem de drop do item, se ele foi dropado no grupo
+    if chat_id != user_id:
+        item_id = str(item._id)
+        reply_markup_drop = InlineKeyboardMarkup([
+            [InlineKeyboardButton(
+                text=f'{EmojiEnum.TAKE.value}Pegar', callback_data=(
+                    f'{{"_id":"{item_id}","drop":{drop}}}'
+                )
+            )]
+        ])
+        await update.effective_message.reply_text(
+            text=f'{user_name} dropou o item:\n\n{markdown_text}',
+            disable_notification=silent,
+            reply_markup=reply_markup_drop,
+            parse_mode=ParseMode.MARKDOWN_V2
+        )
+
+    return START_ROUTES
+
+
+@print_basic_infos
+async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Pega o item dropado
+    '''
+    query = update.callback_query
+
+    try:
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    bag_model = BagModel()
+    items_model = ItemModel()
+    user_id = update.effective_user.id
+    data = eval(query.data)
+    item_id = data['_id']
+    drop = data['drop']
+
+    item = items_model.get(item_id)
+    item = Item(item, quantity=drop)
+    bag_model.add(item, user_id)
+
+    await query.answer(
+        f'Você pegou "{drop}x {item.name}".',
+        show_alert=True
+    )
+    await query.delete_message()
+
+    return ConversationHandler.END
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -408,6 +540,7 @@ BAG_HANDLER = ConversationHandler(
         USE_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(use_item, pattern=r'^{"use":1'),
+            CallbackQueryHandler(drop_item, pattern=r'^{"drop":1'),
         ],
     },
     fallbacks=[
@@ -415,4 +548,7 @@ BAG_HANDLER = ConversationHandler(
     ],
     allow_reentry=True,
     conversation_timeout=TEN_MINUTES_IN_SECONDS,
+)
+DROP_HANDLER = CallbackQueryHandler(
+    get_drop, pattern=r'^{"_id":'
 )

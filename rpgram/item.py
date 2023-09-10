@@ -9,10 +9,17 @@ from rpgram import Consumable
 from rpgram.enums import EmojiEnum
 
 ItemsTypes = Union[Equipment, Consumable]
+ItemsTypesTuple = (Equipment, Consumable)
 
 
 class Item:
     def __init__(self, item: ItemsTypes, quantity: int = 1):
+        if not isinstance(item, ItemsTypesTuple):
+            raise TypeError(
+                f'Item precisa ser de algum desses tipos: {ItemsTypesTuple}.\n'
+                f'Mas o item fornecido é do tipo: ({type(item)}).'
+            )
+
         self.item = item
         self.__quantity = 0
         self.quantity = quantity
@@ -46,7 +53,7 @@ class Item:
             )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'{self.quantity:02}x *{self.name}*'
+        text = f'{self.quantity:02}x {self.item.emoji_type}*{self.name}*'
 
         if verbose:
             if isinstance(self.item, Equipment):

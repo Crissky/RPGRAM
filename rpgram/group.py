@@ -7,6 +7,9 @@ from constant.text import SECTION_HEAD
 from function.datetime import datetime_to_string
 
 
+MAX_NUM_PLAYERS = 3
+
+
 class Group:
     def __init__(
         self,
@@ -21,6 +24,7 @@ class Group:
         # multiplicador do bônus de xp pelo nível do Personagem
         character_multiplier_xp: float = 1.0,
         higher_level: int = 1,
+        tier: dict = {},
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -36,7 +40,7 @@ class Group:
         self.spawn_end_time = spawn_end_time
         self.multiplier_xp = float(multiplier_xp)
         self.character_multiplier_xp = float(character_multiplier_xp)
-        self.higher_level = int(higher_level)
+        self.tier = tier
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -92,6 +96,24 @@ class Group:
         else:
             raise KeyError(f'"{key}" não é uma chave válida.')
 
+    def add_tier(self, player_id: int, level: int) -> None:
+        if player_id in self.tier.keys() or len(self.tier) < MAX_NUM_PLAYERS:
+            self.tier[player_id] = level
+        else:
+            min_key = min(self.tier, key=self.tier.get)
+            min_value = self.tier[min_key]
+            if level > min_value:
+                self.tier.pop(min_key)
+                self.tier[player_id] = level
+
+    @property
+    def higher_level(self) -> int:
+        higher_level = 1
+        if self.tier:
+            higher_level = sum(self.tier.values()) // len(self.tier)
+
+        return higher_level
+
     def __repr__(self) -> str:
         return (
             f'{SECTION_HEAD.format("Configuração do Grupo")}\n'
@@ -121,6 +143,7 @@ class Group:
             spawn_end_time=self.spawn_end_time,
             multiplier_xp=self.multiplier_xp,
             character_multiplier_xp=self.character_multiplier_xp,
+            tier=self.tier,
             higher_level=self.higher_level,
             created_at=self.created_at,
             updated_at=self.updated_at

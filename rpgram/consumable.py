@@ -92,6 +92,10 @@ class Consumable:
         return False
 
     # Getters
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.CONSUMABLE.value
+
     _id = property(lambda self: self.__id)
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)

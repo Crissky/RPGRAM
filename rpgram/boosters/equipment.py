@@ -447,8 +447,24 @@ class Equipment(StatsBooster):
         ) - 6
 
     @property
+    def emoji_type(self) -> str:
+        name_type = self.equip_type.name
+        emoji_type = EmojiEnum[name_type].value
+        return emoji_type
+
+    @property
+    def power_and_type(self) -> str:
+        power_emoji = EmojiEnum.EQUIPMENT_POWER.value
+        emoji_type = self.emoji_type
+        return f'{self.power}{power_emoji}{emoji_type}'
+
+    @property
     def name_and_power(self) -> str:
         return f'{self.name} ({self.power}{EmojiEnum.EQUIPMENT_POWER.value})'
+
+    @property
+    def name_and_power_and_type(self) -> str:
+        return f'{self.name} ({self.power_and_type})'
 
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
