@@ -517,7 +517,7 @@ def create_random_consumable(group_level: int):
 
 def create_random_trap(group_level: int) -> int:
     trap_level = random_group_level(group_level)
-    trap_degree = randint(5, 15)
+    trap_degree = randint(10, 20)
 
     return trap_level * trap_degree
 
