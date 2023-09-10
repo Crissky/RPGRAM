@@ -32,8 +32,8 @@ class EquipsModel(Model):
                 'id_key': 'ring_id',
                 'model': ItemModel()
             },
-            'necklace': {
-                'id_key': 'necklace_id',
+            'amulet': {
+                'id_key': 'amulet_id',
                 'model': ItemModel()
             },
         }
@@ -55,8 +55,8 @@ if __name__ == '__main__':
     print(boots)
     ring = equipment_model.get('aaaaaaaaaaaaaaaaaaaaaaaa')
     print(ring)
-    necklace = equipment_model.get('999999999999999999999999')
-    print(necklace)
+    amulet = equipment_model.get('999999999999999999999999')
+    print(amulet)
     equips = Equips(
         player_id=123,
         _id='ffffffffffffffffffffffff',
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         armor=armor,
         boots=boots,
         ring=ring,
-        necklace=necklace,
+        amulet=amulet,
     )
     print(equips)
     equips_model.save(equips)

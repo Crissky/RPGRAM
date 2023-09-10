@@ -14,7 +14,7 @@ from repository.mongo.populate.item_constants import (
     HELMET_EQUIPMENTS,
     LIGHT_EQUIPMENTS,
     MAGIC_WEAPONS,
-    NECKLACE_EQUIPMENTS,
+    AMULET_EQUIPMENTS,
     ONE_HAND_EQUIPMENTS,
     PIERCING_WEAPONS,
     RING_EQUIPMENTS,
@@ -44,7 +44,7 @@ WEARABLE_EQUIPMENTS_ENUM = [
     EquipmentEnum.BOOTS.name
 ]
 ACCESSORY_EQUIPMENTS_ENUM = [
-    EquipmentEnum.RING.name, EquipmentEnum.NECKLACE.name
+    EquipmentEnum.RING.name, EquipmentEnum.AMULET.name
 ]
 BONUS_RARITY = {
     RarityEnum.COMMON.name: 1, RarityEnum.UNCOMMON.name: 2,
@@ -96,7 +96,7 @@ def choice_type_item(no_trap: bool = False) -> str:
         EquipmentEnum.HELMET.name: 100,
         EquipmentEnum.ONE_HAND.name: 120, EquipmentEnum.TWO_HANDS.name: 120,
         EquipmentEnum.ARMOR.name: 100, EquipmentEnum.BOOTS.name: 100,
-        EquipmentEnum.RING.name: 25, EquipmentEnum.NECKLACE.name: 25,
+        EquipmentEnum.RING.name: 25, EquipmentEnum.AMULET.name: 25,
     }
 
     if no_trap:
@@ -237,8 +237,8 @@ def get_equipment_and_material(
         material = choice_accessory_material(group_level)
         if equip_type == EquipmentEnum.RING.name:
             weapon = choice(list(RING_EQUIPMENTS))
-        elif equip_type == EquipmentEnum.NECKLACE.name:
-            weapon = choice(list(NECKLACE_EQUIPMENTS))
+        elif equip_type == EquipmentEnum.AMULET.name:
+            weapon = choice(list(AMULET_EQUIPMENTS))
 
     else:
         raise ValueError(
@@ -267,7 +267,7 @@ def get_bonus_and_penality(
         equip_type_bonus = 1
     elif equip_type in [EquipmentEnum.HELMET.name, EquipmentEnum.BOOTS.name]:
         equip_type_bonus = 0.5
-    elif equip_type in [EquipmentEnum.RING.name, EquipmentEnum.NECKLACE.name]:
+    elif equip_type in [EquipmentEnum.RING.name, EquipmentEnum.AMULET.name]:
         equip_type_bonus = 0.25
 
     if equip_type in WEAPON_EQUIPMENTS_ENUM:

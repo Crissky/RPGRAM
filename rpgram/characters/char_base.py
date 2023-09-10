@@ -218,9 +218,9 @@ if __name__ == '__main__':
         weight=0.1,
         bonus_evasion=100,
     )
-    necklace = Equipment(
+    amulet = Equipment(
         name='Colar Brilhante',
-        equip_type=EquipmentEnum.NECKLACE,
+        equip_type=EquipmentEnum.AMULET,
         damage_types=None,
         weight=0.2,
         bonus_charisma=150,
@@ -232,7 +232,7 @@ if __name__ == '__main__':
         armor=armor,
         boots=boots,
         ring=ring,
-        necklace=necklace,
+        amulet=amulet,
     )
     classe = Classe(
         name='Arqueiro',

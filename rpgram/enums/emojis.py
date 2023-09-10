@@ -41,5 +41,5 @@ class EmojiEnum(Enum):
     ARMOR = '🧥'
     BOOTS = '🥾'
     RING = '💍'
-    NECKLACE = '📿'
+    AMULET = '📿'
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
