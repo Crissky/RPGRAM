@@ -127,7 +127,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
         user_name = update.effective_user.name
-        group_level = get_attribute_group_or_player(chat_id, 'higher_level')
+        group_level = get_attribute_group_or_player(chat_id, 'group_level')
         bag_model = BagModel()
         items_model = ItemModel()
         bag_exists = bag_model.exists(user_id)

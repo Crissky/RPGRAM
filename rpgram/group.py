@@ -23,7 +23,7 @@ class Group:
         multiplier_xp: float = 1.0,
         # multiplicador do bônus de xp pelo nível do Personagem
         character_multiplier_xp: float = 1.0,
-        higher_level: int = 1,
+        group_level: int = 1,
         tier: dict = {},
         created_at: datetime = None,
         updated_at: datetime = None
@@ -108,12 +108,12 @@ class Group:
                 self.tier[player_id] = level
 
     @property
-    def higher_level(self) -> int:
-        higher_level = 1
+    def group_level(self) -> int:
+        group_level = 1
         if self.tier:
-            higher_level = sum(self.tier.values()) // len(self.tier)
+            group_level = sum(self.tier.values()) // len(self.tier)
 
-        return higher_level
+        return group_level
 
     def __repr__(self) -> str:
         return (
@@ -127,7 +127,7 @@ class Group:
             f'Multiplicador de XP: {self.multiplier_xp:.2f}\n'
             f'Mult. de XP por Nível: '
             f'{self.character_multiplier_xp:.2f}\n'
-            f'Nível do Grupo: {self.higher_level}\n'
+            f'Nível do Grupo: {self.group_level}\n'
             f'ID: {self.__id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
@@ -145,7 +145,7 @@ class Group:
             multiplier_xp=self.multiplier_xp,
             character_multiplier_xp=self.character_multiplier_xp,
             tier=self.tier,
-            higher_level=self.higher_level,
+            group_level=self.group_level,
             created_at=self.created_at,
             updated_at=self.updated_at
         )
