@@ -96,7 +96,8 @@ class Group:
         else:
             raise KeyError(f'"{key}" não é uma chave válida.')
 
-    def add_tier(self, player_id: int, level: int) -> None:
+    def add_tier(self, player_id: Union[int, str], level: int) -> None:
+        player_id = str(player_id)
         if player_id in self.tier.keys() or len(self.tier) < MAX_NUM_PLAYERS:
             self.tier[player_id] = level
         else:
