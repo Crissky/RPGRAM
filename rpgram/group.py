@@ -127,7 +127,7 @@ class Group:
             f'Multiplicador de XP: {self.multiplier_xp:.2f}\n'
             f'Mult. de XP por Nível: '
             f'{self.character_multiplier_xp:.2f}\n'
-            f'Top Nível: {self.higher_level}\n'
+            f'Nível do Grupo: {self.higher_level}\n'
             f'ID: {self.__id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
