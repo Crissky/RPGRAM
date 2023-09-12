@@ -163,10 +163,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     print('inspect_treasure() - text:', text)
-    await query.edit_message_text(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2
-    )
+    await query.edit_message_text(text=text)
 
     if isinstance(items, list):
         markdown_item_sheet = ''
