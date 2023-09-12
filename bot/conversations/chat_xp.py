@@ -31,6 +31,7 @@ from function.datetime import (
 from repository.mongo import (
     PlayerModel
 )
+from rpgram.enums import EmojiEnum
 
 
 @skip_if_no_singup_group
@@ -68,7 +69,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if level_up:
         new_level = report_xp['level']
         await update.effective_message.reply_text(
-            f'Parabéns!!!\n'
+            f'{EmojiEnum.LEVEL_UP.value}'
+            f'Parabéns!!!{EmojiEnum.LEVEL_UP.value}\n'
             f'{user_name} passou de nível! '
             f'Seu personagem agora está no nível {new_level}.',
             disable_notification=silent
@@ -78,7 +80,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         player_char = report_xp['char']
         try:
             await update.effective_user.send_message(
-                f'Você ganhou {xp} de XP.\n'
+                f'Você ganhou {xp} pontos de XP.\n'
                 f'Experiência: {player_char.bs.show_xp}',
                 disable_notification=silent
             )

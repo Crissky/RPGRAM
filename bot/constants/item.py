@@ -1,3 +1,12 @@
+import re
+
+
+CALLBACK_TEXT_GET = '$get_item'
+CALLBACK_TEXT_IGNORE = '$ignore_item'
+ESCAPED_CALLBACK_TEXT_GET = re.escape(CALLBACK_TEXT_GET)
+ESCAPED_CALLBACK_TEXT_IGNORE = re.escape(CALLBACK_TEXT_IGNORE)
+
+
 REPLY_TEXTS_FIND_TREASURE_START = [
     'Durante a sua viagem, vocês se deparam com uma clareira tranquila na floresta, ',
     'Explorando uma caverna escura, vocês se deparam com uma passagem secreta, ',

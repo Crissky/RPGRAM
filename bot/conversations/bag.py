@@ -13,8 +13,10 @@ from telegram.ext import (
 from bot.constants.bag import (
     ACCESS_DENIED,
     CALLBACK_CLOSE_BAG,
+    CALLBACK_TEXT_DESTROY_ITEM,
     CANCEL_COMMANDS,
     COMMANDS,
+    ESCAPED_CALLBACK_TEXT_DESTROY_ITEM,
     ITEMS_PER_PAGE
 )
 
@@ -442,13 +444,14 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
     item = player_bag[0]
     drop = min(drop, item.quantity)
-    markdown_text = item.get_all_sheets(verbose=True, markdown=True)
+    markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
 
     bag_model.sub(item, user_id, quantity=-(drop))
 
     reply_markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(
-            text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
+            text=f'{EmojiEnum.BACK.value}Voltar',
+            callback_data=(
                 f'{{"page":{page},"user_id":{user_id},'
                 f'"retry_state":{START_ROUTES}}}'
             )
@@ -465,17 +468,27 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         item_id = str(item._id)
         reply_markup_drop = InlineKeyboardMarkup([
             [InlineKeyboardButton(
-                text=f'{EmojiEnum.TAKE.value}Pegar', callback_data=(
+                text=f'{EmojiEnum.TAKE.value}Coletar',
+                callback_data=(
                     f'{{"_id":"{item_id}","drop":{drop}}}'
                 )
+            ), InlineKeyboardButton(
+                text=f'Quebrar{EmojiEnum.DESTROY_ITEM.value}',
+                callback_data=CALLBACK_TEXT_DESTROY_ITEM
             )]
         ])
-        await update.effective_message.reply_text(
-            text=f'{user_name} dropou o item:\n\n{markdown_text}',
+        response = await update.effective_message.reply_text(
+            text=f'{user_name} dropou o item:\n\n{markdown_item_sheet}',
             disable_notification=silent,
             reply_markup=reply_markup_drop,
             parse_mode=ParseMode.MARKDOWN_V2
         )
+        message_id = response.message_id
+        drops = context.chat_data.get('drop', None)
+        if isinstance(drops, dict):
+            drops[message_id] = True
+        else:
+            context.chat_data['drop'] = {message_id: True}
 
     return START_ROUTES
 
@@ -484,7 +497,22 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Pega o item dropado
     '''
+
     query = update.callback_query
+    message_id = update.effective_message.message_id
+    drops = {}
+
+    # Check se o item pode ser pego, se não, cancela a ação e apaga a mensagem
+    # Só pode ser pego se no dicionário drop contiver o message_id como chave e
+    # True como valor. Caso contrário, cancela a ação e apaga a mensagem.
+    if 'drop' in context.chat_data:
+        drops = context.chat_data['drop']
+        if not drops.get(message_id, None):
+            drops.pop(message_id, None)
+            await query.answer(f'Este item não existe mais.', show_alert=True)
+            await query.delete_message()
+
+            return ConversationHandler.END
 
     try:
         await query.edit_message_reply_markup()
@@ -518,7 +546,21 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             show_alert=True
         )
 
+    drops.pop(message_id, None)
     await query.delete_message()
+
+    return ConversationHandler.END
+
+
+async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Quebra o item dropado
+    '''
+    query = update.callback_query
+    try:
+        await query.answer('Quebrando o item...', show_alert=True)
+        await query.delete_message()
+    except Exception as e:
+        print('destroy_drop():', type(e), e)
 
     return ConversationHandler.END
 
@@ -580,6 +622,11 @@ BAG_HANDLER = ConversationHandler(
     allow_reentry=True,
     conversation_timeout=TEN_MINUTES_IN_SECONDS,
 )
-DROP_HANDLER = CallbackQueryHandler(
-    get_drop, pattern=r'^{"_id":'
-)
+DROP_HANDLERS = [
+    CallbackQueryHandler(
+        get_drop, pattern=r'^{"_id":'
+    ),
+    CallbackQueryHandler(
+        destroy_drop, pattern=f'^{ESCAPED_CALLBACK_TEXT_DESTROY_ITEM}$',
+    )
+]

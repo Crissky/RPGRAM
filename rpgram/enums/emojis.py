@@ -43,3 +43,5 @@ class EmojiEnum(Enum):
     RING = '💍'
     AMULET = '📿'
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
+    LEVEL_UP = '🎊'
+    DESTROY_ITEM = '💥'
