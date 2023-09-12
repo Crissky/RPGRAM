@@ -102,12 +102,18 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     ]]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
 
-    await context.bot.send_message(
+    response = await context.bot.send_message(
         chat_id=chat_id,
         text=text,
         disable_notification=silent,
         reply_markup=reply_markup,
     )
+    message_id = response.message_id
+    treasures = context.chat_data.get('treasure', None)
+    if isinstance(treasures, dict):
+        treasures[message_id] = True
+    else:
+        context.chat_data['treasure'] = {message_id: True}
 
 
 @print_basic_infos
@@ -117,13 +123,31 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador 
     que clicou no botão de investigar e salva o item em sua bolsa.
     '''
+
+    query = update.callback_query
+    message_id = update.effective_message.message_id
+    treasures = {}
+
+    # Checa se o baú pode ser aberto, se não, cancela a ação e apaga a mensagem
+    # Só pode ser aberto se no dicionário drop contiver o message_id como chave
+    # e True como valor. Caso contrário, cancela a ação e apaga a mensagem.
+    if 'treasure' in context.chat_data:
+        treasures = context.chat_data['treasure']
+        if not treasures.get(message_id, None):
+            treasures.pop(message_id, None)
+            await query.answer(
+                f'Este tesouro já foi descoberto.', show_alert=True
+            )
+            await query.delete_message()
+
+            return ConversationHandler.END
+
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     items_model = ItemModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
-    query = update.callback_query
     group_level = get_attribute_group_or_player(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     bag_exists = bag_model.exists(user_id)
@@ -137,6 +161,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     items = create_random_item(group_level)
     if isinstance(items, int):
+        treasures.pop(message_id, None)
         return await activated_trap(items, user_id, user_name, query)
 
     text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN).lower()
@@ -217,6 +242,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'para uma lista de itens que o jogador encontrou no baú.\n'
             f'Items: {items}.'
         )
+
+    treasures.pop(message_id, None)
 
     return ConversationHandler.END
 

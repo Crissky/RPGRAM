@@ -502,7 +502,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message_id = update.effective_message.message_id
     drops = {}
 
-    # Check se o item pode ser pego, se não, cancela a ação e apaga a mensagem
+    # Checa se o item pode ser pego, se não, cancela a ação e apaga a mensagem
     # Só pode ser pego se no dicionário drop contiver o message_id como chave e
     # True como valor. Caso contrário, cancela a ação e apaga a mensagem.
     if 'drop' in context.chat_data:
