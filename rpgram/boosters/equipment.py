@@ -285,28 +285,28 @@ class Equipment(StatsBooster):
             f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
 
             f'`FOR: {self.strength:+} {{{strength_diff:+}}}'
-            f' x({self.multiplier_strength:+.2f} '
-            f'{{{multiplier_strength_diff:+.2f}}})`\n'
+            f' x({self.multiplier_strength:+.2f}) '
+            f'{{{multiplier_strength_diff:+.2f}}}`\n'
 
             f'`DES: {self.dexterity:+} {{{dexterity_diff:+}}}'
-            f' x({self.multiplier_dexterity:+.2f} '
-            f'{{{multiplier_dexterity_diff:+.2f}}})`\n'
+            f' x({self.multiplier_dexterity:+.2f}) '
+            f'{{{multiplier_dexterity_diff:+.2f}}}`\n'
 
             f'`CON: {self.constitution:+} {{{constitution_diff:+}}}'
-            f' x({self.multiplier_constitution:+.2f} '
-            f'{{{multiplier_constitution_diff:+.2f}}})`\n'
+            f' x({self.multiplier_constitution:+.2f}) '
+            f'{{{multiplier_constitution_diff:+.2f}}}`\n'
 
             f'`INT: {self.intelligence:+} {{{intelligence_diff:+}}}'
-            f' x({self.multiplier_intelligence:+.2f} '
-            f'{{{multiplier_intelligence_diff:+.2f}}})`\n'
+            f' x({self.multiplier_intelligence:+.2f}) '
+            f'{{{multiplier_intelligence_diff:+.2f}}}`\n'
 
             f'`SAB: {self.wisdom:+} {{{wisdom_diff:+}}}'
-            f' x({self.multiplier_wisdom:+.2f} '
-            f'{{{multiplier_wisdom_diff:+.2f}}})`\n'
+            f' x({self.multiplier_wisdom:+.2f}) '
+            f'{{{multiplier_wisdom_diff:+.2f}}}`\n'
 
             f'`CAR: {self.charisma:+} {{{charisma_diff:+}}}'
-            f' x({self.multiplier_charisma:+.2f} '
-            f'{{{multiplier_charisma_diff:+.2f}}})`\n\n'
+            f' x({self.multiplier_charisma:+.2f}) '
+            f'{{{multiplier_charisma_diff:+.2f}}}`\n\n'
 
             f'`HP: {self.hp:+} '
             f'{{{hp_diff:+}}}`\n'
