@@ -22,7 +22,7 @@ class EmojiEnum(Enum):
     PRECISION_ATTACK = '💫'
     PRECISION_DEFENSE = '🛡'
     PAGE = '📜'
-    TAKE = '🖐'  # 👐🖐
+    TAKE = '🫲'  # 👐🖐🫲
     TEAM_BLUE = '🔵'
     TEAM_RED = '🔴'
     TEAM_WHITE = '🔘'
