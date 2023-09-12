@@ -55,8 +55,8 @@ def add_xp(
     xp = int((randint(min_xp, max_xp) + level_bonus) * multiplier_xp)
     
     if group_level > level:
-        handicap = randint(125, 150) / 100
-        xp = xp * handicap
+        handicap = randint(110, 125) / 100
+        xp = xp + (group_level * handicap)
 
     char.base_stats.xp = xp
     char_model.save(char)
