@@ -13,7 +13,6 @@ from bot.conversations import (
     CHAT_XP_HANDLER,
     BATTLE_HANDLER,
     BAG_HANDLER,
-    DROP_HANDLER
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -25,7 +24,8 @@ from bot.conversations import (
     CONFIG_PLAYER_HANDLERS,
     REST_HANDLERS,
     TREASURE_HANDLERS,
-    VIEW_EQUIPS_HANDLERS
+    VIEW_EQUIPS_HANDLERS,
+    DROP_HANDLERS
 )
 from bot.conversations.item import job_create_find_treasure
 from function.datetime import get_last_hour
@@ -46,7 +46,6 @@ def main() -> None:
     application.add_handler(CHAT_XP_HANDLER)
     application.add_handler(BATTLE_HANDLER)
     application.add_handler(BAG_HANDLER)
-    application.add_handler(DROP_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
@@ -59,6 +58,7 @@ def main() -> None:
     application.add_handlers(REST_HANDLERS)
     application.add_handlers(TREASURE_HANDLERS)
     application.add_handlers(VIEW_EQUIPS_HANDLERS)
+    application.add_handlers(DROP_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(

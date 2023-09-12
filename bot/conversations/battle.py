@@ -388,8 +388,8 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
             blue = TEAMS[CALLBACK_ENTER_BLUE_TEAM]
             red = TEAMS[CALLBACK_ENTER_RED_TEAM]
             text += (
-                f'O Time {blue} recebeu {report_xp["blue"]} de XP e o '
-                f'Time {red} recebeu {report_xp["red"]} de XP.\n'
+                f'O Time {blue} recebeu {report_xp["blue"]} pontos de XP e o '
+                f'Time {red} recebeu {report_xp["red"]} pontos de XP.\n'
             )
             for char in battle.turn_order:
                 if isinstance(char, PlayerCharacter):

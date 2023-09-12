@@ -1,6 +1,5 @@
-import re
-
 from random import choice, randint
+from time import sleep
 
 from telegram import (
     CallbackQuery,
@@ -13,14 +12,18 @@ from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
 )
+from bot.constants.bag import CALLBACK_TEXT_DESTROY_ITEM
 from bot.constants.item import (
+    CALLBACK_TEXT_GET,
+    CALLBACK_TEXT_IGNORE,
+    ESCAPED_CALLBACK_TEXT_GET,
+    ESCAPED_CALLBACK_TEXT_IGNORE,
     REPLY_TEXTS_FIND_TRAP_DAMAGE,
     REPLY_TEXTS_FIND_TRAP_OPEN,
     REPLY_TEXTS_FIND_TREASURE_START,
     REPLY_TEXTS_FIND_TREASURE_MIDDLE,
     REPLY_TEXTS_FIND_TREASURE_END,
     REPLY_TEXTS_FIND_TREASURE_OPEN,
-    REPLY_TEXTS_FIND_TREASURE_FINDING,
     REPLY_TEXTS_IGNORE_TREASURE,
 )
 from bot.constants.rest import COMMANDS as rest_commands
@@ -32,7 +35,6 @@ from bot.decorators import (
 from bot.functions.char import add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
 from telegram.ext import ConversationHandler
-from constant.text import TEXT_SEPARATOR
 from function.datetime import get_brazil_time_now
 
 from repository.mongo import BagModel, GroupModel, ItemModel
@@ -40,12 +42,6 @@ from repository.mongo.populate.item import create_random_item
 from rpgram import Bag, Consumable
 from rpgram.boosters import Equipment
 from rpgram.enums import EmojiEnum
-
-
-CALLBACK_TEXT_YES = '$get_item'
-CALLBACK_TEXT_NO = '$drop_item'
-ESCAPED_CALLBACK_TEXT_YES = re.escape(CALLBACK_TEXT_YES)
-ESCAPED_CALLBACK_TEXT_NO = re.escape(CALLBACK_TEXT_NO)
 
 
 async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
@@ -97,11 +93,11 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     inline_keyboard = [[
         InlineKeyboardButton(
             f'{EmojiEnum.INSPECT.value}Investigar',
-            callback_data=CALLBACK_TEXT_YES
+            callback_data=CALLBACK_TEXT_GET
         ),
         InlineKeyboardButton(
             f'Ignorar{EmojiEnum.IGNORE.value}',
-            callback_data=CALLBACK_TEXT_NO
+            callback_data=CALLBACK_TEXT_IGNORE
         ),
     ]]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
@@ -122,86 +118,106 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     que clicou no botão de investigar e salva o item em sua bolsa.
     '''
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    bag_model = BagModel()
+    items_model = ItemModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    user_name = update.effective_user.name
     query = update.callback_query
-    if query:
-        chat_id = update.effective_chat.id
-        user_id = update.effective_user.id
-        user_name = update.effective_user.name
-        group_level = get_attribute_group_or_player(chat_id, 'higher_level')
-        bag_model = BagModel()
-        items_model = ItemModel()
-        bag_exists = bag_model.exists(user_id)
+    group_level = get_attribute_group_or_player(chat_id, 'group_level')
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    bag_exists = bag_model.exists(user_id)
 
-        if not bag_exists:
-            player_bag = Bag(
-                items=[],
-                player_id=user_id,
-            )
-            bag_model.save(player_bag)
-
-        items = create_random_item(group_level)
-        if isinstance(items, int):
-            return await activated_trap(items, user_id, user_name, query)
-        elif isinstance(items, list):
-            markdown_item_sheet = ''
-            for item in items:
-                if isinstance(item.item, Equipment):
-                    items_model.save(item.item)
-                    markdown_item_sheet += item.get_all_sheets(
-                        verbose=True, markdown=True
-                    )
-                elif isinstance(item.item, Consumable):
-                    markdown_item_sheet += item.get_sheet(
-                        verbose=True, markdown=True
-                    )
-                else:
-                    raise TypeError(
-                        f'Variável item é do tipo "{type(item)}", mas precisa '
-                        f'ser do tipo "Equipment" ou "Consumable".\n'
-                        f'Item: {item}'
-                    )
-                markdown_item_sheet += f'{TEXT_SEPARATOR}\n'
-                bag_model.add(item, user_id)
-        else:
-            raise TypeError(
-                f'Variável items é do tipo "{type(items)}", mas precisar ser '
-                f'do tipo "int" para dano de armadilhas ou do tipo "list" '
-                f'para uma lista de itens que o jogador encontrou no baú.\n'
-                f'Items: {items}.'
-            )
-
-        text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN)
-        text_find_treasure_finding = choice(
-            REPLY_TEXTS_FIND_TREASURE_FINDING
-        ).format(user_name=user_name)
-
-        text = f'{text_find_treasure_open}\n\n'
-        text += f'{text_find_treasure_finding}\n'
-        text += f'{markdown_item_sheet}\n\n'
-
-        min_xp = group_level
-        max_xp = int(group_level * 1.5)
-        report_xp = add_xp(chat_id, user_id, min_xp=min_xp, max_xp=max_xp)
-        level_up = report_xp['level_up']
-        if level_up:
-            new_level = report_xp['level']
-            text += (
-                f'Parabéns\!\!\!\n'
-                f'Você passou de nível\! '
-                f'Seu personagem agora está no nível {new_level}\.'
-            )
-        else:
-            xp = report_xp['xp']
-            player_char = report_xp['char']
-            text += (
-                f'Você ganhou {xp} de XP\.\n'
-                f'Experiência: {player_char.bs.show_xp}'
-            )
-
-        await query.edit_message_text(
-            text=text,
-            parse_mode=ParseMode.MARKDOWN_V2
+    if not bag_exists:
+        player_bag = Bag(
+            items=[],
+            player_id=user_id,
         )
+        bag_model.save(player_bag)
+
+    items = create_random_item(group_level)
+    if isinstance(items, int):
+        return await activated_trap(items, user_id, user_name, query)
+
+    text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN)
+    text = f'{text_find_treasure_open}\n\n'
+
+    min_xp = group_level
+    max_xp = int(group_level * 1.5)
+    report_xp = add_xp(chat_id, user_id, min_xp=min_xp, max_xp=max_xp)
+    level_up = report_xp['level_up']
+    if level_up:
+        new_level = report_xp['level']
+        text += (
+            f'{EmojiEnum.LEVEL_UP.value}'
+            f'Parabéns\!\!\!{EmojiEnum.LEVEL_UP.value}\n'
+            f'Você passou de nível\! '
+            f'Seu personagem agora está no nível {new_level}\.'
+        )
+    else:
+        xp = report_xp['xp']
+        player_char = report_xp['char']
+        text += (
+            f'Você ganhou {xp} pontos de XP\.\n'
+            f'Experiência: {player_char.bs.show_xp}'
+        )
+
+    print('inspect_treasure() - text:', text)
+    await query.edit_message_text(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
+
+    if isinstance(items, list):
+        markdown_item_sheet = ''
+        for item in items:
+            time_sleep = 2
+            sleep(time_sleep)
+            item_id = str(item._id)
+            drop = item.quantity
+            reply_markup_drop = InlineKeyboardMarkup([
+                [InlineKeyboardButton(
+                    text=f'{EmojiEnum.TAKE.value}Coletar',
+                    callback_data=(
+                        f'{{"_id":"{item_id}","drop":{drop}}}'
+                    )
+                ), InlineKeyboardButton(
+                    text=f'Quebrar{EmojiEnum.DESTROY_ITEM.value}',
+                    callback_data=CALLBACK_TEXT_DESTROY_ITEM
+                )],
+            ])
+
+            if isinstance(item.item, Equipment):
+                items_model.save(item.item)
+            elif not isinstance(item.item, (Consumable, Equipment)):
+                raise TypeError(
+                    f'Variável item é do tipo "{type(item.item)}", '
+                    f'mas precisa ser do tipo "Consumable" ou "Equipment".\n'
+                    f'Item: {item.item}'
+                )
+            markdown_item_sheet = item.get_all_sheets(
+                verbose=True, markdown=True
+            )
+            response = await update.effective_message.reply_text(
+                text=f'O baú dropou o item:\n\n{markdown_item_sheet}',
+                disable_notification=silent,
+                reply_markup=reply_markup_drop,
+                parse_mode=ParseMode.MARKDOWN_V2
+            )
+            message_id = response.message_id
+            drops = context.chat_data.get('drop', None)
+            if isinstance(drops, dict):
+                drops[message_id] = True
+            else:
+                context.chat_data['drop'] = {message_id: True}
+    else:
+        raise TypeError(
+            f'Variável items é do tipo "{type(items)}", mas precisar ser '
+            f'do tipo "int" para dano de armadilhas ou do tipo "list" '
+            f'para uma lista de itens que o jogador encontrou no baú.\n'
+            f'Items: {items}.'
+        )
+
     return ConversationHandler.END
 
 
@@ -250,10 +266,10 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 TREASURE_HANDLERS = [
     CallbackQueryHandler(
         inspect_treasure,
-        pattern=f'^{ESCAPED_CALLBACK_TEXT_YES}$',
+        pattern=f'^{ESCAPED_CALLBACK_TEXT_GET}$',
     ),
     CallbackQueryHandler(
         ignore_treasure,
-        pattern=f'^{ESCAPED_CALLBACK_TEXT_NO}$',
+        pattern=f'^{ESCAPED_CALLBACK_TEXT_IGNORE}$',
     ),
 ]
