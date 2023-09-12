@@ -139,8 +139,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if isinstance(items, int):
         return await activated_trap(items, user_id, user_name, query)
 
-    text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN)
-    text = f'{text_find_treasure_open}\n\n'
+    text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN).lower()
+    text = f'{user_name}, {text_find_treasure_open}\n\n'
 
     min_xp = group_level
     max_xp = int(group_level * 1.5)
