@@ -10,13 +10,17 @@ from repository.mongo.populate.item_constants import (
     BLUDGEONING_WEAPONS,
     BOOTS_EQUIPMENTS,
     ENCHANTED_WEAPONS,
+    GRIMOIRE_EQUIPMENTS,
     HEAVY_EQUIPMENTS,
     HELMET_EQUIPMENTS,
     LIGHT_EQUIPMENTS,
     MAGIC_WEAPONS,
     AMULET_EQUIPMENTS,
+    MAGICAL_STONES_EQUIPMENTS,
+    MAGICAL_WEARABLE_EQUIPMENTS,
     ONE_HAND_EQUIPMENTS,
     PIERCING_WEAPONS,
+    QUILL_EQUIPMENTS,
     RING_EQUIPMENTS,
     SLASHING_WEAPONS,
     TWO_HANDS_EQUIPMENTS,
@@ -25,12 +29,18 @@ from repository.mongo.populate.item_constants import (
 
 from rpgram.boosters import Equipment
 from rpgram import Consumable
-from rpgram.enums import EquipmentEnum, DamageEnum, RarityEnum
 from rpgram import Item
 from rpgram.enums import (
     AccessoryMaterialsEnum,
+    DamageEnum,
+    EquipmentEnum,
+    GrimoireMaterialEnum,
+    MagicalStonesMaterialEnum,
+    MagicalWearableMaterialEnum,
+    QuillMaterialEnum,
+    RarityEnum,
     WeaponMaterialEnum,
-    WearableMaterialEnum
+    WearableMaterialEnum,
 )
 
 
@@ -305,9 +315,9 @@ def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
         raise ValueError(f'"{weapon}" não é um tipo de equipamento válido.')
 
     attr_bonus_prob = equipment['attr_bonus_prob']
-    attr_panality_prob = equipment['attr_panality_prob']
+    attr_penality_prob = equipment['attr_penality_prob']
 
-    return attr_bonus_prob, attr_panality_prob
+    return attr_bonus_prob, attr_penality_prob
 
 
 def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
@@ -454,6 +464,34 @@ def add_secret_stats(rarity: str, group_level: int):
     return secret_stats
 
 
+def translate_material_name(
+    equip_type: str, weapon: str, material: str,
+) -> str:
+    if equip_type in WEAPON_EQUIPMENTS_ENUM:
+        index = WEAPON_MATERIALS[material] - 1
+    elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
+        index = WEARABLE_MATERIALS[material] - 1
+    elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
+        index = ACCESSORY_MATERIALS[material] - 1
+
+    if weapon in QUILL_EQUIPMENTS:
+        material_name = list(QuillMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
+    elif weapon in GRIMOIRE_EQUIPMENTS:
+        material_name = list(GrimoireMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
+    elif weapon in MAGICAL_STONES_EQUIPMENTS:
+        material_name = list(MagicalStonesMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
+    elif weapon in MAGICAL_WEARABLE_EQUIPMENTS:
+        material_name = list(MagicalWearableMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
+    else:
+        material_name = material.replace("_", " ").title()
+
+    return material_name
+
+
 def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     '''Retorna um equipamento aleatório.
     '''
@@ -461,10 +499,11 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
     weapon, material = get_equipment_and_material(equip_type, group_level)
 
     equip_name = weapon if weapon else equip_type
+    print(f'Equipamento: {weapon}', end=' ')
     bonus, penality = get_bonus_and_penality(
         equip_type, rarity, material, group_level, True
     )
-    attr_bonus_prob, attr_panality_prob = get_attribute_probabilities(
+    attr_bonus_prob, attr_penality_prob = get_attribute_probabilities(
         equip_name
     )
     equipment_dict = defaultdict(int)
@@ -473,15 +512,19 @@ def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
         equipment_dict[attribute] += 1
 
     for _ in range(penality):
-        attribute = weighted_choice(**attr_panality_prob)
+        attribute = weighted_choice(**attr_penality_prob)
         equipment_dict[attribute] -= 1
 
-    equip_name = equip_name.replace('_', ' ')
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
+    rarity_name = rarity.replace("_", " ").title()
+    material_name = translate_material_name(equip_type, weapon, material)
+    equip_name = equip_name.replace('_', ' ').title()
     damage_types = get_equipment_damage_type(weapon, rarity)
     damage_type_name = get_equipment_damage_type_name(damage_types)
     name = (
-        f'{rarity.title()} {material.title()} {equip_name.title()}'
+        f'{rarity_name} '
+        f'{material_name} '
+        f'{equip_name}'
         f'{damage_type_name}'
     )
     secret_stats = add_secret_stats(rarity, group_level)
@@ -570,3 +613,10 @@ if __name__ == '__main__':
 
     for _ in range(1000):
         create_random_item(1001)
+
+    # for _ in range(1000):
+    #     items = create_random_item(1001)
+    #     if isinstance(items, list):
+    #         for item in items:
+    #             if isinstance(item.item, Equipment):
+    #                 print(f'\t{item.item.name}')
