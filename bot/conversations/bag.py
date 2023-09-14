@@ -372,6 +372,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.edit_message_reply_markup(
                 reply_markup=old_reply_markup
             )
+        finally:
             return USE_ROUTES
 
     markdown_player_sheet = player_character.get_all_sheets(
