@@ -409,6 +409,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return START_ROUTES
 
 
+@print_basic_infos
 @retry_after
 async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''drop o item do jogador.
@@ -555,6 +556,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return ConversationHandler.END
 
 
+@print_basic_infos
 async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Quebra o item dropado
     '''
