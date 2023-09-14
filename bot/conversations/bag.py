@@ -353,6 +353,8 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             old_hp = player_character.cs.show_hit_points
             consumable.use(player_character)
             new_hp = player_character.cs.show_hit_points
+            bag_model.sub(item, user_id)
+            char_model.save(player_character)
             await query.answer(
                 text=(
                     f'Você usou o item "{consumable.name}".\n'
