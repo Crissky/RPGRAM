@@ -50,5 +50,16 @@ def skip_if_dead_char(callback):
             return await callback(update, context)
         else:
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - DEAD CHAR')
+            query = update.callback_query
+            char_hit_points = ''
+            if char:
+                char_hit_points = f'HP: {char.combat_stats.show_hit_points}'
+            if query:
+                query.answer(
+                    f'Essa ação não pode ser realizada, pois seu personagem'
+                    f'está morto.\n\n'
+                    f'{char_hit_points}',
+                    show_alert=True
+                )
             return ConversationHandler.END
     return wrapper
