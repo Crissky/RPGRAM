@@ -56,7 +56,7 @@ def skip_if_dead_char(callback):
                 char_hit_points = f'HP: {char.combat_stats.show_hit_points}'
             if query:
                 await query.answer(
-                    f'Essa ação não pode ser realizada, pois seu personagem'
+                    f'Essa ação não pode ser realizada, pois seu personagem '
                     f'está morto.\n\n'
                     f'{char_hit_points}',
                     show_alert=True
