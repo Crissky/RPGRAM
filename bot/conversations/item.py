@@ -279,7 +279,7 @@ async def activated_trap(
 
 @print_basic_infos
 @need_singup_group
-@need_have_char
+@skip_if_dead_char
 async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Apaga a mensagem de busca de tesouro quando um jogador 
     clica em IGNORAR.
