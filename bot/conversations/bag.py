@@ -27,9 +27,10 @@ from bot.constants.filters import (
 from bot.decorators import (
     need_not_in_battle,
     print_basic_infos,
+    retry_after,
+    skip_if_dead_char,
     skip_if_no_have_char,
     skip_if_no_singup_player,
-    retry_after,
 )
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
@@ -497,6 +498,7 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return START_ROUTES
 
 
+@skip_if_dead_char
 @print_basic_infos
 async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Pega o item dropado
@@ -556,6 +558,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return ConversationHandler.END
 
 
+@skip_if_dead_char
 @print_basic_infos
 async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Quebra o item dropado
