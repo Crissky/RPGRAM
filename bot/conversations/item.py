@@ -30,7 +30,8 @@ from bot.constants.rest import COMMANDS as rest_commands
 from bot.decorators import (
     need_have_char,
     need_singup_group,
-    print_basic_infos
+    print_basic_infos,
+    skip_if_dead_char,
 )
 from bot.functions.char import add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
@@ -116,9 +117,9 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         context.chat_data['treasure'] = {message_id: True}
 
 
-@print_basic_infos
+@skip_if_dead_char
 @need_singup_group
-@need_have_char
+@print_basic_infos
 async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador 
     que clicou no botão de investigar e salva o item em sua bolsa.
