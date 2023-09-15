@@ -9,3 +9,4 @@ from rpgram.enums.material import QuillMaterialEnum
 from rpgram.enums.material import GrimoireMaterialEnum
 from rpgram.enums.material import MagicalStonesMaterialEnum
 from rpgram.enums.material import MagicalWearableMaterialEnum
+from rpgram.enums.material import MaskMaterialEnum

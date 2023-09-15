@@ -40,13 +40,25 @@ class GrimoireMaterialEnum(Enum):
 class MagicalStonesMaterialEnum(Enum):
     HEMATITE = 'hematita'
     AGATE = 'ágata'
-    MALACHITE = 'MALAQUITA'
+    MALACHITE = 'malaquita'
     LAPIS_LAZULI = 'lápis lazúli'
     JADE = 'jade'
     AMETHYST = 'ametista'
     AMBER = 'âmbar'
     OPAL = 'opala'
     EMERALD = 'esmeralda'
+
+
+class WearableMaterialEnum(Enum):
+    CLOTH = 'pano'
+    LEATHER = 'couro'
+    BONE = 'osso'
+    COPPER = 'cobre'
+    IRON = 'ferro'
+    STEEL = 'aço'
+    RUNITE = 'runita'
+    MITHRIL = 'mitril'
+    ADAMANTIUM = 'adamantium'
 
 
 class MagicalWearableMaterialEnum(Enum):
@@ -61,16 +73,16 @@ class MagicalWearableMaterialEnum(Enum):
     INA = 'ina'
 
 
-class WearableMaterialEnum(Enum):
-    CLOTH = 'pano'
-    LEATHER = 'couro'
-    BONE = 'osso'
-    COPPER = 'cobre'
-    IRON = 'ferro'
-    STEEL = 'aço'
-    RUNITE = 'runita'
-    MITHRIL = 'mitril'
-    ADAMANTIUM = 'adamantium'
+class MaskMaterialEnum(Enum):
+    BARONG = 'barong'  # Lembra uma Pantera (Indonésia)
+    CALAVERA = 'calavera'  # Caveira mexicana
+    HANNYA = 'hannya'  # japonês, representando um demônio feminino ciumento
+    HUAXIA = 'huaxia'  # Ópera de Pequim
+    KABUKI = 'kabuki'  # Teatro japonês
+    KACHINA = 'kachina'  # Estilo a máscara do Crash (Povos Nativos Americanos)
+    TENGU = 'tengu'  # Narigão vermelho
+    VENETIAN = 'venetian'  # Carnaval
+    ZANNI = 'zanni'  # Nariguda italiana
 
 
 class AccessoryMaterialsEnum(Enum):

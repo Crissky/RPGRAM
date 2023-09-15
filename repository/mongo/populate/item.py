@@ -18,6 +18,7 @@ from repository.mongo.populate.item_constants import (
     AMULET_EQUIPMENTS,
     MAGICAL_STONES_EQUIPMENTS,
     MAGICAL_WEARABLE_EQUIPMENTS,
+    MASK_EQUIPMENTS,
     ONE_HAND_EQUIPMENTS,
     PIERCING_WEAPONS,
     QUILL_EQUIPMENTS,
@@ -37,6 +38,7 @@ from rpgram.enums import (
     GrimoireMaterialEnum,
     MagicalStonesMaterialEnum,
     MagicalWearableMaterialEnum,
+    MaskMaterialEnum,
     QuillMaterialEnum,
     RarityEnum,
     WeaponMaterialEnum,
@@ -486,6 +488,9 @@ def translate_material_name(
     elif weapon in MAGICAL_WEARABLE_EQUIPMENTS:
         material_name = list(MagicalWearableMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
+    elif weapon in MASK_EQUIPMENTS:
+        material_name = list(MaskMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
     else:
         material_name = material.replace("_", " ").title()
 

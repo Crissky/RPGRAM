@@ -32,12 +32,12 @@ ENCHANTED_WEAPONS = [
 
 
 # Equipamentos mais ou menos pesados que o normal
-LIGHT_EQUIPMENTS = ['RING', 'NECKLACE', 'AMULET', 'QUILL']
+LIGHT_EQUIPMENTS = ['RING', 'NECKLACE', 'AMULET', 'QUILL', 'CHARM']
 HEAVY_EQUIPMENTS = [
     'GREAT_SWORD', 'SHIELD', 'DOUBLE_AXE', 'HALBERD', 'FLAIL', 'SLEDGEHAMMER',
-    'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL', 'SHARUR', 'BRIGANDINE'
+    'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL', 'SHARUR'
 ]
-VERY_HEAVY_EQUIPMENTS = ['ARMOR', 'WARHAMMER', 'PIKE']
+VERY_HEAVY_EQUIPMENTS = ['ARMOR', 'WARHAMMER', 'PIKE', 'BRIGANDINE']
 
 
 # Especial Materials Equipments
@@ -45,6 +45,8 @@ QUILL_EQUIPMENTS = ['QUILL']
 GRIMOIRE_EQUIPMENTS = ['GRIMOIRE']
 MAGICAL_STONES_EQUIPMENTS = ['ORB', 'CRYSTAL']
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
+MASK_EQUIPMENTS = ['MASK']
+
 
 # EQUIPMENTS DEFINITIONS
 ONE_HAND_EQUIPMENTS = {
@@ -761,7 +763,7 @@ HELMET_EQUIPMENTS = {
             'bonus_hit_points': 5, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 10,
-            'bonus_magical_defense': 7, 'bonus_hit': 1,
+            'bonus_magical_defense': 5, 'bonus_hit': 1,
             'bonus_evasion': 3,
         },
         attr_penality_prob={
@@ -786,6 +788,22 @@ HELMET_EQUIPMENTS = {
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
             'bonus_evasion': 5,
+        }
+    ),
+    'MASK': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 7, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 7, 'bonus_hit': 3,
+            'bonus_evasion': 1,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
         }
     ),
 }
@@ -856,6 +874,22 @@ BOOTS_EQUIPMENTS = {
             'bonus_evasion': 1,
         }
     ),
+    'SANDAL': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 10,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 5,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 10,
+            'bonus_evasion': 10,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
 }
 RING_EQUIPMENTS = {
     'RING': dict(
@@ -897,6 +931,22 @@ AMULET_EQUIPMENTS = {
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 10, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'CHARM': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 10, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
             'bonus_magical_defense': 10, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
