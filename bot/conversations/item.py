@@ -28,7 +28,6 @@ from bot.constants.item import (
 )
 from bot.constants.rest import COMMANDS as rest_commands
 from bot.decorators import (
-    need_have_char,
     need_singup_group,
     print_basic_infos,
     skip_if_dead_char,
