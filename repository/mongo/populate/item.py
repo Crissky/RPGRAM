@@ -93,10 +93,10 @@ def random_group_level(level: int) -> int:
     '''Função que retorna um valor inteiro aleatório entre 75% e 125% do 
     level passado. No entando, o menor valor retornado sempre será 1.
     '''
-    min_level = int(level * 0.75)
-    max_level = int(level * 1.25) + 1
+    min_level = max(int(level - 10), 1)
+    max_level = int(level + 10)
     new_level = choice(range(min_level, max_level))
-    return max(new_level, 1)
+    return new_level
 
 
 def choice_type_item(no_trap: bool = False) -> str:
