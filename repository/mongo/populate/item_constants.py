@@ -6,7 +6,7 @@ SLASHING_WEAPONS = [
 ]
 BLUDGEONING_WEAPONS = [
     'SHIELD', 'STAFF', 'WARHAMMER', 'MACE', 'CLUB', 'FLAIL', 'MORNING_STAR',
-    'SLEDGEHAMMER', 'BLACKJACK'
+    'SLEDGEHAMMER', 'BLACKJACK', 'SHARUR'
 ]
 PIERCING_WEAPONS = [
     'BOW', 'HALBERD', 'CROSSBOW', 'ARBALEST', 'SPEAR', 'JAVELIN', 'PIKE',
@@ -14,7 +14,7 @@ PIERCING_WEAPONS = [
 ]
 MAGIC_WEAPONS = [
     'WAND', 'GRIMOIRE', 'ORB', 'SCEPTER', 'QUILL', 'CHALICE',
-    'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR'
+    'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR', 'RIKUDŌKON'
 ]
 
 ALL_WEAPONS = []
@@ -27,7 +27,7 @@ ALL_WEAPONS.extend(MAGIC_WEAPONS)
 # Equipamentos com maior chance de ter um tipo de dano extra
 ENCHANTED_WEAPONS = [
     'WAND', 'STAFF', 'DART_BLOWER', 'GRIMOIRE', 'ORB', 'SCEPTER', 'QUILL',
-    'CHALICE', 'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR'
+    'CHALICE', 'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR', 'RIKUDŌKON'
 ]
 
 
@@ -35,9 +35,9 @@ ENCHANTED_WEAPONS = [
 LIGHT_EQUIPMENTS = ['RING', 'NECKLACE', 'AMULET', 'QUILL', 'CHARM']
 HEAVY_EQUIPMENTS = [
     'GREAT_SWORD', 'SHIELD', 'DOUBLE_AXE', 'HALBERD', 'FLAIL', 'SLEDGEHAMMER',
-    'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL', 'SHARUR'
+    'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL', 'RIKUDŌKON'
 ]
-VERY_HEAVY_EQUIPMENTS = ['ARMOR', 'WARHAMMER', 'PIKE', 'BRIGANDINE']
+VERY_HEAVY_EQUIPMENTS = ['ARMOR', 'WARHAMMER', 'PIKE', 'BRIGANDINE', 'SHARUR']
 
 
 # Especial Materials Equipments
@@ -54,7 +54,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 10, 'bonus_precision_attack': 3,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 3,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
             'bonus_evasion': 3,
         },
@@ -70,7 +70,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 5, 'bonus_precision_attack': 10,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 7,
             'bonus_evasion': 1,
         },
@@ -118,7 +118,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 3, 'bonus_initiative': 1,
             'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 3,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
@@ -134,7 +134,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 5,
             'bonus_physical_attack': 10, 'bonus_precision_attack': 3,
-            'bonus_magical_attack': 3, 'bonus_physical_defense': 3,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
             'bonus_magical_defense': 3, 'bonus_hit': 5,
             'bonus_evasion': 5,
         },
@@ -166,7 +166,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 3,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 10,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 5,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
             'bonus_magical_defense': 1, 'bonus_hit': 3,
             'bonus_evasion': 3,
         },
@@ -198,7 +198,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 5,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 10,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
             'bonus_evasion': 1,
         },
@@ -230,7 +230,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 5, 'bonus_initiative': 1,
             'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 5,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
@@ -246,7 +246,7 @@ ONE_HAND_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
@@ -299,9 +299,9 @@ ONE_HAND_EQUIPMENTS = {
             'bonus_evasion': 0,
         },
         attr_penality_prob={
-            'bonus_hit_points': 0, 'bonus_initiative': 0,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 0,
             'bonus_evasion': 1,
         }
@@ -470,11 +470,11 @@ ONE_HAND_EQUIPMENTS = {
 TWO_HANDS_EQUIPMENTS = {
     'GREAT_SWORD': dict(
         attr_bonus_prob={
-            'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
-            'bonus_magical_defense': 1, 'bonus_hit': 1,
-            'bonus_evasion': 1,
+            'bonus_hit_points': 3, 'bonus_initiative': 0,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 10,
@@ -487,8 +487,8 @@ TWO_HANDS_EQUIPMENTS = {
     'BOW': dict(
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 5,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 10,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
             'bonus_evasion': 1,
         },
@@ -503,7 +503,7 @@ TWO_HANDS_EQUIPMENTS = {
     'STAFF': dict(
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 3, 'bonus_precision_attack': 1,
+            'bonus_physical_attack': 3, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 10, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 5, 'bonus_hit': 5,
             'bonus_evasion': 5,
@@ -552,7 +552,7 @@ TWO_HANDS_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 3,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
             'bonus_magical_defense': 1, 'bonus_hit': 7,
             'bonus_evasion': 1,
         },
@@ -583,8 +583,8 @@ TWO_HANDS_EQUIPMENTS = {
     'FLAIL': dict(
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 10, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
@@ -598,18 +598,18 @@ TWO_HANDS_EQUIPMENTS = {
     ),
     'ARBALEST': dict(
         attr_bonus_prob={
-            'bonus_hit_points': 0, 'bonus_initiative': 5,
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
             'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
-            'bonus_magical_defense': 0, 'bonus_hit': 5,
+            'bonus_magical_defense': 0, 'bonus_hit': 3,
             'bonus_evasion': 0,
         },
         attr_penality_prob={
             'bonus_hit_points': 0, 'bonus_initiative': 0,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
-            'bonus_magical_defense': 1, 'bonus_hit': 0,
-            'bonus_evasion': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
+            'bonus_evasion': 5,
         }
     ),
     'SPEAR': dict(
@@ -695,7 +695,7 @@ TWO_HANDS_EQUIPMENTS = {
     'SCEPTER': dict(
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 0,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 7, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 10, 'bonus_hit': 1,
             'bonus_evasion': 1,
@@ -742,8 +742,24 @@ TWO_HANDS_EQUIPMENTS = {
     ),
     'SHARUR': dict(
         attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 0,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 10,
+        }
+    ),
+    'RIKUDŌKON': dict(
+        attr_bonus_prob={
             'bonus_hit_points': 5, 'bonus_initiative': 3,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 10, 'bonus_physical_defense': 5,
             'bonus_magical_defense': 5, 'bonus_hit': 3,
             'bonus_evasion': 3,
@@ -752,7 +768,7 @@ TWO_HANDS_EQUIPMENTS = {
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
-            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
             'bonus_evasion': 1,
         }
     ),
