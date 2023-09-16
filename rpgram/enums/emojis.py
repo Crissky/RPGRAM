@@ -10,6 +10,9 @@ class EmojiEnum(Enum):
     DISCARD = '🗑️'
     DODGE = '🥾'
     EQUIPMENT_POWER = '🔸'
+    EQUIPMENT_LEVEL = '🔺'
+    EQUIPMENT_RARITY = '🔹'
+    EQUIPMENT_MATERIAL = '💠'
     INSPECT = '🕵️'
     IGNORE = '🙅'  # 🙄💁‍♂️🙅
     HEALING = '💞'
@@ -45,3 +48,11 @@ class EmojiEnum(Enum):
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
     LEVEL_UP = '🎊'
     DESTROY_ITEM = '💥'
+    STATS = '📈'
+    GROUP = '👥'
+    PLAYER = '👤'
+    EQUIPS = '⚔️'
+    BASE_ATTRIBUTES = '📑'
+    COMBAT_ATTRIBUTES = '👊'
+    ITEMS = '🎒'
+    GENERAL = '🔖'
