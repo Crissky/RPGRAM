@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class RarityEnum(Enum):
-    COMMON = 'comum'
-    UNCOMMON = 'incomum'
-    RARE = 'raro'
-    EPIC = 'épico'
-    LEGENDARY = 'lendário'
-    MYTHIC = 'mítico'
+    COMMON = 'Comum'
+    UNCOMMON = 'Incomum'
+    RARE = 'Raro'
+    EPIC = 'Épico'
+    LEGENDARY = 'Lendário'
+    MYTHIC = 'Mítico'

@@ -262,13 +262,15 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         equip_or_use,
         [
             InlineKeyboardButton(
-                text=f'{EmojiEnum.DISCARD.value}Descartar', callback_data=(
+                text=f'{EmojiEnum.DISCARD.value}Descartar',
+                callback_data=(
                     f'{{"drop":1,"item":{item_pos},'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
             InlineKeyboardButton(
-                text=f'{EmojiEnum.DISCARD.value}Descartar x10', callback_data=(
+                text=f'{EmojiEnum.DISCARD.value}Descartar x10',
+                callback_data=(
                     f'{{"drop":10,"item":{item_pos},'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
@@ -276,7 +278,8 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         ],
         [
             InlineKeyboardButton(
-                text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
+                text=f'{EmojiEnum.BACK.value}Voltar',
+                callback_data=(
                     f'{{"page":{page},"user_id":{user_id},'
                     f'"retry_state":{USE_ROUTES}}}'
                 )

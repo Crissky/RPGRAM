@@ -28,7 +28,6 @@ from bot.constants.item import (
 )
 from bot.constants.rest import COMMANDS as rest_commands
 from bot.decorators import (
-    need_have_char,
     need_singup_group,
     print_basic_infos,
     skip_if_dead_char,
@@ -87,7 +86,6 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     chat_id = int(job.chat_id)  # chat_id vem como string
     silent = get_attribute_group_or_player(chat_id, 'silent')
-    print('job_find_treasure() - silent:', silent)
     text = choice(REPLY_TEXTS_FIND_TREASURE_START)
     text += choice(REPLY_TEXTS_FIND_TREASURE_MIDDLE)
     text += choice(REPLY_TEXTS_FIND_TREASURE_END)
@@ -188,7 +186,6 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'Experiência: {player_char.bs.show_xp}'
         )
 
-    print('inspect_treasure() - text:', text)
     await query.edit_message_text(
         text=text,
         parse_mode=ParseMode.MARKDOWN_V2
