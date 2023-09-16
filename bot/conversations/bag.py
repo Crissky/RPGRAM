@@ -192,7 +192,6 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         print(type(e), e)
         return ConversationHandler.END
 
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
@@ -307,7 +306,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         print(type(e), e)
         return ConversationHandler.END
 
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     char_model = CharacterModel()
     equips_model = EquipsModel()
@@ -424,7 +422,6 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         print(type(e), e)
         return ConversationHandler.END
 
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
@@ -526,7 +523,6 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         print(type(e), e)
         return ConversationHandler.END
 
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     items_model = ItemModel()
     user_id = update.effective_user.id
@@ -577,7 +573,6 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Apaga a mensagem quando o jogador dono da bolsa 
     clica em Fechar A Bolsa.
     '''
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     user_id = update.effective_user.id
     query = update.callback_query
     if query:
