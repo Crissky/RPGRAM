@@ -124,11 +124,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'INFO: Exibe os itens equipados no personagem.\n'
         f'Atalhos: {equips_cmd}\n\n'
     )
-    await update.effective_message.reply_markdown_v2(
-        text,
-        disable_notification=silent,
-        reply_markup=get_help_reply_markup(update),
-    )
+    if query:
+        await query.edit_message_text(
+            text=text,
+            reply_markup=get_help_reply_markup(update),
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
+    else:
+        await update.effective_message.reply_markdown_v2(
+            text,
+            disable_notification=silent,
+            reply_markup=get_help_reply_markup(update),
+        )
 
 
 async def details(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -148,7 +155,6 @@ async def details(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text=text,
         reply_markup=get_help_reply_markup(update),
         parse_mode=ParseMode.MARKDOWN_V2,
-
     )
 
 
