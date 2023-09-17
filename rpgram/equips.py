@@ -108,10 +108,7 @@ class Equips:
                     f'Valor de hand, "{hand}", não é uma string.'
                 )
 
-            if (
-                self.right_hand and
-                self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
-            ):
+            if self.equiped_two_handed_weapon():
                 old_equipments.append(self.right_hand)
                 self.__right_hand = None
                 self.__left_hand = None
@@ -131,10 +128,7 @@ class Equips:
                 )
 
         elif equip_type == EquipmentEnum.TWO_HANDS:
-            if (
-                self.right_hand and
-                self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
-            ):
+            if self.equiped_two_handed_weapon():
                 old_equipments.append(self.right_hand)
                 self.__right_hand = None
                 self.__left_hand = None
@@ -164,6 +158,21 @@ class Equips:
 
         self.__update_stats()
         return old_equipments
+
+    def equiped_two_handed_weapon(self) -> bool:
+        return (
+            self.right_hand and
+            self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
+        )
+
+    def get_equipment_hands(self) -> List[Equipment]:
+        weapons = []
+        if self.equiped_two_handed_weapon():
+            weapons.append(self.right_hand)
+        else:
+            weapons.extend([self.left_hand, self.right_hand])
+
+        return [e for e in weapons if e is not None]
 
     def unequip(self, equipment: Equipment) -> Equipment:
         equip_type = equipment.equip_type
@@ -273,7 +282,8 @@ class Equips:
         elif equipment.equip_type == EquipmentEnum.ONE_HAND:
             other_equipment.append(self.right_hand)
         elif equipment.equip_type == EquipmentEnum.TWO_HANDS:
-            other_equipment.extend([self.right_hand, self.left_hand])
+            equipment_hands = self.get_equipment_hands()
+            other_equipment.extend(equipment_hands)
         elif equipment.equip_type == EquipmentEnum.ARMOR:
             other_equipment.append(self.armor)
         elif equipment.equip_type == EquipmentEnum.BOOTS:
@@ -381,10 +391,7 @@ class Equips:
             self.helmet, self.left_hand, self.right_hand,
             self.armor, self.boots, self.ring, self.amulet
         ]
-        if (
-            self.right_hand and
-            self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
-        ):
+        if self.equiped_two_handed_weapon():
             equips.remove(self.right_hand)
 
         for equip in equips:
@@ -552,7 +559,6 @@ if __name__ == '__main__':
     equips.equip(sword)
     equips.equip(shield, 'LEFT')
     equips.equip(dagger, 'RIGHT')
-    # equips.equip(dagger)
     equips.equip(armor)
     equips.equip(boots)
     equips.equip(any_ring)
@@ -561,7 +567,7 @@ if __name__ == '__main__':
     print(equips.get_sheet(True))
     print(equips.to_dict())
 
-    # Verificar se estar retornando os equipamentos certos 
+    # Verificar se estar retornando os equipamentos certos
     # ao trocar de equipamentos
     result = equips.equip(sword)
     if shield in result and dagger in result:
