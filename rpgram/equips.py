@@ -97,8 +97,8 @@ class Equips:
             )
 
         if equip_type == EquipmentEnum.HELMET:
-            if self.__helmet is not None:
-                old_equipments.append(self.__helmet)
+            if self.helmet is not None:
+                old_equipments.append(self.helmet)
             self.__helmet = new_equipment
         elif equip_type == EquipmentEnum.ONE_HAND:
             if not isinstance(hand, str):
@@ -109,20 +109,20 @@ class Equips:
                 )
 
             if (
-                self.__right_hand and
-                self.__right_hand.equip_type == EquipmentEnum.TWO_HANDS
+                self.right_hand and
+                self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
             ):
-                old_equipments.append(self.__right_hand)
+                old_equipments.append(self.right_hand)
                 self.__right_hand = None
                 self.__left_hand = None
 
             if hand.upper() in ['R', 'RIGHT']:
-                if self.__right_hand is not None:
-                    old_equipments.append(self.__right_hand)
+                if self.right_hand is not None:
+                    old_equipments.append(self.right_hand)
                 self.__right_hand = new_equipment
             elif hand.upper() in ['L', 'LEFT']:
-                if self.__left_hand is not None:
-                    old_equipments.append(self.__left_hand)
+                if self.left_hand is not None:
+                    old_equipments.append(self.left_hand)
                 self.__left_hand = new_equipment
             else:
                 raise ValueError(
@@ -131,27 +131,27 @@ class Equips:
                 )
 
         elif equip_type == EquipmentEnum.TWO_HANDS:
-            if self.__left_hand is not None:
-                old_equipments.append(self.__left_hand)
-            if self.__right_hand is not None:
-                old_equipments.append(self.__right_hand)
+            if self.left_hand is not None:
+                old_equipments.append(self.left_hand)
+            if self.right_hand is not None:
+                old_equipments.append(self.right_hand)
             self.__left_hand = new_equipment
             self.__right_hand = new_equipment
         elif equip_type == EquipmentEnum.ARMOR:
-            if self.__armor is not None:
-                old_equipments.append(self.__armor)
+            if self.armor is not None:
+                old_equipments.append(self.armor)
             self.__armor = new_equipment
         elif equip_type == EquipmentEnum.BOOTS:
-            if self.__boots is not None:
-                old_equipments.append(self.__boots)
+            if self.boots is not None:
+                old_equipments.append(self.boots)
             self.__boots = new_equipment
         elif equip_type == EquipmentEnum.RING:
-            if self.__ring is not None:
-                old_equipments.append(self.__ring)
+            if self.ring is not None:
+                old_equipments.append(self.ring)
             self.__ring = new_equipment
         elif equip_type == EquipmentEnum.AMULET:
-            if self.__amulet is not None:
-                old_equipments.append(self.__amulet)
+            if self.amulet is not None:
+                old_equipments.append(self.amulet)
             self.__amulet = new_equipment
 
         self.__update_stats()
@@ -161,25 +161,25 @@ class Equips:
         equip_type = equipment.equip_type
 
         if self.helmet == equipment:
-            equipment = self.__helmet
+            equipment = self.helmet
             self.__helmet = None
         elif self.left_hand == equipment:
-            equipment = self.__left_hand
+            equipment = self.left_hand
             self.__left_hand = None
         elif self.right_hand == equipment:
-            equipment = self.__right_hand
+            equipment = self.right_hand
             self.__right_hand = None
         elif self.armor == equipment:
-            equipment = self.__armor
+            equipment = self.armor
             self.__armor = None
         elif self.boots == equipment:
-            equipment = self.__boots
+            equipment = self.boots
             self.__boots = None
         elif self.ring == equipment:
-            equipment = self.__ring
+            equipment = self.ring
             self.__ring = None
         elif self.amulet == equipment:
-            equipment = self.__amulet
+            equipment = self.amulet
             self.__amulet = None
         else:
             raise ValueError(f'"{equipment}" não está equipado.')
@@ -369,13 +369,13 @@ class Equips:
         return dict(
             player_id=self.__player_id,
             _id=self.__id,
-            helmet_id=self.__helmet._id if self.__helmet else None,
-            left_hand_id=self.__left_hand._id if self.__left_hand else None,
-            right_hand_id=self.__right_hand._id if self.__right_hand else None,
-            armor_id=self.__armor._id if self.__armor else None,
-            boots_id=self.__boots._id if self.__boots else None,
-            ring_id=self.__ring._id if self.__ring else None,
-            amulet_id=self.__amulet._id if self.__amulet else None,
+            helmet_id=self.helmet._id if self.helmet else None,
+            left_hand_id=self.left_hand._id if self.left_hand else None,
+            right_hand_id=self.right_hand._id if self.right_hand else None,
+            armor_id=self.armor._id if self.armor else None,
+            boots_id=self.boots._id if self.boots else None,
+            ring_id=self.ring._id if self.ring else None,
+            amulet_id=self.amulet._id if self.amulet else None,
             # observers=[o._id for o in self.__observers],
             created_at=self.__created_at,
             updated_at=self.__updated_at,
@@ -383,14 +383,14 @@ class Equips:
 
     def __iter__(self):
         equips = [
-            self.__helmet, self.__left_hand, self.__right_hand,
-            self.__armor, self.__boots, self.__ring, self.__amulet
+            self.helmet, self.left_hand, self.right_hand,
+            self.armor, self.boots, self.ring, self.amulet
         ]
         if (
-            self.__left_hand and
-            self.__left_hand.equip_type == EquipmentEnum.TWO_HANDS
+            self.left_hand and
+            self.left_hand.equip_type == EquipmentEnum.TWO_HANDS
         ):
-            equips.remove(self.__left_hand)
+            equips.remove(self.left_hand)
 
         for equip in equips:
             if equip:
