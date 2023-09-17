@@ -131,6 +131,14 @@ class Equips:
                 )
 
         elif equip_type == EquipmentEnum.TWO_HANDS:
+            if (
+                self.right_hand and
+                self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
+            ):
+                old_equipments.append(self.right_hand)
+                self.__right_hand = None
+                self.__left_hand = None
+
             if self.left_hand is not None:
                 old_equipments.append(self.left_hand)
             if self.right_hand is not None:
@@ -387,10 +395,10 @@ class Equips:
             self.armor, self.boots, self.ring, self.amulet
         ]
         if (
-            self.left_hand and
-            self.left_hand.equip_type == EquipmentEnum.TWO_HANDS
+            self.right_hand and
+            self.right_hand.equip_type == EquipmentEnum.TWO_HANDS
         ):
-            equips.remove(self.left_hand)
+            equips.remove(self.right_hand)
 
         for equip in equips:
             if equip:
@@ -565,3 +573,27 @@ if __name__ == '__main__':
     print(equips.compare(sword))
     print(equips.get_sheet(True))
     print(equips.to_dict())
+
+    # Verificar se estar retornando os equipamentos certos 
+    # ao trocar de equipamentos
+    result = equips.equip(sword)
+    if shield in result and dagger in result:
+        print(
+            f'Equipou {sword.name} e '
+            f'recebeu {result[0].name} e {result[1].name}.'
+        )
+    else:
+        raise Exception(
+            f'Deveria receber dois equipamentos (shield e dagger), '
+            f'mas rebebeu {result}.'
+        )
+    result = equips.equip(sword)
+    if sword in result:
+        print(
+            f'Equipou {sword.name} e '
+            f'recebeu {result[0].name}.'
+        )
+    else:
+        raise Exception(
+            f'Deveria receber um equipamento (sword), mas rebebeu {result}.'
+        )
