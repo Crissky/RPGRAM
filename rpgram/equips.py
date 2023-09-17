@@ -236,20 +236,7 @@ class Equips:
         self.__bonus_hit = 0
         self.__bonus_evasion = 0
 
-        if (
-            isinstance(self.left_hand, Equipment) and
-            self.left_hand.equip_type == EquipmentEnum.TWO_HANDS
-        ):
-            equips = [
-                self.helmet, self.left_hand, self.armor,
-                self.boots, self.ring, self.amulet
-            ]
-        else:
-            equips = [
-                self.helmet, self.left_hand, self.right_hand, self.armor,
-                self.boots, self.ring, self.amulet
-            ]
-        equips = [e for e in equips if e is not None]
+        equips = list(self)
         for e in equips:
             self.__equipments_weight += float(e.weight)
 
