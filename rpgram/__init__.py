@@ -6,3 +6,4 @@ from rpgram.battle import Battle
 from rpgram.consumable import Consumable
 from rpgram.item import Item
 from rpgram.bag import Bag
+from rpgram.condition import Condition
