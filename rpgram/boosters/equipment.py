@@ -271,10 +271,11 @@ class Equipment(StatsBooster):
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
 
+        type_icon = EmojiEnum[self.equip_type.name].value
         text = (
             f'COMPARANDO COM: {other_names}\n\n'
             f'*Equipamento*: {self.name}\n'
-            f'*Tipo*: {self.equip_type.value}\n'
+            f'*Tipo*: {self.equip_type.value}{type_icon}\n'
             f'{damage_types}'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{{{power_diff:+}}}{power_multiplier}\n'
@@ -359,9 +360,10 @@ class Equipment(StatsBooster):
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
 
+        type_icon = EmojiEnum[self.equip_type.name].value
         text = (
             f'*Equipamento*: {self.name}\n'
-            f'*Tipo*: {self.equip_type.value}\n'
+            f'*Tipo*: {self.equip_type.value}{type_icon}\n'
             f'{damage_types}'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
