@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from typing import List
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ChatAction, ParseMode
@@ -115,48 +116,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         return ConversationHandler.END
 
-    items_buttons = []
-    # Criando texto e botões dos itens
-    for index, item in enumerate(items):
-        markdown_text += f'*Ⅰ{(index + 1):02}:* '
-        markdown_text += item.get_sheet(verbose=True, markdown=True)
-        items_buttons.append(InlineKeyboardButton(
-            text=f'Item {index + 1}',
-            callback_data=(
-                f'{{"item":{index},"page":{page},"user_id":{user_id}}}'
-            )
-        ))
+    # Criando os Botões
+    markdown_text += get_item_texts(items=items)
+    reshaped_items_buttons = get_item_buttons(
+        items=items, page=page, user_id=user_id
+    )
 
-    reshaped_items_buttons = []
-    # Colocando dois botões de itens por linha
-    for item1, item2 in zip_longest(items_buttons[0::2], items_buttons[1::2]):
-        new_line = [item1, item2]
-        if None in new_line:
-            new_line.remove(None)
-        reshaped_items_buttons.append(new_line)
+    navigation_keyboard = get_navigation_buttons(
+        have_back_page=have_back_page,
+        have_next_page=have_next_page,
+        page=page,
+        user_id=user_id
+    )
 
-    navigation_keyboard = []
-    if have_back_page:  # Cria botão de Voltar Página
-        navigation_keyboard.append(
-            InlineKeyboardButton(
-                text=f'{EmojiEnum.PREVIOUS.value} Anterior',
-                callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
-            )
-        )
-    if have_next_page:  # Cria botão de Avançar Página
-        navigation_keyboard.append(
-            InlineKeyboardButton(
-                text=f'Próxima {EmojiEnum.NEXT.value}',
-                callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
-            )
-        )
-
-    cancel_button = [InlineKeyboardButton(
-        text=f'{EmojiEnum.CLOSE_BAG.value}Fechar Bolsa',
-        callback_data=(
-            f'{{"command":"{CALLBACK_CLOSE_BAG}","user_id":{user_id}}}'
-        )
-    )]
+    cancel_button = get_close_bag_button(user_id=user_id)
     reply_markup = InlineKeyboardMarkup(
         reshaped_items_buttons + [navigation_keyboard] + [cancel_button]
     )
@@ -258,33 +231,16 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
             )
         ]
 
+    discard_buttons = get_discard_buttons(
+        page=page, user_id=user_id, item_pos=item_pos
+    )
+    back_button = get_back_button(
+        page=page, user_id=user_id, retry_state=USE_ROUTES
+    )
     reply_markup = InlineKeyboardMarkup([
         equip_or_use,
-        [
-            InlineKeyboardButton(
-                text=f'{EmojiEnum.DISCARD.value}Descartar',
-                callback_data=(
-                    f'{{"drop":1,"item":{item_pos},'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
-            ),
-            InlineKeyboardButton(
-                text=f'{EmojiEnum.DISCARD.value}Descartar x10',
-                callback_data=(
-                    f'{{"drop":10,"item":{item_pos},'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
-            )
-        ],
-        [
-            InlineKeyboardButton(
-                text=f'{EmojiEnum.BACK.value}Voltar',
-                callback_data=(
-                    f'{{"page":{page},"user_id":{user_id},'
-                    f'"retry_state":{USE_ROUTES}}}'
-                )
-            )
-        ]
+        discard_buttons,
+        back_button
     ])
     # Edita mensagem com as informações do item escolhido
     await query.edit_message_text(
@@ -374,9 +330,18 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 show_alert=True
             )
         finally:
-            await query.edit_message_reply_markup(
-                reply_markup=old_reply_markup
-            )
+            if item.quantity <= 1:
+                back_button = get_back_button(
+                    page=page, user_id=user_id, retry_state=USE_ROUTES
+                )
+                reply_markup = InlineKeyboardMarkup([back_button])
+                await query.edit_message_reply_markup(
+                    reply_markup=reply_markup
+                )
+            else:
+                await query.edit_message_reply_markup(
+                    reply_markup=old_reply_markup
+                )
             return USE_ROUTES
 
     markdown_player_sheet = player_character.get_all_sheets(
@@ -393,14 +358,10 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     char_model.save(player_character)
     equips_model.save(player_character.equips)
 
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(
-            text=f'{EmojiEnum.BACK.value}Voltar', callback_data=(
-                f'{{"page":{page},"user_id":{user_id},'
-                f'"retry_state":{START_ROUTES}}}'
-            )
-        )]
-    ])
+    back_button = get_back_button(
+        page=page, user_id=user_id, retry_state=START_ROUTES
+    )
+    reply_markup = InlineKeyboardMarkup([back_button])
     # Edita mensagem com as informações do personagem do jogador
     await query.edit_message_text(
         text=markdown_player_sheet,
@@ -453,15 +414,10 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     bag_model.sub(item, user_id, quantity=-(drop))
 
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(
-            text=f'{EmojiEnum.BACK.value}Voltar',
-            callback_data=(
-                f'{{"page":{page},"user_id":{user_id},'
-                f'"retry_state":{START_ROUTES}}}'
-            )
-        )]
-    ])
+    back_button = get_back_button(
+        page=page, user_id=user_id, retry_state=START_ROUTES
+    )
+    reply_markup = InlineKeyboardMarkup([back_button])
     await query.edit_message_text(
         text=f'Você dropou o item "{drop}x {item.name}"\.',
         reply_markup=reply_markup,
@@ -471,16 +427,9 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Envia mensagem de drop do item, se ele foi dropado no grupo
     if chat_id != user_id:
         item_id = str(item._id)
+        take_break_buttons = get_take_break_buttons(drop, item_id)
         reply_markup_drop = InlineKeyboardMarkup([
-            [InlineKeyboardButton(
-                text=f'{EmojiEnum.TAKE.value}Coletar',
-                callback_data=(
-                    f'{{"_id":"{item_id}","drop":{drop}}}'
-                )
-            ), InlineKeyboardButton(
-                text=f'Quebrar{EmojiEnum.DESTROY_ITEM.value}',
-                callback_data=CALLBACK_TEXT_DESTROY_ITEM
-            )]
+            take_break_buttons
         ])
         response = await update.effective_message.reply_text(
             text=f'{user_name} dropou o item:\n\n{markdown_item_sheet}',
@@ -573,7 +522,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    '''Apaga a mensagem quando o jogador dono da bolsa 
+    '''Apaga a mensagem quando o jogador dono da bolsa
     clica em Fechar A Bolsa.
     '''
     user_id = update.effective_user.id
@@ -593,6 +542,127 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return ConversationHandler.END
 
     return START_ROUTES
+
+
+def get_item_texts(items: List[Item]) -> str:
+    markdown_text = ''
+    for index, item in enumerate(items):
+        markdown_text += f'*Ⅰ{(index + 1):02}:* '
+        markdown_text += item.get_sheet(verbose=True, markdown=True)
+
+    return markdown_text
+
+
+def get_item_buttons(
+    items: List[Item], page: int, user_id: int
+) -> List[List[InlineKeyboardButton]]:
+
+    items_buttons = []
+    # Criando texto e botões dos itens
+    for index, _ in enumerate(items):
+        items_buttons.append(InlineKeyboardButton(
+            text=f'Item {index + 1}',
+            callback_data=(
+                f'{{"item":{index},"page":{page},"user_id":{user_id}}}'
+            )
+        ))
+
+    reshaped_items_buttons = []
+    # Colocando dois botões de itens por linha
+    for item1, item2 in zip_longest(items_buttons[0::2], items_buttons[1::2]):
+        new_line = [item1, item2]
+        if None in new_line:
+            new_line.remove(None)
+        reshaped_items_buttons.append(new_line)
+
+    return reshaped_items_buttons
+
+
+def get_navigation_buttons(
+    have_back_page: bool, have_next_page: bool, page: int, user_id: int
+) -> List[InlineKeyboardButton]:
+
+    navigation_keyboard = []
+    if have_back_page:  # Cria botão de Voltar Página
+        navigation_keyboard.append(
+            InlineKeyboardButton(
+                text=f'{EmojiEnum.PREVIOUS.value} Anterior',
+                callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
+            )
+        )
+    if have_next_page:  # Cria botão de Avançar Página
+        navigation_keyboard.append(
+            InlineKeyboardButton(
+                text=f'Próxima {EmojiEnum.NEXT.value}',
+                callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
+            )
+        )
+
+    return navigation_keyboard
+
+
+def get_discard_buttons(
+    page: int,
+    user_id: int,
+    item_pos: int
+) -> List[InlineKeyboardButton]:
+
+    return [
+        InlineKeyboardButton(
+            text=f'{EmojiEnum.DISCARD.value}Descartar',
+            callback_data=(
+                f'{{"drop":1,"item":{item_pos},'
+                f'"page":{page},"user_id":{user_id}}}'
+            )
+        ),
+        InlineKeyboardButton(
+            text=f'{EmojiEnum.DISCARD.value}Descartar x10',
+            callback_data=(
+                f'{{"drop":10,"item":{item_pos},'
+                f'"page":{page},"user_id":{user_id}}}'
+            )
+        )
+    ]
+
+
+def get_close_bag_button(user_id: int) -> List[InlineKeyboardButton]:
+    return [
+        InlineKeyboardButton(
+            text=f'{EmojiEnum.CLOSE_BAG.value}Fechar Bolsa',
+            callback_data=(
+                f'{{"command":"{CALLBACK_CLOSE_BAG}","user_id":{user_id}}}'
+            )
+        )]
+
+
+def get_back_button(
+    page: int, user_id: int, retry_state: int
+) -> List[InlineKeyboardButton]:
+    return [
+        InlineKeyboardButton(
+            text=f'{EmojiEnum.BACK.value}Voltar',
+            callback_data=(
+                f'{{"page":{page},"user_id":{user_id},'
+                f'"retry_state":{retry_state}}}'
+            )
+        )
+    ]
+
+
+def get_take_break_buttons(
+    drop: int, item_id: str
+) -> List[InlineKeyboardButton]:
+    return [
+        InlineKeyboardButton(
+            text=f'{EmojiEnum.TAKE.value}Coletar',
+            callback_data=(
+                f'{{"_id":"{item_id}","drop":{drop}}}'
+            )
+        ),
+        InlineKeyboardButton(
+            text=f'Quebrar{EmojiEnum.DESTROY_ITEM.value}',
+            callback_data=CALLBACK_TEXT_DESTROY_ITEM
+        )]
 
 
 BAG_HANDLER = ConversationHandler(
