@@ -48,6 +48,7 @@ class EmojiEnum(Enum):
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
     LEVEL_UP = '🎊'
     DESTROY_ITEM = '💥'
+    SORT_ITEMS = '📚'
     STATS = '📈'
     GROUP = '👥'
     PLAYER = '👤'
@@ -56,3 +57,5 @@ class EmojiEnum(Enum):
     COMBAT_ATTRIBUTES = '👊'
     ITEMS = '🎒'
     GENERAL = '🔖'
+    SORT_UP = '🔼'  # 🔼🔺
+    SORT_DOWN = '🔽'  # 🔽🔻

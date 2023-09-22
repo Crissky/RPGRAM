@@ -15,6 +15,7 @@ from bot.constants.bag import (
     ACCESS_DENIED,
     CALLBACK_CLOSE_BAG,
     CALLBACK_TEXT_DESTROY_ITEM,
+    CALLBACK_TEXT_SORT_ITEMS,
     CANCEL_COMMANDS,
     COMMANDS,
     ESCAPED_CALLBACK_TEXT_DESTROY_ITEM,
@@ -48,7 +49,8 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
     START_ROUTES,
     CHECK_ROUTES,
     USE_ROUTES,
-) = range(3)
+    SORT_ROUTES,
+) = range(4)
 
 
 @skip_if_no_singup_player
@@ -129,6 +131,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         user_id=user_id
     )
 
+    sort_items_button = get_sort_button()
     cancel_button = get_close_bag_button(user_id=user_id)
     reply_markup = InlineKeyboardMarkup(
         reshaped_items_buttons + [navigation_keyboard] + [cancel_button]
@@ -521,6 +524,12 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     return ConversationHandler.END
 
 
+@print_basic_infos
+async def sort_items(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    '''Ordena os itens da bolsa
+    '''
+
+
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Apaga a mensagem quando o jogador dono da bolsa
     clica em Fechar A Bolsa.
@@ -665,6 +674,92 @@ def get_take_break_buttons(
         )]
 
 
+def get_sort_button(
+    page: int, user_id: str
+) -> List[InlineKeyboardButton]:
+    return [
+        InlineKeyboardButton(
+            text=f'Ordenar{EmojiEnum.SORT_ITEMS.value}',
+            callback_data=(
+                f'{{"command":{CALLBACK_TEXT_SORT_ITEMS},'
+                f'"page":{page},"user_id":{user_id}}}'
+            )
+        )]
+
+
+def get_sort_buttons(
+    page: int, user_id: str
+) -> List[InlineKeyboardButton]:
+    return [
+        [
+            InlineKeyboardButton(
+                text=(
+                    f'{EmojiEnum.CONSUMABLE.value}'
+                    f'Ordenar{EmojiEnum.SORT_UP.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":consumable_up,'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+            InlineKeyboardButton(
+                text=(
+                    f'{EmojiEnum.CONSUMABLE.value}'
+                    f'Ordenar{EmojiEnum.SORT_DOWN.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":consumable_down,'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text=(
+                    f'{EmojiEnum.EQUIPMENT_POWER.value}'
+                    f'Ordenar{EmojiEnum.SORT_UP.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":power_up,'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+            InlineKeyboardButton(
+                text=(
+                    f'{EmojiEnum.EQUIPMENT_POWER.value}'
+                    f'Ordenar{EmojiEnum.SORT_DOWN.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":power_down,'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text=(
+                    f'{EmojiEnum.EQUIPMENT_RARITY.value}'
+                    f'Ordenar{EmojiEnum.SORT_UP.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":rarity_up,'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+            InlineKeyboardButton(
+                text=(
+                    f'{EmojiEnum.EQUIPMENT_RARITY.value}'
+                    f'Ordenar{EmojiEnum.SORT_DOWN.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":rarity_down,'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+        ]
+    ]
+
+
 BAG_HANDLER = ConversationHandler(
     entry_points=[
         PrefixHandler(
@@ -683,6 +778,9 @@ BAG_HANDLER = ConversationHandler(
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(check_item, pattern=r'^{"item":'),
             CallbackQueryHandler(
+                sort_items, pattern=f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}"'
+            ),
+            CallbackQueryHandler(
                 cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'
             ),
         ],
@@ -691,6 +789,12 @@ BAG_HANDLER = ConversationHandler(
             CallbackQueryHandler(use_item, pattern=r'^{"use":1'),
             CallbackQueryHandler(drop_item, pattern=r'^{"drop":1'),
         ],
+        SORT_ROUTES: [
+            CallbackQueryHandler(start, pattern=r'^{"page":'),
+            CallbackQueryHandler(
+                sort_items, pattern=f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}"'
+            ),
+        ]
     },
     fallbacks=[
         CommandHandler(CANCEL_COMMANDS, cancel)
