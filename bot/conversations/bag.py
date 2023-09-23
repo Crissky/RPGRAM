@@ -19,6 +19,7 @@ from bot.constants.bag import (
     CANCEL_COMMANDS,
     COMMANDS,
     ESCAPED_CALLBACK_TEXT_DESTROY_ITEM,
+    ESCAPED_CALLBACK_TEXT_SORT_ITEMS,
     ITEMS_PER_PAGE
 )
 
@@ -131,10 +132,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         user_id=user_id
     )
 
-    sort_items_button = get_sort_button()
+    sort_items_button = get_sort_button(page=page, user_id=user_id)
     cancel_button = get_close_bag_button(user_id=user_id)
     reply_markup = InlineKeyboardMarkup(
-        reshaped_items_buttons + [navigation_keyboard] + [cancel_button]
+        reshaped_items_buttons + [navigation_keyboard] +
+        [sort_items_button + cancel_button]
     )
 
     markdown_text = TITLE_HEAD.format(markdown_text)
@@ -525,9 +527,97 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 @print_basic_infos
-async def sort_items(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def choice_sort_items(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> None:
+    '''Selecionar como será ordenado os itens
+    '''
+    query = update.callback_query
+
+    try:
+        old_reply_markup = query.message.reply_markup
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
+    user_id = update.effective_user.id
+    data = eval(query.data)
+    page = data['page']
+    data_user_id = data['user_id']
+
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        return CHECK_ROUTES
+
+    sort_buttons = get_sort_buttons(page=page, user_id=user_id)
+    back_button = get_back_button(
+        page=page, user_id=user_id, retry_state=SORT_ROUTES
+    )
+    reply_markup = InlineKeyboardMarkup(
+        sort_buttons + [back_button]
+    )
+    await query.edit_message_reply_markup(reply_markup)
+    return SORT_ROUTES
+
+
+@print_basic_infos
+async def sort_items(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> None:
     '''Ordena os itens da bolsa
     '''
+    query = update.callback_query
+
+    try:
+        old_reply_markup = query.message.reply_markup
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
+    bag_model = BagModel()
+    user_id = update.effective_user.id
+    data = eval(query.data)
+    page = data['page']
+    data_user_id = data['user_id']
+    sort = data['sort']
+
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        return CHECK_ROUTES
+
+    await query.answer(text='Ordenando itens...')
+
+    player_bag = bag_model.get(query={'player_id': user_id})
+
+    if sort == 'consumable_up':
+        player_bag.sort_by_equip_type()
+    elif sort == 'consumable_down':
+        player_bag.sort_by_equip_type(False)
+    elif sort == 'power_up':
+        player_bag.sort_by_power()
+    elif sort == 'power_down':
+        player_bag.sort_by_power(False)
+    elif sort == 'rarity_up':
+        player_bag.sort_by_rarity()
+    elif sort == 'rarity_down':
+        player_bag.sort_by_rarity(False)
+
+    bag_model.save(player_bag)
+
+    back_button = get_back_button(
+        page=0, user_id=user_id, retry_state=START_ROUTES
+    )
+    reply_markup = InlineKeyboardMarkup([back_button])
+    await query.edit_message_text(
+        text='Itens ordenados com sucesso!',
+        reply_markup=reply_markup,
+    )
+
+    return START_ROUTES
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -649,7 +739,7 @@ def get_back_button(
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'{EmojiEnum.BACK.value}Voltar',
+            text=f'Voltar{EmojiEnum.BACK.value}',
             callback_data=(
                 f'{{"page":{page},"user_id":{user_id},'
                 f'"retry_state":{retry_state}}}'
@@ -679,9 +769,9 @@ def get_sort_button(
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'Ordenar{EmojiEnum.SORT_ITEMS.value}',
+            text=f'{EmojiEnum.SORT_ITEMS.value}Ordenar',
             callback_data=(
-                f'{{"command":{CALLBACK_TEXT_SORT_ITEMS},'
+                f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}",'
                 f'"page":{page},"user_id":{user_id}}}'
             )
         )]
@@ -689,48 +779,26 @@ def get_sort_button(
 
 def get_sort_buttons(
     page: int, user_id: str
-) -> List[InlineKeyboardButton]:
+) -> List[List[InlineKeyboardButton]]:
     return [
         [
             InlineKeyboardButton(
                 text=(
-                    f'{EmojiEnum.CONSUMABLE.value}'
-                    f'Ordenar{EmojiEnum.SORT_UP.value}'
+                    f'Ordenar{EmojiEnum.CONSUMABLE.value}'
+                    f'{EmojiEnum.SORT_UP.value}'
                 ),
                 callback_data=(
-                    f'{{"sort":consumable_up,'
+                    f'{{"sort":"consumable_up",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
             InlineKeyboardButton(
                 text=(
-                    f'{EmojiEnum.CONSUMABLE.value}'
-                    f'Ordenar{EmojiEnum.SORT_DOWN.value}'
+                    f'Ordenar{EmojiEnum.CONSUMABLE.value}'
+                    f'{EmojiEnum.SORT_DOWN.value}'
                 ),
                 callback_data=(
-                    f'{{"sort":consumable_down,'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
-            ),
-        ],
-        [
-            InlineKeyboardButton(
-                text=(
-                    f'{EmojiEnum.EQUIPMENT_POWER.value}'
-                    f'Ordenar{EmojiEnum.SORT_UP.value}'
-                ),
-                callback_data=(
-                    f'{{"sort":power_up,'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
-            ),
-            InlineKeyboardButton(
-                text=(
-                    f'{EmojiEnum.EQUIPMENT_POWER.value}'
-                    f'Ordenar{EmojiEnum.SORT_DOWN.value}'
-                ),
-                callback_data=(
-                    f'{{"sort":power_down,'
+                    f'{{"sort":"consumable_down",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
@@ -738,21 +806,43 @@ def get_sort_buttons(
         [
             InlineKeyboardButton(
                 text=(
-                    f'{EmojiEnum.EQUIPMENT_RARITY.value}'
-                    f'Ordenar{EmojiEnum.SORT_UP.value}'
+                    f'Ordenar{EmojiEnum.EQUIPMENT_POWER.value}'
+                    f'{EmojiEnum.SORT_UP.value}'
                 ),
                 callback_data=(
-                    f'{{"sort":rarity_up,'
+                    f'{{"sort":"power_up",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
             InlineKeyboardButton(
                 text=(
-                    f'{EmojiEnum.EQUIPMENT_RARITY.value}'
-                    f'Ordenar{EmojiEnum.SORT_DOWN.value}'
+                    f'Ordenar{EmojiEnum.EQUIPMENT_POWER.value}'
+                    f'{EmojiEnum.SORT_DOWN.value}'
                 ),
                 callback_data=(
-                    f'{{"sort":rarity_down,'
+                    f'{{"sort":"power_down",'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text=(
+                    f'Ordenar{EmojiEnum.EQUIPMENT_RARITY.value}'
+                    f'{EmojiEnum.SORT_UP.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":"rarity_up",'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+            InlineKeyboardButton(
+                text=(
+                    f'Ordenar{EmojiEnum.EQUIPMENT_RARITY.value}'
+                    f'{EmojiEnum.SORT_DOWN.value}'
+                ),
+                callback_data=(
+                    f'{{"sort":"rarity_down",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
@@ -778,7 +868,8 @@ BAG_HANDLER = ConversationHandler(
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(check_item, pattern=r'^{"item":'),
             CallbackQueryHandler(
-                sort_items, pattern=f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}"'
+                choice_sort_items,
+                pattern=f'{{"command":"{ESCAPED_CALLBACK_TEXT_SORT_ITEMS}"'
             ),
             CallbackQueryHandler(
                 cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'
@@ -791,9 +882,7 @@ BAG_HANDLER = ConversationHandler(
         ],
         SORT_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
-            CallbackQueryHandler(
-                sort_items, pattern=f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}"'
-            ),
+            CallbackQueryHandler(sort_items, pattern=r'^{"sort":'),
         ]
     },
     fallbacks=[

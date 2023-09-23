@@ -13,12 +13,12 @@ class EquipmentEnum(Enum):
 
 class EquipmentEnumOrder(Enum):
     HELMET = 4
-    ONE_HAND = 6
-    TWO_HANDS = 7
-    ARMOR = 5
-    BOOTS = 3
-    RING = 2
-    AMULET = 1
+    ONE_HAND = 1
+    TWO_HANDS = 2
+    ARMOR = 3
+    BOOTS = 5
+    RING = 6
+    AMULET = 7
 
 
 if __name__ == '__main__':

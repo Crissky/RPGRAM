@@ -75,28 +75,8 @@ class Bag:
         if bag_item.quantity <= 0:
             self.__items.remove(bag_item)
 
-    def sort_by_power(self, reverse: bool = True):
-        if reverse:
-            self.__items.sort(
-                key=lambda x: (
-                    x.power,
-                    x.equip_type_order,
-                    x.rarity_order,
-                    x.name
-                ), reverse=True
-            )
-        else:
-            self.__items.sort(
-                key=lambda x: (
-                    -x.power,
-                    x.equip_type_order,
-                    x.rarity_order,
-                    x.name
-                ), reverse=True
-            )
-
     def sort_by_equip_type(self, reverse: bool = True):
-        if reverse:
+        if reverse:  # Consumable first
             self.__items.sort(
                 key=lambda x: (
                     x.equip_type_order,
@@ -105,7 +85,7 @@ class Bag:
                     x.name
                 ), reverse=True
             )
-        else:
+        else:  # Equipment first
             self.__items.sort(
                 key=lambda x: (
                     -x.equip_type_order,
@@ -115,8 +95,28 @@ class Bag:
                 ), reverse=True
             )
 
+    def sort_by_power(self, reverse: bool = True):
+        if reverse:  # Greater power first
+            self.__items.sort(
+                key=lambda x: (
+                    x.power,
+                    x.equip_type_order,
+                    x.rarity_order,
+                    x.name
+                ), reverse=True
+            )
+        else:  # Lower power first
+            self.__items.sort(
+                key=lambda x: (
+                    -x.power,
+                    x.equip_type_order,
+                    x.rarity_order,
+                    x.name
+                ), reverse=True
+            )
+
     def sort_by_rarity(self, reverse: bool = True):
-        if reverse:
+        if reverse:  # More rare first
             self.__items.sort(
                 key=lambda x: (
                     x.rarity_order,
@@ -125,7 +125,7 @@ class Bag:
                     x.name
                 ), reverse=True
             )
-        else:
+        else:  # Less rare first
             self.__items.sort(
                 key=lambda x: (
                     -x.rarity_order,
@@ -226,9 +226,9 @@ if __name__ == '__main__':
         player_id='ffffffffffffffffffffffff',
     )
     print(bag)
-    bag.sort_by_power()
-    print(bag)
     bag.sort_by_equip_type()
+    print(bag)
+    bag.sort_by_power()
     print(bag)
     bag.sort_by_rarity()
     print(bag)
