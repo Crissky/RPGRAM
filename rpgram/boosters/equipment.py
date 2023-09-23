@@ -471,8 +471,9 @@ class Equipment(StatsBooster):
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_types = property(lambda self: self.__damage_types)
-    requirements = property(lambda self: self.__requirements)
     weight = property(lambda self: self.__weight)
+    requirements = property(lambda self: self.__requirements)
+    rarity = property(lambda self: self.__rarity)
 
 
 if __name__ == '__main__':

@@ -6,7 +6,13 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters import Equipment
 from rpgram import Consumable
-from rpgram.enums import EmojiEnum
+from rpgram.enums import (
+    EmojiEnum,
+    EquipmentEnumOrder,
+    RarityEnum,
+    RarityEnumOrder,
+)
+from rpgram.enums.equipment import EquipmentEnumOrder
 
 ItemsTypes = Union[Equipment, Consumable]
 ItemsTypesTuple = (Equipment, Consumable)
@@ -40,6 +46,40 @@ class Item:
     @property
     def quantity(self) -> int:
         return self.__quantity
+
+    @property
+    def power(self) -> int:
+        power = 0
+        if isinstance(self.item, Equipment):
+            power = self.item.power
+
+        return power
+
+    @property
+    def rarity(self) -> RarityEnum:
+        return self.item.rarity
+
+    @property
+    def rarity_order(self) -> int:
+        return RarityEnumOrder[self.rarity.name].value
+
+    @property
+    def equip_type_order(self) -> int:
+        if isinstance(self.item, Consumable):
+            order = len(EquipmentEnumOrder) + 1
+        elif isinstance(self.item, Equipment):
+            order = EquipmentEnumOrder[self.item.equip_type.name].value
+
+        return order
+
+    @property
+    def class_order(self) -> int:
+        if isinstance(self.item, Consumable):
+            order = 1
+        elif isinstance(self.item, Equipment):
+            order = 2
+
+        return order
 
     @quantity.setter
     def quantity(self, value):

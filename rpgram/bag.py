@@ -75,6 +75,66 @@ class Bag:
         if bag_item.quantity <= 0:
             self.__items.remove(bag_item)
 
+    def sort_by_equip_type(self, reverse: bool = True):
+        if reverse:  # Consumable first
+            self.__items.sort(
+                key=lambda x: (
+                    x.equip_type_order,
+                    x.power,
+                    x.rarity_order,
+                    x.name
+                ), reverse=True
+            )
+        else:  # Equipment first
+            self.__items.sort(
+                key=lambda x: (
+                    -x.equip_type_order,
+                    x.power,
+                    x.rarity_order,
+                    x.name
+                ), reverse=True
+            )
+
+    def sort_by_power(self, reverse: bool = True):
+        if reverse:  # Greater power first
+            self.__items.sort(
+                key=lambda x: (
+                    x.power,
+                    x.equip_type_order,
+                    x.rarity_order,
+                    x.name
+                ), reverse=True
+            )
+        else:  # Lower power first
+            self.__items.sort(
+                key=lambda x: (
+                    -x.power,
+                    x.equip_type_order,
+                    x.rarity_order,
+                    x.name
+                ), reverse=True
+            )
+
+    def sort_by_rarity(self, reverse: bool = True):
+        if reverse:  # More rare first
+            self.__items.sort(
+                key=lambda x: (
+                    x.rarity_order,
+                    x.power,
+                    x.equip_type_order,
+                    x.name
+                ), reverse=True
+            )
+        else:  # Less rare first
+            self.__items.sort(
+                key=lambda x: (
+                    -x.rarity_order,
+                    x.power,
+                    x.equip_type_order,
+                    x.name
+                ), reverse=True
+            )
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         if verbose:
             text = '\n'.join([
@@ -136,15 +196,39 @@ class Bag:
 
 
 if __name__ == '__main__':
-    from rpgram import Consumable
+    from rpgram.enums import EquipmentEnum, DamageEnum, RarityEnum
+
     potion = Consumable(
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
         function='target.combat_stats.hp = 100',
+        _id='111111111111111111111111',
+    )
+    high_potion = Consumable(
+        name='High Potion',
+        description='Cura 1000 de HP.',
+        weight=0.1,
+        function='target.combat_stats.hp = 1000',
+        rarity=RarityEnum.UNCOMMON,
+        _id='222222222222222222222222',
+    )
+    shield = Equipment(
+        name='Escudo Comparativo de Madeira',
+        equip_type=EquipmentEnum.ONE_HAND,
+        damage_types=[DamageEnum.SLASHING, 'FIRE'],
+        rarity=RarityEnum.RARE,
+        _id='333333333333333333333333',
+        bonus_physical_defense=10,
     )
     bag = Bag(
-        items=[potion, potion, potion],
+        items=[potion, potion, potion, high_potion, shield],
         player_id='ffffffffffffffffffffffff',
     )
+    print(bag)
+    bag.sort_by_equip_type()
+    print(bag)
+    bag.sort_by_power()
+    print(bag)
+    bag.sort_by_rarity()
     print(bag)
