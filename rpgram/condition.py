@@ -86,6 +86,13 @@ class Condition:
             return self._id == other._id
         return False
 
+    # Getters
+    name = property(lambda self: self.__name)
+    description = property(lambda self: self.__description)
+    function = property(lambda self: self.__function)
+    battle_function = property(lambda self: self.__battle_function)
+    _id = property(lambda self: self.__id)
+
 
 if __name__ == '__main__':
     poison = Condition(
