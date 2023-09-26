@@ -39,28 +39,36 @@ class Model:
     def __alt_id_is_valid(self):
         return isinstance(self.alternative_id, str)
 
+    def get_query_by_id(self, _id: Union[int, ObjectId, str]):
+        query = None
+        if isinstance(_id, ObjectId):
+            query = {'_id': _id}
+        elif ObjectId.is_valid(_id):
+            query = {'_id': ObjectId(_id)}
+        elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
+            query = {self.alternative_id: _id}
+        else:
+            raise ValueError(
+                'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
+                'uma string com 24 caracteres que representa um ObjectId.'
+                f'ID: {_id}, Tipo: {type(_id)}'
+            )
+        return query
+
+    def check_query(self, query: dict):
+        if not query:
+            raise ValueError('Query esta vazia.')
+        if not isinstance(query, dict):
+            raise ValueError('Query precisa ser um dicionário.')
+
     def delete(
         self,
         _id: Union[int, ObjectId, str] = None,
         query: dict = None
     ) -> Any:
         if _id:
-            if isinstance(_id, ObjectId):
-                query = {'_id': _id}
-            elif ObjectId.is_valid(_id):
-                query = {'_id': ObjectId(_id)}
-            elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
-                query = {self.alternative_id: _id}
-            else:
-                raise ValueError(
-                    'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
-                    'uma string com 24 caracteres que representa um ObjectId.'
-                    f'ID: {_id}, Tipo: {type(_id)}'
-                )
-        if not query:
-            raise ValueError('Query esta vazia.')
-        if not isinstance(query, dict):
-            raise ValueError('Query precisa ser um dicionário.')
+            query = self.get_query_by_id(_id)
+        self.check_query(query)
         return self.database.delete(self.collection, query)
 
     def get(
@@ -71,22 +79,8 @@ class Model:
         partial: bool = True
     ) -> Any:
         if _id:
-            if isinstance(_id, ObjectId):
-                query = {'_id': _id}
-            elif ObjectId.is_valid(_id):
-                query = {'_id': ObjectId(_id)}
-            elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
-                query = {self.alternative_id: _id}
-            else:
-                raise ValueError(
-                    'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
-                    'uma string com 24 caracteres que representa um ObjectId.'
-                    f'ID: {_id}, Tipo: {type(_id)}'
-                )
-        if not query:
-            raise ValueError('Query esta vazia.')
-        if not isinstance(query, dict):
-            raise ValueError('Query precisa ser um dicionário.')
+            query = self.get_query_by_id(_id)
+        self.check_query(query)
         if isinstance(fields, str):
             fields = [fields]
         if (result := self.database.find(self.collection, query, fields)):
@@ -146,20 +140,21 @@ class Model:
 
     def exists(self, _id: Union[int, ObjectId, str]) -> bool:
         if _id:
-            if isinstance(_id, ObjectId):
-                query = {'_id': _id}
-            elif ObjectId.is_valid(_id):
-                query = {'_id': ObjectId(_id)}
-            elif isinstance(_id, (int, str)) and self.__alt_id_is_valid():
-                query = {self.alternative_id: _id}
-            else:
-                raise ValueError(
-                    'ID inválido. O ID Precisa ser um inteiro ou ObjectId ou '
-                    'uma string com 24 caracteres que representa um ObjectId.'
-                    f'ID: {_id}, Tipo: {type(_id)}'
-                )
+            query = self.get_query_by_id(_id)
+        self.check_query(query)
 
         return bool(self.database.count(self.collection, query, limit=1))
+
+    def length(
+        self,
+        field: str,
+        _id: Union[int, ObjectId, str] = None,
+        query: dict = None,
+    ) -> int:
+        if _id:
+            query = self.get_query_by_id(_id)
+        self.check_query(query)
+        return self.database.length(self.collection, query, field)
 
     def __populate_load(self, dict_obj: dict):
         '''Função que popula os campos do objeto que são outras classes e que 

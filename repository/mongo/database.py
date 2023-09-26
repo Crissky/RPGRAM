@@ -43,6 +43,23 @@ class Database:
     def count(self, collection: str, query: dict, **kwargs: Any) -> int:
         return self.db[collection].count_documents(filter=query, **kwargs)
 
+    def length(self, collection: str, query: dict, field: str) -> int:
+        cursor = self.db[collection].aggregate([
+            {
+                '$match': query
+            },
+            {
+                '$project': {
+                    'length': {
+                        '$size': f'${field}'
+                    }
+                }
+            }
+        ])
+        result = next(cursor, None)
+        if result:
+            return result['length']
+
     @classmethod
     def get_instance(cls):
         if cls._instance is None:
