@@ -131,11 +131,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         page=page,
         user_id=user_id
     )
+    extremes_navigation_keyboard = get_extremes_navigation_buttons(
+        have_back_page=have_back_page,
+        have_next_page=have_next_page,
+        user_id=user_id
+    )
 
     sort_items_button = get_sort_button(page=page, user_id=user_id)
     cancel_button = get_close_bag_button(user_id=user_id)
     reply_markup = InlineKeyboardMarkup(
-        reshaped_items_buttons + [navigation_keyboard] +
+        reshaped_items_buttons +
+        [navigation_keyboard] +
+        [extremes_navigation_keyboard] +
         [sort_items_button + cancel_button]
     )
 
@@ -685,14 +692,14 @@ def get_navigation_buttons(
     if have_back_page:  # Cria botão de Voltar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
-                text=f'{EmojiEnum.PREVIOUS.value} Anterior',
+                text=f'{EmojiEnum.PREVIOUS_PAGE.value} Anterior',
                 callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
             )
         )
     if have_next_page:  # Cria botão de Avançar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
-                text=f'Próxima {EmojiEnum.NEXT.value}',
+                text=f'Próxima {EmojiEnum.NEXT_PAGE.value}',
                 callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
             )
         )
@@ -700,12 +707,37 @@ def get_navigation_buttons(
     return navigation_keyboard
 
 
+def get_extremes_navigation_buttons(
+    have_back_page: bool, have_next_page: bool, user_id: int
+) -> List[InlineKeyboardButton]:
+
+    extremes_navigation_keyboard = []
+    if have_back_page:  # Cria botão para a Primeira Página
+        extremes_navigation_keyboard.append(
+            InlineKeyboardButton(
+                text=f'{EmojiEnum.FIRST_PAGE.value} Primeira',
+                callback_data=f'{{"page":0,"user_id":{user_id}}}'
+            )
+        )
+    if have_next_page:  # Cria botão para a Última Página
+        bag_model = BagModel()
+        bag_length = bag_model.length('items_ids', user_id)
+        total_pages = (bag_length - 1) // ITEMS_PER_PAGE
+        extremes_navigation_keyboard.append(
+            InlineKeyboardButton(
+                text=f'Última {EmojiEnum.LAST_PAGE.value}',
+                callback_data=f'{{"page":{total_pages},"user_id":{user_id}}}'
+            )
+        )
+
+    return extremes_navigation_keyboard
+
+
 def get_discard_buttons(
     page: int,
     user_id: int,
     item_pos: int
 ) -> List[InlineKeyboardButton]:
-
     return [
         InlineKeyboardButton(
             text=f'{EmojiEnum.DISCARD.value}Descartar',
