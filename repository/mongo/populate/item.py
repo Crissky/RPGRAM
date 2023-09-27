@@ -104,11 +104,11 @@ def choice_type_item(no_trap: bool = False) -> str:
     O tipo do item é retornado com base em sua propabilidade.
     '''
     types_item = {
-        'CONSUMABLE': 800, 'TRAP': 100,
+        'CONSUMABLE': 800, 'TRAP': 150,
         EquipmentEnum.HELMET.name: 100,
         EquipmentEnum.ONE_HAND.name: 120, EquipmentEnum.TWO_HANDS.name: 120,
         EquipmentEnum.ARMOR.name: 100, EquipmentEnum.BOOTS.name: 100,
-        EquipmentEnum.RING.name: 25, EquipmentEnum.AMULET.name: 25,
+        EquipmentEnum.RING.name: 50, EquipmentEnum.AMULET.name: 50,
     }
 
     if no_trap:
