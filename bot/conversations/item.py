@@ -194,7 +194,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if isinstance(items, list):
         markdown_item_sheet = ''
         for item in items:
-            time_sleep = 2
+            time_sleep = 1
             sleep(time_sleep)
             item_id = str(item._id)
             drop = item.quantity
