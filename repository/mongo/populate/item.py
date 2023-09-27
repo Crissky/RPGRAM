@@ -573,7 +573,6 @@ def create_random_trap(group_level: int) -> int:
 def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
-    group_level = random_group_level(group_level)
     choiced_item = choice_type_item()
     equipment_types = [e.name for e in EquipmentEnum]
     if choiced_item == 'TRAP':
@@ -582,6 +581,7 @@ def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
         times = choice_total_times()
         items = []
         for _ in range(times):
+            group_level = random_group_level(group_level)
             choiced_item = choice_type_item(no_trap=True)
             if choiced_item == 'CONSUMABLE':
                 item = create_random_consumable(group_level)
