@@ -11,9 +11,11 @@ from rpgram import (
     Equips,
     Group,
     Player,
+    Status,
 )
 from rpgram.boosters import (
     Classe,
+    Condition,
     Equipment,
     Race,
 )

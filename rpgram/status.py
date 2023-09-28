@@ -5,7 +5,7 @@ from bson import ObjectId
 from constant.text import TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
-from rpgram import Condition
+from rpgram.boosters import Condition
 
 
 class Status:

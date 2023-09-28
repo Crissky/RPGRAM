@@ -2,12 +2,13 @@ from datetime import datetime
 from typing import Union
 
 from bson import ObjectId
-from constant.text import TEXT_DELIMITER
 
+from constant.text import TEXT_DELIMITER
+from rpgram.boosters import StatsBooster
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 
-class Condition:
+class Condition(StatsBooster):
     def __init__(
         self,
         name: str,
@@ -18,16 +19,16 @@ class Condition:
         created_at: datetime = None,
         updated_at: datetime = None,
     ):
-        if isinstance(_id, str):
-            _id = ObjectId(_id)
+        super().__init__(
+            _id=_id,
+            created_at=created_at,
+            updated_at=updated_at,
+        )
 
         self.__name = name
         self.__description = description
         self.__function = function
         self.__battle_function = battle_function
-        self.__id = _id
-        self.__created_at = created_at
-        self.__updated_at = updated_at
 
     def activate(self, target):
         result = exec(self.__function)
@@ -43,9 +44,9 @@ class Condition:
             description=self.__description,
             function=self.__function,
             battle_function=self.__battle_function,
-            _id=self.__id,
-            created_at=self.__created_at,
-            updated_at=self.__updated_at,
+            _id=self._id,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
         )
 
     def __call__(self, target):
@@ -91,7 +92,6 @@ class Condition:
     description = property(lambda self: self.__description)
     function = property(lambda self: self.__function)
     battle_function = property(lambda self: self.__battle_function)
-    _id = property(lambda self: self.__id)
 
 
 if __name__ == '__main__':
