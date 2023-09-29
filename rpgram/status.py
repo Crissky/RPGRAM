@@ -27,6 +27,16 @@ class Status:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
+    def add_condition(self, condition: Condition) -> None:
+        if not isinstance(condition, Condition):
+            raise TypeError(
+                f'O parâmetro deve ser do tipo Condition. '
+                f'Tipo: {type(condition)}.'
+            )
+        self.__conditions.append(condition)
+
+    add = add_condition
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
         if not self.__conditions:
