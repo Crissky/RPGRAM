@@ -4,6 +4,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram import Equips
 from rpgram.boosters import Race, Classe
 from rpgram.characters import BaseCharacter
+from rpgram.constants.text import PLAYER_EMOJI_TEXT
 
 
 class PlayerCharacter(BaseCharacter):
@@ -55,7 +56,7 @@ class PlayerCharacter(BaseCharacter):
     player_name = property(lambda self: self.__player_name)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'*Jogador*: {self.player_name}\n'
+        text = f'*{PLAYER_EMOJI_TEXT}*: {self.player_name}\n'
         if verbose:
             text += f'*ID do Jogador*: {self.player_id}\n\n'
 

@@ -6,6 +6,23 @@ from bson import ObjectId
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import Equipment
+from rpgram.constants.text import (
+    CHARISMA_EMOJI_TEXT,
+    CONSTITUTION_EMOJI_TEXT,
+    DEXTERITY_EMOJI_TEXT,
+    EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
+    HIT_POINT_EMOJI_TEXT,
+    INITIATIVE_EMOJI_TEXT,
+    INTELLIGENCE_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
+    PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT,
+    STRENGTH_EMOJI_TEXT,
+    WISDOM_EMOJI_TEXT
+)
 from rpgram.enums import EmojiEnum, EquipmentEnum
 from rpgram.errors import EquipmentRequirementError
 from rpgram.stats import BaseStats
@@ -326,28 +343,28 @@ class Equips:
             text += (
                 f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
 
-                f'`FOR: {self.strength:+} '
+                f'`{STRENGTH_EMOJI_TEXT}: {self.strength:+} '
                 f'x({self.__multiplier_strength:+.2f})`\n'
-                f'`DES: {self.dexterity:+} '
+                f'`{DEXTERITY_EMOJI_TEXT}: {self.dexterity:+} '
                 f'x({self.__multiplier_dexterity:+.2f})`\n'
-                f'`CON: {self.constitution:+} '
+                f'`{CONSTITUTION_EMOJI_TEXT}: {self.constitution:+} '
                 f'x({self.__multiplier_constitution:+.2f})`\n'
-                f'`INT: {self.intelligence:+} '
+                f'`{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:+} '
                 f'x({self.__multiplier_intelligence:+.2f})`\n'
-                f'`SAB: {self.wisdom:+} '
+                f'`{WISDOM_EMOJI_TEXT}: {self.wisdom:+} '
                 f'x({self.__multiplier_wisdom:+.2f})`\n'
-                f'`CAR: {self.charisma:+} '
+                f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:+} '
                 f'x({self.__multiplier_charisma:+.2f})`\n\n'
 
-                f'`HP: {self.hp:+}`\n'
-                f'`INICIATIVA: {self.initiative:+}`\n'
-                f'`ATAQUE FÍSICO: {self.physical_attack:+}`\n'
-                f'`ATAQUE DE PRECISÃO: {self.precision_attack:+}`\n'
-                f'`ATAQUE MÁGICO: {self.magical_attack:+}`\n'
-                f'`DEFESA FÍSICA: {self.physical_defense:+}`\n'
-                f'`DEFESA MÁGICA: {self.magical_defense:+}`\n'
-                f'`ACERTO: {self.hit:+}`\n'
-                f'`EVASÃO: {self.evasion:+}`\n'
+                f'`{HIT_POINT_EMOJI_TEXT}: {self.hp:+}`\n'
+                f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:+}`\n'
+                f'`{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:+}`\n'
+                f'`{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:+}`\n'
+                f'`{MAGICAL_ATTACK_EMOJI_TEXT}: {self.magical_attack:+}`\n'
+                f'`{PHYSICAL_DEFENSE_EMOJI_TEXT}: {self.physical_defense:+}`\n'
+                f'`{MAGICAL_DEFENSE_EMOJI_TEXT}: {self.magical_defense:+}`\n'
+                f'`{HIT_EMOJI_TEXT}: {self.hit:+}`\n'
+                f'`{EVASION_EMOJI_TEXT}: {self.evasion:+}`\n'
             )
 
         if not markdown:

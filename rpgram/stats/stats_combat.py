@@ -2,6 +2,17 @@ from typing import List
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram.constants.text import (
+    EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
+    HIT_POINT_EMOJI_TEXT,
+    INITIATIVE_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
+    PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT
+)
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 
@@ -275,47 +286,47 @@ class CombatStats:
 
         text = f'*{SECTION_HEAD.format("ATRIBUTOS DE COMBATE")}*\n'
 
-        text += f'`HP: {self.current_hit_points}/{self.hit_points} '
+        text += f'`{HIT_POINT_EMOJI_TEXT}: {self.show_hit_points} '
         if verbose:
             text += f'[{base_hp}{self.bonus_hit_points:+}]'
         text += f'`\n'
 
-        text += f'`INICIATIVA: {self.initiative:02} '
+        text += f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:02} '
         if verbose:
             text += f'[{base_init}{self.bonus_initiative:+}]'
         text += f'`\n'
 
-        text += f'`ATAQUE FÍSICO: {self.physical_attack:02} '
+        text += f'`{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:02} '
         if verbose:
             text += f'[{base_phy_atk}{self.bonus_physical_attack:+}]'
         text += f'`\n'
 
-        text += f'`ATAQUE DE PRECISÃO: {self.precision_attack:02} '
+        text += f'`{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:02} '
         if verbose:
             text += f'[{base_pre_atk}{self.bonus_precision_attack:+}]'
         text += f'`\n'
 
-        text += f'`ATAQUE MÁGICO: {self.magical_attack:02} '
+        text += f'`{MAGICAL_ATTACK_EMOJI_TEXT}: {self.magical_attack:02} '
         if verbose:
             text += f'[{base_mag_atk}{self.bonus_magical_attack:+}]'
         text += f'`\n'
 
-        text += f'`DEFESA FÍSICA: {self.physical_defense:02} '
+        text += f'`{PHYSICAL_DEFENSE_EMOJI_TEXT}: {self.physical_defense:02} '
         if verbose:
             text += f'[{base_phy_def}{self.bonus_physical_defense:+}]'
         text += f'`\n'
 
-        text += f'`DEFESA MÁGICA: {self.magical_defense:02} '
+        text += f'`{MAGICAL_DEFENSE_EMOJI_TEXT}: {self.magical_defense:02} '
         if verbose:
             text += f'[{base_mag_def}{self.bonus_magical_defense:+}]'
         text += f'`\n'
 
-        text += f'`ACERTO: {self.hit:02} '
+        text += f'`{HIT_EMOJI_TEXT}: {self.hit:02} '
         if verbose:
             text += f'[{base_hit}{self.bonus_hit:+}]'
         text += f'`\n'
 
-        text += f'`EVASÃO: {self.evasion:02} '
+        text += f'`{EVASION_EMOJI_TEXT}: {self.evasion:02} '
         if verbose:
             text += f'[{base_evasion}{self.bonus_evasion:+}]'
         text += f'`\n'

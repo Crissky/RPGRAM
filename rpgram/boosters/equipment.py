@@ -5,6 +5,23 @@ from bson import ObjectId
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
+from rpgram.constants.text import (
+    CHARISMA_EMOJI_TEXT,
+    CONSTITUTION_EMOJI_TEXT,
+    DEXTERITY_EMOJI_TEXT,
+    EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
+    HIT_POINT_EMOJI_TEXT,
+    INITIATIVE_EMOJI_TEXT,
+    INTELLIGENCE_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
+    PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT,
+    STRENGTH_EMOJI_TEXT,
+    WISDOM_EMOJI_TEXT
+)
 from rpgram.enums import DamageEnum, EquipmentEnum, RarityEnum
 from rpgram.enums import EmojiEnum
 
@@ -285,47 +302,53 @@ class Equipment(StatsBooster):
         text += (
             f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
 
-            f'`FOR: {self.strength:+} {{{strength_diff:+}}}'
+            f'`{STRENGTH_EMOJI_TEXT}: {self.strength:+} '
+            f'{{{strength_diff:+}}}'
             f' x({self.multiplier_strength:+.2f}) '
             f'{{{multiplier_strength_diff:+.2f}}}`\n'
 
-            f'`DES: {self.dexterity:+} {{{dexterity_diff:+}}}'
+            f'`{DEXTERITY_EMOJI_TEXT}: {self.dexterity:+} '
+            f'{{{dexterity_diff:+}}}'
             f' x({self.multiplier_dexterity:+.2f}) '
             f'{{{multiplier_dexterity_diff:+.2f}}}`\n'
 
-            f'`CON: {self.constitution:+} {{{constitution_diff:+}}}'
+            f'`{CONSTITUTION_EMOJI_TEXT}: {self.constitution:+} '
+            f'{{{constitution_diff:+}}}'
             f' x({self.multiplier_constitution:+.2f}) '
             f'{{{multiplier_constitution_diff:+.2f}}}`\n'
 
-            f'`INT: {self.intelligence:+} {{{intelligence_diff:+}}}'
+            f'`{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:+} '
+            f'{{{intelligence_diff:+}}}'
             f' x({self.multiplier_intelligence:+.2f}) '
             f'{{{multiplier_intelligence_diff:+.2f}}}`\n'
 
-            f'`SAB: {self.wisdom:+} {{{wisdom_diff:+}}}'
+            f'`{WISDOM_EMOJI_TEXT}: {self.wisdom:+} '
+            f'{{{wisdom_diff:+}}}'
             f' x({self.multiplier_wisdom:+.2f}) '
             f'{{{multiplier_wisdom_diff:+.2f}}}`\n'
 
-            f'`CAR: {self.charisma:+} {{{charisma_diff:+}}}'
+            f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:+} '
+            f'{{{charisma_diff:+}}}'
             f' x({self.multiplier_charisma:+.2f}) '
             f'{{{multiplier_charisma_diff:+.2f}}}`\n\n'
 
-            f'`HP: {self.hp:+} '
+            f'`{HIT_POINT_EMOJI_TEXT}: {self.hp:+} '
             f'{{{hp_diff:+}}}`\n'
-            f'`INICIATIVA: {self.initiative:+} '
+            f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:+} '
             f'{{{initiative_diff:+}}}`\n'
-            f'`ATAQUE FÍSICO: {self.physical_attack:+} '
+            f'`{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:+} '
             f'{{{physical_attack_diff:+}}}`\n'
-            f'`ATAQUE DE PRECISÃO: {self.precision_attack:+} '
+            f'`{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:+} '
             f'{{{precision_attack_diff:+}}}`\n'
-            f'`ATAQUE MÁGICO: {self.magical_attack:+} '
+            f'`{MAGICAL_ATTACK_EMOJI_TEXT}: {self.magical_attack:+} '
             f'{{{magical_attack_diff:+}}}`\n'
-            f'`DEFESA FÍSICA: {self.physical_defense:+} '
+            f'`{PHYSICAL_DEFENSE_EMOJI_TEXT}: {self.physical_defense:+} '
             f'{{{physical_defense_diff:+}}}`\n'
-            f'`DEFESA MÁGICA: {self.magical_defense:+} '
+            f'`{MAGICAL_DEFENSE_EMOJI_TEXT}: {self.magical_defense:+} '
             f'{{{magical_defense_diff:+}}}`\n'
-            f'`ACERTO: {self.hit:+} '
+            f'`{HIT_EMOJI_TEXT}: {self.hit:+} '
             f'{{{hit_diff:+}}}`\n'
-            f'`EVASÃO: {self.evasion:+} '
+            f'`{EVASION_EMOJI_TEXT}: {self.evasion:+} '
             f'{{{evasion_diff:+}}}`\n'
         )
 

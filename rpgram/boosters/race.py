@@ -5,6 +5,15 @@ from typing import Union
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
+from rpgram.constants.text import (
+    CHARISMA_EMOJI_TEXT,
+    CONSTITUTION_EMOJI_TEXT,
+    DEXTERITY_EMOJI_TEXT,
+    INTELLIGENCE_EMOJI_TEXT,
+    RACE_EMOJI_TEXT,
+    STRENGTH_EMOJI_TEXT,
+    WISDOM_EMOJI_TEXT
+)
 
 
 class Race(StatsBooster):
@@ -49,36 +58,36 @@ class Race(StatsBooster):
         self.__description = description
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'*Raça*: {self.name}\n'.upper()
+        text = f'*{RACE_EMOJI_TEXT}*: {self.name}\n'.upper()
 
         text += f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
 
-        text += f'`FOR: {self.strength:+}'
+        text += f'`{STRENGTH_EMOJI_TEXT}: {self.strength:+}'
         if verbose:
             text += f' x({self.multiplier_strength:+.2f})'
         text += f'`\n'
 
-        text += f'`DES: {self.dexterity:+}'
+        text += f'`{DEXTERITY_EMOJI_TEXT}: {self.dexterity:+}'
         if verbose:
             text += f' x({self.multiplier_dexterity:+.2f})'
         text += f'`\n'
 
-        text += f'`CON: {self.constitution:+}'
+        text += f'`{CONSTITUTION_EMOJI_TEXT}: {self.constitution:+}'
         if verbose:
             text += f' x({self.multiplier_constitution:+.2f})'
         text += f'`\n'
 
-        text += f'`INT: {self.intelligence:+}'
+        text += f'`{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:+}'
         if verbose:
             text += f' x({self.multiplier_intelligence:+.2f})'
         text += f'`\n'
 
-        text += f'`SAB: {self.wisdom:+}'
+        text += f'`{WISDOM_EMOJI_TEXT}: {self.wisdom:+}'
         if verbose:
             text += f' x({self.multiplier_wisdom:+.2f})'
         text += f'`\n'
 
-        text += f'`CAR: {self.charisma:+}'
+        text += f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:+}'
         if verbose:
             text += f' x({self.multiplier_charisma:+.2f})'
         text += f'`\n'

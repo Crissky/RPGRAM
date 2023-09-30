@@ -5,6 +5,11 @@ from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram import Equips
 from rpgram.boosters import Race, Classe
+from rpgram.constants.text import (
+    CHARACTER_EMOJI_TEXT,
+    CLASS_EMOJI_TEXT,
+    RACE_EMOJI_TEXT
+)
 from rpgram.stats import BaseStats, CombatStats
 
 
@@ -85,7 +90,7 @@ class BaseCharacter:
     cs = combat_stats
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'*Personagem*: {self.name}\n'
+        text = f'*{CHARACTER_EMOJI_TEXT}*: {self.name}\n'
         if verbose:
             text += f'*ID Personagem*: {self.__id}\n'
 
@@ -114,8 +119,8 @@ class BaseCharacter:
             # usado duas vezes nos textos que vem dos outros get_sheet, pois
             # o esperado seria somente uma \ e não duas.
             race_classe_text = (
-                f'*Raça*: {self.race.name}\n'
-                f'*Classe*: {self.classe.name}\n'
+                f'*{RACE_EMOJI_TEXT}*: {self.race.name}\n'
+                f'*{CLASS_EMOJI_TEXT}*: {self.classe.name}\n'
             )
             if not markdown:
                 race_classe_text = remove_bold(race_classe_text)
