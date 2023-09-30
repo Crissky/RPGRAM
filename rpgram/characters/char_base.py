@@ -166,12 +166,14 @@ class BaseCharacter:
             updated_at=self.updated_at,
         )
 
-    def __eq__(self, __value: object) -> bool:
-        if isinstance(__value, BaseCharacter):
-            return all((
-                self.__id == __value.__id,
-                self.name == __value.name,
-            ))
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, BaseCharacter):
+            if self._id is not None and other._id is not None:
+                return all((
+                    self.__id == other.__id,
+                    self.name == other.name,
+                ))
+        return False
 
 
 if __name__ == '__main__':

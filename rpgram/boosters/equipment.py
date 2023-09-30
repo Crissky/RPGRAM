@@ -411,7 +411,8 @@ class Equipment(StatsBooster):
 
     def __eq__(self, other):
         if isinstance(other, Equipment):
-            return self._id == other._id
+            if self._id is not None and other._id is not None:
+                return self._id == other._id
         return False
 
     # Getters
