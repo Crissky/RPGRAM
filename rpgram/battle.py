@@ -499,7 +499,10 @@ class Battle:
         return self.get_sheet()
 
     def __eq__(self, other: 'Battle') -> bool:
-        return self.__id == other.__id
+        if isinstance(other, Battle):
+            if self._id is not None and other._id is not None:
+                return self.__id == other.__id
+        return False
 
 
 if __name__ == '__main__':

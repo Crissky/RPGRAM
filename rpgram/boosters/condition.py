@@ -2,32 +2,35 @@ from datetime import datetime
 from typing import Union
 
 from bson import ObjectId
-from constant.text import TEXT_DELIMITER
 
+from constant.text import TEXT_DELIMITER
+from rpgram.boosters import StatsBooster
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 
-class Condition:
+class Condition(StatsBooster):
     def __init__(
         self,
         name: str,
         description: str,
         function: str,
         battle_function: str,
+        level: int = 1,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
     ):
-        if isinstance(_id, str):
-            _id = ObjectId(_id)
+        super().__init__(
+            _id=_id,
+            created_at=created_at,
+            updated_at=updated_at,
+        )
 
         self.__name = name
         self.__description = description
         self.__function = function
         self.__battle_function = battle_function
-        self.__id = _id
-        self.__created_at = created_at
-        self.__updated_at = updated_at
+        self.__level = level
 
     def activate(self, target):
         result = exec(self.__function)
@@ -37,19 +40,31 @@ class Condition:
         result = exec(self.__battle_function)
         return result
 
+    def __call__(self, target):
+        return self.activate(target)
+
+    def add_level(self):
+        self.__level += 1
+
+        return self
+
+    def remove_level(self):
+        self.__level -= 1
+        if self.__level < 1:
+            return None
+        return self
+
     def to_dict(self):
         return dict(
             name=self.__name,
             description=self.__description,
             function=self.__function,
             battle_function=self.__battle_function,
-            _id=self.__id,
-            created_at=self.__created_at,
-            updated_at=self.__updated_at,
+            _id=self._id,
+            level=self.__level,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
         )
-
-    def __call__(self, target):
-        return self.activate(target)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*Condição*: {self.__name}\n'
@@ -83,7 +98,8 @@ class Condition:
 
     def __eq__(self, other):
         if isinstance(other, Condition):
-            return self._id == other._id
+            if self._id is not None and other._id is not None:
+                return self._id == other._id
         return False
 
     # Getters
@@ -91,7 +107,7 @@ class Condition:
     description = property(lambda self: self.__description)
     function = property(lambda self: self.__function)
     battle_function = property(lambda self: self.__battle_function)
-    _id = property(lambda self: self.__id)
+    level = property(lambda self: self.__level)
 
 
 if __name__ == '__main__':

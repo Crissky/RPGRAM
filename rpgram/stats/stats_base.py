@@ -3,6 +3,18 @@ from typing import List
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
+from rpgram.constants.text import (
+    ATTRIBUTE_POINTS_EMOJI_TEXT,
+    CHARISMA_EMOJI_TEXT,
+    CONSTITUTION_EMOJI_TEXT,
+    DEXTERITY_EMOJI_TEXT,
+    INTELLIGENCE_EMOJI_TEXT,
+    LEVEL_CLASS_EMOJI_TEXT,
+    LEVEL_EMOJI_TEXT,
+    STRENGTH_EMOJI_TEXT,
+    WISDOM_EMOJI_TEXT,
+    XP_EMOJI_TEXT
+)
 
 
 class BaseStats:
@@ -449,14 +461,15 @@ class BaseStats:
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
-            f'*Nível*: {self.level} (*Nível da Classe*: {self.classe_level})\n'
-            f'*Experiência*: {self.show_xp}\n'
-            f'*Pontos*: {self.points}\n\n'
+            f'*{LEVEL_EMOJI_TEXT}*: {self.level} '
+            f'(*{LEVEL_CLASS_EMOJI_TEXT}*: {self.classe_level})\n'
+            f'*{XP_EMOJI_TEXT}*: {self.show_xp}\n'
+            f'*{ATTRIBUTE_POINTS_EMOJI_TEXT}*: {self.points}\n\n'
         )
 
         text += f"*{SECTION_HEAD.format('ATRIBUTOS BASE')}*\n"
 
-        text += f'`FOR: {self.strength:02} '
+        text += f'`{STRENGTH_EMOJI_TEXT}: {self.strength:02} '
         if verbose:
             text += (
                 f'[{self.base_strength}{self.bonus_strength:+}]'
@@ -464,7 +477,7 @@ class BaseStats:
             )
         text += f'({self.mod_strength:+})`\n'
 
-        text += f'`DES: {self.dexterity:02} '
+        text += f'`{DEXTERITY_EMOJI_TEXT}: {self.dexterity:02} '
         if verbose:
             text += (
                 f'[{self.base_dexterity}{self.bonus_dexterity:+}]'
@@ -472,7 +485,7 @@ class BaseStats:
             )
         text += f'({self.mod_dexterity:+})`\n'
 
-        text += f'`CON: {self.constitution:02} '
+        text += f'`{CONSTITUTION_EMOJI_TEXT}: {self.constitution:02} '
         if verbose:
             text += (
                 f'[{self.base_constitution}{self.bonus_constitution:+}]'
@@ -480,7 +493,7 @@ class BaseStats:
             )
         text += f'({self.mod_constitution:+})`\n'
 
-        text += f'`INT: {self.intelligence:02} '
+        text += f'`{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:02} '
         if verbose:
             text += (
                 f'[{self.base_intelligence}{self.bonus_intelligence:+}]'
@@ -488,7 +501,7 @@ class BaseStats:
             )
         text += f'({self.mod_intelligence:+})`\n'
 
-        text += f'`SAB: {self.wisdom:02} '
+        text += f'`{WISDOM_EMOJI_TEXT}: {self.wisdom:02} '
         if verbose:
             text += (
                 f'[{self.base_wisdom}{self.bonus_wisdom:+}]'
@@ -496,7 +509,7 @@ class BaseStats:
             )
         text += f'({self.mod_wisdom:+})`\n'
 
-        text += f'`CAR: {self.charisma:02} '
+        text += f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:02} '
         if verbose:
             text += (
                 f'[{self.base_charisma}{self.bonus_charisma:+}]'

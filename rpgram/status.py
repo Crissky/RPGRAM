@@ -5,7 +5,7 @@ from bson import ObjectId
 from constant.text import TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
-from rpgram import Condition
+from rpgram.boosters import Condition
 
 
 class Status:
@@ -13,7 +13,7 @@ class Status:
     def __init__(
         self,
         player_id: int,
-        conditions: List[Condition],
+        conditions: List[Condition] = [],
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
@@ -26,6 +26,42 @@ class Status:
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
+
+    def add_condition(self, condition: Condition) -> None:
+        if not isinstance(condition, Condition):
+            raise TypeError(
+                f'O parâmetro deve ser do tipo Condition. '
+                f'Tipo: {type(condition)}.'
+            )
+
+        if condition not in self.__conditions:
+            self.__conditions.append(condition)
+        else:
+            index = self.__conditions.index(condition)
+            new_condition = self.__conditions[index]
+            new_condition.add_level()
+
+    add = add_condition
+
+    def remove_condition(self, condition: Condition) -> None:
+        if not isinstance(condition, Condition):
+            raise TypeError(
+                f'O parâmetro deve ser do tipo Condition. '
+                f'Tipo: {type(condition)}.'
+            )
+
+        if condition in self.__conditions:
+            index = self.__conditions.index(condition)
+            new_condition = self.__conditions[index]
+            new_condition = new_condition.remove_level()
+            if not new_condition:
+                self.__conditions.pop(index)
+        else:
+            raise ValueError(
+                f'O status não possui a condição {condition.name}.'
+            )
+
+    remove = remove_condition
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''

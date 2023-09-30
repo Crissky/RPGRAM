@@ -97,7 +97,10 @@ class Item:
 
         if verbose:
             if isinstance(self.item, Equipment):
-                text += f' ({self.item.power}{EmojiEnum.EQUIPMENT_POWER.value})'
+                text += (
+                    f' ({self.item.power}{EmojiEnum.EQUIPMENT_POWER.value}|'
+                    f'{self.item.level_text})'
+                )
             elif isinstance(self.item, Consumable):
                 text += f' ({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
         text += f'\n'
