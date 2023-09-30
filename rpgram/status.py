@@ -13,7 +13,7 @@ class Status:
     def __init__(
         self,
         player_id: int,
-        conditions: List[Condition],
+        conditions: List[Condition] = [],
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
@@ -33,9 +33,35 @@ class Status:
                 f'O parâmetro deve ser do tipo Condition. '
                 f'Tipo: {type(condition)}.'
             )
-        self.__conditions.append(condition)
+
+        if condition not in self.__conditions:
+            self.__conditions.append(condition)
+        else:
+            index = self.__conditions.index(condition)
+            new_condition = self.__conditions[index]
+            new_condition.add_level()
 
     add = add_condition
+
+    def remove_condition(self, condition: Condition) -> None:
+        if not isinstance(condition, Condition):
+            raise TypeError(
+                f'O parâmetro deve ser do tipo Condition. '
+                f'Tipo: {type(condition)}.'
+            )
+
+        if condition in self.__conditions:
+            index = self.__conditions.index(condition)
+            new_condition = self.__conditions[index]
+            new_condition = new_condition.remove_level()
+            if not new_condition:
+                self.__conditions.pop(index)
+        else:
+            raise ValueError(
+                f'O status não possui a condição {condition.name}.'
+            )
+
+    remove = remove_condition
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
