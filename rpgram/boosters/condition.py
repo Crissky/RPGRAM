@@ -15,6 +15,7 @@ class Condition(StatsBooster):
         description: str,
         function: str,
         battle_function: str,
+        level: int = 1,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
@@ -29,6 +30,7 @@ class Condition(StatsBooster):
         self.__description = description
         self.__function = function
         self.__battle_function = battle_function
+        self.__level = level
 
     def activate(self, target):
         result = exec(self.__function)
@@ -38,6 +40,20 @@ class Condition(StatsBooster):
         result = exec(self.__battle_function)
         return result
 
+    def __call__(self, target):
+        return self.activate(target)
+
+    def add_level(self):
+        self.__level += 1
+
+        return self
+
+    def remove_level(self):
+        self.__level -= 1
+        if self.__level < 1:
+            return None
+        return self
+
     def to_dict(self):
         return dict(
             name=self.__name,
@@ -45,12 +61,10 @@ class Condition(StatsBooster):
             function=self.__function,
             battle_function=self.__battle_function,
             _id=self._id,
+            level=self.__level,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
-
-    def __call__(self, target):
-        return self.activate(target)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*Condição*: {self.__name}\n'
@@ -84,7 +98,8 @@ class Condition(StatsBooster):
 
     def __eq__(self, other):
         if isinstance(other, Condition):
-            return self._id == other._id
+            if self._id is not None and other._id is not None:
+                return self._id == other._id
         return False
 
     # Getters
@@ -92,6 +107,7 @@ class Condition(StatsBooster):
     description = property(lambda self: self.__description)
     function = property(lambda self: self.__function)
     battle_function = property(lambda self: self.__battle_function)
+    level = property(lambda self: self.__level)
 
 
 if __name__ == '__main__':
