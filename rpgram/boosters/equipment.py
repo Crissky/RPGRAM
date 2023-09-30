@@ -469,6 +469,15 @@ class Equipment(StatsBooster):
     def name_and_power_and_type(self) -> str:
         return f'{self.name} ({self.power_and_type})'
 
+    @property
+    def level(self) -> int:
+        level = self.requirements.get('level', 0)
+        return level
+
+    @property
+    def level_text(self) -> str:
+        return f'{self.level}{EmojiEnum.EQUIPMENT_LEVEL.value}'
+
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_types = property(lambda self: self.__damage_types)
