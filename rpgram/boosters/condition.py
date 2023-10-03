@@ -6,6 +6,7 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 from rpgram.boosters import StatsBooster
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram.enums import TurnEnum
 
 
 class Condition(StatsBooster):
@@ -15,6 +16,8 @@ class Condition(StatsBooster):
         description: str,
         function: str,
         battle_function: str,
+        frequency: Union[str, TurnEnum],
+        turn: int = 1,
         level: int = 1,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
@@ -25,11 +28,20 @@ class Condition(StatsBooster):
             created_at=created_at,
             updated_at=updated_at,
         )
+        if isinstance(frequency, str):
+            frequency = TurnEnum[frequency]
+        if not isinstance(frequency, TurnEnum):
+            raise TypeError(
+                f'frequency deve ser do tipo TurnEnum. '
+                f'Tipo: {type(frequency)}.'
+            )
 
         self.__name = name
         self.__description = description
         self.__function = function
         self.__battle_function = battle_function
+        self.__frequency = frequency
+        self.__turn = turn
         self.__level = level
 
     def activate(self, target):
@@ -61,6 +73,8 @@ class Condition(StatsBooster):
             function=self.__function,
             battle_function=self.__battle_function,
             _id=self._id,
+            frequency=self.__frequency.name,
+            turn=self.__turn,
             level=self.__level,
             created_at=self.created_at,
             updated_at=self.updated_at,
@@ -74,6 +88,9 @@ class Condition(StatsBooster):
                 f'*Descrição*: {self.__description}\n'
                 f'*Função*: {self.__function}\n'
                 f'*Função em Batalha*: {self.__battle_function}\n'
+                f'*Frequência*: {self.__frequency.value}\n'
+                f'*Turno*: {self.__turn}\n'
+                f'*Nível*: {self.__level}\n'
             )
 
         if not markdown:
@@ -107,6 +124,8 @@ class Condition(StatsBooster):
     description = property(lambda self: self.__description)
     function = property(lambda self: self.__function)
     battle_function = property(lambda self: self.__battle_function)
+    frequency = property(lambda self: self.__frequency)
+    turn = property(lambda self: self.__turn)
     level = property(lambda self: self.__level)
 
 
@@ -116,6 +135,7 @@ if __name__ == '__main__':
         description='Causa 10 de dano por hora.',
         function='target.cs.hp = -10',
         battle_function='target.cs.hp = -10',
+        frequency='CONTINUOUS',
     )
 
     print(poison)

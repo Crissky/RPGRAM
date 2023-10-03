@@ -20,6 +20,18 @@ class Status:
     ) -> None:
         if isinstance(_id, str):
             _id = ObjectId(_id)
+        if isinstance(conditions, list):
+            for index, condition in enumerate(conditions):
+                if not isinstance(condition, Condition):
+                    raise TypeError(
+                        f'Conditions deve ser uma lista de Conditions. '
+                        f'Index: {index}, Tipo: {type(condition)}.'
+                    )
+        else:
+            raise TypeError(
+                f'Conditions deve ser uma lista de Conditions. '
+                f'Tipo: {type(conditions)}.'
+            )
 
         self.__player_id = player_id
         self.__conditions = conditions
@@ -91,7 +103,7 @@ class Status:
         self, verbose: bool = False, markdown: bool = False
     ) -> str:
         return (
-            'Status: ' +
+            ('Status:\n' if verbose else 'Status: ') +
             self.get_sheet(verbose=verbose, markdown=markdown)
         )
 
@@ -106,9 +118,13 @@ if __name__ == '__main__':
         conditions=[],
     )
     print(status.get_sheet())
+    print('#'*30)
     print(status.get_sheet(verbose=True))
+    print('#'*30)
     print(status.get_all_sheets())
+    print('#'*30)
     print(status.get_all_sheets(verbose=True))
+    print('#'*30)
     status = Status(
         player_id='1',
         conditions=[
@@ -117,16 +133,21 @@ if __name__ == '__main__':
                 description='Veneno venenoso',
                 function='Normal',
                 battle_function='Normal',
+                frequency='CONTINUOUS',
             ),
             Condition(
                 name='Burn',
                 description='Tá pegando fogo',
                 function='Normal',
                 battle_function='Normal',
+                frequency='CONTINUOUS',
             ),
         ],
     )
     print(status.get_sheet())
+    print('#'*30)
     print(status.get_sheet(verbose=True))
+    print('#'*30)
     print(status.get_all_sheets())
+    print('#'*30)
     print(status.get_all_sheets(verbose=True))
