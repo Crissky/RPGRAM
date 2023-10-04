@@ -33,11 +33,15 @@ class Status:
                 f'Tipo: {type(conditions)}.'
             )
 
+        self.__observers = []
+
         self.__player_id = player_id
         self.__conditions = conditions
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
+
+        self.__update_stats()
 
     def add_condition(self, condition: Condition) -> None:
         if not isinstance(condition, Condition):
@@ -52,6 +56,7 @@ class Status:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
             new_condition.add_level()
+        self.__update_stats()
 
     add = add_condition
 
@@ -72,8 +77,75 @@ class Status:
             raise ValueError(
                 f'O status não possui a condição {condition.name}.'
             )
+        self.__update_stats()
 
     remove = remove_condition
+
+    def attach_observer(self, observer):
+        self.__observers.append(observer)
+
+    def detach_observer(self, observer):
+        self.__observers.remove(observer)
+
+    def notify_observers(self):
+        for observer in self.__observers:
+            observer.update()
+
+    def __update_stats(self):
+        self.__equipments_weight = 0
+
+        self.__bonus_strength = 0
+        self.__bonus_dexterity = 0
+        self.__bonus_constitution = 0
+        self.__bonus_intelligence = 0
+        self.__bonus_wisdom = 0
+        self.__bonus_charisma = 0
+
+        self.__multiplier_strength = 1
+        self.__multiplier_dexterity = 1
+        self.__multiplier_constitution = 1
+        self.__multiplier_intelligence = 1
+        self.__multiplier_wisdom = 1
+        self.__multiplier_charisma = 1
+
+        self.__bonus_hit_points = 0
+        self.__bonus_initiative = 0
+        self.__bonus_physical_attack = 0
+        self.__bonus_precision_attack = 0
+        self.__bonus_magical_attack = 0
+        self.__bonus_physical_defense = 0
+        self.__bonus_magical_defense = 0
+        self.__bonus_hit = 0
+        self.__bonus_evasion = 0
+
+        for c in self.conditions:
+            self.__equipments_weight += float(c.weight)
+
+            self.__bonus_strength += int(c.bonus_strength)
+            self.__bonus_dexterity += int(c.bonus_dexterity)
+            self.__bonus_constitution += int(c.bonus_constitution)
+            self.__bonus_intelligence += int(c.bonus_intelligence)
+            self.__bonus_wisdom += int(c.bonus_wisdom)
+            self.__bonus_charisma += int(c.bonus_charisma)
+
+            self.__multiplier_strength += c.multiplier_strength - 1.0
+            self.__multiplier_dexterity += c.multiplier_dexterity - 1.0
+            self.__multiplier_constitution += c.multiplier_constitution - 1.0
+            self.__multiplier_intelligence += c.multiplier_intelligence - 1.0
+            self.__multiplier_wisdom += c.multiplier_wisdom - 1.0
+            self.__multiplier_charisma += c.multiplier_charisma - 1.0
+
+            self.__bonus_hit_points += int(c.bonus_hit_points)
+            self.__bonus_initiative += int(c.bonus_initiative)
+            self.__bonus_physical_attack += int(c.bonus_physical_attack)
+            self.__bonus_precision_attack += int(c.bonus_precision_attack)
+            self.__bonus_magical_attack += int(c.bonus_magical_attack)
+            self.__bonus_physical_defense += int(c.bonus_physical_defense)
+            self.__bonus_magical_defense += int(c.bonus_magical_defense)
+            self.__bonus_hit += int(c.bonus_hit)
+            self.__bonus_evasion += int(c.bonus_evasion)
+
+        self.notify_observers()
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
