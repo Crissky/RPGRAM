@@ -10,11 +10,13 @@ class ConditionModel(Model):
 
 
 if __name__ == '__main__':
+    from rpgram.enums import TurnEnum
     condition = Condition(
         name='BURN TESTE',
         description='Queimaduras que reduzem a Constituição em 10%.',
         function='self.__multiplier_constitution = 0.9',
         battle_function='self.__multiplier_constitution = 0.9',
+        frequency=TurnEnum.CONTINUOUS.name,
         _id='ffffffffffffffffffffffff'
     )
     print('CONDITION:', condition)
