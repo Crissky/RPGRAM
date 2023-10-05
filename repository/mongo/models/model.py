@@ -182,6 +182,14 @@ class Model:
                             if 'subclass' in field_info.keys():
                                 subclass = field_info['subclass']
                                 object_loaded = subclass(object_loaded, **item)
+                            # Instancia a classe novamente combinando os
+                            # atributos fixo do objeto (que vem com model)
+                            # com os atributos variáveis (que estão na lista).
+                            elif 'remakeclass' in field_info.keys():
+                                remakeclass = field_info['remakeclass']
+                                object_dict = object_loaded.to_dict()
+                                object_dict.update(item)
+                                object_loaded = remakeclass(**object_dict)
                             object.append(object_loaded)
                         elif isinstance(item, (ObjectId, str)):
                             object.append(model.get(item))
