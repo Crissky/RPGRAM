@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Union
 
 from bson import ObjectId
-from constant.text import TEXT_SEPARATOR_2
+from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters import Condition
@@ -92,8 +92,6 @@ class Status:
             observer.update()
 
     def __update_stats(self):
-        self.__equipments_weight = 0
-
         self.__bonus_strength = 0
         self.__bonus_dexterity = 0
         self.__bonus_constitution = 0
@@ -119,8 +117,6 @@ class Status:
         self.__bonus_evasion = 0
 
         for c in self.conditions:
-            self.__equipments_weight += float(c.weight)
-
             self.__bonus_strength += int(c.bonus_strength)
             self.__bonus_dexterity += int(c.bonus_dexterity)
             self.__bonus_constitution += int(c.bonus_constitution)
@@ -177,6 +173,29 @@ class Status:
         return (
             ('Status:\n' if verbose else 'Status: ') +
             self.get_sheet(verbose=verbose, markdown=markdown)
+        )
+
+    def __repr__(self) -> str:
+        return (
+            f'{TEXT_DELIMITER}\n'
+            f'{self.get_sheet(True)}'
+            f'{TEXT_DELIMITER}\n'
+        )
+
+    def to_dict(self):
+        return dict(
+            player_id=self.__player_id,
+            condition_ids=[
+                dict(
+                    _id=condition._id,
+                    turn=condition.turn,
+                    level=condition.level,
+                )
+                for condition in self.__conditions
+            ],
+            _id=self.__id,
+            created_at=self.__created_at,
+            updated_at=self.__updated_at,
         )
 
     # Getters
