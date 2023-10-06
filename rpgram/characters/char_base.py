@@ -118,6 +118,7 @@ class BaseCharacter:
         if verbose:
             text = (
                 f'{self.get_sheet(verbose, markdown)}'
+                f'{self.status.get_all_sheets(verbose, markdown)}\n'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.race.get_sheet(verbose, markdown)}\n'

@@ -6,6 +6,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.condition import Condition
+from rpgram.constants.text import STATUS_EMOJI_TEXT
 
 
 class Status:
@@ -170,10 +171,17 @@ class Status:
     def get_all_sheets(
         self, verbose: bool = False, markdown: bool = False
     ) -> str:
-        return (
-            ('Status:\n' if verbose else 'Status: ') +
-            self.get_sheet(verbose=verbose, markdown=markdown)
-        )
+        text = f'*{STATUS_EMOJI_TEXT}*:'
+        text += '\n' if verbose and self.__conditions else f' '
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+        text += self.get_sheet(verbose=verbose, markdown=markdown)
+
+        return text
 
     def __repr__(self) -> str:
         return (
