@@ -1,10 +1,13 @@
 from datetime import datetime
 from bson import ObjectId
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram import Equips
-from rpgram.boosters import Race, Classe
-from rpgram.characters import BaseCharacter
+
+from rpgram.boosters.classe import Classe
+from rpgram.boosters.race import Race
+from rpgram.characters.char_base import BaseCharacter
 from rpgram.constants.text import PLAYER_EMOJI_TEXT
+from rpgram.equips import Equips
+from rpgram.status import Status
 
 
 class PlayerCharacter(BaseCharacter):
@@ -16,6 +19,7 @@ class PlayerCharacter(BaseCharacter):
         classe: Classe,
         race: Race,
         equips: Equips = None,
+        status: Status = None,
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -35,6 +39,7 @@ class PlayerCharacter(BaseCharacter):
             race=race,
             player_id=player_id,
             equips=equips,
+            status=status,
             level=level,
             xp=xp,
             base_strength=base_strength,

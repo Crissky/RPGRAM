@@ -5,7 +5,9 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.enums import EmojiEnum, RarityEnum
+
+from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.rarity import RarityEnum
 
 
 class Consumable:

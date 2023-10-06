@@ -4,9 +4,10 @@ from typing import Union
 from bson import ObjectId
 
 from constant.text import TEXT_DELIMITER
-from rpgram.boosters import StatsBooster
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.enums import TurnEnum
+
+from rpgram.boosters.stats_booster import StatsBooster
+from rpgram.enums.turn import TurnEnum
 
 
 class Condition(StatsBooster):

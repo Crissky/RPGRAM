@@ -3,8 +3,11 @@ from datetime import datetime
 
 from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram import Equips
-from rpgram.boosters import Race, Classe
+
+from rpgram.equips import Equips
+from rpgram.status import Status
+from rpgram.boosters.classe import Classe
+from rpgram.boosters.race import Race
 from rpgram.constants.text import (
     CHARACTER_EMOJI_TEXT,
     CLASS_EMOJI_TEXT,
@@ -21,6 +24,7 @@ class BaseCharacter:
         race: Race,
         player_id: int = None,
         equips: Equips = None,
+        status: Status = None,
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -38,12 +42,15 @@ class BaseCharacter:
             _id = ObjectId(_id)
         if equips is None:
             equips = Equips(player_id=player_id, _id=ObjectId())
+        if status is None:
+            status = Status(player_id=player_id, _id=ObjectId())
 
         self.__name = char_name
         self.__id = _id
         self.__classe = classe
         self.__race = race
         self.__equips = equips
+        self.__status = status
         self.__base_stats = BaseStats(
             level=level,
             xp=xp,
@@ -61,6 +68,8 @@ class BaseCharacter:
         )
         self.__equips.attach_observer(self.__base_stats)
         self.__equips.attach_observer(self.__combat_stats)
+        self.__status.attach_observer(self.__base_stats)
+        self.__status.attach_observer(self.__combat_stats)
         self.__created_at = created_at
         self.__updated_at = updated_at
 
@@ -84,6 +93,7 @@ class BaseCharacter:
     classe: Classe = property(fget=lambda self: self.__classe)
     race: Race = property(fget=lambda self: self.__race)
     equips: Equips = property(fget=lambda self: self.__equips)
+    status: Status = property(fget=lambda self: self.__status)
     created_at: datetime = property(lambda self: self.__created_at)
     updated_at: datetime = property(lambda self: self.__updated_at)
     bs = base_stats
@@ -167,6 +177,7 @@ class BaseCharacter:
             race_name=self.race.name,
             classe_name=self.classe.name,
             equips_id=self.equips._id,
+            status_id=self.status._id,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )

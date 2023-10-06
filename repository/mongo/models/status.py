@@ -1,5 +1,5 @@
 from repository.mongo import CollectionEnum, Model
-from repository.mongo import ConditionModel
+from repository.mongo.models.condition import ConditionModel
 
 from rpgram import Status
 from rpgram.boosters import Condition

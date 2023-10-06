@@ -1,4 +1,4 @@
-from rpgram.enums import EmojiEnum
+from rpgram.enums.emojis import EmojiEnum
 
 PLAYER_FULL = 'Jogador'
 CHARACTER_FULL = 'Personagem'

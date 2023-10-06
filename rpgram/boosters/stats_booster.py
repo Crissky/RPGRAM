@@ -4,6 +4,7 @@ from typing import Union
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+
 from rpgram.constants.text import (
     CHARISMA_EMOJI_TEXT,
     CONSTITUTION_EMOJI_TEXT,
