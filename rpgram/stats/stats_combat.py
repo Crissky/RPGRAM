@@ -82,6 +82,7 @@ class CombatStats:
             'healed': self.healed,
             'alive': self.alive,
             'dead': self.dead,
+            'action': 'Cura',
             'text': f'HP: {old_show_hp} ››› {new_show_hp}.'
         }
 
@@ -103,6 +104,7 @@ class CombatStats:
             'healed': self.healed,
             'alive': self.alive,
             'dead': self.dead,
+            'action': 'Dano',
             'text': f'HP: {old_show_hp} ››› {new_show_hp}.'
         }
 
