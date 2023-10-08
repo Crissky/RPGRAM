@@ -3,6 +3,7 @@ from repository.mongo import Model
 from repository.mongo.models.classe import ClasseModel
 from repository.mongo.models.race import RaceModel
 from repository.mongo.models.equips import EquipsModel
+from repository.mongo.models.status import StatusModel
 from rpgram.characters import BaseCharacter, PlayerCharacter
 
 
@@ -23,6 +24,10 @@ class CharacterModel(Model):
             'equips': {
                 'id_key': 'equips_id',
                 'model': EquipsModel()
+            },
+            'status': {
+                'id_key': 'status_id',
+                'model': StatusModel()
             }
         }
     )

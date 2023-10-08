@@ -66,6 +66,7 @@ class EmojiEnum(Enum):
     STATS = '📈'
     GROUP = '👥'
     PLAYER = '🎮'
+    STATUS = '🗂'
     CHARACTER = '👤'
     RACE = '🧝'
     CLASS = '🧙‍♂️'

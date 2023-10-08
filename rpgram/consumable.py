@@ -5,7 +5,9 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.enums import EmojiEnum, RarityEnum
+
+from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.rarity import RarityEnum
 
 
 class Consumable:
@@ -15,6 +17,7 @@ class Consumable:
         description: str,
         weight: float,
         function: str,
+        battle_function: str = None,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
@@ -31,6 +34,7 @@ class Consumable:
         self.__description = description
         self.__weight = weight
         self.__function = function
+        self.__battle_function = battle_function
         self.__rarity = rarity
         self.__id = _id
         self.__created_at = created_at
@@ -40,12 +44,20 @@ class Consumable:
         result = exec(self.__function)
         return result
 
+    def battle_use(self, target):  # If é provisório até a criação das conditions no banco
+        if self.__battle_function:
+            result = exec(self.__battle_function)
+        else:
+            result = self.use(target)
+        return result
+
     def to_dict(self):
         return dict(
             name=self.__name,
             description=self.__description,
             weight=self.__weight,
             function=self.__function,
+            battle_function=self.__battle_function,
             rarity=self.__rarity.name,
             _id=self.__id,
             created_at=self.__created_at,

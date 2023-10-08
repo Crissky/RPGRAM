@@ -166,22 +166,56 @@ def choice_rarity(group_level: int) -> str:
     return weighted_choice(**rarities)
 
 
+def choice_material(
+    group_level: int,
+    equipment_materials: dict,
+    level_base: int = 25,
+    chance_reducer: int = 25,
+    total_materials: int = 3,
+) -> str:
+    '''Retorna um material de um equipamento de maneira aleatória.
+    Quanto maior o nível de grupo, maior a diversidade de materiais.
+    Um novo material entrará na lista de escolha (materials) 
+    a cada "level_base" pontos de nível de grupo.
+
+    Args:
+        "group_level": Nível do Grupo
+        "equipment_materials": Dicionário contendo os materiais dos equipamentos 
+            como chave e o multiplicador como valor.
+        "level_base": Nível base para a ocorrência de novos materiais além do 
+            primeiro.
+        "chance_reducer": Redutor de propabilidade dos materiais mais raros.
+        "total_materials": Número máximo de materiais mais raros que ficarão 
+            na lista para serem escolhidos.
+    '''
+
+    materials = {}
+    chance = 100 + (len(equipment_materials) * chance_reducer)
+    for material, multiplier in equipment_materials.items():
+        level_threshold = level_base * (multiplier - 1)
+        if group_level >= level_threshold or not materials:
+            materials[material] = chance
+            chance -= chance_reducer
+
+    if len(materials) > total_materials:
+        materials = dict([materials.popitem() for _ in range(total_materials)])
+
+    return weighted_choice(**materials)
+
+
 def choice_weapon_material(group_level: int) -> str:
     '''Retorna um material de arma de maneira aleatória.
     Quanto maior o nível de grupo, maior a diversidade de materiais.
     Um novo material entrará na lista de escolha (materials) 
     a cada 25 pontos de nível de grupo.
     '''
-    materials = {}
-    level_base = 25
-    chance = 100 + (len(WEAPON_MATERIALS) * 25)
-    for material, multiplier in WEAPON_MATERIALS.items():
-        level_threshold = level_base * (multiplier - 1)
-        if group_level >= level_threshold or not materials:
-            materials[material] = chance
-            chance -= 25
 
-    return weighted_choice(**materials)
+    return choice_material(
+        group_level=group_level,
+        equipment_materials=WEAPON_MATERIALS,
+        level_base=25,
+        chance_reducer=25
+    )
 
 
 def choice_armor_material(group_level: int) -> str:
@@ -190,16 +224,13 @@ def choice_armor_material(group_level: int) -> str:
     Um novo material entrará na lista de escolha (materials) 
     a cada 25 pontos de nível de grupo.
     '''
-    materials = {}
-    level_base = 25
-    chance = 100 + (len(WEARABLE_MATERIALS) * 25)
-    for material, multiplier in WEARABLE_MATERIALS.items():
-        level_threshold = level_base * (multiplier - 1)
-        if group_level >= level_threshold or not materials:
-            materials[material] = chance
-            chance -= 25
 
-    return weighted_choice(**materials)
+    return choice_material(
+        group_level=group_level,
+        equipment_materials=WEARABLE_MATERIALS,
+        level_base=25,
+        chance_reducer=25
+    )
 
 
 def choice_accessory_material(group_level: int) -> str:
@@ -208,16 +239,13 @@ def choice_accessory_material(group_level: int) -> str:
     Um novo material entrará na lista de escolha (materials) 
     a cada 50 pontos de nível de grupo.
     '''
-    materials = {}
-    level_base = 50
-    chance = 100 + (len(ACCESSORY_MATERIALS) * 25)
-    for material, multiplier in ACCESSORY_MATERIALS.items():
-        level_threshold = level_base * (multiplier - 1)
-        if group_level >= level_threshold or not materials:
-            materials[material] = chance
-            chance -= 25
 
-    return weighted_choice(**materials)
+    return choice_material(
+        group_level=group_level,
+        equipment_materials=ACCESSORY_MATERIALS,
+        level_base=50,
+        chance_reducer=25
+    )
 
 
 def get_equipment_and_material(

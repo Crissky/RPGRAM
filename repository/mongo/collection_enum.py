@@ -13,3 +13,4 @@ class CollectionEnum(Enum):
     GROUP = 'groups'
     PLAYERS = 'players'
     RACES = 'races'
+    STATUS = 'status'

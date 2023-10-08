@@ -1,6 +1,8 @@
 '''
 Classe responsável por gerenciar a Batalha
 '''
+import random
+
 from copy import deepcopy
 from datetime import datetime
 from operator import attrgetter
@@ -8,15 +10,14 @@ from typing import List, Union
 
 from bson import ObjectId
 
-from rpgram import Dice
-from rpgram.characters import BaseCharacter
-from rpgram.enums import EmojiEnum
+from rpgram.characters.char_base import BaseCharacter
+from rpgram.dice import Dice
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.errors import (
     BattleIsNotOverError,
     CurrentPlayerTurnError,
     EmptyTeamError
 )
-import random
 
 ACTION_LIST = ['physical_attack', 'precision_attack', 'magical_attack']
 REACTION_LIST = ['defend', 'dodge']
@@ -512,19 +513,22 @@ if __name__ == '__main__':
         classe=Classe('Ladino'),
         race=Race('Hobbit'),
         base_dexterity=2,
-        base_constitution=1
+        base_constitution=1,
+        _id='ffffffffffffffffffffffff'
     )
     gandalf = BaseCharacter(
         char_name='Gandalf',
         classe=Classe('Mago'),
         race=Race('Humano'),
         base_intelligence=3,
+        _id='eeeeeeeeeeeeeeeeeeeeeeee'
     )
     aragorn = BaseCharacter(
         char_name='Aragorn',
         classe=Classe('Guerreiro'),
         race=Race('Humano'),
         base_strength=3,
+        _id='dddddddddddddddddddddddd'
     )
     battle = Battle(
         blue_team=[aragorn, frodo],

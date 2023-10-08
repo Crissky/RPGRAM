@@ -5,7 +5,8 @@ from bson import ObjectId
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.boosters import Equipment
+
+from rpgram.boosters.equipment import Equipment
 from rpgram.constants.text import (
     CHARISMA_EMOJI_TEXT,
     CONSTITUTION_EMOJI_TEXT,
@@ -23,9 +24,10 @@ from rpgram.constants.text import (
     STRENGTH_EMOJI_TEXT,
     WISDOM_EMOJI_TEXT
 )
-from rpgram.enums import EmojiEnum, EquipmentEnum
+from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.equipment import EquipmentEnum
 from rpgram.errors import EquipmentRequirementError
-from rpgram.stats import BaseStats
+from rpgram.stats.stats_base import BaseStats
 
 if __name__ in ['__main__', 'equip']:
     from rpgram.enums import DamageEnum

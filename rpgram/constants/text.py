@@ -1,9 +1,10 @@
-from rpgram.enums import EmojiEnum
+from rpgram.enums.emojis import EmojiEnum
 
 PLAYER_FULL = 'Jogador'
 CHARACTER_FULL = 'Personagem'
 RACE_FULL = 'Raça'
 CLASS_FULL = 'Classe'
+STATUS_FULL = 'Status'
 
 LEVEL_ABB = 'NV'
 LEVEL_FULL = 'Nível'
@@ -34,6 +35,7 @@ PLAYER_EMOJI_TEXT = f'{EmojiEnum.PLAYER.value}{PLAYER_FULL}'
 CHARACTER_EMOJI_TEXT = f'{EmojiEnum.CHARACTER.value}{CHARACTER_FULL}'
 RACE_EMOJI_TEXT = f'{EmojiEnum.RACE.value}{RACE_FULL}'
 CLASS_EMOJI_TEXT = f'{EmojiEnum.CLASS.value}{CLASS_FULL}'
+STATUS_EMOJI_TEXT = f'{EmojiEnum.STATUS.value}{STATUS_FULL}'
 LEVEL_EMOJI_TEXT = f'{EmojiEnum.LEVEL.value}{LEVEL_FULL}'
 LEVEL_CLASS_EMOJI_TEXT = f'{EmojiEnum.LEVEL_CLASS.value}{LEVEL_CLASS_FULL}'
 XP_EMOJI_TEXT = f'{EmojiEnum.XP.value}{XP_FULL}'
