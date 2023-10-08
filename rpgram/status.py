@@ -7,6 +7,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.condition import Condition
 from rpgram.constants.text import STATUS_EMOJI_TEXT
+from rpgram.enums.turn import TurnEnum
 
 
 class Status:
@@ -51,12 +52,12 @@ class Status:
                 f'Tipo: {type(condition)}.'
             )
 
-        if condition not in self.__conditions:
-            self.__conditions.append(condition)
-        else:
+        if condition in self.__conditions:
             index = self.__conditions.index(condition)
-            new_condition = self.__conditions[index]
-            new_condition.add_level()
+            condition = self.__conditions[index]
+            condition.add_level()
+        else:
+            self.__conditions.append(condition)
         self.__update_stats()
 
     add = add_condition
@@ -81,6 +82,38 @@ class Status:
         self.__update_stats()
 
     remove = remove_condition
+
+    def activate(self, char) -> List[dict]:
+        reports = []
+        for condition in self.__conditions:
+            if condition.frequency != TurnEnum.CONTINUOUS:
+                report = condition.activate(char)
+                reports.append(report)
+
+        # exclui todos as condition con turn igual a zero
+        self.__conditions = [
+            condition
+            for condition in self.__conditions
+            if condition.turn != 0
+        ]
+
+        return reports
+
+    def battle_activate(self, char) -> List[dict]:
+        reports = []
+        for condition in self.__conditions:
+            if condition.frequency != TurnEnum.CONTINUOUS:
+                report = condition.battle_activate(char)
+                reports.append(report)
+
+        # exclui todos as condition con turn igual a zero
+        self.__conditions = [
+            condition
+            for condition in self.__conditions
+            if condition.turn != 0
+        ]
+
+        return reports
 
     def attach_observer(self, observer):
         self.__observers.append(observer)
@@ -230,15 +263,15 @@ if __name__ == '__main__':
             Condition(
                 name='Poison',
                 description='Veneno venenoso',
-                function='Normal',
-                battle_function='Normal',
+                function='print("function:Poison")',
+                battle_function='print("battle_function:Poison")',
                 frequency='CONTINUOUS',
             ),
             Condition(
                 name='Burn',
                 description='Tá pegando fogo',
-                function='Normal',
-                battle_function='Normal',
+                function='print("function:Burn")',
+                battle_function='print("battle_function:Burn")',
                 frequency='CONTINUOUS',
             ),
         ],
