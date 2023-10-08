@@ -320,16 +320,15 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     elif isinstance(item.item, Consumable):  # Tenta usar o item
         consumable = item.item
         try:
-            old_hp = player_character.cs.show_hit_points
-            consumable.use(player_character)
-            new_hp = player_character.cs.show_hit_points
+            report = consumable.use(player_character)
+            report_text = report['text']
             bag_model.sub(item, user_id)
             char_model.save(player_character)
             await query.answer(
                 text=(
                     f'Você usou o item "{consumable.name}".\n'
                     f'Descrição: "{consumable.description}".\n\n'
-                    f'HP: {old_hp} ››› {new_hp}.'
+                    f'{report_text}'
                 ),
                 show_alert=True
             )
