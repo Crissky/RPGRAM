@@ -64,6 +64,48 @@ class CombatStats:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
 
+    def cure_hit_points(self, value: int) -> dict:
+        value = int(abs(value))
+        old_hp = self.current_hit_points
+        old_show_hp = self.show_hit_points
+        self.set_damage(value)
+        new_hp = self.current_hit_points
+        new_show_hp = self.show_hit_points
+        return {
+            'old_hp': old_hp,
+            'old_show_hp': old_show_hp,
+            'new_hp': new_hp,
+            'new_show_hp': new_show_hp,
+            'cure': value,
+            'true_cure': (new_hp - old_hp),
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+            'text': f'HP: {old_show_hp} ››› {new_show_hp}.'
+        }
+
+    def damage_hit_points(self, value: int) -> dict:
+        value = -int(abs(value))
+        old_hp = self.current_hit_points
+        old_show_hp = self.show_hit_points
+        self.set_damage(value)
+        new_hp = self.current_hit_points
+        new_show_hp = self.show_hit_points
+        return {
+            'old_hp': old_hp,
+            'old_show_hp': old_show_hp,
+            'new_hp': new_hp,
+            'new_show_hp': new_show_hp,
+            'damage': value,
+            'true_damage': (old_hp - new_hp),
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+            'text': f'HP: {old_show_hp} ››› {new_show_hp}.'
+        }
+
     def revive(self, value: int = 1) -> None:
         value = int(value * -1)
         if self.alive:
@@ -378,3 +420,10 @@ if __name__ == '__main__':
     combat_stats.hp = -30
     combat_stats.hp = 10  # Cura
     print(combat_stats)
+
+    print('cure_hit_points')
+    print(combat_stats.cure_hit_points(100))
+    print('damage_hit_points')
+    print(combat_stats.damage_hit_points(100))
+    print('cure_hit_points')
+    print(combat_stats.cure_hit_points(100))
