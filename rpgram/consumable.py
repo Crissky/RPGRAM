@@ -41,15 +41,19 @@ class Consumable:
         self.__updated_at = updated_at
 
     def use(self, target):
-        result = exec(self.__function)
-        return result
+        local = {'target': target}
+        exec(self.__function, None, local)
+        report = local['report']
+        return report
 
     def battle_use(self, target):  # If é provisório até a criação das conditions no banco
         if self.__battle_function:
-            result = exec(self.__battle_function)
+            local = {'target': target}
+            exec(self.__battle_function, None, local)
+            report = local['report']
         else:
-            result = self.use(target)
-        return result
+            report = self.use(target)
+        return report
 
     def to_dict(self):
         return dict(

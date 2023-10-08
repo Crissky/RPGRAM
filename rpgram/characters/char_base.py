@@ -140,6 +140,7 @@ class BaseCharacter:
                 race_classe_text = escape_basic_markdown_v2(race_classe_text)
             text = (
                 f'{self.get_sheet(verbose, markdown)}'
+                f'{self.status.get_all_sheets(verbose, markdown)}\n'
                 f'{race_classe_text}'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
