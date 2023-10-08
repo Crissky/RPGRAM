@@ -45,12 +45,19 @@ class Condition(StatsBooster):
         self.__turn = turn
         self.__level = level
 
+        if self.__frequency == TurnEnum.CONTINUOUS:
+            self.activate(None)
+
     def activate(self, target):
         result = exec(self.__function)
+        if self.__turn not in [-1, 0]:
+            self.__turn -= 1
         return result
 
     def battle_activate(self, target):
         result = exec(self.__battle_function)
+        if self.__turn not in [-1, 0]:
+            self.__turn -= 1
         return result
 
     def __call__(self, target):
@@ -136,7 +143,7 @@ if __name__ == '__main__':
         description='Causa 10 de dano por hora.',
         function='target.cs.hp = -10',
         battle_function='target.cs.hp = -10',
-        frequency='CONTINUOUS',
+        frequency='START',
     )
 
     print(poison)
