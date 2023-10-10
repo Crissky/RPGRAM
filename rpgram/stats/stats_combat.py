@@ -110,6 +110,32 @@ class CombatStats:
             'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_damage}).'
         }
 
+    def physical_damage_hit_points(self, value: int) -> dict:
+        attack = int(abs(value))
+        defense = self.physical_defense
+        value = attack - defense
+        if value < 0:
+            value = 0
+        report = self.damage_hit_points(value)
+        report['action'] = 'Ataque Físico'
+        report['attack'] = attack
+        report['defense'] = defense
+
+        return report
+
+    def magical_damage_hit_points(self, value: int) -> dict:
+        attack = int(abs(value))
+        defense = self.magical_defense
+        value = attack - defense
+        if value < 0:
+            value = 0
+        report = self.damage_hit_points(value)
+        report['action'] = 'Ataque Mágico'
+        report['attack'] = attack
+        report['defense'] = defense
+
+        return report
+
     def revive(self, value: int = 1) -> dict:
         value = int(value * -1)
         old_hp = self.current_hit_points
@@ -446,6 +472,10 @@ if __name__ == '__main__':
 
     print('cure_hit_points')
     print(combat_stats.cure_hit_points(100))
+    print('physical_damage_hit_points')
+    print(combat_stats.physical_damage_hit_points(20))
+    print('magical_damage_hit_points')
+    print(combat_stats.magical_damage_hit_points(20))
     print('damage_hit_points')
     print(combat_stats.damage_hit_points(100))
     print('cure_hit_points')
