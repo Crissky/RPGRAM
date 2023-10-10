@@ -90,21 +90,20 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     player_character = char_model.get(user_id)
     player = player_model.get(user_id)
-    max_hp = player_character.cs.hp
-    current_hp = player_character.cs.show_hit_points
     revive_reporting = ''
     if player_character.is_dead():
-        player_character.cs.revive()
+        report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
     else:
-        heal = int(max_hp * 0.13)
-        player_character.cs.hp = heal
-    new_current_hp = player_character.cs.show_hit_points
+        max_hp = player_character.cs.hp
+        heal = int(max_hp * 0.18)
+        report = player_character.cs.cure_hit_points(heal)
     char_model.save(player_character)
+    report_text = report['text']
     hp_reporting = (
         f'{revive_reporting}'
         f'Seu personagem curou HP❤️‍🩹 descansando!\n\n'
-        f'HP: {current_hp} ››› {new_current_hp}\n\n'
+        f'{report_text}\n\n'
     )
 
     if player_character.is_healed():
