@@ -68,9 +68,9 @@ from rpgram.errors import EmptyTeamError
 ) = range(5)
 
 
-@print_basic_infos
 @need_singup_group
 @need_have_char
+@print_basic_infos
 async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('battle_start')
     battle_model = BattleModel()
@@ -112,8 +112,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ENTER_BATTLE_ROUTES
-@print_basic_infos
 @need_have_char
+@print_basic_infos
 async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('enter_battle')
     battle_model = BattleModel()
