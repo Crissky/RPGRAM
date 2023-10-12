@@ -265,11 +265,11 @@ async def activated_trap(
         user_id=user_id,
         type_damage=trap_type_damage
     )
-    true_damage = damage_report['true_damage']
+    absolute_damage = damage_report['absolute_damage']
     text = (
         f'{text_find_trap_open}\n\n'
-        f'{text_find_trap_damage} "{true_damage}" pontos de dano '
-        f'do tipo "{trap_type_damage.value}".\n\n'
+        f'{text_find_trap_damage} "{absolute_damage}"({damage}) '
+        f'pontos de dano do tipo "{trap_type_damage.value}".\n\n'
     )
     if damage_report['dead']:
         text += 'Seus pontos de vida chegaram a zero.\n'
