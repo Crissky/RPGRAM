@@ -111,6 +111,5 @@ def add_damage(
     return dict(
         char=char,
         type_damage=type_damage,
-        dead=char.is_dead(),
         **damage_report,
     )
