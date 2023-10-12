@@ -64,28 +64,6 @@ class CombatStats:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
 
-    def cure_hit_points(self, value: int) -> dict:
-        value = int(abs(value))
-        old_hp = self.current_hit_points
-        old_show_hp = self.show_hit_points
-        self.set_damage(value)
-        new_hp = self.current_hit_points
-        new_show_hp = self.show_hit_points
-        return {
-            'old_hp': old_hp,
-            'old_show_hp': old_show_hp,
-            'new_hp': new_hp,
-            'new_show_hp': new_show_hp,
-            'cure': value,
-            'true_cure': (new_hp - old_hp),
-            'damaged': self.damaged,
-            'healed': self.healed,
-            'alive': self.alive,
-            'dead': self.dead,
-            'action': 'Cura',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp}.'
-        }
-
     def damage_hit_points(self, value: int) -> dict:
         value = -int(abs(value))
         old_hp = self.current_hit_points
@@ -93,23 +71,83 @@ class CombatStats:
         self.set_damage(value)
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
+        true_damage = (old_hp - new_hp)
         return {
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
             'new_hp': new_hp,
             'new_show_hp': new_show_hp,
             'damage': value,
-            'true_damage': (old_hp - new_hp),
+            'true_damage': true_damage,
             'damaged': self.damaged,
             'healed': self.healed,
             'alive': self.alive,
             'dead': self.dead,
             'action': 'Dano',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp}.'
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_damage}).'
         }
 
-    def revive(self, value: int = 1) -> None:
+    def physical_damage_hit_points(self, value: int) -> dict:
+        attack = int(abs(value))
+        defense = self.physical_defense
+        value = attack - defense
+        if value < 0:
+            value = 0
+        report = self.damage_hit_points(value)
+        report['action'] = 'Ataque Físico'
+        report['attack'] = attack
+        report['defense'] = defense
+        report['defense_name'] = 'Defesa Física'
+        report['guard_text'] = (
+            f'Defendeu com {defense} pontos de Defesa Física.'
+        )
+
+        return report
+
+    def magical_damage_hit_points(self, value: int) -> dict:
+        attack = int(abs(value))
+        defense = self.magical_defense
+        value = attack - defense
+        if value < 0:
+            value = 0
+        report = self.damage_hit_points(value)
+        report['action'] = 'Ataque Mágico'
+        report['attack'] = attack
+        report['defense'] = defense
+        report['defense_name'] = 'Defesa Mágica'
+        report['guard_text'] = (
+            f'Defendeu com {defense} pontos de Defesa Mágica.'
+        )
+
+        return report
+
+    def cure_hit_points(self, value: int) -> dict:
+        value = int(abs(value))
+        old_hp = self.current_hit_points
+        old_show_hp = self.show_hit_points
+        self.set_damage(value)
+        new_hp = self.current_hit_points
+        new_show_hp = self.show_hit_points
+        true_cure = (new_hp - old_hp)
+        return {
+            'old_hp': old_hp,
+            'old_show_hp': old_show_hp,
+            'new_hp': new_hp,
+            'new_show_hp': new_show_hp,
+            'cure': value,
+            'true_cure': true_cure,
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+            'action': 'Cura',
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
+        }
+
+    def revive(self, value: int = 1) -> dict:
         value = int(value * -1)
+        old_hp = self.current_hit_points
+        old_show_hp = self.show_hit_points
         if self.alive:
             print(f'Não pode reviver um personagem vivo.')
             return
@@ -121,6 +159,23 @@ class CombatStats:
         elif self.__damage < 0:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
+        new_hp = self.current_hit_points
+        new_show_hp = self.show_hit_points
+        true_cure = (old_hp - new_hp)
+        return {
+            'old_hp': old_hp,
+            'old_show_hp': old_show_hp,
+            'new_hp': new_hp,
+            'new_show_hp': new_show_hp,
+            'cure': value,
+            'true_cure': true_cure,
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+            'action': 'Reviver',
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
+        }
 
     def update(self) -> None:
         self.__boost_stats()
@@ -425,6 +480,10 @@ if __name__ == '__main__':
 
     print('cure_hit_points')
     print(combat_stats.cure_hit_points(100))
+    print('physical_damage_hit_points')
+    print(combat_stats.physical_damage_hit_points(20))
+    print('magical_damage_hit_points')
+    print(combat_stats.magical_damage_hit_points(20))
     print('damage_hit_points')
     print(combat_stats.damage_hit_points(100))
     print('cure_hit_points')

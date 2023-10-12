@@ -25,6 +25,7 @@ from bot.constants.item import (
     REPLY_TEXTS_FIND_TREASURE_END,
     REPLY_TEXTS_FIND_TREASURE_OPEN,
     REPLY_TEXTS_IGNORE_TREASURE,
+    TRAP_TYPE_DAMAGE_MULTIPLIER,
 )
 from bot.constants.rest import COMMANDS as rest_commands
 from bot.decorators import (
@@ -252,15 +253,23 @@ async def activated_trap(
     user_name: str,
     query: CallbackQuery
 ):
-    damage_report = add_damage(damage, user_id=user_id)
-    char = damage_report['char']
-    text_find_trap_open = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
+    text_find_trap_open, trap_type_damage = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
     text_find_trap_damage = choice(REPLY_TEXTS_FIND_TRAP_DAMAGE).format(
         user_name=user_name
     )
+    type_damage_name = trap_type_damage.name
+    type_damage_multiplier = TRAP_TYPE_DAMAGE_MULTIPLIER[type_damage_name]
+    damage = int(type_damage_multiplier * damage)
+    damage_report = add_damage(
+        damage,
+        user_id=user_id,
+        type_damage=trap_type_damage
+    )
+    true_damage = damage_report['true_damage']
     text = (
         f'{text_find_trap_open}\n\n'
-        f'{text_find_trap_damage} "{damage}" pontos de dano.\n\n'
+        f'{text_find_trap_damage} "{true_damage}" pontos de dano '
+        f'do tipo "{trap_type_damage.value}".\n\n'
     )
     if damage_report['dead']:
         text += 'Seus pontos de vida chegaram a zero.\n'
@@ -268,7 +277,8 @@ async def activated_trap(
             f'Use o comando /{rest_commands[0]} '
             f'para descansar e poder continuar a sua jornada.\n\n'
         )
-    text += f'HP: {char.combat_stats.show_hit_points}'
+    text += f'{damage_report["text"]}\n'
+    text += f'{damage_report.get("guard_text")}'
     await query.edit_message_text(text=text)
 
     return ConversationHandler.END

@@ -1,10 +1,35 @@
 import re
 
+from rpgram.enums.damage import DamageEnum
+
 
 CALLBACK_TEXT_GET = '$get_item'
 CALLBACK_TEXT_IGNORE = '$ignore_item'
 ESCAPED_CALLBACK_TEXT_GET = re.escape(CALLBACK_TEXT_GET)
 ESCAPED_CALLBACK_TEXT_IGNORE = re.escape(CALLBACK_TEXT_IGNORE)
+
+
+TRAP_TYPE_DAMAGE_MULTIPLIER = {
+    DamageEnum.BLUDGEONING.name: 1.0,
+    DamageEnum.HITTING.name: 1.0,
+    DamageEnum.SLASHING.name: 1.2,
+    DamageEnum.PIERCING.name: 1.2,
+    DamageEnum.MAGIC.name: 2.0,
+    DamageEnum.BLESSING.name: 1.0,
+    DamageEnum.DIVINE.name: 5.0,
+    DamageEnum.LIGHT.name: 1.0,
+    DamageEnum.DARK.name: 2.0,
+    DamageEnum.FIRE.name: 1.5,
+    DamageEnum.WATER.name: 1.5,
+    DamageEnum.COLD.name: 1.5,
+    DamageEnum.LIGHTNING.name: 2.0,
+    DamageEnum.WIND.name: 1.5,
+    DamageEnum.ROCK.name: 1.5,
+    DamageEnum.GROUND.name: 1.5,
+    DamageEnum.ACID.name: 2.0,
+    DamageEnum.POISON.name: 2.0,
+    DamageEnum.CHAOS.name: 2.5,
+}
 
 
 REPLY_TEXTS_FIND_TREASURE_START = [
@@ -580,106 +605,498 @@ REPLY_TEXTS_IGNORE_TREASURE = [
 
 
 REPLY_TEXTS_FIND_TRAP_OPEN = [
-    'Com cuidado, você abre o objeto, mas antes que perceba, uma explosão irrompe.',
-    'Ao destrancar e abrir, um gás venenoso escapa, preenchendo o ar ao seu redor.',
-    'Deslizando a tampa, você ativa um mecanismo oculto que dispara uma chuva de dardos afiados.',
-    'Ao remover a cobertura, um líquido corrosivo começa a se derramar, causando estragos.',
-    'Desprendendo as presilhas, você inadvertidamente desencadeia uma descarga de magia elétrica.',
-    'Abraçando a curiosidade, você abre o objeto e aciona uma armadilha de alçapão.',
-    'Com um clique, o mecanismo se abre, liberando uma enxurrada de ácido.',
-    'Desdobrando as abas, você desencadeia um vento forte que varre tudo em seu caminho.',
-    'Com um giro da chave, o invólucro se abre e um enxame de insetos emerge.',
-    'Com um puxão cuidadoso, você ativa uma rede de fogo mágico que o envolve instantaneamente.',
-    'Ao soltar os lacres, você percebe tarde demais que um veneno mortal foi liberado.',
-    'Empurrando as bordas, você aciona uma mola que o arremessa para trás.',
-    'Rompendo o selo, você dispara uma série de flechas afiadas em sua direção.',
-    'Ao desamarrar as cordas, uma pedra pesada cai, o atingindo.',
-    'Com um movimento suave, você ativa uma armadilha e virotes são disparados em sua direção.',
-    'Desprendendo os grampos, você desencadeia uma cascata de rochas sobre ti.',
-    'Ao erguer a tampa, uma explosão de fogo se espalha, queimando tudo em seu alcance.',
-    'Com um toque delicado, você aciona uma armadilha de alçapão subterrânea.',
-    'Ao destravar, uma lâmina afiada aparece, visando seus pés.',
-    'Com um deslize, você abre o objeto e ativa uma rede de arame que o envolve.',
-    'Desatando o nó, você desencadeia um alçapão que o faz cair em um poço escuro.',
-    'Ao retirar o sele, você aciona uma chuva de ácido que queima tudo à sua volta.',
-    'Com um movimento impreciso, você dispara uma armadilha de flechas letais.',
-    'Deslizando as partes, você aciona um veneno paralisante que se espalha por seu corpo.',
-    'Ao romper o lacre, você ativa uma armadilha que solta uma criatura feroz.',
-    'Com um gesto descuidado, você desencadeia uma explosão mágica.',
-    'Desvendando as dobras, você aciona um mecanismo que lhe arremessa para longe.',
-    'Ao desatar o fecho, uma armadilha de espinhos afiados é ativada.',
-    'Com um simples movimento, você abre o objeto e é engolido por um redemoinho.',
-    'Desprendendo os clipes, você ativa uma armadilha que prende seus pés.',
-    'Ao erguer a aba, uma armadilha de alçapão o faz cair em um abismo escuro.',
-    'Com um toque suave, você aciona uma armadilha que libera um gás paralisante.',
-    'Ao destravar, uma explosão sônica ensurdecedora faz você perder a audição temporariamente.',
-    'Com um giro, você abre o objeto e ativa uma armadilha de água turbulenta.',
-    'Desfazendo o nó, você ativa uma armadilha que o faz escorregar e cair.',
-    'Ao remover o sele, você aciona uma armadilha causando uma explosão de virotes.',
-    'Com um movimento inábil, você ativa uma armadilha que dispara estacas afiadas.',
-    'Desprendendo as travas, você ativa uma armadilha que o envolve em trevas anômalas.',
-    'Ao romper o selo, uma armadilha de correntes de fogo o prende, imobilizando-o.',
-    'Com um gesto descuidado, você aciona uma armadilha de pedras que caem sobre ti.',
-    'Ao desamarrar os cordões, você ativa uma armadilha que libera um gás.',
-    'Desvendando o fecho, você aciona uma armadilha que despeja dardos flamejantes sobre você.',
-    'Com um simples movimento, você abre o objeto e é engolido por uma correnteza violenta.',
-    'Desprendendo as partes, você ativa uma armadilha que o lança para um fosso fundo.',
-    'Ao desvendar o selo, você ativa uma armadilha de flechas envenenadas.',
-    'Com um gesto delicado, você aciona uma armadilha que o envolve em uma teia ácida pegajosa.',
-    'Ao desfazer os laços, você ativa uma armadilha que o prende em uma rede de espinhos de aço.',
-    'Com um movimento habilidoso, você ativa uma armadilha que desencadeia uma tempestade de granizo.',
-    'Desprendendo as travas, você ativa uma armadilha que libera gás congelante.',
-    'Ao romper o lacre, uma armadilha de fogo é ativada, queimando tudo ao seu redor.',
-    'Com um gesto descuidado, você aciona uma armadilha que o prende em um vórtice de vento.',
-    'Desfazendo o nó, você ativa uma armadilha que o faz cair em um abismo interdimensional.',
-    'Ao retirar a capa, você aciona uma armadilha que libera uma chuva de pedras.',
-    'Com um movimento inábil, você ativa uma armadilha que o envolve em sombras aterrorizantes.',
-    'Desprendendo os clipes, você ativa uma armadilha que libera criaturas esfomeadas.',
-    'Ao erguer a aba, uma armadilha de alçapão o faz cair em um labirinto subterrâneo.',
-    'Com um toque suave, você aciona uma armadilha que libera um gás alucinógeno.',
-    'Ao destravar, você aciona uma explosão que o arremessa longe.',
-    'Com um giro, você abre o objeto e ativa uma armadilha de ácido corrosivo.',
-    'Desfazendo o laço, você aciona uma armadilha que o prende em uma ilusão terrível.',
-    'Ao remover a cobertura, você ativa uma armadilha que despeja óleo flamejante.',
-    'Com um movimento preciso, você aciona uma armadilha que libera um enxame de insetos venenosos.',
-    'Deslizando as partes, você ativa uma armadilha que cria um vácuo repentino.',
-    'Ao destrancar, você ativa uma armadilha que o faz cair em um fosso com espetos.',
-    'Com um giro da chave, uma explosão mágica irrompe.',
-    'Desprezando as presilhas, você aciona uma armadilha que liberta um monstro furioso.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de vento cortante.',
-    'Com um clique, o mecanismo se abre, disparando raios elétricos em todas as direções.',
-    'Desdobrando as abas, você ativa uma armadilha que cria um terremoto.',
-    'Ao remover a cobertura, uma tempestade de fogo irrompe, causando estragos.',
-    'Desprendendo as presilhas, você aciona uma armadilha que solta um gás alucinógeno.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de água em fúria.',
-    'Com um clique, o mecanismo se abre, liberando uma torrente de pedras.',
-    'Desdobrando as abas, você aciona uma armadilha que dispara lâminas afiadas.',
-    'Ao remover a cobertura, uma explosão sônica ensurdecedora enche o ambiente.',
-    'Com um gesto descuidado, você ativa uma armadilha cortante que prende seus membros.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de fumaça mágica.',
-    'Desprendendo as presilhas, você aciona uma armadilha que o envolve em trevas de perdição.',
-    'Com um clique, o mecanismo se abre, liberando um veneno paralisante.',
-    'Desdobrando as abas, você aciona uma armadilha que libera uma chuva de rochas.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de correntes letais.',
-    'Com um gesto descuidado, você ativa uma armadilha que libera um gás venenoso.',
-    'Ao remover a cobertura, uma rede de fios afiados de aço é disparada em sua direção.',
-    'Desprendendo as presilhas, você aciona uma armadilha que o envolve em uma teia incandescente pegajosa.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de granizo.',
-    'Com um clique, o mecanismo se abre, causando uma explosão de fogo.',
-    'Desdobrando as abas, você aciona uma armadilha que dispara flechas envenenadas.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de ácido corrosivo.',
-    'Com um gesto descuidado, você aciona uma armadilha que libera um enxame de insetos venenosos.',
-    'Ao remover a cobertura, um líquido viscoso começa a se derramar, corroendo tudo em seu alcance.',
-    'Desprendendo as presilhas, você aciona uma armadilha que liberta criaturas famintas.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha que o faz escorregar em direção a um poço escuro.',
-    'Com um clique, o mecanismo se abre, desencadeando uma tempestade de granizo.',
-    'Desdobrando as abas, você ativa uma armadilha que o prende em uma rede de fios abrolhosos de aço.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de pedras que caem em você.',
-    'Com um gesto descuidado, você aciona uma armadilha que desencadeia uma chuva de ácido.',
-    'Ao remover a cobertura, uma rede de arame é disparada em sua direção.',
-    'Desprendendo as presilhas, você aciona uma armadilha que o faz cair em um poço profundo.',
-    'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de flechas afiadas.',
-    'Com um clique, o mecanismo se abre, soltando uma criatura aterrorizante em sua direção.',
+    (
+        'Com cuidado, você abre o objeto, mas antes que perceba, uma explosão '
+        'irrompe.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Ao destrancar e abrir, um gás venenoso escapa, preenchendo o ar ao '
+        'seu redor.',
+        DamageEnum.POISON
+    ),
+    (
+        'Deslizando a tampa, você ativa um mecanismo oculto que dispara uma '
+        'chuva de dardos afiados.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Ao remover a cobertura, um líquido corrosivo começa a se derramar, '
+        'causando estragos.',
+        DamageEnum.ACID
+    ),
+    (
+        'Desprendendo as presilhas, você inadvertidamente desencadeia uma '
+        'descarga de magia elétrica.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Abraçando a curiosidade, você abre o objeto e aciona uma armadilha '
+        'de alçapão.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Com um clique, o mecanismo se abre, liberando uma enxurrada '
+        'de ácido.',
+        DamageEnum.ACID
+    ),
+    (
+        'Desdobrando as abas, você desencadeia um vento forte que varre tudo '
+        'em seu caminho.',
+        DamageEnum.WIND
+    ),
+    (
+        'Com um giro da chave, o invólucro se abre e um enxame de '
+        'insetos venenosos emerge.',
+        DamageEnum.POISON
+    ),
+    (
+        'Com um puxão cuidadoso, você ativa uma rede de fogo mágico que o '
+        'envolve instantaneamente.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Ao soltar os lacres, você percebe tarde demais que um veneno mortal '
+        'foi liberado.',
+        DamageEnum.POISON
+    ),
+    (
+        'Empurrando as bordas, você aciona uma mola que o arremessa '
+        'para trás.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Rompendo o selo, você dispara uma série de flechas afiadas '
+        'em sua direção.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Ao desamarrar as cordas, uma pedra pesada cai, o atingindo.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Com um movimento suave, você ativa uma armadilha e virotes '
+        'são disparados em sua direção.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Desprendendo os grampos, você desencadeia uma cascata de rochas '
+        'sobre ti.',
+        DamageEnum.ROCK
+    ),
+    (
+        'Ao erguer a tampa, uma explosão de fogo se espalha, queimando tudo '
+        'em seu alcance.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Com um toque delicado, você aciona uma armadilha de alçapão '
+        'subterrânea.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Ao destravar, uma lâmina afiada aparece, visando seus pés.',
+        DamageEnum.SLASHING
+    ),
+    (
+        'Com um deslize, você abre o objeto e ativa uma rede de arame '
+        'que o envolve.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Desatando o nó, você desencadeia um alçapão que o faz cair em um '
+        'poço escuro.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Ao retirar o sele, você aciona uma chuva de ácido que queima '
+        'tudo à sua volta.',
+        DamageEnum.ACID
+    ),
+    (
+        'Com um movimento impreciso, você dispara uma armadilha de '
+        'flechas letais.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Deslizando as partes, você aciona um veneno paralisante que se '
+        'espalha por seu corpo.',
+        DamageEnum.POISON
+    ),
+    (
+        'Ao romper o lacre, você ativa uma armadilha que solta uma '
+        'criatura feroz.',
+        DamageEnum.CHAOS
+    ),
+    (
+        'Com um gesto descuidado, você desencadeia uma explosão mágica.',
+        DamageEnum.MAGIC
+    ),
+    (
+        'Desvendando as dobras, você aciona um mecanismo que lhe '
+        'arremessa para longe.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Ao desatar o fecho, uma armadilha de espinhos afiados é ativada.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Com um simples movimento, você abre o objeto e é engolido '
+        'por um redemoinho.',
+        DamageEnum.WIND
+    ),
+    (
+        'Desprendendo os clipes, você ativa uma armadilha que '
+        'prende seus pés.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Ao erguer a aba, uma armadilha de alçapão o faz cair '
+        'em um abismo escuro.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Com um toque suave, você aciona uma armadilha que libera um '
+        'gás paralisante.',
+        DamageEnum.POISON
+    ),
+    (
+        'Ao destravar, uma explosão sônica ensurdecedora faz você perder '
+        'a audição temporariamente.',
+        DamageEnum.MAGIC
+    ),
+    (
+        'Com um giro, você abre o objeto e ativa uma armadilha de '
+        'água turbulenta.',
+        DamageEnum.WATER
+    ),
+    (
+        'Desfazendo o nó, você ativa uma armadilha que o faz '
+        'escorregar e cair.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Ao remover o sele, você aciona uma armadilha causando '
+        'uma explosão de virotes.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Com um movimento inábil, você ativa uma armadilha que '
+        'dispara estacas afiadas.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Desprendendo as travas, você ativa uma armadilha que o '
+        'envolve em trevas anômalas.',
+        DamageEnum.DARK
+    ),
+    (
+        'Ao romper o selo, uma armadilha de correntes de fogo o '
+        'prende, imobilizando-o.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Com um gesto descuidado, você aciona uma armadilha de '
+        'pedras que caem sobre ti.',
+        DamageEnum.ROCK
+    ),
+    (
+        'Ao desamarrar os cordões, você ativa uma armadilha que '
+        'libera um gás.',
+        DamageEnum.POISON
+    ),
+    (
+        'Desvendando o fecho, você aciona uma armadilha que '
+        'despeja dardos flamejantes sobre você.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Com um simples movimento, você abre o objeto e é '
+        'engolido por uma correnteza violenta.',
+        DamageEnum.WATER
+    ),
+    (
+        'Desprendendo as partes, você ativa uma armadilha que o '
+        'lança para um fosso fundo.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Ao desvendar o selo, você ativa uma armadilha de '
+        'flechas envenenadas.',
+        DamageEnum.POISON
+    ),
+    (
+        'Com um gesto delicado, você aciona uma armadilha que o envolve em '
+        'uma teia ácida pegajosa.',
+        DamageEnum.ACID
+    ),
+    (
+        'Ao desfazer os laços, você ativa uma armadilha que o prende em uma '
+        'rede de espinhos de aço.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Com um movimento habilidoso, você ativa uma armadilha que '
+        'desencadeia uma tempestade de granizo.',
+        DamageEnum.COLD
+    ),
+    (
+        'Desprendendo as travas, você ativa uma armadilha que libera '
+        'gás congelante.',
+        DamageEnum.COLD
+    ),
+    (
+        'Ao romper o lacre, uma armadilha de fogo é ativada, '
+        'queimando tudo ao seu redor.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Com um gesto descuidado, você aciona uma armadilha que o '
+        'prende em um vórtice de vento.',
+        DamageEnum.WIND
+    ),
+    (
+        'Desfazendo o nó, você ativa uma armadilha que o faz cair em um '
+        'abismo interdimensional.',
+        DamageEnum.CHAOS
+    ),
+    (
+        'Ao retirar a capa, você aciona uma armadilha que libera uma '
+        'chuva de pedras.',
+        DamageEnum.ROCK
+    ),
+    (
+        'Com um movimento inábil, você ativa uma armadilha que o envolve em '
+        'sombras aterrorizantes.',
+        DamageEnum.DARK
+    ),
+    (
+        'Desprendendo os clipes, você ativa uma armadilha que libera '
+        'criaturas esfomeadas.',
+        DamageEnum.CHAOS
+    ),
+    (
+        'Ao erguer a aba, uma armadilha de alçapão o faz cair em um '
+        'labirinto subterrâneo.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Com um toque suave, você aciona uma armadilha que libera um '
+        'gás alucinógeno.',
+        DamageEnum.POISON
+    ),
+    (
+        'Ao destravar, você aciona uma explosão que o arremessa longe.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Com um giro, você abre o objeto e ativa uma armadilha de '
+        'ácido corrosivo.',
+        DamageEnum.ACID
+    ),
+    (
+        'Desfazendo o laço, você aciona uma armadilha que o prende '
+        'em uma ilusão terrível.',
+        DamageEnum.CHAOS
+    ),
+    (
+        'Ao remover a cobertura, você ativa uma armadilha que despeja '
+        'óleo flamejante.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Com um movimento preciso, você aciona uma armadilha que '
+        'libera um enxame de insetos venenosos.',
+        DamageEnum.POISON
+    ),
+    (
+        'Deslizando as partes, você ativa uma armadilha que '
+        'cria um vácuo repentino.',
+        DamageEnum.WIND
+    ),
+    (
+        'Ao destrancar, você ativa uma armadilha que o faz '
+        'cair em um fosso com espetos.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Com um giro da chave, uma explosão mágica irrompe.',
+        DamageEnum.MAGIC
+    ),
+    (
+        'Desprezando as presilhas, você aciona uma armadilha '
+        'que liberta um monstro furioso.',
+        DamageEnum.CHAOS
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa '
+        'uma armadilha de vento cortante.',
+        DamageEnum.WIND
+    ),
+    (
+        'Com um clique, o mecanismo se abre, disparando raios '
+        'elétricos em todas as direções.',
+        DamageEnum.LIGHTNING
+    ),
+    (
+        'Desdobrando as abas, você ativa uma armadilha que cria '
+        'um terremoto.',
+        DamageEnum.GROUND
+    ),
+    (
+        'Ao remover a cobertura, uma tempestade de fogo irrompe, '
+        'causando estragos.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Desprendendo as presilhas, você aciona uma armadilha que '
+        'solta um gás alucinógeno.',
+        DamageEnum.POISON
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma '
+        'armadilha de água em fúria.',
+        DamageEnum.WATER
+    ),
+    (
+        'Com um clique, o mecanismo se abre, liberando uma '
+        'torrente de pedras.',
+        DamageEnum.ROCK
+    ),
+    (
+        'Desdobrando as abas, você aciona uma armadilha que dispara '
+        'lâminas afiadas.',
+        DamageEnum.SLASHING
+    ),
+    (
+        'Ao remover a cobertura, uma explosão sônica ensurdecedora enche '
+        'o ambiente.',
+        DamageEnum.MAGIC
+    ),
+    (
+        'Com um gesto descuidado, você ativa uma armadilha cortante que '
+        'prende seus membros.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de '
+        'fumaça mágica.',
+        DamageEnum.MAGIC
+    ),
+    (
+        'Desprendendo as presilhas, você aciona uma armadilha que o '
+        'envolve em trevas de perdição.',
+        DamageEnum.DARK
+    ),
+    (
+        'Com um clique, o mecanismo se abre, liberando um veneno paralisante.',
+        DamageEnum.POISON
+    ),
+    (
+        'Desdobrando as abas, você aciona uma armadilha que libera '
+        'uma chuva de rochas.',
+        DamageEnum.ROCK
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma '
+        'armadilha de correntes letais.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Com um gesto descuidado, você ativa uma armadilha que '
+        'libera um gás venenoso.',
+        DamageEnum.POISON
+    ),
+    (
+        'Ao remover a cobertura, uma rede de fios afiados de aço é '
+        'disparada em sua direção.',
+        DamageEnum.SLASHING
+    ),
+    (
+        'Desprendendo as presilhas, você aciona uma armadilha que o '
+        'envolve em uma teia incandescente pegajosa.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa '
+        'uma armadilha de granizo.',
+        DamageEnum.COLD
+    ),
+    (
+        'Com um clique, o mecanismo se abre, causando uma explosão de fogo.',
+        DamageEnum.FIRE
+    ),
+    (
+        'Desdobrando as abas, você aciona uma armadilha que dispara '
+        'flechas envenenadas.',
+        DamageEnum.POISON
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma '
+        'armadilha de ácido corrosivo.',
+        DamageEnum.ACID
+    ),
+    (
+        'Com um gesto descuidado, você aciona uma armadilha que libera um '
+        'enxame de insetos venenosos.',
+        DamageEnum.POISON
+    ),
+    (
+        'Ao remover a cobertura, um líquido viscoso começa a se derramar, '
+        'corroendo tudo em seu alcance.',
+        DamageEnum.ACID
+    ),
+    (
+        'Desprendendo as presilhas, você aciona uma armadilha que liberta '
+        'criaturas famintas.',
+        DamageEnum.CHAOS
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
+        'que o faz escorregar em direção a um poço escuro.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Com um clique, o mecanismo se abre, desencadeando uma '
+        'tempestade de granizo.',
+        DamageEnum.COLD
+    ),
+    (
+        'Desdobrando as abas, você ativa uma armadilha que o prende '
+        'em uma rede de fios abrolhosos de aço.',
+        DamageEnum.SLASHING
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma '
+        'armadilha de pedras que caem em você.',
+        DamageEnum.ROCK
+    ),
+    (
+        'Com um gesto descuidado, você aciona uma armadilha que '
+        'desencadeia uma chuva de ácido.',
+        DamageEnum.ACID
+    ),
+    (
+        'Ao remover a cobertura, uma rede de arame é disparada '
+        'em sua direção.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Desprendendo as presilhas, você aciona uma armadilha que o faz '
+        'cair em um poço profundo.',
+        DamageEnum.BLUDGEONING
+    ),
+    (
+        'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
+        'de flechas afiadas.',
+        DamageEnum.PIERCING
+    ),
+    (
+        'Com um clique, o mecanismo se abre, soltando uma criatura '
+        'aterrorizante em sua direção.',
+        DamageEnum.CHAOS
+    ),
 ]
 
 REPLY_TEXTS_FIND_TRAP_DAMAGE = [
