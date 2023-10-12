@@ -94,8 +94,7 @@ class Item:
         if verbose:
             if isinstance(self.item, Equipment):
                 text += (
-                    f' ({self.item.power}{EmojiEnum.EQUIPMENT_POWER.value}|'
-                    f'{self.item.level_text})'
+                    f' {self.item.power_and_level}'
                 )
             elif isinstance(self.item, Consumable):
                 text += f' ({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
@@ -139,6 +138,7 @@ if __name__ == '__main__':
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
+        condition=None,
         function='target.combat_stats.hp = 100'
     )
     sword = Equipment(

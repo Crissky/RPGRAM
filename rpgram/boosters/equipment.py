@@ -476,6 +476,11 @@ class Equipment(StatsBooster):
         ) - 6
 
     @property
+    def power_text(self) -> str:
+        power_emoji = EmojiEnum.EQUIPMENT_POWER.value
+        return f'{self.power}{power_emoji}'
+
+    @property
     def emoji_type(self) -> str:
         name_type = self.equip_type.name
         emoji_type = EmojiEnum[name_type].value
@@ -483,17 +488,8 @@ class Equipment(StatsBooster):
 
     @property
     def power_and_type(self) -> str:
-        power_emoji = EmojiEnum.EQUIPMENT_POWER.value
         emoji_type = self.emoji_type
-        return f'{self.power}{power_emoji}{emoji_type}'
-
-    @property
-    def name_and_power(self) -> str:
-        return f'{self.name} ({self.power}{EmojiEnum.EQUIPMENT_POWER.value})'
-
-    @property
-    def name_and_power_and_type(self) -> str:
-        return f'{self.name} ({self.power_and_type})'
+        return f'{self.power_text}{emoji_type}'
 
     @property
     def level(self) -> int:
@@ -502,7 +498,24 @@ class Equipment(StatsBooster):
 
     @property
     def level_text(self) -> str:
-        return f'{self.level}{EmojiEnum.EQUIPMENT_LEVEL.value}'
+        level_emoji = EmojiEnum.EQUIPMENT_LEVEL.value
+        return f'{self.level}{level_emoji}'
+
+    @property
+    def power_and_level(self) -> str:
+        return f'({self.power_text}|{self.level_text})'
+
+    @property
+    def name_and_power(self) -> str:
+        return f'{self.name} ({self.power_text})'
+
+    @property
+    def name_power_type(self) -> str:
+        return f'{self.name} ({self.power_and_type})'
+
+    @property
+    def name_power_level(self) -> str:
+        return f'{self.name} {self.power_and_level}'
 
     name = property(lambda self: self.__name)
     equip_type = property(lambda self: self.__equip_type)
