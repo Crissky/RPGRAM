@@ -64,29 +64,6 @@ class CombatStats:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
 
-    def cure_hit_points(self, value: int) -> dict:
-        value = int(abs(value))
-        old_hp = self.current_hit_points
-        old_show_hp = self.show_hit_points
-        self.set_damage(value)
-        new_hp = self.current_hit_points
-        new_show_hp = self.show_hit_points
-        true_cure = (new_hp - old_hp)
-        return {
-            'old_hp': old_hp,
-            'old_show_hp': old_show_hp,
-            'new_hp': new_hp,
-            'new_show_hp': new_show_hp,
-            'cure': value,
-            'true_cure': true_cure,
-            'damaged': self.damaged,
-            'healed': self.healed,
-            'alive': self.alive,
-            'dead': self.dead,
-            'action': 'Cura',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
-        }
-
     def damage_hit_points(self, value: int) -> dict:
         value = -int(abs(value))
         old_hp = self.current_hit_points
@@ -135,6 +112,29 @@ class CombatStats:
         report['defense'] = defense
 
         return report
+
+    def cure_hit_points(self, value: int) -> dict:
+        value = int(abs(value))
+        old_hp = self.current_hit_points
+        old_show_hp = self.show_hit_points
+        self.set_damage(value)
+        new_hp = self.current_hit_points
+        new_show_hp = self.show_hit_points
+        true_cure = (new_hp - old_hp)
+        return {
+            'old_hp': old_hp,
+            'old_show_hp': old_show_hp,
+            'new_hp': new_hp,
+            'new_show_hp': new_show_hp,
+            'cure': value,
+            'true_cure': true_cure,
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+            'action': 'Cura',
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
+        }
 
     def revive(self, value: int = 1) -> dict:
         value = int(value * -1)
