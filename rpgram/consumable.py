@@ -17,9 +17,9 @@ class Consumable:
         name: str,
         description: str,
         weight: float,
-        condition: Condition,
         function: str,
         battle_function: str = None,
+        condition: Condition = None,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
@@ -63,9 +63,9 @@ class Consumable:
             name=self.__name,
             description=self.__description,
             weight=self.__weight,
-            condition=self.__condition._id if self.__condition else None,
             function=self.__function,
             battle_function=self.__battle_function,
+            condition=self.__condition._id if self.__condition else None,
             rarity=self.__rarity.name,
             _id=self.__id,
             created_at=self.__created_at,
@@ -181,7 +181,7 @@ if __name__ == '__main__':
         description='Cura 100 de HP.',
         weight=0.1,
         condition=None,
-        function='target.combat_stats.hp = 100'
+        function='report = target.combat_stats.cure_hit_points(100)'
     )
     print(potion)
     print(potion.to_dict())

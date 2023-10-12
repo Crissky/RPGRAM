@@ -326,19 +326,19 @@ class Equips:
             f'*Peso*: {self.equipments_weight:.2f}{EmojiEnum.WEIGHT.value}\n\n'
 
             f'*Capacete*: '
-            f'{self.helmet.name_and_power if self.helmet else ""}\n'
+            f'{self.helmet.name_power_level if self.helmet else ""}\n'
             f'*Mão Esq.*: '
-            f'{self.left_hand.name_and_power if self.left_hand else ""}\n'
+            f'{self.left_hand.name_power_level if self.left_hand else ""}\n'
             f'*Mão Dir.*: '
-            f'{self.right_hand.name_and_power if self.right_hand else ""}\n'
+            f'{self.right_hand.name_power_level if self.right_hand else ""}\n'
             f'*Armadura*: '
-            f'{self.armor.name_and_power if self.armor else ""}\n'
+            f'{self.armor.name_power_level if self.armor else ""}\n'
             f'*Botas*: '
-            f'{self.boots.name_and_power if self.boots else ""}\n'
+            f'{self.boots.name_power_level if self.boots else ""}\n'
             f'*Anel*: '
-            f'{self.ring.name_and_power if self.ring else ""}\n'
+            f'{self.ring.name_power_level if self.ring else ""}\n'
             f'*Amuleto*: '
-            f'{self.amulet.name_and_power if self.amulet else ""}\n\n'
+            f'{self.amulet.name_power_level if self.amulet else ""}\n\n'
         )
 
         if verbose:

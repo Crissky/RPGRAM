@@ -71,20 +71,20 @@ class CombatStats:
         self.set_damage(value)
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
-        true_damage = (old_hp - new_hp)
+        absolute_damage = (old_hp - new_hp)
         return {
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
             'new_hp': new_hp,
             'new_show_hp': new_show_hp,
             'damage': value,
-            'true_damage': true_damage,
+            'absolute_damage': absolute_damage,
             'damaged': self.damaged,
             'healed': self.healed,
             'alive': self.alive,
             'dead': self.dead,
-            'action': 'Dano',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_damage}).'
+            'action': 'DANO',
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({value}).'
         }
 
     def physical_damage_hit_points(self, value: int) -> dict:
@@ -94,12 +94,12 @@ class CombatStats:
         if value < 0:
             value = 0
         report = self.damage_hit_points(value)
-        report['action'] = 'Ataque Físico'
+        report['action'] = 'ATAQUE FÍSICO'
         report['attack'] = attack
         report['defense'] = defense
-        report['defense_name'] = 'Defesa Física'
+        report['defense_name'] = 'DEFESA FÍSICA'
         report['guard_text'] = (
-            f'Defendeu com {defense} pontos de Defesa Física.'
+            f'Defendeu com {defense} pontos de DEFESA FÍSICA.'
         )
 
         return report
@@ -111,12 +111,12 @@ class CombatStats:
         if value < 0:
             value = 0
         report = self.damage_hit_points(value)
-        report['action'] = 'Ataque Mágico'
+        report['action'] = 'ATAQUE MÁGICO'
         report['attack'] = attack
         report['defense'] = defense
-        report['defense_name'] = 'Defesa Mágica'
+        report['defense_name'] = 'DEFESA MÁGICA'
         report['guard_text'] = (
-            f'Defendeu com {defense} pontos de Defesa Mágica.'
+            f'Defendeu com {defense} pontos de DEFESA MÁGICA.'
         )
 
         return report
@@ -140,7 +140,7 @@ class CombatStats:
             'healed': self.healed,
             'alive': self.alive,
             'dead': self.dead,
-            'action': 'Cura',
+            'action': 'CURA',
             'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
         }
 
