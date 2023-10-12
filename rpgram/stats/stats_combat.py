@@ -97,6 +97,10 @@ class CombatStats:
         report['action'] = 'Ataque Físico'
         report['attack'] = attack
         report['defense'] = defense
+        report['defense_name'] = 'Defesa Física'
+        report['guard_text'] = (
+            f'Defendeu com {defense} pontos de Defesa Física.'
+        )
 
         return report
 
@@ -110,6 +114,10 @@ class CombatStats:
         report['action'] = 'Ataque Mágico'
         report['attack'] = attack
         report['defense'] = defense
+        report['defense_name'] = 'Defesa Mágica'
+        report['guard_text'] = (
+            f'Defendeu com {defense} pontos de Defesa Mágica.'
+        )
 
         return report
 

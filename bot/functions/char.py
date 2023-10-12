@@ -3,6 +3,11 @@ from random import randint
 from repository.mongo import CharacterModel, GroupModel
 from rpgram import Group
 from rpgram.characters import BaseCharacter
+from rpgram.enums.damage import (
+    DamageEnum,
+    MAGICAL_DAMAGE_TYPES,
+    PHYSICAL_DAMAGE_TYPES
+)
 
 
 def add_xp(
@@ -53,7 +58,7 @@ def add_xp(
     group_level = group.group_level
 
     xp = int((randint(min_xp, max_xp) + level_bonus) * multiplier_xp)
-    
+
     if group_level > level:
         handicap = randint(110, 125) / 100
         xp = int(xp + (group_level * handicap))
@@ -77,7 +82,12 @@ def add_xp(
     )
 
 
-def add_damage(damage: int, user_id: int = None, char: BaseCharacter = None):
+def add_damage(
+    damage: int,
+    user_id: int = None,
+    char: BaseCharacter = None,
+    type_damage: DamageEnum = None,
+):
     '''Função que adiciona dano ao personagem.
     '''
     if all((user_id is None, char is None)):
@@ -90,11 +100,17 @@ def add_damage(damage: int, user_id: int = None, char: BaseCharacter = None):
     if user_id and char is None:
         char = char_model.get(user_id)
 
-    char.combat_stats.hp = -(damage)
+    if type_damage in PHYSICAL_DAMAGE_TYPES:
+        damage_report = char.combat_stats.physical_damage_hit_points(damage)
+    elif type_damage in MAGICAL_DAMAGE_TYPES:
+        damage_report = char.combat_stats.magical_damage_hit_points(damage)
+    else:
+        damage_report = char.combat_stats.damage_hit_points(damage)
     char_model.save(char)
 
     return dict(
         char=char,
-        damage=damage,
-        dead=char.is_dead()
+        type_damage=type_damage,
+        dead=char.is_dead(),
+        **damage_report,
     )
