@@ -62,10 +62,10 @@ class Status:
 
     add = add_condition
 
-    def remove_condition(self, condition: Condition) -> None:
-        if not isinstance(condition, Condition):
+    def remove_condition(self, condition: Union[Condition, str]) -> None:
+        if not isinstance(condition, (Condition, str)):
             raise TypeError(
-                f'O parâmetro deve ser do tipo Condition. '
+                f'O parâmetro deve ser do tipo Condition ou String. '
                 f'Tipo: {type(condition)}.'
             )
 
@@ -76,8 +76,12 @@ class Status:
             if not new_condition:
                 self.__conditions.pop(index)
         else:
+            if isinstance(condition, Condition):
+                name = condition.name
+            elif isinstance(condition, str):
+                name = condition
             raise ValueError(
-                f'O status não possui a condição {condition.name}.'
+                f'O status não possui a condição {name}.'
             )
         self.__update_stats()
 

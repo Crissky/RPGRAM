@@ -129,6 +129,8 @@ class Condition(StatsBooster):
         if isinstance(other, Condition):
             if self._id is not None and other._id is not None:
                 return self._id == other._id
+        elif isinstance(other, str):
+            return self.name == other
         return False
 
     # Getters
