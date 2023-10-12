@@ -84,10 +84,10 @@ class Condition(StatsBooster):
             description=self.__description,
             function=self.__function,
             battle_function=self.__battle_function,
-            _id=self._id,
             frequency=self.__frequency.name,
             turn=self.__turn,
             level=self.__level,
+            _id=self._id,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
@@ -129,6 +129,8 @@ class Condition(StatsBooster):
         if isinstance(other, Condition):
             if self._id is not None and other._id is not None:
                 return self._id == other._id
+        elif isinstance(other, str):
+            return self.name == other
         return False
 
     # Getters
@@ -151,3 +153,4 @@ if __name__ == '__main__':
     )
 
     print(poison)
+    print(poison.to_dict())

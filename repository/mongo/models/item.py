@@ -74,6 +74,7 @@ if __name__ == "__main__":
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
+        condition=None,
         function='target.combat_stats.hp = 100',
         _id='888888888888888888888888'
     )

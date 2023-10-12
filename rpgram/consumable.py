@@ -5,6 +5,7 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram.boosters.condition import Condition
 
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.rarity import RarityEnum
@@ -16,6 +17,7 @@ class Consumable:
         name: str,
         description: str,
         weight: float,
+        condition: Condition,
         function: str,
         battle_function: str = None,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
@@ -33,6 +35,7 @@ class Consumable:
         self.__name = name
         self.__description = description
         self.__weight = weight
+        self.__condition = condition
         self.__function = function
         self.__battle_function = battle_function
         self.__rarity = rarity
@@ -60,6 +63,7 @@ class Consumable:
             name=self.__name,
             description=self.__description,
             weight=self.__weight,
+            condition=self.__condition._id if self.__condition else None,
             function=self.__function,
             battle_function=self.__battle_function,
             rarity=self.__rarity.name,
@@ -117,6 +121,7 @@ class Consumable:
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
     weight = property(lambda self: self.__weight)
+    condition = property(lambda self: self.__condition)
     function = property(lambda self: self.__function)
     rarity = property(lambda self: self.__rarity)
 
@@ -175,9 +180,11 @@ if __name__ == '__main__':
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
+        condition=None,
         function='target.combat_stats.hp = 100'
     )
     print(potion)
+    print(potion.to_dict())
     print('HP:', base_character.cs.show_hit_points)
     base_character.cs.hp = -300
     potion(base_character)
