@@ -1,5 +1,6 @@
 from repository.mongo import Model
 from repository.mongo import CollectionEnum
+from repository.mongo.models.condition import ConditionModel
 from rpgram.boosters import Equipment
 from rpgram import Consumable
 
@@ -7,6 +8,14 @@ from rpgram import Consumable
 class ItemModel(Model):
     _class = property(lambda self: (Equipment, Consumable))
     collection = property(lambda self: CollectionEnum.ITEMS.value)
+    populate_fields = property(
+        lambda self: {
+            'condition': {
+                'id_key': 'condition_name',
+                'model': ConditionModel()
+            },
+        }
+    )
 
 
 if __name__ == "__main__":
