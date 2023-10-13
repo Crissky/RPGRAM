@@ -44,14 +44,14 @@ class Consumable:
         self.__updated_at = updated_at
 
     def use(self, target):
-        local = {'target': target}
+        local = {'target': target, 'self': self}
         exec(self.__function, None, local)
         report = local['report']
         return report
 
     def battle_use(self, target):  # If é provisório até a criação das conditions no banco
         if self.__battle_function:
-            local = {'target': target}
+            local = {'target': target, 'self': self}
             exec(self.__battle_function, None, local)
             report = local['report']
         else:
@@ -65,7 +65,7 @@ class Consumable:
             weight=self.__weight,
             function=self.__function,
             battle_function=self.__battle_function,
-            condition=self.__condition._id if self.__condition else None,
+            condition_name=self.__condition.name if self.__condition else None,
             rarity=self.__rarity.name,
             _id=self.__id,
             created_at=self.__created_at,
