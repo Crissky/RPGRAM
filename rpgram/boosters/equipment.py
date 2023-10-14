@@ -4,7 +4,6 @@ from bson import ObjectId
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.boosters.condition import Condition
 
 from rpgram.boosters.stats_booster import StatsBooster
 from rpgram.constants.text import (
@@ -39,7 +38,6 @@ class Equipment(StatsBooster):
         weight: float = 10,
         requirements: Dict[str, Any] = {},
         rarity: Union[RarityEnum, str] = 'COMMON',
-        condition: Condition = None,  # WORKAROUND para o populate_fields da classe Consumable do ItemModel
         _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
@@ -432,7 +430,6 @@ class Equipment(StatsBooster):
             requirements=self.__requirements,
             weight=self.__weight,
             rarity=self.__rarity.name,
-            condition_name=None,  # WORKAROUND para o populate_fields da classe Consumable do ItemModel
         )
         _dict.update(super().to_dict())
 

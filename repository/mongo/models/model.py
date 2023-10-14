@@ -167,6 +167,10 @@ class Model:
         Quando o campo a ser populado é uma lista, todos os elementos da lista 
         serão populados, porém todos eles devem pertencer a mesma tabela.'''
         for field_name, field_info in self.populate_fields.items():
+            expected_class = field_info.get('_class')
+            if expected_class and expected_class != dict_obj['_class']:
+                continue
+
             if field_info['id_key'] in dict_obj.keys():
                 key = field_info['id_key']
                 dict_field = dict_obj.pop(key)
@@ -244,9 +248,25 @@ class Model:
                     (aka _id ou alternative_id).
                 model: Modelo usado para carregar o objeto que populará
                     o objeto do modelo atual.
-                subclass: Class que será usada para instanciar o novo objeto
-                    que usará o objeto carregado pelo `model` quando campo é
-                    salvo no banco do objeto pai com o tipo lista.
+                subclass: Class que será usada para instanciar novos objetos.
+                    Essa classe usará o objeto carregado pelo `model` como um 
+                    dos seus atributos, além dos demais chaves/valores do 
+                    dicionário salvo no banco.
+                    Usado quando o campo é salvo no banco do objeto pai como
+                    uma lista de dicionários (Usado no BagModel para usar os 
+                    objetos do tipo Equipment/Consumable carregados pelo 
+                    ItemModel como atributo da classe Item).
+                remakeclass: Classe que será instanciada usando o to_dict() do
+                    objeto carregado do banco pelo `model` como seus 
+                    atributos, além dos demais chaves/valores do dicionário 
+                    salvo no banco. (Usado pelo StatusModel para modificar 
+                    valores que deveriam ser variáveis [como turno e level] da 
+                    classe Condition sem alterar os valores padrão [como nome 
+                    e descrição]).
+                _class: Atributo só será populado em objetos dessa classe. 
+                    (Usando em ItemModel para popular atributo somente da 
+                    classe Consumable e não tenta na Classe Equipment, pois 
+                    levantaria um erro).
 
             populate_fields = {
                 'field_name': {
@@ -268,9 +288,23 @@ class Model:
                 'items': {
                     'id_key': 'items_ids',
                     'model': ItemModel(),  # Carrega equipamentos e consumíveis
-                    'subclass': Item
+                    'subclass': Item  # Usa o equipamento/consumível carregado como atributo ao instanciar a classe Item
                 }
-           }
+            }
+            Exemplo3:
+            populate_fields = {
+                'conditions': {
+                    'id_key': 'condition_ids',
+                    'model': ConditionModel(),
+                    'remakeclass': Condition,  # Classe que será instanciada usando o dicionário do objeto carregado pelo 'model'
+            }
+            Exemplo4:
+            'condition': {
+                'id_key': 'condition_name',
+                '_class': 'Consumable',  # Atributo 'condition' só será populado em objetos dessa classe.
+                'model': ConditionModel()
+            },
+        }
     )
         '''
         return {}

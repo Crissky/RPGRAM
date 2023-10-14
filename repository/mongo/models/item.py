@@ -12,6 +12,7 @@ class ItemModel(Model):
         lambda self: {
             'condition': {
                 'id_key': 'condition_name',
+                '_class': 'Consumable',
                 'model': ConditionModel()
             },
         }
