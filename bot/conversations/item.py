@@ -109,11 +109,11 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup,
     )
     message_id = response.message_id
-    treasures = context.chat_data.get('treasure', None)
+    treasures = context.chat_data.get('treasures', None)
     if isinstance(treasures, dict):
         treasures[message_id] = True
     else:
-        context.chat_data['treasure'] = {message_id: True}
+        context.chat_data['treasures'] = {message_id: True}
 
 
 @skip_if_dead_char
@@ -131,9 +131,9 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Checa se o baú pode ser aberto, se não, cancela a ação e apaga a mensagem
     # Só pode ser aberto se no dicionário drop contiver o message_id como chave
     # e True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if 'treasure' in context.chat_data:
-        treasures = context.chat_data['treasure']
-        if not treasures.get(message_id, None):
+    if 'treasures' in context.chat_data:
+        treasures = context.chat_data['treasures']
+        if treasures.get(message_id, None) is not True:
             treasures.pop(message_id, None)
             await query.answer(
                 f'Este tesouro já foi descoberto.', show_alert=True

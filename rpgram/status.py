@@ -45,45 +45,62 @@ class Status:
 
         self.__update_stats()
 
-    def add_condition(self, condition: Condition) -> None:
+    def add_condition(self, condition: Condition) -> dict:
         if not isinstance(condition, Condition):
             raise TypeError(
                 f'O parâmetro deve ser do tipo Condition. '
                 f'Tipo: {type(condition)}.'
             )
 
+        report = {}
+        name = condition.name
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             condition = self.__conditions[index]
             condition.add_level()
+            level = condition.level
+            report['text'] = (
+                f'O nível da Condição "{name}" foi aumentado para {level}.'
+            )
         else:
             self.__conditions.append(condition)
+            report['text'] = f'A Condição "{name}" foi adicionada.'
         self.__update_stats()
+
+        return report
 
     add = add_condition
 
-    def remove_condition(self, condition: Union[Condition, str]) -> None:
+    def remove_condition(self, condition: Union[Condition, str]) -> dict:
         if not isinstance(condition, (Condition, str)):
             raise TypeError(
                 f'O parâmetro deve ser do tipo Condition ou String. '
                 f'Tipo: {type(condition)}.'
             )
 
+        if isinstance(condition, Condition):
+            name = condition.name
+        elif isinstance(condition, str):
+            name = condition
+
+        report = {}
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
             new_condition = new_condition.remove_level()
             if not new_condition:
+                report['text'] = f'A Condição "{name}" foi removida.'
                 self.__conditions.pop(index)
+            else:
+                level = new_condition.level
+                report['text'] = (
+                    f'O nível da Condição "{name}" foi reduzido para {level}.'
+                )
         else:
-            if isinstance(condition, Condition):
-                name = condition.name
-            elif isinstance(condition, str):
-                name = condition
-            raise ValueError(
-                f'O status não possui a condição {name}.'
-            )
+            raise ValueError(f'O status não possui a condição {name}.')
         self.__update_stats()
+
+        return report
 
     remove = remove_condition
 
