@@ -25,7 +25,7 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
 
-    if isinstance(args, list) and args in ['chat', 'chat_data']:
+    if isinstance(args, list) and args[0] in ['chat', 'chat_data']:
         chat_data = context.chat_data
         text = 'Conteúdo de "context.chat_data":\n\n'
         for key, value in chat_data.items():
