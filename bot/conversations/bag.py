@@ -523,7 +523,11 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     '''Quebra o item dropado
     '''
     query = update.callback_query
+    message_id = update.effective_message.message_id
+    drops = context.chat_data.get('drops', {})
+
     try:
+        drops.pop(message_id, None)
         await query.answer('Quebrando o item...', show_alert=True)
         await query.delete_message()
     except Exception as e:
