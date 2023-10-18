@@ -473,7 +473,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # True como valor. Caso contrário, cancela a ação e apaga a mensagem.
     if 'drop' in context.chat_data:
         drops = context.chat_data['drop']
-        if not drops.get(message_id, None):
+        if drops.get(message_id, None) is not True:
             drops.pop(message_id, None)
             await query.answer(f'Este item não existe mais.', show_alert=True)
             await query.delete_message()
