@@ -449,11 +449,11 @@ async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             parse_mode=ParseMode.MARKDOWN_V2
         )
         message_id = response.message_id
-        drops = context.chat_data.get('drop', None)
+        drops = context.chat_data.get('drops', None)
         if isinstance(drops, dict):
             drops[message_id] = True
         else:
-            context.chat_data['drop'] = {message_id: True}
+            context.chat_data['drops'] = {message_id: True}
 
     return START_ROUTES
 
@@ -471,8 +471,8 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Checa se o item pode ser pego, se não, cancela a ação e apaga a mensagem
     # Só pode ser pego se no dicionário drop contiver o message_id como chave e
     # True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if 'drop' in context.chat_data:
-        drops = context.chat_data['drop']
+    if 'drops' in context.chat_data:
+        drops = context.chat_data['drops']
         if drops.get(message_id, None) is not True:
             drops.pop(message_id, None)
             await query.answer(f'Este item não existe mais.', show_alert=True)
@@ -523,7 +523,11 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     '''Quebra o item dropado
     '''
     query = update.callback_query
+    message_id = update.effective_message.message_id
+    drops = context.chat_data.get('drops', {})
+
     try:
+        drops.pop(message_id, None)
         await query.answer('Quebrando o item...', show_alert=True)
         await query.delete_message()
     except Exception as e:

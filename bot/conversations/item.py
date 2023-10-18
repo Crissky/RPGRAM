@@ -228,12 +228,12 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 reply_markup=reply_markup_drop,
                 parse_mode=ParseMode.MARKDOWN_V2
             )
-            message_id = response.message_id
-            drops = context.chat_data.get('drop', None)
+            drops_message_id = response.message_id
+            drops = context.chat_data.get('drops', None)
             if isinstance(drops, dict):
-                drops[message_id] = True
+                drops[drops_message_id] = True
             else:
-                context.chat_data['drop'] = {message_id: True}
+                context.chat_data['drops'] = {drops_message_id: True}
     else:
         raise TypeError(
             f'Variável items é do tipo "{type(items)}", mas precisar ser '
@@ -291,7 +291,12 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Apaga a mensagem de busca de tesouro quando um jogador 
     clica em IGNORAR.
     '''
+
     query = update.callback_query
+    message_id = update.effective_message.message_id
+    treasures = context.chat_data.get('treasures', {})
+    treasures.pop(message_id, None)
+
     if query:
         text = choice(REPLY_TEXTS_IGNORE_TREASURE)
         await query.edit_message_text(text=text)
