@@ -9,16 +9,23 @@ from telegram.ext import (
     ContextTypes,
     PrefixHandler
 )
+
 from bot.constants.debug import COMMANDS
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-
-
+from bot.decorators import (
+    skip_if_no_have_char,
+    skip_if_no_singup_player,
+    print_basic_infos,
+)
 from bot.functions.general import get_attribute_group_or_player
 
 
+@skip_if_no_singup_player
+@skip_if_no_have_char
+@print_basic_infos
 async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
