@@ -229,11 +229,11 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 parse_mode=ParseMode.MARKDOWN_V2
             )
             message_id = response.message_id
-            drops = context.chat_data.get('drop', None)
+            drops = context.chat_data.get('drops', None)
             if isinstance(drops, dict):
                 drops[message_id] = True
             else:
-                context.chat_data['drop'] = {message_id: True}
+                context.chat_data['drops'] = {message_id: True}
     else:
         raise TypeError(
             f'Variável items é do tipo "{type(items)}", mas precisar ser '
