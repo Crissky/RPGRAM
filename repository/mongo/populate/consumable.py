@@ -1,10 +1,22 @@
 from repository.mongo import ItemModel
 from rpgram import Consumable
 from rpgram.boosters import Condition
-from rpgram.enums import RarityEnum, TurnEnum
+from rpgram.enums import ConditionEnum, RarityEnum, TurnEnum
 
+
+BLEEDING = ConditionEnum.BLEEDING.name.title()
+BLINDNESS = ConditionEnum.BLINDNESS.name.title()
+BURN = ConditionEnum.BURN.name.title()
+CONFUSION = ConditionEnum.CONFUSION.name.title()
+CURSE = ConditionEnum.CURSE.name.title()
+EXHAUSTION = ConditionEnum.EXHAUSTION.name.title()
+PARALYSIS = ConditionEnum.PARALYSIS.name.title()
+PETRIFIED = ConditionEnum.PETRIFIED.name.title()
+POISONING = ConditionEnum.POISONING.name.title()
+SILENCE = ConditionEnum.SILENCE.name.title()
 
 CONSUMABLES = [
+    # Healing Potions
     {
         'name': 'Minor Healing Potion',
         'description': 'Cura 100 de HP em 5 Turnos.',
@@ -85,6 +97,88 @@ CONSUMABLES = [
         'function': 'report = target.combat_stats.cure_hit_points(target.combat_stats.hp)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.MYTHIC.name,
+    },
+
+    # Cure Potions
+    {
+        'name': 'Bandage',
+        'description': f'Cura {BLEEDING}.',
+        'weight': 0.1,
+        'condition': Condition('Bandage', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{BLEEDING}")',
+        'rarity': RarityEnum.COMMON.name,
+    },
+    {
+        'name': 'Eye Drops',
+        'description': f'Cura {BLINDNESS}.',
+        'weight': 0.1,
+        'condition': Condition('Eye Drops', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{BLINDNESS}")',
+        'rarity': RarityEnum.COMMON.name,
+    },
+    {
+        'name': 'Aloe',
+        'description': f'Cura {BURN}.',
+        'weight': 0.1,
+        'condition': Condition('Aloe', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{BURN}")',
+        'rarity': RarityEnum.COMMON.name,
+    },
+    {
+        'name': 'Remedy',
+        'description': f'Cura {CONFUSION}.',
+        'weight': 0.1,
+        'condition': Condition('Remedy', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{CONFUSION}")',
+        'rarity': RarityEnum.COMMON.name,
+    },
+    {
+        'name': 'Mystical Incense',
+        'description': f'Cura {CURSE}.',
+        'weight': 0.1,
+        'condition': Condition('Mystical Incense', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{CURSE}")',
+        'rarity': RarityEnum.RARE.name,
+    },
+    {
+        'name': 'Energy Potion',
+        'description': f'Cura {EXHAUSTION}.',
+        'weight': 0.1,
+        'condition': Condition('Energy Potion', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{EXHAUSTION}")',
+        'rarity': RarityEnum.UNCOMMON.name,
+    },
+    {
+        'name': 'Vitamin',
+        'description': f'Cura {PARALYSIS}.',
+        'weight': 0.1,
+        'condition': Condition('Vitamin', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{PARALYSIS}")',
+        'rarity': RarityEnum.UNCOMMON.name,
+    },
+    {
+        'name': 'Gold Needle',
+        'description': f'Cura {PETRIFIED}.',
+        'weight': 0.1,
+        'condition': Condition('Gold Needle', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{PETRIFIED}")',
+        'rarity': RarityEnum.RARE.name,
+    },
+    {
+        'name': 'Antidote',
+        'description': f'Cura {POISONING}.',
+        'weight': 0.1,
+        'condition': Condition('Antidote', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{POISONING}")',
+        'rarity': RarityEnum.COMMON.name,
+    },
+    {
+        'name': 'Echo Herb',
+        'description': f'Cura {SILENCE}.',
+        'weight': 0.1,
+        'condition': Condition('Echo Herb', None, None, None, TurnEnum.START),
+        'function': f'report = target.status.remove_condition("{SILENCE}")',
+        'rarity': RarityEnum.COMMON.name,
     },
 ]
 
