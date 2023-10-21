@@ -11,3 +11,4 @@ from rpgram.enums.material import MagicalStonesMaterialEnum
 from rpgram.enums.material import MagicalWearableMaterialEnum
 from rpgram.enums.material import MaskMaterialEnum
 from rpgram.enums.turn import TurnEnum
+from rpgram.enums.condition import ConditionEnum
