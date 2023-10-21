@@ -16,7 +16,8 @@ def add_xp(
     group: Group = None,
     char: BaseCharacter = None,
     min_xp: int = 1,
-    max_xp: int = 10
+    max_xp: int = 10,
+    base_xp: int = 0,
 ) -> dict:
     '''Função que adiciona xp ao personagem.
     Retorna um dicionário com as informações do novo nível do personagem.
@@ -52,34 +53,33 @@ def add_xp(
     if user_id and char is None:
         char = char_model.get(user_id)
 
+    user_name = char.player_name
     level = char.base_stats.level
     level_bonus = group.character_multiplier_xp * level
     multiplier_xp = group.multiplier_xp
     group_level = group.group_level
+    base_xp += randint(min_xp, max_xp)
 
-    xp = int((randint(min_xp, max_xp) + level_bonus) * multiplier_xp)
+    xp = int((base_xp + level_bonus) * multiplier_xp)
 
     if group_level > level:
         handicap = randint(110, 125) / 100
         xp = int(xp + (group_level * handicap))
 
-    char.base_stats.xp = xp
+    report_xp = char.base_stats.add_xp(xp, user_name)
     char_model.save(char)
     new_level = char.base_stats.level
 
-    if new_level > level:
+    if report_xp['level_up']:
         player_id = char.player_id
         group.add_tier(player_id, new_level)
         group_model = GroupModel()
         group_model.save(group)
 
-    return dict(
-        level_up=new_level > level,
-        level=new_level,
-        char=char,
-        group=group,
-        xp=xp
-    )
+    report_xp['char'] = char
+    report_xp['group'] = group
+
+    return report_xp
 
 
 def add_damage(

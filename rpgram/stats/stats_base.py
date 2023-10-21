@@ -15,6 +15,7 @@ from rpgram.constants.text import (
     WISDOM_EMOJI_TEXT,
     XP_EMOJI_TEXT
 )
+from rpgram.enums.emojis import EmojiEnum
 
 
 class BaseStats:
@@ -126,6 +127,33 @@ class BaseStats:
         self.__base_intelligence = 0
         self.__base_wisdom = 0
         self.__base_charisma = 0
+
+    def add_xp(self, value: int, user_name: str = 'Você') -> dict:
+        level = self.level
+        self.xp = value
+        new_level = self.level
+        level_up = new_level > level
+        if level_up:
+            text = (
+                f'{EmojiEnum.LEVEL_UP.value}'
+                f'Parabéns!!!{EmojiEnum.LEVEL_UP.value}\n'
+                f'{user_name} passou de nível! '
+                f'Seu personagem agora está no nível {new_level}.'
+            )
+        else:
+            text = (
+                f'{user_name} ganhou {value} pontos de XP.\n'
+                f'Experiência: {self.show_xp}'
+            )
+
+        return dict(
+            old_level=level,
+            level=new_level,
+            new_level=new_level,
+            level_up=level_up,
+            text=text,
+            xp=value,
+        )
 
     # Getters
     @property

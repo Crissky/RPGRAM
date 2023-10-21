@@ -64,24 +64,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model.save(player)
 
     report_xp = add_xp(chat_id, user_id)
-    level_up = report_xp['level_up']
+    text = report_xp['text']
 
-    if level_up:
-        new_level = report_xp['level']
+    if report_xp['level_up']:
         await update.effective_message.reply_text(
-            f'{EmojiEnum.LEVEL_UP.value}'
-            f'Parabéns!!!{EmojiEnum.LEVEL_UP.value}\n'
-            f'{user_name} passou de nível! '
-            f'Seu personagem agora está no nível {new_level}.',
+            text=text,
             disable_notification=silent
         )
     elif player.verbose:
-        xp = report_xp['xp']
-        player_char = report_xp['char']
         try:
             await update.effective_user.send_message(
-                f'Você ganhou {xp} pontos de XP.\n'
-                f'Experiência: {player_char.bs.show_xp}',
+                text=text,
                 disable_notification=silent
             )
         except Forbidden as error:
