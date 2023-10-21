@@ -7,6 +7,7 @@ CANCEL_COMMANDS = ['cancel', 'close']
 
 
 ITEMS_PER_PAGE = 10
+USE_MANY_MAX = 5
 
 
 # ACTIONS

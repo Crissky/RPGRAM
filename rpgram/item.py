@@ -26,6 +26,34 @@ class Item:
         self.__quantity = 0
         self.quantity = quantity
 
+    def add(self, quantity: int = 1) -> None:
+        self.quantity += quantity
+
+    def sub(self, quantity: int = 1) -> None:
+        self.quantity -= quantity
+
+    def use(self, target) -> dict:
+        if self.quantity <= 0:
+            raise ValueError(f'Não possui "{self.item.name}".')
+        elif not isinstance(self.item, Consumable):
+            raise TypeError(
+                f'Item não é um consumível, é do tipo "{type(self.item)}".'
+            )
+        self.sub()
+
+        return self.item.use(target=target)
+
+    def battle_use(self, target) -> dict:
+        if self.quantity >= 0:
+            raise ValueError(f'Não possui "{self.item.name}".')
+        elif not isinstance(self.item, Consumable):
+            raise TypeError(
+                f'Item não é um consumível, é do tipo "{type(self.item)}".'
+            )
+        self.sub()
+
+        return self.item.battle_use(target=target)
+
     # Getters
     @property
     def _id(self) -> ObjectId:
@@ -77,6 +105,7 @@ class Item:
 
         return order
 
+    # Setters
     @quantity.setter
     def quantity(self, value):
         quantity = self.__quantity

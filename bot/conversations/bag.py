@@ -20,7 +20,8 @@ from bot.constants.bag import (
     COMMANDS,
     ESCAPED_CALLBACK_TEXT_DESTROY_ITEM,
     ESCAPED_CALLBACK_TEXT_SORT_ITEMS,
-    ITEMS_PER_PAGE
+    ITEMS_PER_PAGE,
+    USE_MANY_MAX
 )
 
 from bot.constants.filters import (
@@ -232,12 +233,21 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
                 )
             ]
     elif isinstance(item.item, Consumable):
+        quantity = min(item.quantity, USE_MANY_MAX)
         use_text = f'{EmojiEnum.USE_POTION.value}Usar'
+        use_many_text = f'{EmojiEnum.USE_POTION.value}Usar x{quantity}'
         equip_or_use = [
             InlineKeyboardButton(
                 text=use_text,
                 callback_data=(
                     f'{{"use":1,"item":{item_pos},'
+                    f'"page":{page},"user_id":{user_id}}}'
+                )
+            ),
+            InlineKeyboardButton(
+                text=use_many_text,
+                callback_data=(
+                    f'{{"use":{quantity},"item":{item_pos},'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             )
@@ -285,6 +295,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
+    use_quantity = data['use']
     hand = data.get('hand', None)
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
@@ -318,25 +329,31 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
             return USE_ROUTES
     elif isinstance(item.item, Consumable):  # Tenta usar o item
-        consumable = item.item
+        # consumable = item.item
+        name = item.name
+        description = item.item.description
+        use_quantity = min(item.quantity, use_quantity)
+        text = (
+            f'Você usou {use_quantity} "{name}".\n'
+            f'Descrição: "{description}".\n\n'
+        )
         try:
-            report = consumable.use(player_character)
-            report_text = report['text']
-            bag_model.sub(item, user_id)
+            for _ in range(use_quantity):
+                report = item.use(player_character)
+                report_text = report['text']
+                bag_model.sub(item, user_id)
+            text += report_text + '\n'
             char_model.save(player_character)
+
             await query.answer(
-                text=(
-                    f'Você usou o item "{consumable.name}".\n'
-                    f'Descrição: "{consumable.description}".\n\n'
-                    f'{report_text}'
-                ),
+                text=text,
                 show_alert=True
             )
         except Exception as error:
             print(error)
             await query.answer(
                 text=(
-                    f'Item "{consumable.name}" não pode ser usado.\n\n{error}'
+                    f'Item "{name}" não pode ser usado.\n\n{error}'
                 ),
                 show_alert=True
             )
@@ -912,7 +929,7 @@ BAG_HANDLER = ConversationHandler(
         ],
         USE_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
-            CallbackQueryHandler(use_item, pattern=r'^{"use":1'),
+            CallbackQueryHandler(use_item, pattern=r'^{"use":'),
             CallbackQueryHandler(drop_item, pattern=r'^{"drop":1'),
         ],
         SORT_ROUTES: [
