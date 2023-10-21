@@ -4,6 +4,7 @@ from rpgram.enums import TurnEnum
 
 CONDITIONS = [
     {
+        # Healing Potion Conditions
         'name': 'Minor Healing Potion',
         'description': 'Cura 100 de HP em 5 Turnos.',
         'function': (

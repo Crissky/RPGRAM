@@ -37,6 +37,7 @@ from bot.functions.char import add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
 from telegram.ext import ConversationHandler
 from function.datetime import get_brazil_time_now
+from function.text import escape_markdown_v2
 
 from repository.mongo import BagModel, GroupModel, ItemModel
 from repository.mongo.populate.item import create_random_item
@@ -170,22 +171,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     min_xp = group_level
     max_xp = int(group_level * 1.5)
     report_xp = add_xp(chat_id, user_id, min_xp=min_xp, max_xp=max_xp)
-    level_up = report_xp['level_up']
-    if level_up:
-        new_level = report_xp['level']
-        text += (
-            f'{EmojiEnum.LEVEL_UP.value}'
-            f'Parabéns\!\!\!{EmojiEnum.LEVEL_UP.value}\n'
-            f'Você passou de nível\! '
-            f'Seu personagem agora está no nível {new_level}\.'
-        )
-    else:
-        xp = report_xp['xp']
-        player_char = report_xp['char']
-        text += (
-            f'Você ganhou {xp} pontos de XP\.\n'
-            f'Experiência: {player_char.bs.show_xp}'
-        )
+    text += report_xp['text']
+    text = escape_markdown_v2(text)
 
     await query.edit_message_text(
         text=text,
@@ -210,7 +197,6 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     callback_data=CALLBACK_TEXT_DESTROY_ITEM
                 )],
             ])
-
             if isinstance(item.item, Equipment):
                 items_model.save(item.item)
             elif not isinstance(item.item, (Consumable, Equipment)):
