@@ -21,6 +21,7 @@ class Consumable:
         battle_function: str = None,
         condition: Condition = None,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
+        usable: bool = True,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
@@ -39,6 +40,7 @@ class Consumable:
         self.__function = function
         self.__battle_function = battle_function
         self.__rarity = rarity
+        self.__usable = usable
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
@@ -67,6 +69,7 @@ class Consumable:
             battle_function=self.__battle_function,
             condition_name=self.__condition.name if self.__condition else None,
             rarity=self.__rarity.name,
+            usable=self.__usable,
             _id=self.__id,
             created_at=self.__created_at,
             updated_at=self.__updated_at,
@@ -124,6 +127,7 @@ class Consumable:
     condition = property(lambda self: self.__condition)
     function = property(lambda self: self.__function)
     rarity = property(lambda self: self.__rarity)
+    usable = property(lambda self: self.__usable)
 
 
 if __name__ == '__main__':

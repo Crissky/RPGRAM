@@ -8,6 +8,7 @@ class ConditionEnum(Enum):
     CONFUSION = 'Confusão'
     CURSE = 'Maldição'
     EXHAUSTION = 'Exaustão'
+    FROZEN = 'Congelado'
     PARALYSIS = 'Paralisia'
     PETRIFIED = 'Petrificado'
     POISONING = 'Envenenamento'
