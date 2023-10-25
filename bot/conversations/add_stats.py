@@ -20,6 +20,8 @@ from bot.decorators import (
     need_have_char,
     need_not_in_battle,
     print_basic_infos,
+    skip_if_dead_char,
+
 )
 from bot.functions.general import get_attribute_group_or_player
 
@@ -28,6 +30,7 @@ from function.text import escape_markdown_v2
 from repository.mongo import CharacterModel
 
 
+@skip_if_dead_char
 @print_basic_infos
 @need_have_char
 @need_not_in_battle
