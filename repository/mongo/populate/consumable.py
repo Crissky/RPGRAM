@@ -10,6 +10,7 @@ BURN = ConditionEnum.BURN.name.title()
 CONFUSION = ConditionEnum.CONFUSION.name.title()
 CURSE = ConditionEnum.CURSE.name.title()
 EXHAUSTION = ConditionEnum.EXHAUSTION.name.title()
+FROZEN = ConditionEnum.FROZEN.name.title()
 PARALYSIS = ConditionEnum.PARALYSIS.name.title()
 PETRIFIED = ConditionEnum.PETRIFIED.name.title()
 POISONING = ConditionEnum.POISONING.name.title()
@@ -101,10 +102,9 @@ CONSUMABLES = [
 
     # Cure Potions
     {
-        'name': 'Bandage',
+        'name': 'Cotton Bandage',
         'description': f'Cura {BLEEDING}.',
         'weight': 0.1,
-        'condition': Condition('Bandage', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{BLEEDING}")',
         'rarity': RarityEnum.COMMON.name,
     },
@@ -112,23 +112,20 @@ CONSUMABLES = [
         'name': 'Eye Drops',
         'description': f'Cura {BLINDNESS}.',
         'weight': 0.1,
-        'condition': Condition('Eye Drops', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{BLINDNESS}")',
         'rarity': RarityEnum.COMMON.name,
     },
     {
-        'name': 'Aloe',
+        'name': 'Aloe Compress',
         'description': f'Cura {BURN}.',
         'weight': 0.1,
-        'condition': Condition('Aloe', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{BURN}")',
         'rarity': RarityEnum.COMMON.name,
     },
     {
-        'name': 'Remedy',
+        'name': 'Red Remedy',
         'description': f'Cura {CONFUSION}.',
         'weight': 0.1,
-        'condition': Condition('Remedy', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{CONFUSION}")',
         'rarity': RarityEnum.COMMON.name,
     },
@@ -136,7 +133,6 @@ CONSUMABLES = [
         'name': 'Mystical Incense',
         'description': f'Cura {CURSE}.',
         'weight': 0.1,
-        'condition': Condition('Mystical Incense', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{CURSE}")',
         'rarity': RarityEnum.RARE.name,
     },
@@ -144,15 +140,20 @@ CONSUMABLES = [
         'name': 'Energy Potion',
         'description': f'Cura {EXHAUSTION}.',
         'weight': 0.1,
-        'condition': Condition('Energy Potion', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{EXHAUSTION}")',
         'rarity': RarityEnum.UNCOMMON.name,
     },
     {
-        'name': 'Vitamin',
+        'name': 'Hot Potion',
+        'description': f'Cura {FROZEN}.',
+        'weight': 0.1,
+        'function': f'report = target.status.remove_condition("{FROZEN}")',
+        'rarity': RarityEnum.UNCOMMON.name,
+    },
+    {
+        'name': 'Vitamin Fruit',
         'description': f'Cura {PARALYSIS}.',
         'weight': 0.1,
-        'condition': Condition('Vitamin', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{PARALYSIS}")',
         'rarity': RarityEnum.UNCOMMON.name,
     },
@@ -160,7 +161,6 @@ CONSUMABLES = [
         'name': 'Gold Needle',
         'description': f'Cura {PETRIFIED}.',
         'weight': 0.1,
-        'condition': Condition('Gold Needle', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{PETRIFIED}")',
         'rarity': RarityEnum.RARE.name,
     },
@@ -168,7 +168,6 @@ CONSUMABLES = [
         'name': 'Antidote',
         'description': f'Cura {POISONING}.',
         'weight': 0.1,
-        'condition': Condition('Antidote', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{POISONING}")',
         'rarity': RarityEnum.COMMON.name,
     },
@@ -176,7 +175,6 @@ CONSUMABLES = [
         'name': 'Echo Herb',
         'description': f'Cura {SILENCE}.',
         'weight': 0.1,
-        'condition': Condition('Echo Herb', None, None, None, TurnEnum.START),
         'function': f'report = target.status.remove_condition("{SILENCE}")',
         'rarity': RarityEnum.COMMON.name,
     },
