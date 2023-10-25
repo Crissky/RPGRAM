@@ -7,8 +7,8 @@
 from repository.mongo import ClasseModel
 from rpgram.boosters import Classe
 
-races = {
-    'barbarian': {
+CLASSES = [
+    {
         'name': 'Bárbaro',
         'description': (
             'Bárbaros são definidos por sua fúria: '
@@ -54,12 +54,12 @@ races = {
         'bonus_charisma': 5,
         'multiplier_strength': 2,
         'multiplier_dexterity': 1,
-        'multiplier_constitution': 1.5,
+        'multiplier_constitution': 2,
         'multiplier_intelligence': 0.5,
         'multiplier_wisdom': 0.5,
         'multiplier_charisma': 0.5,
     },
-    'cleric': {
+    {
         'name': 'Clérigo',
         'description': (
             'Clérigos são intermediadores entre o mundo mortal e o '
@@ -97,13 +97,13 @@ races = {
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
         'multiplier_strength': 0.1,
-        'multiplier_dexterity': 0.7,
-        'multiplier_constitution': 0.7,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 1,
         'multiplier_intelligence': 1.5,
-        'multiplier_wisdom': 1.5,
+        'multiplier_wisdom': 2,
         'multiplier_charisma': 1.5,
     },
-    'druid': {
+    {
         'name': 'Druida',
         'description': (
             'Quer seja convocando as forças elementais da '
@@ -138,14 +138,14 @@ races = {
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 1.4,
+        'multiplier_strength': 1.7,
         'multiplier_dexterity': 1,
-        'multiplier_constitution': 1.5,
+        'multiplier_constitution': 1.7,
         'multiplier_intelligence': 0.1,
-        'multiplier_wisdom': 1.5,
+        'multiplier_wisdom': 1.7,
         'multiplier_charisma': 0.5,
     },
-    'sorcerer': {
+    {
         'name': 'Feiticeiro',
         'description': (
             'Os feiticeiros carregam um patrimônio mágico '
@@ -193,14 +193,14 @@ races = {
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 0.5,
-        'multiplier_dexterity': 0.5,
+        'multiplier_strength': 0.1,
+        'multiplier_dexterity': 1,
         'multiplier_constitution': 0.5,
-        'multiplier_intelligence': 1.5,
+        'multiplier_intelligence': 2,
         'multiplier_wisdom': 2,
         'multiplier_charisma': 1,
     },
-    'fighter': {
+    {
         'name': 'Guerreiro',
         'description': (
             'Cavaleiros em missões, lordes '
@@ -233,14 +233,14 @@ races = {
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 1.5,
+        'multiplier_strength': 2,
         'multiplier_dexterity': 1.5,
         'multiplier_constitution': 1.5,
         'multiplier_intelligence': 0.5,
         'multiplier_wisdom': 0.5,
         'multiplier_charisma': 0.5,
     },
-    'rogue': {
+    {
         'name': 'Ladino',
         'description': (
             'Ladinos contam com sua perícia, furtividade e as '
@@ -274,14 +274,14 @@ races = {
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 1,
+        'multiplier_strength': 1.5,
         'multiplier_dexterity': 2,
         'multiplier_constitution': 1,
         'multiplier_intelligence': 0.5,
         'multiplier_wisdom': 1,
         'multiplier_charisma': 0.5,
     },
-    'wizard': {
+    {
         'name': 'Mago',
         'description': (
             'Os magos são usuários de magia soberanos, unidos e '
@@ -322,15 +322,24 @@ races = {
         'multiplier_strength': 0.5,
         'multiplier_dexterity': 0.5,
         'multiplier_constitution': 0.5,
-        'multiplier_intelligence': 2,
+        'multiplier_intelligence': 2.5,
         'multiplier_wisdom': 1.5,
         'multiplier_charisma': 1,
     },
-}
+]
 
 if __name__ == '__main__':
     classe_model = ClasseModel()
-
-    for classe_definition in races.values():
-        classe = Classe(**classe_definition)
+    fields = ['_id', 'name', 'created_at']
+    for classe_dict in CLASSES:
+        classe_name = classe_dict['name']
+        mongo_dict = classe_model.get(
+            query={'name': classe_name},
+            fields=fields,
+        )
+        if mongo_dict:
+            for field in fields:
+                classe_dict[field] = mongo_dict[field]
+        classe = Classe(**classe_dict)
+        print(classe)
         classe_model.save(classe)
