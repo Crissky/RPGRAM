@@ -55,6 +55,7 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
 ) = range(4)
 
 
+@skip_if_dead_char
 @skip_if_no_singup_player
 @skip_if_no_have_char
 @need_not_in_battle
@@ -273,6 +274,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     return USE_ROUTES
 
 
+@skip_if_dead_char
 @print_basic_infos
 @retry_after
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
