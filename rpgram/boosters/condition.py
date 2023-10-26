@@ -1,3 +1,7 @@
+'''
+Este módulo representa as condições positivas e negativas dos personagens.
+'''
+
 from datetime import datetime
 from typing import Union
 
@@ -57,11 +61,14 @@ class Condition(StatsBooster):
         return report
 
     def battle_activate(self, target):
-        local = {'target': target, 'self': self}
-        exec(self.__battle_function, None, local)
-        report = local['report']
-        if self.__turn not in [-1, 0]:
-            self.__turn -= 1
+        if self.__battle_function:
+            local = {'target': target, 'self': self}
+            exec(self.__battle_function, None, local)
+            report = local['report']
+            if self.__turn not in [-1, 0]:
+                self.__turn -= 1
+        else:
+            self.activate(target)
         return report
 
     def __call__(self, target):
@@ -149,8 +156,8 @@ if __name__ == '__main__':
     poison = Condition(
         name='Veneno',
         description='Causa 10 de dano por hora.',
-        function='target.cs.hp = -10',
-        battle_function='target.cs.hp = -10',
+        function='target.cs.damage_hit_points(10)',
+        battle_function='target.cs.damage_hit_points(10)',
         frequency='START',
     )
 

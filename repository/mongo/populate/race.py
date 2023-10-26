@@ -7,8 +7,8 @@
 from repository.mongo import RaceModel
 from rpgram.boosters import Race
 
-RACES = {
-    'dwarf': {
+RACES = [
+    {
         'name': 'Anão',
         'description': (
             'Audazes e resistentes, os anões são '
@@ -43,12 +43,12 @@ RACES = {
         'bonus_charisma': 5,
         'multiplier_strength': 1,
         'multiplier_dexterity': 1,
-        'multiplier_constitution': 1.5,
+        'multiplier_constitution': 2,
         'multiplier_intelligence': 1,
         'multiplier_wisdom': 1,
         'multiplier_charisma': 0.5,
     },
-    'elf': {
+    {
         'name': 'Elfo',
         'description': (
             'Elfos possuem graça sobrenatural e seus traços finos, os elfos '
@@ -86,13 +86,13 @@ RACES = {
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
         'multiplier_strength': 0.5,
-        'multiplier_dexterity': 1.3,
-        'multiplier_constitution': 0.5,
-        'multiplier_intelligence': 1.3,
-        'multiplier_wisdom': 1,
-        'multiplier_charisma': 1.4,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 1.5,
+        'multiplier_wisdom': 1.5,
+        'multiplier_charisma': 1,
     },
-    'halfling': {
+    {
         'name': 'Halfling',
         'description': (
             'Os pequeninos halflings sobrevivem em um mundo cheio '
@@ -143,12 +143,12 @@ RACES = {
         'bonus_charisma': 5,
         'multiplier_strength': 0.5,
         'multiplier_dexterity': 1.5,
-        'multiplier_constitution': 0.5,
+        'multiplier_constitution': 1,
         'multiplier_intelligence': 1,
         'multiplier_wisdom': 1.5,
         'multiplier_charisma': 1,
     },
-    'human': {
+    {
         'name': 'Humano',
         'description': (
             'Os humanos são os mais adaptáveis, flexíveis e '
@@ -200,14 +200,14 @@ RACES = {
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 1,
-        'multiplier_dexterity': 1,
-        'multiplier_constitution': 1,
+        'multiplier_strength': 1.2,
+        'multiplier_dexterity': 1.2,
+        'multiplier_constitution': 1.2,
         'multiplier_intelligence': 1,
         'multiplier_wisdom': 1,
         'multiplier_charisma': 1,
     },
-    'orc': {
+    {
         'name': 'Orque',
         'description': (
             'A pigmentação acinzentada dos orques, suas testas '
@@ -244,18 +244,27 @@ RACES = {
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 1.9,
+        'multiplier_strength': 2,
         'multiplier_dexterity': 1,
-        'multiplier_constitution': 1.3,
-        'multiplier_intelligence': 0.7,
+        'multiplier_constitution': 1.5,
+        'multiplier_intelligence': 0.5,
         'multiplier_wisdom': 1,
-        'multiplier_charisma': 0.1,
+        'multiplier_charisma': 0.5,
     }
-}
+]
 
 if __name__ == '__main__':
     race_model = RaceModel()
-
-    for race_definition in RACES.values():
-        race = Race(**race_definition)
+    fields = ['_id', 'name', 'created_at']
+    for race_dict in RACES:
+        race_name = race_dict['name']
+        mongo_dict = race_model.get(
+            query={'name': race_name},
+            fields=fields,
+        )
+        if mongo_dict:
+            for field in fields:
+                race_dict[field] = mongo_dict[field]
+        race = Race(**race_dict)
+        print(race)
         race_model.save(race)

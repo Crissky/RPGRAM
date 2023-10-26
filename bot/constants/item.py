@@ -10,10 +10,10 @@ ESCAPED_CALLBACK_TEXT_IGNORE = re.escape(CALLBACK_TEXT_IGNORE)
 
 
 TRAP_TYPE_DAMAGE_MULTIPLIER = {
-    DamageEnum.BLUDGEONING.name: 1.0,
-    DamageEnum.HITTING.name: 1.0,
-    DamageEnum.SLASHING.name: 1.2,
-    DamageEnum.PIERCING.name: 1.2,
+    DamageEnum.BLUDGEONING.name: 1.5,
+    DamageEnum.HITTING.name: 1.5,
+    DamageEnum.SLASHING.name: 2.0,
+    DamageEnum.PIERCING.name: 2.0,
     DamageEnum.MAGIC.name: 2.0,
     DamageEnum.BLESSING.name: 1.0,
     DamageEnum.DIVINE.name: 5.0,
