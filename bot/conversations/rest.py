@@ -81,6 +81,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+@print_basic_infos
 async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     player_model = PlayerModel()
