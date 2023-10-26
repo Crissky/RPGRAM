@@ -518,6 +518,91 @@ class StatsBooster:
         elif self.__identified is False:
             return True
 
+    # Setters
+    @bonus_strength.setter
+    def bonus_strength(self, value: int):
+        self.__bonus_strength = int(value)
+
+    @bonus_dexterity.setter
+    def bonus_dexterity(self, value: int):
+        self.__bonus_dexterity = int(value)
+
+    @bonus_constitution.setter
+    def bonus_constitution(self, value: int):
+        self.__bonus_constitution = int(value)
+
+    @bonus_intelligence.setter
+    def bonus_intelligence(self, value: int):
+        self.__bonus_intelligence = int(value)
+
+    @bonus_wisdom.setter
+    def bonus_wisdom(self, value: int):
+        self.__bonus_wisdom = int(value)
+
+    @bonus_charisma.setter
+    def bonus_charisma(self, value: int):
+        self.__bonus_charisma = int(value)
+
+    @multiplier_strength.setter
+    def multiplier_strength(self, value: float):
+        self.__multiplier_strength = value
+
+    @multiplier_dexterity.setter
+    def multiplier_dexterity(self, value: float):
+        self.__multiplier_dexterity = value
+
+    @multiplier_constitution.setter
+    def multiplier_constitution(self, value: float):
+        self.__multiplier_constitution = value
+
+    @multiplier_intelligence.setter
+    def multiplier_intelligence(self, value: float):
+        self.__multiplier_intelligence = value
+
+    @multiplier_wisdom.setter
+    def multiplier_wisdom(self, value: float):
+        self.__multiplier_wisdom = value
+
+    @multiplier_charisma.setter
+    def multiplier_charisma(self, value: float):
+        self.__multiplier_charisma = value
+
+    @bonus_hit_points.setter
+    def bonus_hit_points(self, value: int):
+        self.__bonus_hit_points = int(value)
+
+    @bonus_initiative.setter
+    def bonus_initiative(self, value: int):
+        self.__bonus_initiative = int(value)
+
+    @bonus_physical_attack.setter
+    def bonus_physical_attack(self, value: int):
+        self.__bonus_physical_attack = int(value)
+
+    @bonus_precision_attack.setter
+    def bonus_precision_attack(self, value: int):
+        self.__bonus_precision_attack = int(value)
+
+    @bonus_magical_attack.setter
+    def bonus_magical_attack(self, value: int):
+        self.__bonus_magical_attack = int(value)
+
+    @bonus_physical_defense.setter
+    def bonus_physical_defense(self, value: int):
+        self.__bonus_physical_defense = int(value)
+
+    @bonus_magical_defense.setter
+    def bonus_magical_defense(self, value: int):
+        self.__bonus_magical_defense = int(value)
+
+    @bonus_hit.setter
+    def bonus_hit(self, value: int):
+        self.__bonus_hit = int(value)
+
+    @bonus_evasion.setter
+    def bonus_evasion(self, value: int):
+        self.__bonus_evasion = int(value)
+
     _id = property(lambda self: self.__id)
     strength = bonus_strength
     dexterity = bonus_dexterity

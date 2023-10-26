@@ -1,3 +1,7 @@
+'''
+Este módulo gerencia as Condições do Personagem.
+'''
+
 from datetime import datetime
 from typing import List, Union
 
@@ -62,6 +66,8 @@ class Status:
             report['text'] = (
                 f'O nível da Condição "{name}" foi aumentado para {level}.'
             )
+            if condition.frequency == TurnEnum.CONTINUOUS:
+                condition.activate(None)
         else:
             self.__conditions.append(condition)
             report['text'] = f'A Condição "{name}" foi adicionada.'
@@ -92,6 +98,8 @@ class Status:
                 report['text'] = f'A Condição "{name}" foi removida.'
                 self.__conditions.pop(index)
             else:
+                if new_condition.frequency == TurnEnum.CONTINUOUS:
+                    new_condition.activate(None)
                 level = new_condition.level
                 report['text'] = (
                     f'O nível da Condição "{name}" foi reduzido para {level}.'
@@ -103,6 +111,16 @@ class Status:
         return report
 
     remove = remove_condition
+
+    def remove_conditions(
+        self, *conditions: Union[Condition, str]
+    ) -> List[dict]:
+        reports = []
+        for condition in conditions:
+            report = self.remove_condition(condition)
+            reports.append(report)
+
+        return reports
 
     def activate(self, char) -> List[dict]:
         reports = []
@@ -284,15 +302,15 @@ if __name__ == '__main__':
             Condition(
                 name='Poison',
                 description='Veneno venenoso',
-                function='print("function:Poison")',
-                battle_function='print("battle_function:Poison")',
+                function='print("function:Poison");report={};',
+                battle_function='print("battle_function:Poison");report={};',
                 frequency='CONTINUOUS',
             ),
             Condition(
                 name='Burn',
                 description='Tá pegando fogo',
-                function='print("function:Burn")',
-                battle_function='print("battle_function:Burn")',
+                function='print("function:Burn");report={};',
+                battle_function='print("battle_function:Burn");report={};',
                 frequency='CONTINUOUS',
             ),
         ],
