@@ -200,13 +200,15 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     )
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
+    equip_or_use_buttons = None
+    identify_button = None
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
         markdown_text = equips.compare(item.item)
         if item.item.equip_type == EquipmentEnum.ONE_HAND:
             use_text_left = f'{EmojiEnum.LEFT.value}Equipar'
             use_text_right = f'Equipar{EmojiEnum.RIGHT.value}'
-            equip_or_use = [
+            equip_or_use_buttons = [
                 InlineKeyboardButton(
                     text=use_text_left,
                     callback_data=(
@@ -224,7 +226,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
             ]
         else:
             use_text = f'{EmojiEnum.TO_EQUIP.value}Equipar'
-            equip_or_use = [
+            equip_or_use_buttons = [
                 InlineKeyboardButton(
                     text=use_text,
                     callback_data=(
@@ -237,22 +239,23 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         quantity = min(item.quantity, USE_MANY_MAX)
         use_text = f'{EmojiEnum.USE_POTION.value}Usar'
         use_many_text = f'{EmojiEnum.USE_POTION.value}Usar x{quantity}'
-        equip_or_use = [
-            InlineKeyboardButton(
-                text=use_text,
-                callback_data=(
-                    f'{{"use":1,"item":{item_pos},'
-                    f'"page":{page},"user_id":{user_id}}}'
+        if item.item.usable:
+            equip_or_use_buttons = [
+                InlineKeyboardButton(
+                    text=use_text,
+                    callback_data=(
+                        f'{{"use":1,"item":{item_pos},'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
+                ),
+                InlineKeyboardButton(
+                    text=use_many_text,
+                    callback_data=(
+                        f'{{"use":{quantity},"item":{item_pos},'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
                 )
-            ),
-            InlineKeyboardButton(
-                text=use_many_text,
-                callback_data=(
-                    f'{{"use":{quantity},"item":{item_pos},'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
-            )
-        ]
+            ]
 
     discard_buttons = get_discard_buttons(
         page=page, user_id=user_id, item_pos=item_pos
@@ -261,7 +264,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         page=page, user_id=user_id, retry_state=USE_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([
-        equip_or_use,
+        equip_or_use_buttons,
         discard_buttons,
         back_button
     ])

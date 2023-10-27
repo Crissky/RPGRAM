@@ -124,22 +124,12 @@ def add_damage(
 
 def save_char(
     char: BaseCharacter,
-    classe: bool = False,
-    race: bool = False,
     equips: bool = False,
     status: bool = False,
 
 ):
     char_model = CharacterModel()
     char_model.save(char)
-
-    if classe and char.classe:
-        classe_model = ClasseModel()
-        classe_model.save(char.classe)
-
-    if race and char.race:
-        race_model = RaceModel()
-        race_model.save(char.race)
 
     if equips and char.equips:
         equips_model = EquipsModel()
