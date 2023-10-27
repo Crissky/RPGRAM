@@ -20,8 +20,8 @@ if __name__ == '__main__':
         _id='ffffffffffffffffffffffff'
     )
     print('CONDITION:', condition)
-    conditions_model = ConditionModel()
-    result = conditions_model.save(condition)
+    condition_model = ConditionModel()
+    result = condition_model.save(condition)
     print('result:', result)
-    condition2 = conditions_model.get('ffffffffffffffffffffffff')
+    condition2 = condition_model.get('ffffffffffffffffffffffff')
     print('CONDITION2:', condition2)
