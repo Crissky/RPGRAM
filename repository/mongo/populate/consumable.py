@@ -133,35 +133,35 @@ CONSUMABLES = [
     {
         'name': 'Mystical Incense',
         'description': f'Cura {CURSE}.',
-        'weight': 0.1,
+        'weight': 0.2,
         'function': f'report = target.status.remove_condition("{CURSE}")',
         'rarity': RarityEnum.RARE.name,
     },
     {
         'name': 'Energy Potion',
         'description': f'Cura {EXHAUSTION}.',
-        'weight': 0.1,
+        'weight': 0.15,
         'function': f'report = target.status.remove_condition("{EXHAUSTION}")',
         'rarity': RarityEnum.UNCOMMON.name,
     },
     {
         'name': 'Hot Potion',
         'description': f'Cura {FROZEN}.',
-        'weight': 0.1,
+        'weight': 0.15,
         'function': f'report = target.status.remove_condition("{FROZEN}")',
         'rarity': RarityEnum.UNCOMMON.name,
     },
     {
         'name': 'Vitamin Fruit',
         'description': f'Cura {PARALYSIS}.',
-        'weight': 0.1,
+        'weight': 0.3,
         'function': f'report = target.status.remove_condition("{PARALYSIS}")',
         'rarity': RarityEnum.UNCOMMON.name,
     },
     {
         'name': 'Gold Needle',
         'description': f'Cura {PETRIFIED}.',
-        'weight': 0.1,
+        'weight': 0.15,
         'function': f'report = target.status.remove_condition("{PETRIFIED}")',
         'rarity': RarityEnum.RARE.name,
     },
@@ -178,6 +178,19 @@ CONSUMABLES = [
         'weight': 0.1,
         'function': f'report = target.status.remove_condition("{SILENCE}")',
         'rarity': RarityEnum.COMMON.name,
+    },
+
+    # Other Items
+    {
+        'name': 'Identifying Lens',
+        'description': f'Identifica bônus ocultos de um Equipamento.',
+        'weight': 0.3,
+        'function': f'report = target.identify()',
+        'battle_function': (
+            'report = {"text": f"{self.name} não pode ser usado em batalha."}'
+        ),
+        'rarity': RarityEnum.RARE.name,
+        'usable': False,
     },
 ]
 
