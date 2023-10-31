@@ -200,7 +200,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     )
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
-    equip_or_use_buttons = None
+    equip_or_use_buttons = []
     identify_button = None
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
@@ -239,7 +239,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         quantity = min(item.quantity, USE_MANY_MAX)
         use_text = f'{EmojiEnum.USE_POTION.value}Usar'
         use_many_text = f'{EmojiEnum.USE_POTION.value}Usar x{quantity}'
-        if item.item.usable:
+        if item.item.usable is True:
             equip_or_use_buttons = [
                 InlineKeyboardButton(
                     text=use_text,
