@@ -36,6 +36,7 @@ from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
 )
+from bot.functions.bag import have_identifying_lens
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
@@ -201,7 +202,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
     equip_or_use_buttons = []
-    identify_button = None
+    identify_button = []
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
         markdown_text = equips.compare(item.item)
@@ -231,6 +232,18 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
                     text=use_text,
                     callback_data=(
                         f'{{"use":1,"item":{item_pos},'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
+                )
+            ]
+
+        if have_identifying_lens(user_id) and item.item.identifiable:
+            identify_text = f'Identificar{EmojiEnum.IDENTIFY.value}'
+            identify_button = [
+                InlineKeyboardButton(
+                    text=identify_text,
+                    callback_data=(
+                        f'{{"identify":1,"item":{item_pos},'
                         f'"page":{page},"user_id":{user_id}}}'
                     )
                 )
@@ -265,6 +278,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     )
     reply_markup = InlineKeyboardMarkup([
         equip_or_use_buttons,
+        identify_button,
         discard_buttons,
         back_button
     ])
@@ -407,7 +421,51 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 @print_basic_infos
 @retry_after
-async def drop_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def identify_item(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
+    '''identifica um equipamento.
+    '''
+    query = update.callback_query
+
+    try:
+        old_reply_markup = query.message.reply_markup
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
+    bag_model = BagModel()
+    char_model = CharacterModel()
+    user_id = update.effective_user.id
+    data = eval(query.data)
+    item_pos = data['item']
+    page = data['page']
+    data_user_id = data['user_id']
+    use_quantity = data['identify']
+
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        return USE_ROUTES
+
+    item_index = (ITEMS_PER_PAGE * page) + item_pos
+    player_bag = bag_model.get(
+        query={'player_id': user_id},
+        fields={'items_ids': {'$slice': [item_index, 1]}},
+        partial=False
+    )
+    item = player_bag[0]
+    player_character = char_model.get(user_id)
+
+
+@print_basic_infos
+@retry_after
+async def drop_item(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
     '''drop o item do jogador.
     '''
     query = update.callback_query
@@ -936,6 +994,7 @@ BAG_HANDLER = ConversationHandler(
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(use_item, pattern=r'^{"use":'),
             CallbackQueryHandler(drop_item, pattern=r'^{"drop":1'),
+            CallbackQueryHandler(identify_item, pattern=r'^{"identify":1'),
         ],
         SORT_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
