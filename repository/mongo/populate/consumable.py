@@ -21,72 +21,72 @@ CONSUMABLES = [
     # Healing Potions
     {
         'name': 'Minor Healing Potion',
-        'description': 'Cura 100 de HP em 5 Turnos.',
+        'description': 'Cura 50 de HP em 5 Turnos.',
         'weight': 0.1,
         'condition': Condition(
             'Minor Healing Potion', None, None, None, TurnEnum.START
+        ),
+        'function': 'report = target.combat_stats.cure_hit_points(50)',
+        'battle_function': 'report = target.status.add_condition(self.condition)',
+        'rarity': RarityEnum.COMMON.name,
+    }, {
+        'name': 'Light Healing Potion',
+        'description': 'Cura 100 de HP em 5 Turnos.',
+        'weight': 0.1,
+        'condition': Condition(
+            'Light Healing Potion', None, None, None, TurnEnum.START
         ),
         'function': 'report = target.combat_stats.cure_hit_points(100)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.COMMON.name,
     }, {
-        'name': 'Light Healing Potion',
-        'description': 'Cura 250 de HP em 5 Turnos.',
-        'weight': 0.1,
-        'condition': Condition(
-            'Light Healing Potion', None, None, None, TurnEnum.START
-        ),
-        'function': 'report = target.combat_stats.cure_hit_points(250)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
-        'rarity': RarityEnum.COMMON.name,
-    }, {
         'name': 'Healing Potion',
-        'description': 'Cura 500 de HP em 5 Turnos.',
+        'description': 'Cura 200 de HP em 5 Turnos.',
         'weight': 0.1,
         'condition': Condition(
             'Healing Potion', None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(500)',
+        'function': 'report = target.combat_stats.cure_hit_points(200)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.COMMON.name,
     }, {
         'name': 'Greater Healing Potion',
-        'description': 'Cura 1000 de HP em 5 Turnos.',
+        'description': 'Cura 500 de HP em 5 Turnos.',
         'weight': 0.1,
         'condition': Condition(
             'Greater Healing Potion', None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(1000)',
+        'function': 'report = target.combat_stats.cure_hit_points(500)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.UNCOMMON.name,
     }, {
         'name': 'Rare Healing Potion',
-        'description': 'Cura 2000 de HP em 5 Turnos.',
+        'description': 'Cura 1000 de HP em 5 Turnos.',
         'weight': 0.1,
         'condition': Condition(
             'Rare Healing Potion', None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(2000)',
+        'function': 'report = target.combat_stats.cure_hit_points(1000)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.RARE.name,
     }, {
         'name': 'Epic Healing Potion',
-        'description': 'Cura 5000 de HP em 5 Turnos.',
+        'description': 'Cura 2500 de HP em 5 Turnos.',
         'weight': 0.1,
         'condition': Condition(
             'Epic Healing Potion', None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(5000)',
+        'function': 'report = target.combat_stats.cure_hit_points(2500)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.EPIC.name,
     }, {
         'name': 'Legendary Healing Potion',
-        'description': 'Cura 10000 de HP em 5 Turnos.',
+        'description': 'Cura 5000 de HP em 5 Turnos.',
         'weight': 0.1,
         'condition': Condition(
             'Legendary Healing Potion', None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(10000)',
+        'function': 'report = target.combat_stats.cure_hit_points(5000)',
         'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.LEGENDARY.name,
     }, {
