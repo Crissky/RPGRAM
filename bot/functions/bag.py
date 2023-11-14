@@ -13,6 +13,10 @@ def get_item_by_name(item_name: str) -> Item:
     return item
 
 
+def get_identifying_lens() -> Item:
+    return get_item_by_name(IDENTIFYING_LENS)
+
+
 def get_id_item_by_name(item_name: str) -> dict:
     item_model = ItemModel()
     item_dict = item_model.get(
