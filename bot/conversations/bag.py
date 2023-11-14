@@ -17,11 +17,33 @@ from bot.constants.bag import (
     CALLBACK_TEXT_DESTROY_ITEM,
     CALLBACK_TEXT_SORT_ITEMS,
     CANCEL_COMMANDS,
+    CLOSE_BAG_BUTTON_TEXT,
     COMMANDS,
+    CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
+    CONSUMABLE_SORT_UP_BUTTON_TEXT,
+    DESTROY_ITEM_BUTTON_TEXT,
+    DISCARD_BUTTON_TEXT,
+    DISCARD_MANY_BUTTON_TEXT,
+    EQUIP_BUTTON_TEXT,
+    EQUIPMENT_POWER_SORT_DOWN_BUTTON_TEXT,
+    EQUIPMENT_POWER_SORT_UP_BUTTON_TEXT,
+    EQUIPMENT_RARITY_SORT_DOWN_BUTTON_TEXT,
+    EQUIPMENT_RARITY_SORT_UP_BUTTON_TEXT,
     ESCAPED_CALLBACK_TEXT_DESTROY_ITEM,
     ESCAPED_CALLBACK_TEXT_SORT_ITEMS,
+    IDENTIFY_BUTTON_TEXT,
     ITEMS_PER_PAGE,
-    USE_MANY_MAX
+    EQUIP_LEFT_BUTTON_TEXT,
+    NAV_BACK_BUTTON_TEXT,
+    NAV_PREVIOUS_BUTTON_TEXT,
+    NAV_END_BUTTON_TEXT,
+    NAV_NEXT_BUTTON_TEXT,
+    NAV_START_BUTTON_TEXT,
+    SORT_ITEMS_BUTTON_TEXT,
+    TAKE_BUTTON_TEXT,
+    USE_BUTTON_TEXT,
+    USE_MANY_MAX,
+    EQUIP_RIGHT_BUTTON_TEXT
 )
 
 from bot.constants.filters import (
@@ -42,6 +64,7 @@ from bot.functions.bag import (
     sub_identifying_lens
 )
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.keyboard import remove_buttons_by_text
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
@@ -211,18 +234,16 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         equips = equips_model.get(user_id)
         markdown_text = equips.compare(item.item)
         if item.item.equip_type == EquipmentEnum.ONE_HAND:
-            use_text_left = f'{EmojiEnum.LEFT.value}Equipar'
-            use_text_right = f'Equipar{EmojiEnum.RIGHT.value}'
             equip_or_use_buttons = [
                 InlineKeyboardButton(
-                    text=use_text_left,
+                    text=EQUIP_LEFT_BUTTON_TEXT,
                     callback_data=(
                         f'{{"use":1,"item":{item_pos},"hand":"L",'
                         f'"page":{page},"user_id":{user_id}}}'
                     )
                 ),
                 InlineKeyboardButton(
-                    text=use_text_right,
+                    text=EQUIP_RIGHT_BUTTON_TEXT,
                     callback_data=(
                         f'{{"use":1,"item":{item_pos},"hand":"R",'
                         f'"page":{page},"user_id":{user_id}}}'
@@ -230,10 +251,9 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
                 )
             ]
         else:
-            use_text = f'{EmojiEnum.TO_EQUIP.value}Equipar'
             equip_or_use_buttons = [
                 InlineKeyboardButton(
-                    text=use_text,
+                    text=EQUIP_BUTTON_TEXT,
                     callback_data=(
                         f'{{"use":1,"item":{item_pos},'
                         f'"page":{page},"user_id":{user_id}}}'
@@ -242,10 +262,9 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
             ]
 
         if have_identifying_lens(user_id) and item.item.identifiable:
-            identify_text = f'Identificar{EmojiEnum.IDENTIFY.value}'
             identify_button = [
                 InlineKeyboardButton(
-                    text=identify_text,
+                    text=IDENTIFY_BUTTON_TEXT,
                     callback_data=(
                         f'{{"identify":1,"item":{item_pos},'
                         f'"page":{page},"user_id":{user_id}}}'
@@ -254,19 +273,18 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
             ]
     elif isinstance(item.item, Consumable):
         quantity = min(item.quantity, USE_MANY_MAX)
-        use_text = f'{EmojiEnum.USE_POTION.value}Usar'
-        use_many_text = f'{EmojiEnum.USE_POTION.value}Usar x{quantity}'
+        use_many_button_text = f'{EmojiEnum.USE_POTION.value}Usar x{quantity}'
         if item.item.usable is True:
             equip_or_use_buttons = [
                 InlineKeyboardButton(
-                    text=use_text,
+                    text=USE_BUTTON_TEXT,
                     callback_data=(
                         f'{{"use":1,"item":{item_pos},'
                         f'"page":{page},"user_id":{user_id}}}'
                     )
                 ),
                 InlineKeyboardButton(
-                    text=use_many_text,
+                    text=use_many_button_text,
                     callback_data=(
                         f'{{"use":{quantity},"item":{item_pos},'
                         f'"page":{page},"user_id":{user_id}}}'
@@ -441,7 +459,6 @@ async def identify_item(
         return ConversationHandler.END
 
     bag_model = BagModel()
-    char_model = CharacterModel()
     item_model = ItemModel()
     user_id = update.effective_user.id
     data = eval(query.data)
@@ -462,7 +479,6 @@ async def identify_item(
         partial=False
     )
     item_equipment = player_bag[0]
-    player_character = char_model.get(user_id)
     if have_identifying_lens(user_id):
         item_identifier = get_identifying_lens()
         report = item_identifier.use(item_equipment.item)
@@ -479,20 +495,19 @@ async def identify_item(
         await query.answer(text=text, show_alert=True)
 
     markdown_player_sheet = item_equipment.item.get_all_sheets(
-        verbose=False, markdown=True
+        verbose=True, markdown=True
     )
-    back_button = get_back_button(
-        page=page, user_id=user_id, retry_state=START_ROUTES
+    reply_markup = remove_buttons_by_text(
+        old_reply_markup,
+        IDENTIFY_BUTTON_TEXT
     )
-    reply_markup = InlineKeyboardMarkup([back_button])
-    # Edita mensagem com as informações do personagem do jogador
     await query.edit_message_text(
         text=markdown_player_sheet,
         reply_markup=reply_markup,
         parse_mode=ParseMode.MARKDOWN_V2
     )
 
-    return START_ROUTES
+    return USE_ROUTES
 
 
 @print_basic_infos
@@ -810,14 +825,14 @@ def get_navigation_buttons(
     if have_back_page:  # Cria botão de Voltar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
-                text=f'{EmojiEnum.PREVIOUS_PAGE.value} Anterior',
+                text=NAV_PREVIOUS_BUTTON_TEXT,
                 callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
             )
         )
     if have_next_page:  # Cria botão de Avançar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
-                text=f'Próxima {EmojiEnum.NEXT_PAGE.value}',
+                text=NAV_NEXT_BUTTON_TEXT,
                 callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
             )
         )
@@ -833,7 +848,7 @@ def get_extremes_navigation_buttons(
     if have_back_page:  # Cria botão para a Primeira Página
         extremes_navigation_keyboard.append(
             InlineKeyboardButton(
-                text=f'{EmojiEnum.FIRST_PAGE.value} Primeira',
+                text=NAV_START_BUTTON_TEXT,
                 callback_data=f'{{"page":0,"user_id":{user_id}}}'
             )
         )
@@ -843,7 +858,7 @@ def get_extremes_navigation_buttons(
         total_pages = (bag_length - 1) // ITEMS_PER_PAGE
         extremes_navigation_keyboard.append(
             InlineKeyboardButton(
-                text=f'Última {EmojiEnum.LAST_PAGE.value}',
+                text=NAV_END_BUTTON_TEXT,
                 callback_data=f'{{"page":{total_pages},"user_id":{user_id}}}'
             )
         )
@@ -858,14 +873,14 @@ def get_discard_buttons(
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'{EmojiEnum.DISCARD.value}Descartar',
+            text=DISCARD_BUTTON_TEXT,
             callback_data=(
                 f'{{"drop":1,"item":{item_pos},'
                 f'"page":{page},"user_id":{user_id}}}'
             )
         ),
         InlineKeyboardButton(
-            text=f'{EmojiEnum.DISCARD.value}Descartar x10',
+            text=DISCARD_MANY_BUTTON_TEXT,
             callback_data=(
                 f'{{"drop":10,"item":{item_pos},'
                 f'"page":{page},"user_id":{user_id}}}'
@@ -877,7 +892,7 @@ def get_discard_buttons(
 def get_close_bag_button(user_id: int) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'{EmojiEnum.CLOSE_BAG.value}Fechar Bolsa',
+            text=CLOSE_BAG_BUTTON_TEXT,
             callback_data=(
                 f'{{"command":"{CALLBACK_CLOSE_BAG}","user_id":{user_id}}}'
             )
@@ -889,7 +904,7 @@ def get_back_button(
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'Voltar{EmojiEnum.BACK.value}',
+            text=NAV_BACK_BUTTON_TEXT,
             callback_data=(
                 f'{{"page":{page},"user_id":{user_id},'
                 f'"retry_state":{retry_state}}}'
@@ -903,13 +918,13 @@ def get_take_break_buttons(
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'{EmojiEnum.TAKE.value}Coletar',
+            text=TAKE_BUTTON_TEXT,
             callback_data=(
                 f'{{"_id":"{item_id}","drop":{drop}}}'
             )
         ),
         InlineKeyboardButton(
-            text=f'Quebrar{EmojiEnum.DESTROY_ITEM.value}',
+            text=DESTROY_ITEM_BUTTON_TEXT,
             callback_data=CALLBACK_TEXT_DESTROY_ITEM
         )]
 
@@ -919,7 +934,7 @@ def get_sort_button(
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
-            text=f'{EmojiEnum.SORT_ITEMS.value}Ordenar',
+            text=SORT_ITEMS_BUTTON_TEXT,
             callback_data=(
                 f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}",'
                 f'"page":{page},"user_id":{user_id}}}'
@@ -930,23 +945,18 @@ def get_sort_button(
 def get_sort_buttons(
     page: int, user_id: str
 ) -> List[List[InlineKeyboardButton]]:
+
     return [
         [
             InlineKeyboardButton(
-                text=(
-                    f'Ordenar{EmojiEnum.CONSUMABLE.value}'
-                    f'{EmojiEnum.SORT_UP.value}'
-                ),
+                text=CONSUMABLE_SORT_UP_BUTTON_TEXT,
                 callback_data=(
                     f'{{"sort":"consumable_up",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
             InlineKeyboardButton(
-                text=(
-                    f'Ordenar{EmojiEnum.CONSUMABLE.value}'
-                    f'{EmojiEnum.SORT_DOWN.value}'
-                ),
+                text=CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
                 callback_data=(
                     f'{{"sort":"consumable_down",'
                     f'"page":{page},"user_id":{user_id}}}'
@@ -955,20 +965,14 @@ def get_sort_buttons(
         ],
         [
             InlineKeyboardButton(
-                text=(
-                    f'Ordenar{EmojiEnum.EQUIPMENT_POWER.value}'
-                    f'{EmojiEnum.SORT_UP.value}'
-                ),
+                text=EQUIPMENT_POWER_SORT_UP_BUTTON_TEXT,
                 callback_data=(
                     f'{{"sort":"power_up",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
             InlineKeyboardButton(
-                text=(
-                    f'Ordenar{EmojiEnum.EQUIPMENT_POWER.value}'
-                    f'{EmojiEnum.SORT_DOWN.value}'
-                ),
+                text=EQUIPMENT_POWER_SORT_DOWN_BUTTON_TEXT,
                 callback_data=(
                     f'{{"sort":"power_down",'
                     f'"page":{page},"user_id":{user_id}}}'
@@ -977,20 +981,14 @@ def get_sort_buttons(
         ],
         [
             InlineKeyboardButton(
-                text=(
-                    f'Ordenar{EmojiEnum.EQUIPMENT_RARITY.value}'
-                    f'{EmojiEnum.SORT_UP.value}'
-                ),
+                text=EQUIPMENT_RARITY_SORT_UP_BUTTON_TEXT,
                 callback_data=(
                     f'{{"sort":"rarity_up",'
                     f'"page":{page},"user_id":{user_id}}}'
                 )
             ),
             InlineKeyboardButton(
-                text=(
-                    f'Ordenar{EmojiEnum.EQUIPMENT_RARITY.value}'
-                    f'{EmojiEnum.SORT_DOWN.value}'
-                ),
+                text=EQUIPMENT_RARITY_SORT_DOWN_BUTTON_TEXT,
                 callback_data=(
                     f'{{"sort":"rarity_down",'
                     f'"page":{page},"user_id":{user_id}}}'
