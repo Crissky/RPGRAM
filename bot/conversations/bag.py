@@ -36,7 +36,11 @@ from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
 )
-from bot.functions.bag import have_identifying_lens
+from bot.functions.bag import (
+    get_identifying_lens,
+    have_identifying_lens,
+    sub_identifying_lens
+)
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
@@ -352,16 +356,16 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         name = item.name
         description = item.item.description
         use_quantity = min(item.quantity, use_quantity)
-        text = (
-            f'Você usou {use_quantity} "{name}".\n'
-            f'Descrição: "{description}".\n\n'
-        )
         try:
             for _ in range(use_quantity):
                 report = item.use(player_character)
                 report_text = report['text']
                 bag_model.sub(item, user_id)
-            text += report_text + '\n'
+            text = (
+                f'Você usou {use_quantity} "{name}".\n'
+                f'Descrição: "{description}".\n\n'
+                f'{report_text}\n'
+            )
             char_model.save(player_character)
 
             await query.answer(
@@ -438,6 +442,7 @@ async def identify_item(
 
     bag_model = BagModel()
     char_model = CharacterModel()
+    item_model = ItemModel()
     user_id = update.effective_user.id
     data = eval(query.data)
     item_pos = data['item']
@@ -456,8 +461,38 @@ async def identify_item(
         fields={'items_ids': {'$slice': [item_index, 1]}},
         partial=False
     )
-    item = player_bag[0]
+    item_equipment = player_bag[0]
     player_character = char_model.get(user_id)
+    if have_identifying_lens(user_id):
+        item_identifier = get_identifying_lens()
+        report = item_identifier.use(item_equipment.item)
+        report_text = report['text']
+        item_model.save(item_equipment)
+        sub_identifying_lens(user_id)
+        name = item_identifier.name
+        description = item_identifier.item.description
+        text = (
+            f'Você usou {use_quantity} "{name}".\n'
+            f'Descrição: "{description}".\n\n'
+            f'{report_text}\n'
+        )
+        await query.answer(text=text, show_alert=True)
+
+    markdown_player_sheet = item_equipment.item.get_all_sheets(
+        verbose=False, markdown=True
+    )
+    back_button = get_back_button(
+        page=page, user_id=user_id, retry_state=START_ROUTES
+    )
+    reply_markup = InlineKeyboardMarkup([back_button])
+    # Edita mensagem com as informações do personagem do jogador
+    await query.edit_message_text(
+        text=markdown_player_sheet,
+        reply_markup=reply_markup,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
+
+    return START_ROUTES
 
 
 @print_basic_infos
@@ -567,13 +602,13 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return ConversationHandler.END
 
     bag_model = BagModel()
-    items_model = ItemModel()
+    item_model = ItemModel()
     user_id = update.effective_user.id
     data = eval(query.data)
     item_id = data['_id']
     drop = data['drop']
 
-    item = items_model.get(item_id)
+    item = item_model.get(item_id)
     if item:
         item = Item(item, quantity=drop)
         bag_model.add(item, user_id)
