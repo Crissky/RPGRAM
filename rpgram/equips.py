@@ -3,7 +3,7 @@ from typing import List, Union
 
 from bson import ObjectId
 
-from constant.text import SECTION_HEAD, TEXT_DELIMITER
+from constant.text import SECTION_HEAD, TEXT_DELIMITER, TEXT_SEPARATOR
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.equipment import Equipment
@@ -316,6 +316,17 @@ class Equips:
 
         if not other_equipment:
             return equipment.get_sheet(True, True)
+        elif equipment.equip_type == EquipmentEnum.ONE_HAND and (
+            self.left_hand is not None or self.right_hand is not None
+        ):
+            texts = []
+            if self.left_hand is not None:
+                compare_text = equipment.compare(self.left_hand)
+                texts.append(f'{EmojiEnum.LEFT.value}{compare_text}')
+            if self.right_hand is not None:
+                compare_text = equipment.compare(self.right_hand)
+                texts.append(f'{EmojiEnum.RIGHT.value}{compare_text}')
+            return f'\n{TEXT_SEPARATOR}\n\n'.join(texts)
         else:
             return equipment.compare(*other_equipment)
 
