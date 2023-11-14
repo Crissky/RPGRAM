@@ -20,9 +20,9 @@ CONDITIONS = [
     # Healing Potion Conditions
     {
         'name': 'Minor Healing Potion',
-        'description': 'Cura 100 de HP em 5 Turnos.',
+        'description': 'Cura 50 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(20 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(10 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(20)',
@@ -31,9 +31,9 @@ CONDITIONS = [
     },
     {
         'name': 'Light Healing Potion',
-        'description': 'Cura 250 de HP em 5 Turnos.',
+        'description': 'Cura 100 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(50 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(20 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(50)',
@@ -42,9 +42,9 @@ CONDITIONS = [
     },
     {
         'name': 'Healing Potion',
-        'description': 'Cura 500 de HP em 5 Turnos.',
+        'description': 'Cura 200 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(100 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(40 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(100)',
@@ -53,9 +53,9 @@ CONDITIONS = [
     },
     {
         'name': 'Greater Healing Potion',
-        'description': 'Cura 1000 de HP em 5 Turnos.',
+        'description': 'Cura 500 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(200 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(100 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(200)',
@@ -64,9 +64,9 @@ CONDITIONS = [
     },
     {
         'name': 'Rare Healing Potion',
-        'description': 'Cura 2000 de HP em 5 Turnos.',
+        'description': 'Cura 1000 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(400 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(200 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(400)',
@@ -75,9 +75,9 @@ CONDITIONS = [
     },
     {
         'name': 'Epic Healing Potion',
-        'description': 'Cura 5000 de HP em 5 Turnos.',
+        'description': 'Cura 2500 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(1000 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(500 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(1000)',
@@ -86,9 +86,9 @@ CONDITIONS = [
     },
     {
         'name': 'Legendary Healing Potion',
-        'description': 'Cura 10000 de HP em 5 Turnos.',
+        'description': 'Cura 5000 de HP em 5 Turnos.',
         'function': (
-            'report = target.combat_stats.cure_hit_points(2000 * self.turn);'
+            'report = target.combat_stats.cure_hit_points(1000 * self.turn);'
             'self.last_turn()'
         ),
         'battle_function': 'report = target.combat_stats.cure_hit_points(2000)',

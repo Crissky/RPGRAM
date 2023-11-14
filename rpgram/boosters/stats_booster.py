@@ -169,6 +169,16 @@ class StatsBooster:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
+    def identify(self) -> dict:
+        report = {}
+        if self.identifiable:
+            self.__identified = True
+            report['text'] = f'{self.name} foi identificado.'
+        else:
+            raise ValueError(f'{self.name} não é identificável.')
+
+        return report
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
 

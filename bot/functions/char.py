@@ -1,6 +1,13 @@
 from random import randint
 
-from repository.mongo import CharacterModel, GroupModel
+from repository.mongo import (
+    CharacterModel,
+    ClasseModel,
+    EquipsModel,
+    GroupModel,
+    RaceModel,
+    StatusModel,
+)
 from rpgram import Group
 from rpgram.characters import BaseCharacter
 from rpgram.enums.damage import (
@@ -113,3 +120,21 @@ def add_damage(
         type_damage=type_damage,
         **damage_report,
     )
+
+
+def save_char(
+    char: BaseCharacter,
+    equips: bool = False,
+    status: bool = False,
+
+):
+    char_model = CharacterModel()
+    char_model.save(char)
+
+    if equips and char.equips:
+        equips_model = EquipsModel()
+        equips_model.save(char.equips)
+
+    if status and char.status:
+        status_model = StatusModel()
+        status_model.save(char.status)

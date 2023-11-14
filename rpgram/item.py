@@ -34,7 +34,9 @@ class Item:
 
     def use(self, target) -> dict:
         if self.quantity <= 0:
-            raise ValueError(f'Não possui "{self.item.name}".')
+            raise ValueError(
+                f'A quantidade de "{self.item.name}" é menor ou igual a zero.'
+            )
         elif not isinstance(self.item, Consumable):
             raise TypeError(
                 f'Item não é um consumível, é do tipo "{type(self.item)}".'

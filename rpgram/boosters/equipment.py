@@ -516,8 +516,15 @@ class Equipment(StatsBooster):
     @property
     def name_power_level(self) -> str:
         return f'{self.name} {self.power_and_level}'
+    
+    @property
+    def identifiable_tag(self) -> str:
+        text = ''
+        if self.identifiable:
+            text = EmojiEnum.IDENTIFY.value
+        return text
 
-    name = property(lambda self: self.__name)
+    name = property(lambda self: self.identifiable_tag + self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_types = property(lambda self: self.__damage_types)
     weight = property(lambda self: self.__weight)

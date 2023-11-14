@@ -11,3 +11,4 @@ from repository.mongo.models.battle import BattleModel
 from repository.mongo.models.equips import EquipsModel
 from repository.mongo.models.bag import BagModel
 from repository.mongo.models.condition import ConditionModel
+from repository.mongo.models.status import StatusModel

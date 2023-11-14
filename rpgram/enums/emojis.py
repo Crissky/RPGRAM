@@ -77,3 +77,4 @@ class EmojiEnum(Enum):
     GENERAL = '🔖'
     SORT_UP = '🔼'  # 🔼🔺
     SORT_DOWN = '🔽'  # 🔽🔻
+    IDENTIFY = '🔍'
