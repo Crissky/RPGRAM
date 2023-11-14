@@ -165,16 +165,6 @@ class Equipment(StatsBooster):
         self.__requirements = requirements
         self.__rarity = rarity
 
-    def identify(self) -> dict:
-        report = {}
-        if self.identifiable:
-            self.__identified = True
-            report['text'] = f'{self.name} foi identificado.'
-        else:
-            raise ValueError(f'{self.name} não é identificável.')
-
-        return report
-
     def compare(self, *others_equipment: List[StatsBooster]) -> str:
         if isinstance(others_equipment, StatsBooster):
             others_equipment = [others_equipment]

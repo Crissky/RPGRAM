@@ -460,6 +460,7 @@ async def identify_item(
 
     bag_model = BagModel()
     item_model = ItemModel()
+    equips_model = EquipsModel()
     user_id = update.effective_user.id
     data = eval(query.data)
     item_pos = data['item']
@@ -478,15 +479,16 @@ async def identify_item(
         fields={'items_ids': {'$slice': [item_index, 1]}},
         partial=False
     )
-    item_equipment = player_bag[0]
     if have_identifying_lens(user_id):
-        item_identifier = get_identifying_lens()
-        report = item_identifier.use(item_equipment.item)
+        item_equipment = player_bag[0]
+        equipment = item_equipment.item
+        consumable_identifier = get_identifying_lens()
+        report = consumable_identifier.use(equipment)
         report_text = report['text']
-        item_model.save(item_equipment)
+        item_model.save(equipment)
         sub_identifying_lens(user_id)
-        name = item_identifier.name
-        description = item_identifier.item.description
+        name = consumable_identifier.name
+        description = consumable_identifier.description
         text = (
             f'Você usou {use_quantity} "{name}".\n'
             f'Descrição: "{description}".\n\n'
@@ -494,15 +496,14 @@ async def identify_item(
         )
         await query.answer(text=text, show_alert=True)
 
-    markdown_player_sheet = item_equipment.item.get_all_sheets(
-        verbose=True, markdown=True
-    )
+    equips = equips_model.get(user_id)
+    markdown_text = equips.compare(equipment)
     reply_markup = remove_buttons_by_text(
         old_reply_markup,
         IDENTIFY_BUTTON_TEXT
     )
     await query.edit_message_text(
-        text=markdown_player_sheet,
+        text=markdown_text,
         reply_markup=reply_markup,
         parse_mode=ParseMode.MARKDOWN_V2
     )

@@ -1,19 +1,22 @@
 
+from typing import Union
 from repository.mongo import BagModel, ItemModel
 from rpgram import Item
+from rpgram import Consumable
+from rpgram.boosters import Equipment
 
 
 IDENTIFYING_LENS = 'Identifying Lens'
 
 
-def get_item_by_name(item_name: str) -> Item:
+def get_item_by_name(item_name: str) -> Union[Consumable, Equipment]:
     item_model = ItemModel()
     item = item_model.get(query={'name': item_name})
 
     return item
 
 
-def get_identifying_lens() -> Item:
+def get_identifying_lens() -> Consumable:
     return get_item_by_name(IDENTIFYING_LENS)
 
 
