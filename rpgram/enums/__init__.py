@@ -1,7 +1,7 @@
 from rpgram.enums.equipment import EquipmentEnum, EquipmentEnumOrder
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
-from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.emojis import EmojiEnum, FaceEmojiEnum
 from rpgram.enums.material import WeaponMaterialEnum
 from rpgram.enums.material import WearableMaterialEnum
 from rpgram.enums.material import AccessoryMaterialsEnum

@@ -389,7 +389,7 @@ class Equipment(StatsBooster):
         type_icon = EmojiEnum[self.equip_type.name].value
         text = (
             f'*Equipamento*: {self.name}\n'
-            f'*Tipo*: {self.equip_type.value}{type_icon}\n'
+            f'*Tipo*: {self.name_type}{type_icon}\n'
             f'{damage_types}'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
@@ -481,10 +481,22 @@ class Equipment(StatsBooster):
         return f'{self.power}{power_emoji}'
 
     @property
+    def name_type(self) -> str:
+        return self.equip_type.value
+
+    @property
     def emoji_type(self) -> str:
         name_type = self.equip_type.name
         emoji_type = EmojiEnum[name_type].value
         return emoji_type
+
+    @property
+    def emoji_name_type(self) -> str:
+        return f'{self.emoji_type}{self.name_type}'
+
+    @property
+    def name_emoji_type(self) -> str:
+        return f'{self.name_type}{self.emoji_type}'
 
     @property
     def power_and_type(self) -> str:
@@ -516,7 +528,7 @@ class Equipment(StatsBooster):
     @property
     def name_power_level(self) -> str:
         return f'{self.name} {self.power_and_level}'
-    
+
     @property
     def identifiable_tag(self) -> str:
         text = ''
