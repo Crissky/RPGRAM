@@ -44,11 +44,12 @@ VERY_HEAVY_EQUIPMENTS = [
 
 
 # Especial Materials Equipments
-QUILL_EQUIPMENTS = ['QUILL']
-GRIMOIRE_EQUIPMENTS = ['GRIMOIRE']
+MAGICAL_QUILL_EQUIPMENTS = ['QUILL']
+MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE']
 MAGICAL_STONES_EQUIPMENTS = ['ORB', 'CRYSTAL']
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
-MASK_EQUIPMENTS = ['MASK']
+MAGICAL_MASK_EQUIPMENTS = ['MASK']
+TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK']
 
 
 # EQUIPMENTS DEFINITIONS
@@ -904,6 +905,22 @@ ARMOR_EQUIPMENTS = {
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'CLOAK': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
         }
     ),

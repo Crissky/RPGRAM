@@ -10,7 +10,7 @@ from repository.mongo.populate.item_constants import (
     BLUDGEONING_WEAPONS,
     BOOTS_EQUIPMENTS,
     ENCHANTED_WEAPONS,
-    GRIMOIRE_EQUIPMENTS,
+    MAGICAL_GRIMOIRE_EQUIPMENTS,
     HEAVY_EQUIPMENTS,
     HELMET_EQUIPMENTS,
     LIGHT_EQUIPMENTS,
@@ -18,12 +18,13 @@ from repository.mongo.populate.item_constants import (
     AMULET_EQUIPMENTS,
     MAGICAL_STONES_EQUIPMENTS,
     MAGICAL_WEARABLE_EQUIPMENTS,
-    MASK_EQUIPMENTS,
+    MAGICAL_MASK_EQUIPMENTS,
     ONE_HAND_EQUIPMENTS,
     PIERCING_WEAPONS,
-    QUILL_EQUIPMENTS,
+    MAGICAL_QUILL_EQUIPMENTS,
     RING_EQUIPMENTS,
     SLASHING_WEAPONS,
+    TATICAL_WEARABLE_EQUIPMENTS,
     TWO_HANDS_EQUIPMENTS,
     VERY_HEAVY_EQUIPMENTS
 )
@@ -35,14 +36,15 @@ from rpgram.enums import (
     AccessoryMaterialsEnum,
     DamageEnum,
     EquipmentEnum,
-    GrimoireMaterialEnum,
+    MagicalGrimoireMaterialEnum,
     MagicalStonesMaterialEnum,
     MagicalWearableMaterialEnum,
-    MaskMaterialEnum,
-    QuillMaterialEnum,
+    MagicalMaskMaterialEnum,
+    MagicalQuillMaterialEnum,
     RarityEnum,
     WeaponMaterialEnum,
     WearableMaterialEnum,
+    TacticalWearableMaterialEnum
 )
 
 
@@ -504,11 +506,11 @@ def translate_material_name(
     elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
         index = ACCESSORY_MATERIALS[material] - 1
 
-    if weapon in QUILL_EQUIPMENTS:
-        material_name = list(QuillMaterialEnum)[index].name
+    if weapon in MAGICAL_QUILL_EQUIPMENTS:
+        material_name = list(MagicalQuillMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif weapon in GRIMOIRE_EQUIPMENTS:
-        material_name = list(GrimoireMaterialEnum)[index].name
+    elif weapon in MAGICAL_GRIMOIRE_EQUIPMENTS:
+        material_name = list(MagicalGrimoireMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
     elif weapon in MAGICAL_STONES_EQUIPMENTS:
         material_name = list(MagicalStonesMaterialEnum)[index].name
@@ -516,8 +518,11 @@ def translate_material_name(
     elif weapon in MAGICAL_WEARABLE_EQUIPMENTS:
         material_name = list(MagicalWearableMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
-    elif weapon in MASK_EQUIPMENTS:
-        material_name = list(MaskMaterialEnum)[index].name
+    elif weapon in MAGICAL_MASK_EQUIPMENTS:
+        material_name = list(MagicalMaskMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
+    elif weapon in TATICAL_WEARABLE_EQUIPMENTS:
+        material_name = list(TacticalWearableMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
     else:
         material_name = material.replace("_", " ").title()

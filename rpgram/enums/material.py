@@ -13,7 +13,7 @@ class WeaponMaterialEnum(Enum):
     MITHRIL = 'Mitril'
 
 
-class QuillMaterialEnum(Enum):
+class MagicalQuillMaterialEnum(Enum):
     YATAGARASU = 'Corvo-de-Três-Pernas'
     HARPIA = 'Harpia'
     ROC = 'Roca'
@@ -25,7 +25,7 @@ class QuillMaterialEnum(Enum):
     QUETZALCOATL = 'Quetzalcóatl'
 
 
-class GrimoireMaterialEnum(Enum):
+class MagicalGrimoireMaterialEnum(Enum):
     MERLIN = 'Merlin'
     DUMBLEDORE = 'Dumbledore'
     MEDIVH = 'Medivh'
@@ -73,7 +73,7 @@ class MagicalWearableMaterialEnum(Enum):
     INA = 'Ina'
 
 
-class MaskMaterialEnum(Enum):
+class MagicalMaskMaterialEnum(Enum):
     BARONG = 'Barong'  # Lembra uma Pantera (Indonésia)
     CALAVERA = 'Calavera'  # Caveira mexicana
     HANNYA = 'Hannya'  # japonês, representando um demônio feminino ciumento
@@ -83,6 +83,18 @@ class MaskMaterialEnum(Enum):
     TENGU = 'Tengu'  # Narigão vermelho
     VENETIAN = 'Venetian'  # Carnaval
     ZANNI = 'Zanni'  # Nariguda italiana
+
+
+class TacticalWearableMaterialEnum(Enum):
+    CLOTH = 'Pano'
+    LEATHER = 'Couro'
+    MINK = 'Vison'
+    MOLESKIN = 'Moleskine'
+    CHIFFON = 'Chiffon'  # Musseline
+    SILK = 'Seda'
+    WYVERN_SCALES = 'Escamas de Serpe'
+    NEMEAN_LEATHER = 'Couro de Neméia'
+    CHAIN_MITHRIL = 'Anéis de Mitril'
 
 
 class AccessoryMaterialsEnum(Enum):
