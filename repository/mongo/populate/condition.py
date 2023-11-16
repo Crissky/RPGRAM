@@ -114,9 +114,10 @@ CONDITIONS = [
             'power = self.level * 0.02;'
             'damage = target.combat_stats.hp * power;'
             'report = target.combat_stats.damage_hit_points(damage);'
+            f'report["text"] = "{BLEEDING} -> " + report["text"];'
             f'report["action"] = "{BLEEDING}";'
         ),
-'battle_function': None,
+        'battle_function': None,
         'frequency': TurnEnum.START,
         'turn': -1,
     },
@@ -235,6 +236,7 @@ CONDITIONS = [
             'power = self.level;'
             'damage = 10 * power;'
             'report = target.combat_stats.damage_hit_points(damage);'
+            f'report["text"] = "{POISONING} -> " + report["text"];'
             f'report["action"] = "{POISONING}";'
         ),
         'battle_function': None,
