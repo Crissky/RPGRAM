@@ -222,13 +222,13 @@ class Status:
             text = 'Normal'
         elif verbose:
             text += f'{TEXT_SEPARATOR_2}\n'.join(
-                f'*Nome*: {condition.name}\n'
+                f'*Nome*: {condition.name} (Nv: {condition.level})\n'
                 f'*Descrição*: {condition.description}\n'
                 for condition in self.__conditions
             )
         else:
             text += '/'.join(
-                condition.name
+                condition.full_name
                 for condition in self.__conditions
             )
 
@@ -281,6 +281,31 @@ class Status:
     # Getters
     conditions = property(lambda self: self.__conditions)
     _id = property(lambda self: self.__id)
+    bonus_strength = property(lambda self: self.__bonus_strength)
+    bonus_dexterity = property(lambda self: self.__bonus_dexterity)
+    bonus_constitution = property(lambda self: self.__bonus_constitution)
+    bonus_intelligence = property(lambda self: self.__bonus_intelligence)
+    bonus_wisdom = property(lambda self: self.__bonus_wisdom)
+    bonus_charisma = property(lambda self: self.__bonus_charisma)
+    multiplier_strength = property(lambda self: self.__multiplier_strength)
+    multiplier_dexterity = property(lambda self: self.__multiplier_dexterity)
+    multiplier_constitution = property(
+        lambda self: self.__multiplier_constitution)
+    multiplier_intelligence = property(
+        lambda self: self.__multiplier_intelligence)
+    multiplier_wisdom = property(lambda self: self.__multiplier_wisdom)
+    multiplier_charisma = property(lambda self: self.__multiplier_charisma)
+    bonus_hit_points = property(lambda self: self.__bonus_hit_points)
+    bonus_initiative = property(lambda self: self.__bonus_initiative)
+    bonus_physical_attack = property(lambda self: self.__bonus_physical_attack)
+    bonus_precision_attack = property(
+        lambda self: self.__bonus_precision_attack)
+    bonus_magical_attack = property(lambda self: self.__bonus_magical_attack)
+    bonus_physical_defense = property(
+        lambda self: self.__bonus_physical_defense)
+    bonus_magical_defense = property(lambda self: self.__bonus_magical_defense)
+    bonus_hit = property(lambda self: self.__bonus_hit)
+    bonus_evasion = property(lambda self: self.__bonus_evasion)
 
 
 if __name__ == '__main__':

@@ -144,6 +144,7 @@ class Condition(StatsBooster):
 
     # Getters
     name = property(lambda self: self.__name)
+    full_name = property(lambda self: f'{self.name}{self.level}')
     description = property(lambda self: self.__description)
     function = property(lambda self: self.__function)
     battle_function = property(lambda self: self.__battle_function)
