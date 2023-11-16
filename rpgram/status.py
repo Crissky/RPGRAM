@@ -105,7 +105,7 @@ class Status:
                     f'O nível da Condição "{name}" foi reduzido para {level}.'
                 )
         else:
-            raise ValueError(f'O status não possui a condição "{name}".')
+            report['text'] = f'O status não possui a condição "{name}".'
         self.__update_stats()
 
         return report
