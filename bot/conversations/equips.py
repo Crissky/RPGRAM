@@ -149,7 +149,7 @@ def get_equips_keyboard(
     if (amulet := equips.amulet):
         accessories_buttons.append(create_equipment_button(amulet, user_id))
     equips_keyboard.append(accessories_buttons)
-    equips_keyboard.append([get_refresh_close_button(user_id)])
+    equips_keyboard.append(get_refresh_close_button(user_id))
 
     return InlineKeyboardMarkup(equips_keyboard)
 
@@ -172,7 +172,7 @@ def create_equipment_button(
     )
 
 
-def get_refresh_close_button(user_id) -> InlineKeyboardButton:
+def get_refresh_close_button(user_id) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
             f'{EmojiEnum.REFRESH.value}Atualizar',
