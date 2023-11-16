@@ -69,9 +69,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif len(args) == 1:
         verbose = 'verbose' == args[0] or 'v' == args[0]
 
+    status_sheet = player_char.status.get_all_sheets(
+        verbose=verbose,
+        markdown=True
+    )
+    combat_stats_sheets = player_char.cs.get_all_sheets(
+        verbose=verbose,
+        markdown=True
+    )
     await update.effective_message.reply_text(
         f'{text}'
-        f'{player_char.cs.get_all_sheets(verbose=verbose, markdown=True)}',
+        f'{status_sheet}\n'
+        f'{combat_stats_sheets}',
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent
     )

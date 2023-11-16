@@ -60,7 +60,12 @@ class BaseCharacter:
             base_intelligence=base_intelligence,
             base_wisdom=base_wisdom,
             base_charisma=base_charisma,
-            stats_boosters=[self.__race, self.__classe, self.__equips]
+            stats_boosters=[
+                self.__race,
+                self.__classe,
+                self.__equips,
+                self.__status
+            ]
         )
         self.__combat_stats = CombatStats(
             base_stats=self.__base_stats,

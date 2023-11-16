@@ -39,7 +39,7 @@ from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
 from bot.constants.rest import COMMANDS as rest_commands
-from bot.constants.view_equips import COMMANDS as view_equips_commands
+from bot.constants.equips import COMMANDS as view_equips_commands
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -54,13 +54,14 @@ from rpgram.enums import (
     EmojiEnum,
     EquipmentEnum,
     AccessoryMaterialsEnum,
-    GrimoireMaterialEnum,
+    MagicalGrimoireMaterialEnum,
     MagicalStonesMaterialEnum,
     MagicalWearableMaterialEnum,
-    MaskMaterialEnum,
-    QuillMaterialEnum,
+    MagicalMaskMaterialEnum,
+    MagicalQuillMaterialEnum,
     WeaponMaterialEnum,
     WearableMaterialEnum,
+    TacticalWearableMaterialEnum,
     RarityEnum
 )
 
@@ -327,12 +328,13 @@ def get_details_text(option: str) -> str:
             f'Os materias dos equipamentos são:\n'
 
             f'*Armas* : {help_enum(WeaponMaterialEnum)}.\n\n'
-            f'*Penas* : {help_enum(QuillMaterialEnum)}.\n\n'
-            f'*Grimórios* : {help_enum(GrimoireMaterialEnum)}.\n\n'
+            f'*Penas* : {help_enum(MagicalQuillMaterialEnum)}.\n\n'
+            f'*Grimórios* : {help_enum(MagicalGrimoireMaterialEnum)}.\n\n'
             f'*Pedras Mágicas* : {help_enum(MagicalStonesMaterialEnum)}.\n\n'
             f'*Vestes* : {help_enum(WearableMaterialEnum)}.\n\n'
             f'*Vestes Mágicas* : {help_enum(MagicalWearableMaterialEnum)}.\n\n'
-            f'*Máscaras* : {help_enum(MaskMaterialEnum)}.\n\n'
+            f'*Máscaras* : {help_enum(MagicalMaskMaterialEnum)}.\n\n'
+            f'*Capas* : {help_enum(TacticalWearableMaterialEnum)}.\n\n'
             f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.\n\n'
         )
     elif option == CALLBACK_BASE_ATTRIBUTES:

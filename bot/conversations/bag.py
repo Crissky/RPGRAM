@@ -63,6 +63,7 @@ from bot.functions.bag import (
     have_identifying_lens,
     sub_identifying_lens
 )
+from bot.functions.char import save_char
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text
 from constant.text import TITLE_HEAD
@@ -358,7 +359,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         equipment = item.item
         try:
             old_equipments = player_character.equips.equip(equipment, hand)
-            await query.answer(text=f'Você equipou "{equipment.name}".\n\n')
+            await query.answer(text=f'Você equipou "{equipment.name}".')
         except Exception as error:
             print(error)
             await query.answer(
@@ -384,7 +385,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 f'Descrição: "{description}".\n\n'
                 f'{report_text}\n'
             )
-            char_model.save(player_character)
+            save_char(player_character, status=True)
 
             await query.answer(
                 text=text,
@@ -424,8 +425,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         old_equipment_item = Item(old_equipment)
         bag_model.add(old_equipment_item, user_id)
 
-    char_model.save(player_character)
-    equips_model.save(player_character.equips)
+    save_char(player_character, equips=True)
 
     back_button = get_back_button(
         page=page, user_id=user_id, retry_state=START_ROUTES

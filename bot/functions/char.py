@@ -1,11 +1,11 @@
-from random import randint
+from random import randint, random
+from typing import List
 
 from repository.mongo import (
     CharacterModel,
-    ClasseModel,
+    ConditionModel,
     EquipsModel,
     GroupModel,
-    RaceModel,
     StatusModel,
 )
 from rpgram import Group
@@ -56,8 +56,8 @@ def add_xp(
         group_model = GroupModel()
         group = group_model.get(chat_id)
 
-    char_model = CharacterModel()
     if user_id and char is None:
+        char_model = CharacterModel()
         char = char_model.get(user_id)
 
     user_name = char.player_name
@@ -74,7 +74,7 @@ def add_xp(
         xp = int(xp + (group_level * handicap))
 
     report_xp = char.base_stats.add_xp(xp, user_name)
-    char_model.save(char)
+    save_char(char)
     new_level = char.base_stats.level
 
     if report_xp['level_up']:
@@ -94,7 +94,7 @@ def add_damage(
     user_id: int = None,
     char: BaseCharacter = None,
     type_damage: DamageEnum = None,
-):
+) -> dict:
     '''Função que adiciona dano ao personagem.
     '''
     if all((user_id is None, char is None)):
@@ -103,8 +103,8 @@ def add_damage(
             'Ao menos um dos dois não podem ser None.'
         )
 
-    char_model = CharacterModel()
     if user_id and char is None:
+        char_model = CharacterModel()
         char = char_model.get(user_id)
 
     if type_damage in PHYSICAL_DAMAGE_TYPES:
@@ -113,13 +113,48 @@ def add_damage(
         damage_report = char.combat_stats.magical_damage_hit_points(damage)
     else:
         damage_report = char.combat_stats.damage_hit_points(damage)
-    char_model.save(char)
+    save_char(char)
 
     return dict(
         char=char,
         type_damage=type_damage,
         **damage_report,
     )
+
+
+def add_conditions_trap(
+    conditions_trap: List[dict],
+    user_id: int = None,
+    char: BaseCharacter = None,
+) -> dict:
+    '''Função que adiciona condições ao personagem.
+    '''
+    if all((user_id is None, char is None)):
+        raise ValueError(
+            'Forneça um "user_id" ou "char". '
+            'Ao menos um dos dois não podem ser None.'
+        )
+
+    condition_model = ConditionModel()
+    if user_id and char is None:
+        char_model = CharacterModel()
+        char = char_model.get(user_id)
+
+    condition_trap_report = {'text': '', 'char': char}
+    for condition_trap in conditions_trap:
+        efficiency = random()
+        accuracy = condition_trap['accuracy']
+        condition_name = condition_trap['condition']
+        if efficiency <= accuracy:
+            condition = condition_model.get(condition_name)
+            report = char.status.add(condition)
+            condition_trap_report['text'] += report['text'] + '\n'
+
+    if condition_trap_report['text']:
+        condition_trap_report['text'] += '\n'
+    save_char(char, status=True)
+
+    return condition_trap_report
 
 
 def save_char(
