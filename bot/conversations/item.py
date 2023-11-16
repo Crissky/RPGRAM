@@ -250,6 +250,7 @@ async def activated_trap(
     type_damage_name = trap_type_damage.name
     type_damage_multiplier = TRAP_TYPE_DAMAGE_MULTIPLIER[type_damage_name]
     damage = int(type_damage_multiplier * damage)
+
     damage_report = add_damage(
         damage,
         user_id=user_id,
@@ -259,6 +260,7 @@ async def activated_trap(
         trap_conditions,
         char=damage_report['char']
     )
+
     absolute_damage = damage_report['absolute_damage']
     condition_report_text = condition_report["text"]
     text = (

@@ -1,3 +1,4 @@
+from typing import List
 from bson import ObjectId
 from datetime import datetime
 
@@ -77,6 +78,14 @@ class BaseCharacter:
         self.__status.attach_observer(self.__combat_stats)
         self.__created_at = created_at
         self.__updated_at = updated_at
+
+    def activate_status(self) -> List[dict]:
+        reports = self.__status.activate(self)
+        return reports
+
+    def battle_activate_status(self) -> List[dict]:
+        reports = self.__status.battle_activate(self)
+        return reports
 
     def is_damaged(self) -> bool:
         return self.combat_stats.damaged
