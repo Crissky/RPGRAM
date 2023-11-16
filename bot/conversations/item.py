@@ -11,6 +11,7 @@ from telegram.constants import ChatAction, ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
+    ConversationHandler,
 )
 from bot.constants.bag import CALLBACK_TEXT_DESTROY_ITEM
 from bot.constants.item import (
@@ -33,9 +34,8 @@ from bot.decorators import (
     print_basic_infos,
     skip_if_dead_char,
 )
-from bot.functions.char import add_damage, add_xp
+from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
-from telegram.ext import ConversationHandler
 from function.datetime import get_brazil_time_now
 from function.text import escape_markdown_v2
 
@@ -239,7 +239,11 @@ async def activated_trap(
     user_name: str,
     query: CallbackQuery
 ):
-    text_find_trap_open, trap_type_damage = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
+    (
+        text_find_trap_open,
+        trap_type_damage,
+        trap_conditions
+    ) = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
     text_find_trap_damage = choice(REPLY_TEXTS_FIND_TRAP_DAMAGE).format(
         user_name=user_name
     )
@@ -251,11 +255,17 @@ async def activated_trap(
         user_id=user_id,
         type_damage=trap_type_damage
     )
+    condition_report = add_conditions_trap(
+        trap_conditions,
+        char=damage_report['char']
+    )
     absolute_damage = damage_report['absolute_damage']
+    condition_report_text = condition_report["text"]
     text = (
         f'{text_find_trap_open}\n\n'
         f'{text_find_trap_damage} "{absolute_damage}"({damage}) '
         f'pontos de dano do tipo "{trap_type_damage.value}".\n\n'
+        f'{condition_report_text}'
     )
     if damage_report['dead']:
         text += 'Seus pontos de vida chegaram a zero.\n'

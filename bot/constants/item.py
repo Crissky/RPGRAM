@@ -1,6 +1,19 @@
 import re
 
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums import DamageEnum
+from rpgram.enums.condition import (
+    BLEEDING,
+    BLINDNESS,
+    BURN,
+    CONFUSION,
+    CURSE,
+    EXHAUSTION,
+    FROZEN,
+    PARALYSIS,
+    PETRIFIED,
+    POISONING,
+    SILENCE,
+)
 
 
 CALLBACK_TEXT_GET = '$get_item'
@@ -608,494 +621,718 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Com cuidado, você abre o objeto, mas antes que perceba, uma explosão '
         'irrompe.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 1.0}]
     ),
     (
         'Ao destrancar e abrir, um gás venenoso escapa, preenchendo o ar ao '
         'seu redor.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [{'condition': POISONING, 'accuracy': 1.0}]
     ),
     (
         'Deslizando a tampa, você ativa um mecanismo oculto que dispara uma '
         'chuva de dardos afiados.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.7}]
     ),
     (
         'Ao remover a cobertura, um líquido corrosivo começa a se derramar, '
         'causando estragos.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Desprendendo as presilhas, você inadvertidamente desencadeia uma '
         'descarga de magia elétrica.',
-        DamageEnum.FIRE
+        DamageEnum.LIGHTNING,
+        [{'condition': PARALYSIS, 'accuracy': 0.5}]
     ),
     (
         'Abraçando a curiosidade, você abre o objeto e aciona uma armadilha '
         'de alçapão.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Com um clique, o mecanismo se abre, liberando uma enxurrada '
         'de ácido.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Desdobrando as abas, você desencadeia um vento forte que varre tudo '
         'em seu caminho.',
-        DamageEnum.WIND
+        DamageEnum.WIND,
+        []
     ),
     (
         'Com um giro da chave, o invólucro se abre e um enxame de '
         'insetos venenosos emerge.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [{'condition': POISONING, 'accuracy': 0.5}]
     ),
     (
         'Com um puxão cuidadoso, você ativa uma rede de fogo mágico que o '
         'envolve instantaneamente.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 1.0}]
     ),
     (
         'Ao soltar os lacres, você percebe tarde demais que um veneno mortal '
         'foi liberado.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 1.0},
+        ]
     ),
     (
         'Empurrando as bordas, você aciona uma mola que o arremessa '
         'para trás.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Rompendo o selo, você dispara uma série de flechas afiadas '
         'em sua direção.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.7}]
     ),
     (
         'Ao desamarrar as cordas, uma pedra pesada cai, o atingindo.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Com um movimento suave, você ativa uma armadilha e virotes '
         'são disparados em sua direção.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Desprendendo os grampos, você desencadeia uma cascata de rochas '
         'sobre ti.',
-        DamageEnum.ROCK
+        DamageEnum.ROCK,
+        []
     ),
     (
         'Ao erguer a tampa, uma explosão de fogo se espalha, queimando tudo '
         'em seu alcance.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 1.0}]
     ),
     (
         'Com um toque delicado, você aciona uma armadilha de alçapão '
         'subterrânea.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Ao destravar, uma lâmina afiada aparece, visando seus pés.',
-        DamageEnum.SLASHING
+        DamageEnum.SLASHING,
+        [{'condition': BLEEDING, 'accuracy': 0.25}]
     ),
     (
         'Com um deslize, você abre o objeto e ativa uma rede de arame '
         'que o envolve.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Desatando o nó, você desencadeia um alçapão que o faz cair em um '
         'poço escuro.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Ao retirar o sele, você aciona uma chuva de ácido que queima '
         'tudo à sua volta.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Com um movimento impreciso, você dispara uma armadilha de '
         'flechas letais.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.8}]
     ),
     (
         'Deslizando as partes, você aciona um veneno paralisante que se '
         'espalha por seu corpo.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': PARALYSIS, 'accuracy': 0.5}
+        ]
     ),
     (
         'Ao romper o lacre, você ativa uma armadilha que solta uma '
         'criatura feroz.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [{'condition': CURSE, 'accuracy': 0.25}]
     ),
     (
         'Com um gesto descuidado, você desencadeia uma explosão mágica.',
-        DamageEnum.MAGIC
+        DamageEnum.MAGIC,
+        [
+            {'condition': BLINDNESS, 'accuracy': 0.5},
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.5},
+            {'condition': EXHAUSTION, 'accuracy': 0.5},
+            {'condition': FROZEN, 'accuracy': 0.5},
+            {'condition': PARALYSIS, 'accuracy': 0.5},
+            {'condition': PETRIFIED, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': SILENCE, 'accuracy': 0.5},
+        ]
     ),
     (
         'Desvendando as dobras, você aciona um mecanismo que lhe '
         'arremessa para longe.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Ao desatar o fecho, uma armadilha de espinhos afiados é ativada.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Com um simples movimento, você abre o objeto e é engolido '
         'por um redemoinho.',
-        DamageEnum.WIND
+        DamageEnum.WIND,
+        []
     ),
     (
         'Desprendendo os clipes, você ativa uma armadilha que '
         'prende seus pés.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Ao erguer a aba, uma armadilha de alçapão o faz cair '
         'em um abismo escuro.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Com um toque suave, você aciona uma armadilha que libera um '
         'gás paralisante.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': PARALYSIS, 'accuracy': 0.5}
+        ]
     ),
     (
         'Ao destravar, uma explosão sônica ensurdecedora faz você perder '
         'a audição temporariamente.',
-        DamageEnum.MAGIC
+        DamageEnum.MAGIC,
+        [
+            {'condition': BLINDNESS, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.5},
+            {'condition': SILENCE, 'accuracy': 0.5},
+        ]
     ),
     (
         'Com um giro, você abre o objeto e ativa uma armadilha de '
         'água turbulenta.',
-        DamageEnum.WATER
+        DamageEnum.WATER,
+        []
     ),
     (
         'Desfazendo o nó, você ativa uma armadilha que o faz '
         'escorregar e cair.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Ao remover o sele, você aciona uma armadilha causando '
         'uma explosão de virotes.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Com um movimento inábil, você ativa uma armadilha que '
         'dispara estacas afiadas.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.75}]
     ),
     (
         'Desprendendo as travas, você ativa uma armadilha que o '
         'envolve em trevas anômalas.',
-        DamageEnum.DARK
+        DamageEnum.DARK,
+        [{'condition': CURSE, 'accuracy': 0.25}]
     ),
     (
         'Ao romper o selo, uma armadilha de correntes de fogo o '
         'prende, imobilizando-o.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 0.8}]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha de '
         'pedras que caem sobre ti.',
-        DamageEnum.ROCK
+        DamageEnum.ROCK,
+        []
     ),
     (
         'Ao desamarrar os cordões, você ativa uma armadilha que '
         'libera um gás.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [{'condition': POISONING, 'accuracy': 0.5}]
     ),
     (
         'Desvendando o fecho, você aciona uma armadilha que '
         'despeja dardos flamejantes sobre você.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': BLEEDING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Com um simples movimento, você abre o objeto e é '
         'engolido por uma correnteza violenta.',
-        DamageEnum.WATER
+        DamageEnum.WATER,
+        []
     ),
     (
         'Desprendendo as partes, você ativa uma armadilha que o '
         'lança para um fosso fundo.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Ao desvendar o selo, você ativa uma armadilha de '
         'flechas envenenadas.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': BLEEDING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Com um gesto delicado, você aciona uma armadilha que o envolve em '
         'uma teia ácida pegajosa.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75}
+        ]
     ),
     (
         'Ao desfazer os laços, você ativa uma armadilha que o prende em uma '
         'rede de espinhos de aço.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Com um movimento habilidoso, você ativa uma armadilha que '
         'desencadeia uma tempestade de granizo.',
-        DamageEnum.COLD
+        DamageEnum.COLD,
+        [{'condition': FROZEN, 'accuracy': 0.75}]
     ),
     (
         'Desprendendo as travas, você ativa uma armadilha que libera '
         'gás congelante.',
-        DamageEnum.COLD
+        DamageEnum.COLD,
+        [{'condition': FROZEN, 'accuracy': 0.75}]
     ),
     (
         'Ao romper o lacre, uma armadilha de fogo é ativada, '
         'queimando tudo ao seu redor.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 1.0}]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha que o '
         'prende em um vórtice de vento.',
-        DamageEnum.WIND
+        DamageEnum.WIND,
+        []
     ),
     (
         'Desfazendo o nó, você ativa uma armadilha que o faz cair em um '
         'abismo interdimensional.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': SILENCE, 'accuracy': 0.5},
+            {'condition': BLINDNESS, 'accuracy': 0.75}
+        ]
     ),
     (
         'Ao retirar a capa, você aciona uma armadilha que libera uma '
         'chuva de pedras.',
-        DamageEnum.ROCK
+        DamageEnum.ROCK,
+        []
     ),
     (
         'Com um movimento inábil, você ativa uma armadilha que o envolve em '
         'sombras aterrorizantes.',
-        DamageEnum.DARK
+        DamageEnum.DARK,
+        [{'condition': BLINDNESS, 'accuracy': 1.0}]
     ),
     (
         'Desprendendo os clipes, você ativa uma armadilha que libera '
         'criaturas esfomeadas.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [{'condition': CURSE, 'accuracy': 0.25}]
     ),
     (
         'Ao erguer a aba, uma armadilha de alçapão o faz cair em um '
         'labirinto subterrâneo.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Com um toque suave, você aciona uma armadilha que libera um '
         'gás alucinógeno.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.75}
+        ]
     ),
     (
         'Ao destravar, você aciona uma explosão que o arremessa longe.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 0.7}]
     ),
     (
         'Com um giro, você abre o objeto e ativa uma armadilha de '
         'ácido corrosivo.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.7},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Desfazendo o laço, você aciona uma armadilha que o prende '
         'em uma ilusão terrível.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CONFUSION, 'accuracy': 0.75}
+        ]
     ),
     (
         'Ao remover a cobertura, você ativa uma armadilha que despeja '
         'óleo flamejante.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.5}
+        ]
     ),
     (
         'Com um movimento preciso, você aciona uma armadilha que '
         'libera um enxame de insetos venenosos.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [{'condition': POISONING, 'accuracy': 0.5}]
     ),
     (
         'Deslizando as partes, você ativa uma armadilha que '
         'cria um vácuo repentino.',
-        DamageEnum.WIND
+        DamageEnum.WIND,
+        []
     ),
     (
         'Ao destrancar, você ativa uma armadilha que o faz '
         'cair em um fosso com espetos.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 1.0}]
     ),
     (
         'Com um giro da chave, uma explosão mágica irrompe.',
-        DamageEnum.MAGIC
+        DamageEnum.MAGIC,
+        [
+            {'condition': BLINDNESS, 'accuracy': 0.5},
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.5},
+            {'condition': EXHAUSTION, 'accuracy': 0.5},
+            {'condition': FROZEN, 'accuracy': 0.5},
+            {'condition': PARALYSIS, 'accuracy': 0.5},
+            {'condition': PETRIFIED, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': SILENCE, 'accuracy': 0.5},
+        ]
     ),
     (
         'Desprezando as presilhas, você aciona uma armadilha '
         'que liberta um monstro furioso.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [{'condition': CURSE, 'accuracy': 0.25}]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa '
         'uma armadilha de vento cortante.',
-        DamageEnum.WIND
+        DamageEnum.WIND,
+        []
     ),
     (
         'Com um clique, o mecanismo se abre, disparando raios '
         'elétricos em todas as direções.',
-        DamageEnum.LIGHTNING
+        DamageEnum.LIGHTNING,
+        [{'condition': PARALYSIS, 'accuracy': 0.75}]
     ),
     (
         'Desdobrando as abas, você ativa uma armadilha que cria '
         'um terremoto.',
-        DamageEnum.GROUND
+        DamageEnum.GROUND,
+        []
     ),
     (
         'Ao remover a cobertura, uma tempestade de fogo irrompe, '
         'causando estragos.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.0},
+        ]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que '
         'solta um gás alucinógeno.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.75}
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de água em fúria.',
-        DamageEnum.WATER
+        DamageEnum.WATER,
+        []
     ),
     (
         'Com um clique, o mecanismo se abre, liberando uma '
         'torrente de pedras.',
-        DamageEnum.ROCK
+        DamageEnum.ROCK,
+        []
     ),
     (
         'Desdobrando as abas, você aciona uma armadilha que dispara '
         'lâminas afiadas.',
-        DamageEnum.SLASHING
+        DamageEnum.SLASHING,
+        [{'condition': BLEEDING, 'accuracy': 0.9}]
     ),
     (
         'Ao remover a cobertura, uma explosão sônica ensurdecedora enche '
         'o ambiente.',
-        DamageEnum.MAGIC
+        DamageEnum.MAGIC,
+        [
+            {'condition': BLINDNESS, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.5},
+            {'condition': SILENCE, 'accuracy': 0.5},
+        ]
     ),
     (
         'Com um gesto descuidado, você ativa uma armadilha cortante que '
         'prende seus membros.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de '
         'fumaça mágica.',
-        DamageEnum.MAGIC
+        DamageEnum.MAGIC,
+        [
+            {'condition': BLINDNESS, 'accuracy': 0.5},
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': CONFUSION, 'accuracy': 0.5},
+            {'condition': EXHAUSTION, 'accuracy': 0.5},
+            {'condition': FROZEN, 'accuracy': 0.5},
+            {'condition': PARALYSIS, 'accuracy': 0.5},
+            {'condition': PETRIFIED, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': SILENCE, 'accuracy': 0.5},
+        ]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que o '
         'envolve em trevas de perdição.',
-        DamageEnum.DARK
+        DamageEnum.DARK,
+        []
     ),
     (
         'Com um clique, o mecanismo se abre, liberando um veneno paralisante.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': PARALYSIS, 'accuracy': 0.75}
+        ]
     ),
     (
         'Desdobrando as abas, você aciona uma armadilha que libera '
         'uma chuva de rochas.',
-        DamageEnum.ROCK
+        DamageEnum.ROCK,
+        []
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de correntes letais.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Com um gesto descuidado, você ativa uma armadilha que '
         'libera um gás venenoso.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Ao remover a cobertura, uma rede de fios afiados de aço é '
         'disparada em sua direção.',
-        DamageEnum.SLASHING
+        DamageEnum.SLASHING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que o '
         'envolve em uma teia incandescente pegajosa.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [{'condition': BURN, 'accuracy': 0.5}]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa '
         'uma armadilha de granizo.',
-        DamageEnum.COLD
+        DamageEnum.COLD,
+        [{'condition': FROZEN, 'accuracy': 0.25}]
     ),
     (
         'Com um clique, o mecanismo se abre, causando uma explosão de fogo.',
-        DamageEnum.FIRE
+        DamageEnum.FIRE,
+        [
+            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.5},
+        ]
     ),
     (
         'Desdobrando as abas, você aciona uma armadilha que dispara '
         'flechas envenenadas.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': BLEEDING, 'accuracy': 0.75}
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de ácido corrosivo.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.7},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha que libera um '
         'enxame de insetos venenosos.',
-        DamageEnum.POISON
+        DamageEnum.POISON,
+        [{'condition': POISONING, 'accuracy': 0.5}]
     ),
     (
         'Ao remover a cobertura, um líquido viscoso começa a se derramar, '
         'corroendo tudo em seu alcance.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.7},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que liberta '
         'criaturas famintas.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [{'condition': CURSE, 'accuracy': 0.25}]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
         'que o faz escorregar em direção a um poço escuro.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Com um clique, o mecanismo se abre, desencadeando uma '
         'tempestade de granizo.',
-        DamageEnum.COLD
+        DamageEnum.COLD,
+        [{'condition': FROZEN, 'accuracy': 0.5}]
     ),
     (
         'Desdobrando as abas, você ativa uma armadilha que o prende '
         'em uma rede de fios abrolhosos de aço.',
-        DamageEnum.SLASHING
+        DamageEnum.SLASHING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de pedras que caem em você.',
-        DamageEnum.ROCK
+        DamageEnum.ROCK,
+        []
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha que '
         'desencadeia uma chuva de ácido.',
-        DamageEnum.ACID
+        DamageEnum.ACID,
+        [
+            {'condition': BURN, 'accuracy': 0.7},
+            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.5}
+        ]
     ),
     (
         'Ao remover a cobertura, uma rede de arame é disparada '
         'em sua direção.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.5}]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que o faz '
         'cair em um poço profundo.',
-        DamageEnum.BLUDGEONING
+        DamageEnum.BLUDGEONING,
+        []
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
         'de flechas afiadas.',
-        DamageEnum.PIERCING
+        DamageEnum.PIERCING,
+        [{'condition': BLEEDING, 'accuracy': 0.75}]
     ),
     (
         'Com um clique, o mecanismo se abre, soltando uma criatura '
         'aterrorizante em sua direção.',
-        DamageEnum.CHAOS
+        DamageEnum.CHAOS,
+        [{'condition': CURSE, 'accuracy': 0.25}]
     ),
 ]
 
@@ -1112,3 +1349,20 @@ REPLY_TEXTS_FIND_TRAP_DAMAGE = [
     'Infortunadamente, {user_name} recebeu',
     'De forma inesperada, {user_name} sofreu',
 ]
+
+
+if __name__ == '__main__':
+    for i, tt in enumerate(REPLY_TEXTS_FIND_TRAP_OPEN):
+        try:
+            print(i, end=',')
+            _, _, conditions = tt
+            for condition in conditions:
+                acc = condition['accuracy']
+                if acc > 1.0:
+                    raise ValueError(f'Accuracy {acc} é maior que 1.0.\n{tt}')
+                if acc < 0.0:
+                    raise ValueError(f'Accuracy {acc} é menor que 0.0.\n{tt}')
+        except ValueError as error:
+            print(tt)
+            raise error
+    print('OK!!!')
