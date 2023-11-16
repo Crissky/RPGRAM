@@ -26,7 +26,7 @@ ACCESS_DENIED = (
     f'Use o comando !{COMMANDS[0]} para acessar OS SEUS 🎒ITENS.'
 )
 # ACTION BUTTON TEXTS
-CLOSE_BAG_BUTTON_TEXT = f'{EmojiEnum.CLOSE_BAG.value}Fechar Bolsa'
+CLOSE_BAG_BUTTON_TEXT = f'Fechar Bolsa{EmojiEnum.CLOSE_BAG.value}'
 DESTROY_ITEM_BUTTON_TEXT = f'Quebrar{EmojiEnum.DESTROY_ITEM.value}'
 DISCARD_BUTTON_TEXT = f'{EmojiEnum.DISCARD.value}Descartar'
 DISCARD_MANY_BUTTON_TEXT = f'{EmojiEnum.DISCARD.value}Descartar x10'

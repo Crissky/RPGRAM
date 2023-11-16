@@ -52,6 +52,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return None
+        
+        # Apaga o Mensagem
+        if data.get('close', False):
+            await query.answer('Fechando Equipamentos...')
+            await query.delete_message()
+            return None
 
     if not equips:
         player_character = char_model.get(user_id)
@@ -143,7 +149,7 @@ def get_equips_keyboard(
     if (amulet := equips.amulet):
         accessories_buttons.append(create_equipment_button(amulet, user_id))
     equips_keyboard.append(accessories_buttons)
-    equips_keyboard.append([get_refresh_button(user_id)])
+    equips_keyboard.append([get_refresh_close_button(user_id)])
 
     return InlineKeyboardMarkup(equips_keyboard)
 
@@ -166,14 +172,23 @@ def create_equipment_button(
     )
 
 
-def get_refresh_button(user_id) -> InlineKeyboardButton:
-    return InlineKeyboardButton(
-        f'{EmojiEnum.REFRESH.value}Atualizar',
-        callback_data=(
-            f'{{"refresh":1,'
-            f'"user_id":{user_id}}}'
+def get_refresh_close_button(user_id) -> InlineKeyboardButton:
+    return [
+        InlineKeyboardButton(
+            f'{EmojiEnum.REFRESH.value}Atualizar',
+            callback_data=(
+                f'{{"refresh":1,'
+                f'"user_id":{user_id}}}'
+            )
+        ),
+        InlineKeyboardButton(
+            f'Fechar{EmojiEnum.CLOSE.value}',
+            callback_data=(
+                f'{{"close":1,'
+                f'"user_id":{user_id}}}'
+            )
         )
-    )
+    ]
 
 
 def get_random_refresh_text() -> str:
@@ -198,5 +213,8 @@ VIEW_EQUIPS_HANDLERS = [
     ),
     CallbackQueryHandler(
         start, pattern=r'^{"refresh":1'
+    ),
+    CallbackQueryHandler(
+        start, pattern=r'^{"close":1'
     ),
 ]

@@ -79,6 +79,7 @@ class EmojiEnum(Enum):
     SORT_DOWN = '🔽'  # 🔽🔻
     IDENTIFY = '🔍'
     REFRESH = '🔄'
+    CLOSE = '❌'
 
 
 class FaceEmojiEnum(Enum):
