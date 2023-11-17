@@ -107,8 +107,8 @@ class Condition(StatsBooster):
         if verbose:
             text += (
                 f'*Descrição*: {self.__description}\n'
-                f'*Função*: {self.__function}\n'
-                f'*Função em Batalha*: {self.__battle_function}\n'
+                f'*Função*: {self.function}\n'
+                f'*Função em Batalha*: {self.battle_function}\n'
                 f'*Frequência*: {self.__frequency.value}\n'
                 f'*Turno*: {self.__turn}\n'
                 f'*Nível*: {self.__level}\n'
