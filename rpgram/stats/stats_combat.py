@@ -208,8 +208,8 @@ class CombatStats:
     def hit_points(self) -> int:
         return int(
             10 +
-            (self.constitution * 10) +
-            (self.strength * 5) +
+            (self.constitution * 15) +
+            (self.strength * 7.5) +
             self.bonus_hit_points
         )
 
@@ -284,7 +284,8 @@ class CombatStats:
     @property
     def magical_defense(self) -> int:
         return int(
-            (self.wisdom * 2) +
+            (self.wisdom * 3) +
+            self.intelligence +
             self.constitution +
             self.bonus_magical_defense
         )
