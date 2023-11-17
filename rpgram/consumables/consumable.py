@@ -85,7 +85,6 @@ class Consumable:
             text += (
                 f'*Peso*: {self.__weight}{EmojiEnum.WEIGHT.value}\n'
                 f'*Descrição*: {self.__description}\n'
-                f'*Função*: {self.__function}\n'
                 f'*Raridade*: {self.__rarity.value}\n'
             )
 
