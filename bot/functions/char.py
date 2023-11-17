@@ -157,11 +157,38 @@ def add_conditions_trap(
     return condition_trap_report
 
 
+def activate_conditions(
+    user_id: int = None,
+    char: BaseCharacter = None,
+) -> dict:
+    '''Função que adiciona ativa as condições no Status do personagem.
+    '''
+    if all((user_id is None, char is None)):
+        raise ValueError(
+            'Forneça um "user_id" ou "char". '
+            'Ao menos um dos dois não podem ser None.'
+        )
+
+    if user_id and char is None:
+        char_model = CharacterModel()
+        char = char_model.get(user_id)
+
+    activate_report = {'text': '', 'char': char}
+    reports = char.activate_status()
+    for report in reports:
+        activate_report['text'] += report['text'] + '\n'
+
+    if activate_report['text']:
+        activate_report['text'] += '\n'
+    save_char(char, status=True)
+
+    return activate_report
+
+
 def save_char(
     char: BaseCharacter,
     equips: bool = False,
     status: bool = False,
-
 ):
     char_model = CharacterModel()
     char_model.save(char)
