@@ -622,34 +622,63 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com cuidado, você abre o objeto, mas antes que perceba, uma explosão '
         'irrompe.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 1.0}]
+        [
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.10},
+        ]
     ),
     (
         'Ao destrancar e abrir, um gás venenoso escapa, preenchendo o ar ao '
         'seu redor.',
         DamageEnum.POISON,
-        [{'condition': POISONING, 'accuracy': 1.0}]
+        [
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Deslizando a tampa, você ativa um mecanismo oculto que dispara uma '
         'chuva de dardos afiados.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.7}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Ao remover a cobertura, um líquido corrosivo começa a se derramar, '
         'causando estragos.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
         ]
     ),
     (
         'Desprendendo as presilhas, você inadvertidamente desencadeia uma '
         'descarga de magia elétrica.',
         DamageEnum.LIGHTNING,
-        [{'condition': PARALYSIS, 'accuracy': 0.5}]
+        [
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+        ]
     ),
     (
         'Abraçando a curiosidade, você abre o objeto e aciona uma armadilha '
@@ -662,8 +691,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'de ácido.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
         ]
     ),
     (
@@ -676,24 +709,57 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um giro da chave, o invólucro se abre e um enxame de '
         'insetos venenosos emerge.',
         DamageEnum.POISON,
-        [{'condition': POISONING, 'accuracy': 0.5}]
+        [
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um puxão cuidadoso, você ativa uma rede de fogo mágico que o '
         'envolve instantaneamente.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 1.0}]
+        [
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+        ]
     ),
     (
         'Ao soltar os lacres, você percebe tarde demais que um veneno mortal '
         'foi liberado.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 1.0},
-            {'condition': POISONING, 'accuracy': 1.0},
-            {'condition': POISONING, 'accuracy': 1.0},
-            {'condition': POISONING, 'accuracy': 1.0},
-            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
         ]
     ),
     (
@@ -706,7 +772,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Rompendo o selo, você dispara uma série de flechas afiadas '
         'em sua direção.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.7}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Ao desamarrar as cordas, uma pedra pesada cai, o atingindo.',
@@ -717,7 +794,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um movimento suave, você ativa uma armadilha e virotes '
         'são disparados em sua direção.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Desprendendo os grampos, você desencadeia uma cascata de rochas '
@@ -729,7 +812,28 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao erguer a tampa, uma explosão de fogo se espalha, queimando tudo '
         'em seu alcance.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 1.0}]
+        [
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um toque delicado, você aciona uma armadilha de alçapão '
@@ -740,13 +844,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Ao destravar, uma lâmina afiada aparece, visando seus pés.',
         DamageEnum.SLASHING,
-        [{'condition': BLEEDING, 'accuracy': 0.25}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um deslize, você abre o objeto e ativa uma rede de arame '
         'que o envolve.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Desatando o nó, você desencadeia um alçapão que o faz cair em um '
@@ -759,8 +871,26 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'tudo à sua volta.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 1.0},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
         ]
     ),
     (
@@ -774,29 +904,48 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'espalha por seu corpo.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': PARALYSIS, 'accuracy': 0.5}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
         ]
     ),
     (
         'Ao romper o lacre, você ativa uma armadilha que solta uma '
         'criatura feroz.',
         DamageEnum.CHAOS,
-        [{'condition': CURSE, 'accuracy': 0.25}]
+        [
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um gesto descuidado, você desencadeia uma explosão mágica.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'accuracy': 0.5},
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.5},
-            {'condition': EXHAUSTION, 'accuracy': 0.5},
-            {'condition': FROZEN, 'accuracy': 0.5},
-            {'condition': PARALYSIS, 'accuracy': 0.5},
-            {'condition': PETRIFIED, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': SILENCE, 'accuracy': 0.5},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
         ]
     ),
     (
@@ -808,7 +957,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Ao desatar o fecho, uma armadilha de espinhos afiados é ativada.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Com um simples movimento, você abre o objeto e é engolido '
@@ -820,7 +975,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desprendendo os clipes, você ativa uma armadilha que '
         'prende seus pés.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Ao erguer a aba, uma armadilha de alçapão o faz cair '
@@ -833,8 +992,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'gás paralisante.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': PARALYSIS, 'accuracy': 0.5}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
         ]
     ),
     (
@@ -842,9 +1005,15 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'a audição temporariamente.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.5},
-            {'condition': SILENCE, 'accuracy': 0.5},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
         ]
     ),
     (
@@ -863,25 +1032,59 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao remover o sele, você aciona uma armadilha causando '
         'uma explosão de virotes.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Com um movimento inábil, você ativa uma armadilha que '
         'dispara estacas afiadas.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.75}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+        ]
     ),
     (
         'Desprendendo as travas, você ativa uma armadilha que o '
         'envolve em trevas anômalas.',
         DamageEnum.DARK,
-        [{'condition': CURSE, 'accuracy': 0.25}]
+        [
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+        ]
     ),
     (
         'Ao romper o selo, uma armadilha de correntes de fogo o '
         'prende, imobilizando-o.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 0.8}]
+        [
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+        ]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha de '
@@ -893,15 +1096,34 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao desamarrar os cordões, você ativa uma armadilha que '
         'libera um gás.',
         DamageEnum.POISON,
-        [{'condition': POISONING, 'accuracy': 0.5}]
+        [
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Desvendando o fecho, você aciona uma armadilha que '
         'despeja dardos flamejantes sobre você.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': BLEEDING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
         ]
     ),
     (
@@ -921,8 +1143,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'flechas envenenadas.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': BLEEDING, 'accuracy': 0.5}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
         ]
     ),
     (
@@ -931,32 +1166,71 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.ACID,
         [
             {'condition': BURN, 'accuracy': 0.75},
-            {'condition': POISONING, 'accuracy': 0.75}
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
         ]
     ),
     (
         'Ao desfazer os laços, você ativa uma armadilha que o prende em uma '
         'rede de espinhos de aço.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Com um movimento habilidoso, você ativa uma armadilha que '
         'desencadeia uma tempestade de granizo.',
         DamageEnum.COLD,
-        [{'condition': FROZEN, 'accuracy': 0.75}]
+        [
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+        ]
     ),
     (
         'Desprendendo as travas, você ativa uma armadilha que libera '
         'gás congelante.',
         DamageEnum.COLD,
-        [{'condition': FROZEN, 'accuracy': 0.75}]
+        [
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.75},
+            {'condition': FROZEN, 'accuracy': 0.75},
+        ]
     ),
     (
         'Ao romper o lacre, uma armadilha de fogo é ativada, '
         'queimando tudo ao seu redor.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 1.0}]
+        [
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha que o '
@@ -970,8 +1244,20 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.CHAOS,
         [
             {'condition': CURSE, 'accuracy': 0.25},
-            {'condition': SILENCE, 'accuracy': 0.5},
-            {'condition': BLINDNESS, 'accuracy': 0.75}
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.75},
+            {'condition': BLINDNESS, 'accuracy': 0.75},
+            {'condition': BLINDNESS, 'accuracy': 0.75},
+            {'condition': BLINDNESS, 'accuracy': 0.75},
+            {'condition': BLINDNESS, 'accuracy': 0.75},
         ]
     ),
     (
@@ -984,13 +1270,30 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um movimento inábil, você ativa uma armadilha que o envolve em '
         'sombras aterrorizantes.',
         DamageEnum.DARK,
-        [{'condition': BLINDNESS, 'accuracy': 1.0}]
+        [
+            {'condition': BLINDNESS, 'accuracy': 1.00},
+            {'condition': BLINDNESS, 'accuracy': 1.00},
+            {'condition': BLINDNESS, 'accuracy': 1.00},
+            {'condition': BLINDNESS, 'accuracy': 1.00},
+            {'condition': BLINDNESS, 'accuracy': 1.00},
+        ]
     ),
     (
         'Desprendendo os clipes, você ativa uma armadilha que libera '
         'criaturas esfomeadas.',
         DamageEnum.CHAOS,
-        [{'condition': CURSE, 'accuracy': 0.25}]
+        [
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+        ]
     ),
     (
         'Ao erguer a aba, uma armadilha de alçapão o faz cair em um '
@@ -1003,22 +1306,49 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'gás alucinógeno.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.75}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
         ]
     ),
     (
         'Ao destravar, você aciona uma explosão que o arremessa longe.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 0.7}]
+        [
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.10},
+            {'condition': BURN, 'accuracy': 0.10},
+            {'condition': BURN, 'accuracy': 0.10},
+        ]
     ),
     (
         'Com um giro, você abre o objeto e ativa uma armadilha de '
         'ácido corrosivo.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 0.7},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
         ]
     ),
     (
@@ -1026,8 +1356,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em uma ilusão terrível.',
         DamageEnum.CHAOS,
         [
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
             {'condition': CURSE, 'accuracy': 0.25},
-            {'condition': CONFUSION, 'accuracy': 0.75}
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
         ]
     ),
     (
@@ -1035,16 +1378,40 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'óleo flamejante.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
             {'condition': BURN, 'accuracy': 0.75},
-            {'condition': BURN, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
         ]
     ),
     (
         'Com um movimento preciso, você aciona uma armadilha que '
         'libera um enxame de insetos venenosos.',
         DamageEnum.POISON,
-        [{'condition': POISONING, 'accuracy': 0.5}]
+        [
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Deslizando as partes, você ativa uma armadilha que '
@@ -1056,28 +1423,68 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao destrancar, você ativa uma armadilha que o faz '
         'cair em um fosso com espetos.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 1.0}]
+        [
+            {'condition': BLEEDING, 'accuracy': 1.00},
+            {'condition': BLEEDING, 'accuracy': 1.00},
+            {'condition': BLEEDING, 'accuracy': 1.00},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um giro da chave, uma explosão mágica irrompe.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'accuracy': 0.5},
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.5},
-            {'condition': EXHAUSTION, 'accuracy': 0.5},
-            {'condition': FROZEN, 'accuracy': 0.5},
-            {'condition': PARALYSIS, 'accuracy': 0.5},
-            {'condition': PETRIFIED, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': SILENCE, 'accuracy': 0.5},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
         ]
     ),
     (
         'Desprezando as presilhas, você aciona uma armadilha '
         'que liberta um monstro furioso.',
         DamageEnum.CHAOS,
-        [{'condition': CURSE, 'accuracy': 0.25}]
+        [
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa '
@@ -1089,7 +1496,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um clique, o mecanismo se abre, disparando raios '
         'elétricos em todas as direções.',
         DamageEnum.LIGHTNING,
-        [{'condition': PARALYSIS, 'accuracy': 0.75}]
+        [
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+        ]
     ),
     (
         'Desdobrando as abas, você ativa uma armadilha que cria '
@@ -1102,11 +1520,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'causando estragos.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'accuracy': 1.0},
-            {'condition': BURN, 'accuracy': 1.0},
-            {'condition': BURN, 'accuracy': 1.0},
-            {'condition': BURN, 'accuracy': 1.0},
-            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
         ]
     ),
     (
@@ -1114,8 +1542,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'solta um gás alucinógeno.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.75}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
+            {'condition': CONFUSION, 'accuracy': 0.75},
         ]
     ),
     (
@@ -1134,16 +1575,28 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desdobrando as abas, você aciona uma armadilha que dispara '
         'lâminas afiadas.',
         DamageEnum.SLASHING,
-        [{'condition': BLEEDING, 'accuracy': 0.9}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+        ]
     ),
     (
         'Ao remover a cobertura, uma explosão sônica ensurdecedora enche '
         'o ambiente.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.5},
-            {'condition': SILENCE, 'accuracy': 0.5},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
         ]
     ),
     (
@@ -1157,19 +1610,39 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'fumaça mágica.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'accuracy': 0.5},
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': CONFUSION, 'accuracy': 0.5},
-            {'condition': EXHAUSTION, 'accuracy': 0.5},
-            {'condition': FROZEN, 'accuracy': 0.5},
-            {'condition': PARALYSIS, 'accuracy': 0.5},
-            {'condition': PETRIFIED, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': SILENCE, 'accuracy': 0.5},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BLINDNESS, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': CONFUSION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': EXHAUSTION, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': PETRIFIED, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
+            {'condition': SILENCE, 'accuracy': 0.50},
         ]
     ),
     (
@@ -1182,8 +1655,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um clique, o mecanismo se abre, liberando um veneno paralisante.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': PARALYSIS, 'accuracy': 0.75}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
+            {'condition': PARALYSIS, 'accuracy': 0.75},
         ]
     ),
     (
@@ -1203,9 +1684,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'libera um gás venenoso.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 1.0},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
+            {'condition': POISONING, 'accuracy': 1.00},
             {'condition': POISONING, 'accuracy': 0.75},
-            {'condition': POISONING, 'accuracy': 0.5},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
             {'condition': POISONING, 'accuracy': 0.25},
         ]
     ),
@@ -1213,27 +1706,66 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao remover a cobertura, uma rede de fios afiados de aço é '
         'disparada em sua direção.',
         DamageEnum.SLASHING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que o '
         'envolve em uma teia incandescente pegajosa.',
         DamageEnum.FIRE,
-        [{'condition': BURN, 'accuracy': 0.5}]
+        [
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa '
         'uma armadilha de granizo.',
         DamageEnum.COLD,
-        [{'condition': FROZEN, 'accuracy': 0.25}]
+        [
+            {'condition': FROZEN, 'accuracy': 0.25},
+            {'condition': FROZEN, 'accuracy': 0.25},
+            {'condition': FROZEN, 'accuracy': 0.25},
+            {'condition': FROZEN, 'accuracy': 0.25},
+            {'condition': FROZEN, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, causando uma explosão de fogo.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'accuracy': 1.0},
+            {'condition': BURN, 'accuracy': 1.00},
+            {'condition': BURN, 'accuracy': 1.00},
             {'condition': BURN, 'accuracy': 0.75},
-            {'condition': BURN, 'accuracy': 0.5},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
         ]
     ),
     (
@@ -1241,8 +1773,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'flechas envenenadas.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': BLEEDING, 'accuracy': 0.75}
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
+            {'condition': BLEEDING, 'accuracy': 0.75},
         ]
     ),
     (
@@ -1250,30 +1790,70 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'armadilha de ácido corrosivo.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 0.7},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
         ]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha que libera um '
         'enxame de insetos venenosos.',
         DamageEnum.POISON,
-        [{'condition': POISONING, 'accuracy': 0.5}]
+        [
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Ao remover a cobertura, um líquido viscoso começa a se derramar, '
         'corroendo tudo em seu alcance.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 0.7},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
         ]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que liberta '
         'criaturas famintas.',
         DamageEnum.CHAOS,
-        [{'condition': CURSE, 'accuracy': 0.25}]
+        [
+            {'condition': CURSE, 'accuracy': 0.75},
+            {'condition': CURSE, 'accuracy': 0.75},
+            {'condition': CURSE, 'accuracy': 0.75},
+            {'condition': CURSE, 'accuracy': 0.75},
+            {'condition': CURSE, 'accuracy': 0.75},
+            {'condition': CURSE, 'accuracy': 0.75},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.50},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
@@ -1285,13 +1865,29 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um clique, o mecanismo se abre, desencadeando uma '
         'tempestade de granizo.',
         DamageEnum.COLD,
-        [{'condition': FROZEN, 'accuracy': 0.5}]
+        [
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+            {'condition': FROZEN, 'accuracy': 0.50},
+        ]
     ),
     (
         'Desdobrando as abas, você ativa uma armadilha que o prende '
         'em uma rede de fios abrolhosos de aço.',
         DamageEnum.SLASHING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
@@ -1304,17 +1900,36 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'desencadeia uma chuva de ácido.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'accuracy': 0.7},
-            {'condition': BURN, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5},
-            {'condition': POISONING, 'accuracy': 0.5}
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.75},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.50},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': BURN, 'accuracy': 0.25},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
+            {'condition': POISONING, 'accuracy': 0.50},
         ]
     ),
     (
         'Ao remover a cobertura, uma rede de arame é disparada '
         'em sua direção.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.5}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+        ]
     ),
     (
         'Desprendendo as presilhas, você aciona uma armadilha que o faz '
@@ -1326,13 +1941,43 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
         'de flechas afiadas.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'accuracy': 0.75}]
+        [
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.50},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+            {'condition': BLEEDING, 'accuracy': 0.25},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, soltando uma criatura '
         'aterrorizante em sua direção.',
         DamageEnum.CHAOS,
-        [{'condition': CURSE, 'accuracy': 0.25}]
+        [
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+            {'condition': CURSE, 'accuracy': 0.25},
+        ]
     ),
 ]
 

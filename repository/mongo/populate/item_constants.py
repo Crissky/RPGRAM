@@ -5,12 +5,13 @@ SLASHING_WEAPONS = [
     'SCIMITAR', 'MACHETE', 'CUTLASS', 'FALCHION', 'HALBERD', 'WHIP'
 ]
 BLUDGEONING_WEAPONS = [
-    'SHIELD', 'SPIKED_SHIELD', 'STAFF', 'WARHAMMER', 'MACE', 'CLUB', 'FLAIL',
+    'SHIELD', 'STAFF', 'WARHAMMER', 'MACE', 'CLUB', 'FLAIL',
     'MORNING_STAR', 'SLEDGEHAMMER', 'BLACKJACK', 'SHARUR'
 ]
 PIERCING_WEAPONS = [
-    'BOW', 'HALBERD', 'CROSSBOW', 'ARBALEST', 'SPEAR', 'JAVELIN', 'PIKE',
-    'LANCE', 'RAPIER', 'ESTOQUE', 'TRIDENT', 'DART_BLOWER', 'SAI'
+    'SPIKED_SHIELD', 'BOW', 'HALBERD', 'CROSSBOW', 'ARBALEST', 'SPEAR',
+    'JAVELIN', 'PIKE', 'LANCE', 'RAPIER', 'ESTOQUE', 'TRIDENT', 'DART_BLOWER',
+    'SAI'
 ]
 MAGIC_WEAPONS = [
     'WAND', 'GRIMOIRE', 'ORB', 'SCEPTER', 'QUILL', 'CHALICE',
@@ -49,7 +50,7 @@ MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE']
 MAGICAL_STONES_EQUIPMENTS = ['ORB', 'CRYSTAL']
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
-TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK']
+TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD']
 
 
 # EQUIPMENTS DEFINITIONS
@@ -808,6 +809,54 @@ HELMET_EQUIPMENTS = {
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
             'bonus_evasion': 10,
+        }
+    ),
+    'KRÁNOS': dict(  # krános é capacete em grego
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 1,
+            'bonus_physical_attack': 7, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 10,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        }
+    ),
+    'GUGEL': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 3, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'HOOD': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 3, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 7,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 7,
+            'bonus_evasion': 7,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
         }
     ),
     'POINTED_HAT': dict(
