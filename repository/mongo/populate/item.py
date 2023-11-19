@@ -587,7 +587,7 @@ def create_random_consumable(group_level: int):
     '''
     item_model = ItemModel()
     rarity = choice_rarity(group_level)
-    query = dict(rarity=rarity, _class='Consumable')
+    query = dict(rarity=rarity, _class={'$ne':'Equipment'})
     item_list = item_model.get_all(query=query)
     quantity = randint(1, 3)
     item = choice(item_list)
