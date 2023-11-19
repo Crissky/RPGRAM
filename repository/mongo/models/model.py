@@ -7,7 +7,6 @@ from repository.mongo import Database
 from rpgram import (
     Bag,
     Battle,
-    Consumable,
     Equips,
     Group,
     Player,
@@ -15,11 +14,31 @@ from rpgram import (
 )
 from rpgram.boosters import (
     Classe,
-    Condition,
     Equipment,
     Race,
 )
 from rpgram.characters import BaseCharacter, PlayerCharacter
+from rpgram.conditions import (
+    Condition,
+    HealingCondition,
+    BleedingCondition,
+    BlindnessCondition,
+    BurnCondition,
+    ConfusionCondition,
+    CurseCondition,
+    ExhaustionCondition,
+    FrozenCondition,
+    ParalysisCondition,
+    PetrifiedCondition,
+    PoisoningCondition,
+    SilenceCondition,
+)
+from rpgram.consumables import (
+    Consumable,
+    HealingConsumable,
+    CureConsumable,
+    IdentifyingConsumable,
+)
 
 
 def singleton(cls):
@@ -112,7 +131,7 @@ class Model:
 
         return result
 
-    def save(self, obj: Any):
+    def save(self, obj: Any, replace=False):
         if not isinstance(obj, self._class):
             raise ValueError(
                 f'Objeto inválido. Precisa ser {self._class} não {type(obj)}'
@@ -126,12 +145,20 @@ class Model:
             obj_dict.pop('_id', None)
             if obj_dict.get(self.alternative_id, None):
                 query[self.alternative_id] = obj_dict[self.alternative_id]
-        if query and self.database.find(self.collection, query):
+        if (
+            query and
+            self.database.find(self.collection, query) and
+            not replace
+        ):
             print(f'Updating: {self.__class__.__name__}')
             obj_dict['updated_at'] = get_brazil_time_now()
             result = self.database.update(
                 self.collection, query, {'$set': obj_dict}
             )
+        elif query and self.database.find(self.collection, query) and replace:
+            print(f'Replacing: {self.__class__.__name__}')
+            obj_dict['updated_at'] = get_brazil_time_now()
+            result = self.database.replace(self.collection, query, obj_dict)
         else:
             print(f'Inserting: {self.__class__.__name__}')
             obj_dict['created_at'] = get_brazil_time_now()
@@ -166,15 +193,19 @@ class Model:
 
         Quando o campo a ser populado é uma lista, todos os elementos da lista 
         serão populados, porém todos eles devem pertencer a mesma tabela.'''
-        for field_name, field_info in self.populate_fields.items():
-            expected_class = field_info.get('_class')
-            if expected_class and expected_class != dict_obj['_class']:
+        for popu_field_name, popu_field_info in self.populate_fields.items():
+            expected_class = popu_field_info.get('_class')
+            is_same_class = issubclass(
+                eval(dict_obj['_class']),
+                eval(expected_class)
+            ) if expected_class else False
+            if expected_class and not is_same_class:
                 continue
 
-            if field_info['id_key'] in dict_obj.keys():
-                key = field_info['id_key']
+            if popu_field_info['id_key'] in dict_obj.keys():
+                key = popu_field_info['id_key']
                 dict_field = dict_obj.pop(key)
-                model = field_info['model']
+                model = popu_field_info['model']
 
                 object = None
                 if isinstance(dict_field, list):
@@ -183,14 +214,14 @@ class Model:
                         if isinstance(item, dict):
                             object_id = item.pop('_id')
                             object_loaded = model.get(object_id)
-                            if 'subclass' in field_info.keys():
-                                subclass = field_info['subclass']
+                            if 'subclass' in popu_field_info.keys():
+                                subclass = popu_field_info['subclass']
                                 object_loaded = subclass(object_loaded, **item)
                             # Instancia a classe novamente combinando os
                             # atributos fixo do objeto (que vem com model)
                             # com os atributos variáveis (que estão na lista).
-                            elif 'remakeclass' in field_info.keys():
-                                remakeclass = field_info['remakeclass']
+                            elif 'remakeclass' in popu_field_info.keys():
+                                remakeclass = object_loaded.__class__
                                 object_dict = object_loaded.to_dict()
                                 object_dict.update(item)
                                 object_loaded = remakeclass(**object_dict)
@@ -207,7 +238,7 @@ class Model:
                 elif dict_field is not None:  # esperado que dict_field seja um _id
                     object = model.get(dict_field)
 
-                dict_obj[field_name] = object
+                dict_obj[popu_field_name] = object
             else:
                 if isinstance(self._class, tuple):
                     class_name = ', '.join([c.__name__ for c in self._class])
@@ -215,7 +246,7 @@ class Model:
                     class_name = self._class.__name__
                 raise KeyError(
                     f'O dicionário da(s) classe(s) {class_name} '
-                    f'não possui campo {field_info["id_key"]}.'
+                    f'não possui campo {popu_field_info["id_key"]}.'
                 )
 
         return dict_obj
@@ -256,7 +287,8 @@ class Model:
                     uma lista de dicionários (Usado no BagModel para usar os 
                     objetos do tipo Equipment/Consumable carregados pelo 
                     ItemModel como atributo da classe Item).
-                remakeclass: Classe que será instanciada usando o to_dict() do
+                remakeclass: Se existir esse campo, define que a Classe que 
+                    será instanciada usando o to_dict() do
                     objeto carregado do banco pelo `model` como seus 
                     atributos, além dos demais chaves/valores do dicionário 
                     salvo no banco. (Usado pelo StatusModel para modificar 
@@ -296,7 +328,7 @@ class Model:
                 'conditions': {
                     'id_key': 'condition_ids',
                     'model': ConditionModel(),
-                    'remakeclass': Condition,  # Classe que será instanciada usando o dicionário do objeto carregado pelo 'model'
+                    'remakeclass': True,  # Se a Classe será reinstanciada
             }
             Exemplo4:
             'condition': {
