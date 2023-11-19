@@ -2,7 +2,6 @@ from repository.mongo import CollectionEnum, Model
 from repository.mongo.models.condition import ConditionModel
 
 from rpgram import Status
-from rpgram.boosters import Condition
 
 
 class StatusModel(Model):
@@ -13,7 +12,7 @@ class StatusModel(Model):
             'conditions': {
                 'id_key': 'condition_ids',
                 'model': ConditionModel(),
-                'remakeclass': Condition,
+                'remakeclass': True,
             }
         }
     )

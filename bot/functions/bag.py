@@ -2,7 +2,7 @@
 from typing import Union
 from repository.mongo import BagModel, ItemModel
 from rpgram import Item
-from rpgram import Consumable
+from rpgram.consumables import Consumable
 from rpgram.boosters import Equipment
 
 

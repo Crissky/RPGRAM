@@ -5,7 +5,7 @@ from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.equipment import Equipment
-from rpgram.consumable import Consumable
+from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder

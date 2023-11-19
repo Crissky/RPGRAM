@@ -5,7 +5,6 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.boosters.condition import Condition
 
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.rarity import RarityEnum
@@ -19,7 +18,6 @@ class Consumable:
         weight: float,
         function: str,
         battle_function: str = None,
-        condition: Condition = None,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         usable: bool = True,
         _id: Union[str, ObjectId] = None,
@@ -36,7 +34,6 @@ class Consumable:
         self.__name = name
         self.__description = description
         self.__weight = weight
-        self.__condition = condition
         self.__function = function
         self.__battle_function = battle_function
         self.__rarity = rarity
@@ -47,14 +44,14 @@ class Consumable:
 
     def use(self, target):
         local = {'target': target, 'self': self}
-        exec(self.__function, None, local)
+        exec(self.function, None, local)
         report = local['report']
         return report
 
-    def battle_use(self, target):  # If é provisório até a criação das conditions no banco
-        if self.__battle_function:
+    def battle_use(self, target):
+        if self.battle_function:
             local = {'target': target, 'self': self}
-            exec(self.__battle_function, None, local)
+            exec(self.battle_function, None, local)
             report = local['report']
         else:
             report = self.use(target)
@@ -67,7 +64,6 @@ class Consumable:
             weight=self.__weight,
             function=self.__function,
             battle_function=self.__battle_function,
-            condition_name=self.__condition.name if self.__condition else None,
             rarity=self.__rarity.name,
             usable=self.__usable,
             _id=self.__id,
@@ -85,7 +81,6 @@ class Consumable:
             text += (
                 f'*Peso*: {self.__weight}{EmojiEnum.WEIGHT.value}\n'
                 f'*Descrição*: {self.__description}\n'
-                f'*Função*: {self.__function}\n'
                 f'*Raridade*: {self.__rarity.value}\n'
             )
 
@@ -124,8 +119,8 @@ class Consumable:
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
     weight = property(lambda self: self.__weight)
-    condition = property(lambda self: self.__condition)
     function = property(lambda self: self.__function)
+    battle_function = property(lambda self: self.__battle_function)
     rarity = property(lambda self: self.__rarity)
     usable = property(lambda self: self.__usable)
 
@@ -184,7 +179,6 @@ if __name__ == '__main__':
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
-        condition=None,
         function='report = target.combat_stats.cure_hit_points(100)'
     )
     print(potion)

@@ -9,7 +9,7 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
-from rpgram.boosters.condition import Condition
+from rpgram.conditions.condition import Condition
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
 
@@ -59,15 +59,16 @@ class Status:
         report = {}
         name = condition.name
         if condition in self.__conditions:
+            turn = condition.turn
             index = self.__conditions.index(condition)
             condition = self.__conditions[index]
             condition.add_level()
+            condition.set_turn(turn)
             level = condition.level
             report['text'] = (
                 f'O nível da Condição "{name}" foi aumentado para {level}.'
             )
-            if condition.frequency == TurnEnum.CONTINUOUS:
-                condition.activate(None)
+            condition.activate_continuous()
         else:
             self.__conditions.append(condition)
             report['text'] = f'A Condição "{name}" foi adicionada.'
@@ -98,8 +99,7 @@ class Status:
                 report['text'] = f'A Condição "{name}" foi removida.'
                 self.__conditions.pop(index)
             else:
-                if new_condition.frequency == TurnEnum.CONTINUOUS:
-                    new_condition.activate(None)
+                new_condition.activate_continuous()
                 level = new_condition.level
                 report['text'] = (
                     f'O nível da Condição "{name}" foi reduzido para {level}.'

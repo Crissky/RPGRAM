@@ -17,6 +17,9 @@ from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 
 
+FULL_HEAL_VALUE = 'FULL_HEAL'
+
+
 class CombatStats:
     def __init__(
         self,
@@ -122,6 +125,8 @@ class CombatStats:
         return report
 
     def cure_hit_points(self, value: int) -> dict:
+        if value == FULL_HEAL_VALUE:
+            value = self.hit_points
         value = int(abs(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points

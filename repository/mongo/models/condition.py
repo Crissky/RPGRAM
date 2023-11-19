@@ -1,6 +1,6 @@
 from repository.mongo import Model
 from repository.mongo.collection_enum import CollectionEnum
-from rpgram.boosters import Condition
+from rpgram.conditions import Condition
 
 
 class ConditionModel(Model):
