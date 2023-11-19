@@ -1,7 +1,12 @@
 from repository.mongo import ItemModel
-from rpgram import Consumable
-from rpgram.boosters import Condition
-from rpgram.enums import RarityEnum, TurnEnum
+from rpgram.consumables import Consumable
+from rpgram.conditions import Condition
+from rpgram.consumables import (
+    CureConsumable,
+    IdentifyingConsumable,
+    HealingConsumable
+)
+from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
 from rpgram.enums.condition import (
     BLEEDING,
     BLINDNESS,
@@ -15,182 +20,210 @@ from rpgram.enums.condition import (
     POISONING,
     SILENCE,
 )
+from rpgram.stats.stats_combat import FULL_HEAL_VALUE
 
+
+MINOR_HEALING_POTION_POWER = 50
+LIGHT_HEALING_POTION_POWER = 100
+HEALING_POTION_POWER = 200
+GREATER_HEALING_POTION_POWER = 500
+RARE_HEALING_POTION_POWER = 1000
+EPIC_HEALING_POTION_POWER = 2500
+LEGENDARY_HEALING_POTION_POWER = 5000
+MYTHIC_HEALING_POTION_POWER = FULL_HEAL_VALUE
 
 CONSUMABLES = [
     # Healing Potions
     {
-        'name': 'Minor Healing Potion',
-        'description': 'Cura 50 de HP em 5 Turnos.',
-        'weight': 0.1,
+        'name': HealingConsumableEnum.HEAL1.value,
+        'description': f'Cura {MINOR_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': MINOR_HEALING_POTION_POWER,
+        'weight': 0.10,
         'condition': Condition(
-            'Minor Healing Potion', None, None, None, TurnEnum.START
+            HealingConsumableEnum.HEAL1.value,
+            None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(50)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.COMMON.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Light Healing Potion',
-        'description': 'Cura 100 de HP em 5 Turnos.',
-        'weight': 0.1,
+        'name': HealingConsumableEnum.HEAL2.value,
+        'description': f'Cura {LIGHT_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': LIGHT_HEALING_POTION_POWER,
+        'weight': 0.15,
         'condition': Condition(
-            'Light Healing Potion', None, None, None, TurnEnum.START
+            HealingConsumableEnum.HEAL2.value,
+            None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(100)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.COMMON.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Healing Potion',
-        'description': 'Cura 200 de HP em 5 Turnos.',
-        'weight': 0.1,
+        'name': HealingConsumableEnum.HEAL3.value,
+        'description': f'Cura {HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': HEALING_POTION_POWER,
+        'weight': 0.20,
         'condition': Condition(
-            'Healing Potion', None, None, None, TurnEnum.START
+            HealingConsumableEnum.HEAL3.value,
+            None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(200)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.COMMON.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Greater Healing Potion',
-        'description': 'Cura 500 de HP em 5 Turnos.',
-        'weight': 0.1,
-        'condition': Condition(
-            'Greater Healing Potion', None, None, None, TurnEnum.START
+        'name': HealingConsumableEnum.HEAL4.value,
+        'description': (
+            f'Cura {GREATER_HEALING_POTION_POWER} de HP em 5 Turnos.'
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(500)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
+        'power': GREATER_HEALING_POTION_POWER,
+        'weight': 0.25,
+        'condition': Condition(
+            HealingConsumableEnum.HEAL4.value,
+            None, None, None, TurnEnum.START
+        ),
         'rarity': RarityEnum.UNCOMMON.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Rare Healing Potion',
-        'description': 'Cura 1000 de HP em 5 Turnos.',
-        'weight': 0.1,
+        'name': HealingConsumableEnum.HEAL5.value,
+        'description': f'Cura {RARE_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': RARE_HEALING_POTION_POWER,
+        'weight': 0.30,
         'condition': Condition(
-            'Rare Healing Potion', None, None, None, TurnEnum.START
+            HealingConsumableEnum.HEAL5.value,
+            None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(1000)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.RARE.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Epic Healing Potion',
-        'description': 'Cura 2500 de HP em 5 Turnos.',
-        'weight': 0.1,
+        'name': HealingConsumableEnum.HEAL6.value,
+        'description': f'Cura {EPIC_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': EPIC_HEALING_POTION_POWER,
+        'weight': 0.35,
         'condition': Condition(
-            'Epic Healing Potion', None, None, None, TurnEnum.START
+            HealingConsumableEnum.HEAL6.value, None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(2500)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.EPIC.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Legendary Healing Potion',
-        'description': 'Cura 5000 de HP em 5 Turnos.',
-        'weight': 0.1,
-        'condition': Condition(
-            'Legendary Healing Potion', None, None, None, TurnEnum.START
+        'name': HealingConsumableEnum.HEAL7.value,
+        'description': (
+            f'Cura {LEGENDARY_HEALING_POTION_POWER} de HP em 5 Turnos.'
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(5000)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
+        'power': LEGENDARY_HEALING_POTION_POWER,
+        'weight': 0.40,
+        'condition': Condition(
+            HealingConsumableEnum.HEAL7.value,
+            None, None, None, TurnEnum.START
+        ),
         'rarity': RarityEnum.LEGENDARY.name,
+        'class': HealingConsumable,
     }, {
-        'name': 'Mythic Healing Potion',
+        'name': HealingConsumableEnum.HEAL8.value,
         'description': 'Cura TODO de HP ou 1000 a cada Turno.',
-        'weight': 0.1,
+        'power': MYTHIC_HEALING_POTION_POWER,
+        'weight': 0.45,
         'condition': Condition(
-            'Mythic Healing Potion', None, None, None, TurnEnum.START
+            HealingConsumableEnum.HEAL8.value,
+            None, None, None, TurnEnum.START
         ),
-        'function': 'report = target.combat_stats.cure_hit_points(target.combat_stats.hp)',
-        'battle_function': 'report = target.status.add_condition(self.condition)',
         'rarity': RarityEnum.MYTHIC.name,
+        'class': HealingConsumable,
     },
 
     # Cure Potions
     {
         'name': 'Cotton Bandage',
         'description': f'Cura {BLEEDING}.',
-        'weight': 0.1,
-        'function': f'report = target.status.remove_condition("{BLEEDING}")',
+        'condition_target': BLEEDING,
+        'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Eye Drops',
         'description': f'Cura {BLINDNESS}.',
-        'weight': 0.1,
-        'function': f'report = target.status.remove_condition("{BLINDNESS}")',
+        'condition_target': BLINDNESS,
+        'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Aloe Compress',
         'description': f'Cura {BURN}.',
-        'weight': 0.1,
-        'function': f'report = target.status.remove_condition("{BURN}")',
+        'condition_target': BURN,
+        'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Red Remedy',
         'description': f'Cura {CONFUSION}.',
-        'weight': 0.1,
-        'function': f'report = target.status.remove_condition("{CONFUSION}")',
+        'condition_target': CONFUSION,
+        'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Mystical Incense',
         'description': f'Cura {CURSE}.',
-        'weight': 0.2,
-        'function': f'report = target.status.remove_condition("{CURSE}")',
+        'condition_target': CURSE,
+        'weight': 0.20,
         'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
     },
     {
         'name': 'Energy Potion',
         'description': f'Cura {EXHAUSTION}.',
-        'weight': 0.15,
-        'function': f'report = target.status.remove_condition("{EXHAUSTION}")',
+        'condition_target': EXHAUSTION,
+        'weight': 0.25,
         'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Hot Potion',
         'description': f'Cura {FROZEN}.',
-        'weight': 0.15,
-        'function': f'report = target.status.remove_condition("{FROZEN}")',
+        'condition_target': FROZEN,
+        'weight': 0.25,
         'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Vitamin Fruit',
         'description': f'Cura {PARALYSIS}.',
-        'weight': 0.3,
-        'function': f'report = target.status.remove_condition("{PARALYSIS}")',
+        'condition_target': PARALYSIS,
+        'weight': 0.55,
         'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Gold Needle',
         'description': f'Cura {PETRIFIED}.',
+        'condition_target': PETRIFIED,
         'weight': 0.15,
-        'function': f'report = target.status.remove_condition("{PETRIFIED}")',
         'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
     },
     {
         'name': 'Antidote',
         'description': f'Cura {POISONING}.',
-        'weight': 0.1,
-        'function': f'report = target.status.remove_condition("{POISONING}")',
+        'condition_target': POISONING,
+        'weight': 0.15,
         'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
     },
     {
         'name': 'Echo Herb',
         'description': f'Cura {SILENCE}.',
-        'weight': 0.1,
-        'function': f'report = target.status.remove_condition("{SILENCE}")',
+        'condition_target': SILENCE,
+        'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
     },
 
     # Other Items
     {
         'name': 'Identifying Lens',
         'description': f'Identifica bônus ocultos de um Equipamento.',
-        'weight': 0.3,
-        'function': f'report = target.identify()',
-        'battle_function': (
-            'report = {"text": f"{self.name} não pode ser usado em batalha."}'
-        ),
+        'weight': 0.30,
         'rarity': RarityEnum.RARE.name,
-        'usable': False,
+        'class': IdentifyingConsumable
     },
 ]
 
@@ -199,6 +232,7 @@ if __name__ == "__main__":
     fields = ['_id', 'name', 'created_at']
     for consumable_dict in CONSUMABLES:
         consumable_name = consumable_dict['name']
+        consumable_class = consumable_dict.pop('class')
         mongo_dict = items_model.get(
             query={'name': consumable_name},
             fields=fields,
@@ -206,6 +240,6 @@ if __name__ == "__main__":
         if mongo_dict:
             for field in fields:
                 consumable_dict[field] = mongo_dict[field]
-        consumable = Consumable(**consumable_dict)
+        consumable = consumable_class(**consumable_dict)
         print(consumable)
-        items_model.save(consumable)
+        items_model.save(consumable, replace=True)

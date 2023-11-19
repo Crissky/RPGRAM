@@ -14,24 +14,19 @@ class HealingConsumable(Consumable):
         description: str,
         power: int,
         weight: float,
-        condition: Condition = None,
+        condition: Condition,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         usable: bool = True,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
     ):
-        function = ('report = target.combat_stats.cure_hit_points(self.power)')
-        battle_function = (
-            'report = target.status.add_condition(self.condition)'
-        )
         super().__init__(
             name=name,
             description=description,
             weight=weight,
-            condition=condition,
-            function=function,
-            battle_function=battle_function,
+            function=None,
+            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -39,6 +34,17 @@ class HealingConsumable(Consumable):
             updated_at=updated_at,
         )
         self.power = power
+        self.condition = condition
+
+    @property
+    def function(self) -> str:
+        return ('report = target.combat_stats.cure_hit_points(self.power)')
+
+    @property
+    def battle_function(self) -> str:
+        return (
+            'report = target.status.add_condition(self.condition)'
+        )
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -47,7 +53,7 @@ class HealingConsumable(Consumable):
             description=super_dict['description'],
             power=self.power,
             weight=super_dict['weight'],
-            condition_name=super_dict['condition_name'],
+            condition_name=self.condition.name if self.condition else None,
             rarity=super_dict['rarity'],
             usable=super_dict['usable'],
             _id=super_dict['_id'],
@@ -55,10 +61,15 @@ class HealingConsumable(Consumable):
             updated_at=super_dict['updated_at'],
         )
 
+
 if __name__ == '__main__':
-    print(HealingConsumable(
+    healing_consumable = HealingConsumable(
         name='Heal Consumable',
         description='Heal Consumable',
         power=10,
         weight=1.0,
-    ))
+        condition=None,
+    )
+
+    print(healing_consumable)
+    print(healing_consumable.to_dict())
