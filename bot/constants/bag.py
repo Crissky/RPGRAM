@@ -7,7 +7,7 @@ from rpgram.enums.emojis import EmojiEnum
 COMMANDS = ['bolsa', 'bag', 'inventario']
 CANCEL_COMMANDS = ['cancel', 'close']
 
-
+# ITEMS CONSTANTS
 ITEMS_PER_PAGE = 10
 DROPUSE_MANY_MAX = 10
 DROPUSE_QUANTITY_OPTION_LIST = [1, 3, 5, 10]

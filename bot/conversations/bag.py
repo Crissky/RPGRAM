@@ -860,7 +860,7 @@ def get_use_consumable_buttons(
     item: Item
 ) -> List[InlineKeyboardButton]:
     use_buttons = []
-    quantity = min(item.quantity, DROPUSE_MANY_MAX)
+    quantity = item.quantity
     if item.item.usable is True:
         for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
             if quantity_option <= quantity:
@@ -887,7 +887,7 @@ def get_discard_buttons(
     item: Item
 ) -> List[InlineKeyboardButton]:
     drop_buttons = []
-    quantity = min(item.quantity, DROPUSE_MANY_MAX)
+    quantity = item.quantity
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
             text = DISCARD_MANY_BUTTON_TEXT.format(
