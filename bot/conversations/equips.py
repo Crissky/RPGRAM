@@ -39,9 +39,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     query = update.callback_query
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
-    equips = equips_model.get(user_id)
 
     if query:
         data = eval(query.data)
@@ -59,6 +57,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.delete_message()
             return None
 
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    equips = equips_model.get(user_id)
     if not equips:
         player_character = char_model.get(user_id)
         equips = player_character.equips
