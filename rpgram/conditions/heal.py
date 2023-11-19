@@ -6,7 +6,7 @@ from rpgram.conditions.condition import Condition
 from rpgram.enums.turn import TurnEnum
 
 
-class HealingCodition(Condition):
+class HealingCondition(Condition):
     def __init__(
         self,
         name: str,
@@ -19,19 +19,11 @@ class HealingCodition(Condition):
         created_at: datetime = None,
         updated_at: datetime = None,
     ):
-        function = (
-            'remaining_heal = self.power * self.turn;'
-            'report = target.combat_stats.cure_hit_points(remaining_heal);'
-            'self.last_turn()'
-        )
-        battle_function = (
-            'report = target.combat_stats.cure_hit_points(self.power)'
-        )
         super().__init__(
             name=name,
             description=description,
-            function=function,
-            battle_function=battle_function,
+            function=None,
+            battle_function=None,
             frequency=frequency,
             turn=turn,
             level=level,
@@ -41,11 +33,41 @@ class HealingCodition(Condition):
         )
         self.power = power
 
+    @property
+    def function(self) -> str:
+        return (
+            'remaining_heal = abs(self.power * self.turn);'
+            'report = target.combat_stats.cure_hit_points(remaining_heal);'
+            'self.last_turn()'
+        )
+
+    @property
+    def battle_function(self) -> str:
+        return (
+            'report = target.combat_stats.cure_hit_points(self.power)'
+        )
+
+    def to_dict(self) -> dict:
+        super_dict = super().to_dict()
+        return dict(
+            name=super_dict['name'],
+            description=super_dict['description'],
+            power=self.power,
+            frequency=super_dict['frequency'],
+            turn=super_dict['turn'],
+            _id=super_dict['_id'],
+            created_at=super_dict['created_at'],
+            updated_at=super_dict['updated_at'],
+        )
+
 
 if __name__ == '__main__':
-    print(HealingCodition(
+    healing_condition = HealingCondition(
         name='Heal Condition',
         description='Heal Condition Description',
         power=10,
         frequency=TurnEnum.START,
-    ))
+    )
+
+    print(healing_condition)
+    print(healing_condition.to_dict())

@@ -57,7 +57,7 @@ class DebuffCondition(Condition):
         )
 
 
-class BleedingCodition(DebuffCondition):
+class BleedingCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -70,7 +70,7 @@ class BleedingCodition(DebuffCondition):
         )
 
 
-class BlindnessCodition(DebuffCondition):
+class BlindnessCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -83,7 +83,7 @@ class BlindnessCodition(DebuffCondition):
         )
 
 
-class BurnCodition(DebuffCondition):
+class BurnCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -96,7 +96,7 @@ class BurnCodition(DebuffCondition):
         )
 
 
-class ConfusionCodition(DebuffCondition):
+class ConfusionCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -107,7 +107,7 @@ class ConfusionCodition(DebuffCondition):
         )
 
 
-class CurseCodition(DebuffCondition):
+class CurseCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -121,7 +121,7 @@ class CurseCodition(DebuffCondition):
         )
 
 
-class ExhaustionCodition(DebuffCondition):
+class ExhaustionCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -135,7 +135,7 @@ class ExhaustionCodition(DebuffCondition):
         )
 
 
-class FrozenCodition(DebuffCondition):
+class FrozenCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -146,7 +146,7 @@ class FrozenCodition(DebuffCondition):
         )
 
 
-class ParalysisCodition(DebuffCondition):
+class ParalysisCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -157,7 +157,7 @@ class ParalysisCodition(DebuffCondition):
         )
 
 
-class PetrifiedCodition(DebuffCondition):
+class PetrifiedCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -168,7 +168,7 @@ class PetrifiedCodition(DebuffCondition):
         )
 
 
-class PoisoningCodition(DebuffCondition):
+class PoisoningCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -181,7 +181,7 @@ class PoisoningCodition(DebuffCondition):
         )
 
 
-class SilenceCodition(DebuffCondition):
+class SilenceCondition(DebuffCondition):
 
     @property
     def function(self) -> str:
@@ -193,57 +193,57 @@ class SilenceCodition(DebuffCondition):
 
 
 if __name__ == '__main__':
-    print(BleedingCodition(
+    print(BleedingCondition(
         name='BleedingCodition',
         description='BleedingCodition Description',
         frequency=TurnEnum.START
     ))
-    print(BlindnessCodition(
+    print(BlindnessCondition(
         name='BlindnessCodition',
         description='BlindnessCodition Description',
         frequency=TurnEnum.START
     ))
-    print(BurnCodition(
+    print(BurnCondition(
         name='BurnCodition',
         description='BurnCodition Description',
         frequency=TurnEnum.START
     ))
-    print(ConfusionCodition(
+    print(ConfusionCondition(
         name='ConfusionCodition',
         description='ConfusionCodition Description',
         frequency=TurnEnum.START
     ))
-    print(CurseCodition(
+    print(CurseCondition(
         name='CurseCodition',
         description='CurseCodition Description',
         frequency=TurnEnum.START
     ))
-    print(ExhaustionCodition(
+    print(ExhaustionCondition(
         name='ExhaustionCodition',
         description='ExhaustionCodition Description',
         frequency=TurnEnum.START
     ))
-    print(FrozenCodition(
+    print(FrozenCondition(
         name='FrozenCodition',
         description='FrozenCodition Description',
         frequency=TurnEnum.START
     ))
-    print(ParalysisCodition(
+    print(ParalysisCondition(
         name='ParalysisCodition',
         description='ParalysisCodition Description',
         frequency=TurnEnum.START
     ))
-    print(PetrifiedCodition(
+    print(PetrifiedCondition(
         name='PetrifiedCodition',
         description='PetrifiedCodition Description',
         frequency=TurnEnum.START
     ))
-    print(PoisoningCodition(
+    print(PoisoningCondition(
         name='PoisoningCodition',
         description='PoisoningCodition Description',
         frequency=TurnEnum.START
     ))
-    print(SilenceCodition(
+    print(SilenceCondition(
         name='SilenceCodition',
         description='SilenceCodition Description',
         frequency=TurnEnum.START
