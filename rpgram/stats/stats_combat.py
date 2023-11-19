@@ -58,7 +58,7 @@ class CombatStats:
         elif value < 0:
             if self.dead:
                 print(f'Não pode curar um personagem morto.')
-                return
+                return None
             print(f'Recebeu {-value} de Cura.', end=' ')
         self.__damage += value
         if self.__damage > self.hit_points:
@@ -155,7 +155,7 @@ class CombatStats:
         old_show_hp = self.show_hit_points
         if self.alive:
             print(f'Não pode reviver um personagem vivo.')
-            return
+            return None
         elif value < 0:
             print(f'Reviveu restaurando {-value} de HP.', end=' ')
         self.__damage += value
