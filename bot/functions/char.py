@@ -122,12 +122,41 @@ def add_damage(
     )
 
 
+def add_conditions(
+    *conditions: List[dict],
+    user_id: int = None,
+    char: BaseCharacter = None,
+):
+    '''Função que adiciona condições ao personagem
+    '''
+    if all((user_id is None, char is None)):
+        raise ValueError(
+            'Forneça um "user_id" ou "char". '
+            'Ao menos um dos dois não podem ser None.'
+        )
+
+    if user_id and char is None:
+        char_model = CharacterModel()
+        char = char_model.get(user_id)
+
+    condition_report = {'text': '', 'char': char}
+    for condition in conditions:
+        report = char.status.add(condition)
+        condition_report['text'] += report['text'] + '\n'
+
+    if condition_report['text']:
+        condition_report['text'] += '\n'
+    save_char(char, status=True)
+
+    return condition_report
+
+
 def add_conditions_trap(
     conditions_trap: List[dict],
     user_id: int = None,
     char: BaseCharacter = None,
 ) -> dict:
-    '''Função que adiciona condições ao personagem.
+    '''Função que adiciona condições ao personagem oriundas de armadilhas.
     '''
     if all((user_id is None, char is None)):
         raise ValueError(

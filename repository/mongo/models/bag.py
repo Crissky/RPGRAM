@@ -95,7 +95,7 @@ class BagModel(Model):
 
 
 if __name__ == '__main__':
-    from rpgram import Consumable
+    from rpgram.consumables import Consumable
     potion = Consumable(
         name='Potion',
         description='Cura 100 de HP.',

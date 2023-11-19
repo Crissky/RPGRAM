@@ -30,7 +30,7 @@ from repository.mongo.populate.item_constants import (
 )
 
 from rpgram.boosters import Equipment
-from rpgram import Consumable
+from rpgram.consumables import Consumable
 from rpgram import Item
 from rpgram.enums import (
     AccessoryMaterialsEnum,

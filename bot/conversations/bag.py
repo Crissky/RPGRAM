@@ -69,9 +69,9 @@ from bot.functions.keyboard import remove_buttons_by_text
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
-from rpgram import Bag
+from rpgram import Bag, Item
 from rpgram.boosters import Equipment
-from rpgram import Consumable, Item
+from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum, EquipmentEnum
 
 

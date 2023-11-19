@@ -49,21 +49,24 @@ class Condition(StatsBooster):
         self.__turn = turn
         self.__level = level
 
+        self.activate_continuous()
+
+    def activate_continuous(self):
         if self.__frequency == TurnEnum.CONTINUOUS:
             self.activate(None)
 
     def activate(self, target):
         local = {'target': target, 'self': self}
-        exec(self.__function, None, local)
+        exec(self.function, None, local)
         report = local['report']
         if self.__turn not in [-1, 0]:
             self.__turn -= 1
         return report
 
     def battle_activate(self, target):
-        if self.__battle_function:
+        if self.battle_function:
             local = {'target': target, 'self': self}
-            exec(self.__battle_function, None, local)
+            exec(self.battle_function, None, local)
             report = local['report']
             if self.__turn not in [-1, 0]:
                 self.__turn -= 1
@@ -85,6 +88,11 @@ class Condition(StatsBooster):
             return None
         return self
 
+    def set_turn(self, turn: int):
+        if turn == 0 or turn < -1:
+            raise ValueError('turn deve ser maior que zero ou -1.')
+        self.__turn = turn
+
     def last_turn(self):
         self.__turn = 1
 
@@ -92,8 +100,8 @@ class Condition(StatsBooster):
         return dict(
             name=self.__name,
             description=self.__description,
-            function=self.__function,
-            battle_function=self.__battle_function,
+            function=self.function,
+            battle_function=self.battle_function,
             frequency=self.__frequency.name,
             turn=self.__turn,
             _id=self._id,
@@ -107,8 +115,8 @@ class Condition(StatsBooster):
         if verbose:
             text += (
                 f'*Descrição*: {self.__description}\n'
-                f'*Função*: {self.__function}\n'
-                f'*Função em Batalha*: {self.__battle_function}\n'
+                f'*Função*: {self.function}\n'
+                f'*Função em Batalha*: {self.battle_function}\n'
                 f'*Frequência*: {self.__frequency.value}\n'
                 f'*Turno*: {self.__turn}\n'
                 f'*Nível*: {self.__level}\n'

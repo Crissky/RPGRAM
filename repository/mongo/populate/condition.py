@@ -1,6 +1,30 @@
 from repository.mongo import ConditionModel
-from rpgram.boosters import Condition
-from rpgram.enums import TurnEnum
+from repository.mongo.populate.consumable import (
+    MINOR_HEALING_POTION_POWER,
+    LIGHT_HEALING_POTION_POWER,
+    HEALING_POTION_POWER,
+    GREATER_HEALING_POTION_POWER,
+    RARE_HEALING_POTION_POWER,
+    EPIC_HEALING_POTION_POWER,
+    LEGENDARY_HEALING_POTION_POWER,
+    MYTHIC_HEALING_POTION_POWER,
+)
+from rpgram.conditions import (
+    Condition,
+    HealingCondition,
+    BleedingCondition,
+    BlindnessCondition,
+    BurnCondition,
+    ConfusionCondition,
+    CurseCondition,
+    ExhaustionCondition,
+    FrozenCondition,
+    ParalysisCondition,
+    PetrifiedCondition,
+    PoisoningCondition,
+    SilenceCondition,
+)
+from rpgram.enums import HealingConsumableEnum, TurnEnum
 from rpgram.enums.condition import (
     BLEEDING,
     BLINDNESS,
@@ -15,247 +39,168 @@ from rpgram.enums.condition import (
     SILENCE,
 )
 
+MINOR_HEALING_POTION_TURNPOWER = MINOR_HEALING_POTION_POWER // 5
+LIGHT_HEALING_POTION_TURNPOWER = LIGHT_HEALING_POTION_POWER // 5
+HEALING_POTION_TURNPOWER = HEALING_POTION_POWER // 5
+GREATER_HEALING_POTION_TURNPOWER = GREATER_HEALING_POTION_POWER // 5
+RARE_HEALING_POTION_TURNPOWER = RARE_HEALING_POTION_POWER // 5
+EPIC_HEALING_POTION_TURNPOWER = EPIC_HEALING_POTION_POWER // 5
+LEGENDARY_HEALING_POTION_TURNPOWER = LEGENDARY_HEALING_POTION_POWER // 5
+MYTHIC_HEALING_POTION_TURNPOWER = LEGENDARY_HEALING_POTION_TURNPOWER
 
 CONDITIONS = [
     # Healing Potion Conditions
     {
-        'name': 'Minor Healing Potion',
-        'description': 'Cura 50 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(10 * self.turn);'
-            'self.last_turn()'
-        ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(20)',
+        'name': HealingConsumableEnum.HEAL1.value,
+        'description': f'Cura {MINOR_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': MINOR_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Light Healing Potion',
-        'description': 'Cura 100 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(20 * self.turn);'
-            'self.last_turn()'
-        ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(50)',
+        'name': HealingConsumableEnum.HEAL2.value,
+        'description': f'Cura {LIGHT_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': LIGHT_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Healing Potion',
-        'description': 'Cura 200 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(40 * self.turn);'
-            'self.last_turn()'
-        ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(100)',
+        'name': HealingConsumableEnum.HEAL3.value,
+        'description': f'Cura {HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Greater Healing Potion',
-        'description': 'Cura 500 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(100 * self.turn);'
-            'self.last_turn()'
+        'name': HealingConsumableEnum.HEAL4.value,
+        'description': (
+            f'Cura {GREATER_HEALING_POTION_POWER} de HP em 5 Turnos.'
         ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(200)',
+        'power': GREATER_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Rare Healing Potion',
-        'description': 'Cura 1000 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(200 * self.turn);'
-            'self.last_turn()'
-        ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(400)',
+        'name': HealingConsumableEnum.HEAL5.value,
+        'description': f'Cura {RARE_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': RARE_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Epic Healing Potion',
-        'description': 'Cura 2500 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(500 * self.turn);'
-            'self.last_turn()'
-        ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(1000)',
+        'name': HealingConsumableEnum.HEAL6.value,
+        'description': f'Cura {EPIC_HEALING_POTION_POWER} de HP em 5 Turnos.',
+        'power': EPIC_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Legendary Healing Potion',
-        'description': 'Cura 5000 de HP em 5 Turnos.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(1000 * self.turn);'
-            'self.last_turn()'
+        'name': HealingConsumableEnum.HEAL7.value,
+        'description': (
+            f'Cura {LEGENDARY_HEALING_POTION_POWER} de HP em 5 Turnos.'
         ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(2000)',
+        'power': LEGENDARY_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': HealingCondition
     },
     {
-        'name': 'Mythic Healing Potion',
-        'description': 'Cura 1000 de HP por Turno.',
-        'function': (
-            'report = target.combat_stats.cure_hit_points(1000 * self.turn);'
-            'self.last_turn()'
+        'name': HealingConsumableEnum.HEAL8.value,
+        'description': (
+            f'Cura {MYTHIC_HEALING_POTION_TURNPOWER} de HP por Turno.'
         ),
-        'battle_function': 'report = target.combat_stats.cure_hit_points(1000)',
+        'power': MYTHIC_HEALING_POTION_TURNPOWER,
         'frequency': TurnEnum.START,
         'turn': -1,
+        'class': HealingCondition
     },
     # Negative Conditions
     {
         'name': BLEEDING,
         'description': 'Causa (2% x Nível) de dano a cada turno.',
-        'function': (
-            'power = self.level * 0.02;'
-            'damage = target.combat_stats.hp * power;'
-            'report = target.combat_stats.damage_hit_points(damage);'
-            f'report["text"] = "{BLEEDING} -> " + report["text"];'
-            f'report["action"] = "{BLEEDING}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
         'turn': -1,
+        'class': BleedingCondition,
     },
     {
         'name': BLINDNESS,
         'description': 'Reduz a chance de acerto.',
-        'function': (
-            'power = self.level + 1;'
-            'self.bonus_evasion = -(10 * power);'
-            'report = {};'
-            'report["text"] = "Personagem está cego.";'
-            f'report["action"] = "{BLINDNESS}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
+        'class': BlindnessCondition,
     },
     {
         'name': BURN,
         'description': 'Reduz o multiplicador de Constituição.',
-        'function': (
-            'power = self.level / 10;'
-            'self.multiplier_constitution = 1 - power;'
-            'report = {};'
-            'report["text"] = "Personagem está com queimaduras.";'
-            f'report["action"] = "{BURN}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
+        'class': BurnCondition,
     },
     {
         'name': CONFUSION,
         'description': (
             'O personagem pode fazer coisa inusitadas por 5 turnos.'
         ),
-        'function': (
-            'report = {};'
-            'report["text"] = "Personagem está confuso.";'
-            f'report["action"] = "{CONFUSION}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
         'turn': 5,
+        'class': ConfusionCondition,
     },
     {
         'name': CURSE,
         'description': 'Reduz os multiplicadores de Inteligência e Sabedoria.',
-        'function': (
-            'power = self.level / 10;'
-            'self.multiplier_intelligence = 1 - power;'
-            'self.multiplier_wisdom = 1 - power;'
-            'report = {};'
-            'report["text"] = "Personagem está amaldiçoado.";'
-            f'report["action"] = "{CURSE}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
+        'class': CurseCondition,
     },
     {
         'name': EXHAUSTION,
         'description': 'Reduz os multiplicadores de Força e Destreza.',
-        'function': (
-            'power = self.level / 10;'
-            'self.multiplier_strength = 1 - power;'
-            'self.multiplier_dexterity = 1 - power;'
-            'report = {};'
-            'report["text"] = "Personagem está exausto.";'
-            f'report["action"] = "{EXHAUSTION}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
+        'class': ExhaustionCondition,
     },
     {
         'name': FROZEN,
         'description': 'O personagem não pode realizar ações por 10 turnos.',
-        'function': (
-            'report = {};'
-            'report["text"] = "Personagem está congelado.";'
-            f'report["action"] = "{FROZEN}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
-        'turn': 10,
+        'turn': 5,
+        'class': FrozenCondition,
     },
     {
         'name': PARALYSIS,
         'description': 'O personagem não pode realizar ações por 5 turnos.',
-        'function': (
-            'report = {};'
-            'report["text"] = "Personagem está paralisado.";'
-            f'report["action"] = "{PARALYSIS}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
-        'turn': 5,
+        'turn': 3,
+        'class': ParalysisCondition,
     },
     {
         'name': PETRIFIED,
         'description': 'O personagem não pode realizar ações.',
-        'function': (
-            'report = {};'
-            'report["text"] = "Personagem está petrificado.";'
-            f'report["action"] = "{PETRIFIED}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
         'turn': -1,
+        'class': PetrifiedCondition,
     },
     {
         'name': POISONING,
         'description': 'O personagem perde vida a cada turno.',
-        'function': (
-            'power = self.level;'
-            'damage = 10 * power;'
-            'report = target.combat_stats.damage_hit_points(damage);'
-            f'report["text"] = "{POISONING} -> " + report["text"];'
-            f'report["action"] = "{POISONING}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
         'turn': -1,
+        'class': PoisoningCondition,
     },
     {
         'name': SILENCE,
         'description': (
             'O personagem não pode usar feitiços, magias ou encantamentos.'
         ),
-        'function': (
-            'report = {};'
-            'report["text"] = "Personagem está silenciado.";'
-            f'report["action"] = "{SILENCE}";'
-        ),
-        'battle_function': None,
         'frequency': TurnEnum.START,
         'turn': -1,
+        'class': SilenceCondition,
     },
 ]
 
@@ -264,6 +209,7 @@ if __name__ == "__main__":
     fields = ['_id', 'name', 'created_at']
     for condition_dict in CONDITIONS:
         condition_name = condition_dict['name']
+        condition_class = condition_dict.pop('class')
         mongo_dict = conditions_model.get(
             query={'name': condition_name},
             fields=fields,
@@ -271,6 +217,6 @@ if __name__ == "__main__":
         if mongo_dict:
             for field in fields:
                 condition_dict[field] = mongo_dict[field]
-        condition = Condition(**condition_dict)
+        condition = condition_class(**condition_dict)
         print(condition)
-        conditions_model.save(condition)
+        conditions_model.save(condition, replace=True)

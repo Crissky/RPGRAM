@@ -2,7 +2,7 @@ from rpgram.boosters.classe import Classe
 from rpgram.boosters.equipment import Equipment
 from rpgram.boosters.race import Race
 from rpgram.characters.char_base import BaseCharacter
-from rpgram.consumable import Consumable
+from rpgram.consumables.consumable import Consumable
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.equips import Equips
