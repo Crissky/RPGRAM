@@ -4,13 +4,14 @@ Módulo responsável por exibir algumas variáveis de contexto
 
 
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
     PrefixHandler
 )
 
-from bot.constants.debug import COMMANDS
+from bot.constants.debug import COMMANDS, DEBUFF_COMMANDS
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
@@ -20,7 +21,10 @@ from bot.decorators import (
     skip_if_no_singup_player,
     print_basic_infos,
 )
+from bot.functions.char import add_conditions
 from bot.functions.general import get_attribute_group_or_player
+from function.text import escape_basic_markdown_v2
+from repository.mongo import CharacterModel, ConditionModel
 
 
 @skip_if_no_singup_player
@@ -46,6 +50,35 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+@skip_if_no_singup_player
+@skip_if_no_have_char
+@print_basic_infos
+async def get_random_debuff(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    condition_model = ConditionModel()
+    user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    args = context.args
+    
+    conditions = condition_model.get_all({
+        '_class': {
+            '$ne': 'HealingCondition'
+        }
+    })
+    report = add_conditions(*conditions, user_id=user_id)
+    char = report['char']
+    text = escape_basic_markdown_v2(report['text'])
+    text += char.cs.get_all_sheets(verbose=False, markdown=True)
+    await update.effective_message.reply_text(
+        text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        disable_notification=silent,
+    )
+
+
 DEBUG_HANDLERS = [
     PrefixHandler(
         PREFIX_COMMANDS,
@@ -57,5 +90,16 @@ DEBUG_HANDLERS = [
         COMMANDS,
         start_debug,
         BASIC_COMMAND_FILTER
-    )
+    ),
+    PrefixHandler(
+        PREFIX_COMMANDS,
+        DEBUFF_COMMANDS,
+        get_random_debuff,
+        BASIC_COMMAND_FILTER
+    ),
+    CommandHandler(
+        DEBUFF_COMMANDS,
+        get_random_debuff,
+        BASIC_COMMAND_FILTER
+    ),
 ]
