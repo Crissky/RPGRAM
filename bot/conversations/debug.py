@@ -71,7 +71,7 @@ async def get_random_debuff(
     report = add_conditions(*conditions, user_id=user_id)
     char = report['char']
     text = escape_basic_markdown_v2(report['text'])
-    text += char.cs.get_all_sheets(verbose=False, markdown=True)
+    text += char.get_all_sheets(verbose=False, markdown=True)
     await update.effective_message.reply_text(
         text,
         parse_mode=ParseMode.MARKDOWN_V2,
