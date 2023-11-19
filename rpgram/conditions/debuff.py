@@ -75,8 +75,8 @@ class BlindnessCondition(DebuffCondition):
     @property
     def function(self) -> str:
         return (
-            'power = self.level + 1;'
-            'self.bonus_evasion = -(10 * power);'
+            'power = self.level / 10;'
+            'self.multiplier_dexterity = 1 - power;'
             'report = {};'
             'report["text"] = "Personagem está cego.";'
             f'report["action"] = "{BLINDNESS}";'
@@ -174,7 +174,7 @@ class PoisoningCondition(DebuffCondition):
     def function(self) -> str:
         return (
             'power = self.level;'
-            'damage = 10 * power;'
+            'damage = sum([10 + i + i*10//2 for i in range(0, power)]);'
             'report = target.combat_stats.damage_hit_points(damage);'
             f'report["text"] = "{POISONING} -> " + report["text"];'
             f'report["action"] = "{POISONING}";'
