@@ -479,8 +479,6 @@ class BaseStats:
             self.wisdom = value
         elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
             self.charisma = value
-        elif key in ['XP', 'EXPERIENCE', 'EXPERIENCIA', 'EXPERIÊNCIA']:
-            self.xp = value
         else:
             raise KeyError(
                 f'Atributo "{key}" não encontrado. '
