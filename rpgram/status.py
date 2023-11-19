@@ -224,6 +224,9 @@ class Status:
             text += f'{TEXT_SEPARATOR_2}\n'.join(
                 f'*Nome*: {condition.name} (Nv: {condition.level})\n'
                 f'*Descrição*: {condition.description}\n'
+                f'*Turno*: '
+                f'{condition.turn if condition.turn > -1 else "Eterno"}\n'
+                f'*Nível*: {condition.level}\n'
                 for condition in self.__conditions
             )
         else:

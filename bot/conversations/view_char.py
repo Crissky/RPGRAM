@@ -42,7 +42,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                     f'{player_name} não possui um personamgem.',
                     disable_notification=silent
                 )
-                return
+                return None
             player_character = new_player_character
             verbose = 'verbose' in args[1:2] or 'v' in args[1:2]
         else:
