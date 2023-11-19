@@ -2,7 +2,7 @@ from repository.mongo import Model
 from repository.mongo import CollectionEnum
 from repository.mongo.models.condition import ConditionModel
 from rpgram.boosters import Equipment
-from rpgram import Consumable
+from rpgram.consumables import Consumable
 
 
 class ItemModel(Model):
@@ -12,8 +12,8 @@ class ItemModel(Model):
         lambda self: {
             'condition': {
                 'id_key': 'condition_name',
-                '_class': 'Consumable',
-                'model': ConditionModel()
+                '_class': 'HealingConsumable',
+                'model': ConditionModel(),
             },
         }
     )

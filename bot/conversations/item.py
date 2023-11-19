@@ -41,8 +41,9 @@ from function.text import escape_markdown_v2
 
 from repository.mongo import BagModel, GroupModel, ItemModel
 from repository.mongo.populate.item import create_random_item
-from rpgram import Bag, Consumable
+from rpgram import Bag
 from rpgram.boosters import Equipment
+from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum
 
 
