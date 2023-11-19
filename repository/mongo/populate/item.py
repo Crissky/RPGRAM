@@ -108,7 +108,7 @@ def choice_type_item(no_trap: bool = False) -> str:
     types_item = {
         'CONSUMABLE': 800, 'TRAP': 150,
         EquipmentEnum.HELMET.name: 100,
-        EquipmentEnum.ONE_HAND.name: 120, EquipmentEnum.TWO_HANDS.name: 120,
+        EquipmentEnum.ONE_HAND.name: 150, EquipmentEnum.TWO_HANDS.name: 150,
         EquipmentEnum.ARMOR.name: 100, EquipmentEnum.BOOTS.name: 100,
         EquipmentEnum.RING.name: 50, EquipmentEnum.AMULET.name: 50,
     }
@@ -598,7 +598,7 @@ def create_random_consumable(group_level: int):
 
 def create_random_trap(group_level: int) -> int:
     trap_level = group_level
-    trap_degree = randint(15, 20)
+    trap_degree = randint(10, 20)
 
     return trap_level * trap_degree
 
