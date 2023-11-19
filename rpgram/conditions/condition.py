@@ -49,6 +49,9 @@ class Condition(StatsBooster):
         self.__turn = turn
         self.__level = level
 
+        self.activate_continuous()
+
+    def activate_continuous(self):
         if self.__frequency == TurnEnum.CONTINUOUS:
             self.activate(None)
 
@@ -84,6 +87,11 @@ class Condition(StatsBooster):
         if self.__level < 1:
             return None
         return self
+
+    def set_turn(self, turn: int):
+        if turn == 0 or turn < -1:
+            raise ValueError('turn deve ser maior que zero ou -1.')
+        self.__turn = turn
 
     def last_turn(self):
         self.__turn = 1
