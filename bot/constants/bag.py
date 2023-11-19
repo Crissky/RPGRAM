@@ -9,7 +9,8 @@ CANCEL_COMMANDS = ['cancel', 'close']
 
 
 ITEMS_PER_PAGE = 10
-USE_MANY_MAX = 5
+DROPUSE_MANY_MAX = 10
+DROPUSE_QUANTITY_OPTION_LIST = [1, 3, 5, 10]
 
 
 # ACTIONS
@@ -28,14 +29,15 @@ ACCESS_DENIED = (
 # ACTION BUTTON TEXTS
 CLOSE_BAG_BUTTON_TEXT = f'Fechar Bolsa{EmojiEnum.CLOSE_BAG.value}'
 DESTROY_ITEM_BUTTON_TEXT = f'Quebrar{EmojiEnum.DESTROY_ITEM.value}'
-DISCARD_BUTTON_TEXT = f'{EmojiEnum.DISCARD.value}Descartar'
-DISCARD_MANY_BUTTON_TEXT = f'{EmojiEnum.DISCARD.value}Descartar x10'
+DISCARD_MANY_BUTTON_TEXT = (
+    f'{EmojiEnum.DISCARD.value}Descartar x{{quantity_option}}'
+)
 EQUIP_BUTTON_TEXT = f'{EmojiEnum.TO_EQUIP.value}Equipar'
 EQUIP_LEFT_BUTTON_TEXT = f'{EmojiEnum.LEFT.value}Equipar'
 EQUIP_RIGHT_BUTTON_TEXT = f'Equipar{EmojiEnum.RIGHT.value}'
 IDENTIFY_BUTTON_TEXT = f'Identificar{EmojiEnum.IDENTIFY.value}'
 TAKE_BUTTON_TEXT = f'{EmojiEnum.TAKE.value}Coletar'
-USE_BUTTON_TEXT = f'{EmojiEnum.USE_POTION.value}Usar'
+USE_MANY_BUTTON_TEXT = f'{EmojiEnum.USE_POTION.value}Usar x{{quantity_option}}'
 
 # NAVIGATION BUTTON TEXTS
 NAV_BACK_BUTTON_TEXT = f'Voltar{EmojiEnum.BACK.value}'

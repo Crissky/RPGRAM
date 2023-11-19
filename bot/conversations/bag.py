@@ -22,7 +22,6 @@ from bot.constants.bag import (
     CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
     CONSUMABLE_SORT_UP_BUTTON_TEXT,
     DESTROY_ITEM_BUTTON_TEXT,
-    DISCARD_BUTTON_TEXT,
     DISCARD_MANY_BUTTON_TEXT,
     EQUIP_BUTTON_TEXT,
     EQUIPMENT_POWER_SORT_DOWN_BUTTON_TEXT,
@@ -41,9 +40,10 @@ from bot.constants.bag import (
     NAV_START_BUTTON_TEXT,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
-    USE_BUTTON_TEXT,
-    USE_MANY_MAX,
-    EQUIP_RIGHT_BUTTON_TEXT
+    DROPUSE_MANY_MAX,
+    EQUIP_RIGHT_BUTTON_TEXT,
+    DROPUSE_QUANTITY_OPTION_LIST,
+    USE_MANY_BUTTON_TEXT
 )
 
 from bot.constants.filters import (
@@ -65,7 +65,7 @@ from bot.functions.bag import (
 )
 from bot.functions.char import save_char
 from bot.functions.general import get_attribute_group_or_player
-from bot.functions.keyboard import remove_buttons_by_text
+from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
 from constant.text import TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
@@ -229,13 +229,14 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     )
     item = player_bag[0]
     markdown_text = item.get_all_sheets(verbose=True, markdown=True)
-    equip_or_use_buttons = []
+    equip_buttons = []
+    use_buttons = [[]]
     identify_button = []
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
         markdown_text = equips.compare(item.item)
         if item.item.equip_type == EquipmentEnum.ONE_HAND:
-            equip_or_use_buttons = [
+            equip_buttons = [
                 InlineKeyboardButton(
                     text=EQUIP_LEFT_BUTTON_TEXT,
                     callback_data=(
@@ -252,7 +253,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
                 )
             ]
         else:
-            equip_or_use_buttons = [
+            equip_buttons = [
                 InlineKeyboardButton(
                     text=EQUIP_BUTTON_TEXT,
                     callback_data=(
@@ -273,36 +274,21 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
                 )
             ]
     elif isinstance(item.item, Consumable):
-        quantity = min(item.quantity, USE_MANY_MAX)
-        use_many_button_text = f'{EmojiEnum.USE_POTION.value}Usar x{quantity}'
-        if item.item.usable is True:
-            equip_or_use_buttons = [
-                InlineKeyboardButton(
-                    text=USE_BUTTON_TEXT,
-                    callback_data=(
-                        f'{{"use":1,"item":{item_pos},'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
-                ),
-                InlineKeyboardButton(
-                    text=use_many_button_text,
-                    callback_data=(
-                        f'{{"use":{quantity},"item":{item_pos},'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
-                )
-            ]
+        use_buttons = get_use_consumable_buttons(
+            page=page, user_id=user_id, item_pos=item_pos, item=item
+        )
 
     discard_buttons = get_discard_buttons(
-        page=page, user_id=user_id, item_pos=item_pos
+        page=page, user_id=user_id, item_pos=item_pos, item=item
     )
     back_button = get_back_button(
         page=page, user_id=user_id, retry_state=USE_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([
-        equip_or_use_buttons,
+        equip_buttons,
+        *use_buttons,
         identify_button,
-        discard_buttons,
+        *discard_buttons,
         back_button
     ])
     # Edita mensagem com as informações do item escolhido
@@ -867,27 +853,57 @@ def get_extremes_navigation_buttons(
     return extremes_navigation_keyboard
 
 
+def get_use_consumable_buttons(
+    page: int,
+    user_id: int,
+    item_pos: int,
+    item: Item
+) -> List[InlineKeyboardButton]:
+    use_buttons = []
+    quantity = min(item.quantity, DROPUSE_MANY_MAX)
+    if item.item.usable is True:
+        for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
+            if quantity_option <= quantity:
+                text = USE_MANY_BUTTON_TEXT.format(
+                    quantity_option=quantity_option
+                )
+                use_buttons.append(
+                    InlineKeyboardButton(
+                        text=text,
+                        callback_data=(
+                            f'{{"use":{quantity_option},"item":{item_pos},'
+                            f'"page":{page},"user_id":{user_id}}}'
+                        )
+                    )
+                )
+
+    return reshape_row_buttons(use_buttons, buttons_per_row=2)
+
+
 def get_discard_buttons(
     page: int,
     user_id: int,
-    item_pos: int
+    item_pos: int,
+    item: Item
 ) -> List[InlineKeyboardButton]:
-    return [
-        InlineKeyboardButton(
-            text=DISCARD_BUTTON_TEXT,
-            callback_data=(
-                f'{{"drop":1,"item":{item_pos},'
-                f'"page":{page},"user_id":{user_id}}}'
+    drop_buttons = []
+    quantity = min(item.quantity, DROPUSE_MANY_MAX)
+    for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
+        if quantity_option <= quantity:
+            text = DISCARD_MANY_BUTTON_TEXT.format(
+                quantity_option=quantity_option
             )
-        ),
-        InlineKeyboardButton(
-            text=DISCARD_MANY_BUTTON_TEXT,
-            callback_data=(
-                f'{{"drop":10,"item":{item_pos},'
-                f'"page":{page},"user_id":{user_id}}}'
+            drop_buttons.append(
+                InlineKeyboardButton(
+                    text=text,
+                    callback_data=(
+                        f'{{"drop":{quantity_option},"item":{item_pos},'
+                        f'"page":{page},"user_id":{user_id}}}'
+                    )
+                )
             )
-        )
-    ]
+
+    return reshape_row_buttons(drop_buttons, buttons_per_row=2)
 
 
 def get_close_bag_button(user_id: int) -> List[InlineKeyboardButton]:
