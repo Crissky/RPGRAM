@@ -382,7 +382,7 @@ def get_details_text(option: str) -> str:
             f'inspirar, persuadir, sugestionar ou manipular outras pessoas, '
             f'seja de maneira positiva ou negativa. '
             f'O carisma influencia bastante na `Iniciativa` e contribui '
-            f'um pouco no `Acerto`.\n\n'
+            f'um pouco no `Acerto` e na `Evasão`.\n\n'
         )
     elif option == CALLBACK_COMBAT_ATTRIBUTES:
         text = (
@@ -400,7 +400,7 @@ def get_details_text(option: str) -> str:
             f'zero o personagem ficará incapacidado até que recupere ao menos '
             f'um `Ponto de Vida`.\n'
             f'Os Atributos Base que compoem os `Pontos de Vida` são:\n'
-            f'A `Constituição`(x10) e a `Força`(x5).\n\n'
+            f'A `Constituição`(x15) e a `Força`(x8).\n\n'
 
             f'{EmojiEnum.INITIATIVE.value}'
             f'*Iniciativa*: Representa o quão rápido e sagaz um '
@@ -408,7 +408,7 @@ def get_details_text(option: str) -> str:
             f'`Iniciativa` em relação a dos demais lutadores, mais a frente o '
             f'personagem estará na ordem de ataque.\n'
             f'Os Atributos Base que compoem a `Iniciativa` são:\n'
-            f'A `Sabedoria`(x2), o `Carisma`(x2) e a `Destreza`(x1,5).\n\n'
+            f'A `Sabedoria`(x3), o `Carisma`(x3) e a `Destreza`(x2).\n\n'
 
             f'{EmojiEnum.PHYSICAL_ATTACK.value}'
             f'*Ataque Físico*: Representa o poder dos '
@@ -416,7 +416,7 @@ def get_details_text(option: str) -> str:
             f'valor do `Ataque Físico` em relação ao da `Defesa Física` '
             f'do alvo, maior será o dano causado aos `Pontos de Vida`.\n'
             f'Os Atributos Base que compoem o `Ataque Físico` são:\n'
-            f'A `Força`(x2) e a `Destreza`(x1).\n\n'
+            f'A `Força`(x3) e a `Destreza`(x2).\n\n'
 
             f'{EmojiEnum.PRECISION_ATTACK.value}'
             f'*Ataque de Precisão*: Representa o '
@@ -426,7 +426,7 @@ def get_details_text(option: str) -> str:
             f'relação ao da `Defesa Física` do alvo, maior será o dano '
             f'causado aos `Pontos de Vida` do oponente.\n'
             f'Os Atributos Base que compoem o `Ataque de Precisão` são:\n'
-            f'`Destreza`(x2,5).\n\n'
+            f'`Destreza`(x4).\n\n'
 
             f'{EmojiEnum.MAGICAL_ATTACK.value}'
             f'*Ataque Mágico*: Representa o poder dos '
@@ -435,7 +435,7 @@ def get_details_text(option: str) -> str:
             f'relação ao da `Defesa Mágica` do alvo, maior será o dano '
             f'causado aos `Pontos de Vida` do inimigo.\n'
             f'Os Atributos Base que compoem o `Ataque Mágico` são:\n'
-            f'`Inteligência`(x3) e `Sabedoria`(x1).\n\n'
+            f'`Inteligência`(x4) e `Sabedoria`(x2).\n\n'
 
             f'{EmojiEnum.PHYSICAL_DEFENSE.value}'
             f'*Defesa Física*: Representa a habilidade '
@@ -443,7 +443,7 @@ def get_details_text(option: str) -> str:
             f'golpe físico (aqueles baseados em `Ataque Físico` ou '
             f'`Ataque de Precisão`).\n'
             f'Os Atributos Base que compoem a `Defesa Física` são:\n'
-            f'`Constituição`(x2) e `Destreza`(x1).\n\n'
+            f'`Constituição`(x3) e `Destreza`(x2).\n\n'
 
             f'{EmojiEnum.MAGICAL_DEFENSE.value}'
             f'*Defesa Mágica*: Representa a capacidade '
@@ -451,7 +451,7 @@ def get_details_text(option: str) -> str:
             f'de ataques sobrenaturais (aqueles baseados em '
             f'`Ataque Mágico`).\n'
             f'Os Atributos Base que compoem a `Defesa Mágica` são:\n'
-            f'`Sabedoria`(x2) e `Constituição`(x1).\n\n'
+            f'`Sabedoria`(x4), `Inteligência`(x2) e `Constituição`(x2).\n\n'
 
             f'{EmojiEnum.HIT.value}'
             f'*Acerto*: Representa a perícia que o '
@@ -459,7 +459,7 @@ def get_details_text(option: str) -> str:
             f'os seus ataques. Quanto maior o valor do `Acerto` em relação '
             f'ao da `Evasão` do alvo, maior será a chance de acerto.\n'
             f'Os Atributos Base que compoem o `Acerto` são:\n'
-            f'`Destreza`(x2), `Sabedoria`(x1) e `Carisma`(x1).\n\n'
+            f'`Destreza`(x3), `Sabedoria`(x2) e `Carisma`(x2).\n\n'
 
             f'{EmojiEnum.EVASION.value}'
             f'*Evasão*: Representa a maestria que o '
@@ -467,7 +467,7 @@ def get_details_text(option: str) -> str:
             f'o valor da `Evasão` em relação ao do `Acerto` do atacante, '
             f'maior será a chance de evitar o ataque.\n'
             f'Os Atributos Base que compoem o `Evasão` são:\n'
-            f'`Destreza`(x2) e `Sabedoria`(x1).\n\n'
+            f'`Destreza`(x3), `Sabedoria`(x2) e `Carisma`(x2).\n\n'
         )
     elif option == CALLBACK_ITEMS:
         text = (
