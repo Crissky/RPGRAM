@@ -130,14 +130,16 @@ CONDITIONS = [
     },
     {
         'name': BLINDNESS,
-        'description': 'Reduz a chance de acerto.',
+        'description': 'Reduz o multiplicador de Destreza em (10% x Nível).',
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': BlindnessCondition,
     },
     {
         'name': BURN,
-        'description': 'Reduz o multiplicador de Constituição.',
+        'description': (
+            'Reduz o multiplicador de Constituição em (10% x Nível).'
+            ),
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': BurnCondition,
@@ -153,28 +155,33 @@ CONDITIONS = [
     },
     {
         'name': CURSE,
-        'description': 'Reduz os multiplicadores de Inteligência e Sabedoria.',
+        'description': (
+            'Reduz os multiplicadores de Inteligência e Sabedoria '
+            'em (10% x Nível).'
+            ),
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': CurseCondition,
     },
     {
         'name': EXHAUSTION,
-        'description': 'Reduz os multiplicadores de Força e Destreza.',
+        'description': (
+            'Reduz os multiplicadores de Força e Destreza em (10% x Nível).'
+            ),
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': ExhaustionCondition,
     },
     {
         'name': FROZEN,
-        'description': 'O personagem não pode realizar ações por 10 turnos.',
+        'description': 'O personagem não pode realizar ações por 5 turnos.',
         'frequency': TurnEnum.START,
         'turn': 5,
         'class': FrozenCondition,
     },
     {
         'name': PARALYSIS,
-        'description': 'O personagem não pode realizar ações por 5 turnos.',
+        'description': 'O personagem não pode realizar ações por 3 turnos.',
         'frequency': TurnEnum.START,
         'turn': 3,
         'class': ParalysisCondition,
