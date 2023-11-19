@@ -30,12 +30,28 @@ class Database:
         )
 
     def find_many(
-        self, collection: str, query: dict, fields: Union[list, dict] = None
+        self,
+        collection: str,
+        query: dict,
+        fields: Union[list, dict] = None
     ) -> Cursor:
         return self.database[collection].find(filter=query, projection=fields)
 
     def update(self, collection: str, query: dict, data: dict) -> UpdateResult:
         return self.database[collection].update_one(filter=query, update=data)
+
+    def replace(
+        self,
+        collection: str,
+        query: dict,
+        data: dict,
+        upsert: bool = True
+    ) -> UpdateResult:
+        return self.database[collection].replace_one(
+            filter=query,
+            replacement=data,
+            upsert=upsert
+        )
 
     def delete(self, collection: str, query: dict) -> DeleteResult:
         return self.database[collection].delete_one(filter=query)
