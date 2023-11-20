@@ -5,6 +5,17 @@ from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.rarity import RarityEnum
+from rpgram.stats.stats_combat import FULL_HEAL_VALUE
+
+
+MINOR_HEALING_POTION_POWER = 50
+LIGHT_HEALING_POTION_POWER = 100
+HEALING_POTION_POWER = 200
+GREATER_HEALING_POTION_POWER = 500
+RARE_HEALING_POTION_POWER = 1000
+EPIC_HEALING_POTION_POWER = 2500
+LEGENDARY_HEALING_POTION_POWER = 5000
+MYTHIC_HEALING_POTION_POWER = FULL_HEAL_VALUE
 
 
 class HealingConsumable(Consumable):
