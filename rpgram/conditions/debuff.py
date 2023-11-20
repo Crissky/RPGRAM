@@ -303,6 +303,21 @@ class SilenceCondition(DebuffCondition):
         )
 
 
+DEBUFFS = [
+    BleedingCondition(),
+    BlindnessCondition(),
+    BurnCondition(),
+    ConfusionCondition(),
+    CurseCondition(),
+    ExhaustionCondition(),
+    FrozenCondition(),
+    ParalysisCondition(),
+    PetrifiedCondition(),
+    PoisoningCondition(),
+    SilenceCondition(),
+]
+
+
 if __name__ == '__main__':
     print(BleedingCondition())
     print(BlindnessCondition())

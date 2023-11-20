@@ -24,7 +24,7 @@ from bot.decorators import (
 from bot.functions.char import add_conditions
 from bot.functions.general import get_attribute_group_or_player
 from function.text import escape_basic_markdown_v2
-from repository.mongo import CharacterModel, ConditionModel
+from rpgram.conditions.debuff import DEBUFFS
 
 
 @skip_if_no_singup_player
@@ -57,18 +57,12 @@ async def get_random_debuff(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
-    condition_model = ConditionModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
-    
-    conditions = condition_model.get_all({
-        '_class': {
-            '$ne': 'HealingCondition'
-        }
-    })
-    report = add_conditions(*conditions, user_id=user_id)
+
+    report = add_conditions(*DEBUFFS, user_id=user_id)
     char = report['char']
     text = escape_basic_markdown_v2(report['text'])
     text += char.get_all_sheets(verbose=False, markdown=True)

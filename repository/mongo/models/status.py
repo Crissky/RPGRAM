@@ -1,7 +1,7 @@
 from repository.mongo import CollectionEnum, Model
-from repository.mongo.models.condition import ConditionModel
 
 from rpgram import Status
+from rpgram.conditions.debuff import BleedingCondition
 from rpgram.conditions.factory import factory_condition
 
 
@@ -18,14 +18,16 @@ class StatusModel(Model):
     )
 
 if __name__ == '__main__':
-    conditions_model = ConditionModel()
-    condition = conditions_model.get('ffffffffffffffffffffffff')
+    
+    condition = BleedingCondition()
     status_model = StatusModel()
     status = Status(
         player_id=1,
-        conditions=[condition],
         _id='ffffffffffffffffffffffff'
     )
+    status.add(condition)
+    status.add(condition)
+    status.add(condition)
     status_model.save(status)
     status2 = status_model.get('ffffffffffffffffffffffff')
     print('status2:\n', status2)

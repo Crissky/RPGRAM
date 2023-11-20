@@ -3,13 +3,13 @@ from typing import List
 
 from repository.mongo import (
     CharacterModel,
-    ConditionModel,
     EquipsModel,
     GroupModel,
     StatusModel,
 )
 from rpgram import Group
 from rpgram.characters import BaseCharacter
+from rpgram.conditions.factory import factory_condition
 from rpgram.enums.damage import (
     DamageEnum,
     MAGICAL_DAMAGE_TYPES,
@@ -164,7 +164,6 @@ def add_conditions_trap(
             'Ao menos um dos dois não podem ser None.'
         )
 
-    condition_model = ConditionModel()
     if user_id and char is None:
         char_model = CharacterModel()
         char = char_model.get(user_id)
@@ -175,7 +174,7 @@ def add_conditions_trap(
         accuracy = condition_trap['accuracy']
         condition_name = condition_trap['condition']
         if efficiency <= accuracy:
-            condition = condition_model.get(condition_name)
+            condition = factory_condition(condition_name)
             report = char.status.add(condition)
             condition_trap_report['text'] += report['text'] + '\n'
 
