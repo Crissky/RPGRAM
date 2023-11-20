@@ -242,7 +242,11 @@ class Model:
                             )
                 # esperado que dict_field seja um _id
                 elif popu_field_args is not None:
-                    object = model.get(popu_field_args)
+                    if 'factory' in popu_field_info.keys():
+                        factory = popu_field_info['factory']
+                        item_loaded = factory(popu_field_args)
+                    else:
+                        object = model.get(popu_field_args)
 
                 dict_obj[popu_field_name] = object
             else:
