@@ -207,9 +207,9 @@ class Model:
                 popu_field_args = dict_obj.pop(mongo_field_name)
                 model = popu_field_info.get('model')
 
-                object = None
+                _object = None
                 if isinstance(popu_field_args, list):
-                    object = []
+                    _object = []
                     for item in popu_field_args:
                         if isinstance(item, dict):
                             item_id = item.pop('_id', None)
@@ -230,9 +230,9 @@ class Model:
                             elif 'factory' in popu_field_info.keys():
                                 factory = popu_field_info['factory']
                                 item_loaded = factory(**item)
-                            object.append(item_loaded)
+                            _object.append(item_loaded)
                         elif isinstance(item, (ObjectId, str)):
-                            object.append(model.get(item))
+                            _object.append(model.get(item))
                         else:
                             raise KeyError(
                                 f'O valor da id_key "{mongo_field_name}" '
@@ -244,11 +244,11 @@ class Model:
                 elif popu_field_args is not None:
                     if 'factory' in popu_field_info.keys():
                         factory = popu_field_info['factory']
-                        item_loaded = factory(popu_field_args)
+                        _object = factory(popu_field_args)
                     else:
-                        object = model.get(popu_field_args)
+                        _object = model.get(popu_field_args)
 
-                dict_obj[popu_field_name] = object
+                dict_obj[popu_field_name] = _object
             else:
                 if isinstance(self._class, tuple):
                     class_name = ', '.join([c.__name__ for c in self._class])

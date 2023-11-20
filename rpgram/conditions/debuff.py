@@ -303,19 +303,27 @@ class SilenceCondition(DebuffCondition):
         )
 
 
-DEBUFFS = [
-    BleedingCondition(),
-    BlindnessCondition(),
-    BurnCondition(),
-    ConfusionCondition(),
-    CurseCondition(),
-    ExhaustionCondition(),
-    FrozenCondition(),
-    ParalysisCondition(),
-    PetrifiedCondition(),
-    PoisoningCondition(),
-    SilenceCondition(),
-]
+class Debuffs:
+    __list = [
+        BleedingCondition,
+        BlindnessCondition,
+        BurnCondition,
+        ConfusionCondition,
+        CurseCondition,
+        ExhaustionCondition,
+        FrozenCondition,
+        ParalysisCondition,
+        PetrifiedCondition,
+        PoisoningCondition,
+        SilenceCondition,
+    ]
+
+    def __iter__(self):
+        for condition_class in self.__list:
+            yield condition_class()
+
+
+DEBUFFS = Debuffs()
 
 
 if __name__ == '__main__':
