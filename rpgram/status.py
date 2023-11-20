@@ -272,7 +272,7 @@ class Status:
             player_id=self.__player_id,
             condition_ids=[
                 dict(
-                    _id=condition._id,
+                    condition_name=condition.name,
                     turn=condition.turn,
                     level=condition.level,
                 )
