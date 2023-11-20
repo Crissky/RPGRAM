@@ -87,8 +87,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'Adicionado "{value}" ponto(s) no atributo "{attribute}".\n\n'
             )
         except (KeyError, ValueError) as error:
+            text = str(error)
             if query:
-                text = str(error)
                 await query.answer(text=text, show_alert=True)
             else:
                 await update.effective_message.reply_text(
