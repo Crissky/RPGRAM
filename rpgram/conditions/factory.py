@@ -38,44 +38,55 @@ from rpgram.enums.condition import (
 from rpgram.enums.consumable import HealingConsumableEnum
 
 
-def factory_condition(condition_name, turn, level) -> Condition:
+def factory_condition(
+    condition_name: str,
+    turn: int = None,
+    level: int = None,
+) -> Condition:
     # DEBUFFS
     if condition_name == BLEEDING:
-        return BleedingCondition(turn, level)
+        condition_class = BleedingCondition
     elif condition_name == BLINDNESS:
-        return BlindnessCondition(turn, level)
+        condition_class = BlindnessCondition
     elif condition_name == BURN:
-        return BurnCondition(turn, level)
+        condition_class = BurnCondition
     elif condition_name == CONFUSION:
-        return ConfusionCondition(turn, level)
+        condition_class = ConfusionCondition
     elif condition_name == CURSE:
-        return CurseCondition(turn, level)
+        condition_class = CurseCondition
     elif condition_name == EXHAUSTION:
-        return ExhaustionCondition(turn, level)
+        condition_class = ExhaustionCondition
     elif condition_name == FROZEN:
-        return FrozenCondition(turn, level)
+        condition_class = FrozenCondition
     elif condition_name == PARALYSIS:
-        return ParalysisCondition(turn, level)
+        condition_class = ParalysisCondition
     elif condition_name == PETRIFIED:
-        return PetrifiedCondition(turn, level)
+        condition_class = PetrifiedCondition
     elif condition_name == POISONING:
-        return PoisoningCondition(turn, level)
+        condition_class = PoisoningCondition
     elif condition_name == SILENCE:
-        return SilenceCondition(turn, level)
+        condition_class = SilenceCondition
     # HEALING BUFFS
     elif condition_name == HealingConsumableEnum.HEAL1.value:
-        return Heal1Condition(turn, level)
+        condition_class = Heal1Condition
     elif condition_name == HealingConsumableEnum.HEAL2.value:
-        return Heal2Condition(turn, level)
+        condition_class = Heal2Condition
     elif condition_name == HealingConsumableEnum.HEAL3.value:
-        return Heal3Condition(turn, level)
+        condition_class = Heal3Condition
     elif condition_name == HealingConsumableEnum.HEAL4.value:
-        return Heal4Condition(turn, level)
+        condition_class = Heal4Condition
     elif condition_name == HealingConsumableEnum.HEAL5.value:
-        return Heal5Condition(turn, level)
+        condition_class = Heal5Condition
     elif condition_name == HealingConsumableEnum.HEAL6.value:
-        return Heal6Condition(turn, level)
+        condition_class = Heal6Condition
     elif condition_name == HealingConsumableEnum.HEAL7.value:
-        return Heal7Condition(turn, level)
+        condition_class = Heal7Condition
     elif condition_name == HealingConsumableEnum.HEAL8.value:
-        return Heal8Condition(turn, level)
+        condition_class = Heal8Condition
+
+    if not turn and level:
+        return condition_class(level=level)
+    elif turn and not level:
+        return condition_class(turn=turn)
+    elif turn and level:
+        return condition_class(turn=turn, level=level)
