@@ -1,5 +1,5 @@
 from repository.mongo import ConditionModel
-from repository.mongo.populate.consumable import (
+from rpgram.consumables.heal import (
     MINOR_HEALING_POTION_POWER,
     LIGHT_HEALING_POTION_POWER,
     HEALING_POTION_POWER,
@@ -7,10 +7,8 @@ from repository.mongo.populate.consumable import (
     RARE_HEALING_POTION_POWER,
     EPIC_HEALING_POTION_POWER,
     LEGENDARY_HEALING_POTION_POWER,
-    MYTHIC_HEALING_POTION_POWER,
 )
 from rpgram.conditions import (
-    Condition,
     HealingCondition,
     BleedingCondition,
     BlindnessCondition,
@@ -139,7 +137,7 @@ CONDITIONS = [
         'name': BURN,
         'description': (
             'Reduz o multiplicador de Constituição em (10% x Nível).'
-            ),
+        ),
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': BurnCondition,
@@ -158,7 +156,7 @@ CONDITIONS = [
         'description': (
             'Reduz os multiplicadores de Inteligência e Sabedoria '
             'em (10% x Nível).'
-            ),
+        ),
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': CurseCondition,
@@ -167,7 +165,7 @@ CONDITIONS = [
         'name': EXHAUSTION,
         'description': (
             'Reduz os multiplicadores de Força e Destreza em (10% x Nível).'
-            ),
+        ),
         'frequency': TurnEnum.CONTINUOUS,
         'turn': -1,
         'class': ExhaustionCondition,
