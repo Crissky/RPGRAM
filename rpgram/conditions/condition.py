@@ -144,8 +144,10 @@ class Condition(StatsBooster):
 
     def __eq__(self, other):
         if isinstance(other, Condition):
-            if self._id is not None and other._id is not None:
-                return self._id == other._id
+            return all((
+                self.__class__ == other.__class__,
+                self.name == other.name
+            ))
         elif isinstance(other, str):
             return self.name.upper() == other.upper()
         return False
