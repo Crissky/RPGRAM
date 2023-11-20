@@ -77,13 +77,13 @@ class Condition(StatsBooster):
     def __call__(self, target):
         return self.activate(target)
 
-    def add_level(self):
-        self.__level += 1
+    def add_level(self, value: int = 1):
+        self.__level += abs(value)
 
         return self
 
-    def remove_level(self):
-        self.__level -= 1
+    def remove_level(self, value: int = 1):
+        self.__level -= -abs(value)
         if self.__level < 1:
             return None
         return self

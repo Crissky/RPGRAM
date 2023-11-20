@@ -59,6 +59,15 @@ class DebuffCondition(Condition):
 
 class BleedingCondition(DebuffCondition):
 
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=BLEEDING,
+            description='Causa (2% x Nível) de dano a cada turno.',
+            frequency=TurnEnum.START,
+            turn=-1,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -71,6 +80,15 @@ class BleedingCondition(DebuffCondition):
 
 
 class BlindnessCondition(DebuffCondition):
+
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=BLINDNESS,
+            description='Reduz o multiplicador de Destreza em (10% x Nível).',
+            frequency=TurnEnum.CONTINUOUS,
+            turn=-1,
+            level=level,
+        )
 
     @property
     def function(self) -> str:
@@ -85,6 +103,17 @@ class BlindnessCondition(DebuffCondition):
 
 class BurnCondition(DebuffCondition):
 
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=BURN,
+            description=(
+                'Reduz o multiplicador de Constituição em (10% x Nível).'
+            ),
+            frequency=TurnEnum.CONTINUOUS,
+            turn=-1,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -98,6 +127,17 @@ class BurnCondition(DebuffCondition):
 
 class ConfusionCondition(DebuffCondition):
 
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=CONFUSION,
+            description=(
+                'O personagem pode fazer coisa inusitadas por 5 turnos.'
+            ),
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -108,6 +148,18 @@ class ConfusionCondition(DebuffCondition):
 
 
 class CurseCondition(DebuffCondition):
+
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=CURSE,
+            description=(
+                'Reduz os multiplicadores de Inteligência e Sabedoria '
+                'em (10% x Nível).'
+            ),
+            frequency=TurnEnum.CONTINUOUS,
+            turn=-1,
+            level=level,
+        )
 
     @property
     def function(self) -> str:
@@ -123,6 +175,18 @@ class CurseCondition(DebuffCondition):
 
 class ExhaustionCondition(DebuffCondition):
 
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=EXHAUSTION,
+            description=(
+                'Reduz os multiplicadores de '
+                'Força e Destreza em (10% x Nível).'
+            ),
+            frequency=TurnEnum.CONTINUOUS,
+            turn=-1,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -137,6 +201,15 @@ class ExhaustionCondition(DebuffCondition):
 
 class FrozenCondition(DebuffCondition):
 
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=FROZEN,
+            description='O personagem não pode realizar ações por 5 turnos.',
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -147,6 +220,15 @@ class FrozenCondition(DebuffCondition):
 
 
 class ParalysisCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 3, level: int = 1):
+        super().__init__(
+            name=PARALYSIS,
+            description='O personagem não pode realizar ações por 3 turnos.',
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
 
     @property
     def function(self) -> str:
@@ -159,6 +241,15 @@ class ParalysisCondition(DebuffCondition):
 
 class PetrifiedCondition(DebuffCondition):
 
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=PETRIFIED,
+            description='O personagem não pode realizar ações.',
+            frequency=TurnEnum.START,
+            turn=-1,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -169,6 +260,15 @@ class PetrifiedCondition(DebuffCondition):
 
 
 class PoisoningCondition(DebuffCondition):
+
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=POISONING,
+            description='O personagem perde vida a cada turno.',
+            frequency=TurnEnum.START,
+            turn=-1,
+            level=level,
+        )
 
     @property
     def function(self) -> str:
@@ -183,6 +283,17 @@ class PoisoningCondition(DebuffCondition):
 
 class SilenceCondition(DebuffCondition):
 
+    def __init__(self, turn: int = -1, level: int = 1):
+        super().__init__(
+            name=SILENCE,
+            description=(
+                'O personagem não pode usar feitiços, magias ou encantamentos.'
+            ),
+            frequency=TurnEnum.START,
+            turn=-1,
+            level=level,
+        )
+
     @property
     def function(self) -> str:
         return (
@@ -193,58 +304,14 @@ class SilenceCondition(DebuffCondition):
 
 
 if __name__ == '__main__':
-    print(BleedingCondition(
-        name='BleedingCodition',
-        description='BleedingCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(BlindnessCondition(
-        name='BlindnessCodition',
-        description='BlindnessCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(BurnCondition(
-        name='BurnCodition',
-        description='BurnCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(ConfusionCondition(
-        name='ConfusionCodition',
-        description='ConfusionCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(CurseCondition(
-        name='CurseCodition',
-        description='CurseCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(ExhaustionCondition(
-        name='ExhaustionCodition',
-        description='ExhaustionCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(FrozenCondition(
-        name='FrozenCodition',
-        description='FrozenCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(ParalysisCondition(
-        name='ParalysisCodition',
-        description='ParalysisCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(PetrifiedCondition(
-        name='PetrifiedCodition',
-        description='PetrifiedCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(PoisoningCondition(
-        name='PoisoningCodition',
-        description='PoisoningCodition Description',
-        frequency=TurnEnum.START
-    ))
-    print(SilenceCondition(
-        name='SilenceCodition',
-        description='SilenceCodition Description',
-        frequency=TurnEnum.START
-    ))
+    print(BleedingCondition())
+    print(BlindnessCondition())
+    print(BurnCondition())
+    print(ConfusionCondition())
+    print(CurseCondition())
+    print(ExhaustionCondition())
+    print(FrozenCondition())
+    print(ParalysisCondition())
+    print(PetrifiedCondition())
+    print(PoisoningCondition())
+    print(SilenceCondition())

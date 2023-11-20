@@ -3,7 +3,26 @@ from typing import Union
 
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
+from rpgram.consumables.heal import (
+    MINOR_HEALING_POTION_POWER,
+    LIGHT_HEALING_POTION_POWER,
+    HEALING_POTION_POWER,
+    GREATER_HEALING_POTION_POWER,
+    RARE_HEALING_POTION_POWER,
+    EPIC_HEALING_POTION_POWER,
+    LEGENDARY_HEALING_POTION_POWER,
+)
+from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.turn import TurnEnum
+
+MINOR_HEALING_POTION_TURNPOWER = MINOR_HEALING_POTION_POWER // 5
+LIGHT_HEALING_POTION_TURNPOWER = LIGHT_HEALING_POTION_POWER // 5
+HEALING_POTION_TURNPOWER = HEALING_POTION_POWER // 5
+GREATER_HEALING_POTION_TURNPOWER = GREATER_HEALING_POTION_POWER // 5
+RARE_HEALING_POTION_TURNPOWER = RARE_HEALING_POTION_POWER // 5
+EPIC_HEALING_POTION_TURNPOWER = EPIC_HEALING_POTION_POWER // 5
+LEGENDARY_HEALING_POTION_TURNPOWER = LEGENDARY_HEALING_POTION_POWER // 5
+MYTHIC_HEALING_POTION_TURNPOWER = LEGENDARY_HEALING_POTION_TURNPOWER
 
 
 class HealingCondition(Condition):
@@ -61,13 +80,132 @@ class HealingCondition(Condition):
         )
 
 
-if __name__ == '__main__':
-    healing_condition = HealingCondition(
-        name='Heal Condition',
-        description='Heal Condition Description',
-        power=10,
-        frequency=TurnEnum.START,
-    )
+class Heal1Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL1.value,
+            description=(
+                f'Cura {MINOR_HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=MINOR_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
 
-    print(healing_condition)
-    print(healing_condition.to_dict())
+
+class Heal2Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL2.value,
+            description=(
+                f'Cura {LIGHT_HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=LIGHT_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+class Heal3Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL3.value,
+            description=(
+                f'Cura {HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+class Heal4Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL4.value,
+            description=(
+                f'Cura {GREATER_HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=GREATER_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+class Heal5Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL5.value,
+            description=(
+                f'Cura {RARE_HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=RARE_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+class Heal6Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL6.value,
+            description=(
+                f'Cura {EPIC_HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=EPIC_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+class Heal7Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL7.value,
+            description=(
+                f'Cura {LEGENDARY_HEALING_POTION_POWER} de HP em 5 Turnos.'
+            ),
+            power=LEGENDARY_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+class Heal8Condition(HealingCondition):
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=HealingConsumableEnum.HEAL8.value,
+            description=(
+                f'Cura {MYTHIC_HEALING_POTION_TURNPOWER} de HP em 5 Turnos.'
+            ),
+            power=MYTHIC_HEALING_POTION_TURNPOWER,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=1,
+        )
+
+
+if __name__ == '__main__':
+    print(Heal1Condition())
+    print(Heal1Condition().to_dict())
+    print(Heal2Condition())
+    print(Heal2Condition().to_dict())
+    print(Heal3Condition())
+    print(Heal3Condition().to_dict())
+    print(Heal4Condition())
+    print(Heal4Condition().to_dict())
+    print(Heal5Condition())
+    print(Heal5Condition().to_dict())
+    print(Heal6Condition())
+    print(Heal6Condition().to_dict())
+    print(Heal7Condition())
+    print(Heal7Condition().to_dict())
+    print(Heal8Condition())
+    print(Heal8Condition().to_dict())

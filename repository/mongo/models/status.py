@@ -2,6 +2,7 @@ from repository.mongo import CollectionEnum, Model
 from repository.mongo.models.condition import ConditionModel
 
 from rpgram import Status
+from rpgram.conditions.factory import factory_condition
 
 
 class StatusModel(Model):
@@ -11,8 +12,7 @@ class StatusModel(Model):
         lambda self: {
             'conditions': {
                 'id_key': 'condition_ids',
-                'model': ConditionModel(),
-                'remakeclass': True,
+                'factory': factory_condition,
             }
         }
     )

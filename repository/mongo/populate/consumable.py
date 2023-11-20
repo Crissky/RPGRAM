@@ -6,6 +6,16 @@ from rpgram.consumables import (
     IdentifyingConsumable,
     HealingConsumable
 )
+from rpgram.consumables.heal import (
+    MINOR_HEALING_POTION_POWER,
+    LIGHT_HEALING_POTION_POWER,
+    HEALING_POTION_POWER,
+    GREATER_HEALING_POTION_POWER,
+    RARE_HEALING_POTION_POWER,
+    EPIC_HEALING_POTION_POWER,
+    LEGENDARY_HEALING_POTION_POWER,
+    MYTHIC_HEALING_POTION_POWER,
+)
 from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
 from rpgram.enums.condition import (
     BLEEDING,
@@ -20,17 +30,7 @@ from rpgram.enums.condition import (
     POISONING,
     SILENCE,
 )
-from rpgram.stats.stats_combat import FULL_HEAL_VALUE
 
-
-MINOR_HEALING_POTION_POWER = 50
-LIGHT_HEALING_POTION_POWER = 100
-HEALING_POTION_POWER = 200
-GREATER_HEALING_POTION_POWER = 500
-RARE_HEALING_POTION_POWER = 1000
-EPIC_HEALING_POTION_POWER = 2500
-LEGENDARY_HEALING_POTION_POWER = 5000
-MYTHIC_HEALING_POTION_POWER = FULL_HEAL_VALUE
 
 CONSUMABLES = [
     # Healing Potions
@@ -130,7 +130,7 @@ CONSUMABLES = [
     # Cure Potions
     {
         'name': 'Cotton Bandage',
-        'description': f'Cura {BLEEDING}.',
+        'description': f'Cura condição "{BLEEDING}".',
         'condition_target': BLEEDING,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -138,7 +138,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Eye Drops',
-        'description': f'Cura {BLINDNESS}.',
+        'description': f'Cura condição "{BLINDNESS}".',
         'condition_target': BLINDNESS,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -146,7 +146,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Aloe Compress',
-        'description': f'Cura {BURN}.',
+        'description': f'Cura condição "{BURN}".',
         'condition_target': BURN,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -154,7 +154,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Red Remedy',
-        'description': f'Cura {CONFUSION}.',
+        'description': f'Cura condição "{CONFUSION}".',
         'condition_target': CONFUSION,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -162,7 +162,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Mystical Incense',
-        'description': f'Cura {CURSE}.',
+        'description': f'Cura condição "{CURSE}".',
         'condition_target': CURSE,
         'weight': 0.20,
         'rarity': RarityEnum.RARE.name,
@@ -170,7 +170,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Energy Potion',
-        'description': f'Cura {EXHAUSTION}.',
+        'description': f'Cura condição "{EXHAUSTION}".',
         'condition_target': EXHAUSTION,
         'weight': 0.25,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -178,7 +178,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Hot Potion',
-        'description': f'Cura {FROZEN}.',
+        'description': f'Cura condição "{FROZEN}".',
         'condition_target': FROZEN,
         'weight': 0.25,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -186,7 +186,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Vitamin Fruit',
-        'description': f'Cura {PARALYSIS}.',
+        'description': f'Cura condição "{PARALYSIS}".',
         'condition_target': PARALYSIS,
         'weight': 0.55,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -194,7 +194,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Gold Needle',
-        'description': f'Cura {PETRIFIED}.',
+        'description': f'Cura condição "{PETRIFIED}".',
         'condition_target': PETRIFIED,
         'weight': 0.15,
         'rarity': RarityEnum.RARE.name,
@@ -202,7 +202,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Antidote',
-        'description': f'Cura {POISONING}.',
+        'description': f'Cura condição "{POISONING}".',
         'condition_target': POISONING,
         'weight': 0.15,
         'rarity': RarityEnum.COMMON.name,
@@ -210,7 +210,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Echo Herb',
-        'description': f'Cura {SILENCE}.',
+        'description': f'Cura condição "{SILENCE}".',
         'condition_target': SILENCE,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,

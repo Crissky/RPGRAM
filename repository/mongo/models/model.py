@@ -203,40 +203,46 @@ class Model:
                 continue
 
             if popu_field_info['id_key'] in dict_obj.keys():
-                key = popu_field_info['id_key']
-                dict_field = dict_obj.pop(key)
-                model = popu_field_info['model']
+                mongo_field_name = popu_field_info['id_key']
+                popu_field_args = dict_obj.pop(mongo_field_name)
+                model = popu_field_info.get('model')
 
                 object = None
-                if isinstance(dict_field, list):
+                if isinstance(popu_field_args, list):
                     object = []
-                    for item in dict_field:
+                    for item in popu_field_args:
                         if isinstance(item, dict):
-                            object_id = item.pop('_id')
-                            object_loaded = model.get(object_id)
+                            item_id = item.pop('_id', None)
                             if 'subclass' in popu_field_info.keys():
+                                item_loaded = model.get(item_id)
                                 subclass = popu_field_info['subclass']
-                                object_loaded = subclass(object_loaded, **item)
+                                item_loaded = subclass(item_loaded, **item)
                             # Instancia a classe novamente combinando os
                             # atributos fixo do objeto (que vem com model)
-                            # com os atributos variáveis (que estão na lista).
+                            # com os atributos variáveis
+                            # (que estão na lista do mongo).
                             elif 'remakeclass' in popu_field_info.keys():
-                                remakeclass = object_loaded.__class__
-                                object_dict = object_loaded.to_dict()
-                                object_dict.update(item)
-                                object_loaded = remakeclass(**object_dict)
-                            object.append(object_loaded)
+                                item_loaded = model.get(item_id)
+                                remakeclass = item_loaded.__class__
+                                item_loaded_dict = item_loaded.to_dict()
+                                item_loaded_dict.update(item)
+                                item_loaded = remakeclass(**item_loaded_dict)
+                            elif 'factory' in popu_field_info.keys():
+                                factory = popu_field_info['factory']
+                                item_loaded = factory(**item)
+                            object.append(item_loaded)
                         elif isinstance(item, (ObjectId, str)):
                             object.append(model.get(item))
                         else:
                             raise KeyError(
-                                f'O valor da id_key "{key}" no "dict_obj" '
-                                f'é uma lista e um elemento dessa lista não é '
-                                f'um dict com o campo "_id", str ou ObjectId. '
-                                f'item: {item}.'
+                                f'O valor da id_key "{mongo_field_name}" '
+                                f'no "dict_obj" é uma lista e um elemento '
+                                f'dessa lista não é um dict com o '
+                                f'campo "_id", str ou ObjectId. item: {item}.'
                             )
-                elif dict_field is not None:  # esperado que dict_field seja um _id
-                    object = model.get(dict_field)
+                # esperado que dict_field seja um _id
+                elif popu_field_args is not None:
+                    object = model.get(popu_field_args)
 
                 dict_obj[popu_field_name] = object
             else:
@@ -295,10 +301,13 @@ class Model:
                     valores que deveriam ser variáveis [como turno e level] da 
                     classe Condition sem alterar os valores padrão [como nome 
                     e descrição]).
-                _class: Atributo só será populado em objetos dessa classe. 
-                    (Usando em ItemModel para popular atributo somente da 
-                    classe Consumable e não tenta na Classe Equipment, pois 
-                    levantaria um erro).
+                factory: Função que ira carregar o atributo a partir de uma 
+                função factory usando como argumentos os campos vindos do 
+                Mongo, ao invés de carregar do banco a partir de um Model.
+                _class: Atributo só será populado em objetos que 
+                    são dessa classe. (Usando em ItemModel para popular 
+                    atributo somente da classe Consumable e não tenta na 
+                    Classe Equipment, pois levantaria um erro).
 
             populate_fields = {
                 'field_name': {
@@ -335,6 +344,11 @@ class Model:
                 'id_key': 'condition_name',
                 '_class': 'Consumable',  # Atributo 'condition' só será populado em objetos dessa classe.
                 'model': ConditionModel()
+            }
+            Exemplo4:
+            'condition': {
+                'id_key': 'condition_name',
+                'factory': factory_condition # Função Factory
             },
         }
     )

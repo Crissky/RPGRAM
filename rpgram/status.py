@@ -49,28 +49,30 @@ class Status:
 
         self.__update_stats()
 
-    def add_condition(self, condition: Condition) -> dict:
-        if not isinstance(condition, Condition):
+    def add_condition(self, new_condition: Condition) -> dict:
+        if not isinstance(new_condition, Condition):
             raise TypeError(
                 f'O parâmetro deve ser do tipo Condition. '
-                f'Tipo: {type(condition)}.'
+                f'Tipo: {type(new_condition)}.'
             )
 
         report = {}
-        name = condition.name
-        if condition in self.__conditions:
-            turn = condition.turn
-            index = self.__conditions.index(condition)
-            condition = self.__conditions[index]
-            condition.add_level()
-            condition.set_turn(turn)
-            level = condition.level
+        name = new_condition.name
+        if new_condition in self.__conditions:
+            new_condition_turn = new_condition.turn
+            new_condition_level = new_condition.level
+            index = self.__conditions.index(new_condition)
+            current_condition = self.__conditions[index]
+            current_condition.set_turn(new_condition_turn)
+            current_condition.add_level(new_condition_level)
+            current_condition_level = current_condition.level
             report['text'] = (
-                f'O nível da Condição "{name}" foi aumentado para {level}.'
+                f'O nível da Condição "{name}" foi aumentado '
+                f'para {current_condition_level}.'
             )
-            condition.activate_continuous()
+            current_condition.activate_continuous()
         else:
-            self.__conditions.append(condition)
+            self.__conditions.append(new_condition)
             report['text'] = f'A Condição "{name}" foi adicionada.'
         self.__update_stats()
 
@@ -270,7 +272,7 @@ class Status:
             player_id=self.__player_id,
             condition_ids=[
                 dict(
-                    _id=condition._id,
+                    condition_name=condition.name,
                     turn=condition.turn,
                     level=condition.level,
                 )
