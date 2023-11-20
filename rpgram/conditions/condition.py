@@ -83,7 +83,7 @@ class Condition(StatsBooster):
         return self
 
     def remove_level(self, value: int = 1):
-        self.__level -= -abs(value)
+        self.__level -= abs(value)
         if self.__level < 1:
             return None
         return self
