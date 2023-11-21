@@ -19,6 +19,7 @@ from telegram.error import BadRequest
 from bot.constants.help import ACCESS_DENIED
 from bot.constants.equips import COMMANDS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.conversations.close import get_close_button
 from bot.decorators import (
     need_have_char,
     print_basic_infos,
@@ -188,13 +189,7 @@ def get_refresh_close_button(user_id) -> List[InlineKeyboardButton]:
                 f'"user_id":{user_id}}}'
             )
         ),
-        InlineKeyboardButton(
-            f'Fechar{EmojiEnum.CLOSE.value}',
-            callback_data=(
-                f'{{"close":1,'
-                f'"user_id":{user_id}}}'
-            )
-        )
+        get_close_button(user_id=user_id, right_icon=True)
     ]
 
 
@@ -220,8 +215,5 @@ VIEW_EQUIPS_HANDLERS = [
     ),
     CallbackQueryHandler(
         start, pattern=r'^{"refresh":1'
-    ),
-    CallbackQueryHandler(
-        start, pattern=r'^{"close":1'
     ),
 ]

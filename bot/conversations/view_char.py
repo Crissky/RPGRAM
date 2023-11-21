@@ -15,6 +15,7 @@ from telegram.ext import (
 from bot.constants.view_char import COMMANDS
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
@@ -55,7 +56,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'{markdown_player_sheet}',
             parse_mode=ParseMode.MARKDOWN_V2,
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
     else:
         await update.effective_message.reply_text(

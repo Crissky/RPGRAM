@@ -44,6 +44,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.conversations.close import get_close_button
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
@@ -584,8 +585,9 @@ def get_help_reply_markup(update: Update):
             )
         )
     # buttons.extend([None, None])
+    close_button = [get_close_button(None)]
     reply_markup = InlineKeyboardMarkup(
-        [buttons1, buttons2, buttons3, buttons4]
+        [buttons1, buttons2, buttons3, buttons4, close_button]
     )
     return reply_markup
 

@@ -23,6 +23,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
+from bot.conversations.close import get_close_button
 from bot.decorators import (
     need_have_char,
     need_not_in_battle,
@@ -115,7 +116,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         markdown=True
     )
     addstats_buttons = get_addstats_buttons(user_id, player_char)
-    close_button = get_close_button(user_id=user_id)
+    close_button = [get_close_button(user_id=user_id)]
     reply_markup = InlineKeyboardMarkup([
         *addstats_buttons,
         close_button
@@ -173,18 +174,6 @@ def get_addstats_buttons(
     )
 
 
-def get_close_button(user_id) -> List[InlineKeyboardButton]:
-    return [
-        InlineKeyboardButton(
-            f'{EmojiEnum.CLOSE.value}Fechar',
-            callback_data=(
-                f'{{"close":1,'
-                f'"user_id":{user_id}}}'
-            )
-        )
-    ]
-
-
 ADD_STATS_HANDLERS = [
     PrefixHandler(
         PREFIX_COMMANDS,
@@ -198,5 +187,4 @@ ADD_STATS_HANDLERS = [
         BASIC_COMMAND_FILTER
     ),
     CallbackQueryHandler(start, pattern=r'^{"attribute":'),
-    CallbackQueryHandler(start, pattern=r'^{"close":1'),
 ]
