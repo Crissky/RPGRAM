@@ -84,9 +84,11 @@ def factory_condition(
     elif condition_name == HealingConsumableEnum.HEAL8.value:
         condition_class = Heal8Condition
 
-    if not turn and level:
+    if turn and level:
+        return condition_class(turn=turn, level=level)
+    elif not turn and level:
         return condition_class(level=level)
     elif turn and not level:
         return condition_class(turn=turn)
-    elif turn and level:
-        return condition_class(turn=turn, level=level)
+    elif not turn and not level:
+        return condition_class()
