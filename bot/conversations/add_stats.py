@@ -28,7 +28,7 @@ from bot.decorators import (
     need_not_in_battle,
     print_basic_infos,
     skip_if_dead_char,
-
+    skip_if_immobilized,
 )
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
@@ -41,6 +41,7 @@ from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
 from rpgram.enums.emojis import EmojiEnum
 
 
+@skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 @need_have_char

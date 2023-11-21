@@ -33,6 +33,7 @@ from bot.decorators import (
     need_singup_group,
     print_basic_infos,
     skip_if_dead_char,
+    skip_if_immobilized,
 )
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
@@ -118,6 +119,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         context.chat_data['treasures'] = {message_id: True}
 
 
+@skip_if_immobilized
 @skip_if_dead_char
 @need_singup_group
 @print_basic_infos
@@ -284,6 +286,7 @@ async def activated_trap(
 
 
 @need_singup_group
+@skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):

@@ -17,7 +17,8 @@ from bot.decorators import (
     skip_if_dead_char,
     skip_if_no_singup_group,
     skip_if_no_singup_player,
-    print_basic_infos
+    print_basic_infos,
+    skip_if_immobilized
 )
 from bot.functions.char import add_xp
 from bot.functions.general import get_attribute_group_or_player
@@ -36,6 +37,7 @@ from rpgram.enums import EmojiEnum
 
 @skip_if_no_singup_group
 @skip_if_no_singup_player
+@skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):

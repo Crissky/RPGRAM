@@ -19,7 +19,12 @@ from telegram.error import BadRequest
 from bot.constants.help import ACCESS_DENIED
 from bot.constants.equips import COMMANDS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
-from bot.decorators import need_have_char, print_basic_infos
+from bot.decorators import (
+    need_have_char,
+    print_basic_infos,
+    skip_if_dead_char,
+    skip_if_immobilized,
+)
 from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
@@ -28,6 +33,8 @@ from rpgram.boosters import Equipment
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 
+@skip_if_immobilized
+@skip_if_dead_char
 @print_basic_infos
 @need_have_char
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
