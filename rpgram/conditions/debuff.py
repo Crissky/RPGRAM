@@ -74,8 +74,8 @@ class BleedingCondition(DebuffCondition):
             'power = self.level * 0.02;'
             'damage = target.combat_stats.hp * power;'
             'report = target.combat_stats.damage_hit_points(damage);'
-            f'report["text"] = "{BLEEDING} -> " + report["text"];'
-            f'report["action"] = "{BLEEDING}";'
+            'report["text"] = f"{self.full_name} -> " + report["text"];'
+            'report["action"] = f"{self.name}";'
         )
 
 
@@ -276,8 +276,8 @@ class PoisoningCondition(DebuffCondition):
             'power = self.level;'
             'damage = sum([10 + i + i*10//2 for i in range(0, power)]);'
             'report = target.combat_stats.damage_hit_points(damage);'
-            f'report["text"] = "{POISONING} -> " + report["text"];'
-            f'report["action"] = "{POISONING}";'
+            'report["text"] = f"{self.full_name} -> " + report["text"];'
+            'report["action"] = f"{self.name}";'
         )
 
 
