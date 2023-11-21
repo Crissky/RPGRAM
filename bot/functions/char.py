@@ -170,10 +170,10 @@ def add_conditions_trap(
 
     condition_trap_report = {'text': '', 'char': char}
     for condition_trap in conditions_trap:
-        efficiency = random()
-        accuracy = condition_trap['accuracy']
+        debuff_resistance = random()
+        effectiveness = condition_trap['effectiveness']
         condition_name = condition_trap['condition']
-        if efficiency <= accuracy:
+        if debuff_resistance <= effectiveness:
             condition = factory_condition(condition_name)
             report = char.status.add(condition)
             condition_trap_report['text'] += report['text'] + '\n'
