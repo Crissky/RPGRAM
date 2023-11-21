@@ -2,7 +2,9 @@ from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.create_char import COMMANDS
-from repository.mongo import CharacterModel
+from repository.mongo import CharacterModel, StatusModel
+from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
+from rpgram.enums.condition import DebuffEnum
 
 
 def need_have_char(callback):
@@ -61,5 +63,47 @@ def skip_if_dead_char(callback):
                     f'{char_hit_points}',
                     show_alert=True
                 )
+            return ConversationHandler.END
+    return wrapper
+
+
+def skip_if_immobilized(callback):
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        print('@SKIP_IF_IMMOBILIZED')
+        char_model = CharacterModel()
+        status_model = StatusModel()
+        chat_id = update.effective_chat.id
+        user_id = update.effective_user.id
+        # char = char_model.get(user_id)
+        query = {
+            'player_id': user_id,
+            'condition_args.name': {
+                '$in': IMMOBILIZED_DEBUFFS_NAMES
+            }
+        }
+        status = status_model.get(query=query, fields=['condition_args'])
+        if not status:
+            return await callback(update, context)
+        else:
+            print(
+                f'\tUSER: {user_id} SKIPPED in '
+                f'CHAT: {chat_id} - IMMOBILIZED CHAR'
+            )
+            query = update.callback_query
+            conditions = status['condition_args']
+            text = (
+                f'Essa ação não pode ser realizada, pois seu personagem '
+                f'está '
+            )
+            conditions_names = [
+                DebuffEnum[condition['name'].upper()].value
+                for condition in conditions
+                if condition['name'] in IMMOBILIZED_DEBUFFS_NAMES
+            ]
+            text += ', '.join(conditions_names)
+            if query:
+                await query.answer(text, show_alert=True)
+            else:
+                await update.effective_message.reply_text(text)
             return ConversationHandler.END
     return wrapper

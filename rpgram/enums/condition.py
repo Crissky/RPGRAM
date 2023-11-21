@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ConditionEnum(Enum):
+class DebuffEnum(Enum):
     BLEEDING = 'Sangramento'
     BLINDNESS = 'Cegueira'
     BURN = 'Queimadura'
@@ -15,14 +15,14 @@ class ConditionEnum(Enum):
     SILENCE = 'Silêncio'
 
 
-BLEEDING = ConditionEnum.BLEEDING.name.title()
-BLINDNESS = ConditionEnum.BLINDNESS.name.title()
-BURN = ConditionEnum.BURN.name.title()
-CONFUSION = ConditionEnum.CONFUSION.name.title()
-CURSE = ConditionEnum.CURSE.name.title()
-EXHAUSTION = ConditionEnum.EXHAUSTION.name.title()
-FROZEN = ConditionEnum.FROZEN.name.title()
-PARALYSIS = ConditionEnum.PARALYSIS.name.title()
-PETRIFIED = ConditionEnum.PETRIFIED.name.title()
-POISONING = ConditionEnum.POISONING.name.title()
-SILENCE = ConditionEnum.SILENCE.name.title()
+BLEEDING = DebuffEnum.BLEEDING.name.title()
+BLINDNESS = DebuffEnum.BLINDNESS.name.title()
+BURN = DebuffEnum.BURN.name.title()
+CONFUSION = DebuffEnum.CONFUSION.name.title()
+CURSE = DebuffEnum.CURSE.name.title()
+EXHAUSTION = DebuffEnum.EXHAUSTION.name.title()
+FROZEN = DebuffEnum.FROZEN.name.title()
+PARALYSIS = DebuffEnum.PARALYSIS.name.title()
+PETRIFIED = DebuffEnum.PETRIFIED.name.title()
+POISONING = DebuffEnum.POISONING.name.title()
+SILENCE = DebuffEnum.SILENCE.name.title()

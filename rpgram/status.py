@@ -270,9 +270,9 @@ class Status:
     def to_dict(self):
         return dict(
             player_id=self.__player_id,
-            condition_ids=[
+            condition_args=[
                 dict(
-                    condition_name=condition.name,
+                    name=condition.name,
                     turn=condition.turn,
                     level=condition.level,
                 )

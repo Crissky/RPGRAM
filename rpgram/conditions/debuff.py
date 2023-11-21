@@ -324,6 +324,7 @@ class Debuffs:
 
 
 DEBUFFS = Debuffs()
+IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED]
 
 
 if __name__ == '__main__':

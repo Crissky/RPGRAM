@@ -11,7 +11,7 @@ class StatusModel(Model):
     populate_fields = property(
         lambda self: {
             'conditions': {
-                'id_key': 'condition_ids',
+                'id_key': 'condition_args',
                 'factory': factory_condition,
             }
         }
