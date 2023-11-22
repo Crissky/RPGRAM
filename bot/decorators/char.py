@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from bot.constants.create_char import COMMANDS
 from repository.mongo import CharacterModel, StatusModel
 from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
-from rpgram.enums.condition import DebuffEnum
+from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 
 
 def need_have_char(callback):
@@ -96,7 +96,7 @@ def skip_if_immobilized(callback):
                 f'está '
             )
             conditions_names = [
-                DebuffEnum[condition['name'].upper()].value
+                DEBUFF_FULL_NAMES[condition['name'].upper()]
                 for condition in conditions
                 if condition['name'] in IMMOBILIZED_DEBUFFS_NAMES
             ]

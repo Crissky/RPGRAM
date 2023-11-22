@@ -16,6 +16,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
+from bot.conversations.close import get_close_keyboard
 from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
@@ -31,7 +32,6 @@ from rpgram.conditions.debuff import DEBUFFS
 @skip_if_no_have_char
 @print_basic_infos
 async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
@@ -46,7 +46,8 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.effective_message.reply_text(
         text,
-        disable_notification=silent
+        disable_notification=silent,
+        reply_markup=get_close_keyboard(None)
     )
 
 
@@ -70,6 +71,7 @@ async def get_random_debuff(
         text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
+        reply_markup=get_close_keyboard(None)
     )
 
 

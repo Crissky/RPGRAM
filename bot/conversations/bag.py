@@ -85,7 +85,7 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
 ) = range(4)
 
 
-@skip_if_immobilized
+# @skip_if_immobilized
 @skip_if_dead_char
 @skip_if_no_singup_player
 @skip_if_no_have_char
@@ -302,7 +302,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     return USE_ROUTES
 
 
-@skip_if_immobilized
+# @skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 @retry_after
@@ -430,7 +430,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return START_ROUTES
 
 
-@skip_if_immobilized
+# @skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 @retry_after
@@ -502,7 +502,7 @@ async def identify_item(
     return USE_ROUTES
 
 
-@skip_if_immobilized
+# @skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 @retry_after
@@ -582,7 +582,7 @@ async def drop_item(
     return START_ROUTES
 
 
-@skip_if_immobilized
+# @skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -642,7 +642,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return ConversationHandler.END
 
 
-@skip_if_immobilized
+# @skip_if_immobilized
 @skip_if_dead_char
 @print_basic_infos
 async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

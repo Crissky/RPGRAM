@@ -13,6 +13,7 @@ from bot.conversations import (
     CHAT_XP_HANDLER,
     BATTLE_HANDLER,
     BAG_HANDLER,
+    CLOSE_MSG_HANDLER,
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -26,7 +27,7 @@ from bot.conversations import (
     TREASURE_HANDLERS,
     VIEW_EQUIPS_HANDLERS,
     DROP_HANDLERS,
-    DEBUG_HANDLERS
+    DEBUG_HANDLERS,
 )
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.status import job_activate_conditions
@@ -48,6 +49,7 @@ def main() -> None:
     application.add_handler(CHAT_XP_HANDLER)
     application.add_handler(BATTLE_HANDLER)
     application.add_handler(BAG_HANDLER)
+    application.add_handler(CLOSE_MSG_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)

@@ -11,6 +11,8 @@ from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.stats_booster import StatsBooster
+from rpgram.enums.consumable import HealingConsumableEmojiEnum
+from rpgram.enums.debuff import DebuffEmojiEnum
 from rpgram.enums.turn import TurnEnum
 
 
@@ -154,13 +156,28 @@ class Condition(StatsBooster):
 
     # Getters
     name = property(lambda self: self.__name)
-    full_name = property(lambda self: f'{self.name}{self.level}')
+    full_name = property(lambda self: f'{self.emoji}{self.name}{self.level}')
     description = property(lambda self: self.__description)
     function = property(lambda self: self.__function)
     battle_function = property(lambda self: self.__battle_function)
     frequency = property(lambda self: self.__frequency)
     turn = property(lambda self: self.__turn)
     level = property(lambda self: self.__level)
+
+    @property
+    def emoji_members_list(self) -> list:
+        return [
+            DebuffEmojiEnum.__members__,
+            HealingConsumableEmojiEnum.__members__,
+        ]
+
+    @property
+    def emoji(self) -> str:
+        name_upper = self.name.upper()
+        for emoji_members in self.emoji_members_list:
+            if name_upper in emoji_members:
+                return emoji_members[name_upper].value
+        return ''
 
 
 if __name__ == '__main__':

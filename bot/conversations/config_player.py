@@ -9,6 +9,7 @@ from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_player import COMMANDS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_player
 from bot.functions.general import get_attribute_group_or_player
 
@@ -35,12 +36,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await update.effective_message.reply_text(
                 f'Configurado "{attribute}" para "{value}".\n\n'
                 f'{player}',
-                disable_notification=silent
+                disable_notification=silent,
+                reply_markup=get_close_keyboard(None)
             )
         except (KeyError, ValueError) as error:
             await update.effective_message.reply_text(
                 str(error),
-                disable_notification=silent
+                disable_notification=silent,
+                reply_markup=get_close_keyboard(None)
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         player['VERBOSE'] = 'false'
@@ -49,7 +52,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'Configurado para os valores padrões.\n\n'
             f'{player}',
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         user_name = update.effective_user.name
@@ -58,14 +62,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
             f'{player}',
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
     elif len(args) != 2:
         await update.effective_message.reply_text(
             'Envie o ATRIBUTO e o VALOR que deseja configurar\.\n'
             'Atributos: `VERBOSE`, `SILENT`\.',
             disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
+            reply_markup=get_close_keyboard(None)
         )
 
 

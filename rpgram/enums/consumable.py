@@ -10,3 +10,14 @@ class HealingConsumableEnum(Enum):
     HEAL6 = 'Epic Healing Potion'
     HEAL7 = 'Legendary Healing Potion'
     HEAL8 = 'Mythic Healing Potion'
+
+
+class HealingConsumableEmojiEnum(Enum):
+    HEAL1 = '❤️‍'
+    HEAL2 = '❤️‍'
+    HEAL3 = '❤️‍'
+    HEAL4 = '❤️‍'
+    HEAL5 = '❤️‍'
+    HEAL6 = '❤️‍'
+    HEAL7 = '❤️‍'
+    HEAL8 = '❤️‍'

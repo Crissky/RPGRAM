@@ -14,6 +14,7 @@ from telegram.ext import (
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
 from bot.constants.view_player import COMMANDS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_player
 from bot.functions.general import get_attribute_group_or_player
 
@@ -31,7 +32,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if (player := player_model.get(user_id)):
         await update.effective_message.reply_text(
             f'{player}',
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
     else:
         await update.effective_message.reply_text(

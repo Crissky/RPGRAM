@@ -1,7 +1,7 @@
 import re
 
 from rpgram.enums import DamageEnum
-from rpgram.enums.condition import (
+from rpgram.enums.debuff import (
     BLEEDING,
     BLINDNESS,
     BURN,

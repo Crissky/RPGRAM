@@ -12,6 +12,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
+from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 
@@ -38,12 +39,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await update.effective_message.reply_text(
                 f'Configurado "{attribute}" para "{value}".\n\n'
                 f'{group}',
-                disable_notification=silent
+                disable_notification=silent,
+                reply_markup=get_close_keyboard(None)
             )
         except (KeyError, ValueError) as error:
             await update.effective_message.reply_text(
                 str(error),
-                disable_notification=silent
+                disable_notification=silent,
+                reply_markup=get_close_keyboard(None)
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         group['VERBOSE'] = 'false'
@@ -56,7 +59,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'Configurado para os valores padrões.\n\n'
             f'{group}',
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         chat_name = update.effective_chat.effective_name
@@ -65,7 +69,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'Informações do grupo "{chat_name}" foram atualizadas.\n\n'
             f'{group}',
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
     elif len(args) != 2:
         await update.effective_message.reply_text(
@@ -73,7 +78,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             'Atributos: `VERBOSE`, `SILENT`, `START_TIME`, `END_TIME`, '
             '`MULTIPLIER_XP`, `CHAR_MULTIPLIER_XP`\.',
             disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
+            reply_markup=get_close_keyboard(None)
         )
 
 

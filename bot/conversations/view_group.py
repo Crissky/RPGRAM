@@ -16,6 +16,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
+from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 
@@ -32,7 +33,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if (group := group_model.get(chat_id)):
         await update.effective_message.reply_text(
             f'{group}',
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=get_close_keyboard(None)
         )
 
 
