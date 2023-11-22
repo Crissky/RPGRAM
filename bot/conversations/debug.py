@@ -71,7 +71,7 @@ async def get_random_debuff(
         text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
-        reply_markup=get_close_keyboard(None)
+        reply_markup=get_close_keyboard(user_id=user_id)
     )
 
 

@@ -33,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'{player}',
             disable_notification=silent,
-            reply_markup=get_close_keyboard(None)
+            reply_markup=get_close_keyboard(user_id=user_id)
         )
     else:
         await update.effective_message.reply_text(

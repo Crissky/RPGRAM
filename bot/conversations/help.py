@@ -585,7 +585,7 @@ def get_help_reply_markup(update: Update):
             )
         )
     # buttons.extend([None, None])
-    close_button = [get_close_button(None)]
+    close_button = [get_close_button(user_id=user_id)]
     reply_markup = InlineKeyboardMarkup(
         [buttons1, buttons2, buttons3, buttons4, close_button]
     )
