@@ -57,7 +57,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             f'{markdown_player_sheet}',
             parse_mode=ParseMode.MARKDOWN_V2,
             disable_notification=silent,
-            reply_markup=get_close_keyboard(None)
+            reply_markup=get_close_keyboard(user_id=user_id)
         )
     else:
         await update.effective_message.reply_text(
