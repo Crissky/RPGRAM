@@ -1,6 +1,6 @@
 from bson import ObjectId
 from datetime import datetime
-from typing import Union
+from typing import List, Union
 
 from constant.text import SECTION_HEAD
 from function.datetime import datetime_to_string
@@ -11,6 +11,7 @@ class Player:
         self,
         name: str,
         player_id: int,
+        chat_ids: List[int] = [],
         _id: Union[str, ObjectId] = None,
         verbose: bool = False,
         silent: bool = False,
@@ -21,14 +22,21 @@ class Player:
         if isinstance(_id, str):
             _id = ObjectId(_id)
 
-        self.player_id = player_id
         self.name = name
+        self.player_id = player_id
+        self.chat_ids = chat_ids
         self.__id = _id
         self.verbose = verbose
         self.silent = silent
         self.xp_cooldown = xp_cooldown
         self.created_at = created_at
         self.updated_at = updated_at
+
+    def add_chat_id(self, chat_id):
+        if chat_id not in self.chat_ids:
+            self.chat_ids.append(chat_id)
+        else:
+            raise ValueError(f'O chat ID {chat_id} já está na lista.')
 
     # Getters
     _id = property(lambda self: self.__id)
@@ -73,6 +81,7 @@ class Player:
         return dict(
             name=self.name,
             player_id=self.player_id,
+            chat_ids=self.chat_ids,
             _id=self.__id,
             verbose=self.verbose,
             silent=self.silent,

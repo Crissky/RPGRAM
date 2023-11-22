@@ -71,8 +71,10 @@ async def create_account(
 ) -> int:
     user_name = update.effective_user.name
     player_id = update.effective_user.id
+    chat_id = update.effective_chat.id
     player_model = PlayerModel()
     player = Player(user_name, player_id)
+    player.add_chat_id(chat_id)
     player_model.save(player)
     player = player_model.get(player_id)
     query = update.callback_query
