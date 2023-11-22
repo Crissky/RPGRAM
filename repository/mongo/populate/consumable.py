@@ -1,5 +1,4 @@
 from repository.mongo import ItemModel
-from rpgram.consumables import Consumable
 from rpgram.conditions import Condition
 from rpgram.consumables import (
     CureConsumable,
@@ -17,7 +16,7 @@ from rpgram.consumables.heal import (
     MYTHIC_HEALING_POTION_POWER,
 )
 from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
-from rpgram.enums.condition import (
+from rpgram.enums.debuff import (
     BLEEDING,
     BLINDNESS,
     BURN,

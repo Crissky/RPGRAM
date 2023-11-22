@@ -12,5 +12,5 @@ from rpgram.enums.material import MagicalWearableMaterialEnum
 from rpgram.enums.material import MagicalMaskMaterialEnum
 from rpgram.enums.material import TacticalWearableMaterialEnum
 from rpgram.enums.turn import TurnEnum
-from rpgram.enums.condition import DebuffEnum
+from rpgram.enums.debuff import DebuffEnum
 from rpgram.enums.consumable import HealingConsumableEnum

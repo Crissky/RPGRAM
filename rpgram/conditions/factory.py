@@ -22,7 +22,7 @@ from rpgram.conditions.heal import (
     Heal7Condition,
     Heal8Condition,
 )
-from rpgram.enums.condition import (
+from rpgram.enums.debuff import (
     BLEEDING,
     BLINDNESS,
     BURN,

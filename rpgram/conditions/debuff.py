@@ -3,7 +3,7 @@ from typing import Union
 
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
-from rpgram.enums.condition import (
+from rpgram.enums.debuff import (
     BLEEDING,
     BLINDNESS,
     BURN,
