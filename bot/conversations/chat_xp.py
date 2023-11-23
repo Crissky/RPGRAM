@@ -38,7 +38,6 @@ from rpgram.enums import EmojiEnum
 @skip_if_no_singup_group
 @skip_if_no_singup_player
 @skip_if_dead_char
-@skip_if_immobilized
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
