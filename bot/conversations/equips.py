@@ -26,6 +26,7 @@ from bot.decorators import (
     skip_if_dead_char,
     skip_if_immobilized,
 )
+from bot.decorators.char import confusion
 from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
@@ -36,6 +37,7 @@ from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 @skip_if_dead_char
 @skip_if_immobilized
+@confusion
 @print_basic_infos
 @need_have_char
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

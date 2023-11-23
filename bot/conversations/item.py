@@ -35,6 +35,7 @@ from bot.decorators import (
     skip_if_dead_char,
     skip_if_immobilized,
 )
+from bot.decorators.char import confusion
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
 from function.datetime import get_brazil_time_now
@@ -121,6 +122,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 
 @skip_if_dead_char
 @skip_if_immobilized
+@confusion
 @need_singup_group
 @print_basic_infos
 async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -288,6 +290,7 @@ async def activated_trap(
 @need_singup_group
 @skip_if_dead_char
 @skip_if_immobilized
+@confusion
 @print_basic_infos
 async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Apaga a mensagem de busca de tesouro quando um jogador 
