@@ -34,8 +34,8 @@ from rpgram.boosters import Equipment
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 
-@skip_if_immobilized
 @skip_if_dead_char
+@skip_if_immobilized
 @print_basic_infos
 @need_have_char
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

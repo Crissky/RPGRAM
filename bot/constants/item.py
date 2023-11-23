@@ -2008,9 +2008,13 @@ if __name__ == '__main__':
             for condition in conditions:
                 acc = condition['effectiveness']
                 if acc > 1.0:
-                    raise ValueError(f'Accuracy {acc} é maior que 1.0.\n{tt}')
+                    raise ValueError(
+                        f'Effectiveness {acc} é maior que 1.0.\n{tt}'
+                    )
                 if acc < 0.0:
-                    raise ValueError(f'Accuracy {acc} é menor que 0.0.\n{tt}')
+                    raise ValueError(
+                        f'Effectiveness {acc} é menor que 0.0.\n{tt}'
+                    )
         except ValueError as error:
             print(tt)
             raise error

@@ -1,7 +1,7 @@
 '''
 Classe responsável por gerenciar a Batalha
 '''
-import random
+from random import random
 
 from copy import deepcopy
 from datetime import datetime
@@ -252,7 +252,7 @@ class Battle:
         total_evasion = self.get_total_value(evasion, target_dice)
 
         is_miss = False
-        dodge_score = random.random()
+        dodge_score = random()
         accuracy = self.get_accuracy(
             hit=total_hit,
             evasion=total_evasion,
@@ -311,10 +311,8 @@ class Battle:
     def get_total_value(self, base_value: int, dice: Dice) -> int:
         multiplier = (1 + (dice.value * 0.025))
         boosted_value = int(base_value * multiplier)
-        if (boosted_value - base_value) >= dice.value:
-            result = boosted_value
-        else:
-            result = base_value + dice.value
+        added_value = base_value + dice.value
+        result = max(boosted_value, added_value)
 
         if dice.is_critical:
             result = result * 2

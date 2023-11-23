@@ -5,6 +5,7 @@ from repository.mongo import (
     CharacterModel,
     EquipsModel,
     GroupModel,
+    PlayerModel,
     StatusModel,
 )
 from rpgram import Group
@@ -211,6 +212,14 @@ def activate_conditions(
     save_char(char, status=True)
 
     return activate_report
+
+
+def get_player_ids_from_group(chat_id: int) -> List[dict]:
+    player_model = PlayerModel()
+    query = {'chat_ids': chat_id}
+    fields = ['player_id']
+    player_ids = player_model.get_all(query=query, fields=fields)
+    return player_ids
 
 
 def save_char(
