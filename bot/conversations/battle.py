@@ -4,12 +4,11 @@ Módulo responsável por gerenciar as batalhas
 context.chat_data['battle_response'] -> Message que exibe informações da luta
 context.chat_data['battle_id'] -> _id da batalha
 context.chat_data['action'] -> Ação do atacante
-context.chat_data['target_index'] -> Índice do alvo na lista "turn_order"
+context.chat_data['defenser_index'] -> Índice do alvo na lista "turn_order"
 '''
 
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.error import Forbidden
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -228,8 +227,8 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # SELECT_TARGET_ROUTES
-async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print('select_target')
+async def select_defenser(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('select_defenser')
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
@@ -239,16 +238,16 @@ async def select_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
     character = character_model.get(user_id)
 
     if character == battle.current_player:
-        target_index = int(query.data)
-        context.chat_data['target_index'] = target_index
-        target = battle.turn_order[target_index]
-        target_user_name = target.player_name
+        defenser_index = int(query.data)
+        context.chat_data['defenser_index'] = defenser_index
+        defenser = battle.turn_order[defenser_index]
+        defenser_user_name = defenser.player_name
         action = context.chat_data['action']
 
         reply_markup = get_reaction_inline_keyboard()
-        await query.answer(f'Você selecionou: "{target.name}"')
+        await query.answer(f'Você selecionou: "{defenser.name}"')
         await query.edit_message_text(
-            f'{target.name} ({target_user_name}), '
+            f'{defenser.name} ({defenser_user_name}), '
             f'seu personagem foi alvo de "{ACTIONS[action]}".\n'
             f'Selecione sua reação.\n\n'
             f'{battle.get_sheet()}\n',
@@ -270,30 +269,30 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_id = context.chat_data['battle_id']
     battle = battle_model.get(battle_id)
     character = character_model.get(user_id)
-    target_index = context.chat_data['target_index']
+    defenser_index = context.chat_data['defenser_index']
 
-    if character == battle.turn_order[target_index]:
+    if character == battle.turn_order[defenser_index]:
         text = ''
         attacker_char = battle.current_player
-        target_char = character
+        defenser_char = character
         action = context.chat_data['action']
         acao = ACTIONS[action]
         reaction = query.data
         attacker_dice = Dice(20)
-        target_dice = Dice(20)
+        defenser_dice = Dice(20)
         report = battle.action(
             attacker_char=attacker_char,
-            target=target_char,
+            defenser=defenser_char,
             action=action,
             reaction=reaction,
             attacker_dice=attacker_dice,
-            target_dice=target_dice,
+            defenser_dice=defenser_dice,
         )
         battle_model.save(battle)
         character_model.save(report['attacker'])
-        character_model.save(report['target'])
+        character_model.save(report['defenser'])
 
-        attacker_dice = report['attack']['dice']
+        attacker_dice_text = report['attack']['dice_text']
         hit = report['attack']['hit']
         total_hit = report['attack']['total_hit']
         accuracy = report['attack']['accuracy']
@@ -301,7 +300,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         total_atk = report['attack']['total_atk']
         atk_type = ATTACK_TYPE[report['attack']['action']]
 
-        target_dice = report['defense']['dice']
+        defenser_dice_text = report['defense']['dice_text']
         evasion = report['defense']['evasion']
         total_evasion = report['defense']['total_evasion']
         dodge_score = report['defense']['dodge_score']
@@ -311,7 +310,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         def_type = DEFENSE_TYPE[report['attack']['action']]
 
         if report['defense']['is_miss']:
-            text += f'{target_char.name} esquivou do "{acao}"!\n\n'
+            text += f'{defenser_char.name} esquivou do "{acao}"!\n\n'
             text += (
                 f'{attacker_char.name} {total_hit} '
                 f'({hit}){EmojiEnum.HIT.value} '
@@ -319,7 +318,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'Chance de ACERTO: {accuracy:.2f}%.\n'
             )
             text += (
-                f'{target_char.name} {total_evasion} '
+                f'{defenser_char.name} {total_evasion} '
                 f'({evasion}){EmojiEnum.EVASION.value} '
                 f'pontos de EVASÃO.\n'
                 f'Valor da EVASÃO: {dodge_score:.2f}%.\n'
@@ -328,7 +327,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if report['defense']['reaction'] == 'dodge':
                 half_def = _def // 2
                 text += (
-                    f'{target_char.name} falhou em esquivar '
+                    f'{defenser_char.name} falhou em esquivar '
                     f'e como penalidade bloqueou somente com '
                     f'50% ({half_def}){def_type} de defesa.\n\n'
                     f'Chance de ACERTO: {accuracy:.2f}% [{total_hit}]'
@@ -341,7 +340,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text += (
                 f'{attacker_char.name} causou '
                 f'{damage}{atk_type} de dano '
-                f'em {target_char.name} com o "{acao}".\n\n'
+                f'em {defenser_char.name} com o "{acao}".\n\n'
             )
             text += (
                 f'{attacker_char.name} atacou com {total_atk} '
@@ -349,21 +348,20 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             if report['defense']['reaction'] != 'dodge':
                 text += (
-                    f'{target_char.name} defendeu com {total_def} '
+                    f'{defenser_char.name} defendeu com {total_def} '
                     f'({_def}){def_type} pontos.\n'
                 )
         elif damage < 0:
             text += (
                 f'{attacker_char.name} curou '
                 f'{-damage}{EmojiEnum.HEALING.value} pontos de vida '
-                f'de {target_char.name}.\n'
+                f'de {defenser_char.name}.\n'
             )
 
         text += (
-            f'\n{attacker_char.name}({EmojiEnum.DICE.value}): '
-            f'{attacker_dice}.\n'
+            f'\n{attacker_char.name}[{attacker_dice_text}].\n'
         )
-        text += f'{target_char.name}({EmojiEnum.DICE.value}): {target_dice}.\n'
+        text += f'{defenser_char.name}[{defenser_dice_text}].\n'
 
         reply_markup = get_action_inline_keyboard()
         callback = SELECT_ACTION_ROUTES
@@ -532,7 +530,7 @@ BATTLE_HANDLER = ConversationHandler(
         ],
         SELECT_TARGET_ROUTES: [
             CallbackQueryHandler(
-                select_target, pattern=(
+                select_defenser, pattern=(
                     f'^\d\d?$'
                 )
             )

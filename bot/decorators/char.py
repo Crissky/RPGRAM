@@ -301,12 +301,12 @@ def confusion(callback):
                 defense_action = defense_action.replace('_', ' ').title()
                 text += (
                     f'{action}: {attack_value_boosted}({attack_value}), '
-                    f'Dado: {confuse_char_dice.value}\n'
+                    f'{confuse_char_dice.text}\n'
                 )
                 text += (
                     f'{defense_action}: '
                     f'{defense_value_boosted}({defense_value}), '
-                    f'Dado: {target_char_dice.value}\n'
+                    f'{target_char_dice.text}\n'
                 )
                 text += damage_report['text']
                 if damage_report['dead']:
