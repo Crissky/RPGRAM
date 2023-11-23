@@ -6,6 +6,9 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.equipment import Equipment
 from rpgram.consumables.consumable import Consumable
+from rpgram.consumables.cure import CureConsumable
+from rpgram.consumables.heal import HealingConsumable
+from rpgram.consumables.other import IdentifyingConsumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
@@ -76,7 +79,7 @@ class Item:
     @property
     def power(self) -> int:
         power = 0
-        if isinstance(self.item, Equipment):
+        if hasattr(self.item, 'power'):
             power = self.item.power
 
         return power
@@ -92,7 +95,13 @@ class Item:
     @property
     def equip_type_order(self) -> int:
         if isinstance(self.item, Consumable):
-            order = len(EquipmentEnumOrder) + 1
+            order = len(EquipmentEnumOrder)
+            if isinstance(self.item, IdentifyingConsumable):
+                order += 1
+            elif isinstance(self.item, CureConsumable):
+                order += 2
+            elif isinstance(self.item, HealingConsumable):
+                order += 3
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 
