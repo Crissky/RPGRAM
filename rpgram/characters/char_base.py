@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from bson import ObjectId
 from datetime import datetime
 
@@ -79,6 +79,23 @@ class BaseCharacter:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
+    def get_action_attack(self, action_name) -> int:
+        if action_name == 'physical_attack':
+            return self.cs.physical_attack
+        elif action_name == 'precision_attack':
+            return self.cs.precision_attack
+        elif action_name == 'magical_attack':
+            return self.cs.magical_attack
+
+    def get_action_defense(self, action_name) -> Tuple[int, str]:
+        if action_name == 'magical_attack':
+            defense_value = self.cs.magical_defense
+            defense_action = 'magical_defense'
+        else:
+            defense_value = self.cs.physical_defense
+            defense_action = 'physical_defense'
+        return defense_value, defense_action
+
     def activate_status(self) -> List[dict]:
         reports = self.__status.activate(self)
         return reports
@@ -112,6 +129,9 @@ class BaseCharacter:
     updated_at: datetime = property(lambda self: self.__updated_at)
     bs = base_stats
     cs = combat_stats
+    actions = property(
+        lambda self: ['physical_attack', 'precision_attack', 'magical_attack']
+    )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*{CHARACTER_EMOJI_TEXT}*: {self.name}\n'

@@ -707,7 +707,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desdobrando as abas, você desencadeia um vento forte que varre tudo '
         'em seu caminho.',
         DamageEnum.WIND,
-        []
+        [
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+        ]
     ),
     (
         'Com um giro da chave, o invólucro se abre e um enxame de '
@@ -973,7 +979,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um simples movimento, você abre o objeto e é engolido '
         'por um redemoinho.',
         DamageEnum.WIND,
-        []
+        [
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+        ]
     ),
     (
         'Desprendendo os clipes, você ativa uma armadilha que '
@@ -1240,7 +1252,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um gesto descuidado, você aciona uma armadilha que o '
         'prende em um vórtice de vento.',
         DamageEnum.WIND,
-        []
+        [
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+        ]
     ),
     (
         'Desfazendo o nó, você ativa uma armadilha que o faz cair em um '
@@ -1421,7 +1439,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Deslizando as partes, você ativa uma armadilha que '
         'cria um vácuo repentino.',
         DamageEnum.WIND,
-        []
+        [
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+        ]
     ),
     (
         'Ao destrancar, você ativa uma armadilha que o faz '
@@ -1494,7 +1518,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Seguindo a curiosidade, você abre o objeto e ativa '
         'uma armadilha de vento cortante.',
         DamageEnum.WIND,
-        []
+        [
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, disparando raios '
@@ -2008,9 +2038,13 @@ if __name__ == '__main__':
             for condition in conditions:
                 acc = condition['effectiveness']
                 if acc > 1.0:
-                    raise ValueError(f'Accuracy {acc} é maior que 1.0.\n{tt}')
+                    raise ValueError(
+                        f'Effectiveness {acc} é maior que 1.0.\n{tt}'
+                    )
                 if acc < 0.0:
-                    raise ValueError(f'Accuracy {acc} é menor que 0.0.\n{tt}')
+                    raise ValueError(
+                        f'Effectiveness {acc} é menor que 0.0.\n{tt}'
+                    )
         except ValueError as error:
             print(tt)
             raise error

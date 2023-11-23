@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 
 class Dice:
@@ -7,7 +7,7 @@ class Dice:
         self.__value = None
 
     def throw(self):
-        self.__value = random.randint(1, self.__faces)
+        self.__value = randint(1, self.__faces)
         return self.__value
 
     @property

@@ -10,3 +10,4 @@ from bot.decorators.print import print_basic_infos
 from bot.decorators.battle import need_not_in_battle
 from bot.decorators.retry import retry_after
 from bot.decorators.char import skip_if_immobilized
+from bot.decorators.char import confusion

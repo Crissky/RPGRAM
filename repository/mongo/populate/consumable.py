@@ -129,7 +129,7 @@ CONSUMABLES = [
     # Cure Potions
     {
         'name': 'Cotton Bandage',
-        'description': f'Cura condição "{BLEEDING}".',
+        'description': f'Cura 1 Nível da condição "{BLEEDING}".',
         'condition_target': BLEEDING,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -137,7 +137,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Eye Drops',
-        'description': f'Cura condição "{BLINDNESS}".',
+        'description': f'Cura 1 Nível da condição "{BLINDNESS}".',
         'condition_target': BLINDNESS,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -145,7 +145,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Aloe Compress',
-        'description': f'Cura condição "{BURN}".',
+        'description': f'Cura 1 Nível da condição "{BURN}".',
         'condition_target': BURN,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -153,7 +153,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Red Remedy',
-        'description': f'Cura condição "{CONFUSION}".',
+        'description': f'Cura 1 Nível da condição "{CONFUSION}".',
         'condition_target': CONFUSION,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
@@ -161,7 +161,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Mystical Incense',
-        'description': f'Cura condição "{CURSE}".',
+        'description': f'Cura 1 Nível da condição "{CURSE}".',
         'condition_target': CURSE,
         'weight': 0.20,
         'rarity': RarityEnum.RARE.name,
@@ -169,7 +169,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Energy Potion',
-        'description': f'Cura condição "{EXHAUSTION}".',
+        'description': f'Cura 1 Nível da condição "{EXHAUSTION}".',
         'condition_target': EXHAUSTION,
         'weight': 0.25,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -177,7 +177,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Hot Potion',
-        'description': f'Cura condição "{FROZEN}".',
+        'description': f'Cura 1 Nível da condição "{FROZEN}".',
         'condition_target': FROZEN,
         'weight': 0.25,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -185,7 +185,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Vitamin Fruit',
-        'description': f'Cura condição "{PARALYSIS}".',
+        'description': f'Cura 1 Nível da condição "{PARALYSIS}".',
         'condition_target': PARALYSIS,
         'weight': 0.55,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -193,7 +193,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Gold Needle',
-        'description': f'Cura condição "{PETRIFIED}".',
+        'description': f'Cura 1 Nível da condição "{PETRIFIED}".',
         'condition_target': PETRIFIED,
         'weight': 0.15,
         'rarity': RarityEnum.RARE.name,
@@ -201,7 +201,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Antidote',
-        'description': f'Cura condição "{POISONING}".',
+        'description': f'Cura 1 Nível da condição "{POISONING}".',
         'condition_target': POISONING,
         'weight': 0.15,
         'rarity': RarityEnum.COMMON.name,
@@ -209,7 +209,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Echo Herb',
-        'description': f'Cura condição "{SILENCE}".',
+        'description': f'Cura 1 Nível da condição "{SILENCE}".',
         'condition_target': SILENCE,
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
