@@ -129,6 +129,11 @@ class Status:
         for condition in self.__conditions:
             if condition.frequency != TurnEnum.CONTINUOUS:
                 report = condition.activate(char)
+                if condition.turn == 0:
+                    report['text'] += (
+                        f'\n'
+                        f'Condição "{condition.name}" foi removida do Status.'
+                    )
                 reports.append(report)
 
         # exclui todos as condition con turn igual a zero
@@ -145,6 +150,11 @@ class Status:
         for condition in self.__conditions:
             if condition.frequency != TurnEnum.CONTINUOUS:
                 report = condition.battle_activate(char)
+                if condition.turn == 0:
+                    report['text'] += (
+                        f'\n'
+                        f'Condição "{condition.name}" foi removida do Status.'
+                    )
                 reports.append(report)
 
         # exclui todos as condition con turn igual a zero
