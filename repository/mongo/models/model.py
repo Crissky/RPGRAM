@@ -339,7 +339,7 @@ class Model:
             Exemplo3:
             populate_fields = {
                 'conditions': {
-                    'id_key': 'condition_ids',
+                    'id_key': 'condition_args',
                     'model': ConditionModel(),
                     'remakeclass': True,  # Se a Classe será reinstanciada
             }
