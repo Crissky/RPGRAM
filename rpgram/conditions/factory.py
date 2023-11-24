@@ -11,6 +11,7 @@ from rpgram.conditions import (
     PetrifiedCondition,
     PoisoningCondition,
     SilenceCondition,
+    StunnedCondition,
 )
 from rpgram.conditions.heal import (
     Heal1Condition,
@@ -34,6 +35,7 @@ from rpgram.enums.debuff import (
     PETRIFIED,
     POISONING,
     SILENCE,
+    STUNNED,
 )
 from rpgram.enums.consumable import HealingConsumableEnum
 
@@ -70,6 +72,8 @@ def factory_condition(
         condition_class = PoisoningCondition
     elif name == SILENCE:
         condition_class = SilenceCondition
+    elif name == STUNNED:
+        condition_class = StunnedCondition
     # HEALING BUFFS
     elif name == HealingConsumableEnum.HEAL1.value:
         condition_class = Heal1Condition

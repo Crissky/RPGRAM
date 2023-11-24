@@ -15,6 +15,7 @@ from rpgram.enums.debuff import (
     PETRIFIED,
     POISONING,
     SILENCE,
+    STUNNED,
 )
 from rpgram.enums.turn import TurnEnum
 
@@ -302,6 +303,25 @@ class SilenceCondition(DebuffCondition):
             f'report["action"] = "{SILENCE}";'
         )
 
+class StunnedCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 1, level: int = 1):
+        super().__init__(
+            name=FROZEN,
+            description='O personagem não pode realizar ações por 1 turno.',
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def function(self) -> str:
+        return (
+            'report = {};'
+            'report["text"] = "Personagem está atordoado.";'
+            f'report["action"] = "{STUNNED}";'
+        )
+
 
 class Debuffs:
     __list = [
@@ -324,7 +344,7 @@ class Debuffs:
 
 
 DEBUFFS = Debuffs()
-IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED]
+IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED, STUNNED]
 
 
 if __name__ == '__main__':

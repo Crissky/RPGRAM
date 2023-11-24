@@ -13,6 +13,7 @@ from rpgram.enums.debuff import (
     PETRIFIED,
     POISONING,
     SILENCE,
+    STUNNED,
 )
 
 
@@ -629,6 +630,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.10},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -688,7 +690,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Abraçando a curiosidade, você abre o objeto e aciona uma armadilha '
         'de alçapão.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, liberando uma enxurrada '
@@ -713,6 +717,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -776,7 +781,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Empurrando as bordas, você aciona uma mola que o arremessa '
         'para trás.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Rompendo o selo, você dispara uma série de flechas afiadas '
@@ -798,7 +805,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Ao desamarrar as cordas, uma pedra pesada cai, o atingindo.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um movimento suave, você ativa uma armadilha e virotes '
@@ -816,7 +825,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desprendendo os grampos, você desencadeia uma cascata de rochas '
         'sobre ti.',
         DamageEnum.ROCK,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao erguer a tampa, uma explosão de fogo se espalha, queimando tudo '
@@ -843,13 +854,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
         'Com um toque delicado, você aciona uma armadilha de alçapão '
         'subterrânea.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao destravar, uma lâmina afiada aparece, visando seus pés.',
@@ -874,7 +888,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desatando o nó, você desencadeia um alçapão que o faz cair em um '
         'poço escuro.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao retirar o sele, você aciona uma chuva de ácido que queima '
@@ -956,13 +972,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': PETRIFIED, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
         'Desvendando as dobras, você aciona um mecanismo que lhe '
         'arremessa para longe.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao desatar o fecho, uma armadilha de espinhos afiados é ativada.',
@@ -985,6 +1004,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1001,7 +1021,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao erguer a aba, uma armadilha de alçapão o faz cair '
         'em um abismo escuro.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um toque suave, você aciona uma armadilha que libera um '
@@ -1030,6 +1052,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1042,7 +1065,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desfazendo o nó, você ativa uma armadilha que o faz '
         'escorregar e cair.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao remover o sele, você aciona uma armadilha causando '
@@ -1106,7 +1131,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um gesto descuidado, você aciona uma armadilha de '
         'pedras que caem sobre ti.',
         DamageEnum.ROCK,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao desamarrar os cordões, você ativa uma armadilha que '
@@ -1146,13 +1173,17 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um simples movimento, você abre o objeto e é '
         'engolido por uma correnteza violenta.',
         DamageEnum.WATER,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Desprendendo as partes, você ativa uma armadilha que o '
         'lança para um fosso fundo.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao desvendar o selo, você ativa uma armadilha de '
@@ -1258,6 +1289,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1286,7 +1318,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao retirar a capa, você aciona uma armadilha que libera uma '
         'chuva de pedras.',
         DamageEnum.ROCK,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um movimento inábil, você ativa uma armadilha que o envolve em '
@@ -1321,7 +1355,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Ao erguer a aba, uma armadilha de alçapão o faz cair em um '
         'labirinto subterrâneo.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um toque suave, você aciona uma armadilha que libera um '
@@ -1356,6 +1392,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BURN, 'effectiveness': 0.10},
             {'condition': BURN, 'effectiveness': 0.10},
             {'condition': BURN, 'effectiveness': 0.10},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1495,6 +1532,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1547,7 +1585,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desdobrando as abas, você ativa uma armadilha que cria '
         'um terremoto.',
         DamageEnum.GROUND,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Ao remover a cobertura, uma tempestade de fogo irrompe, '
@@ -1597,13 +1637,17 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de água em fúria.',
         DamageEnum.WATER,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, liberando uma '
         'torrente de pedras.',
         DamageEnum.ROCK,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Desdobrando as abas, você aciona uma armadilha que dispara '
@@ -1631,13 +1675,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
         'Com um gesto descuidado, você ativa uma armadilha cortante que '
         'prende seus membros.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha de '
@@ -1683,7 +1730,14 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desprendendo as presilhas, você aciona uma armadilha que o '
         'envolve em trevas de perdição.',
         DamageEnum.DARK,
-        []
+        [
+            {'condition': BLINDNESS, 'effectiveness': 0.90},
+            {'condition': BLINDNESS, 'effectiveness': 0.90},
+            {'condition': BLINDNESS, 'effectiveness': 0.90},
+            {'condition': CURSE, 'effectiveness': 0.75},
+            {'condition': CURSE, 'effectiveness': 0.75},
+            {'condition': CURSE, 'effectiveness': 0.75},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, liberando um veneno paralisante.',
@@ -1705,13 +1759,17 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desdobrando as abas, você aciona uma armadilha que libera '
         'uma chuva de rochas.',
         DamageEnum.ROCK,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de correntes letais.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um gesto descuidado, você ativa uma armadilha que '
@@ -1800,6 +1858,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1893,7 +1952,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
         'que o faz escorregar em direção a um poço escuro.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um clique, o mecanismo se abre, desencadeando uma '
@@ -1927,7 +1988,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Seguindo a curiosidade, você abre o objeto e ativa uma '
         'armadilha de pedras que caem em você.',
         DamageEnum.ROCK,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Com um gesto descuidado, você aciona uma armadilha que '
@@ -1969,7 +2032,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Desprendendo as presilhas, você aciona uma armadilha que o faz '
         'cair em um poço profundo.',
         DamageEnum.BLUDGEONING,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Seguindo a curiosidade, você abre o objeto e ativa uma armadilha '
