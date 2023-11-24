@@ -307,7 +307,7 @@ class StunnedCondition(DebuffCondition):
 
     def __init__(self, turn: int = 1, level: int = 1):
         super().__init__(
-            name=FROZEN,
+            name=STUNNED,
             description='O personagem não pode realizar ações por 1 turno.',
             frequency=TurnEnum.START,
             turn=turn,
