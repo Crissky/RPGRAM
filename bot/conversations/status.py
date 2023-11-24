@@ -21,10 +21,11 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
     now = get_brazil_time_now()
 
     if now.hour >= spawn_start_time and now.hour < spawn_end_time:
+        print(f'JOB_ACTIVATE_CONDITIONS() - {now}')
         silent = get_attribute_group_or_player(chat_id, 'silent')
         player_ids = status_model.get_all(
             query={
-                'condition_ids': {
+                'condition_args': {
                     '$exists': True, '$not': {'$size': 0}
                 }
             },
@@ -49,3 +50,10 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                         text=text,
                         disable_notification=silent,
                     )
+    else:
+        print(
+            f'Evento job_activate_conditions foi skipado, '
+            f'pois está fora do horário de spawn do grupo.\n'
+            f'[{chat_id}] {group.name}: Hora: {now.hour}:{now.minute}.\n'
+            f'Horário de spawn: {spawn_start_time}H - {spawn_end_time}H.'
+        )
