@@ -75,7 +75,7 @@ def main() -> None:
     )
     application.job_queue.run_repeating(
         callback=job_activate_conditions,
-        interval=timedelta(minutes=60),
+        interval=timedelta(minutes=20),
         first=get_last_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_ACTIVATE_CONDITIONS',
