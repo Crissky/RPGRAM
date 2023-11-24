@@ -13,6 +13,7 @@ class DebuffEnum(Enum):
     PETRIFIED = 'Petrificado'
     POISONING = 'Envenenado'
     SILENCE = 'Silenciado'
+    STUNNED = 'Atordoado'
 
 
 class DebuffEmojiEnum(Enum):
@@ -27,6 +28,7 @@ class DebuffEmojiEnum(Enum):
     PETRIFIED = '🪨'
     POISONING = '🍄'
     SILENCE = '💬'
+    STUNNED = '🎇'  # ❇️
 
 
 DEBUFF_FULL_NAMES = {
@@ -45,3 +47,4 @@ PARALYSIS = DebuffEnum.PARALYSIS.name.title()
 PETRIFIED = DebuffEnum.PETRIFIED.name.title()
 POISONING = DebuffEnum.POISONING.name.title()
 SILENCE = DebuffEnum.SILENCE.name.title()
+STUNNED = DebuffEnum.STUNNED.name.title()

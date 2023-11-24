@@ -11,3 +11,4 @@ from rpgram.conditions.debuff import ParalysisCondition
 from rpgram.conditions.debuff import PetrifiedCondition
 from rpgram.conditions.debuff import PoisoningCondition
 from rpgram.conditions.debuff import SilenceCondition
+from rpgram.conditions.debuff import StunnedCondition
