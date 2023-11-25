@@ -8,6 +8,8 @@ CALLBACK_EQUIPS = 'callback_equips'
 CALLBACK_BASE_ATTRIBUTES = 'callback_base_attributes'
 CALLBACK_COMBAT_ATTRIBUTES = 'callback_combat_attributes'
 CALLBACK_ITEMS = 'callback_items'
+CALLBACK_DEBUFFS = 'callback_debuffs'
+CALLBACK_HEALSTATUS = 'callback_healstatus'
 CALLBACK_GENERAL = 'callback_back_help'
 
 # TEXTS

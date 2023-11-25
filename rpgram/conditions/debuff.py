@@ -336,6 +336,7 @@ class Debuffs:
         PetrifiedCondition,
         PoisoningCondition,
         SilenceCondition,
+        StunnedCondition,
     ]
 
     def __iter__(self):

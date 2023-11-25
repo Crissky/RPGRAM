@@ -12,7 +12,7 @@ from rpgram.consumables.heal import (
     EPIC_HEALING_POTION_POWER,
     LEGENDARY_HEALING_POTION_POWER,
 )
-from rpgram.enums.consumable import HealingConsumableEnum
+from rpgram.enums.consumable import HealingConsumableEmojiEnum, HealingConsumableEnum
 from rpgram.enums.turn import TurnEnum
 
 MINOR_HEALING_POTION_TURNPOWER = MINOR_HEALING_POTION_POWER // 5
@@ -34,6 +34,7 @@ class HealingCondition(Condition):
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,
+        emoji: str = '',
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
         updated_at: datetime = None,
@@ -51,6 +52,7 @@ class HealingCondition(Condition):
             updated_at=updated_at,
         )
         self.power = power
+        self.__emoji = emoji
 
     @property
     def function(self) -> str:
@@ -65,6 +67,10 @@ class HealingCondition(Condition):
         return (
             'report = target.combat_stats.cure_hit_points(self.power)'
         )
+    
+    @property
+    def emoji(self) -> str:
+        return self.__emoji
 
     def to_dict(self) -> dict:
         super_dict = super().to_dict()
@@ -91,6 +97,7 @@ class Heal1Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL1.value,
         )
 
 
@@ -105,6 +112,7 @@ class Heal2Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL2.value,
         )
 
 
@@ -119,6 +127,7 @@ class Heal3Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL3.value,
         )
 
 
@@ -133,6 +142,7 @@ class Heal4Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL4.value,
         )
 
 
@@ -147,6 +157,7 @@ class Heal5Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL5.value,
         )
 
 
@@ -161,6 +172,7 @@ class Heal6Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL6.value,
         )
 
 
@@ -175,6 +187,7 @@ class Heal7Condition(HealingCondition):
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL7.value,
         )
 
 
@@ -183,13 +196,34 @@ class Heal8Condition(HealingCondition):
         super().__init__(
             name=HealingConsumableEnum.HEAL8.value,
             description=(
-                f'Cura {MYTHIC_HEALING_POTION_TURNPOWER} de HP em 5 Turnos.'
+                f'Cura {MYTHIC_HEALING_POTION_TURNPOWER} de HP por Turno.'
             ),
             power=MYTHIC_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
             level=1,
+            emoji=HealingConsumableEmojiEnum.HEAL8.value,
         )
+
+
+class HealStatus:
+    __list = [
+        Heal1Condition,
+        Heal2Condition,
+        Heal3Condition,
+        Heal4Condition,
+        Heal5Condition,
+        Heal6Condition,
+        Heal7Condition,
+        Heal8Condition,
+    ]
+
+    def __iter__(self):
+        for condition_class in self.__list:
+            yield condition_class()
+
+
+HEALSTATUS = HealStatus()
 
 
 if __name__ == '__main__':
