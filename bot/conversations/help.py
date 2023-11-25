@@ -18,10 +18,12 @@ from telegram.ext import (
 from bot.constants.help import (
     ACCESS_DENIED,
     CALLBACK_BASE_ATTRIBUTES,
+    CALLBACK_DEBUFFS,
     CALLBACK_EQUIPS,
     CALLBACK_GENERAL,
     CALLBACK_COMBAT_ATTRIBUTES,
     CALLBACK_GROUP,
+    CALLBACK_HEALSTATUS,
     CALLBACK_ITEMS,
     CALLBACK_PLAYER,
     CALLBACK_STATS,
@@ -51,6 +53,8 @@ from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD, TEXT_SEPARATOR
 
 from function.text import escape_basic_markdown_v2
+from rpgram.conditions.debuff import DEBUFFS
+from rpgram.conditions.heal import HEALSTATUS
 from rpgram.enums import (
     EmojiEnum,
     EquipmentEnum,
@@ -65,6 +69,8 @@ from rpgram.enums import (
     TacticalWearableMaterialEnum,
     RarityEnum
 )
+from rpgram.enums.consumable import HealingConsumableEnum
+from rpgram.enums.debuff import DebuffEnum
 
 
 @print_basic_infos
@@ -484,6 +490,57 @@ def get_details_text(option: str) -> str:
             f'pontos de `Ataque Físico` que uma espada pode fornecer ao '
             f'personagem.'
         )
+    elif option == CALLBACK_DEBUFFS:
+        text = (
+            f'{EmojiEnum.STATUS.value}*Status(Debuffs)*\n\n'
+
+            f'Debuffs são *condições* que prejudicam o personagem de diversas '
+            f'maneiras - como causar dano ou reduzir as estatísticas.\n\n'
+
+            f'Os debuffs podem durar uma quantidade fixa de turnos ou por '
+            f'tempo indeterminado.\n\n'
+
+            f'Quando o personagem com um debuff de um tipo recebe novamente '
+            f'um debuff do mesmo tipo, o número de turnos para se curar '
+            f'retorna para o valor inicial e o '
+            f'nível do debuff é aumentado.\n\n'
+
+            f'O nível do debuff pode influenciar em quanto de prejuízo '
+            f'ele ira causar ao personagem ou somente dificultar na cura '
+            f'por meio de itens.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'*Lista de Debuffs*:\n\n'
+        )
+        for debuff in DEBUFFS:
+            debuff_name = debuff.name.upper()
+            debuff_name = DebuffEnum[debuff_name].value
+            text += f'*Nome*: {debuff.emoji}{debuff.name} ({debuff_name})\n'
+            text += f'*Descrição*: {debuff.description}\n\n'
+    elif option == CALLBACK_HEALSTATUS:
+        text = (
+            f'{EmojiEnum.STATUS.value}*Status(Cura)*\n\n'
+
+            f'*Condições* de cura recuperam os Pontos de Vida (HP) do '
+            f'personagem a cada turno.\n\n'
+
+            f'Essas *condições* geralmente são recebidas pelo uso de itens ou '
+            f'magias de cura durante a batalha, podendo durar alguns '
+            f'turnos ou por um número indefinido de turnos.\n\n'
+
+            f'Fora de batalha, essas *condições* duram somente um turno, '
+            f'recebendo a cura de um turno multiplicada pelo total de turnos '
+            f'faltantes.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'*Lista de Condições de Cura*:\n\n'
+        )
+
+        for heal_status in HEALSTATUS:
+            text += f'*Nome*: {heal_status.emoji}{heal_status.name}\n'
+            text += f'*Descrição*: {heal_status.description}\n\n'
     else:
         raise ValueError(f'Opção de ajuda não encontrada: {option}')
 
@@ -507,9 +564,11 @@ def get_help_reply_markup(update: Update):
         f'Atributos de Combate{EmojiEnum.COMBAT_ATTRIBUTES.value}'
     )
     items_text = f'{EmojiEnum.ITEMS.value}Itens'
+    debuffs_text = f'{EmojiEnum.STATUS.value}Status(Debuffs)'
+    heal_status_text = f'Status(Cura){EmojiEnum.STATUS.value}'
     general_text = f'Geral{EmojiEnum.GENERAL.value}'
 
-    buttons1, buttons2, buttons3, buttons4 = [], [], [], []
+    buttons1, buttons2, buttons3, buttons4, buttons5 = [], [], [], [], []
     if option != CALLBACK_PLAYER:
         buttons1.append(
             InlineKeyboardButton(
@@ -584,10 +643,28 @@ def get_help_reply_markup(update: Update):
                 )
             )
         )
+    if option != CALLBACK_DEBUFFS:
+        buttons5.append(
+            InlineKeyboardButton(
+                text=debuffs_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_DEBUFFS}","user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_HEALSTATUS:
+        buttons5.append(
+            InlineKeyboardButton(
+                text=heal_status_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_HEALSTATUS}","user_id":{user_id}}}'
+                )
+            )
+        )
     # buttons.extend([None, None])
     close_button = [get_close_button(user_id=user_id)]
     reply_markup = InlineKeyboardMarkup(
-        [buttons1, buttons2, buttons3, buttons4, close_button]
+        [buttons1, buttons2, buttons3, buttons4, buttons5, close_button]
     )
     return reply_markup
 
