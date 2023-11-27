@@ -33,12 +33,14 @@ class BaseStats:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
+        points_multiplier: int = 3,
         stats_boosters: List[StatsBooster] = []
     ) -> None:
         if level < 1 and isinstance(level, int):
             raise ValueError('Nível deve ser um inteiro maior que zero.')
         self.__level = int(level)
         self.__current_xp = int(xp)
+        self.__points_multiplier = int(points_multiplier)
 
         self.__base_strength = int(base_strength)
         self.__base_dexterity = int(base_dexterity)
@@ -53,7 +55,7 @@ class BaseStats:
         self.check_attributes()
 
     def __get_points(self) -> int:
-        max_level_points = self.__level * 3
+        max_level_points = self.__level * self.__points_multiplier
         points = max_level_points - self.total_base_stats
         if points < 0:
             raise ValueError(
@@ -258,6 +260,10 @@ class BaseStats:
             (self.base_charisma + self.bonus_charisma) *
             self.multiplier_charisma
         )
+
+    @property
+    def points_multiplier(self) -> int:
+        return self.__points_multiplier
 
     # Setters
     @xp.setter
