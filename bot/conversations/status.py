@@ -45,6 +45,12 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                         text=text,
                     )
                 except Forbidden as error:
+                    member = await context.bot.get_chat_member(
+                        chat_id=chat_id,
+                        user_id=player_id
+                    )
+                    user_name = member.user.name
+                    text = f'{user_name}\n{text}'
                     await context.bot.send_message(
                         chat_id=chat_id,
                         text=text,
