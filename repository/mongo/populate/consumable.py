@@ -3,7 +3,8 @@ from rpgram.conditions import Condition
 from rpgram.consumables import (
     CureConsumable,
     IdentifyingConsumable,
-    HealingConsumable
+    HealingConsumable,
+    XPConsumable,
 )
 from rpgram.consumables.heal import (
     MINOR_HEALING_POTION_POWER,
@@ -15,6 +16,7 @@ from rpgram.consumables.heal import (
     LEGENDARY_HEALING_POTION_POWER,
     MYTHIC_HEALING_POTION_POWER,
 )
+from rpgram.consumables.other import EPIC_PROFICIENCY_ELIXIR_POWER, LEGENDARY_PROFICIENCY_ELIXIR_POWER, MYTHIC_PROFICIENCY_ELIXIR_POWER, PROFICIENCY_ELIXIR_POWER, RARE_PROFICIENCY_ELIXIR_POWER
 from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
 from rpgram.enums.debuff import (
     BLEEDING,
@@ -223,6 +225,58 @@ CONSUMABLES = [
         'weight': 0.30,
         'rarity': RarityEnum.RARE.name,
         'class': IdentifyingConsumable
+    },
+    {
+        'name': 'Proficiency Elixir',
+        'description': (
+            f'Adiciona {PROFICIENCY_ELIXIR_POWER} pontos de experiência.'
+        ),
+        'power': PROFICIENCY_ELIXIR_POWER,
+        'weight': 0.50,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': XPConsumable
+    },
+    {
+        'name': 'Rare Proficiency Elixir',
+        'description': (
+            f'Adiciona {RARE_PROFICIENCY_ELIXIR_POWER} pontos de experiência.'
+        ),
+        'power': RARE_PROFICIENCY_ELIXIR_POWER,
+        'weight': 0.75,
+        'rarity': RarityEnum.RARE.name,
+        'class': XPConsumable
+    },
+    {
+        'name': 'Epic Proficiency Elixir',
+        'description': (
+            f'Adiciona {EPIC_PROFICIENCY_ELIXIR_POWER} pontos de experiência.'
+        ),
+        'power': EPIC_PROFICIENCY_ELIXIR_POWER,
+        'weight': 1.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': XPConsumable
+    },
+    {
+        'name': 'Legendary Proficiency Elixir',
+        'description': (
+            f'Adiciona {LEGENDARY_PROFICIENCY_ELIXIR_POWER} '
+            f'pontos de experiência.'
+        ),
+        'power': LEGENDARY_PROFICIENCY_ELIXIR_POWER,
+        'weight': 1.25,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': XPConsumable
+    },
+    {
+        'name': 'Mythic Proficiency Elixir',
+        'description': (
+            f'Adiciona {MYTHIC_PROFICIENCY_ELIXIR_POWER} '
+            f'pontos de experiência.'
+        ),
+        'power': MYTHIC_PROFICIENCY_ELIXIR_POWER,
+        'weight': 1.50,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': XPConsumable
     },
 ]
 
