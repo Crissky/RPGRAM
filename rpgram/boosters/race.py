@@ -22,6 +22,7 @@ class Race(StatsBooster):
         self,
         name: str,
         description: str = '',
+        enemy: bool = False,
         _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
@@ -57,6 +58,7 @@ class Race(StatsBooster):
         )
         self.__name = name
         self.__description = description
+        self.__enemy = enemy
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*{RACE_EMOJI_TEXT}*: {self.name}\n'.upper()
@@ -117,6 +119,7 @@ class Race(StatsBooster):
         return dict(
             name=self.name,
             description=self.description,
+            enemy=self.enemy,
             _id=self._id,
             bonus_strength=self.bonus_strength,
             bonus_dexterity=self.bonus_dexterity,
@@ -137,6 +140,7 @@ class Race(StatsBooster):
     # Getters
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
+    enemy = property(lambda self: self.__enemy)
 
 
 if __name__ == '__main__':

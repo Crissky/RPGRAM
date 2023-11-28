@@ -34,6 +34,7 @@ class BaseCharacter:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
+        points_multiplier: int = 3,
         combat_damage: int = 0,
         _id: ObjectId = None,
         created_at: datetime = None,
@@ -61,6 +62,7 @@ class BaseCharacter:
             base_intelligence=base_intelligence,
             base_wisdom=base_wisdom,
             base_charisma=base_charisma,
+            points_multiplier=points_multiplier,
             stats_boosters=[
                 self.__race,
                 self.__classe,
@@ -209,6 +211,7 @@ class BaseCharacter:
             base_intelligence=self.base_stats.base_intelligence,
             base_wisdom=self.base_stats.base_wisdom,
             base_charisma=self.base_stats.base_charisma,
+            points_multiplier=self.base_stats.points_multiplier,
             combat_damage=(self.cs.hit_points - self.cs.current_hit_points),
             race_name=self.race.name,
             classe_name=self.classe.name,
