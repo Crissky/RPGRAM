@@ -38,6 +38,7 @@ from rpgram.consumables import (
     HealingConsumable,
     CureConsumable,
     IdentifyingConsumable,
+    XPConsumable,
 )
 
 
