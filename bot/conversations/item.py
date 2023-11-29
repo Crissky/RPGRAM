@@ -120,10 +120,10 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         context.chat_data['treasures'] = {message_id: True}
 
 
+@need_singup_group
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion
-@need_singup_group
 @print_basic_infos
 async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador 

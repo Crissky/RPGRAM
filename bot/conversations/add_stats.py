@@ -25,6 +25,7 @@ from bot.constants.filters import (
 )
 from bot.conversations.close import get_close_button
 from bot.decorators import (
+    confusion,
     need_have_char,
     need_not_in_battle,
     print_basic_infos,
@@ -39,11 +40,11 @@ from function.text import escape_markdown_v2
 from repository.mongo import CharacterModel
 from rpgram.characters import BaseCharacter
 from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
-from rpgram.enums.emojis import EmojiEnum
 
 
 @skip_if_dead_char
 @skip_if_immobilized
+@confusion
 @print_basic_infos
 @need_have_char
 @need_not_in_battle
