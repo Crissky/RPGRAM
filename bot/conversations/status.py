@@ -22,7 +22,6 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
 
     if now.hour >= spawn_start_time and now.hour < spawn_end_time:
         print(f'JOB_ACTIVATE_CONDITIONS() - {now}')
-        silent = get_attribute_group_or_player(chat_id, 'silent')
         player_ids = status_model.get_all(
             query={
                 'condition_args': {
@@ -40,11 +39,13 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
             if text:
                 text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
                 try:
+                    silent = get_attribute_group_or_player(player_id, 'silent')
                     await context.bot.send_message(
                         chat_id=player_id,
                         text=text,
                     )
                 except Forbidden as error:
+                    silent = get_attribute_group_or_player(chat_id, 'silent')
                     member = await context.bot.get_chat_member(
                         chat_id=chat_id,
                         user_id=player_id
