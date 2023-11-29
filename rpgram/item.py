@@ -8,7 +8,7 @@ from rpgram.boosters.equipment import Equipment
 from rpgram.consumables.consumable import Consumable
 from rpgram.consumables.cure import CureConsumable
 from rpgram.consumables.heal import HealingConsumable
-from rpgram.consumables.other import IdentifyingConsumable
+from rpgram.consumables.other import IdentifyingConsumable, XPConsumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
@@ -93,15 +93,17 @@ class Item:
         return RarityEnumOrder[self.rarity.name].value
 
     @property
-    def equip_type_order(self) -> int:
+    def item_type_order(self) -> int:
         if isinstance(self.item, Consumable):
             order = len(EquipmentEnumOrder)
             if isinstance(self.item, IdentifyingConsumable):
                 order += 1
-            elif isinstance(self.item, CureConsumable):
+            elif isinstance(self.item, XPConsumable):
                 order += 2
-            elif isinstance(self.item, HealingConsumable):
+            elif isinstance(self.item, CureConsumable):
                 order += 3
+            elif isinstance(self.item, HealingConsumable):
+                order += 4
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 

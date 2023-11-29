@@ -80,7 +80,7 @@ class Bag:
         if reverse:  # Consumable first
             self.__items.sort(
                 key=lambda x: (
-                    x.equip_type_order,
+                    x.item_type_order,
                     x.power,
                     x.rarity_order,
                     x.name
@@ -89,7 +89,7 @@ class Bag:
         else:  # Equipment first
             self.__items.sort(
                 key=lambda x: (
-                    -x.equip_type_order,
+                    -x.item_type_order,
                     x.power,
                     x.rarity_order,
                     x.name
@@ -101,7 +101,7 @@ class Bag:
             self.__items.sort(
                 key=lambda x: (
                     x.power,
-                    x.equip_type_order,
+                    x.item_type_order,
                     x.rarity_order,
                     x.name
                 ), reverse=True
@@ -110,7 +110,7 @@ class Bag:
             self.__items.sort(
                 key=lambda x: (
                     -x.power,
-                    x.equip_type_order,
+                    x.item_type_order,
                     x.rarity_order,
                     x.name
                 ), reverse=True
@@ -122,7 +122,7 @@ class Bag:
                 key=lambda x: (
                     x.rarity_order,
                     x.power,
-                    x.equip_type_order,
+                    x.item_type_order,
                     x.name
                 ), reverse=True
             )
@@ -131,7 +131,7 @@ class Bag:
                 key=lambda x: (
                     -x.rarity_order,
                     x.power,
-                    x.equip_type_order,
+                    x.item_type_order,
                     x.name
                 ), reverse=True
             )
