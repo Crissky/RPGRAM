@@ -249,8 +249,8 @@ def confusion(callback):
         else:
             battle = Battle([], [], None)
             player_ids = get_player_ids_from_group(chat_id)
-            player_ids.append({'player_id': user_id})
-            player_id = choice(player_ids)['player_id']
+            player_ids.append(user_id)
+            player_id = choice(player_ids)
 
             confuse_char = char_model.get(user_id)
             target_char = char_model.get(player_id)
