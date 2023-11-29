@@ -45,7 +45,7 @@ CONFUSION_TEXT = [
     ),
     (
         'Os sentidos de {personagem} falham momentaneamente, resultando em um '
-        'ataque direcionado a {aliado} por engano.\n\n'
+        'ataque contra {aliado} por engano.\n\n'
     ),
     (
         'Com a mente embaralhada, {personagem} interpreta {aliado} como um '
@@ -254,10 +254,10 @@ def confusion(callback):
 
             confuse_char = char_model.get(user_id)
             target_char = char_model.get(player_id)
-            confuse_char_name = confuse_char.player_name
-            target_char_name = target_char.player_name
+            confuse_player_name = confuse_char.player_name
+            target_player_name = target_char.player_name
             if confuse_char.player_id == target_char.player_id:
-                target_char_name = 'a si mesmo'
+                target_player_name = 'a si mesmo'
 
             confuse_char_dice = Dice(20)
             target_char_dice = Dice(20)
@@ -272,15 +272,15 @@ def confusion(callback):
             )
 
             text = choice(CONFUSION_TEXT).format(
-                personagem=confuse_char_name,
-                aliado=target_char_name
+                personagem=confuse_player_name,
+                aliado=target_player_name
             )
-            target_char_name = target_char.player_name
+            target_player_name = target_char.player_name
             dodge_score = random()
             if dodge_score >= accuracy:
-                text += choice(DODGE_TEXT).format(aliado=target_char_name)
+                text += choice(DODGE_TEXT).format(aliado=target_player_name)
             else:
-                text += choice(ATTACK_TEXT).format(aliado=target_char_name)
+                text += choice(ATTACK_TEXT).format(aliado=target_player_name)
                 action = choice(confuse_char.actions)
                 attack_value = confuse_char.get_action_attack(action)
                 attack_value_boosted = battle.get_total_value(
@@ -311,13 +311,13 @@ def confusion(callback):
                 text += damage_report['text']
                 if damage_report['dead']:
                     text += (
-                        f'\n\n{target_char_name} morreu! '
+                        f'\n\n{target_player_name} morreu! '
                         f'Use o comando /{REST_COMMANDS[0]} para descansar.'
                     )
                 save_char(target_char)
-                if query:
-                    await query.edit_message_text(text)
-                else:
-                    await update.effective_message.reply_text(text)
+            if query:
+                await query.edit_message_text(text)
+            else:
+                await update.effective_message.reply_text(text)
             return ConversationHandler.END
     return wrapper
