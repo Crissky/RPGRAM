@@ -102,7 +102,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     inline_keyboard = [
         [InlineKeyboardButton(race, callback_data=race)]
-        for race in race_model.get_all(fields=['name'])
+        for race in race_model.get_all(query={'enemy': False}, fields=['name'])
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     response = await update.effective_message.reply_text(
@@ -125,7 +125,7 @@ async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     query = update.callback_query
     inline_keyboard = [
         [InlineKeyboardButton(race, callback_data=race)]
-        for race in race_model.get_all(fields=['name'])
+        for race in race_model.get_all(query={'enemy': False}, fields=['name'])
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     await query.edit_message_text(
@@ -444,5 +444,5 @@ if __name__ == '__main__':
     race_model = RaceModel()
     print([
         InlineKeyboardButton(race, callback_data=race)
-        for race in race_model.get_all(fields=['name'])
+        for race in race_model.get_all(query={'enemy': False}, fields=['name'])
     ])
