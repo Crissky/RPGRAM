@@ -65,12 +65,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return None
 
-        # Apaga o Mensagem
-        if data.get('close', False):
-            await query.answer('Fechando Estatísticas...')
-            await query.delete_message()
-            return None
-
         if args is None:
             args = []
             args.append(data['attribute'])
