@@ -80,6 +80,9 @@ class EmojiEnum(Enum):
     IDENTIFY = '🔍'
     REFRESH = '🔄'
     CLOSE = '❌'
+    REST = '💤'
+    BATTLE = '🤼'
+    CONFIG = '⚙️'
 
 
 class FaceEmojiEnum(Enum):

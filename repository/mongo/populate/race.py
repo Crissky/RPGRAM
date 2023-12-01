@@ -35,6 +35,7 @@ RACES = [
             'com o clã e a tradição, e um ódio impetuoso contra goblins '
             'e orcs – essas linhas comuns unem todos os anões.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -79,6 +80,7 @@ RACES = [
             'magia, a arte e o estudo, a música e a poesia, e as coisas '
             'boas do mundo.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -135,6 +137,7 @@ RACES = [
             'empurrada ao longo de uma estrada de terra, ou uma '
             'balsa flutuando rio abaixo.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -194,6 +197,7 @@ RACES = [
             'humanos são os inovadores, os realizadores e os pioneiros '
             'dos mundos.\n\n'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -238,6 +242,7 @@ RACES = [
             'adquirindo renome pelos seus poderosos feitos e '
             'notoriedade por seus costumes bárbaros e fúria selvagem.\n\n'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -250,7 +255,354 @@ RACES = [
         'multiplier_intelligence': 0.5,
         'multiplier_wisdom': 1,
         'multiplier_charisma': 0.5,
-    }
+    },
+    # Enemies
+    {
+        'name': 'Drow',
+        'description': (
+            'Os Drows, também conhecidos como Elfos Negros, são uma raça '
+            'élfica notável por sua natureza sombria e sociedade subterrânea. '
+            'Com uma estatura semelhante aos elfos, os Drows possuem uma '
+            'pele de tom escuro, variando de matizes de azul profundo até '
+            'tons de ébano, muitas vezes contrastando vividamente com seus '
+            'cabelos prateados ou brancos como a neve. '
+            'Seus olhos são frequentemente vermelhos, violetas ou em tons de '
+            'amarelo brilhante, adicionando um ar sinistro à sua aparência. '
+            'O senso de elegância e refinamento é uma característica marcante '
+            'dos Drows, refletida em seus trajes elaborados, geralmente '
+            'compostos por sedas escuras e peças de armadura adornadas '
+            'com detalhes complexos.\n\n'
+
+            'Os Drows habitam principalmente regiões subterrâneas, '
+            'como vastas redes de cidades e complexos labirínticos abaixo '
+            'da superfície. Sua sociedade é extremamente hierárquica e '
+            'frequentemente governada por casas nobres, cada uma competindo '
+            'por poder e prestígio. Conhecidos por sua habilidade em artes '
+            'arcanas, os Drows são naturalmente talentosos na prática da '
+            'magia, especialmente nas vertentes das sombras e da ilusão, '
+            'tornando-os formidáveis tanto em batalha quanto na manipulação '
+            'política dentro de sua sociedade.\n\n'
+
+            'Infelizmente, sua história está repleta de conflitos com outras '
+            'raças, principalmente os elfos e anões, devido a diferenças '
+            'culturais e disputas territoriais. Estereotipados como '
+            'cruéis e implacáveis ​​devido à sociedade impiedosa e às '
+            'estratégias astutas de guerra, os Drows são frequentemente '
+            'temidos e evitados por outras raças, tornando-se uma presença '
+            'intimidante nos reinos subterrâneos que chamam de lar.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 1.75,
+        'multiplier_wisdom': 1.75,
+        'multiplier_charisma': 1,
+    },
+    {
+        'name': 'Goblin',
+        'description': (
+            'Os Goblins são uma raça diminuta, ágil e astuta, conhecida por '
+            'sua natureza travessa e propensão à malícia. Com uma estatura '
+            'pequena e corpos esguios, os Goblins geralmente não ultrapassam '
+            'um metro de altura. Suas peles variam de tonalidades verdes, '
+            'cinzentas e ocres, adaptando-se facilmente aos ambientes '
+            'diversos em que habitam. Possuem narizes pontiagudos, '
+            'orelhas alongadas e olhos brilhantes, muitas vezes amarelados, '
+            'avermelhados ou em tons de laranja, conferindo uma aparência '
+            'cativante, porém astuta.\n\n'
+
+            'Essa raça é conhecida por sua habilidade manual e engenhosidade, '
+            'criando armadilhas elaboradas, artefatos e armas improvisadas. '
+            'Apesar de terem uma estrutura social caótica e desorganizada, '
+            'os Goblins ocasionalmente se reúnem em tribos ou clãs liderados '
+            'por um chefe ou xamã, embora essa hierarquia nem sempre seja '
+            'estável. Suas moradias são frequentemente cavernas ou '
+            'construções precárias, onde podem ser encontrados acumulando '
+            'tesouros, seja por sua utilidade ou por simples capricho.\n\n'
+
+            'Goblins são conhecidos por sua natureza travessa e inclinação '
+            'para causar problemas. Eles muitas vezes se envolvem em '
+            'pilhagens, furtos e trapaças, não apenas entre si, mas também '
+            'em relação a outras raças. Apesar de sua reputação como '
+            'criaturas travessas, sua inteligência inata e habilidades '
+            'táticas tornam os Goblins adversários formidáveis em embates, '
+            'onde sua agilidade e sagacidade são suas maiores armas.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 2.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 2,
+        'multiplier_wisdom': 0.25,
+        'multiplier_charisma': 0.25,
+    },
+    {
+        'name': 'Troll',
+        'description': (
+            'Os Trolls são uma raça formidável e temível, conhecidos por sua '
+            'estatura imponente, força física monstruosa e uma constituição '
+            'resistente. Possuindo uma estatura geralmente acima dos dois '
+            'metros, essas criaturas apresentam músculos robustos, '
+            'pele áspera e densa, variando entre tons de verde, cinza ou '
+            'marrom, muitas vezes com aspecto rochoso ou escamoso. '
+            'Seus olhos brilham em cores vibrantes, como amarelo, vermelho '
+            'ou até mesmo azul fosforescente, conferindo-lhes '
+            'uma aura intimidante.\n\n'
+
+            'Sua aparência é caracterizada por feições marcantes, '
+            'com queixos proeminentes, narizes largos e orelhas alongadas. '
+            'Os Trolls são conhecidos por sua regeneração extraordinária, '
+            'sendo capazes de se recuperar de ferimentos graves rapidamente, '
+            'mesmo chegando a regenerar membros perdidos, embora esse '
+            'processo demande tempo. Sua natureza, por vezes, solitária, '
+            'leva-os a habitar regiões isoladas, como florestas densas, '
+            'montanhas inexploradas ou cavernas profundas.\n\n'
+
+            'Embora muitas vezes retratados como criaturas hostis e '
+            'violentas, os Trolls não são completamente desprovidos de '
+            'racionalidade. Alguns mostram habilidades em artesanato '
+            'rudimentar, enquanto outros possuem uma cultura tribal e '
+            'sistemas sociais próprios. No entanto, essas sociedades '
+            'geralmente são simples e voltadas para a sobrevivência, '
+            'sem se envolverem muito com outras raças. Sua força e '
+            'resistência os tornam inimigos formidáveis, capazes de enfrentar '
+            'desafios consideráveis, tornando-os figuras a serem temidas e '
+            'respeitadas em muitos reinos.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2,
+        'multiplier_dexterity': 0.25,
+        'multiplier_constitution': 2.5,
+        'multiplier_intelligence': 0.75,
+        'multiplier_wisdom': 0.75,
+        'multiplier_charisma': 0.25,
+    },
+    {
+        'name': 'Kobold',
+        'description': (
+            'Os Kobolds são seres pequenos e ágeis, frequentemente medindo '
+            'cerca de um metro de altura. Apresentam uma estrutura esbelta e '
+            'ágil, com pele escamosa que varia em tonalidades de marrom, '
+            'cinza ou tons terrosos. Suas feições faciais lembram as de '
+            'répteis, com olhos grandes e luminosos, normalmente de cores '
+            'amareladas ou avermelhadas, e rostos marcados por focinhos '
+            'alongados. Sua natureza furtiva e astuta é complementada por '
+            'suas orelhas pontiagudas e caudas finas, que contribuem para '
+            'sua agilidade e habilidades furtivas.\n\n'
+
+            'Organizam-se frequentemente em grupos ou tribos, liderados por '
+            'um xamã ou líder carismático, mantendo uma hierarquia rígida, '
+            'em que cada membro possui uma função específica na sociedade.\n\n'
+
+            'Apesar de seu tamanho modesto, os Kobolds são criaturas astutas '
+            'e, em número, podem ser uma força considerável em batalha. '
+            'Geralmente preferem emboscadas e estratégias de guerrilha, '
+            'utilizando suas habilidades furtivas para confundir e '
+            'surpreender seus oponentes. Sua inteligência aguçada e '
+            'natureza determinada fazem dos Kobolds um desafio formidável '
+            'para aventureiros desprevenidos que se aventuram em '
+            'seus territórios.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1.5,
+        'multiplier_dexterity': 2.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Espectro',
+        'description': (
+            'Os Espectros são entidades sobrenaturais, manifestações de '
+            'almas atormentadas e consumidas por emoções negativas após a '
+            'morte. Desprovidos de uma forma física sólida, eles se '
+            'manifestam como aparições etéreas e translúcidas, emanando '
+            'uma aura de desespero e tristeza. Sua aparência varia de acordo '
+            'com a história de sua morte, mas geralmente apresentam uma '
+            'forma fantasmagórica, com contornos nebulosos e distorcidos.\n\n'
+
+            'Essas criaturas são ligadas a eventos trágicos, muitas vezes '
+            'presas a locais específicos onde sofreram a morte ou '
+            'experimentaram um grande sofrimento. Sua presença é acompanhada '
+            'por uma aura de arrepios e uma sensação de frio intenso. '
+            'Normalmente, não são seres malignos por natureza, mas sua '
+            'ligação com a dor e a tragédia pode levá-los a agir de maneira '
+            'hostil quando perturbados ou quando tentam atrair a atenção para '
+            'o que os aflige.\n\n'
+
+            'Os Espectros são conhecidos por suas habilidades sobrenaturais, '
+            'podendo atravessar objetos sólidos, tornar-se invisíveis e até '
+            'manipular as emoções daqueles ao seu redor. Frequentemente, a '
+            'libertação dessas almas atormentadas envolve a resolução dos '
+            'problemas não resolvidos que as mantêm presas, '
+            'proporcionando-lhes paz e permitindo-lhes encontrar a redenção '
+            'ou seguir adiante para o além.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.25,
+        'multiplier_dexterity': 2.5,
+        'multiplier_constitution': 0.25,
+        'multiplier_intelligence': 1.5,
+        'multiplier_wisdom': 1.5,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Ogro',
+        'description': (
+            'Os Ogros são seres imponentes e brutais, conhecidos por sua '
+            'estatura massiva e musculatura poderosa. Com uma altura média '
+            'variando entre 2,5 e 3 metros, essas criaturas apresentam corpos '
+            'robustos, pele grossa e geralmente tonalidades que variam entre '
+            'tons de verde, marrom ou cinza. Suas feições são marcadas por '
+            'rostos largos, queixos proeminentes e dentes afiados, '
+            'conferindo-lhes uma aparência temível e selvagem.\n\n'
+
+            'A inteligência dos Ogros muitas vezes é subestimada, mas '
+            'apesar de sua reputação de seres rudes e selvagens, possuem uma '
+            'forma de cultura própria, geralmente tribal e simples. '
+            'Suas moradias são frequentemente cavernas ou áreas isoladas, '
+            'onde mantêm uma sociedade primitiva, mas com rituais e tradições '
+            'próprias. Costumam caçar em grupos e são habilidosos na arte de '
+            'construir armas e ferramentas grosseiras.\n\n'
+
+            'Dotados de força física impressionante, os Ogros são combatentes '
+            'formidáveis em batalha. Sua resistência e brutalidade os tornam '
+            'oponentes temíveis, capazes de causar estragos significativos '
+            'em confrontos. Apesar de sua natureza geralmente hostil, '
+            'alguns Ogros são conhecidos por terem laços com outras raças ou '
+            'por desejarem uma vida pacífica, embora essa seja uma exceção à '
+            'regra em suas sociedades.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 3,
+        'multiplier_dexterity': 0.25,
+        'multiplier_constitution': 2,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 0.25,
+    },
+    {
+        'name': 'Licantropo',
+        'description': (
+            'Os Licantropos são seres míticos capazes de alternar entre a '
+            'forma humana e a forma de licantrópica. Geralmente, durante a '
+            'lua cheia, sua transformação é inevitável, mas alguns possuem '
+            'a habilidade de controlar essa metamorfose em outros momentos. '
+            'Na forma humana, eles são indistinguíveis de outros seres '
+            'humanos, muitas vezes possuindo características atraentes e '
+            'carismáticas. Por outro lado, na forma de lobo, apresentam uma '
+            'pelagem densa, olhos selvagens e presas afiadas.\n\n'
+
+            'Os Licantropos são frequentemente retratados como seres '
+            'solitários, isolados devido ao medo e à incompreensão que sua '
+            'condição gera nas comunidades humanas. Alguns buscam refúgio '
+            'em clãs ou grupos similares, onde compartilham experiências e '
+            'aprendem a controlar sua natureza animalesca.\n\n'
+
+            'Em sua forma de bestial, os Licantropos possuem sentidos '
+            'aguçados, velocidade e força consideráveis, tornando-os '
+            'caçadores formidáveis. No entanto, a dualidade entre sua '
+            'humanidade e instintos animalescos muitas vezes se torna uma '
+            'luta interna, e controlar essa fera interior pode ser uma '
+            'batalha constante. A luta para equilibrar ambas as naturezas é '
+            'uma narrativa recorrente entre os Licantropos, apresentando '
+            'desafios emocionais e físicos que moldam suas histórias.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2,
+        'multiplier_dexterity': 1.75,
+        'multiplier_constitution': 2,
+        'multiplier_intelligence': 0.25,
+        'multiplier_wisdom': 0.25,
+        'multiplier_charisma': 0.25,
+    },
+    {
+        'name': 'Harpia',
+        'description': (
+            'As Harpias são criaturas míticas com características de aves de '
+            'rapina e corpos femininos. Essas criaturas possuem a cabeça, '
+            'torso e braços de mulher, enquanto o restante do corpo é similar '
+            'ao de uma águia, incluindo asas poderosas e garras afiadas. '
+            'Sua plumagem varia em tons de marrom, cinza ou preto, '
+            'adaptando-se ao ambiente onde habitam, geralmente regiões '
+            'montanhosas, penhascos ou cavernas isoladas.\n\n'
+
+            'Conhecidas por sua agilidade e velocidade impressionantes '
+            'durante o voo, as Harpias são mestras na arte da caça, sendo '
+            'predadoras habilidosas que utilizam suas garras e agilidade '
+            'para capturar suas presas. Essas criaturas têm uma voz '
+            'melodiosa, usada tanto para atrair presas como para se comunicar '
+            'entre si. Seu comportamento muitas vezes é territorial e '
+            'agressivo, especialmente quando sentem ameaças próximas aos seus '
+            'ninhos ou locais de descanso.\n\n'
+
+            'Em algumas lendas, as Harpias são descritas como seres malignos, '
+            'sequestrando pessoas ou lançando maldições sobre aqueles que '
+            'invadem seus territórios. No entanto, em outras histórias, '
+            'são retratadas como seres sábios e protetores da natureza, '
+            'guardiãs de segredos antigos ou mensageiras dos deuses. Essas '
+            'criaturas mitológicas frequentemente têm um papel variado nas '
+            'narrativas, podendo ser antagonistas ou aliadas dependendo da '
+            'história contada.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1.5,
+        'multiplier_dexterity': 1.5,
+        'multiplier_constitution': 1.5,
+        'multiplier_intelligence': 0.75,
+        'multiplier_wisdom': 1,
+        'multiplier_charisma': 0.25,
+    },
 ]
 
 if __name__ == '__main__':
@@ -267,4 +619,4 @@ if __name__ == '__main__':
                 race_dict[field] = mongo_dict[field]
         race = Race(**race_dict)
         print(race)
-        race_model.save(race)
+        race_model.save(race, replace=True)

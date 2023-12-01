@@ -18,6 +18,7 @@ from telegram.ext import (
 from bot.constants.help import (
     ACCESS_DENIED,
     CALLBACK_BASE_ATTRIBUTES,
+    CALLBACK_CLASSES,
     CALLBACK_DEBUFFS,
     CALLBACK_EQUIPS,
     CALLBACK_GENERAL,
@@ -26,22 +27,25 @@ from bot.constants.help import (
     CALLBACK_HEALSTATUS,
     CALLBACK_ITEMS,
     CALLBACK_PLAYER,
+    CALLBACK_RACES,
     CALLBACK_STATS,
     COMMANDS
 )
 from bot.constants.add_stats import COMMANDS as add_stats_commands
 from bot.constants.bag import COMMANDS as bag_commands
 from bot.constants.battle import COMMANDS as battle_commands
+from bot.constants.classe import COMMANDS as classe_commands
 from bot.constants.config_group import COMMANDS as config_group_commands
 from bot.constants.config_player import COMMANDS as config_player_commands
 from bot.constants.create_char import COMMANDS as create_char_commands
+from bot.constants.equips import COMMANDS as equips_commands
+from bot.constants.race import COMMANDS as race_commands
+from bot.constants.rest import COMMANDS as rest_commands
 from bot.constants.sign_up_group import COMMANDS as sign_up_group_commands
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
 from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
-from bot.constants.rest import COMMANDS as rest_commands
-from bot.constants.equips import COMMANDS as view_equips_commands
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -108,72 +112,93 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def get_details_text(option: str) -> str:
     text = ''
     if option == CALLBACK_GENERAL or option is None:
-        sign_up_group_cmd = command_to_string(sign_up_group_commands)
-        sign_up_player_cmd = command_to_string(sign_up_player_commands)
-        create_char_cmd = command_to_string(create_char_commands)
-        view_group_cmd = command_to_string(view_group_commands)
-        view_player_cmd = command_to_string(view_player_commands)
-        view_char_cmd = command_to_string(view_char_commands)
         add_stats_cmd = command_to_string(add_stats_commands)
+        bag_cmd = command_to_string(bag_commands)
+        battle_cmd = command_to_string(battle_commands)
+        classe_cmd = command_to_string(classe_commands)
         config_group_cmd = command_to_string(config_group_commands)
         config_player_cmd = command_to_string(config_player_commands)
-        battle_cmd = command_to_string(battle_commands)
+        create_char_cmd = command_to_string(create_char_commands)
+        equips_cmd = command_to_string(equips_commands)
+        race_cmd = command_to_string(race_commands)
         rest_cmd = command_to_string(rest_commands)
-        bag_cmd = command_to_string(bag_commands)
-        equips_cmd = command_to_string(view_equips_commands)
+        sign_up_group_cmd = command_to_string(sign_up_group_commands)
+        sign_up_player_cmd = command_to_string(sign_up_player_commands)
+        view_char_cmd = command_to_string(view_char_commands)
+        view_group_cmd = command_to_string(view_group_commands)
+        view_player_cmd = command_to_string(view_player_commands)
         text = (
             f'{SECTION_HEAD.format("COMANDOS")}\n\n'
 
+            f'{EmojiEnum.GROUP.value}'
             f'*CRIAR CONTA DO GRUPO*: /{sign_up_group_commands[0]}\n'
             f'INFO: Cria uma conta para o grupo.\n'
             f'Atalhos: {sign_up_group_cmd}\n\n'
 
+            f'{EmojiEnum.PLAYER.value}'
             f'*CRIAR CONTA DE JOGADOR*: /{sign_up_player_commands[0]}\n'
             f'INFO: Cria uma conta para o jogador.\n'
             f'Atalhos: {sign_up_player_cmd}\n\n'
 
+            f'{EmojiEnum.CHARACTER.value}'
             f'*CRIAR PERSONAGEM*: /{create_char_commands[0]}\n'
             f'INFO: Cria um personagem para o jogador.\n'
             f'Atalhos: {create_char_cmd}\n\n'
 
+            f'{EmojiEnum.GROUP.value}'
             f'*INFORMAÇÕES DO GRUPO*: /{view_group_commands[0]}\n'
             f'INFO: Exibe as informações do grupo.\n'
             f'Atalhos: {view_group_cmd}\n\n'
 
+            f'{EmojiEnum.PLAYER.value}'
             f'*INFORMAÇÕES DO JOGADOR*: /{view_player_commands[0]}\n'
             f'INFO: Exibe as informações do jogador.\n'
             f'Atalhos: {view_player_cmd}\n\n'
 
+            f'{EmojiEnum.CHARACTER.value}'
             f'*INFORMAÇÕES DO PERSONAGEM*: /{view_char_commands[0]}\n'
             f'INFO: Exibe as informações do personagem.\n'
             f'Atalhos: {view_char_cmd}\n\n'
 
+            f'{EmojiEnum.STATS.value}'
             f'*ADICIONAR/EXIBIR ESTATISTICAS*: /{add_stats_commands[0]}\n'
             f'INFO: Exibe ou Adiciona estatisticas no personagem.\n'
             f'Atalhos: {add_stats_cmd}\n\n'
 
+            f'{EmojiEnum.CONFIG.value}'
             f'*CONFIGURAÇÃO DO GRUPO*: /{config_group_commands[0]}\n'
             f'INFO: Configura preferências do grupo.\n'
             f'Atalhos: {config_group_cmd}\n\n'
 
+            f'{EmojiEnum.CONFIG.value}'
             f'*CONFIGURAÇÃO DO JOGADOR*: /{config_player_commands[0]}\n'
             f'INFO: Configura preferências do jogador.\n'
             f'Atalhos: {config_player_cmd}\n\n'
 
-            f'*CRIAR BATALHA*: /{battle_commands[0]}\n'
+            f'{EmojiEnum.BATTLE.value}*CRIAR BATALHA*: /{battle_commands[0]}\n'
             f'INFO: Inicia uma batalha no grupo.\n'
             f'Atalhos: {battle_cmd}\n\n'
 
-            f'*INICIAR DESCANSO*: /{rest_commands[0]}\n'
+            f'{EmojiEnum.REST.value}*INICIAR DESCANSO*: /{rest_commands[0]}\n'
             f'INFO: Recupera HP do personagem a cada hora '
             f'(mesmo se estiver 0).\n'
             f'Atalhos: {rest_cmd}\n\n'
 
-            f'*BOLSA*: /{bag_commands[0]}\n'
+            f'{EmojiEnum.CLASS.value}*CLASSES*: /{classe_commands[0]}\n'
+            f'INFO: Exibe as classes existentes no jogo, tanto para os '
+            f'jogadores, quanto as classes exclusivas para os NPCs.'
+            f'Atalhos: {classe_cmd}\n\n'
+
+            f'{EmojiEnum.RACE.value}*RAÇAS*: /{race_commands[0]}\n'
+            f'INFO: Exibe as raças existentes no jogo, tanto para os '
+            f'jogadores, quanto as raças exclusivas para os NPCs.'
+            f'Atalhos: {race_cmd}\n\n'
+
+            f'{EmojiEnum.ITEMS.value}*BOLSA*: /{bag_commands[0]}\n'
             f'INFO: Exibe o conteúdo da bolsa.\n'
             f'Atalhos: {bag_cmd}\n\n'
 
-            f'*EQUIPAMENTOS*: /{view_equips_commands[0]}\n'
+            f'{EmojiEnum.EQUIPS.value}*EQUIPAMENTOS*: /{equips_commands[0]}\n'
             f'INFO: Exibe os itens equipados no personagem.\n'
             f'Atalhos: {equips_cmd}\n\n'
         )
@@ -270,9 +295,9 @@ def get_details_text(option: str) -> str:
             f'Atalhos: {view_player_cmd}\n\n'
         )
     elif option == CALLBACK_EQUIPS:
-        equips_cmd = command_to_string(view_equips_commands)
+        equips_cmd = command_to_string(equips_commands)
         text = (
-            f'*EQUIPAMENTOS*: /{view_equips_commands[0]}\n'
+            f'*EQUIPAMENTOS*: /{equips_commands[0]}\n'
             f'INFO: Mostra os equipamentos do personagem.\n\n'
 
             f'OBS: Use o argumento "verbose" ou "v" para exibir os '
@@ -541,6 +566,16 @@ def get_details_text(option: str) -> str:
         for heal_status in HEALSTATUS:
             text += f'*Nome*: {heal_status.emoji}{heal_status.name}\n'
             text += f'*Descrição*: {heal_status.description}\n\n'
+    elif option == CALLBACK_CLASSES:
+        text = (
+            f'Página de ajuda das CLASSES ainda não foi escrita. '
+            f'Contacte do admininastrô.'
+        )
+    elif option == CALLBACK_RACES:
+        text = (
+            f'Página de ajuda das RAÇAS ainda não foi escrita. '
+            f'Contacte do admininastrô.'
+        )
     else:
         raise ValueError(f'Opção de ajuda não encontrada: {option}')
 
@@ -567,8 +602,17 @@ def get_help_reply_markup(update: Update):
     debuffs_text = f'{EmojiEnum.STATUS.value}Status(Debuffs)'
     heal_status_text = f'Status(Cura){EmojiEnum.STATUS.value}'
     general_text = f'Geral{EmojiEnum.GENERAL.value}'
+    classes_text = f'{EmojiEnum.CLASS.value}Classes'
+    races_text = f'Raças{EmojiEnum.RACE.value}'
 
-    buttons1, buttons2, buttons3, buttons4, buttons5 = [], [], [], [], []
+    (
+        buttons1,
+        buttons2,
+        buttons3,
+        buttons4,
+        buttons5,
+        buttons6
+    ) = [], [], [], [], [], []
     if option != CALLBACK_PLAYER:
         buttons1.append(
             InlineKeyboardButton(
@@ -625,8 +669,26 @@ def get_help_reply_markup(update: Update):
                 )
             )
         )
-    if option != CALLBACK_ITEMS:
+    if option != CALLBACK_CLASSES:
         buttons4.append(
+            InlineKeyboardButton(
+                text=classes_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_CLASSES}","user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_RACES:
+        buttons4.append(
+            InlineKeyboardButton(
+                text=races_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_RACES}","user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_ITEMS:
+        buttons5.append(
             InlineKeyboardButton(
                 text=items_text,
                 callback_data=(
@@ -635,7 +697,7 @@ def get_help_reply_markup(update: Update):
             )
         )
     if option != CALLBACK_GENERAL and query is not None:
-        buttons4.append(
+        buttons5.append(
             InlineKeyboardButton(
                 text=general_text,
                 callback_data=(
@@ -644,7 +706,7 @@ def get_help_reply_markup(update: Update):
             )
         )
     if option != CALLBACK_DEBUFFS:
-        buttons5.append(
+        buttons6.append(
             InlineKeyboardButton(
                 text=debuffs_text,
                 callback_data=(
@@ -653,7 +715,7 @@ def get_help_reply_markup(update: Update):
             )
         )
     if option != CALLBACK_HEALSTATUS:
-        buttons5.append(
+        buttons6.append(
             InlineKeyboardButton(
                 text=heal_status_text,
                 callback_data=(
@@ -661,11 +723,12 @@ def get_help_reply_markup(update: Update):
                 )
             )
         )
-    # buttons.extend([None, None])
     close_button = [get_close_button(user_id=user_id)]
-    reply_markup = InlineKeyboardMarkup(
-        [buttons1, buttons2, buttons3, buttons4, buttons5, close_button]
-    )
+    reply_markup = InlineKeyboardMarkup([
+        buttons1, buttons2, buttons3,
+        buttons4, buttons5, buttons6,
+        close_button
+    ])
     return reply_markup
 
 

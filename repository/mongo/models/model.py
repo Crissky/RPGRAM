@@ -137,6 +137,7 @@ class Model:
             raise ValueError(
                 f'Objeto inválido. Precisa ser {self._class} não {type(obj)}'
             )
+
         obj_dict = obj.to_dict()
         obj_dict['_class'] = obj.__class__.__name__
         query = {}
@@ -146,20 +147,24 @@ class Model:
             obj_dict.pop('_id', None)
             if obj_dict.get(self.alternative_id, None):
                 query[self.alternative_id] = obj_dict[self.alternative_id]
-        if (
-            query and
-            self.database.find(self.collection, query) and
-            not replace
-        ):
-            print(f'Updating: {self.__class__.__name__}')
-            obj_dict['updated_at'] = get_brazil_time_now()
-            result = self.database.update(
-                self.collection, query, {'$set': obj_dict}
-            )
-        elif query and self.database.find(self.collection, query) and replace:
-            print(f'Replacing: {self.__class__.__name__}')
-            obj_dict['updated_at'] = get_brazil_time_now()
-            result = self.database.replace(self.collection, query, obj_dict)
+
+        if query and self.database.find(self.collection, query):
+            if not replace:
+                print(f'Updating: {self.__class__.__name__}')
+                obj_dict['updated_at'] = get_brazil_time_now()
+                result = self.database.update(
+                    collection=self.collection,
+                    query=query,
+                    data={'$set': obj_dict}
+                )
+            elif replace:
+                print(f'Replacing: {self.__class__.__name__}')
+                obj_dict['updated_at'] = get_brazil_time_now()
+                result = self.database.replace(
+                    collection=self.collection,
+                    query=query,
+                    data=obj_dict
+                )
         else:
             print(f'Inserting: {self.__class__.__name__}')
             obj_dict['created_at'] = get_brazil_time_now()
