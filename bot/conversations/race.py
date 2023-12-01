@@ -67,10 +67,10 @@ def get_race_buttons(
     user_id: int,
     _all: bool = False
 ) -> List[List[InlineKeyboardButton]]:
-    model_race = RaceModel()
+    race_model = RaceModel()
     race_buttons = []
     query = {} if _all is True else {'enemy': False}
-    race_names = model_race.get_all(query=query, fields=['name'])
+    race_names = race_model.get_all(query=query, fields=['name'])
 
     for race_name in race_names:
         race_buttons.append(
