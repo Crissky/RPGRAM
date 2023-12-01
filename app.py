@@ -29,6 +29,7 @@ from bot.conversations import (
     DROP_HANDLERS,
     DEBUG_HANDLERS,
     RACES_HANDLERS,
+    CLASSES_HANDLERS,
 )
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.status import job_activate_conditions
@@ -66,6 +67,7 @@ def main() -> None:
     application.add_handlers(DROP_HANDLERS)
     application.add_handlers(DEBUG_HANDLERS)
     application.add_handlers(RACES_HANDLERS)
+    application.add_handlers(CLASSES_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(

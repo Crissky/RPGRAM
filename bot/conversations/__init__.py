@@ -17,3 +17,4 @@ from bot.conversations.equips import VIEW_EQUIPS_HANDLERS
 from bot.conversations.debug import DEBUG_HANDLERS
 from bot.conversations.close import CLOSE_MSG_HANDLER
 from bot.conversations.race import RACES_HANDLERS
+from bot.conversations.classe import CLASSES_HANDLERS

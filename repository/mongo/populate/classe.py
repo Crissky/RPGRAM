@@ -46,6 +46,7 @@ CLASSES = [
             'suficientes para derrotar seja lá o que está ameaçando o '
             'seu caminho.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -90,6 +91,7 @@ CLASSES = [
             'treinamento de combate para enfrentar seus inimigos '
             'corpo-a-corpo, auxiliado pelo poder divino.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -132,6 +134,7 @@ CLASSES = [
             'até mesmo ao ponto de preferirem formas animais a suas '
             'formas naturais.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -187,6 +190,7 @@ CLASSES = [
             'canalizar sua própria magia inata, eles descobrem novas '
             'e incríveis formas de liberar esse poder.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -227,6 +231,7 @@ CLASSES = [
             'vasta especialização tornam os guerreiros combatentes '
             'superiores nos campos de batalha e masmorras.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -268,6 +273,7 @@ CLASSES = [
             'perigo, e alguns poucos aprendem truques de magia para '
             'incrementar suas outras habilidades.'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -313,6 +319,7 @@ CLASSES = [
             'antigos ou escrituras, e de criaturas anciãs (como as '
             'fadas) que são imersas em magia.\n\n'
         ),
+        'enemy': False,
         'bonus_strength': 5,
         'bonus_dexterity': 5,
         'bonus_constitution': 5,
@@ -342,4 +349,4 @@ if __name__ == '__main__':
                 classe_dict[field] = mongo_dict[field]
         classe = Classe(**classe_dict)
         print(classe)
-        classe_model.save(classe)
+        classe_model.save(classe, replace=True)
