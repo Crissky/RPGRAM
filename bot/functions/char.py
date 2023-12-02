@@ -207,6 +207,12 @@ def activate_conditions(
     for report in reports:
         activate_report['text'] += report['text'] + '\n'
 
+    activate_report['status'] = char.status.get_sheet()
+    activate_report['status_verbose'] = char.status.get_sheet(verbose=True)
+    activate_report['all_status'] = char.status.get_all_sheets()
+    activate_report['all_status_verbose'] = char.status.get_all_sheets(
+        verbose=True
+    )
     if activate_report['text']:
         activate_report['text'] += '\n'
     save_char(char, status=True)

@@ -3,6 +3,7 @@ from telegram.ext import ContextTypes
 
 from bot.functions.char import activate_conditions
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import TEXT_SEPARATOR
 from function.datetime import get_brazil_time_now
 
 from repository.mongo import StatusModel
@@ -38,6 +39,8 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
             text = report['text']
             if text:
                 text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
+                text += f'{TEXT_SEPARATOR}\n\n'
+                text += report['all_status_verbose']
                 try:
                     silent = get_attribute_group_or_player(player_id, 'silent')
                     await context.bot.send_message(
