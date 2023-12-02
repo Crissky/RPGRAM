@@ -588,7 +588,7 @@ async def drop_item(
 
 
 @skip_if_dead_char
-# @skip_if_immobilized
+@skip_if_immobilized
 @confusion
 @print_basic_infos
 async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -649,7 +649,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 @skip_if_dead_char
-# @skip_if_immobilized
+@skip_if_immobilized
 @confusion
 @print_basic_infos
 async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
