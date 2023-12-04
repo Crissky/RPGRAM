@@ -38,7 +38,7 @@ from rpgram.enums import EmojiEnum, FaceEmojiEnum
 @need_have_char
 @skip_if_dead_char
 @skip_if_immobilized
-@confusion
+@confusion()
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)

@@ -235,89 +235,88 @@ def skip_if_immobilized(callback):
     return wrapper
 
 
-def confusion(callback):
-    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print('@CONFUSION')
-        char_model = CharacterModel()
-        chat_id = update.effective_chat.id
-        user_id = update.effective_user.id
-        query = update.callback_query
-        status = confusion_status(user_id)
-        activated_confusion = activated_condition()
-        if not status or not activated_confusion:
-            return await callback(update, context)
-        else:
-            battle = Battle([], [], None)
-            player_ids = get_player_ids_from_group(chat_id)
-            player_ids.append(user_id)
-            player_id = choice(player_ids)
-
-            confuse_char = char_model.get(user_id)
-            target_char = char_model.get(player_id)
-            confuse_player_name = confuse_char.player_name
-            target_player_name = target_char.player_name
-            if confuse_char.player_id == target_char.player_id:
-                target_player_name = 'a si mesmo'
-
-            confuse_char_dice = Dice(20)
-            target_char_dice = Dice(20)
-            confuse_char_dice.throw()
-            target_char_dice.throw()
-
-            accuracy = battle.get_accuracy(
-                confuse_char.cs.hit,
-                target_char.cs.evasion,
-                confuse_char_dice,
-                target_char_dice
-            )
-
-            text = choice(CONFUSION_TEXT).format(
-                personagem=confuse_player_name,
-                aliado=target_player_name
-            )
-            target_player_name = target_char.player_name
-            dodge_score = random()
-            if dodge_score >= accuracy:
-                text += choice(DODGE_TEXT).format(aliado=target_player_name)
+def confusion(retry_state=ConversationHandler.END):
+    def decorator(callback):
+        async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            print('@CONFUSION')
+            char_model = CharacterModel()
+            chat_id = update.effective_chat.id
+            user_id = update.effective_user.id
+            query = update.callback_query
+            status = confusion_status(user_id)
+            activated_confusion = activated_condition()
+            if not status or not activated_confusion:
+                return await callback(update, context)
             else:
-                text += choice(ATTACK_TEXT).format(aliado=target_player_name)
-                action = choice(confuse_char.actions)
-                attack_value = confuse_char.get_action_attack(action)
-                attack_value_boosted = battle.get_total_value(
-                    attack_value,
-                    confuse_char_dice
-                )
-                (
-                    defense_value, defense_action
-                ) = target_char.get_action_defense(action)
-                defense_value_boosted = battle.get_total_value(
-                    defense_value,
+                battle = Battle([], [], None)
+                player_ids = get_player_ids_from_group(chat_id)
+                player_ids.append(user_id)
+                player_id = choice(player_ids)
+
+                confuse_char = char_model.get(user_id)
+                target_char = char_model.get(player_id)
+                confuse_player_name = confuse_char.player_name
+                target_player_name = target_char.player_name
+                if confuse_char.player_id == target_char.player_id:
+                    target_player_name = 'a si mesmo'
+
+                confuse_char_dice = Dice(20)
+                target_char_dice = Dice(20)
+                confuse_char_dice.throw()
+                target_char_dice.throw()
+
+                accuracy = battle.get_accuracy(
+                    confuse_char.cs.hit,
+                    target_char.cs.evasion,
+                    confuse_char_dice,
                     target_char_dice
                 )
-                damage = attack_value_boosted - defense_value_boosted
-                damage = max(damage, 0)
-                damage_report = target_char.cs.damage_hit_points(damage)
-                action = action.replace('_', ' ').title()
-                defense_action = defense_action.replace('_', ' ').title()
-                text += (
-                    f'{action}: {attack_value_boosted}({attack_value}), '
-                    f'{confuse_char_dice.text}\n'
+
+                text = choice(CONFUSION_TEXT).format(
+                    personagem=confuse_player_name,
+                    aliado=target_player_name
                 )
-                text += (
-                    f'{defense_action}: '
-                    f'{defense_value_boosted}({defense_value}), '
-                    f'{target_char_dice.text}\n'
-                )
-                text += damage_report['text']
-                if damage_report['dead']:
-                    text += (
-                        f'\n\n{target_player_name} morreu! '
-                        f'Use o comando /{REST_COMMANDS[0]} para descansar.'
+                target_player_name = target_char.player_name
+                dodge_score = random()
+                if dodge_score >= accuracy:
+                    text += choice(DODGE_TEXT).format(aliado=target_player_name)
+                else:
+                    text += choice(ATTACK_TEXT).format(aliado=target_player_name)
+                    action = choice(confuse_char.actions)
+                    attack_value = confuse_char.get_action_attack(action)
+                    attack_value_boosted = battle.get_total_value(
+                        attack_value,
+                        confuse_char_dice
                     )
-                save_char(target_char)
-            if query:
-                await query.edit_message_text(text)
-            else:
+                    (
+                        defense_value, defense_action
+                    ) = target_char.get_action_defense(action)
+                    defense_value_boosted = battle.get_total_value(
+                        defense_value,
+                        target_char_dice
+                    )
+                    damage = attack_value_boosted - defense_value_boosted
+                    damage = max(damage, 0)
+                    damage_report = target_char.cs.damage_hit_points(damage)
+                    action = action.replace('_', ' ').title()
+                    defense_action = defense_action.replace('_', ' ').title()
+                    text += (
+                        f'{action}: {attack_value_boosted}({attack_value}), '
+                        f'{confuse_char_dice.text}\n'
+                    )
+                    text += (
+                        f'{defense_action}: '
+                        f'{defense_value_boosted}({defense_value}), '
+                        f'{target_char_dice.text}\n'
+                    )
+                    text += damage_report['text']
+                    if damage_report['dead']:
+                        text += (
+                            f'\n\n{target_player_name} morreu! '
+                            f'Use o comando /{REST_COMMANDS[0]} para descansar.'
+                        )
+                    save_char(target_char)
                 await update.effective_message.reply_text(text)
-            return ConversationHandler.END
-    return wrapper
+                return retry_state
+        return wrapper
+    return decorator

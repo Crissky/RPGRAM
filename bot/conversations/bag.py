@@ -88,7 +88,7 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
 
 @skip_if_dead_char
 # @skip_if_immobilized
-@confusion
+@confusion(START_ROUTES)
 @skip_if_no_singup_player
 @skip_if_no_have_char
 @need_not_in_battle
@@ -306,7 +306,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @skip_if_dead_char
 # @skip_if_immobilized
-@confusion
+@confusion(USE_ROUTES)
 @print_basic_infos
 @retry_after
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -435,7 +435,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 @skip_if_dead_char
 # @skip_if_immobilized
-@confusion
+@confusion(USE_ROUTES)
 @print_basic_infos
 @retry_after
 async def identify_item(
@@ -508,7 +508,7 @@ async def identify_item(
 
 @skip_if_dead_char
 # @skip_if_immobilized
-@confusion
+@confusion(USE_ROUTES)
 @print_basic_infos
 @retry_after
 async def drop_item(
@@ -589,7 +589,7 @@ async def drop_item(
 
 @skip_if_dead_char
 @skip_if_immobilized
-@confusion
+@confusion()
 @print_basic_infos
 async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Pega o item dropado
@@ -650,7 +650,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 @skip_if_dead_char
 @skip_if_immobilized
-@confusion
+@confusion()
 @print_basic_infos
 async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Quebra o item dropado
