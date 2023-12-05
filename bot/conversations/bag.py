@@ -62,6 +62,7 @@ from bot.decorators import (
 )
 from bot.functions.bag import (
     get_identifying_lens,
+    get_item_by_position,
     have_identifying_lens,
     sub_identifying_lens
 )
@@ -105,6 +106,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
+    page = 0
     if query:
         data = eval(query.data)
         page = data['page']  # starts zero
@@ -116,12 +118,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return retry_state
 
-        skip_slice = ITEMS_PER_PAGE * page
-        size_slice = ITEMS_PER_PAGE + 1
-    else:
-        page = 0
-        skip_slice = 0
-        size_slice = ITEMS_PER_PAGE + 1
+    skip_slice = ITEMS_PER_PAGE * page
+    size_slice = ITEMS_PER_PAGE + 1
 
     player_bag = bag_model.get(
         query={'player_id': user_id},
@@ -212,7 +210,6 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(type(e), e)
         return ConversationHandler.END
 
-    bag_model = BagModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
     data = eval(query.data)
@@ -225,13 +222,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
-    item_index = (ITEMS_PER_PAGE * page) + item_pos
-    player_bag = bag_model.get(
-        query={'player_id': user_id},
-        fields={'items_ids': {'$slice': [item_index, 1]}},
-        partial=False
-    )
-    item = player_bag[0]
+    item = get_item_by_position(user_id, page, item_pos)
     markdown_text = item.get_all_sheets(
         verbose=True,
         markdown=True,
@@ -340,13 +331,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    item_index = (ITEMS_PER_PAGE * page) + item_pos
-    player_bag = bag_model.get(
-        query={'player_id': user_id},
-        fields={'items_ids': {'$slice': [item_index, 1]}},
-        partial=False
-    )
-    item = player_bag[0]
+    item = get_item_by_position(user_id, page, item_pos)
     player_character = char_model.get(user_id)
 
     old_equipments = []
@@ -497,15 +482,9 @@ async def identify_item(
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    item_index = (ITEMS_PER_PAGE * page) + item_pos
-    player_bag = bag_model.get(
-        query={'player_id': user_id},
-        fields={'items_ids': {'$slice': [item_index, 1]}},
-        partial=False
-    )
+    item_equipment = get_item_by_position(user_id, page, item_pos)
+    equipment = item_equipment.item
     if have_identifying_lens(user_id):
-        item_equipment = player_bag[0]
-        equipment = item_equipment.item
         consumable_identifier = get_identifying_lens()
         report = consumable_identifier.use(equipment)
         report_text = report['text']
@@ -518,6 +497,9 @@ async def identify_item(
             f'Descrição: "{description}".\n\n'
             f'{report_text}\n'
         )
+        await query.answer(text=text, show_alert=True)
+    else:
+        text = '⛔VOCÊ NÃO TEM UM ITEM DE IDENTIFICAÇÃO⛔'
         await query.answer(text=text, show_alert=True)
 
     equips = equips_model.get(user_id)
@@ -571,13 +553,7 @@ async def drop_item(
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    item_index = (ITEMS_PER_PAGE * page) + item_pos
-    player_bag = bag_model.get(
-        query={'player_id': user_id},
-        fields={'items_ids': {'$slice': [item_index, 1]}},
-        partial=False
-    )
-    item = player_bag[0]
+    item = get_item_by_position(user_id, page, item_pos)
     drop = min(drop, item.quantity)
     markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
 
