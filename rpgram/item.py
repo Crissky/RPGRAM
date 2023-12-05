@@ -151,9 +151,20 @@ class Item:
         return text
 
     def get_all_sheets(
-        self, verbose: bool = False, markdown: bool = False
+        self, verbose: bool = False,
+        markdown: bool = False,
+        show_quantity: bool = False,
     ) -> str:
-        return self.item.get_sheet(verbose=verbose, markdown=markdown)
+        text = self.item.get_sheet(verbose=verbose, markdown=markdown)
+        if all((verbose, show_quantity, isinstance(self.item, Consumable))):
+            text_quantity = f'*Quantidade*: {self.quantity}\n'
+            if not markdown:
+                text_quantity = remove_bold(text_quantity)
+                text_quantity = remove_code(text_quantity)
+            else:
+                text_quantity = escape_basic_markdown_v2(text_quantity)
+            text += text_quantity
+        return text
 
     def __repr__(self) -> str:
         return (

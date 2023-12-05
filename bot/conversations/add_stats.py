@@ -44,7 +44,7 @@ from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
 
 @skip_if_dead_char
 @skip_if_immobilized
-@confusion
+@confusion()
 @print_basic_infos
 @need_have_char
 @need_not_in_battle
