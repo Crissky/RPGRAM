@@ -1,22 +1,38 @@
 
 from typing import Union
+from bot.constants.bag import ITEMS_PER_PAGE
 from repository.mongo import BagModel, ItemModel
 from rpgram import Item
-from rpgram.consumables import Consumable
+from rpgram.consumables import Consumable, IdentifyingConsumable
 from rpgram.boosters import Equipment
 
 
 IDENTIFYING_LENS = 'Identifying Lens'
 
 
+def get_item_by_position(user_id: int, page: int, item_pos: int) -> Item:
+    '''Retorna um Item da Bag pela posição'''
+    bag_model = BagModel()
+    item_index = (ITEMS_PER_PAGE * page) + item_pos
+    player_bag = bag_model.get(
+        query={'player_id': user_id},
+        fields={'items_ids': {'$slice': [item_index, 1]}},
+        partial=False
+    )
+    item = player_bag[0]
+    return item
+
+
 def get_item_by_name(item_name: str) -> Union[Consumable, Equipment]:
+    '''Retorna um item pelo nome'''
     item_model = ItemModel()
     item = item_model.get(query={'name': item_name})
 
     return item
 
 
-def get_identifying_lens() -> Consumable:
+def get_identifying_lens() -> IdentifyingConsumable:
+    '''Retorna "Identifying Lens"'''
     return get_item_by_name(IDENTIFYING_LENS)
 
 
@@ -70,3 +86,6 @@ def sub_identifying_lens(user_id: int) -> bool:
 
 if __name__ == '__main__':
     sub_identifying_lens(370221845)
+    id_lens = get_identifying_lens()
+    print(type(id_lens))
+    print(id_lens)
