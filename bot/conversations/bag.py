@@ -232,7 +232,11 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         partial=False
     )
     item = player_bag[0]
-    markdown_text = item.get_all_sheets(verbose=True, markdown=True)
+    markdown_text = item.get_all_sheets(
+        verbose=True,
+        markdown=True,
+        show_quantity=True
+    )
     equip_buttons = []
     use_buttons = [[]]
     identify_button = []
@@ -323,7 +327,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     bag_model = BagModel()
     char_model = CharacterModel()
-    equips_model = EquipsModel()
     user_id = update.effective_user.id
     data = eval(query.data)
     item_pos = data['item']
@@ -392,18 +395,44 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 show_alert=True
             )
         finally:
-            if item.quantity <= 1:
+            markdown_text = item.get_all_sheets(
+                verbose=True,
+                markdown=True,
+                show_quantity=True
+            )
+            if item.quantity <= 0:
                 back_button = get_back_button(
                     page=page, user_id=user_id, retry_state=USE_ROUTES
                 )
                 reply_markup = InlineKeyboardMarkup([back_button])
-                await query.edit_message_reply_markup(
-                    reply_markup=reply_markup
-                )
             else:
-                await query.edit_message_reply_markup(
-                    reply_markup=old_reply_markup
+                use_buttons = get_use_consumable_buttons(
+                    page=page,
+                    user_id=user_id,
+                    item_pos=item_pos,
+                    item=item
                 )
+                discard_buttons = get_discard_buttons(
+                    page=page,
+                    user_id=user_id,
+                    item_pos=item_pos,
+                    item=item
+                )
+                back_button = get_back_button(
+                    page=page,
+                    user_id=user_id,
+                    retry_state=USE_ROUTES
+                )
+                reply_markup = InlineKeyboardMarkup([
+                    *use_buttons,
+                    *discard_buttons,
+                    back_button
+                ])
+            await query.edit_message_text(
+                text=markdown_text,
+                reply_markup=reply_markup,
+                parse_mode=ParseMode.MARKDOWN_V2
+            )
             return USE_ROUTES
 
     markdown_player_sheet = player_character.get_all_sheets(
@@ -1059,7 +1088,7 @@ BAG_HANDLER = ConversationHandler(
         USE_ROUTES: [
             CallbackQueryHandler(start, pattern=r'^{"page":'),
             CallbackQueryHandler(use_item, pattern=r'^{"use":'),
-            CallbackQueryHandler(drop_item, pattern=r'^{"drop":1'),
+            CallbackQueryHandler(drop_item, pattern=r'^{"drop":(1|3|5|10)'),
             CallbackQueryHandler(identify_item, pattern=r'^{"identify":1'),
         ],
         SORT_ROUTES: [
