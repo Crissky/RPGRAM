@@ -3,6 +3,7 @@ from collections import defaultdict
 from random import choice, choices, random, randint
 from typing import Dict, Hashable, List, Tuple, Union
 from repository.mongo import ItemModel
+from repository.mongo.populate.function import weighted_choice
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
     ALL_WEAPONS,
@@ -80,17 +81,6 @@ ACCESSORY_MATERIALS = {
 
 
 # FUNCTIONS
-def weighted_choice(**items) -> Hashable:
-    '''Função que retorna um item escolhido de forma aleatória.
-    O item é escolhido de forma aleatória, baseado em sua probabilidade.
-    O parâmetro items deve ser um dicionário, em que a chave é o item
-    e o valor a propabilidade de ser escolhido.
-    '''
-    population = list(items.keys())
-    weights = items.values()
-    return choices(population, weights=weights)[0]
-
-
 def random_group_level(level: int) -> int:
     '''Função que retorna um valor inteiro aleatório entre 75% e 125% do 
     level passado. No entando, o menor valor retornado sempre será 1.
