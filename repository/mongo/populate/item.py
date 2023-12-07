@@ -3,7 +3,7 @@ from collections import defaultdict
 from random import choice, random, randint
 from typing import Dict, List, Tuple, Union
 from repository.mongo import ItemModel
-from repository.mongo.populate.tools import weighted_choice
+from repository.mongo.populate.tools import random_group_level, weighted_choice
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
     ALL_WEAPONS,
@@ -81,16 +81,6 @@ ACCESSORY_MATERIALS = {
 
 
 # FUNCTIONS
-def random_group_level(level: int) -> int:
-    '''Função que retorna um valor inteiro aleatório entre 75% e 125% do 
-    level passado. No entando, o menor valor retornado sempre será 1.
-    '''
-    min_level = max(int(level - 10), 1)
-    max_level = int(level + 10)
-    new_level = choice(range(min_level, max_level))
-    return new_level
-
-
 def choice_type_item(no_trap: bool = False) -> str:
     '''Função que retorna um tipo de item aleatório.
     O tipo do item é retornado com base em sua propabilidade.
