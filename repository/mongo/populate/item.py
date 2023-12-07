@@ -1,9 +1,9 @@
 from bson import ObjectId
 from collections import defaultdict
-from random import choice, choices, random, randint
-from typing import Dict, Hashable, List, Tuple, Union
+from random import choice, random, randint
+from typing import Dict, List, Tuple, Union
 from repository.mongo import ItemModel
-from repository.mongo.populate.function import weighted_choice
+from repository.mongo.populate.tools import weighted_choice
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
     ALL_WEAPONS,
