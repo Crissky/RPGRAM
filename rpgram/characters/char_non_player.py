@@ -3,8 +3,19 @@ from bson import ObjectId
 from rpgram.boosters.classe import Classe
 from rpgram.boosters.race import Race
 from rpgram.characters.char_base import BaseCharacter
+from rpgram.enums.enemy import EnemyStarsEnum
 from rpgram.equips import Equips
 from rpgram.status import Status
+
+
+POINTS_MULTIPLIER = {
+    EnemyStarsEnum.ONE.name: 2,
+    EnemyStarsEnum.TWO.name: 3,
+    EnemyStarsEnum.THREE.name: 5,
+    EnemyStarsEnum.FOUR.name: 7,
+    EnemyStarsEnum.FIVE.name: 11,
+    EnemyStarsEnum.BOSS.name: 28,
+}
 
 
 class NPCharacter(BaseCharacter):
@@ -23,12 +34,13 @@ class NPCharacter(BaseCharacter):
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        points_multiplier: int = 3,
+        stars: str = EnemyStarsEnum.THREE.name,
         combat_damage: int = 0,
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
+        points_multiplier = POINTS_MULTIPLIER[stars]
         super().__init__(
             char_name=char_name,
             classe=classe,
@@ -49,3 +61,12 @@ class NPCharacter(BaseCharacter):
             created_at=created_at,
             updated_at=updated_at
         )
+        self.__stars = stars
+
+    # Getters
+    @property
+    def name(self) -> str:
+        return EnemyStarsEnum[self.stars].value + super().name
+    @property
+    def stars(self) -> int:
+        return self.__stars

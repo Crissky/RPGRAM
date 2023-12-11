@@ -8,16 +8,6 @@ from rpgram.enums import EnemyStarsEnum
 from random import choice
 
 
-POINTS_MULTIPLIER = {
-    EnemyStarsEnum.ONE.name: 2,
-    EnemyStarsEnum.TWO.name: 3,
-    EnemyStarsEnum.THREE.name: 5,
-    EnemyStarsEnum.FOUR.name: 7,
-    EnemyStarsEnum.FIVE.name: 11,
-    EnemyStarsEnum.BOSS.name: 28,
-}
-
-
 def get_total_enemy(max_number_enemies: int = 5) -> int:
     '''Retorna o número total de inimigos que serão criados'''
     number_enemies_probs = {
@@ -48,7 +38,7 @@ def choice_enemy_star(no_boss: bool = False) -> str:
     }
 
     if no_boss:
-        types_item.pop('TRAP')
+        types_item.pop('BOSS')
 
     return weighted_choice(**types_item)
 
@@ -74,7 +64,6 @@ def create_enemy(
 ) -> NPCharacter:
     classe_model = ClasseModel()
     race_model = RaceModel()
-    enemy_points_multiplier = POINTS_MULTIPLIER[enemy_stars]
     enemy_class = classe_model.get(enemy_class_name)
     enemy_race = race_model.get(enemy_race_name)
     enemy = NPCharacter(
@@ -82,10 +71,26 @@ def create_enemy(
         classe=enemy_class,
         race=enemy_race,
         level=enemy_level,
-        points_multiplier=enemy_points_multiplier
+        stars=enemy_stars
     )
 
     return enemy
+
+
+def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
+    base_stats_probs = {
+        'FOR': enemy_char.base_stats.multiplier_strength ** 2,
+        'DES': enemy_char.base_stats.multiplier_dexterity ** 2,
+        'CON': enemy_char.base_stats.multiplier_constitution ** 2,
+        'INT': enemy_char.base_stats.multiplier_intelligence ** 2,
+        'SAB': enemy_char.base_stats.multiplier_wisdom ** 2,
+        'CAR': enemy_char.base_stats.multiplier_charisma ** 2,
+    }
+    for _ in range(enemy_char.base_stats.points):
+        stats_name = weighted_choice(**base_stats_probs)
+        enemy_char.base_stats[stats_name] = 1
+
+    return enemy_char
 
 
 def create_random_enemy(
@@ -101,15 +106,16 @@ def create_random_enemy(
         enemy_stars = choice_enemy_star(no_boss=no_boss)
         enemy_class_name = choice_enemy_class_name()
         enemy_race_name = choice_enemy_race_name()
-        enemy_list.append(
-            create_enemy(
-                enemy_level=enemy_level,
-                enemy_name=enemy_name,
-                enemy_stars=enemy_stars,
-                enemy_class_name=enemy_class_name,
-                enemy_race_name=enemy_race_name,
-            )
+        enemy_char = create_enemy(
+            enemy_level=enemy_level,
+            enemy_name=enemy_name,
+            enemy_stars=enemy_stars,
+            enemy_class_name=enemy_class_name,
+            enemy_race_name=enemy_race_name,
         )
+        enemy_char = distribute_stats(enemy_char)
+
+        enemy_list.append(enemy_char)
         if EnemyStarsEnum.BOSS.name == enemy_stars:
             no_boss = True
 
@@ -127,4 +133,9 @@ if __name__ == '__main__':
     print()
     print(choice_enemy_class_name())
     print(choice_enemy_race_name())
-    print(create_random_enemy(10))
+    enemy_list = create_random_enemy(10)
+    for enemy in enemy_list:
+        print('Nome:', enemy.name)
+        print('Raça:', enemy.race.name)
+        print('Classe:', enemy.classe.name)
+        print(enemy.bs.get_sheet(verbose=True))
