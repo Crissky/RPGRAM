@@ -270,6 +270,39 @@ def get_equipment_and_material(
     return weapon, material
 
 
+def check_equipment_type(equip_type: str, weapon: str):
+    error_message = (
+        f'Arma "{weapon}" não encontrada para o tipo de equipamento '
+        f'"{equip_type}".'
+    )
+    
+    if equip_type == EquipmentEnum.ONE_HAND.name:
+        if weapon not in ONE_HAND_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.TWO_HANDS.name:
+        if weapon not in TWO_HANDS_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.HELMET.name:
+        if weapon not in HELMET_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.ARMOR.name:
+        if weapon not in ARMOR_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.BOOTS.name:
+        if weapon not in BOOTS_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.RING.name:
+        if weapon not in RING_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.AMULET.name:
+        if weapon not in AMULET_EQUIPMENTS:
+            raise ValueError(error_message)
+    else:
+        raise ValueError(
+            f'Tipo de equipamento "{equip_type}" não encontrado.'
+        )
+
+
 def get_bonus_and_penality(
     equip_type: str,
     rarity: str,
@@ -510,11 +543,25 @@ def translate_material_name(
     return material_name
 
 
-def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
+def create_random_equipment(
+    equip_type: str,
+    group_level: int,
+    rarity: Union[RarityEnum, str] = None,
+    weapon: str = None,
+    material: str = None,
+) -> Equipment:
     '''Retorna um equipamento aleatório.
     '''
-    rarity = choice_rarity(group_level)
-    weapon, material = get_equipment_and_material(equip_type, group_level)
+    if isinstance(rarity, RarityEnum):
+        rarity = rarity.name
+    elif rarity not in RarityEnum.__members__:
+        rarity = choice_rarity(group_level)
+
+    _weapon, _material = get_equipment_and_material(equip_type, group_level)
+    weapon = weapon if weapon else _weapon
+    material = material if material else _material
+
+    check_equipment_type(equip_type, weapon)
 
     equip_name = weapon if weapon else equip_type
     print(f'Equipamento: {weapon}', end=' ')
@@ -567,7 +614,7 @@ def create_random_consumable(group_level: int):
     '''
     item_model = ItemModel()
     rarity = choice_rarity(group_level)
-    query = dict(rarity=rarity, _class={'$ne':'Equipment'})
+    query = dict(rarity=rarity, _class={'$ne': 'Equipment'})
     item_list = item_model.get_all(query=query)
     quantity = randint(1, 3)
     item = choice(item_list)
@@ -632,6 +679,16 @@ if __name__ == '__main__':
 
     for _ in range(1000):
         create_random_item(1001)
+
+    # print(
+    #     create_random_equipment(
+    #         EquipmentEnum.ONE_HAND.name,
+    #         100,
+    #         # RarityEnum.RARE,
+    #         weapon='SWORD',
+    #         material=WeaponMaterialEnum.STEEL.name
+    #     ).get_all_sheets(verbose=True)
+    # )
 
     # for _ in range(1000):
     #     items = create_random_item(1001)
