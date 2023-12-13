@@ -1,3 +1,65 @@
+from rpgram.enums import EquipmentEnum
+
+
+MAGICIAN_EQUIPMENTS = {
+    EquipmentEnum.HELMET.name: ['POINTED_HAT', 'MASK'],
+    EquipmentEnum.ONE_HAND.name: [
+        'WAND', 'ORB', 'QUILL', 'CHALICE', 'ROD', 'VAJRA'
+    ],
+    EquipmentEnum.TWO_HANDS.name: [
+        'STAFF', 'GRIMOIRE', 'SCEPTER', 'HARP', 'CRYSTAL', 'RIKUDŌKON'
+    ],
+    EquipmentEnum.ARMOR.name: ['ROBE'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDAL'],
+    EquipmentEnum.RING.name: ['RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'AMULET', 'CHARM'],
+}
+DUELIST_EQUIPMENTS = {
+    EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD'],
+    EquipmentEnum.ONE_HAND.name: [
+        'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN',
+        'RAPIER', 'ESTOQUE', 'SAI'
+    ],
+    EquipmentEnum.TWO_HANDS.name: [
+        'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER'
+    ],
+    EquipmentEnum.ARMOR.name: ['CLOAK'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDAL'],
+    EquipmentEnum.RING.name: ['RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE'],
+}
+FIGHTER_EQUIPMENTS = {
+    EquipmentEnum.HELMET.name: ['HELMET'],
+    EquipmentEnum.ONE_HAND.name: [
+        'SWORD', 'SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'FALCHION', 'MACE',
+        'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT'
+    ],
+    EquipmentEnum.TWO_HANDS.name: [
+        'GREAT_SWORD', 'DOUBLE_AXE', 'HALBERD', 'WARHAMMER', 'FLAIL', 'PIKE',
+        'LANCE'
+    ],
+    EquipmentEnum.ARMOR.name: ['ARMOR', 'BRIGANDINE'],
+    EquipmentEnum.BOOTS.name: ['BOOTS'],
+    EquipmentEnum.RING.name: ['RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE'],
+}
+BARBARIAN_EQUIPMENTS = {
+    EquipmentEnum.HELMET.name: ['KRÁNOS'],
+    EquipmentEnum.ONE_HAND.name: [
+        'SWORD', 'SPIKED_SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'MACE', 'CLUB',
+        'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT'
+    ],
+    EquipmentEnum.TWO_HANDS.name: [
+        'GREAT_SWORD', 'DOUBLE_AXE', 'WARHAMMER', 'FLAIL', 'PIKE', 'LANCE',
+        'SHARUR'
+    ],
+    EquipmentEnum.ARMOR.name: ['SPIKED_ARMOR'],
+    EquipmentEnum.BOOTS.name: ['BOOTS'],
+    EquipmentEnum.RING.name: ['RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE'],
+}
+
+
 NAMES = [
     'Aind', 'Ainn', 'Airk', 'Aitze', 'Ald', 'Ance', 'Anxe', 'Ard', 'Ashf',
     'Aulg', 'Aun', 'Aure', 'Authe', 'Baelt', 'Bakh', 'Bal', 'Balt', 'Balthe',
@@ -1619,3 +1681,53 @@ NAMES = [
     'Zulaaria', 'Zuralion', 'Zuruxeno', 'Zuzusilmar',
     'Zwimolio', 'Zwyäclemon', 'Zyrissalantisar',
 ]
+
+
+if __name__ == '__main__':
+    from typing import List
+
+    from repository.mongo.populate.item_constants import (
+        ALL_EQUIPMENTS_DEFINITIONS
+    )
+
+    ALL_CLASSE_EQUIPMENTS = [
+        MAGICIAN_EQUIPMENTS,
+        DUELIST_EQUIPMENTS,
+        FIGHTER_EQUIPMENTS,
+        BARBARIAN_EQUIPMENTS,
+    ]
+    def get_classe_equipment_names(key: str) -> List[str]:
+        equipment_names = []
+        for classe_equipment in ALL_CLASSE_EQUIPMENTS:
+            equipment_names.extend(classe_equipment[key])
+        equipment_names = set(equipment_names)
+        return equipment_names
+
+    def check_if_exists_in_definitions(key):
+        equipment_names = get_classe_equipment_names(key)
+        for equipment_name in equipment_names:
+            if equipment_name not in ALL_EQUIPMENTS_DEFINITIONS:
+                raise ValueError(
+                    f'Equipment "{equipment_name}" not found in '
+                    f'"ALL_EQUIPMENTS_DEFINITIONS"'
+                )
+
+    def check_if_exists_in_classe_equipment():
+        all_equipments = set([
+            equipment
+            for classe_equipments_dict in ALL_CLASSE_EQUIPMENTS
+            for classe_equipments_values in classe_equipments_dict.values()
+            for equipment in classe_equipments_values
+        ])
+        for definition in ALL_EQUIPMENTS_DEFINITIONS:
+            if definition not in all_equipments:
+                raise ValueError(
+                    f'Definition "{definition}" not found in '
+                    f'classes equipments.'
+                )
+
+    for e in EquipmentEnum:
+        key = e.name
+        check_if_exists_in_definitions(key)
+        check_if_exists_in_classe_equipment()
+        print(f'"{key}": OK!!!')
