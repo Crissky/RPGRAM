@@ -1,8 +1,9 @@
 from bson import ObjectId
 from collections import defaultdict
-from random import choice, choices, random, randint
-from typing import Dict, Hashable, List, Tuple, Union
+from random import choice, random, randint
+from typing import Dict, List, Tuple, Union
 from repository.mongo import ItemModel
+from repository.mongo.populate.tools import random_group_level, weighted_choice
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
     ALL_WEAPONS,
@@ -80,27 +81,6 @@ ACCESSORY_MATERIALS = {
 
 
 # FUNCTIONS
-def weighted_choice(**items) -> Hashable:
-    '''Função que retorna um item escolhido de forma aleatória.
-    O item é escolhido de forma aleatória, baseado em sua probabilidade.
-    O parâmetro items deve ser um dicionário, em que a chave é o item
-    e o valor a propabilidade de ser escolhido.
-    '''
-    population = list(items.keys())
-    weights = items.values()
-    return choices(population, weights=weights)[0]
-
-
-def random_group_level(level: int) -> int:
-    '''Função que retorna um valor inteiro aleatório entre 75% e 125% do 
-    level passado. No entando, o menor valor retornado sempre será 1.
-    '''
-    min_level = max(int(level - 10), 1)
-    max_level = int(level + 10)
-    new_level = choice(range(min_level, max_level))
-    return new_level
-
-
 def choice_type_item(no_trap: bool = False) -> str:
     '''Função que retorna um tipo de item aleatório.
     O tipo do item é retornado com base em sua propabilidade.
@@ -288,6 +268,39 @@ def get_equipment_and_material(
         )
 
     return weapon, material
+
+
+def check_equipment_type(equip_type: str, weapon: str):
+    error_message = (
+        f'Arma "{weapon}" não encontrada para o tipo de equipamento '
+        f'"{equip_type}".'
+    )
+    
+    if equip_type == EquipmentEnum.ONE_HAND.name:
+        if weapon not in ONE_HAND_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.TWO_HANDS.name:
+        if weapon not in TWO_HANDS_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.HELMET.name:
+        if weapon not in HELMET_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.ARMOR.name:
+        if weapon not in ARMOR_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.BOOTS.name:
+        if weapon not in BOOTS_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.RING.name:
+        if weapon not in RING_EQUIPMENTS:
+            raise ValueError(error_message)
+    elif equip_type == EquipmentEnum.AMULET.name:
+        if weapon not in AMULET_EQUIPMENTS:
+            raise ValueError(error_message)
+    else:
+        raise ValueError(
+            f'Tipo de equipamento "{equip_type}" não encontrado.'
+        )
 
 
 def get_bonus_and_penality(
@@ -530,11 +543,25 @@ def translate_material_name(
     return material_name
 
 
-def create_random_equipment(equip_type: str, group_level: int) -> Equipment:
+def create_random_equipment(
+    equip_type: str,
+    group_level: int,
+    rarity: Union[RarityEnum, str] = None,
+    weapon: str = None,
+    material: str = None,
+) -> Equipment:
     '''Retorna um equipamento aleatório.
     '''
-    rarity = choice_rarity(group_level)
-    weapon, material = get_equipment_and_material(equip_type, group_level)
+    if isinstance(rarity, RarityEnum):
+        rarity = rarity.name
+    elif rarity not in RarityEnum.__members__:
+        rarity = choice_rarity(group_level)
+
+    _weapon, _material = get_equipment_and_material(equip_type, group_level)
+    weapon = weapon if weapon else _weapon
+    material = material if material else _material
+
+    check_equipment_type(equip_type, weapon)
 
     equip_name = weapon if weapon else equip_type
     print(f'Equipamento: {weapon}', end=' ')
@@ -587,7 +614,7 @@ def create_random_consumable(group_level: int):
     '''
     item_model = ItemModel()
     rarity = choice_rarity(group_level)
-    query = dict(rarity=rarity, _class={'$ne':'Equipment'})
+    query = dict(rarity=rarity, _class={'$ne': 'Equipment'})
     item_list = item_model.get_all(query=query)
     quantity = randint(1, 3)
     item = choice(item_list)
@@ -652,6 +679,16 @@ if __name__ == '__main__':
 
     for _ in range(1000):
         create_random_item(1001)
+
+    # print(
+    #     create_random_equipment(
+    #         EquipmentEnum.ONE_HAND.name,
+    #         100,
+    #         # RarityEnum.RARE,
+    #         weapon='SWORD',
+    #         material=WeaponMaterialEnum.STEEL.name
+    #     ).get_all_sheets(verbose=True)
+    # )
 
     # for _ in range(1000):
     #     items = create_random_item(1001)

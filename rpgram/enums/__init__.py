@@ -14,3 +14,4 @@ from rpgram.enums.material import TacticalWearableMaterialEnum
 from rpgram.enums.turn import TurnEnum
 from rpgram.enums.debuff import DebuffEnum
 from rpgram.enums.consumable import HealingConsumableEnum
+from rpgram.enums.enemy import EnemyStarsEnum

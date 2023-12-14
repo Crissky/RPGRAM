@@ -28,9 +28,9 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id and data_user_id is not None:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
-
-        await query.answer('Fechando conversa...')
-        await query.delete_message()
+        else:
+            await query.answer('Fechando conversa...')
+            await query.delete_message()
 
 
 def get_close_button(

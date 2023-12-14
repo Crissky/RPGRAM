@@ -196,7 +196,8 @@ class BaseCharacter:
         return (
             f'<Personagem: "{self.name} '
             f'({self.classe.name}/{self.race.name})", '
-            f'HP: {self.cs.current_hit_points}/{self.cs.hit_points}>'
+            f'LV: {self.bs.level}, '
+            f'HP: {self.cs.show_hp}>'
         )
 
     def to_dict(self):
