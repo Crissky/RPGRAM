@@ -549,7 +549,7 @@ def create_random_equipment(
     rarity: Union[RarityEnum, str] = None,
     weapon: str = None,
     material: str = None,
-) -> Equipment:
+) -> Item:
     '''Retorna um equipamento aleatório.
     '''
     if isinstance(rarity, RarityEnum):

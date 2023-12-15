@@ -24,6 +24,7 @@ class NPCharacter(BaseCharacter):
         char_name: str,
         classe: Classe,
         race: Race,
+        enemy_id: ObjectId = None,
         equips: Equips = None,
         status: Status = None,
         level: int = 1,
@@ -45,6 +46,7 @@ class NPCharacter(BaseCharacter):
             char_name=char_name,
             classe=classe,
             race=race,
+            player_id=enemy_id,
             equips=equips,
             status=status,
             level=level,
@@ -66,7 +68,16 @@ class NPCharacter(BaseCharacter):
     # Getters
     @property
     def name(self) -> str:
-        return EnemyStarsEnum[self.stars].value + super().name
+        return super().name + f'({self.emoji_stars})'
+
     @property
     def stars(self) -> int:
         return self.__stars
+
+    @property
+    def emoji_stars(self):
+        return EnemyStarsEnum[self.stars].value
+
+    @property
+    def enemy_id(self) -> ObjectId:
+        return super().player_id
