@@ -1,11 +1,16 @@
 from typing import List
+from random import choice, randint
+
+from bson import ObjectId
+
 from repository.mongo.models.classe import ClasseModel
 from repository.mongo.models.race import RaceModel
-from repository.mongo.populate.enemy_constants import NAMES
+from repository.mongo.populate.enemy_constants import ARCHETYPES_EQUIPMENTS, NAMES
+from repository.mongo.populate.item import create_random_equipment
 from repository.mongo.populate.tools import random_group_level, weighted_choice
+from rpgram import Equips
 from rpgram.characters import NPCharacter
-from rpgram.enums import EnemyStarsEnum
-from random import choice
+from rpgram.enums import EnemyStarsEnum, EquipmentEnum
 
 
 def get_total_enemy(max_number_enemies: int = 5) -> int:
@@ -15,6 +20,13 @@ def get_total_enemy(max_number_enemies: int = 5) -> int:
         for i, j in enumerate(range(max_number_enemies, 0, -1))
     }
     return int(weighted_choice(**number_enemies_probs))
+
+
+def random_enemy_level(enemy_level: int) -> int:
+    '''Retorna um inteiro entre 90% e 100% do enemy_level.'''
+    min_enemy_level = max(int(enemy_level * 0.9), 1)
+
+    return randint(min_enemy_level, enemy_level)
 
 
 def choice_enemy_name() -> str:
@@ -44,15 +56,82 @@ def choice_enemy_star(no_boss: bool = False) -> str:
 
 
 def choice_enemy_class_name() -> str:
+    '''Retorna o nome aleatório de uma classe.'''
     classe_model = ClasseModel()
     classe_list = classe_model.get_all(fields=['name'])
     return choice(classe_list)
 
 
 def choice_enemy_race_name() -> str:
+    '''Retorna o nome aleatório de uma raça.'''
     race_model = RaceModel()
     race_list = race_model.get_all(fields=['name'])
     return choice(race_list)
+
+
+def get_enemy_equips(
+    enemy_id: ObjectId,
+    enemy_level: int,
+    enemy_class_name: str
+) -> Equips:
+    ''''Retorna os equipamentos do inimigo baseado no arquétipo da classe.'''
+    archetype_equipments = ARCHETYPES_EQUIPMENTS[enemy_class_name]
+    hand = choice([EquipmentEnum.ONE_HAND, EquipmentEnum.TWO_HANDS])
+    hand_list = archetype_equipments[hand.name]
+    helmet_list = archetype_equipments[EquipmentEnum.HELMET.name]
+    armor_list = archetype_equipments[EquipmentEnum.ARMOR.name]
+    boots_list = archetype_equipments[EquipmentEnum.BOOTS.name]
+    ring_list = archetype_equipments[EquipmentEnum.RING.name]
+    amulet_list = archetype_equipments[EquipmentEnum.AMULET.name]
+
+    left_hand = create_random_equipment(
+        equip_type=hand.name,
+        group_level=random_enemy_level(enemy_level),
+        weapon=choice(hand_list),
+    ).item
+    right_hand = None
+    if hand == EquipmentEnum.ONE_HAND:
+        right_hand = create_random_equipment(
+            equip_type=hand.name,
+            group_level=random_enemy_level(enemy_level),
+            weapon=choice(hand_list),
+        ).item
+    helmet = create_random_equipment(
+        equip_type=EquipmentEnum.HELMET.name,
+        group_level=random_enemy_level(enemy_level),
+        weapon=choice(helmet_list),
+    ).item
+    armor = create_random_equipment(
+        equip_type=EquipmentEnum.ARMOR.name,
+        group_level=random_enemy_level(enemy_level),
+        weapon=choice(armor_list),
+    ).item
+    boots = create_random_equipment(
+        equip_type=EquipmentEnum.BOOTS.name,
+        group_level=random_enemy_level(enemy_level),
+        weapon=choice(boots_list),
+    ).item
+    ring = create_random_equipment(
+        equip_type=EquipmentEnum.RING.name,
+        group_level=random_enemy_level(enemy_level),
+        weapon=choice(ring_list),
+    ).item
+    amulet = create_random_equipment(
+        equip_type=EquipmentEnum.AMULET.name,
+        group_level=random_enemy_level(enemy_level),
+        weapon=choice(amulet_list),
+    ).item
+
+    return Equips(
+        player_id=enemy_id,
+        helmet=helmet,
+        left_hand=left_hand,
+        right_hand=right_hand,
+        armor=armor,
+        boots=boots,
+        ring=ring,
+        amulet=amulet,
+    )
 
 
 def create_enemy(
@@ -66,12 +145,16 @@ def create_enemy(
     race_model = RaceModel()
     enemy_class = classe_model.get(enemy_class_name)
     enemy_race = race_model.get(enemy_race_name)
+    enemy_id = ObjectId()
+    equips = get_enemy_equips(enemy_id, enemy_level, enemy_class_name)
     enemy = NPCharacter(
         char_name=enemy_name,
         classe=enemy_class,
         race=enemy_race,
+        equips=equips,
         level=enemy_level,
-        stars=enemy_stars
+        stars=enemy_stars,
+        enemy_id=enemy_id,
     )
 
     return enemy
@@ -93,7 +176,7 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
     return enemy_char
 
 
-def create_random_enemy(
+def create_random_enemies(
     group_level: int,
     no_boss: bool = False
 ) -> List[NPCharacter]:
@@ -131,11 +214,6 @@ if __name__ == '__main__':
     for item in result.most_common():
         print(f'{item[0]}: {item[1]},', end=' ')
     print()
-    print(choice_enemy_class_name())
-    print(choice_enemy_race_name())
-    enemy_list = create_random_enemy(10)
+    enemy_list = create_random_enemies(10)
     for enemy in enemy_list:
-        print('Nome:', enemy.name)
-        print('Raça:', enemy.race.name)
-        print('Classe:', enemy.classe.name)
-        print(enemy.bs.get_sheet(verbose=True))
+        print(enemy.get_all_sheets(verbose=False))

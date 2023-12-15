@@ -69,8 +69,9 @@ from bot.functions.bag import (
 from bot.functions.char import save_char
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
-from constant.text import TITLE_HEAD
+from constant.text import TEXT_SEPARATOR, TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
+from function.text import escape_basic_markdown_v2
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
 from rpgram import Bag, Item
 from rpgram.boosters import Equipment
@@ -355,22 +356,16 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         name = item.name
         description = item.item.description
         use_quantity = min(item.quantity, use_quantity)
+        all_report_text = f'Reporting({use_quantity:02}):\n'
         try:
-            for _ in range(use_quantity):
+            for i in range(use_quantity):
                 report = item.use(player_character)
-                report_text = report['text']
+                all_report_text += f'{i+1:02}: {report["text"]}\n'
                 bag_model.sub(item, user_id)
-            text = (
-                f'Você usou {use_quantity} "{name}".\n'
-                f'Descrição: "{description}".\n\n'
-                f'{report_text}\n'
-            )
+            text = f'Você usou {use_quantity} "{name}".\n'
             save_char(player_character, status=True)
 
-            await query.answer(
-                text=text,
-                show_alert=True
-            )
+            await query.answer(text=text)
         except Exception as error:
             print(error)
             await query.answer(
@@ -384,6 +379,12 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 verbose=True,
                 markdown=True,
                 show_quantity=True
+            )
+            all_report_text = escape_basic_markdown_v2(all_report_text)
+            markdown_text = (
+                f'{markdown_text}'
+                f'\n{TEXT_SEPARATOR}\n\n'
+                f'{all_report_text}'
             )
             if item.quantity <= 0:
                 back_button = get_back_button(

@@ -1,6 +1,7 @@
 from rpgram.enums import EquipmentEnum
 
 
+# Archetype Equipment
 MAGICIAN_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['POINTED_HAT', 'MASK'],
     EquipmentEnum.ONE_HAND.name: [
@@ -59,6 +60,15 @@ BARBARIAN_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE'],
 }
 
+ARCHETYPES_EQUIPMENTS = {
+    'Clérigo': MAGICIAN_EQUIPMENTS,
+    'Feiticeiro': MAGICIAN_EQUIPMENTS,
+    'Mago': MAGICIAN_EQUIPMENTS,
+    'Ladino': DUELIST_EQUIPMENTS,
+    'Druida': FIGHTER_EQUIPMENTS,
+    'Guerreiro': FIGHTER_EQUIPMENTS,
+    'Bárbaro': BARBARIAN_EQUIPMENTS,
+}
 
 NAMES = [
     'Aind', 'Ainn', 'Airk', 'Aitze', 'Ald', 'Ance', 'Anxe', 'Ard', 'Ashf',
@@ -1686,48 +1696,85 @@ NAMES = [
 if __name__ == '__main__':
     from typing import List
 
+    from repository.mongo.models.classe import ClasseModel
     from repository.mongo.populate.item_constants import (
         ALL_EQUIPMENTS_DEFINITIONS
     )
 
-    ALL_CLASSE_EQUIPMENTS = [
+    ALL_ARCHETYPE_EQUIPMENTS = [
         MAGICIAN_EQUIPMENTS,
         DUELIST_EQUIPMENTS,
         FIGHTER_EQUIPMENTS,
         BARBARIAN_EQUIPMENTS,
     ]
-    def get_classe_equipment_names(key: str) -> List[str]:
+
+    def get_archetype_equipment_names(key: str) -> List[str]:
+        '''Retorna uma lista com os nomes dos equipamentos de um tipo (key) 
+        de todos os arquétipos.'''
         equipment_names = []
-        for classe_equipment in ALL_CLASSE_EQUIPMENTS:
-            equipment_names.extend(classe_equipment[key])
+        for archetype_equipment in ALL_ARCHETYPE_EQUIPMENTS:
+            equipment_names.extend(archetype_equipment[key])
         equipment_names = set(equipment_names)
         return equipment_names
 
     def check_if_exists_in_definitions(key):
-        equipment_names = get_classe_equipment_names(key)
+        '''Checa se todos os equipamentos de um tipo (key) dos arquétipos 
+        existem nas Definições de Equipamentos.'''
+        equipment_names = get_archetype_equipment_names(key)
         for equipment_name in equipment_names:
-            if equipment_name not in ALL_EQUIPMENTS_DEFINITIONS:
+            if equipment_name not in ALL_EQUIPMENTS_DEFINITIONS.keys():
                 raise ValueError(
                     f'Equipment "{equipment_name}" not found in '
                     f'"ALL_EQUIPMENTS_DEFINITIONS"'
                 )
 
     def check_if_exists_in_classe_equipment():
+        '''Checa se todos os equipamentos das Definições de Equipamentos 
+        existem nos equipamentos dos arquétipos.'''
         all_equipments = set([
             equipment
-            for classe_equipments_dict in ALL_CLASSE_EQUIPMENTS
+            for classe_equipments_dict in ALL_ARCHETYPE_EQUIPMENTS
             for classe_equipments_values in classe_equipments_dict.values()
             for equipment in classe_equipments_values
         ])
-        for definition in ALL_EQUIPMENTS_DEFINITIONS:
-            if definition not in all_equipments:
+        for equipment_name in ALL_EQUIPMENTS_DEFINITIONS.keys():
+            if equipment_name not in all_equipments:
                 raise ValueError(
-                    f'Definition "{definition}" not found in '
-                    f'classes equipments.'
+                    f'Definition "{equipment_name}" not found in '
+                    f'"Archetype Equipments".'
                 )
+        print('CHECK_IF_EXISTS_IN_CLASSE_EQUIPMENT: OK!!!')
+
+    def check_classes_local():
+        '''Checa se todas as classes do Database estão sendo usadas no 
+        "ARCHETYPES_EQUIPMENTS".'''
+        classe_model = ClasseModel()
+        classe_names = classe_model.get_all(fields=['name'])
+        for classe_name in classe_names:
+            if classe_name not in ARCHETYPES_EQUIPMENTS.keys():
+                raise ValueError(
+                    f'Classe "{classe_name}" from Database not found in '
+                    f'"CLASSES_EQUIPMENTS".'
+                )
+        print('CHECK_CLASSES_LOCAL: OK!!!')
+
+    def check_classes_database():
+        '''Checa se todas as classes do "ARCHETYPES_EQUIPMENTS" estão 
+        presentes no Database.'''
+        classe_model = ClasseModel()
+        classe_names = classe_model.get_all(fields=['name'])
+        for classe_name in ARCHETYPES_EQUIPMENTS.keys():
+            if classe_name not in classe_names:
+                raise ValueError(
+                    f'Classe "{classe_name}" from "CLASSES_EQUIPMENTS" '
+                    f'not found in Database.'
+                )
+        print('CHECK_CLASSES_DATABASE: OK!!!')
 
     for e in EquipmentEnum:
         key = e.name
         check_if_exists_in_definitions(key)
-        check_if_exists_in_classe_equipment()
         print(f'"{key}": OK!!!')
+    check_if_exists_in_classe_equipment()
+    check_classes_local()
+    check_classes_database()
