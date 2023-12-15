@@ -24,7 +24,9 @@ from bot.decorators import (
 )
 from bot.functions.char import add_conditions
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import TEXT_SEPARATOR
 from function.text import escape_basic_markdown_v2
+from repository.mongo.populate.enemy import create_random_enemies
 from rpgram.conditions.debuff import DEBUFFS
 
 
@@ -36,16 +38,24 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
 
-    if isinstance(args, list) and args[0] in ['chat', 'chat_data']:
+    if len(args) > 0 and args[0] in ['chat', 'chat_data']:
         chat_data = context.chat_data
         text = 'Conteúdo de "context.chat_data":\n\n'
         for key, value in chat_data.items():
             text += f'{key}: {value}\n'
+    elif len(args) > 0 and args[0] in ['enemy', 'inimigo']:
+        group_level = get_attribute_group_or_player(chat_id, 'group_level')
+        enemy_list = create_random_enemies(group_level=group_level)
+        text = f'{TEXT_SEPARATOR}\n\n'.join(
+            enemy.get_all_sheets()
+            for enemy in enemy_list
+        )
     else:
         text = f'"{args}" não é um argumento válido.'
 
     await update.effective_message.reply_text(
-        text,
+        escape_basic_markdown_v2(text),
+        parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
         reply_markup=get_close_keyboard(None)
     )
