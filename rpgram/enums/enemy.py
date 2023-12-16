@@ -8,3 +8,10 @@ class EnemyStarsEnum(Enum):
     FOUR = '🌟🌟🌟🌟'
     FIVE = '🌟🌟🌟🌟🌟'
     BOSS = '👾'  # 👹👺
+
+
+class AlignmentEnum(Enum):
+    ASSASSIN = 'Assassino'
+    BERSERK = 'Furioso'
+    CAREGIVER = 'Cuidador'
+    PROTECTOR = 'Protetor'
