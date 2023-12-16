@@ -72,7 +72,7 @@ class BaseStats:
     def __add_stats(self, points: int, attribute: str) -> None:
         points = int(points)
         clean_attribute = attribute.split('_')[-1].title()
-        print(f'Adicionando {points} Ponto(s) de {clean_attribute}.')
+        # print(f'Adicionando {points} Ponto(s) de {clean_attribute}.')
         if points > self.points:
             raise ValueError(
                 f'Não há Pontos({points}) suficientes para adicionar.\n'

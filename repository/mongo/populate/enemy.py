@@ -5,7 +5,10 @@ from bson import ObjectId
 
 from repository.mongo.models.classe import ClasseModel
 from repository.mongo.models.race import RaceModel
-from repository.mongo.populate.enemy_constants import ARCHETYPES_EQUIPMENTS, NAMES
+from repository.mongo.populate.enemy_constants import (
+    ARCHETYPES_EQUIPMENTS,
+    NAMES
+)
 from repository.mongo.populate.item import create_random_equipment
 from repository.mongo.populate.tools import random_group_level, weighted_choice
 from rpgram import Equips
@@ -16,8 +19,8 @@ from rpgram.enums import EnemyStarsEnum, EquipmentEnum
 def get_total_enemy(max_number_enemies: int = 5) -> int:
     '''Retorna o número total de inimigos que serão criados'''
     number_enemies_probs = {
-        f'{i+1}': j
-        for i, j in enumerate(range(max_number_enemies, 0, -1))
+        f'{num_enemies+1}': probs
+        for num_enemies, probs in enumerate(range(max_number_enemies, 0, -1))
     }
     return int(weighted_choice(**number_enemies_probs))
 
@@ -84,53 +87,52 @@ def get_enemy_equips(
     ring_list = archetype_equipments[EquipmentEnum.RING.name]
     amulet_list = archetype_equipments[EquipmentEnum.AMULET.name]
 
-    left_hand = create_random_equipment(
+    equips_dict = {}
+    equips_dict['left_hand'] = create_random_equipment(
         equip_type=hand.name,
         group_level=random_enemy_level(enemy_level),
         weapon=choice(hand_list),
     ).item
-    right_hand = None
+    equips_dict['right_hand'] = None
     if hand == EquipmentEnum.ONE_HAND:
-        right_hand = create_random_equipment(
+        equips_dict['right_hand'] = create_random_equipment(
             equip_type=hand.name,
             group_level=random_enemy_level(enemy_level),
             weapon=choice(hand_list),
         ).item
-    helmet = create_random_equipment(
+    equips_dict['helmet'] = create_random_equipment(
         equip_type=EquipmentEnum.HELMET.name,
         group_level=random_enemy_level(enemy_level),
         weapon=choice(helmet_list),
     ).item
-    armor = create_random_equipment(
+    equips_dict['armor'] = create_random_equipment(
         equip_type=EquipmentEnum.ARMOR.name,
         group_level=random_enemy_level(enemy_level),
         weapon=choice(armor_list),
     ).item
-    boots = create_random_equipment(
+    equips_dict['boots'] = create_random_equipment(
         equip_type=EquipmentEnum.BOOTS.name,
         group_level=random_enemy_level(enemy_level),
         weapon=choice(boots_list),
     ).item
-    ring = create_random_equipment(
+    equips_dict['ring'] = create_random_equipment(
         equip_type=EquipmentEnum.RING.name,
         group_level=random_enemy_level(enemy_level),
         weapon=choice(ring_list),
     ).item
-    amulet = create_random_equipment(
+    equips_dict['amulet'] = create_random_equipment(
         equip_type=EquipmentEnum.AMULET.name,
         group_level=random_enemy_level(enemy_level),
         weapon=choice(amulet_list),
     ).item
 
+    for equipment in equips_dict.values():
+        if equipment and equipment.identifiable:
+            equipment.identify()
+
     return Equips(
         player_id=enemy_id,
-        helmet=helmet,
-        left_hand=left_hand,
-        right_hand=right_hand,
-        armor=armor,
-        boots=boots,
-        ring=ring,
-        amulet=amulet,
+        **equips_dict,
     )
 
 
@@ -214,6 +216,6 @@ if __name__ == '__main__':
     for item in result.most_common():
         print(f'{item[0]}: {item[1]},', end=' ')
     print()
-    enemy_list = create_random_enemies(10)
+    enemy_list = create_random_enemies(100)
     for enemy in enemy_list:
         print(enemy.get_all_sheets(verbose=False))
