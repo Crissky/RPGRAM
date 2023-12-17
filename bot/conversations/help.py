@@ -3,6 +3,7 @@ Módulo responsável por gerenciar os comandos de ajuda.
 '''
 
 from enum import Enum
+from operator import attrgetter
 from typing import Iterable
 
 from telegram.constants import ParseMode
@@ -19,11 +20,13 @@ from bot.constants.help import (
     ACCESS_DENIED,
     CALLBACK_BASE_ATTRIBUTES,
     CALLBACK_CLASSES,
+    CALLBACK_CURE_CONSUMABLE,
     CALLBACK_DEBUFFS,
     CALLBACK_EQUIPS,
     CALLBACK_GENERAL,
     CALLBACK_COMBAT_ATTRIBUTES,
     CALLBACK_GROUP,
+    CALLBACK_HEALING_CONSUMABLE,
     CALLBACK_HEALSTATUS,
     CALLBACK_ITEMS,
     CALLBACK_PLAYER,
@@ -57,6 +60,9 @@ from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD, TEXT_SEPARATOR
 
 from function.text import escape_basic_markdown_v2
+
+from repository.mongo import ItemModel
+
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.heal import HEALSTATUS
 from rpgram.enums import (
@@ -576,6 +582,29 @@ def get_details_text(option: str) -> str:
             f'Página de ajuda das RAÇAS ainda não foi escrita. '
             f'Contacte do admininastrô.'
         )
+    elif option == CALLBACK_HEALING_CONSUMABLE:
+        item_model = ItemModel()
+        query = {'_class': 'HealingConsumable'}
+        all_healing_consumables = item_model.get_all(query)
+        text = f'{EmojiEnum.HEALING_CONSUMABLE.value}*Itens de Cura (HP)*\n\n'
+
+        for healing_consumable in all_healing_consumables:
+            text += f'*Nome*: {healing_consumable.name}\n'
+            text += f'*Descrição*: {healing_consumable.description}\n'
+            text += f'*Raridade*: {healing_consumable.rarity.value}\n\n'
+    elif option == CALLBACK_CURE_CONSUMABLE:
+        item_model = ItemModel()
+        query = {'_class': 'CureConsumable'}
+        all_cure_consumables = item_model.get_all(query)
+        text = (
+            f'{EmojiEnum.CURE_CONSUMABLE.value}*Itens de Cura (Status)*\n\n'
+        )
+
+        keys = attrgetter('name')
+        for cure_consumable in sorted(all_cure_consumables, key=keys):
+            text += f'*Nome*: {cure_consumable.name}\n'
+            text += f'*Descrição*: {cure_consumable.description}\n'
+            text += f'*Raridade*: {cure_consumable.rarity.value}\n\n'
     else:
         raise ValueError(f'Opção de ajuda não encontrada: {option}')
 
@@ -604,6 +633,12 @@ def get_help_reply_markup(update: Update):
     general_text = f'Geral{EmojiEnum.GENERAL.value}'
     classes_text = f'{EmojiEnum.CLASS.value}Classes'
     races_text = f'Raças{EmojiEnum.RACE.value}'
+    healing_consumable_text = (
+        f'{EmojiEnum.HEALING_CONSUMABLE.value}Itens Cura(HP)'
+    )
+    cure_consumable_text = (
+        f'Itens Cura(Status){EmojiEnum.CURE_CONSUMABLE.value}'
+    )
 
     (
         buttons1,
@@ -611,8 +646,9 @@ def get_help_reply_markup(update: Update):
         buttons3,
         buttons4,
         buttons5,
-        buttons6
-    ) = [], [], [], [], [], []
+        buttons6,
+        buttons7
+    ) = [], [], [], [], [], [], []
     if option != CALLBACK_PLAYER:
         buttons1.append(
             InlineKeyboardButton(
@@ -723,10 +759,32 @@ def get_help_reply_markup(update: Update):
                 )
             )
         )
+    if option != CALLBACK_HEALING_CONSUMABLE:
+        buttons7.append(
+            InlineKeyboardButton(
+                text=healing_consumable_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_HEALING_CONSUMABLE}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_CURE_CONSUMABLE:
+        buttons7.append(
+            InlineKeyboardButton(
+                text=cure_consumable_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_CURE_CONSUMABLE}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+
     close_button = [get_close_button(user_id=user_id)]
     reply_markup = InlineKeyboardMarkup([
         buttons1, buttons2, buttons3,
         buttons4, buttons5, buttons6,
+        buttons7,
         close_button
     ])
     return reply_markup

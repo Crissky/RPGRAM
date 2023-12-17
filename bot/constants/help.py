@@ -13,6 +13,8 @@ CALLBACK_HEALSTATUS = 'callback_healstatus'
 CALLBACK_GENERAL = 'callback_back_help'
 CALLBACK_CLASSES = 'callback_classes'
 CALLBACK_RACES = 'callback_races'
+CALLBACK_HEALING_CONSUMABLE = 'callback_healing_consumable'
+CALLBACK_CURE_CONSUMABLE = 'callback_cure_consumable'
 
 # TEXTS
 ACCESS_DENIED = (
