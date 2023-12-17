@@ -83,6 +83,8 @@ class EmojiEnum(Enum):
     REST = '💤'
     BATTLE = '🤼'
     CONFIG = '⚙️'
+    HEALING_CONSUMABLE = '❤️'
+    CURE_CONSUMABLE = '💊'
 
 
 class FaceEmojiEnum(Enum):
