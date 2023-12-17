@@ -23,7 +23,9 @@ class Database:
         return self.database[collection].insert_one(document=data)
 
     def find(
-        self, collection: str, query: dict, fields: Union[list, dict] = None
+        self, collection: str,
+        query: dict,
+        fields: Union[list, dict] = None
     ) -> Union[dict, None]:
         return self.database[collection].find_one(
             filter=query, projection=fields
