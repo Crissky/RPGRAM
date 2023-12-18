@@ -15,3 +15,4 @@ class AlignmentEnum(Enum):
     BERSERK = 'Furioso'
     CAREGIVER = 'Cuidador'
     PROTECTOR = 'Protetor'
+    SUPPORTER = 'Apoiador'
