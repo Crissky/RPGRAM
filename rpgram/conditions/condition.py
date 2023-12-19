@@ -58,18 +58,18 @@ class Condition(StatsBooster):
             self.activate(None)
 
     def activate(self, target):
-        local = {'target': target, 'self': self}
-        exec(self.function, None, local)
-        report = local['report']
+        _local = {'target': target, 'self': self}
+        exec(self.function, None, _local)
+        report = _local['report']
         if self.__turn not in [-1, 0]:
             self.__turn -= 1
         return report
 
     def battle_activate(self, target):
         if self.battle_function:
-            local = {'target': target, 'self': self}
-            exec(self.battle_function, None, local)
-            report = local['report']
+            _local = {'target': target, 'self': self}
+            exec(self.battle_function, None, _local)
+            report = _local['report']
             if self.__turn not in [-1, 0]:
                 self.__turn -= 1
         else:
