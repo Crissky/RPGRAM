@@ -43,16 +43,22 @@ class Consumable:
         self.__updated_at = updated_at
 
     def use(self, target):
-        local = {'target': target, 'self': self}
-        exec(self.function, None, local)
-        report = local['report']
+        _local = {'target': target, 'self': self}
+
+        # globals são usadas em List comprehension,
+        # pois as variáveis de locals não estão
+        # disponíveis dentro do for
+        _global = _local
+        exec(self.function, _global, _local)
+        report = _local['report']
         return report
 
     def battle_use(self, target):
         if self.battle_function:
-            local = {'target': target, 'self': self}
-            exec(self.battle_function, None, local)
-            report = local['report']
+            _local = {'target': target, 'self': self}
+            _global = _local
+            exec(self.function, _global, _local)
+            report = _local['report']
         else:
             report = self.use(target)
         return report
