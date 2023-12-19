@@ -218,6 +218,96 @@ CONSUMABLES = [
         'class': CureConsumable
     },
 
+    # Greater Cure Potions
+    {
+        'name': 'Greater Cotton Bandage',
+        'description': f'Cura 3 Nível da condição "{BLEEDING}".',
+        'condition_target': [BLEEDING, BLEEDING, BLEEDING],
+        'weight': 0.10,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Eye Drops',
+        'description': f'Cura 3 Nível da condição "{BLINDNESS}".',
+        'condition_target': [BLINDNESS, BLINDNESS, BLINDNESS],
+        'weight': 0.10,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Aloe Compress',
+        'description': f'Cura 3 Nível da condição "{BURN}".',
+        'condition_target': [BURN, BURN, BURN],
+        'weight': 0.10,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Red Remedy',
+        'description': f'Cura 3 Nível da condição "{CONFUSION}".',
+        'condition_target': [CONFUSION, CONFUSION, CONFUSION],
+        'weight': 0.10,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Mystical Incense',
+        'description': f'Cura 3 Nível da condição "{CURSE}".',
+        'condition_target': [CURSE, CURSE, CURSE],
+        'weight': 0.20,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Energy Potion',
+        'description': f'Cura 3 Nível da condição "{EXHAUSTION}".',
+        'condition_target': [EXHAUSTION, EXHAUSTION, EXHAUSTION],
+        'weight': 0.25,
+        'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Hot Potion',
+        'description': f'Cura 3 Nível da condição "{FROZEN}".',
+        'condition_target': [FROZEN, FROZEN, FROZEN],
+        'weight': 0.25,
+        'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Vitamin Fruit',
+        'description': f'Cura 3 Nível da condição "{PARALYSIS}".',
+        'condition_target': [PARALYSIS, PARALYSIS, PARALYSIS],
+        'weight': 0.55,
+        'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Gold Needle',
+        'description': f'Cura 3 Nível da condição "{PETRIFIED}".',
+        'condition_target': [PETRIFIED, PETRIFIED, PETRIFIED],
+        'weight': 0.15,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Antidote',
+        'description': f'Cura 3 Nível da condição "{POISONING}".',
+        'condition_target': [POISONING, POISONING, POISONING],
+        'weight': 0.15,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Echo Herb',
+        'description': f'Cura 3 Nível da condição "{SILENCE}".',
+        'condition_target': [SILENCE, SILENCE, SILENCE],
+        'weight': 0.10,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+
     # Other Items
     {
         'name': 'Identifying Lens',
