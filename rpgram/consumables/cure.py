@@ -1,8 +1,7 @@
 from datetime import datetime
-from typing import Union
+from typing import List, Union
 
 from bson import ObjectId
-from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.rarity import RarityEnum
 
@@ -12,7 +11,7 @@ class CureConsumable(Consumable):
         self,
         name: str,
         description: str,
-        condition_target: str,
+        condition_target: Union[List[str], str],
         weight: float,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         usable: bool = True,
@@ -32,12 +31,20 @@ class CureConsumable(Consumable):
             created_at=created_at,
             updated_at=updated_at,
         )
+        if isinstance(condition_target, str):
+            condition_target = [condition_target]
+
         self.condition_target = condition_target
 
     @property
     def function(self) -> str:
         return (
-            f'report = target.status.remove_condition(self.condition_target)'
+            r'report_list = ['
+            r'target.status.remove_condition(condition_target)["text"] '
+            r'for condition_target in self.condition_target'
+            r'];'
+            r'report_list = set(report_list);'  # Retira msg duplicadas
+            r'report = {"text": "\n".join(report_list)}'
         )
 
     @property
@@ -60,12 +67,17 @@ class CureConsumable(Consumable):
 
 
 if __name__ == '__main__':
+    from rpgram import Status
     cure_consumable = CureConsumable(
         name='Cure Consumable',
         description='Cure Description',
-        condition_target='Poison',
+        condition_target=['Poison', 'Poison', 'Poison'],
         weight=1.0,
     )
+    class Target:
+        status = Status(player_id=1)
+
 
     print(cure_consumable)
     print(cure_consumable.to_dict())
+    print(cure_consumable.use(Target()))
