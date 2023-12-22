@@ -6,6 +6,7 @@ from rpgram.enums.debuff import DebuffEmojiEnum
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.emojis import FaceEmojiEnum
 from rpgram.enums.enemy import EnemyStarsEnum
+from rpgram.enums.enemy import AlignmentEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.material import WeaponMaterialEnum

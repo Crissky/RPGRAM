@@ -1,4 +1,5 @@
-from rpgram.enums import EquipmentEnum
+from repository.mongo.models.race import RaceModel
+from rpgram.enums import AlignmentEnum, EquipmentEnum
 
 
 # Archetype Equipment
@@ -68,6 +69,31 @@ ARCHETYPES_EQUIPMENTS = {
     'Druida': FIGHTER_EQUIPMENTS,
     'Guerreiro': FIGHTER_EQUIPMENTS,
     'Bárbaro': BARBARIAN_EQUIPMENTS,
+}
+RACES_ALIGNMENT = {
+    'Humano': [
+        AlignmentEnum.ASSASSIN,
+        AlignmentEnum.BERSERK,
+        AlignmentEnum.CAREGIVER,
+        AlignmentEnum.PROTECTOR,
+        AlignmentEnum.SUPPORTER,
+    ],
+    'Elfo': [AlignmentEnum.ASSASSIN, AlignmentEnum.SUPPORTER],
+    'Orque': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Anão': [AlignmentEnum.PROTECTOR, AlignmentEnum.BERSERK],
+    'Halfling': [AlignmentEnum.SUPPORTER, AlignmentEnum.ASSASSIN],
+    'Drow': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Goblin': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Troll': [
+        AlignmentEnum.PROTECTOR,
+        AlignmentEnum.CAREGIVER,
+        AlignmentEnum.SUPPORTER
+    ],
+    'Kobold': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Espectro': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Ogro': [AlignmentEnum.BERSERK, AlignmentEnum.PROTECTOR],
+    'Licantropo': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Harpia': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
 }
 
 NAMES = [
@@ -1754,7 +1780,7 @@ if __name__ == '__main__':
             if classe_name not in ARCHETYPES_EQUIPMENTS.keys():
                 raise ValueError(
                     f'Classe "{classe_name}" from Database not found in '
-                    f'"CLASSES_EQUIPMENTS".'
+                    f'"ARCHETYPES_EQUIPMENTS".'
                 )
         print('CHECK_CLASSES_LOCAL: OK!!!')
 
@@ -1766,10 +1792,36 @@ if __name__ == '__main__':
         for classe_name in ARCHETYPES_EQUIPMENTS.keys():
             if classe_name not in classe_names:
                 raise ValueError(
-                    f'Classe "{classe_name}" from "CLASSES_EQUIPMENTS" '
+                    f'Classe "{classe_name}" from "ARCHETYPES_EQUIPMENTS" '
                     f'not found in Database.'
                 )
         print('CHECK_CLASSES_DATABASE: OK!!!')
+
+    def check_races_local():
+        '''Checa se todas as raças do Database estão sendo usadas no 
+        "RACES_ALIGNMENT".'''
+        race_model = RaceModel()
+        race_names = race_model.get_all(fields=['name'])
+        for race_name in race_names:
+            if race_name not in RACES_ALIGNMENT.keys():
+                raise ValueError(
+                    f'Raça "{race_name}" from Database not found in '
+                    f'"RACES_ALIGNMENT".'
+                )
+        print('CHECK_RACES_LOCAL: OK!!!')
+
+    def check_races_database():
+        '''Checa se todas as raças do "RACES_ALIGNMENT" estão 
+        presentes no Database.'''
+        race_model = RaceModel()
+        race_names = race_model.get_all(fields=['name'])
+        for race_name in RACES_ALIGNMENT.keys():
+            if race_name not in race_names:
+                raise ValueError(
+                    f'Raça "{race_name}" from "RACES_ALIGNMENT" '
+                    f'not found in Database.'
+                )
+        print('CHECK_RACES_DATABASE: OK!!!')
 
     for e in EquipmentEnum:
         key = e.name
@@ -1778,3 +1830,5 @@ if __name__ == '__main__':
     check_if_exists_in_classe_equipment()
     check_classes_local()
     check_classes_database()
+    check_races_local()
+    check_races_database()
