@@ -22,7 +22,7 @@ class Dice:
     @property
     def is_critical(self) -> int:
         self.check_throw()
-        return self.__value == self.__faces
+        return self.__value == self.__faces and self.__value > 1
 
     @property
     def text(self) -> str:
