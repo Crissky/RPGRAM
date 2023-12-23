@@ -1,6 +1,10 @@
 from random import choice, random
 
-from bot.functions.char import get_player_ids_from_group, save_char
+from bot.functions.char import (
+    choice_char,
+    get_player_ids_from_group,
+    save_char
+)
 from bot.functions.general import activated_condition
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
@@ -182,7 +186,7 @@ def skip_if_dead_char(callback):
         user_id = update.effective_user.id
         char = char_model.get(user_id)
 
-        if char and char.is_alive():
+        if char and char.is_alive:
             return await callback(update, context)
         else:
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - DEAD CHAR')
@@ -251,17 +255,21 @@ def confusion(retry_state=ConversationHandler.END):
                 battle = Battle([], [], None)
                 player_ids = get_player_ids_from_group(chat_id)
                 player_ids.append(user_id)
-                player_id = choice(player_ids)
 
                 confuse_char = char_model.get(user_id)
-                target_char = char_model.get(player_id)
+                target_char = choice_char(
+                    player_id_list=player_ids,
+                    is_alive=True
+                )
                 confuse_player_name = confuse_char.player_name
                 target_player_name = target_char.player_name
                 if confuse_char.player_id == target_char.player_id:
                     target_player_name = 'a si mesmo'
+                    target_char_dice = Dice(1)
+                else:
+                    target_char_dice = Dice(20)
 
                 confuse_char_dice = Dice(20)
-                target_char_dice = Dice(20)
                 confuse_char_dice.throw()
                 target_char_dice.throw()
 
@@ -279,17 +287,22 @@ def confusion(retry_state=ConversationHandler.END):
                 target_player_name = target_char.player_name
                 dodge_score = random()
                 if dodge_score >= accuracy:
-                    text += choice(DODGE_TEXT).format(aliado=target_player_name)
+                    text += choice(DODGE_TEXT).format(
+                        aliado=target_player_name
+                    )
                 else:
-                    text += choice(ATTACK_TEXT).format(aliado=target_player_name)
-                    action = choice(confuse_char.actions)
+                    text += choice(ATTACK_TEXT).format(
+                        aliado=target_player_name
+                    )
+                    action = confuse_char.weighted_choice_action_attack()
                     attack_value = confuse_char.get_action_attack(action)
                     attack_value_boosted = battle.get_total_value(
                         attack_value,
                         confuse_char_dice
                     )
                     (
-                        defense_value, defense_action
+                        defense_value,
+                        defense_action
                     ) = target_char.get_action_defense(action)
                     defense_value_boosted = battle.get_total_value(
                         defense_value,

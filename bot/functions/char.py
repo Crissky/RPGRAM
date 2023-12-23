@@ -1,4 +1,4 @@
-from random import randint, random
+from random import choice, randint, random
 from typing import List
 
 from repository.mongo import (
@@ -220,12 +220,52 @@ def activate_conditions(
     return activate_report
 
 
-def get_player_ids_from_group(chat_id: int) -> List[dict]:
+def get_player_ids_from_group(chat_id: int) -> List[int]:
     player_model = PlayerModel()
     query = {'chat_ids': chat_id}
     fields = ['player_id']
     player_ids = player_model.get_all(query=query, fields=fields)
+
     return player_ids
+
+
+def choice_char(
+    player_id_list: List[dict] = None,
+    chat_id: int = None,
+    is_alive: bool = False,
+) -> BaseCharacter:
+    if not player_id_list and not chat_id:
+        raise ValueError('Forneça um "player_id_list" ou "chat_id". ')
+    elif player_id_list and chat_id:
+        raise ValueError(
+            'Forneça apenas um dos dois atributos. '
+            'Ao menos um dos dois não podem ser None.'
+        )
+
+    if chat_id:
+        player_id_list = get_player_ids_from_group(chat_id)
+
+    if not player_id_list:
+        raise ValueError(f'Não há player_id_list para o chat_id: "{chat_id}"')
+
+    char = None
+    char_model = CharacterModel()
+    while char is None and player_id_list:
+        player_id = choice(player_id_list)
+        char = char_model.get(player_id)
+        if is_alive:
+            if char and char.is_alive:
+                break
+            else:
+                player_id_list.remove(player_id)
+                char = None
+
+    if not isinstance(char, BaseCharacter):
+        raise ValueError(
+            f'Não há personagem válido para o chat_id: "{chat_id}"'
+        )
+
+    return char
 
 
 def save_char(

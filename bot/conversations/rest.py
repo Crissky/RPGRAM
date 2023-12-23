@@ -54,7 +54,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{reply_text_already_resting}\n\n'
             f'HP: {current_hp}'
         )
-    elif player_character.is_healed():
+    elif player_character.is_healed:
         reply_text_no_need_rest = choice(REPLY_TEXTS_NO_NEED_REST)
         text = (
             f'{reply_text_no_need_rest}\n\n'
@@ -91,7 +91,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     player_character = char_model.get(user_id)
     player = player_model.get(user_id)
     revive_reporting = ''
-    if player_character.is_dead():
+    if player_character.is_dead:
         report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
     else:
@@ -106,7 +106,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         f'{report_text}\n\n'
     )
 
-    if player_character.is_healed():
+    if player_character.is_healed:
         job.schedule_removal()
         text = (
             f'{hp_reporting}'

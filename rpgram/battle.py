@@ -79,7 +79,7 @@ class Battle:
 
         # Caso o jogador que está na primerira posição da lista (jogador atual)
         # não esteja vivo, a vez será passada para o próximo jogador
-        if self.current_player.is_dead():
+        if self.current_player.is_dead:
             self.pass_turn()
 
     def reorder_turn(self):
@@ -131,7 +131,7 @@ class Battle:
     def pass_turn(self):
         for _ in range(len(self.__turn_order)):
             self.skip_player()
-            if self.current_player.is_alive():
+            if self.current_player.is_alive:
                 break
 
     def next_turn(self) -> None:
@@ -341,8 +341,8 @@ class Battle:
         return accuracy
 
     def get_winner(self) -> str:
-        blue_team_alive = any([char.is_alive() for char in self.__blue_team])
-        red_team_alive = any([char.is_alive() for char in self.__red_team])
+        blue_team_alive = any([char.is_alive for char in self.__blue_team])
+        red_team_alive = any([char.is_alive for char in self.__red_team])
         winner = None
 
         if not blue_team_alive and not red_team_alive:
@@ -414,7 +414,7 @@ class Battle:
         else:
             text = EmojiEnum.TEAM_WHITE.value
 
-        if character.is_dead():
+        if character.is_dead:
             text += EmojiEnum.DEAD.value
 
         return text
