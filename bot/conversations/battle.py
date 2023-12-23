@@ -156,7 +156,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.answer(f'{error}', show_alert=True)
             return ENTER_BATTLE_ROUTES
 
-    if not other_battle and character.is_alive():
+    if not other_battle and character.is_alive:
         team = query.data
         time = TEAMS[team]
         resting_status = ''
@@ -175,7 +175,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             battle.get_teams_sheet(),
             reply_markup=reply_markup,
         )
-    elif character.is_dead():
+    elif character.is_dead:
         await query.answer(
             'Seu personagem não pode entrar em batalha com 0 de HP.',
             show_alert=True

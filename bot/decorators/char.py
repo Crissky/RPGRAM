@@ -186,7 +186,7 @@ def skip_if_dead_char(callback):
         user_id = update.effective_user.id
         char = char_model.get(user_id)
 
-        if char and char.is_alive():
+        if char and char.is_alive:
             return await callback(update, context)
         else:
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - DEAD CHAR')

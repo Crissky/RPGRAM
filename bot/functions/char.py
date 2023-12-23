@@ -254,7 +254,7 @@ def choice_char(
         player_id = choice(player_id_list)
         char = char_model.get(player_id)
         if is_alive:
-            if char and char.is_alive():
+            if char and char.is_alive:
                 break
             else:
                 player_id_list.remove(player_id)

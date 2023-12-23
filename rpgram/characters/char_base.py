@@ -117,19 +117,23 @@ class BaseCharacter:
         reports = self.__status.battle_activate(self)
         return reports
 
+    # Getters
+    @property
     def is_damaged(self) -> bool:
         return self.combat_stats.damaged
 
+    @property
     def is_healed(self) -> bool:
         return self.combat_stats.healed
 
+    @property
     def is_alive(self) -> bool:
         return self.combat_stats.alive
 
+    @property
     def is_dead(self) -> bool:
         return self.combat_stats.dead
 
-    # Getters
     name: str = property(lambda self: self.__name)
     _id: ObjectId = property(lambda self: self.__id)
     base_stats: BaseStats = property(fget=lambda self: self.__base_stats)
