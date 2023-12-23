@@ -294,7 +294,7 @@ def confusion(retry_state=ConversationHandler.END):
                     text += choice(ATTACK_TEXT).format(
                         aliado=target_player_name
                     )
-                    action = choice(confuse_char.actions)
+                    action = confuse_char.weighted_choice_action_attack()
                     attack_value = confuse_char.get_action_attack(action)
                     attack_value_boosted = battle.get_total_value(
                         attack_value,

@@ -1,6 +1,7 @@
-from typing import List, Tuple
 from bson import ObjectId
 from datetime import datetime
+from random import choices
+from typing import List, Tuple
 
 from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
@@ -97,6 +98,16 @@ class BaseCharacter:
             defense_value = self.cs.physical_defense
             defense_action = 'physical_defense'
         return defense_value, defense_action
+
+    def weighted_choice_action_attack(self) -> str:
+        actions = {
+            action: self.get_action_attack(action)
+            for action in self.actions
+        }
+        population = list(actions.keys())
+        weights = actions.values()
+
+        return choices(population, weights=weights)[0]
 
     def activate_status(self) -> List[dict]:
         reports = self.__status.activate(self)
@@ -347,3 +358,4 @@ if __name__ == '__main__':
     base_character.combat_stats.hit_points = 50
     print(base_character)
     print(base_character.to_dict())
+    print(base_character.weighted_choice_action_attack())
