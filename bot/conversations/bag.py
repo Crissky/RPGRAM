@@ -667,7 +667,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         drops.pop(message_id, None)
-        await query.answer('Quebrando o item...', show_alert=True)
+        await query.answer('Quebrando o item...')
         await query.delete_message()
     except Exception as e:
         print('destroy_drop():', type(e), e)
