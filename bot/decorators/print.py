@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from function.datetime import utc_to_brazil_datetime
+from function.date_time import utc_to_brazil_datetime
 
 
 def print_basic_infos(callback):

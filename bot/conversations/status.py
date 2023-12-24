@@ -5,7 +5,7 @@ from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import activate_conditions
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TEXT_SEPARATOR
-from function.datetime import get_brazil_time_now
+from function.date_time import get_brazil_time_now
 
 from repository.mongo import GroupModel, StatusModel
 from rpgram.enums import EmojiEnum

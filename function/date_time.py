@@ -6,11 +6,12 @@ import pytz
 UTC = pytz.UTC
 
 
-def get_brazil_time_now():
+def get_brazil_time_now() -> datetime:
     delta = timedelta(hours=3)
     dt = datetime.utcnow()
     dt = replace_tzinfo(dt)
     dt = dt - delta
+    print(type(dt))
     return dt
 
 

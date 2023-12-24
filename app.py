@@ -33,7 +33,7 @@ from bot.conversations import (
 )
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.status import job_activate_conditions
-from function.datetime import get_last_hour
+from function.date_time import get_last_hour
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 MY_GROUP_ID = config('MY_GROUP_ID')
