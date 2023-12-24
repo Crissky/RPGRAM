@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import choice, randint
 from time import sleep
 
@@ -15,6 +16,7 @@ from telegram.ext import (
 )
 from bot.constants.bag import CALLBACK_TEXT_DESTROY_ITEM
 from bot.constants.item import (
+    BOOSTED_DAYS,
     CALLBACK_TEXT_GET,
     CALLBACK_TEXT_IGNORE,
     ESCAPED_CALLBACK_TEXT_GET,
@@ -39,7 +41,7 @@ from bot.decorators.char import confusion
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
-from function.datetime import get_brazil_time_now
+from function.date_time import get_brazil_time_now
 from function.text import escape_markdown_v2
 
 from repository.mongo import BagModel, GroupModel, ItemModel
@@ -59,8 +61,7 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     chat_id = int(job.chat_id)  # chat_id vem como string
     now = get_brazil_time_now()
 
-    weekend = [5, 6]
-    times = randint(1, 2) if now.weekday() in weekend else 1
+    times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
         minutes_in_seconds = randint(1, 29) * 60
         print(
@@ -73,6 +74,14 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
             name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
             chat_id=chat_id,
         )
+
+
+def is_boosted_day(now: datetime) -> bool:
+    weekend = [5, 6]
+    return any((
+        now.weekday() in weekend,
+        now.date().replace(year=2000) in BOOSTED_DAYS
+    ))
 
 
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):

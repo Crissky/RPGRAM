@@ -4,7 +4,7 @@ from typing import Union
 from bson import ObjectId
 
 from constant.text import SECTION_HEAD
-from function.datetime import datetime_to_string
+from function.date_time import datetime_to_string
 
 
 MAX_NUM_PLAYERS = 3
