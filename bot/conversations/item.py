@@ -36,6 +36,7 @@ from bot.decorators import (
     skip_if_immobilized,
 )
 from bot.decorators.char import confusion
+from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.general import get_attribute_group_or_player
 from function.datetime import get_brazil_time_now
@@ -49,38 +50,28 @@ from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum
 
 
+@skip_if_spawn_timeout
 async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
     Está função é chamada em cada 00 e 30 minutos de cada hora.
     '''
-    group_model = GroupModel()
     job = context.job
     chat_id = int(job.chat_id)  # chat_id vem como string
-    group = group_model.get(chat_id)
-    spawn_start_time = group.spawn_start_time
-    spawn_end_time = group.spawn_end_time
     now = get_brazil_time_now()
 
-    if now.hour >= spawn_start_time and now.hour < spawn_end_time:
-        weekend = [5, 6]
-        times = randint(1, 2) if now.weekday() in weekend else 1
-        for i in range(times):
-            minutes_in_seconds = randint(1, 29) * 60
-            print(
-                f'JOB_CREATE_FIND_TREASURE() - {now}: '
-                f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
-            )
-            context.job_queue.run_once(
-                callback=job_find_treasure,
-                when=minutes_in_seconds,
-                name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
-                chat_id=chat_id,
-            )
-    else:
+    weekend = [5, 6]
+    times = randint(1, 2) if now.weekday() in weekend else 1
+    for i in range(times):
+        minutes_in_seconds = randint(1, 29) * 60
         print(
-            f'Evento skipado, pois está fora do horário de spawn do grupo.\n'
-            f'[{chat_id}] {group.name}: Hora: {now.hour}:{now.minute}.\n'
-            f'Horário de spawn: {spawn_start_time}H - {spawn_end_time}H.'
+            f'JOB_CREATE_FIND_TREASURE() - {now}: '
+            f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
+        )
+        context.job_queue.run_once(
+            callback=job_find_treasure,
+            when=minutes_in_seconds,
+            name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
+            chat_id=chat_id,
         )
 
 
