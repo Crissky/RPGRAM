@@ -4,9 +4,7 @@ mensagens nos grupos.
 '''
 
 
-
 from telegram import Update
-from telegram.error import Forbidden
 from telegram.ext import (
     ContextTypes,
     MessageHandler
@@ -17,10 +15,10 @@ from bot.decorators import (
     skip_if_dead_char,
     skip_if_no_singup_group,
     skip_if_no_singup_player,
-    print_basic_infos,
-    skip_if_immobilized
+    print_basic_infos
 )
 from bot.functions.char import add_xp
+from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 
 from function.date_time import (
@@ -32,7 +30,6 @@ from function.date_time import (
 from repository.mongo import (
     PlayerModel
 )
-from rpgram.enums import EmojiEnum
 
 
 @skip_if_no_singup_group
@@ -42,7 +39,6 @@ from rpgram.enums import EmojiEnum
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
 
-    user_name = update.effective_user.name
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     message_date = update.effective_message.date
@@ -73,17 +69,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             disable_notification=silent
         )
     elif player.verbose:
-        try:
-            await update.effective_user.send_message(
-                text=text,
-                disable_notification=silent
-            )
-        except Forbidden as error:
-            print(
-                'Usuário não pode receber mensagens privadas. '
-                'Ele precisa iniciar uma conversa com o bot. '
-                f'(Erro: {error})'
-            )
+        send_private_message(
+            function_caller='CHAT_XP.START()',
+            context=context,
+            user_id=user_id,
+            text=text,
+        )
 
 
 CHAT_XP_HANDLER = MessageHandler(
