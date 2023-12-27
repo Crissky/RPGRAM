@@ -69,7 +69,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             disable_notification=silent
         )
     elif player.verbose:
-        send_private_message(
+        await send_private_message(
             function_caller='CHAT_XP.START()',
             context=context,
             user_id=user_id,

@@ -118,7 +118,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         text = f'{hp_reporting} Seu personagem continua descansando…'
 
     if player.verbose:
-        send_private_message(
+        await send_private_message(
             function_caller='JOB_REST_CURE()',
             context=context,
             text=text,

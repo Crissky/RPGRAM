@@ -36,7 +36,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
             text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
             text += f'{TEXT_SEPARATOR}\n\n'
             text += report['all_status_verbose']
-            send_private_message(
+            await send_private_message(
                 function_caller='JOB_ACTIVATE_CONDITIONS()',
                 context=context,
                 text=text,
