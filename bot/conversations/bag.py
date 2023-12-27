@@ -28,7 +28,6 @@ from bot.constants.bag import (
     EQUIPMENT_POWER_SORT_UP_BUTTON_TEXT,
     EQUIPMENT_RARITY_SORT_DOWN_BUTTON_TEXT,
     EQUIPMENT_RARITY_SORT_UP_BUTTON_TEXT,
-    ESCAPED_CALLBACK_TEXT_DESTROY_ITEM,
     ESCAPED_CALLBACK_TEXT_SORT_ITEMS,
     IDENTIFY_BUTTON_TEXT,
     ITEMS_PER_PAGE,
@@ -40,7 +39,6 @@ from bot.constants.bag import (
     NAV_START_BUTTON_TEXT,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
-    DROPUSE_MANY_MAX,
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
     USE_MANY_BUTTON_TEXT
@@ -66,13 +64,20 @@ from bot.functions.bag import (
     have_identifying_lens,
     sub_identifying_lens
 )
-from bot.functions.char import save_char
+from bot.functions.char import add_xp, save_char
+from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
 from constant.text import TEXT_SEPARATOR, TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
 from function.text import escape_basic_markdown_v2
-from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
+from repository.mongo import (
+    BagModel,
+    CharacterModel,
+    EquipsModel,
+    ItemModel,
+    PlayerModel
+)
 from rpgram import Bag, Item
 from rpgram.boosters import Equipment
 from rpgram.consumables import Consumable
@@ -574,9 +579,7 @@ async def drop_item(
     if chat_id != user_id:
         item_id = str(item._id)
         take_break_buttons = get_take_break_buttons(drop, item_id)
-        reply_markup_drop = InlineKeyboardMarkup([
-            take_break_buttons
-        ])
+        reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
         response = await update.effective_message.reply_text(
             text=f'{user_name} dropou o item:\n\n{markdown_item_sheet}',
             disable_notification=silent,
@@ -654,6 +657,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return ConversationHandler.END
 
 
+@skip_if_no_have_char
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()
@@ -661,13 +665,51 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Quebra o item dropado
     '''
+    item_model = ItemModel()
+    player_model = PlayerModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
     query = update.callback_query
     message_id = update.effective_message.message_id
     drops = context.chat_data.get('drops', {})
+    answer_text = 'Quebrando o item...'
+
+    if drops.get(message_id, None) is True:
+        data = eval(query.data)
+        item_id = data['_id']
+        item = item_model.get(item_id)
+        if isinstance(item, Equipment):
+            power = item.power
+            base_xp = power // 5
+            report_xp = add_xp(
+                chat_id=chat_id,
+                user_id=user_id,
+                base_xp=base_xp,
+                to_add_level_bonus=False
+            )
+            text = f'Você quebrou o item "{item.name}".\n\n'
+            text += report_xp['text']
+            player = player_model.get(user_id)
+            if report_xp['level_up']:
+                silent = get_attribute_group_or_player(chat_id, 'silent')
+                await update.effective_message.reply_text(
+                    text=text,
+                    disable_notification=silent
+                )
+            elif player.verbose:
+                await send_private_message(
+                    function_caller='DESTROY_DROP()',
+                    context=context,
+                    text=text,
+                    user_id=user_id,
+                    chat_id=chat_id,
+                )
+    else:
+        answer_text = 'Este item não existe mais.'
 
     try:
         drops.pop(message_id, None)
-        await query.answer('Quebrando o item...')
+        await query.answer(answer_text)
         await query.delete_message()
     except Exception as e:
         print('destroy_drop():', type(e), e)
@@ -964,7 +1006,9 @@ def get_take_break_buttons(
         ),
         InlineKeyboardButton(
             text=DESTROY_ITEM_BUTTON_TEXT,
-            callback_data=CALLBACK_TEXT_DESTROY_ITEM
+            callback_data=(
+                f'{{"act":"{CALLBACK_TEXT_DESTROY_ITEM}","_id":"{item_id}"}}'
+            )
         )]
 
 
@@ -1084,6 +1128,6 @@ DROP_HANDLERS = [
         get_drop, pattern=r'^{"_id":'
     ),
     CallbackQueryHandler(
-        destroy_drop, pattern=f'^{ESCAPED_CALLBACK_TEXT_DESTROY_ITEM}$',
+        destroy_drop, pattern=f'{{"act":"{CALLBACK_TEXT_DESTROY_ITEM}"',
     )
 ]

@@ -26,6 +26,7 @@ def add_xp(
     min_xp: int = 1,
     max_xp: int = 10,
     base_xp: int = 0,
+    to_add_level_bonus: bool = True,
 ) -> dict:
     '''Função que adiciona xp ao personagem.
     Retorna um dicionário com as informações do novo nível do personagem.
@@ -63,10 +64,14 @@ def add_xp(
 
     user_name = char.player_name
     level = char.base_stats.level
-    level_bonus = group.character_multiplier_xp * level
     multiplier_xp = group.multiplier_xp
     group_level = group.group_level
     base_xp += randint(min_xp, max_xp)
+    level_bonus = (
+        group.character_multiplier_xp * level
+        if to_add_level_bonus is True
+        else 0
+    )
 
     xp = int((base_xp + level_bonus) * multiplier_xp)
 

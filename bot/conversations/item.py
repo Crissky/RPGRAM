@@ -14,7 +14,6 @@ from telegram.ext import (
     ContextTypes,
     ConversationHandler,
 )
-from bot.constants.bag import CALLBACK_TEXT_DESTROY_ITEM
 from bot.constants.item import (
     BOOSTED_DAYS,
     CALLBACK_TEXT_GET,
@@ -31,6 +30,7 @@ from bot.constants.item import (
     TRAP_TYPE_DAMAGE_MULTIPLIER,
 )
 from bot.constants.rest import COMMANDS as rest_commands
+from bot.conversations.bag import get_take_break_buttons
 from bot.decorators import (
     need_singup_group,
     print_basic_infos,
@@ -44,7 +44,7 @@ from bot.functions.general import get_attribute_group_or_player
 from function.date_time import get_brazil_time_now
 from function.text import escape_markdown_v2
 
-from repository.mongo import BagModel, GroupModel, ItemModel
+from repository.mongo import BagModel, ItemModel
 from repository.mongo.populate.item import create_random_item
 from rpgram import Bag
 from rpgram.boosters import Equipment
@@ -191,17 +191,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sleep(time_sleep)
             item_id = str(item._id)
             drop = item.quantity
-            reply_markup_drop = InlineKeyboardMarkup([
-                [InlineKeyboardButton(
-                    text=f'{EmojiEnum.TAKE.value}Coletar',
-                    callback_data=(
-                        f'{{"_id":"{item_id}","drop":{drop}}}'
-                    )
-                ), InlineKeyboardButton(
-                    text=f'Quebrar{EmojiEnum.DESTROY_ITEM.value}',
-                    callback_data=CALLBACK_TEXT_DESTROY_ITEM
-                )],
-            ])
+            take_break_buttons = get_take_break_buttons(drop, item_id)
+            reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
             if isinstance(item.item, Equipment):
                 items_model.save(item.item)
             elif not isinstance(item.item, (Consumable, Equipment)):

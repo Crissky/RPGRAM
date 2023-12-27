@@ -2,7 +2,6 @@ from datetime import timedelta
 from random import choice
 
 from telegram import Update
-from telegram.error import Forbidden
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
@@ -22,6 +21,7 @@ from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
 )
+from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 
 from repository.mongo import BattleModel, CharacterModel, PlayerModel
@@ -118,18 +118,12 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         text = f'{hp_reporting} Seu personagem continua descansando…'
 
     if player.verbose:
-        try:
-            await context.bot.send_message(
-                job.user_id,
-                text=text,
-                disable_notification=silent
-            )
-        except Forbidden as error:
-            print(
-                'Usuário não pode receber mensagens privadas. '
-                'Ele precisa iniciar uma conversa com o bot. '
-                f'(Erro: {error})'
-            )
+        await send_private_message(
+            function_caller='JOB_REST_CURE()',
+            context=context,
+            text=text,
+            user_id=job.user_id,
+        )
 
 
 def stop_resting(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
