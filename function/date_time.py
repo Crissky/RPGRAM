@@ -11,7 +11,7 @@ def get_brazil_time_now() -> datetime:
     dt = datetime.utcnow()
     dt = replace_tzinfo(dt)
     dt = dt - delta
-    print(type(dt))
+
     return dt
 
 
