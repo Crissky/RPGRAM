@@ -150,7 +150,7 @@ class CombatStats:
         }
 
     def revive(self, value: int = 1) -> dict:
-        value = int(value * -1)
+        value = -abs(int(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
         if self.alive:
@@ -158,6 +158,7 @@ class CombatStats:
             return None
         elif value < 0:
             print(f'Reviveu restaurando {-value} de HP.', end=' ')
+        self.__damage = self.hit_points  # define dano para um valor máximo
         self.__damage += value
         if self.__damage > self.hit_points:
             self.__damage = self.hit_points
@@ -496,3 +497,18 @@ if __name__ == '__main__':
     print(combat_stats.damage_hit_points(100))
     print('cure_hit_points')
     print(combat_stats.cure_hit_points(100))
+
+    # Testa se a função reviver revive com HP negativo.
+    combat_stats = CombatStats(
+        level=10,
+        base_strength=0,
+        base_dexterity=0,
+        base_constitution=30,
+        base_intelligence=0,
+        base_wisdom=0,
+        base_charisma=0,
+        damage=1000,
+    )
+    print(combat_stats)
+    combat_stats.revive()
+    print(combat_stats)
