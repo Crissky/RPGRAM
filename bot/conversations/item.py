@@ -75,8 +75,6 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-
-
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR 
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
