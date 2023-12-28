@@ -109,6 +109,15 @@ class BaseCharacter:
 
         return choices(population, weights=weights)[0]
 
+    def get_best_action_attack(self):
+        actions = {
+            action: self.get_action_attack(action)
+            for action in self.actions
+        }
+        action = max(actions, key=actions.get)
+
+        return action
+
     def activate_status(self) -> List[dict]:
         reports = self.__status.activate(self)
         return reports
@@ -146,6 +155,14 @@ class BaseCharacter:
     updated_at: datetime = property(lambda self: self.__updated_at)
     bs = base_stats
     cs = combat_stats
+    race_name: str = property(lambda self: self.race.name)
+    classe_name: str = property(lambda self: self.classe.name)
+    full_name: str = property(
+        lambda self: f'{self.name}, O {self.race_name} {self.classe_name}'
+    )
+    full_name_with_level = property(
+        lambda self: f'{self.full_name} (LV: {self.bs.level})'
+    )
     actions = property(
         lambda self: ['physical_attack', 'precision_attack', 'magical_attack']
     )

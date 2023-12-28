@@ -31,9 +31,10 @@ from bot.conversations import (
     RACES_HANDLERS,
     CLASSES_HANDLERS,
 )
+from bot.conversations.enemy import job_create_enemy_attack
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.status import job_activate_conditions
-from function.date_time import get_last_hour
+from function.date_time import get_last_hour, get_midnight_hour
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 MY_GROUP_ID = config('MY_GROUP_ID')
@@ -83,6 +84,13 @@ def main() -> None:
         first=get_last_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_ACTIVATE_CONDITIONS',
+    )
+    application.job_queue.run_repeating(
+        callback=job_create_enemy_attack,
+        interval=timedelta(hours=3),
+        first=get_midnight_hour(),
+        chat_id=MY_GROUP_ID,
+        name='JOB_ENEMY_ATTACK',
     )
 
     # Run the bot until the user presses Ctrl-C

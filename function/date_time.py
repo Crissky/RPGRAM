@@ -11,7 +11,7 @@ def get_brazil_time_now() -> datetime:
     dt = datetime.utcnow()
     dt = replace_tzinfo(dt)
     dt = dt - delta
-    print(type(dt))
+
     return dt
 
 
@@ -44,5 +44,11 @@ def replace_tzinfo(dt: datetime) -> datetime:
 def get_last_hour() -> datetime:
     now = datetime.now()
     next_hour = now.replace(microsecond=0, second=0, minute=0)
+
+    return next_hour
+
+def get_midnight_hour() -> datetime:
+    now = datetime.now()
+    next_hour = now.replace(microsecond=0, second=0, minute=0, hour=0)
 
     return next_hour

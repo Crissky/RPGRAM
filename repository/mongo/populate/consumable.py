@@ -217,6 +217,22 @@ CONSUMABLES = [
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
+    {
+        'name': 'Panacea',
+        'description': (
+            f'Cura 1 Nível das condições "{BLEEDING}", "{BLINDNESS}", '
+            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
+            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+        ),
+        'condition_target': [
+            BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE, EXHAUSTION, FROZEN,
+            PARALYSIS, PETRIFIED, POISONING, SILENCE
+        ],
+        'weight': 1.23,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+
 
     # Greater Cure Potions
     {
