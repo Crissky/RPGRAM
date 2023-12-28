@@ -46,3 +46,9 @@ def get_last_hour() -> datetime:
     next_hour = now.replace(microsecond=0, second=0, minute=0)
 
     return next_hour
+
+def get_midnight_hour() -> datetime:
+    now = datetime.now()
+    next_hour = now.replace(microsecond=0, second=0, minute=0, hour=0)
+
+    return next_hour
