@@ -1,14 +1,19 @@
-from random import randint, random
-from telegram.ext import ContextTypes
+from random import choice, randint, random
 
+from telegram.ext import ContextTypes
+from telegram.constants import ParseMode
+
+from bot.constants.enemy import AMBUSH_TEXTS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import choice_char, save_char
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
+
 from constant.text import TEXT_SEPARATOR
 
 from function.date_time import get_brazil_time_now
+from function.text import escape_basic_markdown_v2
 
 from repository.mongo.populate.enemy import create_random_enemies
 
@@ -49,7 +54,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     battle = Battle([], [], None)
     enemy_list = create_random_enemies(group_level)
-    texts = []
+    texts = [choice(AMBUSH_TEXTS) + '\n\n']
 
     for enemy_char in enemy_list:
         text = ''
@@ -69,12 +74,12 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         dodge_score = random()
         if dodge_score >= accuracy:
             text += (
-                f'{target_player_name} esquivou do ataque de '
-                f'"{enemy_char.full_name_with_level}".\n\n'
+                f'{target_player_name} *ESQUIVOU DO ATAQUE* de '
+                f'*{enemy_char.full_name_with_level}*.\n\n'
             )
         else:
             text += (
-                f'"{enemy_char.full_name_with_level}" atacou '
+                f'*{enemy_char.full_name_with_level}* *ATACOU* '
                 f'{target_player_name}\n\n'
             )
             action = enemy_char.get_best_action_attack()
@@ -97,11 +102,11 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             action = action.replace('_', ' ').title()
             defense_action = defense_action.replace('_', ' ').title()
             text += (
-                f'{action}: {attack_value_boosted}({attack_value}), '
+                f'*{action}*: {attack_value_boosted}({attack_value}), '
                 f'{enemy_dice.text}\n'
             )
             text += (
-                f'{defense_action}: '
+                f'*{defense_action}*: '
                 f'{defense_value_boosted}({defense_value}), '
                 f'{target_dice.text}\n'
             )
@@ -121,8 +126,10 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         if len(enemy_list) > 1
         else f'O inimigo fugiu!'
     )
+    full_text = escape_basic_markdown_v2(full_text)
     await context.bot.send_message(
         chat_id=chat_id,
         text=full_text,
         disable_notification=silent,
+        parse_mode=ParseMode.MARKDOWN_V2,
     )

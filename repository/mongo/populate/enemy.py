@@ -188,10 +188,11 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
 
 def create_random_enemies(
     group_level: int,
-    no_boss: bool = False
+    no_boss: bool = False,
+    num_max_enemies: int = 5,
 ) -> List[NPCharacter]:
     '''Cria inimigos de maneira aleatória.'''
-    total_enemy = get_total_enemy()
+    total_enemy = get_total_enemy(num_max_enemies)
     enemy_list = []
     for _ in range(total_enemy):
         enemy_level = random_group_level(group_level)
