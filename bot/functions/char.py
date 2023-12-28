@@ -235,7 +235,7 @@ def get_player_ids_from_group(chat_id: int) -> List[int]:
 
 
 def choice_char(
-    player_id_list: List[dict] = None,
+    player_id_list: List[int] = None,
     chat_id: int = None,
     is_alive: bool = False,
 ) -> BaseCharacter:
