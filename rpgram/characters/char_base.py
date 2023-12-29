@@ -1,10 +1,11 @@
 from bson import ObjectId
 from datetime import datetime
-from random import choices
+from random import choices, random
 from typing import List, Tuple
 
 from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram.dice import Dice
 
 from rpgram.equips import Equips
 from rpgram.status import Status
@@ -82,6 +83,7 @@ class BaseCharacter:
         self.__created_at = created_at
         self.__updated_at = updated_at
 
+    # BATTLE FUNCTIONS
     def get_action_attack(self, action_name) -> int:
         if action_name == 'physical_attack':
             return self.cs.physical_attack
@@ -125,6 +127,183 @@ class BaseCharacter:
     def battle_activate_status(self) -> List[dict]:
         reports = self.__status.battle_activate(self)
         return reports
+
+    def get_accuracy(
+        self,
+        defenser_char,
+        attacker_dice: Dice,
+        defenser_dice: Dice,
+    ) -> float:
+        hit = self.cs.hit
+        evasion = defenser_char.cs.evasion
+        attacker_dice.throw(rethrow=False)
+        defenser_dice.throw(rethrow=False)
+
+        accuracy = hit / evasion
+        accuracy = min(accuracy, 1.0)
+        dice_bonus = (attacker_dice.value - defenser_dice.value) / 100
+        accuracy = accuracy + dice_bonus
+        accuracy = min(accuracy, 0.95)
+        accuracy = max(accuracy, 0.1)
+
+        return accuracy
+
+    def test_dodge(
+        self,
+        defenser_char,
+        attacker_dice: Dice,
+        defenser_dice: Dice,
+    ) -> dict:
+        '''Testa se o inimigo esquivou do ataque, retornando True 
+        caso tenha esquivado e False, caso contrário. '''
+        accuracy = self.get_accuracy(
+            defenser_char=defenser_char,
+            attacker_dice=attacker_dice,
+            defenser_dice=defenser_dice,
+        )
+        dodge_score = random()
+
+        return {
+            'attacker_accuracy': accuracy,
+            'defender_dodge_score': dodge_score,
+            'is_dodged': (dodge_score >= accuracy),
+        }
+
+    def get_total_value(self, base_value: int, dice: Dice) -> int:
+        '''Retorna o valor boostado conforme o resultado do dado.
+        '''
+        dice.throw(rethrow=False)
+        multiplier = (1 + (dice.value * 0.025))
+        boosted_value = int(base_value * multiplier)
+        added_value = base_value + dice.value
+        result = max(boosted_value, added_value)
+
+        if dice.is_critical:
+            result = result * 2
+
+        return result
+
+    def to_attack(
+        self,
+        defenser_char,
+        attacker_dice: Dice = Dice(20),
+        defenser_dice: Dice = Dice(20),
+        attacker_action_name: str = None,
+        to_dodge: bool = False,
+        to_defend: bool = True,
+        rest_command: str = None,
+        verbose: bool = False,
+        markdown: bool = False,
+    ) -> dict:
+        '''Personagem ataca um alvo usando um dos ataques básicos. Caso não 
+        seja passado um attacker_action_name, será escolhido o atributo de 
+        ataque mais poderoso.'''
+
+        report = {'text': ''}
+        damage = 0
+        defenser_player_name = defenser_char.player_name
+        attacker_dice.throw(rethrow=False)
+        defenser_dice.throw(rethrow=False)
+
+        dodge_report = self.test_dodge(
+            defenser_char=defenser_char,
+            attacker_dice=attacker_dice,
+            defenser_dice=defenser_dice,
+        )
+
+        if not isinstance(attacker_action_name, str):
+            attacker_action_name = self.get_best_action_attack()
+        attack_value = self.get_action_attack(attacker_action_name)
+        attack_value_boosted = self.get_total_value(
+            attack_value,
+            attacker_dice
+        )
+
+        (
+            defense_value,
+            defense_action_name
+        ) = defenser_char.get_action_defense(attacker_action_name)
+        defense_value_boosted = defenser_char.get_total_value(
+            defense_value,
+            defenser_dice
+        )
+
+        if (is_miss := to_dodge and dodge_report['is_dodged']):
+            report['text'] += (
+                f'{defenser_player_name} *ESQUIVOU DO ATAQUE* de '
+                f'*{self.full_name_with_level}*.\n\n'
+            )
+        else:
+            damage = attack_value_boosted
+            if to_defend:
+                damage = attack_value_boosted - defense_value_boosted
+            damage = max(damage, 0)
+            damage_report = defenser_char.cs.damage_hit_points(damage)
+            attacker_action_name = attacker_action_name.replace(
+                '_', ' ').title()
+            defense_action_name = defense_action_name.replace('_', ' ').title()
+            damage_or_defend_text = (
+                f' que defendeu recebendo *{damage}* pontos de dano'
+            )
+            if damage > 0:
+                damage_or_defend_text = f' e causou *{damage}* pontos de dano'
+            report['text'] += (
+                f'*{self.full_name_with_level}* *ATACOU* '
+                f'{defenser_player_name}{damage_or_defend_text}.\n\n'
+            )
+            if verbose:
+                report['text'] += (
+                    f'*{attacker_action_name}*: '
+                    f'{attack_value_boosted}({attack_value}), '
+                    f'{attacker_dice.text}\n'
+                )
+                report['text'] += (
+                    f'*{defense_action_name}*: '
+                    f'{defense_value_boosted}({defense_value}), '
+                    f'{defenser_dice.text}\n'
+                )
+            report['text'] += damage_report['text']
+            if damage_report['dead']:
+                report['text'] += (
+                    f'\n\n{defenser_player_name} morreu! '
+                    f'Use o comando /{rest_command} para descansar.'
+                )
+            report['text'] += '\n\n'
+
+        if not markdown:
+            report['text'] = remove_bold(report['text'])
+            report['text'] = remove_code(report['text'])
+        else:
+            report['text'] = escape_basic_markdown_v2(report['text'])
+
+        report.update({
+            'attacker': self,
+            'attacker_char': self,
+            'attack': {
+                'action': attacker_action_name,
+                'accuracy': (dodge_report['attacker_accuracy'] * 100),
+                'dice_value': attacker_dice.value,
+                'dice_text': attacker_dice.text,
+                'is_critical': attacker_dice.is_critical,
+                'atk': attack_value,
+                'total_atk': attack_value_boosted,
+            },
+            'defenser': defenser_char,
+            'defenser_char': defenser_char,
+            'defense': {
+                'reaction': defense_action_name,
+                'dodge_score': (dodge_report['defender_dodge_score'] * 100),
+                'dice_value': defenser_dice.value,
+                'dice_text': defenser_dice.text,
+                'is_critical': defenser_dice.is_critical,
+                'def': defense_value,
+                'total_def': defense_value_boosted,
+                'damage': (damage * -1),
+                'is_miss': is_miss
+            },
+        })
+
+        return report
 
     # Getters
     @property

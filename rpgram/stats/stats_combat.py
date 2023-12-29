@@ -67,7 +67,14 @@ class CombatStats:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
 
-    def damage_hit_points(self, value: int) -> dict:
+    def damage_hit_points(self, value: int, action_name: str = None) -> dict:
+        if action_name == 'physical_attack':
+            return self.physical_damage_hit_points(value)
+        elif action_name == 'precision_attack':
+            return self.physical_damage_hit_points(value)
+        elif action_name == 'magical_attack':
+            return self.magical_damage_hit_points(value)
+
         value = -int(abs(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
@@ -167,7 +174,7 @@ class CombatStats:
         print(f'HP: {self.show_hp}')
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
-        true_cure = (old_hp - new_hp)
+        true_cure = (new_hp - old_hp)
         return {
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
