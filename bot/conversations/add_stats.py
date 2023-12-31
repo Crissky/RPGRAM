@@ -17,7 +17,8 @@ from bot.constants.add_stats import (
     ACCESS_DENIED,
     ATTRIBUTE_LIST,
     COMMANDS,
-    POINTS_OPTION_LIST
+    POINTS_OPTION_LIST,
+    SECTION_TEXT_STATS
 )
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
@@ -34,8 +35,9 @@ from bot.decorators import (
 )
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
+from constant.text import SECTION_HEAD_STATS_END, SECTION_HEAD_STATS_START
 
-from function.text import escape_markdown_v2
+from function.text import create_text_in_box, escape_markdown_v2
 
 from repository.mongo import CharacterModel
 from rpgram.characters import BaseCharacter
@@ -116,19 +118,27 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         *addstats_buttons,
         close_button
     ])
+    text = (
+        f'{text}'
+        f'{status_sheet}\n'
+        f'{combat_stats_sheets}'
+    )
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_STATS,
+        section_start=SECTION_HEAD_STATS_START,
+        section_end=SECTION_HEAD_STATS_END
+    )
     if query:
+
         await query.edit_message_text(
-            f'{text}'
-            f'{status_sheet}\n'
-            f'{combat_stats_sheets}',
+            text,
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_markup=reply_markup,
         )
     else:
         await update.effective_message.reply_text(
-            f'{text}'
-            f'{status_sheet}\n'
-            f'{combat_stats_sheets}',
+            text,
             parse_mode=ParseMode.MARKDOWN_V2,
             disable_notification=silent,
             reply_markup=reply_markup,

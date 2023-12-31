@@ -20,16 +20,21 @@ from bot.decorators import (
 from bot.functions.char import add_xp
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import SECTION_HEAD_XP_END, SECTION_HEAD_XP_START
 
 from function.date_time import (
     utc_to_brazil_datetime,
     add_random_minutes_now,
     replace_tzinfo
 )
+from function.text import create_text_in_box
 
 from repository.mongo import (
     PlayerModel
 )
+
+
+SECTION_TEXT_XP = 'EXPERIÊNCIA'
 
 
 @skip_if_no_singup_group
@@ -62,6 +67,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     report_xp = add_xp(chat_id, user_id)
     text = report_xp['text']
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_XP,
+        section_start=SECTION_HEAD_XP_START,
+        section_end=SECTION_HEAD_XP_END,
+        clean_func=None,
+    )
 
     if report_xp['level_up']:
         await update.effective_message.reply_text(

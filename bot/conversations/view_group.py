@@ -11,7 +11,7 @@ from telegram.ext import (
     PrefixHandler,
 )
 
-from bot.constants.view_group import COMMANDS
+from bot.constants.view_group import COMMANDS, SECTION_TEXT_GROUP
 from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
@@ -19,6 +19,8 @@ from bot.constants.filters import (
 from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import SECTION_HEAD_GROUP_END, SECTION_HEAD_GROUP_START
+from function.text import create_text_in_box
 
 from repository.mongo import GroupModel
 
@@ -31,8 +33,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if (group := group_model.get(chat_id)):
+        text = create_text_in_box(
+            text=f'{group}',
+            section_name=SECTION_TEXT_GROUP,
+            section_start=SECTION_HEAD_GROUP_START,
+            section_end=SECTION_HEAD_GROUP_END,
+            clean_func=None
+        )
         await update.effective_message.reply_text(
-            f'{group}',
+            text,
             disable_notification=silent,
             reply_markup=get_close_keyboard(None)
         )

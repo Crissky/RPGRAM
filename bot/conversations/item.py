@@ -25,6 +25,9 @@ from bot.constants.item import (
     REPLY_TEXTS_FIND_TREASURE_END,
     REPLY_TEXTS_FIND_TREASURE_OPEN,
     REPLY_TEXTS_IGNORE_TREASURE,
+    SECTION_TEXT_ACTIVATED_TRAP,
+    SECTION_TEXT_DROP_TREASURE,
+    SECTION_TEXT_OPEN_TREASURE,
     TRAP_TYPE_DAMAGE_MULTIPLIER,
 )
 from bot.constants.rest import COMMANDS as rest_commands
@@ -40,8 +43,14 @@ from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import (
+    SECTION_HEAD_TRAP_END,
+    SECTION_HEAD_TRAP_START,
+    SECTION_HEAD_TREASURE_END,
+    SECTION_HEAD_TREASURE_START
+)
 from function.date_time import get_brazil_time_now
-from function.text import escape_markdown_v2
+from function.text import create_text_in_box, escape_markdown_v2
 
 from repository.mongo import BagModel, ItemModel
 from repository.mongo.populate.item import create_random_item
@@ -85,6 +94,13 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     text = choice(REPLY_TEXTS_FIND_TREASURE_START)
     text += choice(REPLY_TEXTS_FIND_TREASURE_MIDDLE)
     text += choice(REPLY_TEXTS_FIND_TREASURE_END)
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_DROP_TREASURE,
+        section_start=SECTION_HEAD_TREASURE_START,
+        section_end=SECTION_HEAD_TREASURE_END,
+        clean_func=None
+    )
     inline_keyboard = [[
         InlineKeyboardButton(
             f'{EmojiEnum.INSPECT.value}Investigar',
@@ -169,6 +185,12 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     report_xp = add_xp(chat_id, user_id, min_xp=min_xp, max_xp=max_xp)
     text += report_xp['text']
     text = escape_markdown_v2(text)
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_OPEN_TREASURE,
+        section_start=SECTION_HEAD_TREASURE_START,
+        section_end=SECTION_HEAD_TREASURE_END,
+    )
 
     await query.edit_message_text(
         text=text,
@@ -264,6 +286,14 @@ async def activated_trap(
         )
     text += f'{damage_report["text"]}\n'
     text += f'{damage_report.get("guard_text")}'
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_ACTIVATED_TRAP,
+        section_start=SECTION_HEAD_TRAP_START,
+        section_end=SECTION_HEAD_TRAP_END,
+        clean_func=None
+    )
+
     await query.edit_message_text(text=text)
 
     return ConversationHandler.END

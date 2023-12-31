@@ -12,11 +12,13 @@ from telegram.ext import (
 )
 
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
-from bot.constants.view_player import COMMANDS
+from bot.constants.view_player import COMMANDS, SECTION_TEXT_PLAYER
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_player
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import SECTION_HEAD_PLAYER_END, SECTION_HEAD_PLAYER_START
+from function.text import create_text_in_box
 
 from repository.mongo import PlayerModel
 
@@ -30,8 +32,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if (player := player_model.get(user_id)):
+        text = create_text_in_box(
+            text=f'{player}',
+            section_name=SECTION_TEXT_PLAYER,
+            section_start=SECTION_HEAD_PLAYER_START,
+            section_end=SECTION_HEAD_PLAYER_END,
+            clean_func=None
+        )
+
         await update.effective_message.reply_text(
-            f'{player}',
+            text,
             disable_notification=silent,
             reply_markup=get_close_keyboard(user_id=user_id)
         )
