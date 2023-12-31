@@ -48,6 +48,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.conversations.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
     need_not_in_battle,
     print_basic_infos,
@@ -68,9 +69,14 @@ from bot.functions.char import add_xp, save_char
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
-from constant.text import TEXT_SEPARATOR, TITLE_HEAD
+from constant.text import (
+    SECTION_HEAD_XP_END,
+    SECTION_HEAD_XP_START,
+    TEXT_SEPARATOR,
+    TITLE_HEAD
+)
 from constant.time import TEN_MINUTES_IN_SECONDS
-from function.text import escape_basic_markdown_v2
+from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import (
     BagModel,
     CharacterModel,
@@ -689,6 +695,13 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             text = f'Você quebrou o item "{item.name}".\n\n'
             text += report_xp['text']
+            text = create_text_in_box(
+                text=text,
+                section_name=SECTION_TEXT_XP,
+                section_start=SECTION_HEAD_XP_START,
+                section_end=SECTION_HEAD_XP_END,
+                clean_func=None,
+            )
             player = player_model.get(user_id)
             if report_xp['level_up']:
                 silent = get_attribute_group_or_player(chat_id, 'silent')
