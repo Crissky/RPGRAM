@@ -17,7 +17,7 @@ from telegram.ext import (
 from telegram.error import BadRequest
 
 from bot.constants.help import ACCESS_DENIED
-from bot.constants.equips import COMMANDS
+from bot.constants.equips import COMMANDS, SECTION_TEXT_EQUIPS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.close import get_close_button
 from bot.decorators import (
@@ -28,6 +28,8 @@ from bot.decorators import (
 )
 from bot.decorators.char import confusion
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import SECTION_HEAD_EQUIPS_END, SECTION_HEAD_EQUIPS_START
+from function.text import create_text_in_box
 
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
 from rpgram import Equips, Item
@@ -117,6 +119,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             except BadRequest as error:
                 await query.answer(text=str(error))
         else:
+            markdown_equips_sheet = create_text_in_box(
+                text=markdown_equips_sheet,
+                section_name=SECTION_TEXT_EQUIPS,
+                section_start=SECTION_HEAD_EQUIPS_START,
+                section_end=SECTION_HEAD_EQUIPS_END
+            )
+    
             await update.effective_message.reply_text(
                 f'{markdown_equips_sheet}',
                 parse_mode=ParseMode.MARKDOWN_V2,

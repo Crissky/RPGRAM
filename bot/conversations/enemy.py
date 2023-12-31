@@ -5,22 +5,23 @@ from telegram.constants import ParseMode
 
 from bot.constants.enemy import AMBUSH_TEXTS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
+from constant.text import (
+    SECTION_HEAD_ENEMY_END,
+    SECTION_HEAD_ENEMY_START,
+    TEXT_SEPARATOR
+)
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import choice_char, save_char
 from bot.functions.date_time import is_boosted_day
-from bot.functions.general import get_attribute_group_or_player
-
-from constant.text import SECTION_HEAD_2, SECTION_HEAD_2_END, TEXT_SEPARATOR
-
 from function.date_time import get_brazil_time_now
-from function.text import escape_basic_markdown_v2
+from bot.functions.general import get_attribute_group_or_player
+from function.text import create_text_in_box, escape_basic_markdown_v2
 
 from repository.mongo.populate.enemy import create_random_enemies
 
 from rpgram import Dice
 
 
-@skip_if_spawn_timeout
 async def job_create_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     '''Cria um evento de ataque de inimigo que ocorrerá entre 1 e 299 minutos.
     Está função é chamada em cada 3 horas.
@@ -53,12 +54,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     group_level = get_attribute_group_or_player(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
-    texts = [escape_basic_markdown_v2(
-        f'{SECTION_HEAD_2.format("EMBOSCADA")}'
-        f'\n\n'
-        f'{choice(AMBUSH_TEXTS)}'
-        f'\n\n'
-    )]
+    texts = [escape_basic_markdown_v2(f'{choice(AMBUSH_TEXTS)}\n\n')]
 
     for enemy_char in enemy_list:
         try:
@@ -89,8 +85,11 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         if len(enemy_list) > 1
         else f'O inimigo fugiu!'
     )
-    full_text += escape_basic_markdown_v2(
-        f'\n\n{SECTION_HEAD_2_END.format("EMBOSCADA")}'
+    full_text = create_text_in_box(
+        text=full_text,
+        section_name='EMBOSCADA',
+        section_start=SECTION_HEAD_ENEMY_START,
+        section_end=SECTION_HEAD_ENEMY_END
     )
     await context.bot.send_message(
         chat_id=chat_id,

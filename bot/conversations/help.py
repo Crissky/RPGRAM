@@ -32,7 +32,8 @@ from bot.constants.help import (
     CALLBACK_PLAYER,
     CALLBACK_RACES,
     CALLBACK_STATS,
-    COMMANDS
+    COMMANDS,
+    SECTION_TEXT_HELP
 )
 from bot.constants.add_stats import COMMANDS as add_stats_commands
 from bot.constants.bag import COMMANDS as bag_commands
@@ -57,9 +58,9 @@ from bot.conversations.close import get_close_button
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 
-from constant.text import SECTION_HEAD, TEXT_SEPARATOR
+from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP_START, TEXT_SEPARATOR
 
-from function.text import escape_basic_markdown_v2
+from function.text import create_text_in_box, escape_basic_markdown_v2
 
 from repository.mongo import ItemModel
 
@@ -100,6 +101,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     text = get_details_text(option)
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_HELP,
+        section_start=SECTION_HEAD_HELP_START,
+        section_end=SECTION_HEAD_HELP_END
+    )
 
     if query:
         await query.edit_message_text(

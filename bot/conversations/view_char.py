@@ -12,12 +12,14 @@ from telegram.ext import (
     PrefixHandler,
 )
 
-from bot.constants.view_char import COMMANDS
+from bot.constants.view_char import COMMANDS, SECTION_TEXT_CHAR
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import SECTION_HEAD_CHAR_END, SECTION_HEAD_CHAR_START
+from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel
 
@@ -53,6 +55,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         markdown_player_sheet = player_character.get_all_sheets(
             verbose=verbose, markdown=True
         )
+        markdown_player_sheet = create_text_in_box(
+            text=markdown_player_sheet,
+            section_name=SECTION_TEXT_CHAR,
+            section_start=SECTION_HEAD_CHAR_START,
+            section_end=SECTION_HEAD_CHAR_END
+        )
+
         await update.effective_message.reply_text(
             f'{markdown_player_sheet}',
             parse_mode=ParseMode.MARKDOWN_V2,
