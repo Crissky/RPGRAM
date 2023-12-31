@@ -13,12 +13,12 @@ from rpgram.status import Status
 
 
 POINTS_MULTIPLIER = {
-    EnemyStarsEnum.ONE.name: 2,
-    EnemyStarsEnum.TWO.name: 3,
-    EnemyStarsEnum.THREE.name: 5,
-    EnemyStarsEnum.FOUR.name: 7,
-    EnemyStarsEnum.FIVE.name: 11,
-    EnemyStarsEnum.BOSS.name: 28,
+    EnemyStarsEnum.ONE.name: 1,
+    EnemyStarsEnum.TWO.name: 2,
+    EnemyStarsEnum.THREE.name: 3,
+    EnemyStarsEnum.FOUR.name: 5,
+    EnemyStarsEnum.FIVE.name: 7,
+    EnemyStarsEnum.BOSS.name: 18,
 }
 
 
