@@ -26,7 +26,9 @@ from bot.constants.item import (
     REPLY_TEXTS_FIND_TREASURE_OPEN,
     REPLY_TEXTS_IGNORE_TREASURE,
     SECTION_TEXT_ACTIVATED_TRAP,
+    SECTION_TEXT_CONSUMABLE,
     SECTION_TEXT_DROP_TREASURE,
+    SECTION_TEXT_EQUIPMENT,
     SECTION_TEXT_OPEN_TREASURE,
     TRAP_TYPE_DAMAGE_MULTIPLIER,
 )
@@ -44,6 +46,10 @@ from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import (
+    SECTION_HEAD_CONSUMABLE_END,
+    SECTION_HEAD_CONSUMABLE_START,
+    SECTION_HEAD_EQUIPMENT_END,
+    SECTION_HEAD_EQUIPMENT_START,
     SECTION_HEAD_TRAP_END,
     SECTION_HEAD_TRAP_START,
     SECTION_HEAD_TREASURE_END,
@@ -217,8 +223,25 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             markdown_item_sheet = item.get_all_sheets(
                 verbose=True, markdown=True
             )
+            markdown_item_sheet = (
+                f'O baú dropou o item:\n\n{markdown_item_sheet}'
+            )
+            if isinstance(item.item, Consumable):
+                markdown_item_sheet = create_text_in_box(
+                    text=markdown_item_sheet,
+                    section_name=SECTION_TEXT_CONSUMABLE,
+                    section_start=SECTION_HEAD_CONSUMABLE_START,
+                    section_end=SECTION_HEAD_CONSUMABLE_END,
+                )
+            elif isinstance(item.item, Equipment):
+                markdown_item_sheet = create_text_in_box(
+                    text=markdown_item_sheet,
+                    section_name=SECTION_TEXT_EQUIPMENT,
+                    section_start=SECTION_HEAD_EQUIPMENT_START,
+                    section_end=SECTION_HEAD_EQUIPMENT_END,
+                )
             response = await update.effective_message.reply_text(
-                text=f'O baú dropou o item:\n\n{markdown_item_sheet}',
+                text=markdown_item_sheet,
                 disable_notification=silent,
                 reply_markup=reply_markup_drop,
                 parse_mode=ParseMode.MARKDOWN_V2
