@@ -13,7 +13,8 @@ from bot.constants.rest import (
     COMMANDS,
     REPLY_TEXTS_ALREADY_RESTING,
     REPLY_TEXTS_NO_NEED_REST,
-    REPLY_TEXTS_STARTING_REST
+    REPLY_TEXTS_STARTING_REST,
+    SECTION_TEXT_REST
 )
 from bot.decorators import (
     need_not_in_battle,
@@ -23,6 +24,8 @@ from bot.decorators import (
 )
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
+from constant.text import SECTION_HEAD_REST_END, SECTION_HEAD_REST_START
+from function.text import create_text_in_box
 
 from repository.mongo import BattleModel, CharacterModel, PlayerModel
 
@@ -87,7 +90,6 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     chat_id = job.chat_id
     user_id = job.user_id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     player_character = char_model.get(user_id)
     player = player_model.get(user_id)
     revive_reporting = ''
@@ -116,6 +118,13 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
 
     else:
         text = f'{hp_reporting} Seu personagem continua descansando…'
+
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_REST,
+        section_start=SECTION_HEAD_REST_START,
+        section_end=SECTION_HEAD_REST_END,
+    )
 
     if player.verbose:
         await send_private_message(

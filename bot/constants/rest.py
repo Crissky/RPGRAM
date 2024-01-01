@@ -1,4 +1,5 @@
 COMMANDS = ['descanso', 'rest']
+SECTION_TEXT_REST = 'DESCANSO'
 REPLY_TEXTS_ALREADY_RESTING = [
     'Seu personagem já está descansando.',
     'Seu personagem já está aproveitando uma merecida pausa.',

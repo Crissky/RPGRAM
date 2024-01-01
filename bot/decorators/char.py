@@ -5,6 +5,7 @@ from bot.functions.char import (
     get_player_ids_from_group,
     save_char
 )
+from bot.functions.config import get_attribute_group
 from bot.functions.general import activated_condition
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
@@ -194,12 +195,23 @@ def skip_if_dead_char(callback):
             char_hit_points = ''
             if char:
                 char_hit_points = f'HP: {char.combat_stats.show_hit_points}'
+
+            text = (
+                f'Essa ação não pode ser realizada, pois seu personagem '
+                f'está morto.\n\n'
+                f'{char_hit_points}'
+            )
+
             if query:
                 await query.answer(
-                    f'Essa ação não pode ser realizada, pois seu personagem '
-                    f'está morto.\n\n'
-                    f'{char_hit_points}',
+                    text,
                     show_alert=True
+                )
+            else:
+                silent = get_attribute_group(chat_id, 'silent')
+                await update.effective_message.reply_text(
+                    text=text,
+                    disable_notification=silent,
                 )
             return ConversationHandler.END
     return wrapper

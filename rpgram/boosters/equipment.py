@@ -12,7 +12,7 @@ from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
-    HIT_POINT_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT,
     INITIATIVE_EMOJI_TEXT,
     INTELLIGENCE_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
@@ -335,7 +335,7 @@ class Equipment(StatsBooster):
             f' x({self.multiplier_charisma:+.2f}) '
             f'{{{multiplier_charisma_diff:+.2f}}}`\n\n'
 
-            f'`{HIT_POINT_EMOJI_TEXT}: {self.hp:+} '
+            f'`{HIT_POINT_FULL_EMOJI_TEXT}: {self.hp:+} '
             f'{{{hp_diff:+}}}`\n'
             f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:+} '
             f'{{{initiative_diff:+}}}`\n'

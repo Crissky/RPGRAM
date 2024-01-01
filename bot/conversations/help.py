@@ -439,7 +439,7 @@ def get_details_text(option: str) -> str:
             f'do personagem. Os nove Atributos de Combate '
             f'são os seguintes:\n\n'
 
-            f'{EmojiEnum.HIT_POINT.value}'
+            f'{EmojiEnum.HIT_POINT_FULL.value}'
             f'*Pontos de Vida (HP)*: Representam a '
             f'vitalidade do personagem. Quando os `Pontos de Vida` chegam a '
             f'zero o personagem ficará incapacidado até que recupere ao menos '
