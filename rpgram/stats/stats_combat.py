@@ -5,7 +5,9 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
-    HIT_POINT_EMOJI_TEXT,
+    HIT_POINT_DEAD_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT,
+    HIT_POINT_INJURED_EMOJI_TEXT,
     INITIATIVE_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
@@ -401,7 +403,13 @@ class CombatStats:
 
         text = f'*{SECTION_HEAD.format("ATRIBUTOS DE COMBATE")}*\n'
 
-        text += f'`{HIT_POINT_EMOJI_TEXT}: {self.show_hit_points} '
+        if self.dead:
+            text += f'`{HIT_POINT_DEAD_EMOJI_TEXT}: {self.show_hit_points} '
+        elif self.damaged:
+            text += f'`{HIT_POINT_INJURED_EMOJI_TEXT}: {self.show_hit_points} '
+        else:
+            text += f'`{HIT_POINT_FULL_EMOJI_TEXT}: {self.show_hit_points} '
+        
         if verbose:
             text += f'[{base_hp}{self.bonus_hit_points:+}]'
         text += f'`\n'

@@ -13,7 +13,7 @@ from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
-    HIT_POINT_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT,
     INITIATIVE_EMOJI_TEXT,
     INTELLIGENCE_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
@@ -369,7 +369,7 @@ class Equips:
                 f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:+} '
                 f'x({self.__multiplier_charisma:+.2f})`\n\n'
 
-                f'`{HIT_POINT_EMOJI_TEXT}: {self.hp:+}`\n'
+                f'`{HIT_POINT_FULL_EMOJI_TEXT}: {self.hp:+}`\n'
                 f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:+}`\n'
                 f'`{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:+}`\n'
                 f'`{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:+}`\n'
