@@ -213,6 +213,40 @@ def skip_if_dead_char(callback):
                     text=text,
                     disable_notification=silent,
                 )
+
+            return ConversationHandler.END
+    return wrapper
+
+
+def skip_if_dead_char_silent(callback):
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        print(f'@SKIP_IF_DEAD_CHAR_SILENT')
+        char_model = CharacterModel()
+        chat_id = update.effective_chat.id
+        user_id = update.effective_user.id
+        char = char_model.get(user_id)
+
+        if char and char.is_alive:
+            return await callback(update, context)
+        else:
+            print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - DEAD CHAR')
+            query = update.callback_query
+            char_hit_points = ''
+            if char:
+                char_hit_points = f'HP: {char.combat_stats.show_hit_points}'
+
+            text = (
+                f'Essa ação não pode ser realizada, pois seu personagem '
+                f'está morto.\n\n'
+                f'{char_hit_points}'
+            )
+
+            if query:
+                await query.answer(
+                    text,
+                    show_alert=True
+                )
+
             return ConversationHandler.END
     return wrapper
 
