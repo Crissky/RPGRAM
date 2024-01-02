@@ -159,6 +159,7 @@ def add_conditions(
 
 def add_conditions_trap(
     conditions_trap: List[dict],
+    group_level: int,
     user_id: int = None,
     char: BaseCharacter = None,
 ) -> dict:
@@ -174,13 +175,18 @@ def add_conditions_trap(
         char_model = CharacterModel()
         char = char_model.get(user_id)
 
+    condition_level = group_level // 10
+    condition_level = randint(condition_level // 2, condition_level)
     condition_trap_report = {'text': '', 'char': char}
     for condition_trap in conditions_trap:
         debuff_resistance = random()
         effectiveness = condition_trap['effectiveness']
         condition_name = condition_trap['condition']
         if debuff_resistance <= effectiveness:
-            condition = factory_condition(condition_name)
+            condition = factory_condition(
+                condition_name,
+                level=condition_level
+            )
             report = char.status.add(condition)
             condition_trap_report['text'] += report['text'] + '\n'
 
@@ -195,7 +201,7 @@ def activate_conditions(
     user_id: int = None,
     char: BaseCharacter = None,
 ) -> dict:
-    '''Função que adiciona ativa as condições no Status do personagem.
+    '''Função que ativa as condições no Status do personagem.
     '''
     if all((user_id is None, char is None)):
         raise ValueError(

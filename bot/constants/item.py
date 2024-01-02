@@ -632,12 +632,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'irrompe.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.10},
             {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
@@ -646,7 +642,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'seu redor.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 1.00},
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -657,14 +652,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.PIERCING,
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
         ]
     ),
@@ -675,8 +662,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -688,8 +673,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
         ]
@@ -709,8 +692,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -722,9 +703,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
@@ -734,14 +712,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.POISON,
         [
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
         ]
     ),
@@ -750,10 +720,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'envolve instantaneamente.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.25},
         ]
@@ -763,25 +730,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'foi liberado.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
         ]
     ),
@@ -800,14 +750,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -822,9 +764,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'são disparados em sua direção.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
@@ -842,25 +781,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em seu alcance.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': STUNNED, 'effectiveness': 0.90},
         ]
@@ -889,7 +811,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -905,25 +826,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'tudo à sua volta.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
         ]
     ),
@@ -931,7 +836,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um movimento impreciso, você dispara uma armadilha de '
         'flechas letais.',
         DamageEnum.PIERCING,
-        [{'condition': BLEEDING, 'effectiveness': 0.8}]
+        [
+            {'condition': BLEEDING, 'effectiveness': 0.8},
+        ]
     ),
     (
         'Deslizando as partes, você aciona um veneno paralisante que se '
@@ -940,12 +847,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
         ]
@@ -956,14 +857,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.CHAOS,
         [
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
         ]
     ),
@@ -997,9 +890,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1007,9 +897,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'por um redemoinho.',
         DamageEnum.WIND,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': STUNNED, 'effectiveness': 0.90},
@@ -1040,8 +927,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
         ]
@@ -1053,11 +938,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': STUNNED, 'effectiveness': 0.90},
@@ -1084,14 +966,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1099,9 +973,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'dispara estacas afiadas.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
             {'condition': BLEEDING, 'effectiveness': 0.75},
             {'condition': BLEEDING, 'effectiveness': 0.75},
         ]
@@ -1113,12 +984,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
         ]
@@ -1128,9 +993,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'prende, imobilizando-o.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
         ]
@@ -1150,9 +1012,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1162,17 +1021,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
         ]
@@ -1200,17 +1050,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
         ]
@@ -1222,12 +1063,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.75},
         ]
@@ -1240,8 +1075,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1251,12 +1084,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': FROZEN, 'effectiveness': 0.75},
             {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
         ]
@@ -1277,12 +1104,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.FIRE,
         [
             {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
         ]
@@ -1292,8 +1115,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'prende em um vórtice de vento.',
         DamageEnum.WIND,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
@@ -1307,17 +1128,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.75},
-            {'condition': BLINDNESS, 'effectiveness': 0.75},
-            {'condition': BLINDNESS, 'effectiveness': 0.75},
             {'condition': BLINDNESS, 'effectiveness': 0.75},
             {'condition': BLINDNESS, 'effectiveness': 0.75},
         ]
@@ -1336,10 +1148,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.DARK,
         [
             {'condition': BLINDNESS, 'effectiveness': 1.00},
-            {'condition': BLINDNESS, 'effectiveness': 1.00},
-            {'condition': BLINDNESS, 'effectiveness': 1.00},
-            {'condition': BLINDNESS, 'effectiveness': 1.00},
-            {'condition': BLINDNESS, 'effectiveness': 1.00},
         ]
     ),
     (
@@ -1349,11 +1157,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
@@ -1374,12 +1177,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
         ]
@@ -1389,17 +1186,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.FIRE,
         [
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.10},
-            {'condition': BURN, 'effectiveness': 0.10},
-            {'condition': BURN, 'effectiveness': 0.10},
             {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
@@ -1410,10 +1201,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -1425,17 +1212,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
         ]
@@ -1446,18 +1224,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.FIRE,
         [
             {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
@@ -1469,13 +1238,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.POISON,
         [
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
         ]
@@ -1487,9 +1249,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1498,13 +1257,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.PIERCING,
         [
             {'condition': BLEEDING, 'effectiveness': 1.00},
-            {'condition': BLEEDING, 'effectiveness': 1.00},
-            {'condition': BLEEDING, 'effectiveness': 1.00},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
         ]
@@ -1515,29 +1268,20 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
             {'condition': EXHAUSTION, 'effectiveness': 0.50},
             {'condition': EXHAUSTION, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PETRIFIED, 'effectiveness': 0.50},
             {'condition': PETRIFIED, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': STUNNED, 'effectiveness': 0.90},
@@ -1550,12 +1294,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
         ]
@@ -1567,9 +1305,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1579,12 +1314,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
             {'condition': PARALYSIS, 'effectiveness': 0.75},
             {'condition': PARALYSIS, 'effectiveness': 0.75},
         ]
@@ -1603,17 +1332,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.FIRE,
         [
             {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
@@ -1626,17 +1344,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
         ]
@@ -1664,9 +1374,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.75},
             {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1676,11 +1383,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': STUNNED, 'effectiveness': 0.90},
@@ -1701,35 +1405,21 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
             {'condition': EXHAUSTION, 'effectiveness': 0.50},
             {'condition': EXHAUSTION, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
             {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
             {'condition': PETRIFIED, 'effectiveness': 0.50},
             {'condition': PETRIFIED, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
         ]
@@ -1741,8 +1431,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLINDNESS, 'effectiveness': 0.90},
             {'condition': BLINDNESS, 'effectiveness': 0.90},
-            {'condition': BLINDNESS, 'effectiveness': 0.90},
-            {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': CURSE, 'effectiveness': 0.75},
         ]
@@ -1753,12 +1441,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
             {'condition': PARALYSIS, 'effectiveness': 0.75},
             {'condition': PARALYSIS, 'effectiveness': 0.75},
         ]
@@ -1785,19 +1467,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.POISON,
         [
             {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
         ]
@@ -1809,11 +1482,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
@@ -1824,12 +1492,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'envolve em uma teia incandescente pegajosa.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
@@ -1845,7 +1507,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': FROZEN, 'effectiveness': 0.25},
             {'condition': FROZEN, 'effectiveness': 0.25},
             {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1853,16 +1514,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.FIRE,
         [
             {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
@@ -1876,12 +1530,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
             {'condition': BLEEDING, 'effectiveness': 0.75},
             {'condition': BLEEDING, 'effectiveness': 0.75},
         ]
@@ -1893,8 +1541,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -1907,13 +1553,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1923,10 +1562,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -1937,20 +1572,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.CHAOS,
         [
             {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
@@ -1971,13 +1594,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': FROZEN, 'effectiveness': 0.50},
             {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1985,8 +1601,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em uma rede de fios abrolhosos de aço.',
         DamageEnum.SLASHING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
@@ -2006,20 +1620,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.ACID,
         [
             {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.50},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
         ]
@@ -2029,9 +1632,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em sua direção.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
@@ -2051,12 +1651,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
         ]
@@ -2066,20 +1660,6 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'aterrorizante em sua direção.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},

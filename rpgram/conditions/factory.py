@@ -49,6 +49,17 @@ def factory_condition(
     if isinstance(condition_name, str) and not isinstance(name, str):
         name = condition_name
 
+    kwargs = {}
+    if isinstance(turn, int):
+        kwargs['turn'] = turn
+    elif turn is not None:
+        raise TypeError(f'Turno deve ser do tipo inteiro: {type(turn)}')
+
+    if isinstance(level, int):
+        kwargs['level'] = level
+    elif level is not None:
+        raise TypeError(f'Level deve ser do tipo inteiro: {type(level)}')
+
     # DEBUFFS
     if name == BLEEDING:
         condition_class = BleedingCondition
@@ -92,11 +103,11 @@ def factory_condition(
     elif name == HealingConsumableEnum.HEAL8.value:
         condition_class = Heal8Condition
 
-    if turn and level:
-        return condition_class(turn=turn, level=level)
-    elif not turn and level:
-        return condition_class(level=level)
-    elif turn and not level:
-        return condition_class(turn=turn)
-    elif not turn and not level:
-        return condition_class()
+    return condition_class(**kwargs)
+
+
+if __name__ == '__main__':
+    print(factory_condition(name=CONFUSION))
+    print(factory_condition(name=CONFUSION, turn=10))
+    print(factory_condition(name=CONFUSION, level=10))
+    print(factory_condition(name=CONFUSION, turn=10, level=10))
