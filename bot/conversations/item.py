@@ -181,7 +181,13 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     items = create_random_item(group_level)
     if isinstance(items, int):
         treasures.pop(message_id, None)
-        return await activated_trap(items, user_id, user_name, query)
+        return await activated_trap(
+            damage=items,
+            group_level=group_level,
+            user_id=user_id,
+            user_name=user_name,
+            query=query
+        )
 
     text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN).lower()
     text = f'{user_name}, {text_find_treasure_open}\n\n'
@@ -267,9 +273,10 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def activated_trap(
     damage: int,
+    group_level: int,
     user_id: int,
     user_name: str,
-    query: CallbackQuery
+    query: CallbackQuery,
 ):
     (
         text_find_trap_open,
@@ -289,7 +296,8 @@ async def activated_trap(
         type_damage=trap_type_damage
     )
     condition_report = add_conditions_trap(
-        trap_conditions,
+        conditions_trap=trap_conditions,
+        group_level=group_level,
         char=damage_report['char']
     )
 
