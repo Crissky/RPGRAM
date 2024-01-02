@@ -275,7 +275,7 @@ def check_equipment_type(equip_type: str, weapon: str):
         f'Arma "{weapon}" não encontrada para o tipo de equipamento '
         f'"{equip_type}".'
     )
-    
+
     if equip_type == EquipmentEnum.ONE_HAND.name:
         if weapon not in ONE_HAND_EQUIPMENTS:
             raise ValueError(error_message)
@@ -325,6 +325,12 @@ def get_bonus_and_penality(
     elif equip_type in [EquipmentEnum.RING.name, EquipmentEnum.AMULET.name]:
         equip_type_bonus = 0.25
 
+    two_hand_multiplier = (
+        2
+        if equip_type == EquipmentEnum.TWO_HANDS.name
+        else 1
+    )
+
     if equip_type in WEAPON_EQUIPMENTS_ENUM:
         material_bonus = WEAPON_MATERIALS[material]
     elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
@@ -332,12 +338,12 @@ def get_bonus_and_penality(
     elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
         material_bonus = ACCESSORY_MATERIALS[material]
 
+    bonus_multiplier = (equip_type_bonus + rarity_bonus + material_bonus)
+    penality_multiplier = bonus_multiplier // 3
     bonus = int(
-        (group_level * equip_type_bonus) +
-        (group_level * rarity_bonus) +
-        (group_level * material_bonus)
+        group_level * bonus_multiplier * two_hand_multiplier
     )
-    penality = random_group_level(group_level)
+    penality = int(random_group_level(group_level) * penality_multiplier)
     if verbose:
         print(
             f'Level: {group_level}, '
