@@ -32,9 +32,11 @@ from bot.conversations import (
     CLASSES_HANDLERS,
 )
 from bot.conversations.enemy import job_create_enemy_attack
+from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.status import job_activate_conditions
 from function.date_time import get_last_hour, get_midnight_hour
+
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 MY_GROUP_ID = config('MY_GROUP_ID')
@@ -89,6 +91,12 @@ def main() -> None:
         callback=job_create_enemy_attack,
         interval=timedelta(hours=3),
         first=get_midnight_hour(),
+        chat_id=MY_GROUP_ID,
+        name='JOB_ENEMY_ATTACK',
+    )
+    application.job_queue.run_once(
+        callback=job_info_deploy_bot,
+        when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
         name='JOB_ENEMY_ATTACK',
     )

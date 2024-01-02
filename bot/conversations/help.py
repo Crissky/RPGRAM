@@ -809,6 +809,26 @@ def help_enum(enum_class: Enum) -> str:
     return ', '.join(text)
 
 
+async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
+    '''Envia mensagem para o grupo informando o deploy e pedindo para usar o 
+    comando de descanso.
+    '''
+    print('JOB_INFO_DEPLOY_BOT()')
+    job = context.job
+    chat_id = int(job.chat_id)  # chat_id vem como string
+
+    await context.bot.send_message(
+        chat_id=chat_id,
+        text=(
+            f'{SECTION_HEAD.format("DEPLOYANDO")}\n'
+            f'Viajantes destemidos, uma atualização mágica acaba de ser '
+            f'lançada em mim! Porém, como toda mudança encantada, aqueles que '
+            f'estavam desfrutando de um merecido descanso precisarão usar o '
+            f'/{rest_commands[0]} novamente para renovar suas energias.'
+        ),
+    )
+
+
 HELP_HANDLERS = [
     PrefixHandler(
         PREFIX_COMMANDS,
