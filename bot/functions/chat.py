@@ -1,8 +1,27 @@
+from bson import ObjectId
+
 from telegram.constants import ParseMode
 from telegram.error import Forbidden
 from telegram.ext import ContextTypes
 
 from bot.functions.general import get_attribute_group_or_player
+
+
+CALLBACK_KEY_LIST = [
+    'act',
+    'command',
+    'drop',
+    'hand',
+    'identify',
+    'item',
+    'page',
+    'retry_state',
+    'sort',
+    'use',
+    '_id',
+    'user_id',
+    'target_id',
+]
 
 
 async def send_private_message(
@@ -46,3 +65,38 @@ async def send_private_message(
                 f'Function Caller: {function_caller}\n'
                 f'(ERROR: {error})'
             )
+
+
+def callback_data_to_string(callback_data: dict) -> str:
+    items = []
+    for key, value in callback_data.items():
+        key_int = CALLBACK_KEY_LIST.index(key)
+        if isinstance(value, (str, ObjectId)):
+            items.append(f'{key_int}:"{value}"')
+        else:
+            items.append(f'{key_int}:{value}')
+    text = ','.join(items)
+    text = f'{{{text}}}'
+
+    return text
+
+
+def callback_data_to_dict(callback_data_str: str) -> dict:
+    callback_data = eval(callback_data_str)
+    callback_data = {
+        CALLBACK_KEY_LIST[key]: value
+        for key, value in callback_data.items()
+    }
+    return callback_data
+
+
+if __name__ == '__main__':
+    d = {
+        'drop': 10,
+        'item': 10,
+        'page': 10,
+        'user_id': 123456789,
+        'target_id': "123456789"
+    }
+    print(d1 := callback_data_to_string(d))
+    print(d2 := callback_data_to_dict(d1))

@@ -1,4 +1,5 @@
 import re
+from bot.functions.chat import CALLBACK_KEY_LIST
 
 from rpgram.enums.emojis import EmojiEnum
 
@@ -6,6 +7,7 @@ from rpgram.enums.emojis import EmojiEnum
 # COMMANDS
 COMMANDS = ['bolsa', 'bag', 'inventario']
 CANCEL_COMMANDS = ['cancel', 'close']
+
 
 # ITEMS CONSTANTS
 ITEMS_PER_PAGE = 10
@@ -18,6 +20,26 @@ CALLBACK_CLOSE_BAG = 'CLOSE_BAG'
 CALLBACK_TEXT_DESTROY_ITEM = 'break_item'
 CALLBACK_TEXT_SORT_ITEMS = '$sort_items'
 ESCAPED_CALLBACK_TEXT_SORT_ITEMS = re.escape(CALLBACK_TEXT_SORT_ITEMS)
+
+
+# PATTERNS
+PATTERN_PAGE = fr'^{{{CALLBACK_KEY_LIST.index("page")}:'
+PATTERN_ITEM = fr'^{{{CALLBACK_KEY_LIST.index("item")}:'
+PATTERN_USE = fr'^{{{CALLBACK_KEY_LIST.index("use")}:'
+PATTERN_DROP = fr'^{{{CALLBACK_KEY_LIST.index("drop")}:(1|3|5|10)'
+PATTERN_IDENTIFY = fr'^{{{CALLBACK_KEY_LIST.index("identify")}:1'
+PATTERN_SORT = fr'^{{{CALLBACK_KEY_LIST.index("sort")}:'
+PATTERN_CLOSE_BAG = (
+    f'{{{CALLBACK_KEY_LIST.index("command")}:"{CALLBACK_CLOSE_BAG}"'
+)
+PATTERN_SORT_ITEMS = (
+    f'{{{CALLBACK_KEY_LIST.index("command")}:'
+    f'"{ESCAPED_CALLBACK_TEXT_SORT_ITEMS}"'
+)
+PATTERN_DESTROY_ITEM = (
+    f'{{{CALLBACK_KEY_LIST.index("act")}:"{CALLBACK_TEXT_DESTROY_ITEM}"'
+)
+PATTERN_GET_DROP = fr'^{{{CALLBACK_KEY_LIST.index("_id")}:'
 
 
 # ALERT BUTTON TEXTS

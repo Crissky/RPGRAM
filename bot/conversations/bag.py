@@ -28,7 +28,6 @@ from bot.constants.bag import (
     EQUIPMENT_POWER_SORT_UP_BUTTON_TEXT,
     EQUIPMENT_RARITY_SORT_DOWN_BUTTON_TEXT,
     EQUIPMENT_RARITY_SORT_UP_BUTTON_TEXT,
-    ESCAPED_CALLBACK_TEXT_SORT_ITEMS,
     IDENTIFY_BUTTON_TEXT,
     ITEMS_PER_PAGE,
     EQUIP_LEFT_BUTTON_TEXT,
@@ -37,6 +36,16 @@ from bot.constants.bag import (
     NAV_END_BUTTON_TEXT,
     NAV_NEXT_BUTTON_TEXT,
     NAV_START_BUTTON_TEXT,
+    PATTERN_CLOSE_BAG,
+    PATTERN_DESTROY_ITEM,
+    PATTERN_DROP,
+    PATTERN_GET_DROP,
+    PATTERN_IDENTIFY,
+    PATTERN_ITEM,
+    PATTERN_PAGE,
+    PATTERN_SORT,
+    PATTERN_SORT_ITEMS,
+    PATTERN_USE,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -66,9 +75,14 @@ from bot.functions.bag import (
     sub_identifying_lens
 )
 from bot.functions.char import add_xp, save_char
-from bot.functions.chat import send_private_message
+from bot.functions.chat import (
+    callback_data_to_dict,
+    callback_data_to_string,
+    send_private_message
+)
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
+from bot.functions.player import get_player_id_by_name, get_player_name
 from constant.text import (
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
@@ -112,23 +126,34 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
+    player_model = PlayerModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
     query = update.callback_query
+    args = context.args
     silent = get_attribute_group_or_player(chat_id, 'silent')
+
+    if args and args[0].startswith('@'):
+        target_name = args[0]
+        target_id = get_player_id_by_name(target_name)
+    else:
+        target_id = user_id
 
     page = 0
     if query:
-        data = eval(query.data)
+        data = callback_data_to_dict(query.data)
         page = data['page']  # starts zero
         data_user_id = data['user_id']
+        target_id = data['target_id']
         retry_state = data.get('retry_state', None)
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return retry_state
+
+    target_name = get_player_name(target_id)
 
     skip_slice = ITEMS_PER_PAGE * page
     size_slice = ITEMS_PER_PAGE + 1
@@ -146,7 +171,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         bag_model.save(player_bag)
 
     markdown_text = (
-        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n\n'
+        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
+        f'*Alvo*: {target_name}\n\n'
     )
 
     items = player_bag[:]
@@ -167,23 +193,32 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Criando os Botões
     markdown_text += get_item_texts(items=items)
     reshaped_items_buttons = get_item_buttons(
-        items=items, page=page, user_id=user_id
+        items=items,
+        page=page,
+        user_id=user_id,
+        target_id=target_id
     )
 
     navigation_keyboard = get_navigation_buttons(
         have_back_page=have_back_page,
         have_next_page=have_next_page,
         page=page,
-        user_id=user_id
+        user_id=user_id,
+        target_id=target_id
     )
     extremes_navigation_keyboard = get_extremes_navigation_buttons(
         have_back_page=have_back_page,
         have_next_page=have_next_page,
-        user_id=user_id
+        user_id=user_id,
+        target_id=target_id
     )
 
-    sort_items_button = get_sort_button(page=page, user_id=user_id)
-    cancel_button = get_close_bag_button(user_id=user_id)
+    sort_items_button = get_sort_button(
+        page=page,
+        user_id=user_id,
+        target_id=target_id
+    )
+    cancel_button = get_close_bag_button(user_id=user_id, target_id=target_id)
     reply_markup = InlineKeyboardMarkup(
         reshaped_items_buttons +
         [navigation_keyboard] +
@@ -224,10 +259,11 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     equips_model = EquipsModel()
     user_id = update.effective_user.id
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
+    target_id = data['target_id']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
@@ -235,7 +271,9 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return CHECK_ROUTES
 
     item = get_item_by_position(user_id, page, item_pos)
-    markdown_text = item.get_all_sheets(
+    target_name = get_player_name(target_id)
+    markdown_text = f'*Alvo:* {target_name}\n\n'
+    markdown_text += item.get_all_sheets(
         verbose=True,
         markdown=True,
         show_quantity=True
@@ -250,27 +288,38 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             equip_buttons = [
                 InlineKeyboardButton(
                     text=EQUIP_LEFT_BUTTON_TEXT,
-                    callback_data=(
-                        f'{{"use":1,"item":{item_pos},"hand":"L",'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
+                    callback_data=callback_data_to_string({
+                        'use': 1,
+                        'item': item_pos,
+                        'hand': 'L',
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
                 ),
                 InlineKeyboardButton(
                     text=EQUIP_RIGHT_BUTTON_TEXT,
-                    callback_data=(
-                        f'{{"use":1,"item":{item_pos},"hand":"R",'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
+                    callback_data=callback_data_to_string({
+                        'use': 1,
+                        'item': item_pos,
+                        'hand': 'R',
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
                 )
             ]
         else:
             equip_buttons = [
                 InlineKeyboardButton(
                     text=EQUIP_BUTTON_TEXT,
-                    callback_data=(
-                        f'{{"use":1,"item":{item_pos},'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
+                    callback_data=callback_data_to_string({
+                        'use': 1,
+                        'item': item_pos,
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
                 )
             ]
 
@@ -278,22 +327,36 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             identify_button = [
                 InlineKeyboardButton(
                     text=IDENTIFY_BUTTON_TEXT,
-                    callback_data=(
-                        f'{{"identify":1,"item":{item_pos},'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
+                    callback_data=callback_data_to_string({
+                        'identify': 1,
+                        'item': item_pos,
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
                 )
             ]
     elif isinstance(item.item, Consumable):
         use_buttons = get_use_consumable_buttons(
-            page=page, user_id=user_id, item_pos=item_pos, item=item
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            item=item
         )
 
     discard_buttons = get_discard_buttons(
-        page=page, user_id=user_id, item_pos=item_pos, item=item
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        item_pos=item_pos,
+        item=item
     )
     back_button = get_back_button(
-        page=page, user_id=user_id, retry_state=USE_ROUTES
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        retry_state=USE_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([
         equip_buttons,
@@ -331,10 +394,11 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
     char_model = CharacterModel()
     user_id = update.effective_user.id
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
+    target_id = data['target_id']
     use_quantity = data['use']
     hand = data.get('hand', None)
 
@@ -343,8 +407,12 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
+    target_name = get_player_name(target_id)
     item = get_item_by_position(user_id, page, item_pos)
-    player_character = char_model.get(user_id)
+    if isinstance(item.item, Equipment):
+        player_character = char_model.get(user_id)
+    elif isinstance(item.item, Consumable):
+        player_character = char_model.get(target_id)
 
     old_equipments = []
     if isinstance(item.item, Equipment):  # Tenta equipar o item
@@ -363,7 +431,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
             return USE_ROUTES
     elif isinstance(item.item, Consumable):  # Tenta usar o item
-        # consumable = item.item
         name = item.name
         description = item.item.description
         use_quantity = min(item.quantity, use_quantity)
@@ -386,7 +453,8 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 show_alert=True
             )
         finally:
-            markdown_text = item.get_all_sheets(
+            markdown_text = f'*Alvo:* {target_name}\n\n'
+            markdown_text += item.get_all_sheets(
                 verbose=True,
                 markdown=True,
                 show_quantity=True
@@ -399,25 +467,31 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
             if item.quantity <= 0:
                 back_button = get_back_button(
-                    page=page, user_id=user_id, retry_state=USE_ROUTES
+                    page=page,
+                    user_id=user_id,
+                    target_id=target_id,
+                    retry_state=USE_ROUTES
                 )
                 reply_markup = InlineKeyboardMarkup([back_button])
             else:
                 use_buttons = get_use_consumable_buttons(
                     page=page,
                     user_id=user_id,
+                    target_id=target_id,
                     item_pos=item_pos,
                     item=item
                 )
                 discard_buttons = get_discard_buttons(
                     page=page,
                     user_id=user_id,
+                    target_id=target_id,
                     item_pos=item_pos,
                     item=item
                 )
                 back_button = get_back_button(
                     page=page,
                     user_id=user_id,
+                    target_id=target_id,
                     retry_state=USE_ROUTES
                 )
                 reply_markup = InlineKeyboardMarkup([
@@ -446,7 +520,10 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     save_char(player_character, equips=True)
 
     back_button = get_back_button(
-        page=page, user_id=user_id, retry_state=START_ROUTES
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
     # Edita mensagem com as informações do personagem do jogador
@@ -483,10 +560,11 @@ async def identify_item(
     item_model = ItemModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
+    target_id = data['target_id']
     use_quantity = data['identify']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
@@ -553,10 +631,11 @@ async def drop_item(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
+    target_id = data['target_id']
     drop = data['drop']
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
@@ -572,7 +651,10 @@ async def drop_item(
     bag_model.sub(item, user_id, quantity=-(drop))
 
     back_button = get_back_button(
-        page=page, user_id=user_id, retry_state=START_ROUTES
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
     await query.edit_message_text(
@@ -635,7 +717,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
     item_model = ItemModel()
     user_id = update.effective_user.id
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     item_id = data['_id']
     drop = data['drop']
 
@@ -681,7 +763,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     answer_text = 'Quebrando o item...'
 
     if drops.get(message_id, None) is True:
-        data = eval(query.data)
+        data = callback_data_to_dict(query.data)
         item_id = data['_id']
         item = item_model.get(item_id)
         if isinstance(item, Equipment):
@@ -746,18 +828,26 @@ async def choice_sort_items(
         return ConversationHandler.END
 
     user_id = update.effective_user.id
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     page = data['page']
     data_user_id = data['user_id']
+    target_id = data['target_id']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
-    sort_buttons = get_sort_buttons(page=page, user_id=user_id)
+    sort_buttons = get_sort_buttons(
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+    )
     back_button = get_back_button(
-        page=page, user_id=user_id, retry_state=SORT_ROUTES
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        retry_state=SORT_ROUTES
     )
     reply_markup = InlineKeyboardMarkup(
         sort_buttons + [back_button]
@@ -783,9 +873,10 @@ async def sort_items(
 
     bag_model = BagModel()
     user_id = update.effective_user.id
-    data = eval(query.data)
+    data = callback_data_to_dict(query.data)
     page = data['page']
     data_user_id = data['user_id']
+    target_id = data['target_id']
     sort = data['sort']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
@@ -813,7 +904,10 @@ async def sort_items(
     bag_model.save(player_bag)
 
     back_button = get_back_button(
-        page=0, user_id=user_id, retry_state=START_ROUTES
+        page=0,
+        user_id=user_id,
+        target_id=target_id,
+        retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
     await query.edit_message_text(
@@ -831,8 +925,9 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
     query = update.callback_query
     if query:
-        data = eval(query.data)
+        data = callback_data_to_dict(query.data)
         data_user_id = data['user_id']
+        target_id = data['target_id']
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
@@ -857,7 +952,10 @@ def get_item_texts(items: List[Item]) -> str:
 
 
 def get_item_buttons(
-    items: List[Item], page: int, user_id: int
+    items: List[Item],
+    page: int,
+    user_id: int,
+    target_id: int
 ) -> List[List[InlineKeyboardButton]]:
 
     items_buttons = []
@@ -865,9 +963,12 @@ def get_item_buttons(
     for index, _ in enumerate(items):
         items_buttons.append(InlineKeyboardButton(
             text=f'Item {index + 1}',
-            callback_data=(
-                f'{{"item":{index},"page":{page},"user_id":{user_id}}}'
-            )
+            callback_data=callback_data_to_string({
+                'item': index,
+                'page': page,
+                'user_id': user_id,
+                'target_id': target_id
+            })
         ))
 
     reshaped_items_buttons = []
@@ -882,7 +983,11 @@ def get_item_buttons(
 
 
 def get_navigation_buttons(
-    have_back_page: bool, have_next_page: bool, page: int, user_id: int
+    have_back_page: bool,
+    have_next_page: bool,
+    page: int,
+    user_id: int,
+    target_id: int
 ) -> List[InlineKeyboardButton]:
 
     navigation_keyboard = []
@@ -890,14 +995,22 @@ def get_navigation_buttons(
         navigation_keyboard.append(
             InlineKeyboardButton(
                 text=NAV_PREVIOUS_BUTTON_TEXT,
-                callback_data=f'{{"page":{page - 1},"user_id":{user_id}}}'
+                callback_data=callback_data_to_string({
+                    'page': (page - 1),
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             )
         )
     if have_next_page:  # Cria botão de Avançar Página
         navigation_keyboard.append(
             InlineKeyboardButton(
                 text=NAV_NEXT_BUTTON_TEXT,
-                callback_data=f'{{"page":{page + 1},"user_id":{user_id}}}'
+                callback_data=callback_data_to_string({
+                    'page': (page + 1),
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             )
         )
 
@@ -905,7 +1018,10 @@ def get_navigation_buttons(
 
 
 def get_extremes_navigation_buttons(
-    have_back_page: bool, have_next_page: bool, user_id: int
+    have_back_page: bool,
+    have_next_page: bool,
+    user_id: int,
+    target_id: int
 ) -> List[InlineKeyboardButton]:
 
     extremes_navigation_keyboard = []
@@ -913,7 +1029,11 @@ def get_extremes_navigation_buttons(
         extremes_navigation_keyboard.append(
             InlineKeyboardButton(
                 text=NAV_START_BUTTON_TEXT,
-                callback_data=f'{{"page":0,"user_id":{user_id}}}'
+                callback_data=callback_data_to_string({
+                    'page': 0,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             )
         )
     if have_next_page:  # Cria botão para a Última Página
@@ -923,7 +1043,11 @@ def get_extremes_navigation_buttons(
         extremes_navigation_keyboard.append(
             InlineKeyboardButton(
                 text=NAV_END_BUTTON_TEXT,
-                callback_data=f'{{"page":{total_pages},"user_id":{user_id}}}'
+                callback_data=callback_data_to_string({
+                    'page': total_pages,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             )
         )
 
@@ -933,6 +1057,7 @@ def get_extremes_navigation_buttons(
 def get_use_consumable_buttons(
     page: int,
     user_id: int,
+    target_id: int,
     item_pos: int,
     item: Item
 ) -> List[InlineKeyboardButton]:
@@ -947,10 +1072,13 @@ def get_use_consumable_buttons(
                 use_buttons.append(
                     InlineKeyboardButton(
                         text=text,
-                        callback_data=(
-                            f'{{"use":{quantity_option},"item":{item_pos},'
-                            f'"page":{page},"user_id":{user_id}}}'
-                        )
+                        callback_data=callback_data_to_string({
+                            'use': quantity_option,
+                            'item': item_pos,
+                            'page': page,
+                            'user_id': user_id,
+                            'target_id': target_id
+                        })
                     )
                 )
 
@@ -960,6 +1088,7 @@ def get_use_consumable_buttons(
 def get_discard_buttons(
     page: int,
     user_id: int,
+    target_id: int,
     item_pos: int,
     item: Item
 ) -> List[InlineKeyboardButton]:
@@ -973,122 +1102,156 @@ def get_discard_buttons(
             drop_buttons.append(
                 InlineKeyboardButton(
                     text=text,
-                    callback_data=(
-                        f'{{"drop":{quantity_option},"item":{item_pos},'
-                        f'"page":{page},"user_id":{user_id}}}'
-                    )
+                    callback_data=callback_data_to_string({
+                        'drop': quantity_option,
+                        'item': item_pos,
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
                 )
             )
 
     return reshape_row_buttons(drop_buttons, buttons_per_row=2)
 
 
-def get_close_bag_button(user_id: int) -> List[InlineKeyboardButton]:
+def get_close_bag_button(
+    user_id: int,
+    target_id: int
+) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
             text=CLOSE_BAG_BUTTON_TEXT,
-            callback_data=(
-                f'{{"command":"{CALLBACK_CLOSE_BAG}","user_id":{user_id}}}'
-            )
+            callback_data=callback_data_to_string({
+                'command': CALLBACK_CLOSE_BAG,
+                'user_id': user_id,
+                'target_id': target_id
+            })
         )]
 
 
 def get_back_button(
-    page: int, user_id: int, retry_state: int
+    page: int,
+    user_id: int,
+    target_id: int,
+    retry_state: int
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
             text=NAV_BACK_BUTTON_TEXT,
-            callback_data=(
-                f'{{"page":{page},"user_id":{user_id},'
-                f'"retry_state":{retry_state}}}'
-            )
+            callback_data=callback_data_to_string({
+                'page': page,
+                'user_id': user_id,
+                'target_id': target_id,
+                'retry_state': retry_state
+            })
         )
     ]
 
 
 def get_take_break_buttons(
-    drop: int, item_id: str
+    drop: int,
+    item_id: str
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
             text=TAKE_BUTTON_TEXT,
-            callback_data=(
-                f'{{"_id":"{item_id}","drop":{drop}}}'
-            )
+            callback_data=callback_data_to_string({
+                '_id': item_id,
+                'drop': drop
+            })
         ),
         InlineKeyboardButton(
             text=DESTROY_ITEM_BUTTON_TEXT,
-            callback_data=(
-                f'{{"act":"{CALLBACK_TEXT_DESTROY_ITEM}","_id":"{item_id}"}}'
-            )
+            callback_data=callback_data_to_string({
+                'act': CALLBACK_TEXT_DESTROY_ITEM,
+                '_id': item_id
+            })
         )]
 
 
 def get_sort_button(
-    page: int, user_id: str
+    page: int,
+    user_id: int,
+    target_id: int
 ) -> List[InlineKeyboardButton]:
     return [
         InlineKeyboardButton(
             text=SORT_ITEMS_BUTTON_TEXT,
-            callback_data=(
-                f'{{"command":"{CALLBACK_TEXT_SORT_ITEMS}",'
-                f'"page":{page},"user_id":{user_id}}}'
-            )
+            callback_data=callback_data_to_string({
+                'command': CALLBACK_TEXT_SORT_ITEMS,
+                'page': page,
+                'user_id': user_id,
+                'target_id': target_id
+            })
         )]
 
 
 def get_sort_buttons(
-    page: int, user_id: str
+    page: int,
+    user_id: str,
+    target_id: int
 ) -> List[List[InlineKeyboardButton]]:
 
     return [
         [
             InlineKeyboardButton(
                 text=CONSUMABLE_SORT_UP_BUTTON_TEXT,
-                callback_data=(
-                    f'{{"sort":"consumable_up",'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
+                callback_data=callback_data_to_string({
+                    'sort': 'consumable_up',
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             ),
             InlineKeyboardButton(
                 text=CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
-                callback_data=(
-                    f'{{"sort":"consumable_down",'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
+                callback_data=callback_data_to_string({
+                    'sort': 'consumable_down',
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             ),
         ],
         [
             InlineKeyboardButton(
                 text=EQUIPMENT_POWER_SORT_UP_BUTTON_TEXT,
-                callback_data=(
-                    f'{{"sort":"power_up",'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
+                callback_data=callback_data_to_string({
+                    'sort': 'power_up',
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             ),
             InlineKeyboardButton(
                 text=EQUIPMENT_POWER_SORT_DOWN_BUTTON_TEXT,
-                callback_data=(
-                    f'{{"sort":"power_down",'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
+                callback_data=callback_data_to_string({
+                    'sort': 'power_down',
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             ),
         ],
         [
             InlineKeyboardButton(
                 text=EQUIPMENT_RARITY_SORT_UP_BUTTON_TEXT,
-                callback_data=(
-                    f'{{"sort":"rarity_up",'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
+                callback_data=callback_data_to_string({
+                    'sort': 'rarity_up',
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             ),
             InlineKeyboardButton(
                 text=EQUIPMENT_RARITY_SORT_DOWN_BUTTON_TEXT,
-                callback_data=(
-                    f'{{"sort":"rarity_down",'
-                    f'"page":{page},"user_id":{user_id}}}'
-                )
+                callback_data=callback_data_to_string({
+                    'sort': 'rarity_down',
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
             ),
         ]
     ]
@@ -1106,28 +1269,28 @@ BAG_HANDLER = ConversationHandler(
     ],
     states={
         START_ROUTES: [
-            CallbackQueryHandler(start, pattern=r'^{"page":'),
+            CallbackQueryHandler(start, pattern=PATTERN_PAGE),
         ],
         CHECK_ROUTES: [
-            CallbackQueryHandler(start, pattern=r'^{"page":'),
-            CallbackQueryHandler(check_item, pattern=r'^{"item":'),
+            CallbackQueryHandler(start, pattern=PATTERN_PAGE),
+            CallbackQueryHandler(check_item, pattern=PATTERN_ITEM),
             CallbackQueryHandler(
                 choice_sort_items,
-                pattern=f'{{"command":"{ESCAPED_CALLBACK_TEXT_SORT_ITEMS}"'
+                pattern=PATTERN_SORT_ITEMS
             ),
             CallbackQueryHandler(
-                cancel, pattern=f'{{"command":"{CALLBACK_CLOSE_BAG}"'
+                cancel, pattern=PATTERN_CLOSE_BAG
             ),
         ],
         USE_ROUTES: [
-            CallbackQueryHandler(start, pattern=r'^{"page":'),
-            CallbackQueryHandler(use_item, pattern=r'^{"use":'),
-            CallbackQueryHandler(drop_item, pattern=r'^{"drop":(1|3|5|10)'),
-            CallbackQueryHandler(identify_item, pattern=r'^{"identify":1'),
+            CallbackQueryHandler(start, pattern=PATTERN_PAGE),
+            CallbackQueryHandler(use_item, pattern=PATTERN_USE),
+            CallbackQueryHandler(drop_item, pattern=PATTERN_DROP),
+            CallbackQueryHandler(identify_item, pattern=PATTERN_IDENTIFY),
         ],
         SORT_ROUTES: [
-            CallbackQueryHandler(start, pattern=r'^{"page":'),
-            CallbackQueryHandler(sort_items, pattern=r'^{"sort":'),
+            CallbackQueryHandler(start, pattern=PATTERN_PAGE),
+            CallbackQueryHandler(sort_items, pattern=PATTERN_SORT),
         ]
     },
     fallbacks=[
@@ -1138,9 +1301,9 @@ BAG_HANDLER = ConversationHandler(
 )
 DROP_HANDLERS = [
     CallbackQueryHandler(
-        get_drop, pattern=r'^{"_id":'
+        get_drop, pattern=PATTERN_GET_DROP
     ),
     CallbackQueryHandler(
-        destroy_drop, pattern=f'{{"act":"{CALLBACK_TEXT_DESTROY_ITEM}"',
+        destroy_drop, pattern=PATTERN_DESTROY_ITEM,
     )
 ]
