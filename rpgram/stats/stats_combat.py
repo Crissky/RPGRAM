@@ -15,6 +15,7 @@ from rpgram.constants.text import (
     PHYSICAL_DEFENSE_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 
@@ -237,7 +238,10 @@ class CombatStats:
     @property
     def show_hit_points(self) -> str:
         current_hit_points = max(self.current_hit_points, 0)
-        return f'{current_hit_points}/{self.hit_points}'
+        alert_text = ''
+        if self.current_hit_points < 0:
+            alert_text = EmojiEnum.UNDER_ZERO.value
+        return f'{current_hit_points}/{self.hit_points}{alert_text}'
 
     show_hp = show_hit_points
 
