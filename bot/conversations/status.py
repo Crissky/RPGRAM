@@ -3,8 +3,13 @@ from bot.decorators.job import skip_if_spawn_timeout
 
 from bot.functions.char import activate_conditions
 from bot.functions.chat import send_private_message
-from constant.text import TEXT_SEPARATOR
+from constant.text import (
+    SECTION_HEAD_STATUS_END,
+    SECTION_HEAD_STATUS_START,
+    TEXT_SEPARATOR
+)
 from function.date_time import get_brazil_time_now
+from function.text import create_text_in_box
 
 from repository.mongo import StatusModel
 from rpgram.enums import EmojiEnum
@@ -33,9 +38,15 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
         print('report:', report)
         text = report['text']
         if text:
-            text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
+            # text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
             text += f'{TEXT_SEPARATOR}\n\n'
             text += report['all_status_verbose']
+            text = create_text_in_box(
+                text=text,
+                section_name='STATUS REPORT',
+                section_start=SECTION_HEAD_STATUS_START,
+                section_end=SECTION_HEAD_STATUS_END,
+            )
             await send_private_message(
                 function_caller='JOB_ACTIVATE_CONDITIONS()',
                 context=context,
