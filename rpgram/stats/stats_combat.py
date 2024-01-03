@@ -236,7 +236,8 @@ class CombatStats:
 
     @property
     def show_hit_points(self) -> str:
-        return f'{self.current_hit_points}/{self.hit_points}'
+        current_hit_points = max(self.current_hit_points, 0)
+        return f'{current_hit_points}/{self.hit_points}'
 
     show_hp = show_hit_points
 
