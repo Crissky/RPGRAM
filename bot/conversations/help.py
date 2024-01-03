@@ -57,6 +57,7 @@ from bot.constants.filters import (
 from bot.conversations.close import get_close_button
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.player import get_player_name_by_chat_id
 
 from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP_START, TEXT_SEPARATOR
 
@@ -816,7 +817,7 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_INFO_DEPLOY_BOT()')
     job = context.job
     chat_id = int(job.chat_id)  # chat_id vem como string
-
+    player_name = get_player_name_by_chat_id(chat_id=chat_id)
     await context.bot.send_message(
         chat_id=chat_id,
         text=(
@@ -824,7 +825,8 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
             f'Viajantes destemidos, uma atualização mágica acaba de ser '
             f'lançada em mim! Porém, como toda mudança encantada, aqueles que '
             f'estavam desfrutando de um merecido descanso precisarão usar o '
-            f'/{rest_commands[0]} novamente para renovar suas energias.'
+            f'/{rest_commands[0]} novamente para renovar suas energias.\n\n'
+            f'{" ".join(player_name)}'
         ),
     )
 
