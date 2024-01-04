@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 
 from repository.mongo import PlayerModel
 
@@ -24,11 +24,14 @@ def get_player_name(_id: Any) -> str:
     return get_player_attribute_by_id(_id=_id, attribute='name')
 
 
-def get_player_name_by_chat_id(chat_id: int):
+def get_player_name_by_chat_id(chat_id: int, sort: bool = True) -> List[str]:
     player_model = PlayerModel()
     query = {'chat_ids': chat_id}
     fields = ['name']
     player_names = player_model.get_all(query=query, fields=fields)
+
+    if sort:
+        player_names.sort()
 
     if player_names:
         return player_names
