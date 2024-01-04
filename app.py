@@ -98,7 +98,7 @@ def main() -> None:
         callback=job_info_deploy_bot,
         when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
-        name='JOB_ENEMY_ATTACK',
+        name='JOB_INFO_DEPLOY_BOT',
     )
 
     # Run the bot until the user presses Ctrl-C
