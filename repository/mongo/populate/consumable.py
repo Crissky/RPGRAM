@@ -4,6 +4,7 @@ from rpgram.consumables import (
     CureConsumable,
     IdentifyingConsumable,
     HealingConsumable,
+    ReviveConsumable,
     XPConsumable,
 )
 from rpgram.consumables.heal import (
@@ -15,8 +16,15 @@ from rpgram.consumables.heal import (
     EPIC_HEALING_POTION_POWER,
     LEGENDARY_HEALING_POTION_POWER,
     MYTHIC_HEALING_POTION_POWER,
+    MINOR_REVIVE_POWER,
 )
-from rpgram.consumables.other import EPIC_PROFICIENCY_ELIXIR_POWER, LEGENDARY_PROFICIENCY_ELIXIR_POWER, MYTHIC_PROFICIENCY_ELIXIR_POWER, PROFICIENCY_ELIXIR_POWER, RARE_PROFICIENCY_ELIXIR_POWER
+from rpgram.consumables.other import (
+    EPIC_PROFICIENCY_ELIXIR_POWER,
+    LEGENDARY_PROFICIENCY_ELIXIR_POWER,
+    MYTHIC_PROFICIENCY_ELIXIR_POWER,
+    PROFICIENCY_ELIXIR_POWER,
+    RARE_PROFICIENCY_ELIXIR_POWER
+)
 from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
 from rpgram.enums.debuff import (
     BLEEDING,
@@ -126,6 +134,18 @@ CONSUMABLES = [
         ),
         'rarity': RarityEnum.MYTHIC.name,
         'class': HealingConsumable,
+    },
+
+    # Revive Itens
+    {
+        'name': 'Minor Phoenix Feather',
+        'description': (
+            f'Revive personagem curando {MINOR_REVIVE_POWER} de HP.'
+        ),
+        'power': MINOR_REVIVE_POWER,
+        'weight': 0.50,
+        'rarity': RarityEnum.RARE.name,
+        'class': ReviveConsumable,
     },
 
     # Cure Potions

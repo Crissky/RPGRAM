@@ -84,7 +84,7 @@ class BaseCharacter:
         self.__updated_at = updated_at
 
     # BATTLE FUNCTIONS
-    def get_action_attack(self, action_name) -> int:
+    def get_action_attack_value(self, action_name) -> int:
         if action_name == 'physical_attack':
             return self.cs.physical_attack
         elif action_name == 'precision_attack':
@@ -103,7 +103,7 @@ class BaseCharacter:
 
     def weighted_choice_action_attack(self) -> str:
         actions = {
-            action: self.get_action_attack(action)
+            action: self.get_action_attack_value(action)
             for action in self.actions
         }
         population = list(actions.keys())
@@ -113,7 +113,7 @@ class BaseCharacter:
 
     def get_best_action_attack(self):
         actions = {
-            action: self.get_action_attack(action)
+            action: self.get_action_attack_value(action)
             for action in self.actions
         }
         action = max(actions, key=actions.get)
@@ -162,11 +162,15 @@ class BaseCharacter:
             defenser_dice=defenser_dice,
         )
         dodge_score = random()
+        is_dodged = False
+        if not defenser_char.is_immobilized:
+            is_dodged = (dodge_score >= accuracy)
 
         return {
             'attacker_accuracy': accuracy,
             'defender_dodge_score': dodge_score,
-            'is_dodged': (dodge_score >= accuracy),
+            'is_dodged': is_dodged,
+            'is_immobilized': defenser_char.is_immobilized,
         }
 
     def get_total_value(self, base_value: int, dice: Dice) -> int:
@@ -182,6 +186,23 @@ class BaseCharacter:
             result = result * 2
 
         return result
+
+    def calculate_damage(
+        self,
+        defense_value: int,
+        defense_value_boosted: int,
+        attack_value_boosted: int,
+    ) -> int:
+        BLOCK_MULTIPLIER = 0.9
+        MIN_DAMAGE_MULTIPLIER = 0.1
+
+        damage = attack_value_boosted - defense_value_boosted
+        min_damage = int(attack_value_boosted * MIN_DAMAGE_MULTIPLIER)
+        block_value = int(defense_value * BLOCK_MULTIPLIER)
+        if attack_value_boosted > block_value:
+            damage = max(damage, min_damage)
+
+        return max(damage, 0)
 
     def to_attack(
         self,
@@ -213,7 +234,7 @@ class BaseCharacter:
 
         if not isinstance(attacker_action_name, str):
             attacker_action_name = self.get_best_action_attack()
-        attack_value = self.get_action_attack(attacker_action_name)
+        attack_value = self.get_action_attack_value(attacker_action_name)
         attack_value_boosted = self.get_total_value(
             attack_value,
             attacker_dice
@@ -235,8 +256,13 @@ class BaseCharacter:
             )
         else:
             damage = attack_value_boosted
-            if to_defend:
-                damage = attack_value_boosted - defense_value_boosted
+            if to_defend and not defenser_char.is_immobilized:
+                damage = self.calculate_damage(
+                    defense_value=defense_value,
+                    defense_value_boosted=defense_value_boosted,
+                    attack_value_boosted=attack_value_boosted
+                )
+                attack_value_boosted - defense_value_boosted
             damage = max(damage, 0)
             damage_report = defenser_char.cs.damage_hit_points(damage)
             attacker_action_name = attacker_action_name.replace(
@@ -257,11 +283,18 @@ class BaseCharacter:
                     f'{attack_value_boosted}({attack_value}), '
                     f'{attacker_dice.text}\n'
                 )
-                report['text'] += (
-                    f'*{defense_action_name}*: '
-                    f'{defense_value_boosted}({defense_value}), '
-                    f'{defenser_dice.text}\n'
-                )
+                if defenser_char.is_immobilized:
+                    report['text'] += (
+                        f'*Vulnerável*: Personagem não pôde se defender pois '
+                        f'está com {defenser_char.status.immobilized_names()}.'
+                        f'\n'
+                    )
+                else:
+                    report['text'] += (
+                        f'*{defense_action_name}*: '
+                        f'{defense_value_boosted}({defense_value}), '
+                        f'{defenser_dice.text}\n'
+                    )
             report['text'] += damage_report['text']
             if damage_report['dead']:
                 report['text'] += (
@@ -321,6 +354,10 @@ class BaseCharacter:
     @property
     def is_dead(self) -> bool:
         return self.combat_stats.dead
+
+    @property
+    def is_immobilized(self) -> bool:
+        return self.status.immobilized
 
     name: str = property(lambda self: self.__name)
     _id: ObjectId = property(lambda self: self.__id)

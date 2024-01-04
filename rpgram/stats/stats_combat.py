@@ -137,6 +137,7 @@ class CombatStats:
     def cure_hit_points(self, value: int) -> dict:
         if value == FULL_HEAL_VALUE:
             value = self.hit_points
+
         value = int(abs(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
@@ -160,12 +161,26 @@ class CombatStats:
         }
 
     def revive(self, value: int = 1) -> dict:
+        if value == FULL_HEAL_VALUE:
+            value = self.hit_points
+
         value = -abs(int(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
+        report = {
+            'old_hp': old_hp,
+            'old_show_hp': old_show_hp,
+            'cure': value,
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+            'text': None
+        }
         if self.alive:
-            print(f'Não pode reviver um personagem vivo.')
-            return None
+            print('Não pode reviver um personagem vivo.')
+            report['text'] = 'Não pode reviver um personagem vivo.'
+            return report
         elif value < 0:
             print(f'Reviveu restaurando {-value} de HP.', end=' ')
         self.__damage = self.hit_points  # define dano para um valor máximo
@@ -178,7 +193,7 @@ class CombatStats:
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         true_cure = (new_hp - old_hp)
-        return {
+        report.update({
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
             'new_hp': new_hp,
@@ -191,7 +206,9 @@ class CombatStats:
             'dead': self.dead,
             'action': 'Reviver',
             'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
-        }
+        })
+
+        return report
 
     def update(self) -> None:
         self.__boost_stats()
@@ -414,7 +431,7 @@ class CombatStats:
             text += f'`{HIT_POINT_INJURED_EMOJI_TEXT}: {self.show_hit_points} '
         else:
             text += f'`{HIT_POINT_FULL_EMOJI_TEXT}: {self.show_hit_points} '
-        
+
         if verbose:
             text += f'[{base_hp}{self.bonus_hit_points:+}]'
         text += f'`\n'

@@ -32,7 +32,7 @@ async def job_create_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes_in_seconds = randint(1, 299) * 60
+        minutes_in_seconds = randint(1, 179) * 60
         print(
             f'JOB_CREATE_ENEMY_ATTACK() - {now}: '
             f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
