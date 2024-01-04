@@ -10,6 +10,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
+from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
 
@@ -147,6 +148,26 @@ class Status:
         ]
 
         return reports
+
+    @property
+    def immobilized(self) -> bool:
+        return any(
+            condition in IMMOBILIZED_DEBUFFS_NAMES
+            for condition in self.__conditions
+        )
+
+    def immobilized_names(self) -> str:
+        '''Retorna os nomes das condições imobilizantes que o personagem 
+        possui. Caso não haja condições desse tipo, retorna uma exceção.'''
+        names = []
+        for condition in self.__conditions:
+            if condition in IMMOBILIZED_DEBUFFS_NAMES:
+                names.append(condition.full_name)
+
+        if not names:
+            raise ValueError('Status não tem condições imobilizadoras.')
+
+        return ', '.join(names)
 
     def battle_activate(self, char) -> List[dict]:
         reports = []

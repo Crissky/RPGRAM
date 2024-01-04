@@ -360,3 +360,4 @@ if __name__ == '__main__':
     print(PetrifiedCondition())
     print(PoisoningCondition())
     print(SilenceCondition())
+    print(StunnedCondition() in IMMOBILIZED_DEBUFFS_NAMES)
