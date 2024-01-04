@@ -57,6 +57,7 @@ from bot.constants.filters import (
 from bot.conversations.close import get_close_button
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.player import get_player_name_by_chat_id
 
 from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP_START, TEXT_SEPARATOR
 
@@ -199,12 +200,12 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.CLASS.value}*CLASSES*: /{classe_commands[0]}\n'
             f'INFO: Exibe as classes existentes no jogo, tanto para os '
-            f'jogadores, quanto as classes exclusivas para os NPCs.'
+            f'jogadores, quanto as classes exclusivas para os NPCs.\n'
             f'Atalhos: {classe_cmd}\n\n'
 
             f'{EmojiEnum.RACE.value}*RAÇAS*: /{race_commands[0]}\n'
             f'INFO: Exibe as raças existentes no jogo, tanto para os '
-            f'jogadores, quanto as raças exclusivas para os NPCs.'
+            f'jogadores, quanto as raças exclusivas para os NPCs.\n'
             f'Atalhos: {race_cmd}\n\n'
 
             f'{EmojiEnum.ITEMS.value}*BOLSA*: /{bag_commands[0]}\n'
@@ -213,7 +214,7 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.EQUIPS.value}*EQUIPAMENTOS*: /{equips_commands[0]}\n'
             f'INFO: Exibe os itens equipados no personagem.\n'
-            f'Atalhos: {equips_cmd}\n\n'
+            f'Atalhos: {equips_cmd}'
         )
     elif option == CALLBACK_STATS:
         add_stats_cmd = command_to_string(add_stats_commands)
@@ -271,7 +272,7 @@ def get_details_text(option: str) -> str:
             f'*INFORMAÇÕES DO GRUPO*: /{view_group_commands[0]}\n'
             f'INFO: Exibe as informações do grupo.\n\n'
 
-            f'Atalhos: {view_group_cmd}\n\n'
+            f'Atalhos: {view_group_cmd}'
         )
     elif option == CALLBACK_PLAYER:
         config_player_cmd = command_to_string(config_player_commands)
@@ -305,7 +306,7 @@ def get_details_text(option: str) -> str:
             f'*INFORMAÇÕES DO JOGADOR*: /{view_player_commands[0]}\n'
             f'INFO: Exibe as informações do jogador.\n\n'
 
-            f'Atalhos: {view_player_cmd}\n\n'
+            f'Atalhos: {view_player_cmd}'
         )
     elif option == CALLBACK_EQUIPS:
         equips_cmd = command_to_string(equips_commands)
@@ -380,7 +381,7 @@ def get_details_text(option: str) -> str:
             f'*Vestes Mágicas* : {help_enum(MagicalWearableMaterialEnum)}.\n\n'
             f'*Máscaras* : {help_enum(MagicalMaskMaterialEnum)}.\n\n'
             f'*Capas* : {help_enum(TacticalWearableMaterialEnum)}.\n\n'
-            f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.\n\n'
+            f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.'
         )
     elif option == CALLBACK_BASE_ATTRIBUTES:
         text = (
@@ -427,7 +428,7 @@ def get_details_text(option: str) -> str:
             f'inspirar, persuadir, sugestionar ou manipular outras pessoas, '
             f'seja de maneira positiva ou negativa. '
             f'O carisma influencia bastante na `Iniciativa` e contribui '
-            f'um pouco no `Acerto` e na `Evasão`.\n\n'
+            f'um pouco no `Acerto` e na `Evasão`.'
         )
     elif option == CALLBACK_COMBAT_ATTRIBUTES:
         text = (
@@ -512,10 +513,28 @@ def get_details_text(option: str) -> str:
             f'o valor da `Evasão` em relação ao do `Acerto` do atacante, '
             f'maior será a chance de evitar o ataque.\n'
             f'Os Atributos Base que compoem o `Evasão` são:\n'
-            f'`Destreza`(x3), `Sabedoria`(x2) e `Carisma`(x2).\n\n'
+            f'`Destreza`(x3), `Sabedoria`(x2) e `Carisma`(x2).'
         )
     elif option == CALLBACK_ITEMS:
+        bag_cmd = command_to_string(bag_commands)
         text = (
+
+            f'*BAG (Items)*: /{bag_commands[0]}\n'
+            f'INFO: Mostra os itens na bolsa do jogador. Para usar itens '
+            f'consumíveis em outro jogador, passe o arroba dele como '
+            f'argumento do comando.\n'
+            f'Argumentos: [Arroba de algum jogador]\n\n'
+            
+            f'OBS: Se o comando for acionado sem argumentos, os itens serão '
+            f'usados no próprio jogador. Somente consumíveis podem ser '
+            f'usados em outros jogadores, os equipamentos serão equipados '
+            f'no próprio jogador - independente do arroba passado como '
+            f'argumento.\n\n'
+
+            f'Atalhos: {bag_cmd}\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
             f'{EmojiEnum.ITEMS.value}*ITEMS*\n\n'
 
             f'Os itens são divididos em duas categorias: `Consumíveis` e '
@@ -527,6 +546,7 @@ def get_details_text(option: str) -> str:
             f'obter poderes enquanto estiver com ele equipado, como os '
             f'pontos de `Ataque Físico` que uma espada pode fornecer ao '
             f'personagem.'
+
         )
     elif option == CALLBACK_DEBUFFS:
         text = (
@@ -556,6 +576,7 @@ def get_details_text(option: str) -> str:
             debuff_name = DebuffEnum[debuff_name].value
             text += f'*Nome*: {debuff.emoji}{debuff.name} ({debuff_name})\n'
             text += f'*Descrição*: {debuff.description}\n\n'
+        text = text.strip()
     elif option == CALLBACK_HEALSTATUS:
         text = (
             f'{EmojiEnum.STATUS.value}*Status(Cura)*\n\n'
@@ -579,6 +600,7 @@ def get_details_text(option: str) -> str:
         for heal_status in HEALSTATUS:
             text += f'*Nome*: {heal_status.emoji}{heal_status.name}\n'
             text += f'*Descrição*: {heal_status.description}\n\n'
+        text = text.strip()
     elif option == CALLBACK_CLASSES:
         text = (
             f'Página de ajuda das CLASSES ainda não foi escrita. '
@@ -599,6 +621,7 @@ def get_details_text(option: str) -> str:
             text += f'*Nome*: {healing_consumable.name}\n'
             text += f'*Descrição*: {healing_consumable.description}\n'
             text += f'*Raridade*: {healing_consumable.rarity.value}\n\n'
+        text = text.strip()
     elif option == CALLBACK_CURE_CONSUMABLE:
         item_model = ItemModel()
         query = {'_class': 'CureConsumable'}
@@ -612,6 +635,7 @@ def get_details_text(option: str) -> str:
             text += f'*Nome*: {cure_consumable.name}\n'
             text += f'*Descrição*: {cure_consumable.description}\n'
             text += f'*Raridade*: {cure_consumable.rarity.value}\n\n'
+        text = text.strip()
     else:
         raise ValueError(f'Opção de ajuda não encontrada: {option}')
 
@@ -807,6 +831,27 @@ def help_enum(enum_class: Enum) -> str:
         text.append(f'`{enum.value}` (x{index + 1})')
 
     return ', '.join(text)
+
+
+async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
+    '''Envia mensagem para o grupo informando o deploy e pedindo para usar o 
+    comando de descanso.
+    '''
+    print('JOB_INFO_DEPLOY_BOT()')
+    job = context.job
+    chat_id = int(job.chat_id)  # chat_id vem como string
+    player_name = get_player_name_by_chat_id(chat_id=chat_id)
+    await context.bot.send_message(
+        chat_id=chat_id,
+        text=(
+            f'{SECTION_HEAD.format("DEPLOYANDO")}\n'
+            f'Viajantes destemidos, uma atualização mágica acaba de ser '
+            f'lançada em mim! Porém, como toda mudança encantada, aqueles que '
+            f'estavam desfrutando de um merecido descanso precisarão usar o '
+            f'/{rest_commands[0]} novamente para renovar suas energias.\n\n'
+            f'{" ".join(player_name)}'
+        ),
+    )
 
 
 HELP_HANDLERS = [

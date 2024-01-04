@@ -88,6 +88,7 @@ class EmojiEnum(Enum):
     HEALING_CONSUMABLE = '❤️'
     CURE_CONSUMABLE = '💊'
     ALIGNMENT = '🗣️'
+    UNDER_ZERO = '🈴'
 
 
 class FaceEmojiEnum(Enum):

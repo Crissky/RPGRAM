@@ -73,7 +73,10 @@ class Status:
             current_condition.activate_continuous()
         else:
             self.__conditions.append(new_condition)
-            report['text'] = f'A Condição "{name}" foi adicionada.'
+            report['text'] = (
+                f'A Condição "{name} NV: {new_condition.level}" '
+                f'foi adicionada.'
+            )
         self.__update_stats()
 
         return report
