@@ -25,7 +25,10 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-from bot.conversations.close import get_close_button, get_random_refresh_text, get_refresh_close_button
+from bot.conversations.close import (
+    get_random_refresh_text,
+    get_refresh_close_button
+)
 from bot.decorators import (
     confusion,
     need_have_char,

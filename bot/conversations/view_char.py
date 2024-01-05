@@ -13,10 +13,19 @@ from telegram.ext import (
     PrefixHandler,
 )
 
-from bot.constants.view_char import ACCESS_DENIED, COMMANDS, REFRESH_VIEW_CHAR_PATTERN, SECTION_TEXT_CHAR
+from bot.constants.view_char import (
+    ACCESS_DENIED,
+    COMMANDS,
+    REFRESH_VIEW_CHAR_PATTERN,
+    SECTION_TEXT_CHAR
+)
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
-from bot.conversations.close import get_close_keyboard, get_random_refresh_text, get_refresh_close_keyboard
+from bot.conversations.close import (
+    get_close_keyboard,
+    get_random_refresh_text,
+    get_refresh_close_keyboard
+)
 from bot.decorators import print_basic_infos
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_CHAR_END, SECTION_HEAD_CHAR_START
