@@ -4,8 +4,6 @@ informações dos jogadores.
 '''
 
 
-from random import choice
-from typing import List
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ChatAction, ParseMode
 from telegram.ext import (
@@ -16,10 +14,17 @@ from telegram.ext import (
 )
 from telegram.error import BadRequest
 
-from bot.constants.help import ACCESS_DENIED
-from bot.constants.equips import COMMANDS, SECTION_TEXT_EQUIPS
+from bot.constants.equips import (
+    ACCESS_DENIED,
+    COMMANDS,
+    REFRESH_EQUIPS_PATTERN,
+    SECTION_TEXT_EQUIPS
+)
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
-from bot.conversations.close import get_close_button
+from bot.conversations.close import (
+    get_random_refresh_text,
+    get_refresh_close_button
+)
 from bot.decorators import (
     need_have_char,
     print_basic_infos,
@@ -34,7 +39,6 @@ from function.text import create_text_in_box
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
 from rpgram import Equips, Item
 from rpgram.boosters import Equipment
-from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 
 @need_have_char
@@ -55,18 +59,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if query:
         data = eval(query.data)
-        refresh = data.get('refresh', False)
+        refresh = data.get(REFRESH_EQUIPS_PATTERN, False)
         data_user_id = data['user_id']
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return None
-        
-        # Apaga o Mensagem
-        if data.get('close', False):
-            await query.answer('Fechando Equipamentos...')
-            await query.delete_message()
             return None
 
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -110,6 +108,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                     f'{refresh_text}\n'
                     f'{markdown_equips_sheet}'
                 )
+
+            markdown_equips_sheet = create_text_in_box(
+                text=markdown_equips_sheet,
+                section_name=SECTION_TEXT_EQUIPS,
+                section_start=SECTION_HEAD_EQUIPS_START,
+                section_end=SECTION_HEAD_EQUIPS_END
+            )
+
             try:
                 await query.edit_message_text(
                     markdown_equips_sheet,
@@ -125,9 +131,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_start=SECTION_HEAD_EQUIPS_START,
                 section_end=SECTION_HEAD_EQUIPS_END
             )
-    
+
             await update.effective_message.reply_text(
-                f'{markdown_equips_sheet}',
+                markdown_equips_sheet,
                 parse_mode=ParseMode.MARKDOWN_V2,
                 reply_markup=reply_markup,
                 disable_notification=silent
@@ -168,7 +174,9 @@ def get_equips_keyboard(
     if (amulet := equips.amulet):
         accessories_buttons.append(create_equipment_button(amulet, user_id))
     equips_keyboard.append(accessories_buttons)
-    equips_keyboard.append(get_refresh_close_button(user_id))
+    equips_keyboard.append(
+        get_refresh_close_button(user_id, refresh_data=REFRESH_EQUIPS_PATTERN)
+    )
 
     return InlineKeyboardMarkup(equips_keyboard)
 
@@ -191,24 +199,6 @@ def create_equipment_button(
     )
 
 
-def get_refresh_close_button(user_id) -> List[InlineKeyboardButton]:
-    return [
-        InlineKeyboardButton(
-            f'{EmojiEnum.REFRESH.value}Atualizar',
-            callback_data=(
-                f'{{"refresh":1,'
-                f'"user_id":{user_id}}}'
-            )
-        ),
-        get_close_button(user_id=user_id, right_icon=True)
-    ]
-
-
-def get_random_refresh_text() -> str:
-    emoji = choice(list(FaceEmojiEnum)).value
-    return f'Atualizado{emoji}'
-
-
 VIEW_EQUIPS_HANDLERS = [
     PrefixHandler(
         PREFIX_COMMANDS,
@@ -225,6 +215,6 @@ VIEW_EQUIPS_HANDLERS = [
         start, pattern=r'^{"equip_id":'
     ),
     CallbackQueryHandler(
-        start, pattern=r'^{"refresh":1'
+        start, pattern=fr'^{{"{REFRESH_EQUIPS_PATTERN}":1'
     ),
 ]

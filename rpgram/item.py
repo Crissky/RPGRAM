@@ -7,7 +7,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters.equipment import Equipment
 from rpgram.consumables.consumable import Consumable
 from rpgram.consumables.cure import CureConsumable
-from rpgram.consumables.heal import HealingConsumable
+from rpgram.consumables.heal import HealingConsumable, ReviveConsumable
 from rpgram.consumables.other import IdentifyingConsumable, XPConsumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
@@ -102,8 +102,10 @@ class Item:
                 order += 2
             elif isinstance(self.item, CureConsumable):
                 order += 3
-            elif isinstance(self.item, HealingConsumable):
+            elif isinstance(self.item, ReviveConsumable):
                 order += 4
+            elif isinstance(self.item, HealingConsumable):
+                order += 5
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 
@@ -191,7 +193,6 @@ if __name__ == '__main__':
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
-        condition=None,
         function='target.combat_stats.hp = 100'
     )
     sword = Equipment(

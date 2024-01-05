@@ -34,6 +34,7 @@ def create_text_in_box(
     section_end: str = SECTION_HEAD_ENEMY_END,
     clean_func: callable = escape_basic_markdown_v2,
 ) -> str:
+    text = text.strip()
     section_start = section_start.format(section_name)
     section_end = section_end.format(section_name)
     if callable(clean_func):

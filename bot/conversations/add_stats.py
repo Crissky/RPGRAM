@@ -18,13 +18,14 @@ from bot.constants.add_stats import (
     ATTRIBUTE_LIST,
     COMMANDS,
     POINTS_OPTION_LIST,
+    REFRESH_ADD_STATS_PATTERN,
     SECTION_TEXT_STATS
 )
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-from bot.conversations.close import get_close_button
+from bot.conversations.close import get_close_button, get_random_refresh_text, get_refresh_close_button
 from bot.decorators import (
     confusion,
     need_have_char,
@@ -60,6 +61,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query:
         data = eval(query.data)
+        refresh = data.get(REFRESH_ADD_STATS_PATTERN, False)
         data_user_id = data['user_id']
 
         # Não executa se outro usuário mexer na bolsa
@@ -69,8 +71,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if args is None:
             args = []
-            args.append(data['attribute'])
-            args.append(data['value'])
+            if not refresh:
+                args.append(data['attribute'])
+                args.append(data['value'])
 
     text = ''
     verbose = False
@@ -113,23 +116,38 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         markdown=True
     )
     addstats_buttons = get_addstats_buttons(user_id, player_char)
-    close_button = [get_close_button(user_id=user_id)]
+    refresh_close_button = get_refresh_close_button(
+        user_id=user_id,
+        refresh_data=REFRESH_ADD_STATS_PATTERN
+    )
     reply_markup = InlineKeyboardMarkup([
         *addstats_buttons,
-        close_button
+        refresh_close_button
     ])
     text = (
         f'{text}'
         f'{status_sheet}\n'
         f'{combat_stats_sheets}'
     )
-    text = create_text_in_box(
-        text=text,
-        section_name=SECTION_TEXT_STATS,
-        section_start=SECTION_HEAD_STATS_START,
-        section_end=SECTION_HEAD_STATS_END
-    )
+
     if query:
+        if refresh:
+            '''"refresh_text" é usado para modificar a mensagem de maneira
+            aleatória para tentar evitar um erro (BadRequest)
+            quando não há mudanças no "markdown_equips_sheet" usado na
+            função "edit_message_text".'''
+            refresh_text = get_random_refresh_text()
+            text = (
+                f'{refresh_text}\n'
+                f'{text}'
+            )
+
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_STATS,
+            section_start=SECTION_HEAD_STATS_START,
+            section_end=SECTION_HEAD_STATS_END
+        )
 
         await query.edit_message_text(
             text,
@@ -137,6 +155,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     else:
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_STATS,
+            section_start=SECTION_HEAD_STATS_START,
+            section_end=SECTION_HEAD_STATS_END
+        )
+
         await update.effective_message.reply_text(
             text,
             parse_mode=ParseMode.MARKDOWN_V2,
@@ -192,4 +217,7 @@ ADD_STATS_HANDLERS = [
         BASIC_COMMAND_FILTER
     ),
     CallbackQueryHandler(start, pattern=r'^{"attribute":'),
+    CallbackQueryHandler(
+        start, pattern=fr'^{{"{REFRESH_ADD_STATS_PATTERN}":1'
+    ),
 ]
