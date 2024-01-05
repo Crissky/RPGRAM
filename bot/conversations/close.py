@@ -1,3 +1,5 @@
+from random import choice
+from typing import List
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     CallbackQueryHandler,
@@ -9,10 +11,12 @@ from bot.constants.close import (
     CALLBACK_CLOSE,
     ESCAPED_CALLBACK_CLOSE,
     LEFT_CLOSE_BUTTON_TEXT,
+    REFRESH_BUTTON_TEXT,
     RIGHT_CLOSE_BUTTON_TEXT
 )
 from bot.decorators.char import skip_if_no_have_char
 from bot.decorators.print import print_basic_infos
+from rpgram.enums import FaceEmojiEnum
 
 
 @print_basic_infos
@@ -52,10 +56,40 @@ def get_close_button(
     )
 
 
+def get_refresh_close_button(
+    user_id: int,
+    refresh_data: str = 'refresh'
+) -> List[InlineKeyboardButton]:
+    return [
+        InlineKeyboardButton(
+            REFRESH_BUTTON_TEXT,
+            callback_data=(
+                f'{{"{refresh_data}":1,'
+                f'"user_id":{user_id}}}'
+            )
+        ),
+        get_close_button(user_id=user_id, right_icon=True)
+    ]
+
+
+def get_random_refresh_text() -> str:
+    emoji = choice(list(FaceEmojiEnum)).value
+    return f'Atualizado{emoji}'
+
+
 def get_close_keyboard(user_id: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup([[
         get_close_button(user_id=user_id)
     ]])
+
+
+def get_refresh_close_keyboard(
+    user_id: int,
+    refresh_data: str = 'refresh'
+) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        get_refresh_close_button(user_id=user_id, refresh_data=refresh_data)
+    ])
 
 
 CLOSE_MSG_HANDLER = CallbackQueryHandler(
