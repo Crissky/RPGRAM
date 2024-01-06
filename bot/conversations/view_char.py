@@ -62,8 +62,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if args[0].startswith('@'):
             self_char = False
             player_name = args[0]
-            query = {'player_name': player_name}
-            new_player_character = char_model.get(query=query)
+            mongo_query = {'player_name': player_name}
+            new_player_character = char_model.get(query=mongo_query)
             if not new_player_character:
                 await update.effective_message.reply_text(
                     f'{player_name} não possui um personamgem.',
