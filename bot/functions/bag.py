@@ -89,10 +89,14 @@ def drop_random_items_from_bag(user_id: int) -> List[Item]:
     item_model = ItemModel()
     drop_items = []
     query = {'player_id': user_id}
-    total_drop_items = randint(3, 10)
     items_ids = bag_model.get(query=query, fields=['items_ids'])
     if items_ids:
         items_ids = items_ids['items_ids']
+    else:
+        print(f'Usuário de ID "{user_id}" não possui itens na bolsa.')
+        return None
+    total_drop_items = randint(3, 10)
+    total_drop_items = min(total_drop_items, len(items_ids))
     for _ in range(total_drop_items):
         choiced_index = randrange(len(items_ids))
         item_dict = items_ids.pop(choiced_index)
@@ -103,8 +107,8 @@ def drop_random_items_from_bag(user_id: int) -> List[Item]:
         drop_item = Item(drop_item, quantity=drop_quantity)
         drop_items.append(drop_item)
 
-    # for drop_item in drop_items:
-    #     bag_model.sub(drop_item, user_id, drop_item.quantity)
+    for drop_item in drop_items:
+        bag_model.sub(drop_item, user_id, drop_item.quantity)
 
     return drop_items
 
