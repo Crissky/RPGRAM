@@ -92,12 +92,9 @@ class CombatStats:
             'new_show_hp': new_show_hp,
             'damage': value,
             'absolute_damage': absolute_damage,
-            'damaged': self.damaged,
-            'healed': self.healed,
-            'alive': self.alive,
-            'dead': self.dead,
             'action': 'DANO',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({value}).'
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({value}).',
+            **self.basic_report
         }
 
     def physical_damage_hit_points(self, value: int) -> dict:
@@ -152,12 +149,9 @@ class CombatStats:
             'new_show_hp': new_show_hp,
             'cure': value,
             'true_cure': true_cure,
-            'damaged': self.damaged,
-            'healed': self.healed,
-            'alive': self.alive,
-            'dead': self.dead,
             'action': 'CURA',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).',
+            **self.basic_report
         }
 
     def revive(self, value: int = 1) -> dict:
@@ -171,11 +165,8 @@ class CombatStats:
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
             'cure': value,
-            'damaged': self.damaged,
-            'healed': self.healed,
-            'alive': self.alive,
-            'dead': self.dead,
-            'text': None
+            'text': None,
+            **self.basic_report
         }
         if self.alive:
             print('Não pode reviver um personagem vivo.')
@@ -200,12 +191,9 @@ class CombatStats:
             'new_show_hp': new_show_hp,
             'cure': value,
             'true_cure': true_cure,
-            'damaged': self.damaged,
-            'healed': self.healed,
-            'alive': self.alive,
-            'dead': self.dead,
             'action': 'Reviver',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).'
+            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).',
+            **self.basic_report
         })
 
         return report
@@ -358,6 +346,15 @@ class CombatStats:
         self.set_damage(value)
 
     current_hp = current_hit_points
+
+    @property
+    def basic_report(self) -> dict:
+        return {
+            'damaged': self.damaged,
+            'healed': self.healed,
+            'alive': self.alive,
+            'dead': self.dead,
+        }
 
     # Getters
     # Base Attributes
