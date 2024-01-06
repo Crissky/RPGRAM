@@ -175,7 +175,7 @@ def add_conditions_trap(
         char_model = CharacterModel()
         char = char_model.get(user_id)
 
-    condition_level_base = group_level // 10
+    condition_level_base = (group_level // 10) + 1
     condition_trap_report = {'text': '', 'char': char}
     for condition_trap in conditions_trap:
         condition_level = randint(
