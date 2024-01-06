@@ -1,5 +1,5 @@
-
-from typing import Union
+from random import randint, randrange
+from typing import List, Union
 from bot.constants.bag import ITEMS_PER_PAGE
 from repository.mongo import BagModel, ItemModel
 from rpgram import Item
@@ -84,8 +84,34 @@ def sub_identifying_lens(user_id: int) -> bool:
     return sub_item_by_name(IDENTIFYING_LENS, user_id)
 
 
+def drop_random_items_from_bag(user_id: int) -> List[Item]:
+    bag_model = BagModel()
+    item_model = ItemModel()
+    drop_items = []
+    query = {'player_id': user_id}
+    total_drop_items = randint(3, 10)
+    items_ids = bag_model.get(query=query, fields=['items_ids'])
+    if items_ids:
+        items_ids = items_ids['items_ids']
+    for _ in range(total_drop_items):
+        choiced_index = randrange(len(items_ids))
+        item_dict = items_ids.pop(choiced_index)
+        item_id = item_dict['_id']
+        item_quantity = item_dict['quantity']
+        drop_quantity = randint(1, item_quantity)
+        drop_item = item_model.get(query={'_id': item_id})
+        drop_item = Item(drop_item, quantity=drop_quantity)
+        drop_items.append(drop_item)
+
+    # for drop_item in drop_items:
+    #     bag_model.sub(drop_item, user_id, drop_item.quantity)
+
+    return drop_items
+
+
 if __name__ == '__main__':
-    sub_identifying_lens(370221845)
+    # sub_identifying_lens(370221845)
     id_lens = get_identifying_lens()
     print(type(id_lens))
     print(id_lens)
+    print(drop_random_items_from_bag(370221845))

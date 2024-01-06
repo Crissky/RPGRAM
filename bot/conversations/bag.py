@@ -1,7 +1,12 @@
 from itertools import zip_longest
 from typing import List
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+    Update
+)
 from telegram.constants import ChatAction, ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
@@ -46,6 +51,8 @@ from bot.constants.bag import (
     PATTERN_SORT,
     PATTERN_SORT_ITEMS,
     PATTERN_USE,
+    SECTION_TEXT_CONSUMABLE,
+    SECTION_TEXT_EQUIPMENT,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -84,6 +91,10 @@ from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
 from bot.functions.player import get_player_id_by_name, get_player_name
 from constant.text import (
+    SECTION_HEAD_CONSUMABLE_END,
+    SECTION_HEAD_CONSUMABLE_START,
+    SECTION_HEAD_EQUIPMENT_END,
+    SECTION_HEAD_EQUIPMENT_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
     TEXT_SEPARATOR,
@@ -665,21 +676,15 @@ async def drop_item(
 
     # Envia mensagem de drop do item, se ele foi dropado no grupo
     if chat_id != user_id:
-        item_id = str(item._id)
-        take_break_buttons = get_take_break_buttons(drop, item_id)
-        reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
-        response = await update.effective_message.reply_text(
-            text=f'{user_name} dropou o item:\n\n{markdown_item_sheet}',
-            disable_notification=silent,
-            reply_markup=reply_markup_drop,
-            parse_mode=ParseMode.MARKDOWN_V2
+        text = f'{user_name} dropou o item'
+        item.quantity = drop
+        await send_drop_message(
+            update=update,
+            context=context,
+            item=item,
+            text=text,
+            silent=silent,
         )
-        message_id = response.message_id
-        drops = context.chat_data.get('drops', None)
-        if isinstance(drops, dict):
-            drops[message_id] = True
-        else:
-            context.chat_data['drops'] = {message_id: True}
 
     return START_ROUTES
 
@@ -940,6 +945,50 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return ConversationHandler.END
 
     return START_ROUTES
+
+
+async def send_drop_message(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    item: Item,
+    text: str,
+    silent: bool = False,
+):
+    item_id = str(item._id)
+    drop = item.quantity
+    take_break_buttons = get_take_break_buttons(drop, item_id)
+    reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
+    markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
+    markdown_item_sheet = f'{text}:\n\n{markdown_item_sheet}'
+
+    if isinstance(item.item, Consumable):
+        markdown_item_sheet = create_text_in_box(
+            text=markdown_item_sheet,
+            section_name=SECTION_TEXT_CONSUMABLE,
+            section_start=SECTION_HEAD_CONSUMABLE_START,
+            section_end=SECTION_HEAD_CONSUMABLE_END,
+        )
+    elif isinstance(item.item, Equipment):
+        markdown_item_sheet = create_text_in_box(
+            text=markdown_item_sheet,
+            section_name=SECTION_TEXT_EQUIPMENT,
+            section_start=SECTION_HEAD_EQUIPMENT_START,
+            section_end=SECTION_HEAD_EQUIPMENT_END,
+        )
+
+    response = await update.effective_message.reply_text(
+        text=markdown_item_sheet,
+        disable_notification=silent,
+        reply_markup=reply_markup_drop,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
+
+    drops_message_id = response.message_id
+    drops = context.chat_data.get('drops', None)
+    if isinstance(drops, dict):
+        drops[drops_message_id] = True
+    else:
+        context.chat_data['drops'] = {drops_message_id: True}
 
 
 def get_item_texts(items: List[Item]) -> str:
