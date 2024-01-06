@@ -5,6 +5,8 @@ from telegram.constants import ParseMode
 
 from bot.constants.enemy import AMBUSH_TEXTS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
+from bot.conversations.bag import send_drop_message
+from bot.functions.bag import drop_random_items_from_bag
 from constant.text import (
     SECTION_HEAD_ENEMY_END,
     SECTION_HEAD_ENEMY_START,
@@ -59,6 +61,8 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     for enemy_char in enemy_list:
         try:
             defenser_char = choice_char(chat_id=chat_id, is_alive=True)
+            user_id = defenser_char.player_id
+            player_name = defenser_char.player_name
         except ValueError as error:
             print(f'JOB_ENEMY_ATTACK(): {error}')
             if len(texts) > 1:
@@ -77,6 +81,15 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
         if not damage_report['defense']['is_miss']:
             save_char(defenser_char)
+        if damage_report['dead']:
+            drop_items = drop_random_items_from_bag(user_id=user_id)
+            await send_drop_message(
+                chat_id=chat_id,
+                context=context,
+                items=drop_items,
+                text=f'{player_name} morreu e dropou o item',
+                silent=True,
+            )
         texts.append(damage_report['text'])
 
     full_text = f'{TEXT_SEPARATOR}\n'.join(texts)
