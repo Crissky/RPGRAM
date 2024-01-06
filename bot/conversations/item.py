@@ -40,6 +40,7 @@ from bot.decorators import (
 )
 from bot.decorators.char import confusion
 from bot.decorators.job import skip_if_spawn_timeout
+from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
@@ -180,7 +181,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             group_level=group_level,
             user_id=user_id,
             user_name=user_name,
-            query=query
+            update=update,
+            context=context
         )
 
     text_find_treasure_open = choice(REPLY_TEXTS_FIND_TREASURE_OPEN).lower()
@@ -218,7 +220,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await send_drop_message(
                 update=update,
                 context=context,
-                item=item,
+                items=item,
                 text='O baú dropou o item',
                 silent=silent,
             )
@@ -240,8 +242,10 @@ async def activated_trap(
     group_level: int,
     user_id: int,
     user_name: str,
-    query: CallbackQuery,
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
 ):
+    query = update.callback_query
     (
         text_find_trap_open,
         trap_type_damage,
@@ -274,6 +278,14 @@ async def activated_trap(
         f'{condition_report_text}'
     )
     if damage_report['dead']:
+        drop_items = drop_random_items_from_bag(user_id=user_id)
+        await send_drop_message(
+            update=update,
+            context=context,
+            items=drop_items,
+            text=f'{user_name} morreu e dropou o item',
+            silent=True,
+        )
         text += 'Seus pontos de vida chegaram a zero.\n'
         text += (
             f'Use o comando /{rest_commands[0]} '

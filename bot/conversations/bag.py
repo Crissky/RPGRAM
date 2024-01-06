@@ -681,7 +681,7 @@ async def drop_item(
         await send_drop_message(
             update=update,
             context=context,
-            item=item,
+            items=item,
             text=text,
             silent=silent,
         )
@@ -948,47 +948,62 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def send_drop_message(
-    update: Update,
     context: ContextTypes.DEFAULT_TYPE,
-    item: Item,
+    items: List[Item],
     text: str,
+    update: Update = None,
+    chat_id: int = None,
     silent: bool = False,
 ):
-    item_id = str(item._id)
-    drop = item.quantity
-    take_break_buttons = get_take_break_buttons(drop, item_id)
-    reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
-    markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
-    markdown_item_sheet = f'{text}:\n\n{markdown_item_sheet}'
+    if update is None and chat_id is None:
+        raise ValueError('update ou chat_id são requeridos')
+    if isinstance(items, Item):
+        items = [items]
+    for item in items:
+        item_id = str(item._id)
+        drop = item.quantity
+        take_break_buttons = get_take_break_buttons(drop, item_id)
+        reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
+        markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
+        markdown_item_sheet = f'{text}:\n\n{markdown_item_sheet}'
 
-    if isinstance(item.item, Consumable):
-        markdown_item_sheet = create_text_in_box(
-            text=markdown_item_sheet,
-            section_name=SECTION_TEXT_CONSUMABLE,
-            section_start=SECTION_HEAD_CONSUMABLE_START,
-            section_end=SECTION_HEAD_CONSUMABLE_END,
-        )
-    elif isinstance(item.item, Equipment):
-        markdown_item_sheet = create_text_in_box(
-            text=markdown_item_sheet,
-            section_name=SECTION_TEXT_EQUIPMENT,
-            section_start=SECTION_HEAD_EQUIPMENT_START,
-            section_end=SECTION_HEAD_EQUIPMENT_END,
-        )
+        if isinstance(item.item, Consumable):
+            markdown_item_sheet = create_text_in_box(
+                text=markdown_item_sheet,
+                section_name=SECTION_TEXT_CONSUMABLE,
+                section_start=SECTION_HEAD_CONSUMABLE_START,
+                section_end=SECTION_HEAD_CONSUMABLE_END,
+            )
+        elif isinstance(item.item, Equipment):
+            markdown_item_sheet = create_text_in_box(
+                text=markdown_item_sheet,
+                section_name=SECTION_TEXT_EQUIPMENT,
+                section_start=SECTION_HEAD_EQUIPMENT_START,
+                section_end=SECTION_HEAD_EQUIPMENT_END,
+            )
 
-    response = await update.effective_message.reply_text(
-        text=markdown_item_sheet,
-        disable_notification=silent,
-        reply_markup=reply_markup_drop,
-        parse_mode=ParseMode.MARKDOWN_V2
-    )
+        if isinstance(update, Update):
+            response = await update.effective_message.reply_text(
+                text=markdown_item_sheet,
+                disable_notification=silent,
+                reply_markup=reply_markup_drop,
+                parse_mode=ParseMode.MARKDOWN_V2
+            )
+        else:
+            response = await context.bot.send_message(
+                chat_id=chat_id,
+                text=markdown_item_sheet,
+                disable_notification=silent,
+                reply_markup=reply_markup_drop,
+                parse_mode=ParseMode.MARKDOWN_V2,
+            )
 
-    drops_message_id = response.message_id
-    drops = context.chat_data.get('drops', None)
-    if isinstance(drops, dict):
-        drops[drops_message_id] = True
-    else:
-        context.chat_data['drops'] = {drops_message_id: True}
+        drops_message_id = response.message_id
+        drops = context.chat_data.get('drops', None)
+        if isinstance(drops, dict):
+            drops[drops_message_id] = True
+        else:
+            context.chat_data['drops'] = {drops_message_id: True}
 
 
 def get_item_texts(items: List[Item]) -> str:
