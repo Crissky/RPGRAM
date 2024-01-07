@@ -3,27 +3,33 @@ import re
 from constant.text import SECTION_HEAD_ENEMY_START, SECTION_HEAD_ENEMY_END
 
 
-def escape_markdown_v2(text):
+def escape_markdown_v2(text: str):
     for char in r'\_*[]()~`>#+-=|{}.!':
-        text = text.replace(char, f'\{char}')
+        escaped_char = re.escape(char)
+        text = text.replace(escaped_char, char)
+        text = text.replace(char, escaped_char)
+
     return text
 
 
-def escape_basic_markdown_v2(text):
+def escape_basic_markdown_v2(text: str):
     for char in r'_[](){}>#+-=|.!':
-        text = text.replace(char, f'\{char}')
+        escaped_char = re.escape(char)
+        text = text.replace(escaped_char, char)
+        text = text.replace(char, escaped_char)
+
     return text
 
 
-def remove_bold(text):
+def remove_bold(text: str):
     return text.replace('*', '')
 
 
-def remove_italic(text):
+def remove_italic(text: str):
     return re.sub(r'_\b|\b_', '', text)
 
 
-def remove_code(text):
+def remove_code(text: str):
     return text.replace('`', '')
 
 

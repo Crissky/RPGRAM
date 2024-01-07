@@ -56,7 +56,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     group_level = get_attribute_group_or_player(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
-    texts = [escape_basic_markdown_v2(f'{choice(AMBUSH_TEXTS)}\n\n')]
+    texts = [f'{choice(AMBUSH_TEXTS)}\n\n']
 
     for enemy_char in enemy_list:
         try:
@@ -102,16 +102,17 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
                 user_id=user_id,
                 base_xp=base_xp,
             )
-            text_report += escape_basic_markdown_v2(f'{report_xp["text"]}\n\n')
+            text_report += f'{report_xp["text"]}\n\n'
 
         texts.append(text_report)
 
     full_text = f'{TEXT_SEPARATOR}\n'.join(texts)
-    full_text += escape_basic_markdown_v2(
+    full_text += (
         f'Os inimigos fugiram!'
         if len(enemy_list) > 1
         else f'O inimigo fugiu!'
     )
+    full_text = escape_basic_markdown_v2(full_text)
     full_text = create_text_in_box(
         text=full_text,
         section_name='EMBOSCADA',
