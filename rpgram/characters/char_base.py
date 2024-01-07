@@ -362,6 +362,7 @@ class BaseCharacter:
         return self.status.immobilized
 
     name: str = property(lambda self: self.__name)
+    level: int = property(lambda self: self.__base_stats.level)
     _id: ObjectId = property(lambda self: self.__id)
     base_stats: BaseStats = property(fget=lambda self: self.__base_stats)
     combat_stats: CombatStats = property(fget=lambda self: self.__combat_stats)
@@ -380,6 +381,9 @@ class BaseCharacter:
     )
     full_name_with_level = property(
         lambda self: f'{self.full_name} (LV: {self.bs.level})'
+    )
+    points_multiplier: int = property(
+        lambda self: self.__base_stats.points_multiplier
     )
     actions = property(
         lambda self: ['physical_attack', 'precision_attack', 'magical_attack']

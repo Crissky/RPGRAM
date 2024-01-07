@@ -13,7 +13,7 @@ from constant.text import (
     TEXT_SEPARATOR
 )
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import choice_char, save_char
+from bot.functions.char import add_xp, choice_char, save_char
 from bot.functions.date_time import is_boosted_day
 from function.date_time import get_brazil_time_now
 from bot.functions.general import get_attribute_group_or_player
@@ -79,6 +79,8 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             markdown=True
         )
 
+        text_report = damage_report['text']
+
         if not damage_report['defense']['is_miss']:
             save_char(defenser_char)
         if damage_report['dead']:
@@ -90,7 +92,19 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
                 text=f'{player_name} morreu e dropou o item',
                 silent=True,
             )
-        texts.append(damage_report['text'])
+        else:
+            base_xp = int(
+                enemy_char.points_multiplier *
+                max(enemy_char.level - defenser_char.level, 10)
+            )
+            report_xp = add_xp(
+                chat_id=chat_id,
+                user_id=user_id,
+                base_xp=base_xp,
+            )
+            text_report += escape_basic_markdown_v2(f'{report_xp["text"]}\n\n')
+
+        texts.append(text_report)
 
     full_text = f'{TEXT_SEPARATOR}\n'.join(texts)
     full_text += escape_basic_markdown_v2(
