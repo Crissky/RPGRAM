@@ -173,20 +173,6 @@ class BaseCharacter:
             'is_immobilized': defenser_char.is_immobilized,
         }
 
-    def get_total_value(self, base_value: int, dice: Dice) -> int:
-        '''Retorna o valor boostado conforme o resultado do dado.
-        '''
-        dice.throw(rethrow=False)
-        multiplier = (1 + (dice.value * 0.025))
-        boosted_value = int(base_value * multiplier)
-        added_value = base_value + dice.value
-        result = max(boosted_value, added_value)
-
-        if dice.is_critical:
-            result = result * 2
-
-        return result
-
     def calculate_damage(
         self,
         defense_value: int,
@@ -235,19 +221,13 @@ class BaseCharacter:
         if not isinstance(attacker_action_name, str):
             attacker_action_name = self.get_best_action_attack()
         attack_value = self.get_action_attack_value(attacker_action_name)
-        attack_value_boosted = self.get_total_value(
-            attack_value,
-            attacker_dice
-        )
+        attack_value_boosted = attacker_dice.boost_value(attack_value)
 
         (
             defense_value,
             defense_action_name
         ) = defenser_char.get_action_defense(attacker_action_name)
-        defense_value_boosted = defenser_char.get_total_value(
-            defense_value,
-            defenser_dice
-        )
+        defense_value_boosted = defenser_dice.boost_value(defense_value)
 
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
@@ -265,7 +245,10 @@ class BaseCharacter:
                 )
                 attack_value_boosted - defense_value_boosted
             damage = max(damage, 0)
-            damage_report = defenser_char.cs.damage_hit_points(damage)
+            damage_report = defenser_char.cs.damage_hit_points(
+                value=damage,
+                markdown=markdown
+            )
             report.update(damage_report)
             attacker_action_name = attacker_action_name.replace(
                 '_', ' ').title()
@@ -321,18 +304,18 @@ class BaseCharacter:
                 'dice_text': attacker_dice.text,
                 'is_critical': attacker_dice.is_critical,
                 'atk': attack_value,
-                'total_atk': attack_value_boosted,
+                'boosted_atk': attack_value_boosted,
             },
             'defenser': defenser_char,
             'defenser_char': defenser_char,
             'defense': {
-                'reaction': defense_action_name,
+                'action': defense_action_name,
                 'dodge_score': (dodge_report['defender_dodge_score'] * 100),
                 'dice_value': defenser_dice.value,
                 'dice_text': defenser_dice.text,
                 'is_critical': defenser_dice.is_critical,
                 'def': defense_value,
-                'total_def': defense_value_boosted,
+                'boosted_def': defense_value_boosted,
                 'damage': (damage * -1),
                 'is_miss': is_miss
             },

@@ -56,7 +56,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     group_level = get_attribute_group_or_player(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
-    texts = [escape_basic_markdown_v2(f'{choice(AMBUSH_TEXTS)}\n\n')]
+    texts = [f'{choice(AMBUSH_TEXTS)}\n\n']
 
     for enemy_char in enemy_list:
         try:
@@ -68,7 +68,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             if len(texts) > 1:
                 break
             return
-        damage_report = enemy_char.to_attack(
+        attack_report = enemy_char.to_attack(
             defenser_char=defenser_char,
             attacker_dice=Dice(20),
             defenser_dice=Dice(20),
@@ -79,11 +79,11 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             markdown=True
         )
 
-        text_report = damage_report['text']
+        text_report = attack_report['text']
 
-        if not damage_report['defense']['is_miss']:
+        if not attack_report['defense']['is_miss']:
             save_char(defenser_char)
-        if damage_report['dead']:
+        if attack_report['dead']:
             drop_items = drop_random_items_from_bag(user_id=user_id)
             await send_drop_message(
                 chat_id=chat_id,
@@ -102,16 +102,17 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
                 user_id=user_id,
                 base_xp=base_xp,
             )
-            text_report += escape_basic_markdown_v2(f'{report_xp["text"]}\n\n')
+            text_report += f'{report_xp["text"]}\n\n'
 
         texts.append(text_report)
 
     full_text = f'{TEXT_SEPARATOR}\n'.join(texts)
-    full_text += escape_basic_markdown_v2(
+    full_text += (
         f'Os inimigos fugiram!'
         if len(enemy_list) > 1
         else f'O inimigo fugiu!'
     )
+    full_text = escape_basic_markdown_v2(full_text)
     full_text = create_text_in_box(
         text=full_text,
         section_name='EMBOSCADA',

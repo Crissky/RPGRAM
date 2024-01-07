@@ -1,4 +1,4 @@
-from random import choice, random
+from random import choice
 
 from bot.functions.char import (
     choice_char,
@@ -8,13 +8,18 @@ from bot.functions.char import (
 from bot.functions.config import get_attribute_group
 from bot.functions.general import activated_condition
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.create_char import COMMANDS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.functions.status import confusion_status, immobilized_status
+from constant.text import (
+    SECTION_HEAD_CONFUSION_END,
+    SECTION_HEAD_CONFUSION_START
+)
+from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import CharacterModel
-from rpgram import Battle
 from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram import Dice
 from rpgram.enums.debuff import DEBUFF_FULL_NAMES
@@ -298,7 +303,6 @@ def confusion(retry_state=ConversationHandler.END):
             if not status or not activated_confusion:
                 return await callback(update, context)
             else:
-                battle = Battle([], [], None)
                 player_ids = get_player_ids_from_group(chat_id)
                 player_ids.append(user_id)
 
@@ -316,14 +320,18 @@ def confusion(retry_state=ConversationHandler.END):
                     target_char_dice = Dice(20)
 
                 confuse_char_dice = Dice(20)
-                confuse_char_dice.throw()
-                target_char_dice.throw()
+                confuse_action = confuse_char.weighted_choice_action_attack()
 
-                accuracy = battle.get_accuracy(
-                    confuse_char.cs.hit,
-                    target_char.cs.evasion,
-                    confuse_char_dice,
-                    target_char_dice
+                attack_report = confuse_char.to_attack(
+                    defenser_char=target_char,
+                    attacker_dice=confuse_char_dice,
+                    defenser_dice=target_char_dice,
+                    attacker_action_name=confuse_action,
+                    to_dodge=True,
+                    to_defend=True,
+                    rest_command=REST_COMMANDS[0],
+                    verbose=True,
+                    markdown=True,
                 )
 
                 text = choice(CONFUSION_TEXT).format(
@@ -331,8 +339,8 @@ def confusion(retry_state=ConversationHandler.END):
                     aliado=target_player_name
                 )
                 target_player_name = target_char.player_name
-                dodge_score = random()
-                if dodge_score >= accuracy:
+
+                if attack_report['defense']['is_miss']:
                     text += choice(DODGE_TEXT).format(
                         aliado=target_player_name
                     )
@@ -340,42 +348,27 @@ def confusion(retry_state=ConversationHandler.END):
                     text += choice(ATTACK_TEXT).format(
                         aliado=target_player_name
                     )
-                    action = confuse_char.weighted_choice_action_attack()
-                    attack_value = confuse_char.get_action_attack(action)
-                    attack_value_boosted = battle.get_total_value(
-                        attack_value,
-                        confuse_char_dice
-                    )
-                    (
-                        defense_value,
-                        defense_action
-                    ) = target_char.get_action_defense(action)
-                    defense_value_boosted = battle.get_total_value(
-                        defense_value,
-                        target_char_dice
-                    )
-                    damage = attack_value_boosted - defense_value_boosted
-                    damage = max(damage, 0)
-                    damage_report = target_char.cs.damage_hit_points(damage)
-                    action = action.replace('_', ' ').title()
-                    defense_action = defense_action.replace('_', ' ').title()
-                    text += (
-                        f'{action}: {attack_value_boosted}({attack_value}), '
-                        f'{confuse_char_dice.text}\n'
-                    )
-                    text += (
-                        f'{defense_action}: '
-                        f'{defense_value_boosted}({defense_value}), '
-                        f'{target_char_dice.text}\n'
-                    )
-                    text += damage_report['text']
-                    if damage_report['dead']:
+
+                    text += attack_report['text']
+                    if attack_report['dead']:
                         text += (
                             f'\n\n{target_player_name} morreu! '
-                            f'Use o comando /{REST_COMMANDS[0]} para descansar.'
+                            f'Use o comando /{REST_COMMANDS[0]} '
+                            f'para descansar.'
                         )
                     save_char(target_char)
-                await update.effective_message.reply_text(text)
+                text = escape_basic_markdown_v2(text)
+                text = create_text_in_box(
+                    text=text,
+                    section_name='CONFUSÃO',
+                    section_start=SECTION_HEAD_CONFUSION_START,
+                    section_end=SECTION_HEAD_CONFUSION_END
+                )
+
+                await update.effective_message.reply_text(
+                    text,
+                    parse_mode=ParseMode.MARKDOWN_V2,
+                )
                 return retry_state
         return wrapper
     return decorator

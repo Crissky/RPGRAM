@@ -98,7 +98,7 @@ def main() -> None:
     application.job_queue.run_repeating(
         callback=autorest_midnight,
         interval=timedelta(days=1),
-        first=get_midnight_hour(),
+        first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_AUTOREST_MIDNIGHT',
     )
