@@ -34,6 +34,7 @@ from bot.conversations import (
 from bot.conversations.enemy import job_create_enemy_attack
 from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.item import job_create_find_treasure
+from bot.conversations.rest import autorest_midnight
 from bot.conversations.status import job_activate_conditions
 from function.date_time import get_last_hour, get_midnight_hour
 
@@ -93,6 +94,13 @@ def main() -> None:
         first=get_midnight_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_ENEMY_ATTACK',
+    )
+    application.job_queue.run_repeating(
+        callback=autorest_midnight,
+        interval=timedelta(days=1),
+        first=get_midnight_hour(),
+        chat_id=MY_GROUP_ID,
+        name='JOB_AUTOREST_MIDNIGHT',
     )
     application.job_queue.run_once(
         callback=job_info_deploy_bot,

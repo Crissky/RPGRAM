@@ -11,6 +11,7 @@ from telegram.ext import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.rest import (
     COMMANDS,
+    REPLY_TEXT_REST_MIDNIGHT,
     REPLY_TEXTS_ALREADY_RESTING,
     REPLY_TEXTS_NO_NEED_REST,
     REPLY_TEXTS_STARTING_REST,
@@ -24,6 +25,7 @@ from bot.decorators import (
 )
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.player import get_player_id_by_chat_id
 from constant.text import SECTION_HEAD_REST_END, SECTION_HEAD_REST_START
 from function.text import create_text_in_box
 
@@ -35,6 +37,11 @@ from repository.mongo import BattleModel, CharacterModel, PlayerModel
 @need_not_in_battle
 @print_basic_infos
 async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    '''Comando que inicia o descanso do personagem.
+    O descanso faz com que o personagem recupere HP a cada hora.
+    Se o personagem estiver morto, ele reviverá e recuperará 1 de HP 
+    em uma hora.'''
+
     char_model = CharacterModel()
     battle_model = BattleModel()
     chat_id = update.effective_chat.id
@@ -132,6 +139,60 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             text=text,
             user_id=job.user_id,
+        )
+
+
+async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
+    '''Comando que inicia o descanso de todos os personagens do grupo que 
+    não estão com o HP cheio.
+    O descanso faz com que o personagem recupere HP a cada hora.
+    Se o personagem estiver morto, ele reviverá, recuperando 1 de HP 
+    em uma hora.'''
+
+    print('JOB_AUTOREST_MIDNIGHT()')
+    char_model = CharacterModel()
+    battle_model = BattleModel()
+    job = context.job
+    chat_id = int(job.chat_id)  # chat_id vem como string
+    user_ids = get_player_id_by_chat_id(chat_id=chat_id)
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    texts = []
+    for user_id in user_ids:
+        job_name = get_rest_jobname(user_id)
+        current_jobs = context.job_queue.get_jobs_by_name(job_name)
+        player_character = char_model.get(user_id)
+        player_name = player_character.player_name
+        character_id = player_character._id
+        current_hp = player_character.cs.show_hit_points
+        battle = battle_model.get(query={
+            '$or': [{'blue_team': character_id}, {'red_team': character_id}]
+        })
+
+        if battle or current_jobs or player_character.is_healed:
+            continue
+        else:
+            context.job_queue.run_repeating(
+                callback=job_rest_cure,
+                interval=timedelta(hours=1),
+                chat_id=chat_id,
+                user_id=user_id,
+                name=job_name,
+                data=user_id
+            )
+            texts.append(f'{player_name} - HP: {current_hp}')
+
+    if texts:
+        players_hp = '\n'.join(texts)
+        reply_text_rest_midnight = choice(REPLY_TEXT_REST_MIDNIGHT)
+        text = (
+            f'{reply_text_rest_midnight}\n\n'
+            f'{players_hp}\n\n'
+            f'Os personagens irão recuperar HP a cada hora.'
+        )
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=text,
+            disable_notification=silent
         )
 
 
