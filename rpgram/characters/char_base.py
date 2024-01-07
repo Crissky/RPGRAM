@@ -173,20 +173,6 @@ class BaseCharacter:
             'is_immobilized': defenser_char.is_immobilized,
         }
 
-    def get_total_value(self, base_value: int, dice: Dice) -> int:
-        '''Retorna o valor boostado conforme o resultado do dado.
-        '''
-        dice.throw(rethrow=False)
-        multiplier = (1 + (dice.value * 0.025))
-        boosted_value = int(base_value * multiplier)
-        added_value = base_value + dice.value
-        result = max(boosted_value, added_value)
-
-        if dice.is_critical:
-            result = result * 2
-
-        return result
-
     def calculate_damage(
         self,
         defense_value: int,
@@ -235,19 +221,13 @@ class BaseCharacter:
         if not isinstance(attacker_action_name, str):
             attacker_action_name = self.get_best_action_attack()
         attack_value = self.get_action_attack_value(attacker_action_name)
-        attack_value_boosted = self.get_total_value(
-            attack_value,
-            attacker_dice
-        )
+        attack_value_boosted = attacker_dice.boost_value(attack_value)
 
         (
             defense_value,
             defense_action_name
         ) = defenser_char.get_action_defense(attacker_action_name)
-        defense_value_boosted = defenser_char.get_total_value(
-            defense_value,
-            defenser_dice
-        )
+        defense_value_boosted = defenser_dice.boost_value(defense_value)
 
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
