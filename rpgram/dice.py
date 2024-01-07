@@ -51,9 +51,9 @@ class Dice:
         added_value = base_value + self.value
         result = max(boosted_value, added_value)
 
-        if dice.is_critical:
+        if self.is_critical:
             result = result * self.critical_multiplier
-        elif dice.is_critical_fail:
+        elif self.is_critical_fail:
             result = result / self.critical_multiplier
 
         return int(result)
