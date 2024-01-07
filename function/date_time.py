@@ -47,8 +47,12 @@ def get_last_hour() -> datetime:
 
     return next_hour
 
-def get_midnight_hour() -> datetime:
-    now = datetime.now()
-    next_hour = now.replace(microsecond=0, second=0, minute=0, hour=0)
 
-    return next_hour
+def get_midnight_hour(get_yesterday: bool = False) -> datetime:
+    now = datetime.now()
+    midnight_hour = now.replace(microsecond=0, second=0, minute=0, hour=0)
+
+    if get_yesterday:
+        midnight_hour = midnight_hour - timedelta(days=1)
+
+    return midnight_hour
