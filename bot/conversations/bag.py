@@ -238,6 +238,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     markdown_text = TITLE_HEAD.format(markdown_text)
+    markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
         await update.effective_message.reply_text(
             text=markdown_text,
@@ -377,6 +378,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         back_button
     ])
     # Edita mensagem com as informações do item escolhido
+    markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
         text=markdown_text,
         reply_markup=reply_markup,
@@ -470,7 +472,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 markdown=True,
                 show_quantity=True
             )
-            all_report_text = escape_basic_markdown_v2(all_report_text)
             markdown_text = (
                 f'{markdown_text}'
                 f'\n{TEXT_SEPARATOR}\n\n'
@@ -510,6 +511,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                     *discard_buttons,
                     back_button
                 ])
+            markdown_text = escape_basic_markdown_v2(markdown_text)
             await query.edit_message_text(
                 text=markdown_text,
                 reply_markup=reply_markup,
@@ -537,6 +539,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
+    markdown_player_sheet = escape_basic_markdown_v2(markdown_player_sheet)
     # Edita mensagem com as informações do personagem do jogador
     await query.edit_message_text(
         text=markdown_player_sheet,
@@ -609,6 +612,7 @@ async def identify_item(
         old_reply_markup,
         IDENTIFY_BUTTON_TEXT
     )
+    markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
         text=markdown_text,
         reply_markup=reply_markup,
@@ -668,8 +672,10 @@ async def drop_item(
         retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
+    markdown_text = f'Você dropou o item "{drop}x {item.name}".'
+    markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
-        text=f'Você dropou o item "{drop}x {item.name}"\.',
+        text=markdown_text,
         reply_markup=reply_markup,
         parse_mode=ParseMode.MARKDOWN_V2
     )

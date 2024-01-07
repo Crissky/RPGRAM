@@ -112,7 +112,6 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         if len(enemy_list) > 1
         else f'O inimigo fugiu!'
     )
-    full_text = escape_basic_markdown_v2(full_text)
     full_text = create_text_in_box(
         text=full_text,
         section_name='EMBOSCADA',

@@ -53,8 +53,9 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         text = f'"{args}" não é um argumento válido.'
 
+    text = escape_basic_markdown_v2(text)
     await update.effective_message.reply_text(
-        escape_basic_markdown_v2(text),
+        text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
         reply_markup=get_close_keyboard(None)
@@ -75,8 +76,9 @@ async def get_random_debuff(
 
     report = add_conditions(*DEBUFFS, user_id=user_id)
     char = report['char']
-    text = escape_basic_markdown_v2(report['text'])
+    text = report['text']
     text += char.get_all_sheets(verbose=False, markdown=True)
+    text = escape_basic_markdown_v2(text)
     await update.effective_message.reply_text(
         text,
         parse_mode=ParseMode.MARKDOWN_V2,

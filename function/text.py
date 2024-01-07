@@ -5,7 +5,7 @@ from constant.text import SECTION_HEAD_ENEMY_START, SECTION_HEAD_ENEMY_END
 
 def escape_markdown_v2(text: str):
     for char in r'\_*[]()~`>#+-=|{}.!':
-        escaped_char = re.escape(char)
+        escaped_char = f'\{char}'
         text = text.replace(escaped_char, char)
         text = text.replace(char, escaped_char)
 
@@ -14,7 +14,7 @@ def escape_markdown_v2(text: str):
 
 def escape_basic_markdown_v2(text: str):
     for char in r'_[](){}>#+-=|.!':
-        escaped_char = re.escape(char)
+        escaped_char = f'\{char}'
         text = text.replace(escaped_char, char)
         text = text.replace(char, escaped_char)
 
@@ -43,8 +43,8 @@ def create_text_in_box(
     text = text.strip()
     section_start = section_start.format(section_name)
     section_end = section_end.format(section_name)
+    result = f'{section_start}\n\n{text}\n\n{section_end}'
     if callable(clean_func):
-        section_start = clean_func(section_start)
-        section_end = clean_func(section_end)
+        result = clean_func(result)
 
-    return f'{section_start}\n\n{text}\n\n{section_end}'
+    return result
