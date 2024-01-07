@@ -12,6 +12,7 @@ from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_player
 from bot.functions.general import get_attribute_group_or_player
+from function.text import escape_basic_markdown_v2
 
 from repository.mongo import PlayerModel
 
@@ -66,9 +67,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             reply_markup=get_close_keyboard(user_id=user_id)
         )
     elif len(args) != 2:
+        text = escape_basic_markdown_v2(
+            'Envie o ATRIBUTO e o VALOR que deseja configurar.\n'
+            'Atributos:\n`VERBOSE`\n`SILENT`'
+        )
+
         await update.effective_message.reply_text(
-            'Envie o ATRIBUTO e o VALOR que deseja configurar\.\n'
-            'Atributos: `VERBOSE`, `SILENT`\.',
+            text,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_markup=get_close_keyboard(user_id=user_id)

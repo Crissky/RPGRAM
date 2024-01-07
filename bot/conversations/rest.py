@@ -139,6 +139,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             text=text,
             user_id=job.user_id,
+            markdown=True
         )
 
 

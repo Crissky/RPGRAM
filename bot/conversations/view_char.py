@@ -109,7 +109,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
 
             await query.edit_message_text(
-                f'{markdown_player_sheet}',
+                markdown_player_sheet,
                 parse_mode=ParseMode.MARKDOWN_V2,
                 reply_markup=reply_markup
             )

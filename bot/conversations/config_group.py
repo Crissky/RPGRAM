@@ -15,6 +15,7 @@ from bot.constants.filters import (
 from bot.conversations.close import get_close_keyboard
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
+from function.text import escape_basic_markdown_v2
 
 from repository.mongo import GroupModel
 
@@ -73,10 +74,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             reply_markup=get_close_keyboard(None)
         )
     elif len(args) != 2:
+        text = escape_basic_markdown_v2(
+            'Envie o ATRIBUTO e o VALOR que deseja configurar.\n'
+            'Atributos:\n`VERBOSE`\n`SILENT`\n`START_TIME`\n`END_TIME`\n'
+            '`MULTIPLIER_XP`\n`CHAR_MULTIPLIER_XP`'
+        )
+
         await update.effective_message.reply_text(
-            'Envie o ATRIBUTO e o VALOR que deseja configurar\.\n'
-            'Atributos: `VERBOSE`, `SILENT`, `START_TIME`, `END_TIME`, '
-            '`MULTIPLIER_XP`, `CHAR_MULTIPLIER_XP`\.',
+            text,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_markup=get_close_keyboard(None)
