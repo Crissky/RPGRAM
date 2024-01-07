@@ -68,7 +68,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             if len(texts) > 1:
                 break
             return
-        damage_report = enemy_char.to_attack(
+        attack_report = enemy_char.to_attack(
             defenser_char=defenser_char,
             attacker_dice=Dice(20),
             defenser_dice=Dice(20),
@@ -79,11 +79,11 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             markdown=True
         )
 
-        text_report = damage_report['text']
+        text_report = attack_report['text']
 
-        if not damage_report['defense']['is_miss']:
+        if not attack_report['defense']['is_miss']:
             save_char(defenser_char)
-        if damage_report['dead']:
+        if attack_report['dead']:
             drop_items = drop_random_items_from_bag(user_id=user_id)
             await send_drop_message(
                 chat_id=chat_id,
