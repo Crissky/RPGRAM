@@ -36,6 +36,7 @@ from rpgram.conditions import (
 from rpgram.consumables import (
     Consumable,
     HealingConsumable,
+    ReviveConsumable,
     CureConsumable,
     IdentifyingConsumable,
     XPConsumable,

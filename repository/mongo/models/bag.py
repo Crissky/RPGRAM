@@ -43,6 +43,7 @@ class BagModel(Model):
         return result
 
     def sub(self, item: Item, player_id: int, quantity: int = -1) -> Any:
+        quantity = -abs(int(quantity))
         query = {'player_id': player_id, 'items_ids._id': item._id}
         exists = bool(self.database.count(self.collection, query, limit=1))
 

@@ -65,10 +65,11 @@ def add_xp(
     user_name = char.player_name
     level = char.base_stats.level
     multiplier_xp = group.multiplier_xp
+    character_multiplier_xp = group.character_multiplier_xp
     group_level = group.group_level
     base_xp += randint(min_xp, max_xp)
     level_bonus = (
-        group.character_multiplier_xp * level
+        character_multiplier_xp * level
         if to_add_level_bonus is True
         else 0
     )
@@ -175,7 +176,7 @@ def add_conditions_trap(
         char_model = CharacterModel()
         char = char_model.get(user_id)
 
-    condition_level_base = group_level // 10
+    condition_level_base = (group_level // 10) + 1
     condition_trap_report = {'text': '', 'char': char}
     for condition_trap in conditions_trap:
         condition_level = randint(

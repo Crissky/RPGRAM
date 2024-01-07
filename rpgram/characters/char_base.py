@@ -250,10 +250,11 @@ class BaseCharacter:
         )
 
         if (is_miss := to_dodge and dodge_report['is_dodged']):
-            report['text'] += (
+            report['text'] = (
                 f'{defenser_player_name} *ESQUIVOU DO ATAQUE* de '
                 f'*{self.full_name_with_level}*.\n\n'
             )
+            report.update(defenser_char.cs.basic_report)
         else:
             damage = attack_value_boosted
             if to_defend and not defenser_char.is_immobilized:
@@ -265,6 +266,7 @@ class BaseCharacter:
                 attack_value_boosted - defense_value_boosted
             damage = max(damage, 0)
             damage_report = defenser_char.cs.damage_hit_points(damage)
+            report.update(damage_report)
             attacker_action_name = attacker_action_name.replace(
                 '_', ' ').title()
             defense_action_name = defense_action_name.replace('_', ' ').title()
@@ -273,7 +275,7 @@ class BaseCharacter:
             )
             if damage > 0:
                 damage_or_defend_text = f' e causou *{damage}* pontos de dano'
-            report['text'] += (
+            report['text'] = (
                 f'*{self.full_name_with_level}* *ATACOU* '
                 f'{defenser_player_name}{damage_or_defend_text}.\n\n'
             )
@@ -360,6 +362,7 @@ class BaseCharacter:
         return self.status.immobilized
 
     name: str = property(lambda self: self.__name)
+    level: int = property(lambda self: self.__base_stats.level)
     _id: ObjectId = property(lambda self: self.__id)
     base_stats: BaseStats = property(fget=lambda self: self.__base_stats)
     combat_stats: CombatStats = property(fget=lambda self: self.__combat_stats)
@@ -378,6 +381,9 @@ class BaseCharacter:
     )
     full_name_with_level = property(
         lambda self: f'{self.full_name} (LV: {self.bs.level})'
+    )
+    points_multiplier: int = property(
+        lambda self: self.__base_stats.points_multiplier
     )
     actions = property(
         lambda self: ['physical_attack', 'precision_attack', 'magical_attack']
