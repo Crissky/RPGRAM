@@ -70,13 +70,18 @@ class CombatStats:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
 
-    def damage_hit_points(self, value: int, action_name: str = None) -> dict:
+    def damage_hit_points(
+        self,
+        value: int,
+        action_name: str = None,
+        markdown: bool = False,
+    ) -> dict:
         if action_name == 'physical_attack':
-            return self.physical_damage_hit_points(value)
+            return self.physical_damage_hit_points(value, markdown)
         elif action_name == 'precision_attack':
-            return self.physical_damage_hit_points(value)
+            return self.physical_damage_hit_points(value, markdown)
         elif action_name == 'magical_attack':
-            return self.magical_damage_hit_points(value)
+            return self.magical_damage_hit_points(value, markdown)
 
         value = -int(abs(value))
         old_hp = self.current_hit_points
@@ -85,6 +90,14 @@ class CombatStats:
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         absolute_damage = (old_hp - new_hp)
+        text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{value}*).'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
         return {
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
@@ -93,45 +106,69 @@ class CombatStats:
             'damage': value,
             'absolute_damage': absolute_damage,
             'action': 'DANO',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({value}).',
+            'text': text,
             **self.basic_report
         }
 
-    def physical_damage_hit_points(self, value: int) -> dict:
+    def physical_damage_hit_points(
+        self,
+        value: int,
+        markdown: bool = False
+    ) -> dict:
         attack = int(abs(value))
         defense = self.physical_defense
         value = attack - defense
         if value < 0:
             value = 0
-        report = self.damage_hit_points(value)
+
+        guard_text = f'Defendeu com {defense} pontos de DEFESA FÍSICA.'
+        if not markdown:
+            guard_text = remove_bold(guard_text)
+            guard_text = remove_code(guard_text)
+        else:
+            guard_text = escape_basic_markdown_v2(guard_text)
+
+        report = self.damage_hit_points(value, markdown)
         report['action'] = 'ATAQUE FÍSICO'
         report['attack'] = attack
         report['defense'] = defense
         report['defense_name'] = 'DEFESA FÍSICA'
-        report['guard_text'] = (
-            f'Defendeu com {defense} pontos de DEFESA FÍSICA.'
-        )
+        report['guard_text'] = guard_text
 
         return report
 
-    def magical_damage_hit_points(self, value: int) -> dict:
+    def magical_damage_hit_points(
+        self,
+        value: int,
+        markdown: bool = False
+    ) -> dict:
         attack = int(abs(value))
         defense = self.magical_defense
         value = attack - defense
         if value < 0:
             value = 0
-        report = self.damage_hit_points(value)
+
+        guard_text = f'Defendeu com {defense} pontos de DEFESA MÁGICA.'
+        if not markdown:
+            guard_text = remove_bold(guard_text)
+            guard_text = remove_code(guard_text)
+        else:
+            guard_text = escape_basic_markdown_v2(guard_text)
+
+        report = self.damage_hit_points(value, markdown)
         report['action'] = 'ATAQUE MÁGICO'
         report['attack'] = attack
         report['defense'] = defense
         report['defense_name'] = 'DEFESA MÁGICA'
-        report['guard_text'] = (
-            f'Defendeu com {defense} pontos de DEFESA MÁGICA.'
-        )
+        report['guard_text'] = guard_text
 
         return report
 
-    def cure_hit_points(self, value: int) -> dict:
+    def cure_hit_points(
+        self,
+        value: int,
+        markdown: bool = False
+    ) -> dict:
         if value == FULL_HEAL_VALUE:
             value = self.hit_points
 
@@ -142,6 +179,14 @@ class CombatStats:
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         true_cure = (new_hp - old_hp)
+        text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{true_cure}*).'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
         return {
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
@@ -150,11 +195,15 @@ class CombatStats:
             'cure': value,
             'true_cure': true_cure,
             'action': 'CURA',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).',
+            'text': text,
             **self.basic_report
         }
 
-    def revive(self, value: int = 1) -> dict:
+    def revive(
+        self,
+        value: int = 1,
+        markdown: bool = False
+    ) -> dict:
         if value == FULL_HEAL_VALUE:
             value = self.hit_points
 
@@ -170,7 +219,15 @@ class CombatStats:
         }
         if self.alive:
             print('Não pode reviver um personagem vivo.')
-            report['text'] = 'Não pode reviver um personagem vivo.'
+            text = 'Não pode reviver um personagem vivo.'
+
+            if not markdown:
+                text = remove_bold(text)
+                text = remove_code(text)
+            else:
+                text = escape_basic_markdown_v2(text)
+
+            report['text'] = text
             return report
         elif value < 0:
             print(f'Reviveu restaurando {-value} de HP.', end=' ')
@@ -184,6 +241,14 @@ class CombatStats:
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         true_cure = (new_hp - old_hp)
+        text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{true_cure}*).'
+
+        if not markdown:
+            text = remove_bold(text)
+            text = remove_code(text)
+        else:
+            text = escape_basic_markdown_v2(text)
+
         report.update({
             'old_hp': old_hp,
             'old_show_hp': old_show_hp,
@@ -192,7 +257,7 @@ class CombatStats:
             'cure': value,
             'true_cure': true_cure,
             'action': 'Reviver',
-            'text': f'HP: {old_show_hp} ››› {new_show_hp} ({true_cure}).',
+            'text': text,
             **self.basic_report
         })
 
