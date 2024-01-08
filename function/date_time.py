@@ -49,7 +49,7 @@ def get_last_hour() -> datetime:
 
 
 def get_midnight_hour(get_yesterday: bool = False) -> datetime:
-    now = datetime.now()
+    now = get_brazil_time_now()
     midnight_hour = now.replace(microsecond=0, second=0, minute=0, hour=0)
 
     if get_yesterday:
