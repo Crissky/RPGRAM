@@ -57,6 +57,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
     texts = [f'{choice(AMBUSH_TEXTS)}\n\n']
+    dead_player_list = []
 
     for enemy_char in enemy_list:
         try:
@@ -84,14 +85,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         if not attack_report['defense']['is_miss']:
             save_char(defenser_char)
         if attack_report['dead']:
-            drop_items = drop_random_items_from_bag(user_id=user_id)
-            await send_drop_message(
-                chat_id=chat_id,
-                context=context,
-                items=drop_items,
-                text=f'{player_name} morreu e dropou o item',
-                silent=True,
-            )
+            dead_player_list.append({user_id: player_name})
         else:
             base_xp = int(
                 enemy_char.points_multiplier *
@@ -118,9 +112,21 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         section_start=SECTION_HEAD_ENEMY_START,
         section_end=SECTION_HEAD_ENEMY_END
     )
-    await context.bot.send_message(
+    response = await context.bot.send_message(
         chat_id=chat_id,
         text=full_text,
         disable_notification=silent,
         parse_mode=ParseMode.MARKDOWN_V2,
     )
+    message_id = response.message_id
+    for dead_player in dead_player_list:
+        user_id, player_name = dead_player.popitem()
+        drop_items = drop_random_items_from_bag(user_id=user_id)
+        await send_drop_message(
+            context=context,
+            items=drop_items,
+            text=f'{player_name} morreu e dropou o item',
+            chat_id=chat_id,
+            message_id=message_id,
+            silent=True,
+        )

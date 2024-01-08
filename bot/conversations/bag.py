@@ -959,6 +959,7 @@ async def send_drop_message(
     text: str,
     update: Update = None,
     chat_id: int = None,
+    message_id: int = None,
     silent: bool = False,
 ):
     if update is None and chat_id is None:
@@ -1000,6 +1001,7 @@ async def send_drop_message(
                 chat_id=chat_id,
                 text=markdown_item_sheet,
                 disable_notification=silent,
+                reply_to_message_id=message_id,
                 reply_markup=reply_markup_drop,
                 parse_mode=ParseMode.MARKDOWN_V2,
             )

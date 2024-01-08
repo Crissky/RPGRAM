@@ -50,9 +50,15 @@ def get_last_hour() -> datetime:
 
 def get_midnight_hour(get_yesterday: bool = False) -> datetime:
     now = get_brazil_time_now()
-    midnight_hour = now.replace(microsecond=0, second=0, minute=0, hour=0)
+    midnight_hour = now.replace(microsecond=0, second=0, minute=0, hour=3)
 
     if get_yesterday:
         midnight_hour = midnight_hour - timedelta(days=1)
 
     return midnight_hour
+
+
+if __name__ == '__main__':
+    print(get_brazil_time_now())
+    print(get_midnight_hour())
+    print(get_midnight_hour(True))
