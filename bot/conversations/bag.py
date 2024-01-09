@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from time import sleep
 from typing import List
 
 from telegram import (
@@ -57,6 +58,7 @@ from bot.constants.bag import (
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
+    SEND_DROP_MESSAGE_TIME_SLEEP,
     USE_MANY_BUTTON_TEXT
 )
 
@@ -1012,6 +1014,7 @@ async def send_drop_message(
             drops[drops_message_id] = True
         else:
             context.chat_data['drops'] = {drops_message_id: True}
+        sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
 def get_item_texts(items: List[Item]) -> str:
