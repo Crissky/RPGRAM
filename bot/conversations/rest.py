@@ -15,7 +15,8 @@ from bot.constants.rest import (
     REPLY_TEXTS_ALREADY_RESTING,
     REPLY_TEXTS_NO_NEED_REST,
     REPLY_TEXTS_STARTING_REST,
-    SECTION_TEXT_REST
+    SECTION_TEXT_REST,
+    SECTION_TEXT_REST_MIDNIGHT
 )
 from bot.decorators import (
     need_not_in_battle,
@@ -26,7 +27,12 @@ from bot.decorators import (
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_id_by_chat_id
-from constant.text import SECTION_HEAD_REST_END, SECTION_HEAD_REST_START
+from constant.text import (
+    SECTION_HEAD_REST_END,
+    SECTION_HEAD_REST_MIDNIGHT_END,
+    SECTION_HEAD_REST_MIDNIGHT_START,
+    SECTION_HEAD_REST_START
+)
 from function.text import create_text_in_box
 
 from repository.mongo import BattleModel, CharacterModel, PlayerModel
@@ -85,6 +91,15 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'HP: {current_hp}\n\n'
             f'Seu personagem irá recuperar HP a cada hora.'
         )
+
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_REST,
+        section_start=SECTION_HEAD_REST_START,
+        section_end=SECTION_HEAD_REST_END,
+        clean_func=None,
+    )
+
     await update.message.reply_text(
         text=text,
         disable_notification=silent
@@ -190,6 +205,15 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
             f'{players_hp}\n\n'
             f'Os personagens irão recuperar HP a cada hora.'
         )
+
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_REST_MIDNIGHT,
+            section_start=SECTION_HEAD_REST_MIDNIGHT_START,
+            section_end=SECTION_HEAD_REST_MIDNIGHT_END,
+            clean_func=None,
+        )
+
         await context.bot.send_message(
             chat_id=chat_id,
             text=text,

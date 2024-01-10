@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from time import sleep
 from typing import List
 
 from telegram import (
@@ -57,6 +58,7 @@ from bot.constants.bag import (
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
+    SEND_DROP_MESSAGE_TIME_SLEEP,
     USE_MANY_BUTTON_TEXT
 )
 
@@ -76,9 +78,12 @@ from bot.decorators import (
     confusion,
 )
 from bot.functions.bag import (
+    LIMIT_ITEM_IN_BAG,
+    exists_in_bag,
     get_identifying_lens,
     get_item_by_position,
     have_identifying_lens,
+    is_full_bag,
     sub_identifying_lens
 )
 from bot.functions.char import add_xp, save_char
@@ -661,7 +666,6 @@ async def drop_item(
 
     item = get_item_by_position(user_id, page, item_pos)
     drop = min(drop, item.quantity)
-    markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
 
     bag_model.sub(item, user_id, quantity=-(drop))
 
@@ -718,12 +722,18 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.delete_message()
 
             return ConversationHandler.END
+    else:
+        create_and_put_drop_dict(context=context)
+        await query.answer(f'Este item não existe mais.', show_alert=True)
+        await query.delete_message()
 
-    try:
-        await query.edit_message_reply_markup()
-    except Exception as e:
-        print(type(e), e)
         return ConversationHandler.END
+
+    # try:
+    #     await query.edit_message_reply_markup()
+    # except Exception as e:
+    #     print(type(e), e)
+    #     return ConversationHandler.END
 
     bag_model = BagModel()
     item_model = ItemModel()
@@ -731,6 +741,14 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     data = callback_data_to_dict(query.data)
     item_id = data['_id']
     drop = data['drop']
+
+    if is_full_bag(user_id) and not exists_in_bag(user_id, item_id=item_id):
+        await query.answer(
+            f'Você não pode pegar mais itens, pois sua bolsa está cheia. '
+            f'A bolsa não pode ter mais de {LIMIT_ITEM_IN_BAG} tipos de itens diferentes.',
+            show_alert=True
+        )
+        return ConversationHandler.END
 
     item = item_model.get(item_id)
     if item:
@@ -1011,7 +1029,18 @@ async def send_drop_message(
         if isinstance(drops, dict):
             drops[drops_message_id] = True
         else:
-            context.chat_data['drops'] = {drops_message_id: True}
+            create_and_put_drop_dict(context, drops_message_id)
+        sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
+
+
+def create_and_put_drop_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    drops_message_id: int = None
+):
+    '''Cria o dicionário de DROPS que indica quais items dropados ainda podem 
+    ser pegos'''
+    drop_dict = {drops_message_id: True} if drops_message_id else {}
+    context.chat_data['drops'] = drop_dict
 
 
 def get_item_texts(items: List[Item]) -> str:

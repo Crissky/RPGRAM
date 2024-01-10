@@ -1,5 +1,7 @@
+from bson import ObjectId
 from random import randint, randrange
 from typing import List, Union
+
 from bot.constants.bag import ITEMS_PER_PAGE
 from repository.mongo import BagModel, ItemModel
 from rpgram import Item
@@ -8,10 +10,13 @@ from rpgram.boosters import Equipment
 
 
 IDENTIFYING_LENS = 'Identifying Lens'
+LIMIT_ITEM_IN_BAG = 100
 
 
 def get_item_by_position(user_id: int, page: int, item_pos: int) -> Item:
-    '''Retorna um Item da Bag pela posição'''
+    '''Retorna um Item da Bag pela posição.
+    '''
+
     bag_model = BagModel()
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag = bag_model.get(
@@ -24,7 +29,9 @@ def get_item_by_position(user_id: int, page: int, item_pos: int) -> Item:
 
 
 def get_item_by_name(item_name: str) -> Union[Consumable, Equipment]:
-    '''Retorna um item pelo nome'''
+    '''Retorna um item pelo nome.
+    '''
+
     item_model = ItemModel()
     item = item_model.get(query={'name': item_name})
 
@@ -32,11 +39,16 @@ def get_item_by_name(item_name: str) -> Union[Consumable, Equipment]:
 
 
 def get_identifying_lens() -> IdentifyingConsumable:
-    '''Retorna "Identifying Lens"'''
+    '''Retorna "Identifying Lens".
+    '''
+
     return get_item_by_name(IDENTIFYING_LENS)
 
 
 def get_id_item_by_name(item_name: str) -> dict:
+    '''Retorna um dicionário com o _id e o name do item.
+    '''
+
     item_model = ItemModel()
     item_dict = item_model.get(
         query={'name': item_name},
@@ -46,10 +58,32 @@ def get_id_item_by_name(item_name: str) -> dict:
     return item_dict
 
 
-def exists_in_bag(item_name: str, user_id: int) -> bool:
+def exists_in_bag(
+    user_id: int,
+    item_id: str = None,
+    item_name: str = None
+) -> bool:
+    '''Verifica se um item está na bag. Retornando True caso esteja e False 
+    caso contrário.
+    '''
+
+    if item_id is None and item_name is None:
+        raise ValueError('É necessário passar um item_id ou item_name.')
+    elif item_id and item_name:
+        raise ValueError(
+            'É necessário passar um item_id ou item_name, não ambos.'
+        )
+
+    if item_name:
+        item_dict = get_id_item_by_name(item_name)
+        if item_dict:
+            item_id = item_dict['_id']
+        else:
+            raise ValueError(f'Item "{item_name}" não existe no banco.')
+    elif isinstance(item_id, str):
+        item_id = ObjectId(item_id)
+
     bag_model = BagModel()
-    item_dict = get_id_item_by_name(item_name)
-    item_id = item_dict['_id']
     query = {
         'player_id': user_id,
         'items_ids': {
@@ -62,11 +96,18 @@ def exists_in_bag(item_name: str, user_id: int) -> bool:
 
 
 def have_identifying_lens(user_id: int) -> bool:
-    return exists_in_bag(IDENTIFYING_LENS, user_id)
+    '''Verifica se o jogador possui um "Identifying Lens" na bolsa.
+    Retorna True caso tenha e False caso contrário.
+    '''
+
+    return exists_in_bag(user_id, item_name=IDENTIFYING_LENS)
 
 
 def sub_item_by_name(item_name: str, user_id: int):
-    if not exists_in_bag(item_name, user_id):
+    '''Subtrai um item da bag pelo nome.
+    '''
+
+    if not exists_in_bag(user_id, item_name=item_name):
         raise ValueError(f'Item "{item_name}" não está no inventário.')
 
     bag_model = BagModel()
@@ -81,10 +122,16 @@ def sub_item_by_name(item_name: str, user_id: int):
 
 
 def sub_identifying_lens(user_id: int) -> bool:
+    '''Subtrai um "Identifying Lens" da bag.
+    '''
+
     return sub_item_by_name(IDENTIFYING_LENS, user_id)
 
 
 def drop_random_items_from_bag(user_id: int) -> List[Item]:
+    '''Subtrai itens aleatórios da Bag e retorna uma lista do itens subtraidos.
+    '''
+
     bag_model = BagModel()
     item_model = ItemModel()
     drop_items = []
@@ -113,9 +160,28 @@ def drop_random_items_from_bag(user_id: int) -> List[Item]:
     return drop_items
 
 
+def is_full_bag(user_id: int) -> bool:
+    '''Verifica se a bag está cheia.
+    Retorna True caso tenho uma quantidade de itens igual ou maior que
+    LIMIT_ITEM_IN_BAG e False caso contrário.
+    '''
+
+    bag_model = BagModel()
+    query = {
+        'player_id': user_id,
+        f'items_ids.{LIMIT_ITEM_IN_BAG}': {'$exists': True}
+    }
+    bag_dict = bag_model.get(query=query, fields=['player_id'])
+    print(bag_dict)
+
+    return bool(bag_dict)
+
+
 if __name__ == '__main__':
     # sub_identifying_lens(370221845)
     id_lens = get_identifying_lens()
     print(type(id_lens))
     print(id_lens)
-    print(drop_random_items_from_bag(370221845))
+    print('have_identifying_lens:', have_identifying_lens(370221845))
+    # print(drop_random_items_from_bag(370221845))
+    print('is_full_bag:', is_full_bag(370221845))

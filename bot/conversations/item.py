@@ -206,8 +206,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if isinstance(items, list):
+        time_sleep = 1
         for item in items:
-            time_sleep = 1
             sleep(time_sleep)
             if isinstance(item.item, Equipment):
                 items_model.save(item.item)
