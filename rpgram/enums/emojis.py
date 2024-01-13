@@ -87,6 +87,8 @@ class EmojiEnum(Enum):
     CONFIG = '⚙️'
     HEALING_CONSUMABLE = '❤️'
     CURE_CONSUMABLE = '💊'
+    REVIVE_CONSUMABLE = '👼'
+    OTHER_CONSUMABLE = '🧧'
     ALIGNMENT = '🗣️'
     UNDER_ZERO = '🈴'
 

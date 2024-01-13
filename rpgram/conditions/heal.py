@@ -67,7 +67,7 @@ class HealingCondition(Condition):
         return (
             'report = target.combat_stats.cure_hit_points(self.power)'
         )
-    
+
     @property
     def emoji(self) -> str:
         return self.__emoji
