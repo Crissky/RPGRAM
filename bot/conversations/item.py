@@ -1,8 +1,6 @@
 from random import choice, randint
-from time import sleep
 
 from telegram import (
-    CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Update
@@ -206,9 +204,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if isinstance(items, list):
-        time_sleep = 1
         for item in items:
-            sleep(time_sleep)
             if isinstance(item.item, Equipment):
                 items_model.save(item.item)
             elif not isinstance(item.item, (Consumable, Equipment)):

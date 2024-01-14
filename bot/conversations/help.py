@@ -29,8 +29,10 @@ from bot.constants.help import (
     CALLBACK_HEALING_CONSUMABLE,
     CALLBACK_HEALSTATUS,
     CALLBACK_ITEMS,
+    CALLBACK_OTHER_CONSUMABLE,
     CALLBACK_PLAYER,
     CALLBACK_RACES,
+    CALLBACK_REVIVE_CONSUMABLE,
     CALLBACK_STATS,
     COMMANDS,
     SECTION_TEXT_HELP
@@ -524,7 +526,7 @@ def get_details_text(option: str) -> str:
             f'consumíveis em outro jogador, passe o arroba dele como '
             f'argumento do comando.\n'
             f'Argumentos: [Arroba de algum jogador]\n\n'
-            
+
             f'OBS: Se o comando for acionado sem argumentos, os itens serão '
             f'usados no próprio jogador. Somente consumíveis podem ser '
             f'usados em outros jogadores, os equipamentos serão equipados '
@@ -550,7 +552,7 @@ def get_details_text(option: str) -> str:
         )
     elif option == CALLBACK_DEBUFFS:
         text = (
-            f'{EmojiEnum.STATUS.value}*Status(Debuffs)*\n\n'
+            f'{EmojiEnum.STATUS.value}*STATUS(DEBUFFS)*\n\n'
 
             f'Debuffs são *condições* que prejudicam o personagem de diversas '
             f'maneiras - como causar dano ou reduzir as estatísticas.\n\n'
@@ -569,7 +571,7 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'*Lista de Debuffs*:\n\n'
+            f'*LISTA DE DEBUFFS*:\n\n'
         )
         for debuff in DEBUFFS:
             debuff_name = debuff.name.upper()
@@ -579,7 +581,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_HEALSTATUS:
         text = (
-            f'{EmojiEnum.STATUS.value}*Status(Cura)*\n\n'
+            f'{EmojiEnum.STATUS.value}*STATUS(CURA)*\n\n'
 
             f'*Condições* de cura recuperam os Pontos de Vida (HP) do '
             f'personagem a cada turno.\n\n'
@@ -594,7 +596,7 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'*Lista de Condições de Cura*:\n\n'
+            f'*LISTA DE CONDIÇÕES DE CURA*:\n\n'
         )
 
         for heal_status in HEALSTATUS:
@@ -615,7 +617,20 @@ def get_details_text(option: str) -> str:
         item_model = ItemModel()
         query = {'_class': 'HealingConsumable'}
         all_healing_consumables = item_model.get_all(query)
-        text = f'{EmojiEnum.HEALING_CONSUMABLE.value}*Itens de Cura (HP)*\n\n'
+        text = (
+            f'Os itens que curam HP desempenham o papel vital de '
+            f'restaurar a saúde dos personagens. '
+            f'Esses itens são frequentemente consumíveis ou utilizáveis '
+            f'e são essenciais para a sobrevivência dos '
+            f'aventureiros em situações desafiadoras. '
+            f'Eles são projetados para fornecer uma solução rápida e eficaz '
+            f'para recuperar pontos de vida perdidos durante combates, '
+            f'explorações ou outros desafios.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'{EmojiEnum.HEALING_CONSUMABLE.value}*ITENS DE CURA (HP)*\n\n'
+        )
 
         for healing_consumable in all_healing_consumables:
             text += f'*Nome*: {healing_consumable.name}\n'
@@ -627,6 +642,16 @@ def get_details_text(option: str) -> str:
         query = {'_class': 'CureConsumable'}
         all_cure_consumables = item_model.get_all(query)
         text = (
+            f'Os itens que curam Condições (Status) negativas atuam na '
+            f'retirada dos efeitos desfavoráveis que prejudicam o '
+            f'personagem ao longo do tempo. '
+            f'Geralmente, esses itens são representados por poções, elixires, '
+            f'ervas medicinais ou outros recursos mágicos ou alquímicos. '
+            f'Ao serem utilizados, esse itens diminuem o nível da condição '
+            f'que é retirada do personagem ao alcançar o nível zero.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
             f'{EmojiEnum.CURE_CONSUMABLE.value}*Itens de Cura (Status)*\n\n'
         )
 
@@ -635,6 +660,51 @@ def get_details_text(option: str) -> str:
             text += f'*Nome*: {cure_consumable.name}\n'
             text += f'*Descrição*: {cure_consumable.description}\n'
             text += f'*Raridade*: {cure_consumable.rarity.value}\n\n'
+        text = text.strip()
+    elif option == CALLBACK_REVIVE_CONSUMABLE:
+        item_model = ItemModel()
+        query = {'_class': 'ReviveConsumable'}
+        all_revive_consumables = item_model.get_all(query)
+        text = (
+            f'Os itens que revivem personagens exercem um papel crucial ao '
+            f'proporcionar uma nova chance aos aventureiros que enfrentaram '
+            f'a morte. Esses itens são frequentemente raros e preciosos, '
+            f'representando uma oportunidade de trazer de volta à vida um '
+            f'personagem que foi derrotado em combate ou por circunstâncias '
+            f'adversas. '
+            f'Ao serem utilizados, os itens de ressurreição têm o poder de '
+            f'restaurar um personagem à vida, superando lesões fatais ou '
+            f'mesmo mortes permanentes.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'{EmojiEnum.REVIVE_CONSUMABLE.value}*ITENS DE REVIVER*\n\n'
+        )
+
+        keys = attrgetter('name')
+        for revive_consumable in sorted(all_revive_consumables, key=keys):
+            text += f'*Nome*: {revive_consumable.name}\n'
+            text += f'*Descrição*: {revive_consumable.description}\n'
+            text += f'*Raridade*: {revive_consumable.rarity.value}\n\n'
+        text = text.strip()
+    elif option == CALLBACK_OTHER_CONSUMABLE:
+        item_model = ItemModel()
+        query = {'_class': {'$nin': [
+            'CureConsumable',
+            'Equipment',
+            'HealingConsumable',
+            'ReviveConsumable',
+        ]}}
+        all_other_consumables = item_model.get_all(query)
+        text = (
+            f'{EmojiEnum.OTHER_CONSUMABLE.value}*Outros Itens*\n\n'
+        )
+
+        def keys(x): return (x.__class__.__name__, x.name)
+        for other_consumable in sorted(all_other_consumables, key=keys):
+            text += f'*Nome*: {other_consumable.name}\n'
+            text += f'*Descrição*: {other_consumable.description}\n'
+            text += f'*Raridade*: {other_consumable.rarity.value}\n\n'
         text = text.strip()
     else:
         raise ValueError(f'Opção de ajuda não encontrada: {option}')
@@ -670,6 +740,12 @@ def get_help_reply_markup(update: Update):
     cure_consumable_text = (
         f'Itens Cura(Status){EmojiEnum.CURE_CONSUMABLE.value}'
     )
+    revive_consumable_text = (
+        f'{EmojiEnum.REVIVE_CONSUMABLE.value}Itens Reviver'
+    )
+    other_consumable_text = (
+        f'Outros Itens{EmojiEnum.OTHER_CONSUMABLE.value}'
+    )
 
     (
         buttons1,
@@ -678,8 +754,9 @@ def get_help_reply_markup(update: Update):
         buttons4,
         buttons5,
         buttons6,
-        buttons7
-    ) = [], [], [], [], [], [], []
+        buttons7,
+        buttons8
+    ) = [], [], [], [], [], [], [], []
     if option != CALLBACK_PLAYER:
         buttons1.append(
             InlineKeyboardButton(
@@ -810,12 +887,32 @@ def get_help_reply_markup(update: Update):
                 )
             )
         )
+    if option != CALLBACK_REVIVE_CONSUMABLE:
+        buttons8.append(
+            InlineKeyboardButton(
+                text=revive_consumable_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_REVIVE_CONSUMABLE}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_OTHER_CONSUMABLE:
+        buttons8.append(
+            InlineKeyboardButton(
+                text=other_consumable_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_OTHER_CONSUMABLE}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
 
     close_button = [get_close_button(user_id=user_id)]
     reply_markup = InlineKeyboardMarkup([
         buttons1, buttons2, buttons3,
         buttons4, buttons5, buttons6,
-        buttons7,
+        buttons7, buttons8,
         close_button
     ])
     return reply_markup
