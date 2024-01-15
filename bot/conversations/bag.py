@@ -1141,6 +1141,7 @@ def get_extremes_navigation_buttons(
         bag_model = BagModel()
         bag_length = bag_model.length('items_ids', user_id)
         total_pages = (bag_length - 1) // ITEMS_PER_PAGE
+        total_pages = max(total_pages, 0)  # Evita números negativos
         extremes_navigation_keyboard.append(
             InlineKeyboardButton(
                 text=NAV_END_BUTTON_TEXT,
