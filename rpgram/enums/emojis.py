@@ -89,6 +89,7 @@ class EmojiEnum(Enum):
     CURE_CONSUMABLE = '💊'
     REVIVE_CONSUMABLE = '👼'
     OTHER_CONSUMABLE = '🧧'
+    IDENTIFY_CONSUMABLE = '🔎'
     ALIGNMENT = '🗣️'
     UNDER_ZERO = '🈴'
 
