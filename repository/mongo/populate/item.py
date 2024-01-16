@@ -62,9 +62,8 @@ ACCESSORY_EQUIPMENTS_ENUM = [
     EquipmentEnum.RING.name, EquipmentEnum.AMULET.name
 ]
 BONUS_RARITY = {
-    RarityEnum.COMMON.name: 1, RarityEnum.UNCOMMON.name: 2,
-    RarityEnum.RARE.name: 3, RarityEnum.EPIC.name: 4,
-    RarityEnum.LEGENDARY.name: 5, RarityEnum.MYTHIC.name: 6,
+    rarity.name: multiplier+1
+    for multiplier, rarity in enumerate(RarityEnum)
 }
 WEAPON_MATERIALS = {
     material.name: multiplier+1
