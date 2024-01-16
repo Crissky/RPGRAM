@@ -43,6 +43,8 @@ from bot.functions.char import add_conditions_trap, add_damage, add_xp
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import (
+    SECTION_HEAD_OPEN_TREASURE_END,
+    SECTION_HEAD_OPEN_TREASURE_START,
     SECTION_HEAD_TRAP_END,
     SECTION_HEAD_TRAP_START,
     SECTION_HEAD_TREASURE_END,
@@ -194,8 +196,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = create_text_in_box(
         text=text,
         section_name=SECTION_TEXT_OPEN_TREASURE,
-        section_start=SECTION_HEAD_TREASURE_START,
-        section_end=SECTION_HEAD_TREASURE_END,
+        section_start=SECTION_HEAD_OPEN_TREASURE_START,
+        section_end=SECTION_HEAD_OPEN_TREASURE_END,
     )
 
     await query.edit_message_text(
