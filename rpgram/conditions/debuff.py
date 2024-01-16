@@ -66,7 +66,9 @@ class BerserkerCondition(DebuffCondition):
         super().__init__(
             name=BERSERKER,
             description=(
-                f'O personagem fica enlouquecido ({BERSERKER}) por 5 turnos.'
+                f'O personagem fica enlouquecido ({BERSERKER}) por 5 turnos, '
+                f'Aumentando o multiplicador de Força em (10% x Nível), mas '
+                f'podendo atacar aliados ou a si.'
             ),
             frequency=TurnEnum.START,
             turn=turn,
@@ -159,7 +161,8 @@ class ConfusionCondition(DebuffCondition):
         super().__init__(
             name=CONFUSION,
             description=(
-                'O personagem pode fazer coisa inusitadas por 5 turnos.'
+                'O personagem fica confuso por 5 turnos, '
+                'podendo atacar aliados ou a si.'
             ),
             frequency=TurnEnum.START,
             turn=turn,
