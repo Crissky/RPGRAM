@@ -20,7 +20,7 @@ from constant.text import (
 )
 from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import CharacterModel
-from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
+from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram import Dice
 from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 

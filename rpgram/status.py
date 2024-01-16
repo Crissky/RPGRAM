@@ -10,7 +10,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
-from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
+from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
 

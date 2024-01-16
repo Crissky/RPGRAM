@@ -4,6 +4,7 @@ from typing import Union
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.rarity import RarityEnum
 from rpgram.stats.stats_combat import FULL_HEAL_VALUE
 
@@ -48,6 +49,10 @@ class HealingConsumable(Consumable):
         )
         self.power = power
         self.condition = condition
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.HEALING_CONSUMABLE.value
 
     @property
     def function(self) -> str:
@@ -101,6 +106,10 @@ class ReviveConsumable(Consumable):
             updated_at=updated_at,
         )
         self.power = power
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.REVIVE_CONSUMABLE.value
 
     @property
     def function(self) -> str:

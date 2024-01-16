@@ -4,6 +4,7 @@ from typing import Union
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.rarity import RarityEnum
 
 
@@ -37,6 +38,10 @@ class IdentifyingConsumable(Consumable):
             created_at=created_at,
             updated_at=updated_at,
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.IDENTIFY_CONSUMABLE.value
 
     @property
     def function(self) -> str:

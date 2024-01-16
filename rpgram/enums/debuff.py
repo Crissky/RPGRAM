@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class DebuffEnum(Enum):
+    BERSERKER = 'Berserker'
     BLEEDING = 'Sangrando'
     BLINDNESS = 'Cego'
     BURN = 'Afogueado'
@@ -17,6 +18,7 @@ class DebuffEnum(Enum):
 
 
 class DebuffEmojiEnum(Enum):
+    BERSERKER = '💢'
     BLEEDING = '🩸'
     BLINDNESS = '🕶️'
     BURN = '🔥'
@@ -36,6 +38,8 @@ DEBUFF_FULL_NAMES = {
     for debuff in DebuffEnum
 }
 
+
+BERSERKER = DebuffEnum.BERSERKER.name.title()
 BLEEDING = DebuffEnum.BLEEDING.name.title()
 BLINDNESS = DebuffEnum.BLINDNESS.name.title()
 BURN = DebuffEnum.BURN.name.title()
@@ -48,3 +52,26 @@ PETRIFIED = DebuffEnum.PETRIFIED.name.title()
 POISONING = DebuffEnum.POISONING.name.title()
 SILENCE = DebuffEnum.SILENCE.name.title()
 STUNNED = DebuffEnum.STUNNED.name.title()
+
+CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION]
+IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED, STUNNED]
+
+if __name__ == '__main__':
+    debuff_name_list = [debuff.name for debuff in DebuffEnum]
+    debuff_emoji_name_list = [
+        debuff_emoji.name
+        for debuff_emoji in DebuffEmojiEnum
+    ]
+
+    for debuff_name in debuff_name_list:
+        if debuff_name not in debuff_emoji_name_list:
+            raise Exception(
+                f'{debuff_name} não está em {DebuffEmojiEnum.__name__}.')
+
+    for debuff_emoji_name in debuff_emoji_name_list:
+        if debuff_emoji_name not in debuff_name_list:
+            raise Exception(
+                f'{debuff_emoji_name} não está em {DebuffEnum.__name__}.'
+            )
+
+    print('Debuffs OK!')

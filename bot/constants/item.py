@@ -3,6 +3,7 @@ import re
 
 from rpgram.enums import DamageEnum
 from rpgram.enums.debuff import (
+    BERSERKER,
     BLEEDING,
     BLINDNESS,
     BURN,
@@ -643,6 +644,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -712,6 +714,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -732,6 +735,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.75},
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -948,7 +952,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'Com um giro, você abre o objeto e ativa uma armadilha de '
         'água turbulenta.',
         DamageEnum.WATER,
-        []
+        [
+            {'condition': STUNNED, 'effectiveness': 0.90},
+        ]
     ),
     (
         'Desfazendo o nó, você ativa uma armadilha que o faz '
@@ -1011,6 +1017,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1053,6 +1060,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.25},
             {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1125,12 +1133,14 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'abismo interdimensional.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.50},
+            {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': BLINDNESS, 'effectiveness': 0.75},
             {'condition': BLINDNESS, 'effectiveness': 0.75},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1147,6 +1157,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.DARK,
         [
             {'condition': BLINDNESS, 'effectiveness': 1.00},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1178,6 +1189,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1213,8 +1225,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1239,6 +1251,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1283,6 +1296,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
             {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
@@ -1302,6 +1317,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma armadilha de vento cortante.',
         DamageEnum.WIND,
         [
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
         ]
@@ -1334,6 +1351,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1348,6 +1366,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.75},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1386,6 +1405,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
             {'condition': STUNNED, 'effectiveness': 0.90},
         ]
     ),
@@ -1421,6 +1442,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
             {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1432,6 +1455,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BLINDNESS, 'effectiveness': 0.90},
             {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': CURSE, 'effectiveness': 0.75},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': BERSERKER, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1472,6 +1497,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1531,6 +1558,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.50},
             {'condition': BLEEDING, 'effectiveness': 0.75},
             {'condition': BLEEDING, 'effectiveness': 0.75},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1552,6 +1580,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (

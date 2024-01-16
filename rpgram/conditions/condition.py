@@ -57,7 +57,14 @@ class Condition(StatsBooster):
         if self.__frequency == TurnEnum.CONTINUOUS:
             self.activate(None)
 
-    def activate(self, target):
+    def init_activate(self):
+        '''Usado para a condição Berserker que altera os multiplicadores, mas 
+        não tem o tipo de turno contínuo. Ou seja, ativa os multiplicadores 
+        sem diminuir o turno.'''
+        _local = {'target': None, 'self': self}
+        exec(self.function, None, _local)
+
+    def activate(self, target) -> dict:
         _local = {'target': target, 'self': self}
         exec(self.function, None, _local)
         report = _local['report']
@@ -65,7 +72,7 @@ class Condition(StatsBooster):
             self.__turn -= 1
         return report
 
-    def battle_activate(self, target):
+    def battle_activate(self, target) -> dict:
         if self.battle_function:
             _local = {'target': target, 'self': self}
             exec(self.battle_function, None, _local)
@@ -76,7 +83,7 @@ class Condition(StatsBooster):
             self.activate(target)
         return report
 
-    def __call__(self, target):
+    def __call__(self, target) -> dict:
         return self.activate(target)
 
     def add_level(self, value: int = 1):

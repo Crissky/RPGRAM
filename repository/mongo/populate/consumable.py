@@ -27,6 +27,7 @@ from rpgram.consumables.other import (
 )
 from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
 from rpgram.enums.debuff import (
+    BERSERKER,
     BLEEDING,
     BLINDNESS,
     BURN,
@@ -150,6 +151,14 @@ CONSUMABLES = [
 
     # Cure Potions
     {
+        'name': "GrayMage's Pipe",
+        'description': f'Cura 1 Nível da condição "{BERSERKER}".',
+        'condition_target': BERSERKER,
+        'weight': 0.05,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
         'name': 'Cotton Bandage',
         'description': f'Cura 1 Nível da condição "{BLEEDING}".',
         'condition_target': BLEEDING,
@@ -240,13 +249,13 @@ CONSUMABLES = [
     {
         'name': 'Panacea',
         'description': (
-            f'Cura 1 Nível das condições "{BLEEDING}", "{BLINDNESS}", '
+            f'Cura 1 Nível das condições "{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
             f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
             f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
         ),
         'condition_target': [
-            BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE, EXHAUSTION, FROZEN,
-            PARALYSIS, PETRIFIED, POISONING, SILENCE
+            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
+            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
         ],
         'weight': 1.23,
         'rarity': RarityEnum.EPIC.name,
@@ -256,8 +265,17 @@ CONSUMABLES = [
 
     # Greater Cure Potions
     {
+        'name': "Greater GrayMage's Pipe",
+        'description': f'Cura 3 Níveis da condição "{BERSERKER}".',
+        'condition_target': [BERSERKER, BERSERKER, BERSERKER],
+        'weight': 0.05,
+        'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
+    },
+
+    {
         'name': 'Greater Cotton Bandage',
-        'description': f'Cura 3 Nível da condição "{BLEEDING}".',
+        'description': f'Cura 3 Níveis da condição "{BLEEDING}".',
         'condition_target': [BLEEDING, BLEEDING, BLEEDING],
         'weight': 0.10,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -265,7 +283,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Eye Drops',
-        'description': f'Cura 3 Nível da condição "{BLINDNESS}".',
+        'description': f'Cura 3 Níveis da condição "{BLINDNESS}".',
         'condition_target': [BLINDNESS, BLINDNESS, BLINDNESS],
         'weight': 0.10,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -273,7 +291,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Aloe Compress',
-        'description': f'Cura 3 Nível da condição "{BURN}".',
+        'description': f'Cura 3 Níveis da condição "{BURN}".',
         'condition_target': [BURN, BURN, BURN],
         'weight': 0.10,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -281,7 +299,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Red Remedy',
-        'description': f'Cura 3 Nível da condição "{CONFUSION}".',
+        'description': f'Cura 3 Níveis da condição "{CONFUSION}".',
         'condition_target': [CONFUSION, CONFUSION, CONFUSION],
         'weight': 0.10,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -289,7 +307,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Mystical Incense',
-        'description': f'Cura 3 Nível da condição "{CURSE}".',
+        'description': f'Cura 3 Níveis da condição "{CURSE}".',
         'condition_target': [CURSE, CURSE, CURSE],
         'weight': 0.20,
         'rarity': RarityEnum.EPIC.name,
@@ -297,7 +315,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Energy Potion',
-        'description': f'Cura 3 Nível da condição "{EXHAUSTION}".',
+        'description': f'Cura 3 Níveis da condição "{EXHAUSTION}".',
         'condition_target': [EXHAUSTION, EXHAUSTION, EXHAUSTION],
         'weight': 0.25,
         'rarity': RarityEnum.RARE.name,
@@ -305,7 +323,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Hot Potion',
-        'description': f'Cura 3 Nível da condição "{FROZEN}".',
+        'description': f'Cura 3 Níveis da condição "{FROZEN}".',
         'condition_target': [FROZEN, FROZEN, FROZEN],
         'weight': 0.25,
         'rarity': RarityEnum.RARE.name,
@@ -313,7 +331,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Vitamin Fruit',
-        'description': f'Cura 3 Nível da condição "{PARALYSIS}".',
+        'description': f'Cura 3 Níveis da condição "{PARALYSIS}".',
         'condition_target': [PARALYSIS, PARALYSIS, PARALYSIS],
         'weight': 0.55,
         'rarity': RarityEnum.RARE.name,
@@ -321,7 +339,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Gold Needle',
-        'description': f'Cura 3 Nível da condição "{PETRIFIED}".',
+        'description': f'Cura 3 Níveis da condição "{PETRIFIED}".',
         'condition_target': [PETRIFIED, PETRIFIED, PETRIFIED],
         'weight': 0.15,
         'rarity': RarityEnum.EPIC.name,
@@ -329,7 +347,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Antidote',
-        'description': f'Cura 3 Nível da condição "{POISONING}".',
+        'description': f'Cura 3 Níveis da condição "{POISONING}".',
         'condition_target': [POISONING, POISONING, POISONING],
         'weight': 0.15,
         'rarity': RarityEnum.UNCOMMON.name,
@@ -337,7 +355,7 @@ CONSUMABLES = [
     },
     {
         'name': 'Greater Echo Herb',
-        'description': f'Cura 3 Nível da condição "{SILENCE}".',
+        'description': f'Cura 3 Níveis da condição "{SILENCE}".',
         'condition_target': [SILENCE, SILENCE, SILENCE],
         'weight': 0.10,
         'rarity': RarityEnum.UNCOMMON.name,

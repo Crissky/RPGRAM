@@ -1,5 +1,6 @@
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.heal import HealingCondition
+from rpgram.conditions.debuff import BerserkerCondition
 from rpgram.conditions.debuff import BleedingCondition
 from rpgram.conditions.debuff import BlindnessCondition
 from rpgram.conditions.debuff import BurnCondition

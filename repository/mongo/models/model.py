@@ -21,6 +21,7 @@ from rpgram.characters import BaseCharacter, PlayerCharacter
 from rpgram.conditions import (
     Condition,
     HealingCondition,
+    BerserkerCondition,
     BleedingCondition,
     BlindnessCondition,
     BurnCondition,

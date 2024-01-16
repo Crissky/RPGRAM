@@ -3,6 +3,7 @@ from typing import List, Union
 
 from bson import ObjectId
 from rpgram.consumables.consumable import Consumable
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.rarity import RarityEnum
 
 
@@ -35,6 +36,10 @@ class CureConsumable(Consumable):
             condition_target = [condition_target]
 
         self.condition_target = condition_target
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.CURE_CONSUMABLE.value
 
     @property
     def function(self) -> str:
@@ -74,9 +79,9 @@ if __name__ == '__main__':
         condition_target=['Poison', 'Poison', 'Poison'],
         weight=1.0,
     )
+
     class Target:
         status = Status(player_id=1)
-
 
     print(cure_consumable)
     print(cure_consumable.to_dict())
