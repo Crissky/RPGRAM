@@ -52,6 +52,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         data = eval(query.data)
         refresh = data.get(REFRESH_VIEW_CHAR_PATTERN, False)
         data_user_id = data['user_id']
+        if data.get('verbose') == 'v':
+            verbose = True
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
@@ -84,7 +86,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if self_char:
             reply_markup = get_refresh_close_keyboard(
                 user_id=user_id,
-                refresh_data=REFRESH_VIEW_CHAR_PATTERN
+                refresh_data=REFRESH_VIEW_CHAR_PATTERN,
+                to_detail=True
             )
         else:
             reply_markup = get_close_keyboard(user_id=user_id)

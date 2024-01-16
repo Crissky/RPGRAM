@@ -62,10 +62,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
     query = update.callback_query
 
+    verbose = False
+
     if query:
         data = eval(query.data)
         refresh = data.get(REFRESH_ADD_STATS_PATTERN, False)
         data_user_id = data['user_id']
+        if data.get('verbose') == 'v':
+            verbose = True
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
@@ -79,7 +83,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 args.append(data['value'])
 
     text = ''
-    verbose = False
     player_char = char_model.get(user_id)
     silent = get_attribute_group_or_player(chat_id, 'silent')
     if len(args) == 2:
@@ -121,7 +124,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     addstats_buttons = get_addstats_buttons(user_id, player_char)
     refresh_close_button = get_refresh_close_button(
         user_id=user_id,
-        refresh_data=REFRESH_ADD_STATS_PATTERN
+        refresh_data=REFRESH_ADD_STATS_PATTERN,
+        to_detail=True
     )
     reply_markup = InlineKeyboardMarkup([
         *addstats_buttons,
