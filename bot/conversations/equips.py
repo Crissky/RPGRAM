@@ -57,10 +57,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     args = context.args
 
+    verbose = False
+
     if query:
         data = eval(query.data)
         refresh = data.get(REFRESH_EQUIPS_PATTERN, False)
         data_user_id = data['user_id']
+        if data.get('verbose') == 'v':
+            verbose = True
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
@@ -74,7 +78,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         equips = player_character.equips
         equips_model.save(player_character.equips)
 
-    verbose = False
     if args:
         verbose = 'verbose' in args[0] or 'v' in args[0]
 
@@ -175,7 +178,11 @@ def get_equips_keyboard(
         accessories_buttons.append(create_equipment_button(amulet, user_id))
     equips_keyboard.append(accessories_buttons)
     equips_keyboard.append(
-        get_refresh_close_button(user_id, refresh_data=REFRESH_EQUIPS_PATTERN)
+        get_refresh_close_button(
+            user_id,
+            refresh_data=REFRESH_EQUIPS_PATTERN,
+            to_detail=True
+        )
     )
 
     return InlineKeyboardMarkup(equips_keyboard)

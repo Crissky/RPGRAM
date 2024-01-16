@@ -81,6 +81,7 @@ class EmojiEnum(Enum):
     SORT_DOWN = '🔽'  # 🔽🔻
     IDENTIFY = '🔍'
     REFRESH = '🔄'
+    DETAIL = 'ℹ️'
     CLOSE = '❌'
     REST = '💤'
     BATTLE = '🤼'

@@ -9,6 +9,7 @@ from telegram.ext import (
 from bot.constants.close import (
     ACCESS_DENIED,
     CALLBACK_CLOSE,
+    DETAIL_BUTTON_TEXT,
     ESCAPED_CALLBACK_CLOSE,
     LEFT_CLOSE_BUTTON_TEXT,
     REFRESH_BUTTON_TEXT,
@@ -58,18 +59,32 @@ def get_close_button(
 
 def get_refresh_close_button(
     user_id: int,
-    refresh_data: str = 'refresh'
+    refresh_data: str = 'refresh',
+    to_detail: bool = False,
 ) -> List[InlineKeyboardButton]:
-    return [
+    button_list = []
+    button_list.append(
         InlineKeyboardButton(
             REFRESH_BUTTON_TEXT,
             callback_data=(
                 f'{{"{refresh_data}":1,'
                 f'"user_id":{user_id}}}'
             )
-        ),
-        get_close_button(user_id=user_id, right_icon=True)
-    ]
+        )
+    )
+    if to_detail:
+        button_list.append(
+            InlineKeyboardButton(
+                DETAIL_BUTTON_TEXT,
+                callback_data=(
+                    f'{{"{refresh_data}":1,"verbose":"v",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+    button_list.append(get_close_button(user_id=user_id, right_icon=True))
+
+    return button_list
 
 
 def get_random_refresh_text() -> str:
@@ -85,10 +100,15 @@ def get_close_keyboard(user_id: int) -> InlineKeyboardMarkup:
 
 def get_refresh_close_keyboard(
     user_id: int,
-    refresh_data: str = 'refresh'
+    refresh_data: str = 'refresh',
+    to_detail: bool = False,
 ) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup([
-        get_refresh_close_button(user_id=user_id, refresh_data=refresh_data)
+        get_refresh_close_button(
+            user_id=user_id,
+            refresh_data=refresh_data,
+            to_detail=to_detail
+        )
     ])
 
 
