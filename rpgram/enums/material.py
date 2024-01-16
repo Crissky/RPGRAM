@@ -50,12 +50,12 @@ class MagicalStonesMaterialEnum(Enum):
 
 
 class WearableMaterialEnum(Enum):
-    CLOTH = 'Pano'
     LEATHER = 'Couro'
     BONE = 'Osso'
     COPPER = 'Cobre'
     IRON = 'Ferro'
     STEEL = 'Aço'
+    OBSIDIAN = 'Obsidiana'
     RUNITE = 'Runita'
     ADAMANTIUM = 'Adamantium'
     MITHRIL = 'Mitril'
