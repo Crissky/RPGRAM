@@ -4,6 +4,7 @@ from typing import Union
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.enums.debuff import (
+    BERSERKER,
     BLEEDING,
     BLINDNESS,
     BURN,
@@ -17,6 +18,7 @@ from rpgram.enums.debuff import (
     SILENCE,
     STUNNED,
 )
+from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.enums.turn import TurnEnum
 
 
@@ -55,6 +57,31 @@ class DebuffCondition(Condition):
             _id=super_dict['_id'],
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
+        )
+
+
+class BerserkerCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 5, level: int = 1):
+        super().__init__(
+            name=BERSERKER,
+            description=(
+                f'O personagem fica enlouquecido ({BERSERKER}) por 5 turnos.'
+            ),
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+        self.init_activate()
+
+    @property
+    def function(self) -> str:
+        return (
+            'power = self.level / 10;'
+            'self.multiplier_strength = 1 + power;'
+            'report = {};'
+            f'report["text"] = "Personagem está enlouquecido ({BERSERKER}).";'
+            f'report["action"] = "{BERSERKER}";'
         )
 
 
@@ -303,6 +330,7 @@ class SilenceCondition(DebuffCondition):
             f'report["action"] = "{SILENCE}";'
         )
 
+
 class StunnedCondition(DebuffCondition):
 
     def __init__(self, turn: int = 1, level: int = 1):
@@ -325,6 +353,7 @@ class StunnedCondition(DebuffCondition):
 
 class Debuffs:
     __list = [
+        BerserkerCondition,
         BleedingCondition,
         BlindnessCondition,
         BurnCondition,
@@ -345,10 +374,8 @@ class Debuffs:
 
 
 DEBUFFS = Debuffs()
-IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED, STUNNED]
-
-
 if __name__ == '__main__':
+    print(BerserkerCondition())
     print(BleedingCondition())
     print(BlindnessCondition())
     print(BurnCondition())

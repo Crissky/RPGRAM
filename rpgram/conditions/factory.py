@@ -1,5 +1,6 @@
-from rpgram.conditions import (
-    Condition,
+from rpgram.conditions.condition import Condition
+from rpgram.conditions.debuff import (
+    BerserkerCondition,
     BleedingCondition,
     BlindnessCondition,
     BurnCondition,
@@ -24,6 +25,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.enums.debuff import (
+    BERSERKER,
     BLEEDING,
     BLINDNESS,
     BURN,
@@ -61,7 +63,9 @@ def factory_condition(
         raise TypeError(f'Level deve ser do tipo inteiro: {type(level)}')
 
     # DEBUFFS
-    if name == BLEEDING:
+    if name == BERSERKER:
+        condition_class = BerserkerCondition
+    elif name == BLEEDING:
         condition_class = BleedingCondition
     elif name == BLINDNESS:
         condition_class = BlindnessCondition

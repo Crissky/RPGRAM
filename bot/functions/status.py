@@ -1,6 +1,8 @@
 from repository.mongo.models.status import StatusModel
-from rpgram.conditions.debuff import IMMOBILIZED_DEBUFFS_NAMES
-from rpgram.enums.debuff import CONFUSION
+from rpgram.enums.debuff import (
+    CONFUSION_DEBUFFS_NAMES,
+    IMMOBILIZED_DEBUFFS_NAMES
+)
 
 
 def immobilized_status(user_id: int) -> dict:
@@ -23,6 +25,9 @@ def confusion_status(user_id: int) -> dict:
     a condição CONFUSION.
     '''
     status_model = StatusModel()
-    query = {'player_id': user_id, 'condition_args.name': CONFUSION}
+    query = {
+        'player_id': user_id,
+        'condition_args.name': {'$in': CONFUSION_DEBUFFS_NAMES}
+    }
     status = status_model.get(query=query, fields=['condition_args'])
     return status
