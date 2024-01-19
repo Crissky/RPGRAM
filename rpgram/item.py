@@ -132,8 +132,14 @@ class Item:
                 f'Item não pode ter um valor negativo ({error_quantity}).'
             )
 
-    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'{self.quantity:02}x {self.item.emoji_type}*{self.name}*'
+    def get_sheet(
+        self,
+        verbose: bool = False,
+        markdown: bool = False,
+        zero_fill: int = 2
+    ) -> str:
+        formated_quantity = f'{self.quantity}'.zfill(zero_fill)
+        text = f'{formated_quantity}x {self.item.emoji_type}*{self.name}*'
 
         if verbose:
             if isinstance(self.item, Equipment):
