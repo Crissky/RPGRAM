@@ -74,13 +74,15 @@ class BerserkerCondition(DebuffCondition):
             turn=turn,
             level=level,
         )
-        self.init_activate()
+
+    @property
+    def multiplier_strength(self) -> float:
+        power = self.level / 10
+        return (1 + power)
 
     @property
     def function(self) -> str:
         return (
-            'power = self.level / 10;'
-            'self.multiplier_strength = 1 + power;'
             'report = {};'
             f'report["text"] = "Personagem está enlouquecido ({BERSERKER}).";'
             f'report["action"] = "{BERSERKER}";'
@@ -121,10 +123,13 @@ class BlindnessCondition(DebuffCondition):
         )
 
     @property
+    def multiplier_dexterity(self) -> float:
+        power = self.level / 10
+        return (1 - power)
+
+    @property
     def function(self) -> str:
         return (
-            'power = self.level / 10;'
-            'self.multiplier_dexterity = 1 - power;'
             'report = {};'
             'report["text"] = "Personagem está cego.";'
             f'report["action"] = "{BLINDNESS}";'
@@ -145,10 +150,13 @@ class BurnCondition(DebuffCondition):
         )
 
     @property
+    def multiplier_constitution(self) -> float:
+        power = self.level / 10
+        return (1 - power)
+
+    @property
     def function(self) -> str:
         return (
-            'power = self.level / 10;'
-            'self.multiplier_constitution = 1 - power;'
             'report = {};'
             'report["text"] = "Personagem está com queimaduras.";'
             f'report["action"] = "{BURN}";'
@@ -193,11 +201,18 @@ class CurseCondition(DebuffCondition):
         )
 
     @property
+    def multiplier_intelligence(self) -> float:
+        power = self.level / 10
+        return (1 - power)
+
+    @property
+    def multiplier_wisdom(self) -> float:
+        power = self.level / 10
+        return (1 - power)
+
+    @property
     def function(self) -> str:
         return (
-            'power = self.level / 10;'
-            'self.multiplier_intelligence = 1 - power;'
-            'self.multiplier_wisdom = 1 - power;'
             'report = {};'
             'report["text"] = "Personagem está amaldiçoado.";'
             f'report["action"] = "{CURSE}";'
@@ -219,11 +234,18 @@ class ExhaustionCondition(DebuffCondition):
         )
 
     @property
+    def multiplier_strength(self) -> float:
+        power = self.level / 10
+        return (1 - power)
+
+    @property
+    def multiplier_dexterity(self) -> float:
+        power = self.level / 10
+        return (1 - power)
+
+    @property
     def function(self) -> str:
         return (
-            'power = self.level / 10;'
-            'self.multiplier_strength = 1 - power;'
-            'self.multiplier_dexterity = 1 - power;'
             'report = {};'
             'report["text"] = "Personagem está exausto.";'
             f'report["action"] = "{EXHAUSTION}";'
@@ -391,3 +413,5 @@ if __name__ == '__main__':
     print(PoisoningCondition())
     print(SilenceCondition())
     print(StunnedCondition() in IMMOBILIZED_DEBUFFS_NAMES)
+    print('BerserkerCondition(level=10).multiplier_strength:',
+          BerserkerCondition(level=10).multiplier_strength)

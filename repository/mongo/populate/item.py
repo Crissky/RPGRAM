@@ -50,6 +50,9 @@ from rpgram.enums import (
 
 
 # CONSTANTS
+MIN_CONSUMABLE_QUANTITY = 1
+MAX_CONSUMABLE_QUANTITY = 5
+
 WEAPON_EQUIPMENTS_ENUM = [
     EquipmentEnum.ONE_HAND.name, EquipmentEnum.TWO_HANDS.name
 ]
@@ -621,7 +624,7 @@ def create_random_consumable(group_level: int):
     rarity = choice_rarity(group_level)
     query = dict(rarity=rarity, _class={'$ne': 'Equipment'})
     item_list = item_model.get_all(query=query)
-    quantity = randint(1, 3)
+    quantity = randint(MIN_CONSUMABLE_QUANTITY, MAX_CONSUMABLE_QUANTITY)
     item = choice(item_list)
     item = Item(item, quantity)
 
