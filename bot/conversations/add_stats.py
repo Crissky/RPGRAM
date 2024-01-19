@@ -37,6 +37,7 @@ from bot.decorators import (
     skip_if_dead_char,
     skip_if_immobilized,
 )
+from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import SECTION_HEAD_STATS_END, SECTION_HEAD_STATS_START
@@ -48,6 +49,7 @@ from rpgram.characters import BaseCharacter
 from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()
@@ -61,20 +63,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     args = context.args
     query = update.callback_query
-
     verbose = False
 
     if query:
         data = eval(query.data)
         refresh = data.get(REFRESH_ADD_STATS_PATTERN, False)
-        data_user_id = data['user_id']
         if data.get('verbose') == 'v':
             verbose = True
-
-        # Não executa se outro usuário mexer na bolsa
-        if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return None
 
         if args is None:
             args = []

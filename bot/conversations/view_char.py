@@ -27,6 +27,7 @@ from bot.conversations.close import (
     get_refresh_close_keyboard
 )
 from bot.decorators import print_basic_infos
+from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_CHAR_END, SECTION_HEAD_CHAR_START
 from function.text import create_text_in_box
@@ -34,6 +35,7 @@ from function.text import create_text_in_box
 from repository.mongo import CharacterModel
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
@@ -43,7 +45,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     args = context.args
-
     player_character = char_model.get(user_id)
     verbose = False
     self_char = True
@@ -51,14 +52,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if query:
         data = eval(query.data)
         refresh = data.get(REFRESH_VIEW_CHAR_PATTERN, False)
-        data_user_id = data['user_id']
         if data.get('verbose') == 'v':
             verbose = True
-
-        # Não executa se outro usuário mexer na bolsa
-        if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return None
 
     if args and len(args) in [1, 2]:
         if args[0].startswith('@'):

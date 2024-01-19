@@ -58,6 +58,7 @@ from bot.constants.filters import (
 )
 from bot.conversations.close import get_close_button
 from bot.decorators import print_basic_infos
+from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_name_by_chat_id
 
@@ -87,19 +88,15 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.debuff import DebuffEnum
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    user_id = update.effective_user.id
     option = None
+
     if query:
         data = eval(query.data)
         option = data['option']
-        data_user_id = data['user_id']
-        # Não executa se outro usuário mexer na ajuda
-        if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return ConversationHandler.END
 
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')

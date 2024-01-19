@@ -8,6 +8,7 @@ from telegram.ext import (
     PrefixHandler,
 )
 from bot.conversations.close import get_close_button
+from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 
@@ -15,26 +16,20 @@ from bot.constants.classe import ACCESS_DENIED, COMMANDS
 from repository.mongo import ClasseModel
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     args = context.args
     query = update.callback_query
     silent = get_attribute_group_or_player(chat_id, 'silent')
-
     _all = None
     text = 'Escolha uma classe para exibir suas informações.'
+
     if query:
         data = eval(query.data)
-        data_user_id = data['user_id']
         classe_name = data['classe_name']
         _all = data['_all']
-
-        # Não executa se outro usuário mexer na bolsa
-        if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return None
-
         classe_model = ClasseModel()
         classe = classe_model.get(classe_name)
         text = classe.get_sheet(verbose=True)

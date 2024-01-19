@@ -26,12 +26,13 @@ from bot.conversations.close import (
     get_refresh_close_button
 )
 from bot.decorators import (
+    alert_if_not_chat_owner,
+    confusion,
     need_have_char,
     print_basic_infos,
     skip_if_dead_char,
     skip_if_immobilized,
 )
-from bot.decorators.char import confusion
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_EQUIPS_END, SECTION_HEAD_EQUIPS_START
 from function.text import create_text_in_box
@@ -41,6 +42,7 @@ from rpgram import Equips, Item
 from rpgram.boosters import Equipment
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @need_have_char
 @skip_if_dead_char
 @skip_if_immobilized
@@ -56,20 +58,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     query = update.callback_query
     args = context.args
-
     verbose = False
 
     if query:
         data = eval(query.data)
         refresh = data.get(REFRESH_EQUIPS_PATTERN, False)
-        data_user_id = data['user_id']
         if data.get('verbose') == 'v':
             verbose = True
-
-        # Não executa se outro usuário mexer na bolsa
-        if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return None
 
     silent = get_attribute_group_or_player(chat_id, 'silent')
     equips = equips_model.get(user_id)
