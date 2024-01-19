@@ -142,7 +142,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
-    player_model = PlayerModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
@@ -162,7 +161,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         page = data['page']  # starts zero
         data_user_id = data['user_id']
         target_id = data['target_id']
-        retry_state = data.get('retry_state', None)
+        retry_state = data.get('retry_state')
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
@@ -199,7 +198,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if len(items) > ITEMS_PER_PAGE:
         items = player_bag[:-1]
         have_next_page = True
-    elif len(items) == 0 and not query:
+    elif all((len(items) == 0, not query)):
         await update.effective_message.reply_text(
             text='Você não tem itens na sua bolsa.',
             disable_notification=silent,
@@ -418,7 +417,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     data_user_id = data['user_id']
     target_id = data['target_id']
     use_quantity = data['use']
-    hand = data.get('hand', None)
+    hand = data.get('hand')
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
@@ -450,14 +449,14 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             return USE_ROUTES
     elif isinstance(item.item, Consumable):  # Tenta usar o item
         name = item.name
-        description = item.item.description
         use_quantity = min(item.quantity, use_quantity)
-        all_report_text = f'Reporting({use_quantity:02}):\n'
+        all_report_text = [f'Reporting({use_quantity:02}):']
         try:
             for i in range(use_quantity):
                 report = item.use(player_character)
-                all_report_text += f'{i+1:02}: {report["text"]}\n'
+                all_report_text.append(f'{i+1:02}: {report["text"]}')
                 bag_model.sub(item, user_id)
+            all_report_text = '\n'.join(all_report_text)
             text = f'Você usou {use_quantity} "{name}".\n'
             save_char(player_character, status=True)
 
@@ -575,7 +574,6 @@ async def identify_item(
         print(type(e), e)
         return ConversationHandler.END
 
-    bag_model = BagModel()
     item_model = ItemModel()
     equips_model = EquipsModel()
     user_id = update.effective_user.id
@@ -1045,9 +1043,14 @@ def create_and_put_drop_dict(
 
 def get_item_texts(items: List[Item]) -> str:
     markdown_text = ''
+    zero_fill = max(len(str(item.quantity)) for item in items)
     for index, item in enumerate(items):
         markdown_text += f'*Ⅰ{(index + 1):02}:* '
-        markdown_text += item.get_sheet(verbose=True, markdown=True)
+        markdown_text += item.get_sheet(
+            verbose=True,
+            markdown=True,
+            zero_fill=zero_fill
+        )
 
     return markdown_text
 

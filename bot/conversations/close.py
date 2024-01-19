@@ -15,27 +15,23 @@ from bot.constants.close import (
     REFRESH_BUTTON_TEXT,
     RIGHT_CLOSE_BUTTON_TEXT
 )
-from bot.decorators.char import skip_if_no_have_char
-from bot.decorators.print import print_basic_infos
+from bot.decorators import (
+    skip_if_no_have_char,
+    alert_if_not_chat_owner,
+    print_basic_infos
+)
 from rpgram.enums import FaceEmojiEnum
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 @skip_if_no_have_char
 async def close(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_id = update.effective_user.id
     query = update.callback_query
 
     if query:
-        data = eval(query.data)
-        data_user_id = data['user_id']
-
-        # Não executa se outro usuário mexer na bolsa
-        if data_user_id != user_id and data_user_id is not None:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-        else:
-            await query.answer('Fechando conversa...')
-            await query.delete_message()
+        await query.answer('Fechando conversa...')
+        await query.delete_message()
 
 
 def get_close_button(

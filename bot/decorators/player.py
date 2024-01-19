@@ -36,3 +36,31 @@ def skip_if_no_singup_player(callback):
             print(f'\tUSER: {user_id} SKIPPED in CHAT: {chat_id} - NO ACCOUNT')
             return ConversationHandler.END
     return wrapper
+
+
+def alert_if_not_chat_owner(
+    retry_state=ConversationHandler.END,
+    alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
+):
+    '''Não executa a ação quando o botão é clicado por um usuário que não 
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    botão.'''
+
+    def decorator(callback):
+        async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            print('@SKIP_IF_NOT_CHAT_OWNER')
+            user_id = update.effective_user.id
+            query = update.callback_query
+
+            if query:
+                data = eval(query.data)
+                data_user_id = data['user_id']
+                if data_user_id != user_id:
+                    if isinstance(alert_text, str):
+                        await query.answer(text=alert_text, show_alert=True)
+                    return retry_state
+
+            return await callback(update, context)
+
+        return wrapper
+    return decorator

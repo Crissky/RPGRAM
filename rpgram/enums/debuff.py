@@ -65,12 +65,12 @@ if __name__ == '__main__':
 
     for debuff_name in debuff_name_list:
         if debuff_name not in debuff_emoji_name_list:
-            raise Exception(
+            raise ValueError(
                 f'{debuff_name} não está em {DebuffEmojiEnum.__name__}.')
 
     for debuff_emoji_name in debuff_emoji_name_list:
         if debuff_emoji_name not in debuff_name_list:
-            raise Exception(
+            raise ValueError(
                 f'{debuff_emoji_name} não está em {DebuffEnum.__name__}.'
             )
 

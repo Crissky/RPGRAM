@@ -8,6 +8,7 @@ from telegram.ext import (
     PrefixHandler,
 )
 from bot.conversations.close import get_close_button
+from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 
@@ -15,25 +16,20 @@ from bot.constants.race import ACCESS_DENIED, COMMANDS
 from repository.mongo import RaceModel
 
 
+@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     args = context.args
     query = update.callback_query
     silent = get_attribute_group_or_player(chat_id, 'silent')
-
     _all = None
+
     text = 'Escolha uma raça para exibir suas informações.'
     if query:
         data = eval(query.data)
-        data_user_id = data['user_id']
         race_name = data['race_name']
         _all = data['_all']
-
-        # Não executa se outro usuário mexer na bolsa
-        if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
-            return None
 
         race_model = RaceModel()
         race = race_model.get(race_name)
@@ -48,7 +44,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     race_buttons = get_race_buttons(user_id=user_id, _all=is_all)
     close_button = get_close_button(user_id=user_id)
     reply_markup = InlineKeyboardMarkup(
-        race_buttons  + [[close_button]]
+        race_buttons + [[close_button]]
     )
     if query:
         await query.edit_message_text(
