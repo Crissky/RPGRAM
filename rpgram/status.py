@@ -71,7 +71,6 @@ class Status:
                 f'O nível da Condição "{name}" foi aumentado '
                 f'para {current_condition_level}.'
             )
-            current_condition.activate_continuous()
         else:
             self.__conditions.append(new_condition)
             report['text'] = (
@@ -105,7 +104,6 @@ class Status:
                 report['text'] = f'A Condição "{name}" foi removida.'
                 self.__conditions.pop(index)
             else:
-                new_condition.activate_continuous()
                 level = new_condition.level
                 report['text'] = (
                     f'O nível da Condição "{name}" foi reduzido para {level}.'
