@@ -37,26 +37,12 @@ class DebuffCondition(Condition):
         super().__init__(
             name=name,
             description=description,
-            function=None,
-            battle_function=None,
             frequency=frequency,
             turn=turn,
             level=level,
             _id=_id,
             created_at=created_at,
             updated_at=updated_at,
-        )
-
-    def to_dict(self):
-        super_dict = super().to_dict()
-        return dict(
-            name=super_dict['name'],
-            description=super_dict['description'],
-            frequency=super_dict['frequency'],
-            turn=super_dict['turn'],
-            _id=super_dict['_id'],
-            created_at=super_dict['created_at'],
-            updated_at=super_dict['updated_at'],
         )
 
 

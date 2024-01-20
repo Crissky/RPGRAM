@@ -42,8 +42,6 @@ class HealingCondition(Condition):
         super().__init__(
             name=name,
             description=description,
-            function=None,
-            battle_function=None,
             frequency=frequency,
             turn=turn,
             level=level,
@@ -71,19 +69,6 @@ class HealingCondition(Condition):
     @property
     def emoji(self) -> str:
         return self.__emoji
-
-    def to_dict(self) -> dict:
-        super_dict = super().to_dict()
-        return dict(
-            name=super_dict['name'],
-            description=super_dict['description'],
-            power=self.power,
-            frequency=super_dict['frequency'],
-            turn=super_dict['turn'],
-            _id=super_dict['_id'],
-            created_at=super_dict['created_at'],
-            updated_at=super_dict['updated_at'],
-        )
 
 
 class Heal1Condition(HealingCondition):
@@ -228,18 +213,10 @@ HEALSTATUS = HealStatus()
 
 if __name__ == '__main__':
     print(Heal1Condition())
-    print(Heal1Condition().to_dict())
     print(Heal2Condition())
-    print(Heal2Condition().to_dict())
     print(Heal3Condition())
-    print(Heal3Condition().to_dict())
     print(Heal4Condition())
-    print(Heal4Condition().to_dict())
     print(Heal5Condition())
-    print(Heal5Condition().to_dict())
     print(Heal6Condition())
-    print(Heal6Condition().to_dict())
     print(Heal7Condition())
-    print(Heal7Condition().to_dict())
     print(Heal8Condition())
-    print(Heal8Condition().to_dict())
