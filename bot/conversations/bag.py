@@ -456,7 +456,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 report = item.use(player_character)
                 all_report_text.append(f'{i+1:02}: {report["text"]}')
                 bag_model.sub(item, user_id)
-            all_report_text = '\n'.join(all_report_text)
             text = f'Você usou {use_quantity} "{name}".\n'
             save_char(player_character, status=True)
 
@@ -470,6 +469,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 show_alert=True
             )
         finally:
+            all_report_text = '\n'.join(all_report_text)
             markdown_text = f'*Alvo:* {target_name}\n\n'
             markdown_text += item.get_all_sheets(
                 verbose=True,
