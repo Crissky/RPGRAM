@@ -1043,7 +1043,9 @@ def create_and_put_drop_dict(
 
 def get_item_texts(items: List[Item]) -> str:
     markdown_text = ''
-    zero_fill = max(len(str(item.quantity)) for item in items)
+    zero_fill = 2
+    if items:
+        zero_fill = max(len(str(item.quantity)) for item in items)
     for index, item in enumerate(items):
         markdown_text += f'*Ⅰ{(index + 1):02}:* '
         markdown_text += item.get_sheet(
