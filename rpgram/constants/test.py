@@ -2,9 +2,11 @@ from rpgram.boosters.classe import Classe
 from rpgram.boosters.equipment import Equipment
 from rpgram.boosters.race import Race
 from rpgram.characters.char_base import BaseCharacter
-from rpgram.consumables.consumable import Consumable
+from rpgram.conditions.heal import HealingCondition
+from rpgram.consumables.heal import HealingConsumable
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
+from rpgram.enums.turn import TurnEnum
 from rpgram.equips import Equips
 
 
@@ -113,11 +115,19 @@ BASE_CHARACTER = BaseCharacter(
     base_charisma=10,
     combat_damage=0,
 )
-POTION = Consumable(
+POTION = HealingConsumable(
     name='Potion',
     description='Cura 100 de HP.',
+    power=100,
     weight=0.1,
-    function='target.combat_stats.hp = 100'
+    condition=HealingCondition(
+        name='Potion',
+        description='Cura 100 de HP em 5 turnos.',
+        power=20,
+        frequency=TurnEnum.START,
+        turn=5,
+        level=1,
+    )
 )
 
 if __name__ == '__main__':

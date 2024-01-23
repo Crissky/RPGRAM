@@ -21,7 +21,6 @@ class Condition(StatsBooster):
     def __init__(
         self,
         name: str,
-        description: str,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,
@@ -43,10 +42,17 @@ class Condition(StatsBooster):
             )
 
         self.__name = name
-        self.__description = description
         self.__frequency = frequency
         self.__turn = turn
         self.__level = level
+
+    @abstractmethod
+    def function(self, target) -> dict:
+        ...
+
+    @abstractmethod
+    def battle_function(self, target) -> dict:
+        ...
 
     def activate(self, target) -> dict:
         report = self.function(target)
@@ -85,14 +91,14 @@ class Condition(StatsBooster):
         self.__turn = 1
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'*Condição*: {self.__name}\n'
+        text = f'*Condição*: {self.name}\n'
 
         if verbose:
             text += (
-                f'*Descrição*: {self.__description}\n'
-                f'*Frequência*: {self.__frequency.value}\n'
-                f'*Turno*: {self.__turn}\n'
-                f'*Nível*: {self.__level}\n'
+                f'*Descrição*: {self.description}\n'
+                f'*Frequência*: {self.frequency.value}\n'
+                f'*Turno*: {self.turn}\n'
+                f'*Nível*: {self.level}\n'
             )
 
         if not markdown:
@@ -128,18 +134,13 @@ class Condition(StatsBooster):
     # Getters
     name = property(lambda self: self.__name)
     full_name = property(lambda self: f'{self.emoji}{self.name}{self.level}')
-    description = property(lambda self: self.__description)
     frequency = property(lambda self: self.__frequency)
     turn = property(lambda self: self.__turn)
     level = property(lambda self: self.__level)
 
-    @abstractmethod
-    def function(self, target) -> dict:
-        ...
-
-    @abstractmethod
-    def battle_function(self, target) -> dict:
-        ...
+    @property
+    def description(self) -> str:
+        return 'Descrição padrão.'
 
     @property
     def emoji_members_list(self) -> list:
@@ -160,9 +161,8 @@ class Condition(StatsBooster):
 if __name__ == '__main__':
     poison = Condition(
         name='Veneno',
-        description='Causa 10 de dano por hora.',
         frequency='START',
     )
 
-    # print('POISON\n', poison)
+    print('POISON\n', poison)
     print('POISON DICT\n', poison.to_dict())
