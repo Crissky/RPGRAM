@@ -3,9 +3,9 @@ from time import sleep
 from typing import List
 
 from telegram import (
+    CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    Message,
     Update
 )
 from telegram.constants import ChatAction, ParseMode
@@ -116,6 +116,7 @@ from repository.mongo import (
 )
 from rpgram import Bag, Item
 from rpgram.boosters import Equipment
+from rpgram.characters import BaseCharacter
 from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum, EquipmentEnum
 
@@ -399,8 +400,8 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Usa ou equipa o item do jogador.
     '''
-    query = update.callback_query
 
+    query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
         await query.edit_message_reply_markup()
@@ -408,7 +409,6 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         print(type(e), e)
         return ConversationHandler.END
 
-    bag_model = BagModel()
     char_model = CharacterModel()
     user_id = update.effective_user.id
     data = callback_data_to_dict(query.data)
@@ -424,108 +424,69 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    target_name = get_player_name(target_id)
     item = get_item_by_position(user_id, page, item_pos)
     if isinstance(item.item, Equipment):
         player_character = char_model.get(user_id)
     elif isinstance(item.item, Consumable):
         player_character = char_model.get(target_id)
 
-    old_equipments = []
-    if isinstance(item.item, Equipment):  # Tenta equipar o item
-        equipment = item.item
-        try:
-            old_equipments = player_character.equips.equip(equipment, hand)
-            await query.answer(text=f'Você equipou "{equipment.name}".')
-        except Exception as error:
-            print(error)
-            await query.answer(
-                text=(f'{error}'),
-                show_alert=True
-            )
-            await query.edit_message_reply_markup(
-                reply_markup=old_reply_markup
-            )
+    if isinstance(item.item, Consumable):  # Tenta usar o item
+        await use_item_consumable(
+            user_id=user_id,
+            target_id=target_id,
+            item=item,
+            character=player_character,
+            use_quantity=use_quantity,
+            page=page,
+            item_pos=item_pos,
+            query=query,
+        )
+        return USE_ROUTES
+    elif isinstance(item.item, Equipment):  # Tenta equipar o item
+        old_equipments = await use_item_equipment(
+            user_id=user_id,
+            target_id=target_id,
+            item=item,
+            character=player_character,
+            hand=hand,
+            page=page,
+            query=query,
+            old_reply_markup=old_reply_markup,
+        )
+        if not isinstance(old_equipments, list):
             return USE_ROUTES
-    elif isinstance(item.item, Consumable):  # Tenta usar o item
-        name = item.name
-        use_quantity = min(item.quantity, use_quantity)
-        all_report_text = [f'Reporting({use_quantity:02}):']
-        try:
-            for i in range(use_quantity):
-                report = item.use(player_character)
-                all_report_text.append(f'{i+1:02}: {report["text"]}')
-                bag_model.sub(item, user_id)
-            text = f'Você usou {use_quantity} "{name}".\n'
-            save_char(player_character, status=True)
+        else:
+            return START_ROUTES
 
-            await query.answer(text=text)
-        except Exception as error:
-            print(error)
-            await query.answer(
-                text=(
-                    f'Item "{name}" não pode ser usado.\n\n{error}'
-                ),
-                show_alert=True
-            )
-        finally:
-            all_report_text = '\n'.join(all_report_text)
-            markdown_text = f'*Alvo:* {target_name}\n\n'
-            markdown_text += item.get_all_sheets(
-                verbose=True,
-                markdown=True,
-                show_quantity=True
-            )
-            markdown_text = (
-                f'{markdown_text}'
-                f'\n{TEXT_SEPARATOR}\n\n'
-                f'{all_report_text}'
-            )
-            if item.quantity <= 0:
-                back_button = get_back_button(
-                    page=page,
-                    user_id=user_id,
-                    target_id=target_id,
-                    retry_state=USE_ROUTES
-                )
-                reply_markup = InlineKeyboardMarkup([back_button])
-            else:
-                use_buttons = get_use_consumable_buttons(
-                    page=page,
-                    user_id=user_id,
-                    target_id=target_id,
-                    item_pos=item_pos,
-                    item=item
-                )
-                discard_buttons = get_discard_buttons(
-                    page=page,
-                    user_id=user_id,
-                    target_id=target_id,
-                    item_pos=item_pos,
-                    item=item
-                )
-                back_button = get_back_button(
-                    page=page,
-                    user_id=user_id,
-                    target_id=target_id,
-                    retry_state=USE_ROUTES
-                )
-                reply_markup = InlineKeyboardMarkup([
-                    *use_buttons,
-                    *discard_buttons,
-                    back_button
-                ])
-            markdown_text = escape_basic_markdown_v2(markdown_text)
-            await query.edit_message_text(
-                text=markdown_text,
-                reply_markup=reply_markup,
-                parse_mode=ParseMode.MARKDOWN_V2
-            )
-            return USE_ROUTES
 
-    markdown_player_sheet = player_character.get_all_sheets(
-        verbose=False, markdown=True
-    )
+async def use_item_equipment(
+    user_id: int,
+    target_id: int,
+    item: Item,
+    character: BaseCharacter,
+    hand: str,
+    page: int,
+    query: CallbackQuery,
+    old_reply_markup: InlineKeyboardMarkup
+) -> List[Equipment]:
+    '''Tenta equipar o item.
+    '''
+
+    bag_model = BagModel()
+    equipment = item.item
+    old_equipments = None
+    try:
+        old_equipments = character.equips.equip(equipment, hand)
+        await query.answer(text=f'Você equipou "{equipment.name}".')
+    except Exception as error:
+        print(error)
+        await query.answer(
+            text=f'{error}',
+            show_alert=True
+        )
+        await query.edit_message_reply_markup(
+            reply_markup=old_reply_markup
+        )
 
     bag_model.sub(item, user_id)
     # Adiciona na bolsa os equipamentos que já estavam equipados
@@ -534,8 +495,13 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         old_equipment_item = Item(old_equipment)
         bag_model.add(old_equipment_item, user_id)
 
-    save_char(player_character, equips=True)
+    save_char(character, equips=True)
 
+    markdown_player_sheet = character.get_all_sheets(
+        verbose=False,
+        markdown=True
+    )
+    markdown_player_sheet = escape_basic_markdown_v2(markdown_player_sheet)
     back_button = get_back_button(
         page=page,
         user_id=user_id,
@@ -543,15 +509,101 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
-    markdown_player_sheet = escape_basic_markdown_v2(markdown_player_sheet)
-    # Edita mensagem com as informações do personagem do jogador
     await query.edit_message_text(
         text=markdown_player_sheet,
         reply_markup=reply_markup,
         parse_mode=ParseMode.MARKDOWN_V2
     )
 
-    return START_ROUTES
+    return old_equipments
+
+
+async def use_item_consumable(
+    user_id: int,
+    target_id: int,
+    item: Item,
+    character: BaseCharacter,
+    use_quantity: int,
+    page: int,
+    item_pos: int,
+    query: CallbackQuery,
+) -> None:
+    '''Usa o item consumível
+    '''
+
+    bag_model = BagModel()
+    name = item.name
+    use_quantity = min(item.quantity, use_quantity)
+    all_report_text = [f'Reporting({use_quantity:02}):']
+    target_name = get_player_name(target_id)
+    try:
+        for i in range(use_quantity):
+            report = item.use(character)
+            all_report_text.append(f'{i+1:02}: {report["text"]}')
+            bag_model.sub(item, user_id)
+        text = f'Você usou {use_quantity} "{name}".\n'
+        save_char(character, status=True)
+
+        await query.answer(text=text)
+    except Exception as error:
+        print(error)
+        await query.answer(
+            text=f'Item "{name}" não pode ser usado.\n\n{error}',
+            show_alert=True
+        )
+    finally:
+        all_report_text = '\n'.join(all_report_text)
+        markdown_text = f'*Alvo:* {target_name}\n\n'
+        markdown_text += item.get_all_sheets(
+            verbose=True,
+            markdown=True,
+            show_quantity=True
+        )
+        markdown_text = (
+            f'{markdown_text}'
+            f'\n{TEXT_SEPARATOR}\n\n'
+            f'{all_report_text}'
+        )
+        if item.quantity <= 0:
+            back_button = get_back_button(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                retry_state=USE_ROUTES
+            )
+            reply_markup = InlineKeyboardMarkup([back_button])
+        else:
+            use_buttons = get_use_consumable_buttons(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                item_pos=item_pos,
+                item=item
+            )
+            discard_buttons = get_discard_buttons(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                item_pos=item_pos,
+                item=item
+            )
+            back_button = get_back_button(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                retry_state=USE_ROUTES
+            )
+            reply_markup = InlineKeyboardMarkup([
+                *use_buttons,
+                *discard_buttons,
+                back_button
+            ])
+        markdown_text = escape_basic_markdown_v2(markdown_text)
+        await query.edit_message_text(
+            text=markdown_text,
+            reply_markup=reply_markup,
+            parse_mode=ParseMode.MARKDOWN_V2
+        )
 
 
 @skip_if_dead_char
