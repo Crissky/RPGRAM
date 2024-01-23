@@ -102,11 +102,13 @@ class BleedingCondition(DebuffCondition):
         )
 
     def function(self, target) -> dict:
-        power = self.power()
+        power = self.power
         damage = target.combat_stats.hp * power
         report = target.combat_stats.damage_hit_points(damage)
         report['text'] = f'{self.full_name} -> ' + report['text']
         report['action'] = f'{self.name}'
+
+        return report
 
     def battle_function(self, target) -> dict:
         return self.function(target)
@@ -384,6 +386,8 @@ class PoisoningCondition(DebuffCondition):
         report['text'] = f'{self.full_name} -> ' + report['text']
         report['action'] = f'{self.name}'
 
+        return report
+
     def battle_function(self, target) -> dict:
         return self.function(target)
 
@@ -407,6 +411,8 @@ class SilenceCondition(DebuffCondition):
         report['text'] = 'Personagem está silenciado.'
         report['action'] = f'{SILENCE}'
 
+        return report
+
     def battle_function(self, target) -> dict:
         return self.function(target)
 
@@ -429,6 +435,8 @@ class StunnedCondition(DebuffCondition):
         report = {}
         report['text'] = 'Personagem está atordoado.'
         report['action'] = f'{STUNNED}'
+
+        return report
 
     def battle_function(self, target) -> dict:
         return self.function(target)
