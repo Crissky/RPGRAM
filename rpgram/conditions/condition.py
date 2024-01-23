@@ -2,6 +2,7 @@
 Este módulo representa as condições positivas e negativas dos personagens.
 '''
 
+from abc import abstractmethod
 from datetime import datetime
 from typing import Union
 
@@ -20,9 +21,6 @@ class Condition(StatsBooster):
     def __init__(
         self,
         name: str,
-        description: str,
-        function: str,
-        battle_function: str,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,
@@ -44,30 +42,30 @@ class Condition(StatsBooster):
             )
 
         self.__name = name
-        self.__description = description
-        self.__function = function
-        self.__battle_function = battle_function
         self.__frequency = frequency
         self.__turn = turn
         self.__level = level
 
+    @abstractmethod
+    def function(self, target) -> dict:
+        ...
+
+    @abstractmethod
+    def battle_function(self, target) -> dict:
+        ...
+
     def activate(self, target) -> dict:
-        _local = {'target': target, 'self': self}
-        exec(self.function, None, _local)
-        report = _local['report']
+        report = self.function(target)
         if self.__turn not in [-1, 0]:
             self.__turn -= 1
+
         return report
 
     def battle_activate(self, target) -> dict:
-        if self.battle_function:
-            _local = {'target': target, 'self': self}
-            exec(self.battle_function, None, _local)
-            report = _local['report']
-            if self.__turn not in [-1, 0]:
-                self.__turn -= 1
-        else:
-            self.activate(target)
+        report = self.battle_function(target)
+        if self.__turn not in [-1, 0]:
+            self.__turn -= 1
+
         return report
 
     def __call__(self, target) -> dict:
@@ -92,30 +90,15 @@ class Condition(StatsBooster):
     def last_turn(self):
         self.__turn = 1
 
-    def to_dict(self):
-        return dict(
-            name=self.__name,
-            description=self.__description,
-            function=self.function,
-            battle_function=self.battle_function,
-            frequency=self.__frequency.name,
-            turn=self.__turn,
-            _id=self._id,
-            created_at=self.created_at,
-            updated_at=self.updated_at,
-        )
-
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'*Condição*: {self.__name}\n'
+        text = f'*Condição*: {self.name}\n'
 
         if verbose:
             text += (
-                f'*Descrição*: {self.__description}\n'
-                f'*Função*: {self.function}\n'
-                f'*Função em Batalha*: {self.battle_function}\n'
-                f'*Frequência*: {self.__frequency.value}\n'
-                f'*Turno*: {self.__turn}\n'
-                f'*Nível*: {self.__level}\n'
+                f'*Descrição*: {self.description}\n'
+                f'*Frequência*: {self.frequency.value}\n'
+                f'*Turno*: {self.turn}\n'
+                f'*Nível*: {self.level}\n'
             )
 
         if not markdown:
@@ -151,12 +134,13 @@ class Condition(StatsBooster):
     # Getters
     name = property(lambda self: self.__name)
     full_name = property(lambda self: f'{self.emoji}{self.name}{self.level}')
-    description = property(lambda self: self.__description)
-    function = property(lambda self: self.__function)
-    battle_function = property(lambda self: self.__battle_function)
     frequency = property(lambda self: self.__frequency)
     turn = property(lambda self: self.__turn)
     level = property(lambda self: self.__level)
+
+    @property
+    def description(self) -> str:
+        return 'Descrição padrão.'
 
     @property
     def emoji_members_list(self) -> list:
@@ -177,11 +161,8 @@ class Condition(StatsBooster):
 if __name__ == '__main__':
     poison = Condition(
         name='Veneno',
-        description='Causa 10 de dano por hora.',
-        function='target.cs.damage_hit_points(10)',
-        battle_function='target.cs.damage_hit_points(10)',
         frequency='START',
     )
 
-    print(poison)
-    print(poison.to_dict())
+    print('POISON\n', poison)
+    print('POISON DICT\n', poison.to_dict())

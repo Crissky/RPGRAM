@@ -35,7 +35,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
     for player_id in player_id_list:
         print('player_id:', player_id)
         report = activate_conditions(user_id=player_id)
-        print('report:', report)
+        # print('report:', report)
         text = report['text']
         if text:
             # text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
