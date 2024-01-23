@@ -23,10 +23,10 @@ from rpgram.enums.turn import TurnEnum
 
 
 class DebuffCondition(Condition):
+
     def __init__(
         self,
         name: str,
-        description: str,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,
@@ -36,9 +36,6 @@ class DebuffCondition(Condition):
     ):
         super().__init__(
             name=name,
-            description=description,
-            function=None,
-            battle_function=None,
             frequency=frequency,
             turn=turn,
             level=level,
@@ -47,32 +44,24 @@ class DebuffCondition(Condition):
             updated_at=updated_at,
         )
 
-    def to_dict(self):
-        super_dict = super().to_dict()
-        return dict(
-            name=super_dict['name'],
-            description=super_dict['description'],
-            frequency=super_dict['frequency'],
-            turn=super_dict['turn'],
-            _id=super_dict['_id'],
-            created_at=super_dict['created_at'],
-            updated_at=super_dict['updated_at'],
-        )
-
 
 class BerserkerCondition(DebuffCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
             name=BERSERKER,
-            description=(
-                f'O personagem fica enlouquecido ({BERSERKER}) por 5 turnos, '
-                f'Aumentando o multiplicador de Força em (10% x Nível), mas '
-                f'podendo atacar aliados ou a si.'
-            ),
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'O personagem fica enlouquecido ({BERSERKER}) por 5 turnos, '
+            f'Aumentando o multiplicador de Força em '
+            f'"{self.multiplier_strength}x" (10% x Nível), mas '
+            f'podendo atacar aliados ou a si.'
         )
 
     @property
@@ -80,13 +69,15 @@ class BerserkerCondition(DebuffCondition):
         power = self.level / 10
         return (1 + power)
 
-    @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            f'report["text"] = "Personagem está enlouquecido ({BERSERKER}).";'
-            f'report["action"] = "{BERSERKER}";'
-        )
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = f'Personagem está enlouquecido ({BERSERKER}).'
+        report['action'] = f'{BERSERKER}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class BleedingCondition(DebuffCondition):
@@ -94,21 +85,31 @@ class BleedingCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=BLEEDING,
-            description='Causa (2% x Nível) de dano a cada turno.',
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
         )
 
     @property
-    def function(self) -> str:
+    def power(self):
+        return self.level * 0.02
+
+    @property
+    def description(self) -> str:
         return (
-            'power = self.level * 0.02;'
-            'damage = target.combat_stats.hp * power;'
-            'report = target.combat_stats.damage_hit_points(damage);'
-            'report["text"] = f"{self.full_name} -> " + report["text"];'
-            'report["action"] = f"{self.name}";'
+            f'Causa {self.power * 100}% do HP (2% x Nível) '
+            f'como dano a cada turno.'
         )
+
+    def function(self, target) -> dict:
+        power = self.power()
+        damage = target.combat_stats.hp * power
+        report = target.combat_stats.damage_hit_points(damage)
+        report['text'] = f'{self.full_name} -> ' + report['text']
+        report['action'] = f'{self.name}'
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class BlindnessCondition(DebuffCondition):
@@ -116,10 +117,16 @@ class BlindnessCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=BLINDNESS,
-            description='Reduz o multiplicador de Destreza em (10% x Nível).',
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            'Reduz o multiplicador de Destreza em '
+            f'"{self.multiplier_dexterity}x" (10% x Nível).'
         )
 
     @property
@@ -127,13 +134,15 @@ class BlindnessCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está cego.";'
-            f'report["action"] = "{BLINDNESS}";'
-        )
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está cego.'
+        report['action'] = f'{BLINDNESS}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class BurnCondition(DebuffCondition):
@@ -141,12 +150,16 @@ class BurnCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=BURN,
-            description=(
-                'Reduz o multiplicador de Constituição em (10% x Nível).'
-            ),
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Reduz o multiplicador de Constituição em '
+            f'"{self.multiplier_constitution}x" (10% x Nível).'
         )
 
     @property
@@ -154,13 +167,15 @@ class BurnCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está com queimaduras.";'
-            f'report["action"] = "{BURN}";'
-        )
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está com queimaduras.'
+        report['action'] = f'{BURN}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class ConfusionCondition(DebuffCondition):
@@ -168,22 +183,27 @@ class ConfusionCondition(DebuffCondition):
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
             name=CONFUSION,
-            description=(
-                'O personagem fica confuso por 5 turnos, '
-                'podendo atacar aliados ou a si.'
-            ),
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
         )
 
     @property
-    def function(self) -> str:
+    def description(self) -> str:
         return (
-            'report = {};'
-            'report["text"] = "Personagem está confuso.";'
-            f'report["action"] = "{CONFUSION}";'
+            f'O personagem fica confuso por {self.turn} turno(s), '
+            f'podendo atacar aliados ou a si.'
         )
+
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está confuso.'
+        report['action'] = f'{CONFUSION}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class CurseCondition(DebuffCondition):
@@ -191,13 +211,17 @@ class CurseCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=CURSE,
-            description=(
-                'Reduz os multiplicadores de Inteligência e Sabedoria '
-                'em (10% x Nível).'
-            ),
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Reduz os multiplicadores de Inteligência e Sabedoria em '
+            f'"{self.multiplier_intelligence}x" e '
+            f'"{self.multiplier_wisdom}x" (10% x Nível).'
         )
 
     @property
@@ -210,13 +234,15 @@ class CurseCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está amaldiçoado.";'
-            f'report["action"] = "{CURSE}";'
-        )
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está amaldiçoado.'
+        report['action'] = f'{CURSE}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class ExhaustionCondition(DebuffCondition):
@@ -224,13 +250,17 @@ class ExhaustionCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=EXHAUSTION,
-            description=(
-                'Reduz os multiplicadores de '
-                'Força e Destreza em (10% x Nível).'
-            ),
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Reduz os multiplicadores de Força e Destreza em '
+            f'"{self.multiplier_strength}x" e "{self.multiplier_dexterity}x" '
+            f'(10% x Nível).'
         )
 
     @property
@@ -243,13 +273,15 @@ class ExhaustionCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está exausto.";'
-            f'report["action"] = "{EXHAUSTION}";'
-        )
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está exausto.'
+        report['action'] = f'{EXHAUSTION}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class FrozenCondition(DebuffCondition):
@@ -257,19 +289,24 @@ class FrozenCondition(DebuffCondition):
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
             name=FROZEN,
-            description='O personagem não pode realizar ações por 5 turnos.',
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
         )
 
     @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está congelado.";'
-            f'report["action"] = "{FROZEN}";'
-        )
+    def description(self) -> str:
+        return f'O personagem não pode realizar ações por {self.turn} turnos.'
+
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está congelado.'
+        report['action'] = f'{FROZEN}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class ParalysisCondition(DebuffCondition):
@@ -277,19 +314,24 @@ class ParalysisCondition(DebuffCondition):
     def __init__(self, turn: int = 3, level: int = 1):
         super().__init__(
             name=PARALYSIS,
-            description='O personagem não pode realizar ações por 3 turnos.',
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
         )
 
     @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está paralisado.";'
-            f'report["action"] = "{PARALYSIS}";'
-        )
+    def description(self) -> str:
+        return f'O personagem não pode realizar ações por {self.turn} turnos.'
+
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está paralisado.'
+        report['action'] = f'{PARALYSIS}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class PetrifiedCondition(DebuffCondition):
@@ -297,19 +339,24 @@ class PetrifiedCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=PETRIFIED,
-            description='O personagem não pode realizar ações.',
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
         )
 
     @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está petrificado.";'
-            f'report["action"] = "{PETRIFIED}";'
-        )
+    def description(self) -> str:
+        return 'O personagem não pode realizar ações.'
+
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está petrificado.'
+        report['action'] = f'{PETRIFIED}'
+
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class PoisoningCondition(DebuffCondition):
@@ -317,21 +364,28 @@ class PoisoningCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=POISONING,
-            description='O personagem perde vida a cada turno.',
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
         )
 
     @property
-    def function(self) -> str:
-        return (
-            'power = self.level;'
-            'damage = sum([10 + i + i*10//2 for i in range(0, power)]);'
-            'report = target.combat_stats.damage_hit_points(damage);'
-            'report["text"] = f"{self.full_name} -> " + report["text"];'
-            'report["action"] = f"{self.name}";'
-        )
+    def description(self) -> str:
+        return f'O personagem perde {self.damage} pontos de vida a cada turno.'
+
+    @property
+    def damage(self):
+        power = self.level
+        damage = sum([10 + i + i*10//2 for i in range(0, power)])
+        return damage
+
+    def function(self, target) -> dict:
+        report = target.combat_stats.damage_hit_points(self.damage)
+        report['text'] = f'{self.full_name} -> ' + report['text']
+        report['action'] = f'{self.name}'
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class SilenceCondition(DebuffCondition):
@@ -339,21 +393,22 @@ class SilenceCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=SILENCE,
-            description=(
-                'O personagem não pode usar feitiços, magias ou encantamentos.'
-            ),
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
         )
 
     @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está silenciado.";'
-            f'report["action"] = "{SILENCE}";'
-        )
+    def description(self) -> str:
+        return 'O personagem não pode usar feitiços, magias ou encantamentos.'
+
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está silenciado.'
+        report['action'] = f'{SILENCE}'
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class StunnedCondition(DebuffCondition):
@@ -361,19 +416,22 @@ class StunnedCondition(DebuffCondition):
     def __init__(self, turn: int = 1, level: int = 1):
         super().__init__(
             name=STUNNED,
-            description='O personagem não pode realizar ações por 1 turno.',
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
         )
 
     @property
-    def function(self) -> str:
-        return (
-            'report = {};'
-            'report["text"] = "Personagem está atordoado.";'
-            f'report["action"] = "{STUNNED}";'
-        )
+    def description(self) -> str:
+        return f'O personagem não pode realizar ações por {self.turn} turno.'
+
+    def function(self, target) -> dict:
+        report = {}
+        report['text'] = 'Personagem está atordoado.'
+        report['action'] = f'{STUNNED}'
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
 
 class Debuffs:
