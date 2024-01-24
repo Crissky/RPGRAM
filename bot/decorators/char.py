@@ -163,7 +163,8 @@ def need_have_char(callback):
         else:
             await update.effective_message.reply_text(
                 f'Você ainda não criou um personagem!\n'
-                f'Crie o seu personagem com o comando /{COMMANDS[0]}.'
+                f'Crie o seu personagem com o comando /{COMMANDS[0]}.',
+                allow_sending_without_reply=True
             )
             return ConversationHandler.END
     return wrapper
@@ -217,6 +218,7 @@ def skip_if_dead_char(callback):
                 await update.effective_message.reply_text(
                     text=text,
                     disable_notification=silent,
+                    allow_sending_without_reply=True
                 )
 
             return ConversationHandler.END
@@ -285,7 +287,10 @@ def skip_if_immobilized(callback):
             if query:
                 await query.answer(text, show_alert=True)
             else:
-                await update.effective_message.reply_text(text)
+                await update.effective_message.reply_text(
+                    text,
+                    allow_sending_without_reply=True
+                )
             return ConversationHandler.END
     return wrapper
 
@@ -368,6 +373,7 @@ def confusion(retry_state=ConversationHandler.END):
                 await update.effective_message.reply_text(
                     text,
                     parse_mode=ParseMode.MARKDOWN_V2,
+                    allow_sending_without_reply=True
                 )
                 return retry_state
         return wrapper

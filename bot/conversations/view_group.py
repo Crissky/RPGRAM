@@ -43,7 +43,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             text,
             disable_notification=silent,
-            reply_markup=get_close_keyboard(None)
+            reply_markup=get_close_keyboard(None),
+            allow_sending_without_reply=True
         )
 
 

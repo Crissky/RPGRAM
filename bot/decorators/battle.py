@@ -28,7 +28,8 @@ def need_not_in_battle(callback):
             await update.effective_message.reply_text(
                 f'Você não pode usar esse comando enquanto '
                 f'estiver em batalha.\n'
-                f'Você está em uma batalha no grupo "{chat_name}".'
+                f'Você está em uma batalha no grupo "{chat_name}".',
+                allow_sending_without_reply=True
             )
             return ConversationHandler.END
     return wrapper

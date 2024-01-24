@@ -140,7 +140,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             f'Seu personagem ainda não possui equipamentos.\n'
             f'Equips: {equips}',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True,
         )
 
 

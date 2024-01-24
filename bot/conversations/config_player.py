@@ -38,13 +38,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 f'Configurado "{attribute}" para "{value}".\n\n'
                 f'{player}',
                 disable_notification=silent,
-                reply_markup=get_close_keyboard(user_id=user_id)
+                reply_markup=get_close_keyboard(user_id=user_id),
+                allow_sending_without_reply=True
             )
         except (KeyError, ValueError) as error:
             await update.effective_message.reply_text(
                 str(error),
                 disable_notification=silent,
-                reply_markup=get_close_keyboard(user_id=user_id)
+                reply_markup=get_close_keyboard(user_id=user_id),
+                allow_sending_without_reply=True
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         player['VERBOSE'] = 'false'
@@ -54,7 +56,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             f'Configurado para os valores padrões.\n\n'
             f'{player}',
             disable_notification=silent,
-            reply_markup=get_close_keyboard(user_id=user_id)
+            reply_markup=get_close_keyboard(user_id=user_id),
+            allow_sending_without_reply=True
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         user_name = update.effective_user.name
@@ -64,7 +67,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
             f'{player}',
             disable_notification=silent,
-            reply_markup=get_close_keyboard(user_id=user_id)
+            reply_markup=get_close_keyboard(user_id=user_id),
+            allow_sending_without_reply=True
         )
     elif len(args) != 2:
         text = escape_basic_markdown_v2(
@@ -76,7 +80,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             text,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2,
-            reply_markup=get_close_keyboard(user_id=user_id)
+            reply_markup=get_close_keyboard(user_id=user_id),
+            allow_sending_without_reply=True
         )
 
 

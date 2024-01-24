@@ -58,7 +58,8 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
-        reply_markup=get_close_keyboard(None)
+        reply_markup=get_close_keyboard(None),
+        allow_sending_without_reply=True
     )
 
 
@@ -83,7 +84,8 @@ async def get_random_debuff(
         text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
-        reply_markup=get_close_keyboard(user_id=user_id)
+        reply_markup=get_close_keyboard(user_id=user_id),
+        allow_sending_without_reply=True
     )
 
 
