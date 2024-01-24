@@ -203,6 +203,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             text='Você não tem itens na sua bolsa.',
             disable_notification=silent,
+            allow_sending_without_reply=True
         )
         return ConversationHandler.END
 
@@ -249,7 +250,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
+            allow_sending_without_reply=True
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
         await query.edit_message_text(
@@ -275,6 +277,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     equips_model = EquipsModel()
+    chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     data = callback_data_to_dict(query.data)
     item_pos = data['item']
@@ -384,11 +387,19 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ])
     # Edita mensagem com as informações do item escolhido
     markdown_text = escape_basic_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
-        reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
-    )
+    if user_id == chat_id:
+        await query.edit_message_text(
+            text=markdown_text,
+            reply_markup=reply_markup,
+            parse_mode=ParseMode.MARKDOWN_V2
+        )
+    else:
+        await update.effective_chat.send_message(
+            text=markdown_text,
+            reply_markup=reply_markup,
+            parse_mode=ParseMode.MARKDOWN_V2
+        )
+        await query.delete_message()
     return USE_ROUTES
 
 
@@ -868,7 +879,8 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 silent = get_attribute_group_or_player(chat_id, 'silent')
                 await update.effective_message.reply_text(
                     text=text,
-                    disable_notification=silent
+                    disable_notification=silent,
+                    allow_sending_without_reply=True
                 )
             elif player.verbose:
                 await send_private_message(
@@ -1062,7 +1074,8 @@ async def send_drop_message(
                 text=markdown_item_sheet,
                 disable_notification=silent,
                 reply_markup=reply_markup_drop,
-                parse_mode=ParseMode.MARKDOWN_V2
+                parse_mode=ParseMode.MARKDOWN_V2,
+                allow_sending_without_reply=True
             )
         else:
             response = await context.bot.send_message(
