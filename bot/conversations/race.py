@@ -56,6 +56,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text=text,
             reply_markup=reply_markup,
             disable_notification=silent,
+            allow_sending_without_reply=True
         )
 
 

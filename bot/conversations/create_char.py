@@ -75,7 +75,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         response = await update.effective_message.reply_text(
             f'Você precisa criar um perfil para criar um personagem.\n'
             f'Para isso, utilize o comando /criarconta.',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
 
         return ConversationHandler.END
@@ -95,7 +96,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             f'Personagem:\n'
             f'{player_character}',
             reply_markup=reply_markup,
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
         context.user_data['response'] = response
         return DELETE_ROUTES
@@ -111,7 +113,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         'usando o comando /cancel.\n\n'
         'Escolha uma das raças abaixo:',
         reply_markup=reply_markup,
-        disable_notification=silent
+        disable_notification=silent,
+        allow_sending_without_reply=True
     )
     context.user_data['response'] = response
 
@@ -259,7 +262,8 @@ async def create_char(
             f'"{character_name}" não é um nome de personagem válido.\n\n'
             f'O nome de personagem deve conter entre 3 e 50 caracteres, '
             f'apenas letras, números, espaços, e traço "-".',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
 
         return CREATE_CHAR_ROUTES
@@ -289,7 +293,8 @@ async def create_char(
         await update.effective_message.reply_text(
             f'Personagem Criado com sucesso!!!\n\n'
             f'{player_character}',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
     else:
         await update.effective_message.reply_text(
@@ -303,7 +308,8 @@ async def create_char(
             f'character_name: {character_name}\n'
             f'race:\n{race}\n'
             f'classe:\n{classe}\n',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
 
     if 'response' in context.user_data:

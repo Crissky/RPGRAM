@@ -2,6 +2,7 @@ from telegram import Update
 from telegram.constants import ChatMemberStatus
 from telegram.ext import ContextTypes, ConversationHandler
 
+
 def need_are_admin(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@NEED_ARE_ADMIN')
@@ -16,7 +17,8 @@ def need_are_admin(callback):
             return await callback(update, context)
         else:
             await update.effective_message.reply_text(
-                f'Esse comando só pode ser usado por administradores.'
+                f'Esse comando só pode ser usado por administradores.',
+                allow_sending_without_reply=True
             )
             return ConversationHandler.END
     return wrapper

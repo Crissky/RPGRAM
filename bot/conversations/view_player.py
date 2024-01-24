@@ -43,13 +43,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_message.reply_text(
             text,
             disable_notification=silent,
-            reply_markup=get_close_keyboard(user_id=user_id)
+            reply_markup=get_close_keyboard(user_id=user_id),
+            allow_sending_without_reply=True
         )
     else:
         await update.effective_message.reply_text(
             f'Você ainda não está cadastrado!\n'
             f'Cadastre-se com o comando /{sign_up_player_commands[0]}.',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
 
 VIEW_PLAYER_HANDLERS = [

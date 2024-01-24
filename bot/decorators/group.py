@@ -17,7 +17,8 @@ def need_singup_group(callback):
         else:
             await update.effective_message.reply_text(
                 f'É necessário cadastrar o grupo para utilizar esse comando.\n'
-                f'Cadastre o grupo com o comando /{COMMANDS[0]}.'
+                f'Cadastre o grupo com o comando /{COMMANDS[0]}.',
+                allow_sending_without_reply=True
             )
             return ConversationHandler.END
     return wrapper

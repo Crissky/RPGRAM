@@ -17,7 +17,8 @@ def need_singup_player(callback):
         else:
             await update.effective_message.reply_text(
                 f'Você precisa criar sua conta para utilizar esse comando.\n'
-                f'Crie a conta com o comando /{COMMANDS[0]}.'
+                f'Crie a conta com o comando /{COMMANDS[0]}.',
+                allow_sending_without_reply=True
             )
             return ConversationHandler.END
     return wrapper

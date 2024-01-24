@@ -43,7 +43,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.effective_message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
             f'Vocé já possui uma conta.\n\n'
-            f'{player}'
+            f'{player}',
+            allow_sending_without_reply=True
         )
         return ConversationHandler.END
 
@@ -58,6 +59,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         'Seja Bem-vindo, Aventureiro(a).\n'
         'Gostaria de Criar uma Conta?',
         reply_markup=reply_markup,
+        allow_sending_without_reply=True
     )
     context.user_data['response'] = response
 

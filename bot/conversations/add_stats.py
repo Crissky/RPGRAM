@@ -96,13 +96,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 await update.effective_message.reply_text(
                     text,
-                    disable_notification=silent
+                    disable_notification=silent,
+                    allow_sending_without_reply=True
                 )
             return None
     elif len(args) > 2:
         await update.effective_message.reply_text(
             'Envie somente o ATRIBUTO e o VALOR que deseja adicionar.',
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
         return None
     elif len(args) == 1:
@@ -169,6 +171,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode=ParseMode.MARKDOWN_V2,
             disable_notification=silent,
             reply_markup=reply_markup,
+            allow_sending_without_reply=True,
         )
 
 

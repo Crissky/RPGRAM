@@ -90,7 +90,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{user_name}, escolha sua ação.\n\n'
             f'{chat_battle.get_sheet()}\n',
             reply_markup=reply_markup,
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
         context.chat_data['battle_response'] = response
         context.chat_data['battle_id'] = battle_id
@@ -103,7 +104,8 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     response = await update.effective_message.reply_text(
         battle.get_teams_sheet(),
         reply_markup=reply_markup,
-        disable_notification=silent
+        disable_notification=silent,
+        allow_sending_without_reply=True
     )
     context.chat_data['battle_response'] = response
     context.chat_data['battle_id'] = battle_id

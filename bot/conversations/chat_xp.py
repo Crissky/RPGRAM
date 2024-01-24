@@ -78,7 +78,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if report_xp['level_up']:
         await update.effective_message.reply_text(
             text=text,
-            disable_notification=silent
+            disable_notification=silent,
+            allow_sending_without_reply=True
         )
     elif player.verbose:
         await send_private_message(

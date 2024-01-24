@@ -102,7 +102,8 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
         text=text,
-        disable_notification=silent
+        disable_notification=silent,
+        allow_sending_without_reply=True
     )
 
 

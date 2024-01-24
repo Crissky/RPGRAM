@@ -46,14 +46,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if update.effective_chat.type == ChatType.PRIVATE:
         await update.effective_message.reply_text(
-            'Use este comando em um grupo para cadastrá-lo.'
+            'Use este comando em um grupo para cadastrá-lo.',
+            allow_sending_without_reply=True
         )
         return ConversationHandler.END
     elif (group_config := group_model.get(chat_id)):
         await update.effective_message.reply_text(
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
             f'O grupo "{chat_name}" já está cadastrado.\n\n'
-            f'{group_config}'
+            f'{group_config}',
+            allow_sending_without_reply=True
         )
         return ConversationHandler.END
 
@@ -68,6 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         'Seja Bem-vindo, Aventureiro(a).\n'
         'Gostaria de Cadastrar este Grupo?',
         reply_markup=reply_markup,
+        allow_sending_without_reply=True
     )
     context.user_data['response'] = response
 
