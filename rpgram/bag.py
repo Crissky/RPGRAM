@@ -20,7 +20,8 @@ class Bag:
     um conjunto de itens de mesmo tipo por meio da quantidade (quantity).'''
 
     def __init__(
-        self, items: List[Item],
+        self,
+        items: List[Item],
         player_id: int,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
