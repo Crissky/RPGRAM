@@ -244,6 +244,7 @@ class BaseCharacter:
                     attack_value_boosted=attack_value_boosted
                 )
                 attack_value_boosted - defense_value_boosted
+
             damage = max(damage, 0)
             damage_report = defenser_char.cs.damage_hit_points(
                 value=damage,
@@ -256,6 +257,7 @@ class BaseCharacter:
             damage_or_defend_text = (
                 f' que defendeu recebendo *{damage}* pontos de dano'
             )
+
             if damage > 0:
                 damage_or_defend_text = f' e causou *{damage}* pontos de dano'
             report['text'] = (
@@ -280,6 +282,7 @@ class BaseCharacter:
                         f'{defense_value_boosted}({defense_value}), '
                         f'{defenser_dice.text}\n'
                     )
+
             report['text'] += damage_report['text']
             if damage_report['dead']:
                 report['text'] += (
@@ -294,6 +297,8 @@ class BaseCharacter:
         else:
             report['text'] = escape_basic_markdown_v2(report['text'])
 
+        attacker_action_name = attacker_action_name.replace('_', ' ').title()
+        defense_action_name = defense_action_name.replace('_', ' ').title()
         report.update({
             'attacker': self,
             'attacker_char': self,
