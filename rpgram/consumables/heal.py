@@ -40,8 +40,6 @@ class HealingConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -55,15 +53,15 @@ class HealingConsumable(Consumable):
     def emoji_type(self) -> str:
         return EmojiEnum.HEALING_CONSUMABLE.value
 
-    @property
-    def function(self) -> str:
-        return ('report = target.combat_stats.cure_hit_points(self.power)')
+    def function(self, target) -> dict:
+        report = target.combat_stats.cure_hit_points(self.power)
 
-    @property
-    def battle_function(self) -> str:
-        return (
-            'report = target.status.add_condition(self.condition)'
-        )
+        return report
+
+    def battle_function(self, target) -> dict:
+        report = target.status.add_condition(self.condition)
+
+        return report
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -98,8 +96,6 @@ class ReviveConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -112,13 +108,13 @@ class ReviveConsumable(Consumable):
     def emoji_type(self) -> str:
         return EmojiEnum.REVIVE_CONSUMABLE.value
 
-    @property
-    def function(self) -> str:
-        return ('report = target.combat_stats.revive(self.power)')
+    def function(self, target) -> dict:
+        report = target.combat_stats.revive(self.power)
 
-    @property
-    def battle_function(self) -> str:
-        return None
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target=target)
 
     def to_dict(self):
         super_dict = super().to_dict()

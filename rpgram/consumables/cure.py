@@ -24,8 +24,6 @@ class CureConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -41,20 +39,18 @@ class CureConsumable(Consumable):
     def emoji_type(self) -> str:
         return EmojiEnum.CURE_CONSUMABLE.value
 
-    @property
-    def function(self) -> str:
-        return (
-            r'report_list = ['
-            r'target.status.remove_condition(condition_target)["text"] '
-            r'for condition_target in self.condition_target'
-            r'];'
-            r'report_list = set(report_list);'  # Retira msg duplicadas
-            r'report = {"text": "\n".join(report_list)}'
-        )
+    def function(self, target) -> dict:
+        report_list = [
+            target.status.remove_condition(condition_target)["text"]
+            for condition_target in self.condition_target
+        ]
+        report_list = set(report_list)
+        report = {"text": "\n".join(report_list)}
 
-    @property
-    def battle_function(self) -> None:
-        return None
+        return report
+
+    def battle_function(self, target) -> dict:
+        return self.function(target)
 
     def to_dict(self):
         super_dict = super().to_dict()

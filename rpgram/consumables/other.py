@@ -30,8 +30,6 @@ class IdentifyingConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=False,
             _id=_id,
@@ -43,15 +41,15 @@ class IdentifyingConsumable(Consumable):
     def emoji_type(self) -> str:
         return EmojiEnum.IDENTIFY_CONSUMABLE.value
 
-    @property
-    def function(self) -> str:
-        return f'report = target.identify()'
+    def function(self, target) -> dict:
+        report = target.identify()
 
-    @property
-    def battle_function(self) -> str:
-        return (
-            'report = {"text": f"{self.name} não pode ser usado em batalha."}'
-        )
+        return report
+
+    def battle_function(self) -> dict:
+        report = {"text": f"{self.name} não pode ser usado em batalha."}
+
+        return report
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -83,8 +81,6 @@ class XPConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -93,13 +89,15 @@ class XPConsumable(Consumable):
         )
         self.power = power
 
-    @property
-    def function(self) -> str:
-        return ('report = target.base_stats.add_xp(self.power)')
+    def function(self, target) -> dict:
+        report = target.base_stats.add_xp(self.power)
 
-    @property
-    def battle_function(self) -> str:
-        return ('report = target.base_stats.add_xp(self.power)')
+        return report
+
+    def battle_function(self, target) -> dict:
+        report = target.base_stats.add_xp(self.power)
+
+        return report
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -122,6 +120,14 @@ if __name__ == '__main__':
         description='Identifying Description',
         weight=1.0,
     )
+    xp_consumable = XPConsumable(
+        name='XP Consumable',
+        description='XP Description',
+        power=100,
+        weight=1.0,
+    )
 
     print(identifying_consumable)
     print(identifying_consumable.to_dict())
+    print(xp_consumable)
+    print(xp_consumable.to_dict())
