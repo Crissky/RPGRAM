@@ -244,6 +244,21 @@ def get_player_ids_from_group(chat_id: int) -> List[int]:
     return player_ids
 
 
+def get_player_chars_from_group(
+    chat_id: int,
+    is_alive: bool = False
+) -> List[BaseCharacter]:
+    char_model = CharacterModel()
+    player_id_list = get_player_ids_from_group(chat_id)
+    query = {'player_id': {'$in': player_id_list}}
+    char_list = char_model.get_all(query=query)
+
+    if is_alive:
+        char_list = [char for char in char_list if char.is_alive]
+
+    return char_list
+
+
 def choice_char(
     player_id_list: List[int] = None,
     chat_id: int = None,
