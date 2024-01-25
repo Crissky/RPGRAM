@@ -56,7 +56,7 @@ def alert_if_not_chat_owner(
             if query:
                 data = eval(query.data)
                 data_user_id = data['user_id']
-                if data_user_id != user_id:
+                if data_user_id != user_id and data_user_id is not None:
                     if isinstance(alert_text, str):
                         await query.answer(text=alert_text, show_alert=True)
                     return retry_state
