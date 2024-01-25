@@ -16,27 +16,59 @@ class Player:
         verbose: bool = False,
         silent: bool = False,
         xp_cooldown: datetime = None,
+        trocado: int = 0,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
+        self.__chat_ids = []
         if isinstance(_id, str):
             _id = ObjectId(_id)
+        if isinstance(chat_ids, int):
+            chat_ids = [int(chat_ids)]
+
+        for chat_id in chat_ids:
+            self.add_chat_id(chat_id)
 
         self.name = name
         self.player_id = player_id
-        self.chat_ids = chat_ids
         self.__id = _id
         self.verbose = verbose
         self.silent = silent
         self.xp_cooldown = xp_cooldown
+        self.__trocado = trocado
         self.created_at = created_at
         self.updated_at = updated_at
 
     def add_chat_id(self, chat_id):
-        if chat_id not in self.chat_ids:
-            self.chat_ids.append(chat_id)
+        if chat_id not in self.__chat_ids:
+            self.__chat_ids.append(chat_id)
         else:
             raise ValueError(f'O chat ID {chat_id} já está na lista.')
+
+    def add_trocado(self, value: int) -> int:
+        value = int(value)
+        if value <= 0:
+            raise ValueError(f'O valor "{value}" não pode ser negativo.')
+
+        self.__trocado += value
+
+        return self.__trocado
+
+    def sub_trocado(self, value: int) -> int:
+        value = int(value)
+        if value <= 0:
+            raise ValueError(f'O valor "{value}" não pode ser negativo.')
+        if value > self.__trocado:
+            raise ValueError(
+                f'O valor "{value}" para subtrair é maior que o valor total '
+                f'({self.__trocado}) de trocados que o jogador {self.name} '
+                f'possui.'
+            )
+
+        sub_total = self.__trocado - value
+        self.__trocado = max(sub_total, 0)
+
+        return self.__trocado
 
     # Getters
     _id = property(lambda self: self.__id)
@@ -69,10 +101,11 @@ class Player:
         return (
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
+            f'Trocado: {self.__trocado}\n'
             f'ID: {self.__id}\n'
+            f'Player ID: {self.player_id}\n'
             f'Verbose: {self.verbose}\n'
             f'Silencioso: {self.silent}\n'
-            f'Player ID: {self.player_id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
         )
@@ -81,11 +114,12 @@ class Player:
         return dict(
             name=self.name,
             player_id=self.player_id,
-            chat_ids=self.chat_ids,
+            chat_ids=self.__chat_ids,
             _id=self.__id,
             verbose=self.verbose,
             silent=self.silent,
             xp_cooldown=self.xp_cooldown,
+            trocado=self.__trocado,
             created_at=self.created_at,
             updated_at=self.updated_at
         )
