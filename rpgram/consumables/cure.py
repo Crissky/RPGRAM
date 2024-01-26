@@ -4,6 +4,7 @@ from typing import List, Union
 from bson import ObjectId
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 
 
@@ -35,10 +36,6 @@ class CureConsumable(Consumable):
 
         self.condition_target = condition_target
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.CURE_CONSUMABLE.value
-
     def function(self, target) -> dict:
         report_list = [
             target.status.remove_condition(condition_target)["text"]
@@ -65,6 +62,19 @@ class CureConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.CURE_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = 50
+        cure_multiplier = max(len(self.condition_target), 1)
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier * cure_multiplier
+
+        return int(price)
 
 
 if __name__ == '__main__':

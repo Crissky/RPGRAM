@@ -5,6 +5,7 @@ from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.stats.stats_combat import FULL_HEAL_VALUE
 
@@ -49,10 +50,6 @@ class HealingConsumable(Consumable):
         self.power = power
         self.condition = condition
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.HEALING_CONSUMABLE.value
-
     def function(self, target) -> dict:
         report = target.combat_stats.cure_hit_points(self.power)
 
@@ -77,6 +74,18 @@ class HealingConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.HEALING_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = self.power
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 class ReviveConsumable(Consumable):
@@ -104,10 +113,6 @@ class ReviveConsumable(Consumable):
         )
         self.power = power
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.REVIVE_CONSUMABLE.value
-
     def function(self, target) -> dict:
         report = target.combat_stats.revive(self.power)
 
@@ -129,6 +134,18 @@ class ReviveConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.REVIVE_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = (100 + self.power) * 2
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 if __name__ == '__main__':

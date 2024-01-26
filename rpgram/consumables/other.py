@@ -5,6 +5,7 @@ from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 
 
@@ -37,10 +38,6 @@ class IdentifyingConsumable(Consumable):
             updated_at=updated_at,
         )
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.IDENTIFY_CONSUMABLE.value
-
     def function(self, target) -> dict:
         report = target.identify()
 
@@ -62,6 +59,18 @@ class IdentifyingConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.IDENTIFY_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = 500
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 class XPConsumable(Consumable):
@@ -112,6 +121,14 @@ class XPConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def price(self) -> int:
+        base_value = (100 + self.power) * 2
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 if __name__ == '__main__':
