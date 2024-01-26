@@ -1,5 +1,15 @@
 from repository.mongo import ItemModel
-from rpgram.conditions import Condition
+from rpgram.conditions import (
+    Condition,
+    Heal1Condition,
+    Heal2Condition,
+    Heal3Condition,
+    Heal4Condition,
+    Heal5Condition,
+    Heal6Condition,
+    Heal7Condition,
+    Heal8Condition,
+)
 from rpgram.consumables import (
     CureConsumable,
     IdentifyingConsumable,
@@ -56,10 +66,7 @@ CONSUMABLES = [
         'description': f'Cura {MINOR_HEALING_POTION_POWER} de HP em 5 Turnos.',
         'power': MINOR_HEALING_POTION_POWER,
         'weight': 0.10,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL1.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal1Condition(),
         'rarity': RarityEnum.COMMON.name,
         'class': HealingConsumable,
     }, {
@@ -67,10 +74,7 @@ CONSUMABLES = [
         'description': f'Cura {LIGHT_HEALING_POTION_POWER} de HP em 5 Turnos.',
         'power': LIGHT_HEALING_POTION_POWER,
         'weight': 0.15,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL2.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal2Condition(),
         'rarity': RarityEnum.COMMON.name,
         'class': HealingConsumable,
     }, {
@@ -78,10 +82,7 @@ CONSUMABLES = [
         'description': f'Cura {HEALING_POTION_POWER} de HP em 5 Turnos.',
         'power': HEALING_POTION_POWER,
         'weight': 0.20,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL3.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal3Condition(),
         'rarity': RarityEnum.COMMON.name,
         'class': HealingConsumable,
     }, {
@@ -91,10 +92,7 @@ CONSUMABLES = [
         ),
         'power': GREATER_HEALING_POTION_POWER,
         'weight': 0.25,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL4.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal4Condition(),
         'rarity': RarityEnum.UNCOMMON.name,
         'class': HealingConsumable,
     }, {
@@ -102,10 +100,7 @@ CONSUMABLES = [
         'description': f'Cura {RARE_HEALING_POTION_POWER} de HP em 5 Turnos.',
         'power': RARE_HEALING_POTION_POWER,
         'weight': 0.30,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL5.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal5Condition(),
         'rarity': RarityEnum.RARE.name,
         'class': HealingConsumable,
     }, {
@@ -113,9 +108,7 @@ CONSUMABLES = [
         'description': f'Cura {EPIC_HEALING_POTION_POWER} de HP em 5 Turnos.',
         'power': EPIC_HEALING_POTION_POWER,
         'weight': 0.35,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL6.value, None, None, None, TurnEnum.START
-        ),
+        'condition': Heal6Condition(),
         'rarity': RarityEnum.EPIC.name,
         'class': HealingConsumable,
     }, {
@@ -125,10 +118,7 @@ CONSUMABLES = [
         ),
         'power': LEGENDARY_HEALING_POTION_POWER,
         'weight': 0.40,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL7.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal7Condition(),
         'rarity': RarityEnum.LEGENDARY.name,
         'class': HealingConsumable,
     }, {
@@ -136,10 +126,7 @@ CONSUMABLES = [
         'description': 'Cura TODO de HP ou 1000 a cada Turno.',
         'power': MYTHIC_HEALING_POTION_POWER,
         'weight': 0.45,
-        'condition': Condition(
-            HealingConsumableEnum.HEAL8.value,
-            None, None, None, TurnEnum.START
-        ),
+        'condition': Heal8Condition(),
         'rarity': RarityEnum.MYTHIC.name,
         'class': HealingConsumable,
     },
@@ -455,7 +442,7 @@ CONSUMABLES = [
         'rarity': RarityEnum.LEGENDARY.name,
         'class': CureConsumable
     },
-    
+
     # Major Cure Potions
     {
         'name': "Major GrayMage's Pipe",
