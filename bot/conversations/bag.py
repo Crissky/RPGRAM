@@ -770,7 +770,8 @@ async def sell_item(
     reply_markup = InlineKeyboardMarkup([back_button])
     markdown_text = (
         f'Você vendeu "{sell}x {item.name}" e faturou '
-        f'{trocado}{EmojiEnum.TROCADO.value}.'
+        f'{trocado}{EmojiEnum.TROCADO.value}.\n'
+        f'Você tem {player.trocado}{EmojiEnum.TROCADO.value}.'
     )
     markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
