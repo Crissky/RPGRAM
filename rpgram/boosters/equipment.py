@@ -549,11 +549,11 @@ class Equipment(StatsBooster):
     @property
     def sell_price(self) -> int:
         return int(self.price / 20)
-    
+
     @property
     def price_text(self) -> str:
         return f'{self.price}{EmojiEnum.TROCADO.value}'
-    
+
     @property
     def sell_price_text(self) -> str:
         return f'{self.sell_price}{EmojiEnum.TROCADO.value}'
