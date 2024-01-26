@@ -392,9 +392,9 @@ class Equipment(StatsBooster):
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.name_type}{type_icon}\n'
             f'{damage_types}'
+            f'*Raridade*: {self.rarity.value}\n'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
-            f'*Raridade*: {self.rarity.value}\n'
             f'*Valor*: {self.sell_price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
@@ -542,7 +542,7 @@ class Equipment(StatsBooster):
     @property
     def price(self) -> int:
         rarity_multiplier = get_enum_index(self.rarity) + 1
-        price = self.power * rarity_multiplier * 10
+        price = self.power * rarity_multiplier * 5
 
         return int(price)
 
