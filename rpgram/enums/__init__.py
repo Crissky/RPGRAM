@@ -18,6 +18,7 @@ from rpgram.enums.material import MagicalStonesMaterialEnum
 from rpgram.enums.material import MagicalWearableMaterialEnum
 from rpgram.enums.material import MagicalMaskMaterialEnum
 from rpgram.enums.material import TacticalWearableMaterialEnum
+from rpgram.enums.material import CoinMaterialsEnum
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.rarity import RarityEnumOrder
 from rpgram.enums.turn import TurnEnum

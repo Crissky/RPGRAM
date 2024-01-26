@@ -104,3 +104,12 @@ class AccessoryMaterialsEnum(Enum):
     PEARL = 'Pérola'
     PLATINUM = 'Platina'
     DIAMOND = 'Diamante'
+
+
+class CoinMaterialsEnum(Enum):
+    DINAR = 'Dinar'
+    DRACHMA = 'Dracma'
+    ESCUDO = 'Escudo'
+    GUILDER = 'Florim'
+    MARAVEDI = 'Maravedi'
+    SESTERTIUS = 'Sestércio'

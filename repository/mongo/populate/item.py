@@ -10,6 +10,7 @@ from repository.mongo.populate.item_constants import (
     ARMOR_EQUIPMENTS,
     BLUDGEONING_WEAPONS,
     BOOTS_EQUIPMENTS,
+    COIN_EQUIPMENTS,
     ENCHANTED_WEAPONS,
     MAGICAL_GRIMOIRE_EQUIPMENTS,
     HEAVY_EQUIPMENTS,
@@ -35,6 +36,7 @@ from rpgram.consumables import Consumable
 from rpgram import Item
 from rpgram.enums import (
     AccessoryMaterialsEnum,
+    CoinMaterialsEnum,
     DamageEnum,
     EquipmentEnum,
     MagicalGrimoireMaterialEnum,
@@ -101,7 +103,7 @@ def choice_type_item(no_trap: bool = False) -> str:
     return weighted_choice(**types_item)
 
 
-def choice_total_times(min_times: int = 1, max_times: int = 5) -> int:
+def choice_total_items(min_items: int = 1, max_items: int = 5) -> int:
     '''Função que retorna um valor inteiro aleatério entre 
     min_times e max_times de maneira poderada, em que os valores mais próximos 
     de min_times tem maior chance de ocorrer.
@@ -110,16 +112,16 @@ def choice_total_times(min_times: int = 1, max_times: int = 5) -> int:
     ser escolhido.
 
     '''
-    if min_times == max_times:
-        return min_times
-    elif min_times > max_times:
+    if min_items == max_items:
+        return min_items
+    elif min_items > max_items:
         raise ValueError('"min_times" deve ser menor ou igual a "max_times".')
 
-    total_numbers = max_times - min_times + 1
+    total_numbers = max_items - min_items + 1
     base_prob = total_numbers * 100 * 2
     numbers_probs = {
         str(n): int(base_prob := base_prob // 1.5)
-        for n in range(min_times, max_times+1)
+        for n in range(min_items, max_items+1)
     }
 
     return int(weighted_choice(**numbers_probs))
@@ -545,6 +547,9 @@ def translate_material_name(
     elif weapon in TATICAL_WEARABLE_EQUIPMENTS:
         material_name = list(TacticalWearableMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
+    elif weapon in COIN_EQUIPMENTS:
+        material_name = list(CoinMaterialsEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
     else:
         material_name = material.replace("_", " ").title()
 
@@ -589,17 +594,15 @@ def create_random_equipment(
         equipment_dict[attribute] -= 1
 
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
-    rarity_name = rarity.replace("_", " ").title()
     material_name = translate_material_name(equip_type, weapon, material)
-    equip_name = equip_name.replace('_', ' ').title()
     damage_types = get_equipment_damage_type(weapon, rarity)
     damage_type_name = get_equipment_damage_type_name(damage_types)
     name = (
-        f'{rarity_name} '
+        f'{rarity} '
         f'{material_name} '
         f'{equip_name}'
         f'{damage_type_name}'
-    )
+    ).replace("_", " ").title().replace("'S", "'s")
     secret_stats = add_secret_stats(rarity, group_level)
     equipment_dict.update(secret_stats)
     equipment = Equipment(
@@ -638,18 +641,23 @@ def create_random_trap(group_level: int) -> int:
     return trap_level * trap_degree
 
 
-def create_random_item(group_level: int) -> Union[Consumable, Equipment]:
+def create_random_item(
+    group_level: int,
+    min_items: int = 1,
+    max_items: int = 5,
+) -> Union[Consumable, Equipment]:
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
+    
     base_level = group_level
     choiced_item = choice_type_item()
     equipment_types = [e.name for e in EquipmentEnum]
     if choiced_item == 'TRAP':
         items = create_random_trap(group_level)
     else:
-        times = choice_total_times()
+        total_items = choice_total_items(min_items, max_items)
         items = []
-        for _ in range(times):
+        for _ in range(total_items):
             group_level = random_group_level(base_level)
             choiced_item = choice_type_item(no_trap=True)
             if choiced_item == 'CONSUMABLE':

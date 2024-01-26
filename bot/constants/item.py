@@ -18,6 +18,9 @@ from rpgram.enums.debuff import (
     STUNNED,
 )
 
+# Número máximo de itens que podem ser dropados por baú.
+MAX_DROP_ITEMS = 7
+
 # SECTIONS TEXTs
 SECTION_TEXT_DROP_TREASURE = 'TESOURO'
 SECTION_TEXT_OPEN_TREASURE = 'ABERTO'
