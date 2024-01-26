@@ -16,6 +16,7 @@ from bot.constants.item import (
     CALLBACK_TEXT_IGNORE,
     ESCAPED_CALLBACK_TEXT_GET,
     ESCAPED_CALLBACK_TEXT_IGNORE,
+    MAX_DROP_ITEMS,
     REPLY_TEXTS_FIND_TRAP_DAMAGE,
     REPLY_TEXTS_FIND_TRAP_OPEN,
     REPLY_TEXTS_FIND_TREASURE_START,
@@ -173,7 +174,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         bag_model.save(player_bag)
 
-    items = create_random_item(group_level)
+    items = create_random_item(group_level, max_items=MAX_DROP_ITEMS)
     if isinstance(items, int):
         treasures.pop(message_id, None)
         return await activated_trap(

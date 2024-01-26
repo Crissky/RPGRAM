@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from datetime import datetime
 from typing import Union
 
@@ -7,6 +8,7 @@ from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 
 
@@ -16,8 +18,6 @@ class Consumable:
         name: str,
         description: str,
         weight: float,
-        function: str,
-        battle_function: str = None,
         rarity: Union[str, RarityEnum] = RarityEnum.COMMON,
         usable: bool = True,
         _id: Union[str, ObjectId] = None,
@@ -34,33 +34,28 @@ class Consumable:
         self.__name = name
         self.__description = description
         self.__weight = weight
-        self.__function = function
-        self.__battle_function = battle_function
         self.__rarity = rarity
         self.__usable = usable
         self.__id = _id
         self.__created_at = created_at
         self.__updated_at = updated_at
 
-    def use(self, target):
-        _local = {'target': target, 'self': self}
+    @abstractmethod
+    def function(self, target) -> dict:
+        ...
 
-        # globals são usadas em List comprehension,
-        # pois as variáveis de locals não estão
-        # disponíveis dentro do for
-        _global = _local
-        exec(self.function, _global, _local)
-        report = _local['report']
+    @abstractmethod
+    def battle_function(self, target) -> dict:
+        ...
+
+    def use(self, target):
+        report = self.function(target)
+
         return report
 
     def battle_use(self, target):
-        if self.battle_function:
-            _local = {'target': target, 'self': self}
-            _global = _local
-            exec(self.function, _global, _local)
-            report = _local['report']
-        else:
-            report = self.use(target)
+        report = self.battle_function(target)
+
         return report
 
     def to_dict(self):
@@ -68,8 +63,6 @@ class Consumable:
             name=self.__name,
             description=self.__description,
             weight=self.__weight,
-            function=self.__function,
-            battle_function=self.__battle_function,
             rarity=self.__rarity.name,
             usable=self.__usable,
             _id=self.__id,
@@ -85,6 +78,7 @@ class Consumable:
 
         if verbose:
             text += (
+                f'*Valor*: {self.sell_price_text}\n'
                 f'*Peso*: {self.__weight}{EmojiEnum.WEIGHT.value}\n'
                 f'*Descrição*: {self.__description}\n'
                 f'*Raridade*: {self.__rarity.value}\n'
@@ -121,12 +115,29 @@ class Consumable:
     def emoji_type(self) -> str:
         return EmojiEnum.CONSUMABLE.value
 
+    @property
+    def price(self) -> int:
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = 50 * rarity_multiplier * 10
+
+        return int(price)
+
+    @property
+    def sell_price(self) -> int:
+        return max(int(self.price / 20), 1)
+
+    @property
+    def price_text(self) -> str:
+        return f'{self.price}{EmojiEnum.TROCADO.value}'
+
+    @property
+    def sell_price_text(self) -> str:
+        return f'{self.sell_price}{EmojiEnum.TROCADO.value}'
+
     _id = property(lambda self: self.__id)
     name = property(lambda self: self.__name)
     description = property(lambda self: self.__description)
     weight = property(lambda self: self.__weight)
-    function = property(lambda self: self.__function)
-    battle_function = property(lambda self: self.__battle_function)
     rarity = property(lambda self: self.__rarity)
     usable = property(lambda self: self.__usable)
 
@@ -185,7 +196,6 @@ if __name__ == '__main__':
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
-        function='report = target.combat_stats.cure_hit_points(100)'
     )
     print(potion)
     print(potion.to_dict())

@@ -33,11 +33,13 @@ ENCHANTED_WEAPONS = [
 
 
 # Equipamentos mais ou menos pesados que o normal
-LIGHT_EQUIPMENTS = ['RING', 'NECKLACE', 'AMULET', 'QUILL', 'CHARM']
+LIGHT_EQUIPMENTS = [
+    'RING', 'NECKLACE', 'AMULET', 'QUILL', 'CHARM', 'COIN', 'SCARF'
+]
 HEAVY_EQUIPMENTS = [
     'GREAT_SWORD', 'SHIELD', 'SPIKED_SHIELD', 'DOUBLE_AXE', 'HALBERD', 'FLAIL',
     'SLEDGEHAMMER', 'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL',
-    'RIKUDŌKON'
+    'RIKUDŌKON', 'SPAULDER', 'SPIKED_SPAULDER', 'GREAVES', 'SPIKED_GREAVES'
 ]
 VERY_HEAVY_EQUIPMENTS = [
     'ARMOR', 'SPIKED_ARMOR', 'WARHAMMER', 'PIKE', 'BRIGANDINE', 'SHARUR'
@@ -46,11 +48,12 @@ VERY_HEAVY_EQUIPMENTS = [
 
 # Especial Materials Equipments
 MAGICAL_QUILL_EQUIPMENTS = ['QUILL']
-MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE']
+MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE', 'SHOES']
 MAGICAL_STONES_EQUIPMENTS = ['ORB', 'CRYSTAL']
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
-TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD']
+TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'SCARF']
+COIN_EQUIPMENTS = ['COIN']
 
 
 # EQUIPMENTS DEFINITIONS
@@ -973,6 +976,38 @@ ARMOR_EQUIPMENTS = {
             'bonus_evasion': 1,
         }
     ),
+    'SPAULDER': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 5, 'bonus_hit': 5,
+            'bonus_evasion': 5,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 3, 'bonus_precision_attack': 3,
+            'bonus_magical_attack': 3, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'SPIKED_SPAULDER': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 3, 'bonus_initiative': 5,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 0, 'bonus_hit': 5,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        }
+    ),
 }
 BOOTS_EQUIPMENTS = {
     'BOOTS': dict(
@@ -991,7 +1026,7 @@ BOOTS_EQUIPMENTS = {
             'bonus_evasion': 1,
         }
     ),
-    'SANDAL': dict(
+    'SANDALS': dict(
         attr_bonus_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 10,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 5,
@@ -1004,6 +1039,54 @@ BOOTS_EQUIPMENTS = {
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'GREAVES': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 3,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'SPIKED_GREAVES': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 3,
+            'bonus_physical_attack': 10, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 0, 'bonus_hit': 3,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'SHOES': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 10, 'bonus_hit': 5,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
             'bonus_evasion': 1,
         }
     ),
@@ -1022,6 +1105,86 @@ RING_EQUIPMENTS = {
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'KRATOS\'S_RING': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'HERMES\'S_RING': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        }
+    ),
+    'ARTEMIS\'S_RING': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 1,
+        }
+    ),
+    'HECATE\'S_RING': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'GAIA\'S_RING': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
             'bonus_evasion': 1,
         }
     ),
@@ -1073,6 +1236,38 @@ AMULET_EQUIPMENTS = {
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
+        }
+    ),
+    'COIN': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 10, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 10,
+        }
+    ),
+    'SCARF': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 5,
+            'bonus_evasion': 10,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 5, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
         }
     ),
 }

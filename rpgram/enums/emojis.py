@@ -93,6 +93,7 @@ class EmojiEnum(Enum):
     IDENTIFY_CONSUMABLE = '🔎'
     ALIGNMENT = '🗣️'
     UNDER_ZERO = '🈴'
+    TROCADO = '💰'
 
 
 class FaceEmojiEnum(Enum):

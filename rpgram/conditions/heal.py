@@ -12,7 +12,10 @@ from rpgram.consumables.heal import (
     EPIC_HEALING_POTION_POWER,
     LEGENDARY_HEALING_POTION_POWER,
 )
-from rpgram.enums.consumable import HealingConsumableEmojiEnum, HealingConsumableEnum
+from rpgram.enums.consumable import (
+    HealingConsumableEmojiEnum,
+    HealingConsumableEnum
+)
 from rpgram.enums.turn import TurnEnum
 
 MINOR_HEALING_POTION_TURNPOWER = MINOR_HEALING_POTION_POWER // 5

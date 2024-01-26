@@ -5,6 +5,7 @@ from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.stats.stats_combat import FULL_HEAL_VALUE
 
@@ -19,6 +20,7 @@ LEGENDARY_HEALING_POTION_POWER = 5000
 MYTHIC_HEALING_POTION_POWER = FULL_HEAL_VALUE
 
 MINOR_REVIVE_POWER = 1
+REVIVE_POWER = 500
 
 
 class HealingConsumable(Consumable):
@@ -39,8 +41,6 @@ class HealingConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -50,19 +50,15 @@ class HealingConsumable(Consumable):
         self.power = power
         self.condition = condition
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.HEALING_CONSUMABLE.value
+    def function(self, target) -> dict:
+        report = target.combat_stats.cure_hit_points(self.power)
 
-    @property
-    def function(self) -> str:
-        return ('report = target.combat_stats.cure_hit_points(self.power)')
+        return report
 
-    @property
-    def battle_function(self) -> str:
-        return (
-            'report = target.status.add_condition(self.condition)'
-        )
+    def battle_function(self, target) -> dict:
+        report = target.status.add_condition(self.condition)
+
+        return report
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -78,6 +74,20 @@ class HealingConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.HEALING_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = self.power
+        if self.power == MYTHIC_HEALING_POTION_POWER:
+            base_value = LEGENDARY_HEALING_POTION_POWER * 2
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 class ReviveConsumable(Consumable):
@@ -97,8 +107,6 @@ class ReviveConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -107,17 +115,13 @@ class ReviveConsumable(Consumable):
         )
         self.power = power
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.REVIVE_CONSUMABLE.value
+    def function(self, target) -> dict:
+        report = target.combat_stats.revive(self.power)
 
-    @property
-    def function(self) -> str:
-        return ('report = target.combat_stats.revive(self.power)')
+        return report
 
-    @property
-    def battle_function(self) -> str:
-        return None
+    def battle_function(self, target) -> dict:
+        return self.function(target=target)
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -132,6 +136,18 @@ class ReviveConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.REVIVE_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = (100 + self.power) * 2
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 if __name__ == '__main__':

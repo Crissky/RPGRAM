@@ -5,6 +5,7 @@ from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 
 
@@ -30,8 +31,6 @@ class IdentifyingConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=False,
             _id=_id,
@@ -39,19 +38,15 @@ class IdentifyingConsumable(Consumable):
             updated_at=updated_at,
         )
 
-    @property
-    def emoji_type(self) -> str:
-        return EmojiEnum.IDENTIFY_CONSUMABLE.value
+    def function(self, target) -> dict:
+        report = target.identify()
 
-    @property
-    def function(self) -> str:
-        return f'report = target.identify()'
+        return report
 
-    @property
-    def battle_function(self) -> str:
-        return (
-            'report = {"text": f"{self.name} não pode ser usado em batalha."}'
-        )
+    def battle_function(self) -> dict:
+        report = {"text": f"{self.name} não pode ser usado em batalha."}
+
+        return report
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -64,6 +59,18 @@ class IdentifyingConsumable(Consumable):
             created_at=super_dict['created_at'],
             updated_at=super_dict['updated_at'],
         )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.IDENTIFY_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = 500
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
 
 
 class XPConsumable(Consumable):
@@ -83,8 +90,6 @@ class XPConsumable(Consumable):
             name=name,
             description=description,
             weight=weight,
-            function=None,
-            battle_function=None,
             rarity=rarity,
             usable=usable,
             _id=_id,
@@ -93,13 +98,15 @@ class XPConsumable(Consumable):
         )
         self.power = power
 
-    @property
-    def function(self) -> str:
-        return ('report = target.base_stats.add_xp(self.power)')
+    def function(self, target) -> dict:
+        report = target.base_stats.add_xp(self.power)
 
-    @property
-    def battle_function(self) -> str:
-        return ('report = target.base_stats.add_xp(self.power)')
+        return report
+
+    def battle_function(self, target) -> dict:
+        report = target.base_stats.add_xp(self.power)
+
+        return report
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -115,6 +122,14 @@ class XPConsumable(Consumable):
             updated_at=super_dict['updated_at'],
         )
 
+    @property
+    def price(self) -> int:
+        base_value = (100 + self.power) * 2
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
+
 
 if __name__ == '__main__':
     identifying_consumable = IdentifyingConsumable(
@@ -122,6 +137,14 @@ if __name__ == '__main__':
         description='Identifying Description',
         weight=1.0,
     )
+    xp_consumable = XPConsumable(
+        name='XP Consumable',
+        description='XP Description',
+        power=100,
+        weight=1.0,
+    )
 
     print(identifying_consumable)
     print(identifying_consumable.to_dict())
+    print(xp_consumable)
+    print(xp_consumable.to_dict())

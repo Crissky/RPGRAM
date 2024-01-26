@@ -25,6 +25,7 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.emojis import EmojiEnum
 
@@ -391,8 +392,10 @@ class Equipment(StatsBooster):
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.name_type}{type_icon}\n'
             f'{damage_types}'
+            f'*Raridade*: {self.rarity.value}\n'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
+            f'*Valor*: {self.sell_price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
         )
@@ -535,6 +538,25 @@ class Equipment(StatsBooster):
         if self.identifiable:
             text = EmojiEnum.IDENTIFY.value
         return text
+
+    @property
+    def price(self) -> int:
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = self.power * rarity_multiplier * 5
+
+        return int(price)
+
+    @property
+    def sell_price(self) -> int:
+        return int(self.price / 20)
+
+    @property
+    def price_text(self) -> str:
+        return f'{self.price}{EmojiEnum.TROCADO.value}'
+
+    @property
+    def sell_price_text(self) -> str:
+        return f'{self.sell_price}{EmojiEnum.TROCADO.value}'
 
     name = property(lambda self: self.identifiable_tag + self.__name)
     equip_type = property(lambda self: self.__equip_type)
