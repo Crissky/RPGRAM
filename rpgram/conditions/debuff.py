@@ -398,7 +398,7 @@ class SilenceCondition(DebuffCondition):
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
             name=SILENCE,
-            frequency=TurnEnum.START,
+            frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
         )
