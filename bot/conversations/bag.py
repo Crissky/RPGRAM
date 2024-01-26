@@ -49,11 +49,13 @@ from bot.constants.bag import (
     PATTERN_IDENTIFY,
     PATTERN_ITEM,
     PATTERN_PAGE,
+    PATTERN_SELL,
     PATTERN_SORT,
     PATTERN_SORT_ITEMS,
     PATTERN_USE,
     SECTION_TEXT_CONSUMABLE,
     SECTION_TEXT_EQUIPMENT,
+    SELL_MANY_BUTTON_TEXT,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -94,7 +96,7 @@ from bot.functions.chat import (
 )
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
-from bot.functions.player import get_player_id_by_name, get_player_name
+from bot.functions.player import get_player_id_by_name, get_player_name, get_player_trocado
 from constant.text import (
     SECTION_HEAD_CONSUMABLE_END,
     SECTION_HEAD_CONSUMABLE_START,
@@ -188,7 +190,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     markdown_text = (
         f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
-        f'*Alvo*: {target_name}\n\n'
+    )
+    markdown_text += get_trocado_and_target_text(
+        user_id=user_id,
+        target_id=target_id
     )
 
     items = player_bag[:]
@@ -292,7 +297,10 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     item = get_item_by_position(user_id, page, item_pos)
     target_name = get_player_name(target_id)
-    markdown_text = f'*Alvo:* {target_name}\n\n'
+    markdown_text = get_trocado_and_target_text(
+        user_id=user_id,
+        target_id=target_id
+    )
     markdown_text += item.get_all_sheets(
         verbose=True,
         markdown=True,
@@ -372,6 +380,13 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         item_pos=item_pos,
         item=item
     )
+    sell_buttons = get_sell_buttons(
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        item_pos=item_pos,
+        item=item
+    )
     back_button = get_back_button(
         page=page,
         user_id=user_id,
@@ -383,6 +398,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         *use_buttons,
         identify_button,
         *discard_buttons,
+        *sell_buttons,
         back_button
     ])
     # Edita mensagem com as informações do item escolhido
@@ -564,7 +580,10 @@ async def use_item_consumable(
         )
     finally:
         all_report_text = '\n'.join(all_report_text)
-        markdown_text = f'*Alvo:* {target_name}\n\n'
+        markdown_text = get_trocado_and_target_text(
+            user_id=user_id,
+            target_id=target_id
+        )
         markdown_text += item.get_all_sheets(
             verbose=True,
             markdown=True,
@@ -598,6 +617,13 @@ async def use_item_consumable(
                 item_pos=item_pos,
                 item=item
             )
+            sell_buttons = get_sell_buttons(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                item_pos=item_pos,
+                item=item
+            )
             back_button = get_back_button(
                 page=page,
                 user_id=user_id,
@@ -607,6 +633,7 @@ async def use_item_consumable(
             reply_markup = InlineKeyboardMarkup([
                 *use_buttons,
                 *discard_buttons,
+                *sell_buttons,
                 back_button
             ])
         markdown_text = escape_basic_markdown_v2(markdown_text)
@@ -686,6 +713,73 @@ async def identify_item(
     )
 
     return USE_ROUTES
+
+
+@skip_if_dead_char
+@skip_if_immobilized
+@confusion(USE_ROUTES)
+@print_basic_infos
+@retry_after
+async def sell_item(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
+    '''Vende o item do jogador.
+    '''
+    query = update.callback_query
+
+    try:
+        old_reply_markup = query.message.reply_markup
+        await query.edit_message_reply_markup()
+    except Exception as e:
+        print(type(e), e)
+        return ConversationHandler.END
+
+    bag_model = BagModel()
+    player_model = PlayerModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    user_name = update.effective_user.name
+    data = callback_data_to_dict(query.data)
+    item_pos = data['item']
+    page = data['page']
+    data_user_id = data['user_id']
+    target_id = data['target_id']
+    sell = data['sell']
+
+    if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
+        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        return USE_ROUTES
+
+    player = player_model.get(user_id)
+    item = get_item_by_position(user_id, page, item_pos)
+    sell = min(sell, item.quantity)
+    trocado = int(sell * item.sell_price)
+    player.add_trocado(trocado)
+
+    bag_model.sub(item, user_id, quantity=-(sell))
+    player_model.save(player)
+
+    back_button = get_back_button(
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        retry_state=START_ROUTES
+    )
+    reply_markup = InlineKeyboardMarkup([back_button])
+    markdown_text = (
+        f'Você vendeu "{sell}x {item.name}" e faturou '
+        f'{trocado}{EmojiEnum.TROCADO.value}.'
+    )
+    markdown_text = escape_basic_markdown_v2(markdown_text)
+    await query.edit_message_text(
+        text=markdown_text,
+        reply_markup=reply_markup,
+        parse_mode=ParseMode.MARKDOWN_V2,
+    )
+
+    return START_ROUTES
 
 
 @skip_if_dead_char
@@ -1106,6 +1200,17 @@ def create_and_put_drop_dict(
     context.chat_data['drops'] = drop_dict
 
 
+def get_trocado_and_target_text(user_id: int, target_id: int) -> str:
+    trocado = get_player_trocado(user_id)
+    target_name = get_player_name(target_id)
+    text = (
+        f'*Trocado*: {trocado}{EmojiEnum.TROCADO.value}\n'
+        f'*Alvo*: {target_name}\n\n'
+    )
+
+    return text
+
+
 def get_item_texts(items: List[Item]) -> str:
     markdown_text = ''
     zero_fill = 2
@@ -1287,6 +1392,36 @@ def get_discard_buttons(
     return reshape_row_buttons(drop_buttons, buttons_per_row=2)
 
 
+def get_sell_buttons(
+    page: int,
+    user_id: int,
+    target_id: int,
+    item_pos: int,
+    item: Item
+) -> List[InlineKeyboardButton]:
+    sell_buttons = []
+    quantity = item.quantity
+    for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
+        if quantity_option <= quantity:
+            text = SELL_MANY_BUTTON_TEXT.format(
+                quantity_option=quantity_option
+            )
+            sell_buttons.append(
+                InlineKeyboardButton(
+                    text=text,
+                    callback_data=callback_data_to_string({
+                        'sell': quantity_option,
+                        'item': item_pos,
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
+                )
+            )
+
+    return reshape_row_buttons(sell_buttons, buttons_per_row=2)
+
+
 def get_close_bag_button(
     user_id: int,
     target_id: int
@@ -1458,6 +1593,7 @@ BAG_HANDLER = ConversationHandler(
             CallbackQueryHandler(start, pattern=PATTERN_PAGE),
             CallbackQueryHandler(use_item, pattern=PATTERN_USE),
             CallbackQueryHandler(drop_item, pattern=PATTERN_DROP),
+            CallbackQueryHandler(sell_item, pattern=PATTERN_SELL),
             CallbackQueryHandler(identify_item, pattern=PATTERN_IDENTIFY),
         ],
         SORT_ROUTES: [

@@ -13,7 +13,7 @@ CANCEL_COMMANDS = ['cancel', 'close']
 SEND_DROP_MESSAGE_TIME_SLEEP = 1
 ITEMS_PER_PAGE = 10
 DROPUSE_MANY_MAX = 10
-DROPUSE_QUANTITY_OPTION_LIST = [1, 3, 5, 10, 30, 50, 100]
+DROPUSE_QUANTITY_OPTION_LIST = [1, 3, 5, 10, 30, 50]
 
 
 # SECTIONS TEXTs
@@ -32,7 +32,8 @@ ESCAPED_CALLBACK_TEXT_SORT_ITEMS = re.escape(CALLBACK_TEXT_SORT_ITEMS)
 PATTERN_PAGE = fr'^{{{CALLBACK_KEY_LIST.index("page")}:'
 PATTERN_ITEM = fr'^{{{CALLBACK_KEY_LIST.index("item")}:'
 PATTERN_USE = fr'^{{{CALLBACK_KEY_LIST.index("use")}:'
-PATTERN_DROP = fr'^{{{CALLBACK_KEY_LIST.index("drop")}:(1|3|5|10)'
+PATTERN_DROP = fr'^{{{CALLBACK_KEY_LIST.index("drop")}:(1|3|5)'
+PATTERN_SELL = fr'^{{{CALLBACK_KEY_LIST.index("sell")}:(1|3|5)'
 PATTERN_IDENTIFY = fr'^{{{CALLBACK_KEY_LIST.index("identify")}:1'
 PATTERN_SORT = fr'^{{{CALLBACK_KEY_LIST.index("sort")}:'
 PATTERN_CLOSE_BAG = (
@@ -58,6 +59,9 @@ CLOSE_BAG_BUTTON_TEXT = f'Fechar Bolsa{EmojiEnum.CLOSE_BAG.value}'
 DESTROY_ITEM_BUTTON_TEXT = f'Quebrar{EmojiEnum.DESTROY_ITEM.value}'
 DISCARD_MANY_BUTTON_TEXT = (
     f'{EmojiEnum.DISCARD.value}Descartar x{{quantity_option}}'
+)
+SELL_MANY_BUTTON_TEXT = (
+    f'{EmojiEnum.SELL.value}Vender x{{quantity_option}}'
 )
 EQUIP_BUTTON_TEXT = f'{EmojiEnum.TO_EQUIP.value}Equipar'
 EQUIP_LEFT_BUTTON_TEXT = f'{EmojiEnum.LEFT.value}Equipar'

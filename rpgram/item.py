@@ -85,6 +85,14 @@ class Item:
         return power
 
     @property
+    def price(self) -> int:
+        return self.item.price
+
+    @property
+    def sell_price(self) -> int:
+        return self.item.sell_price
+
+    @property
     def rarity(self) -> RarityEnum:
         return self.item.rarity
 

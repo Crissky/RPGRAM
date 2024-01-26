@@ -4,6 +4,7 @@ from typing import List, Union
 
 from constant.text import SECTION_HEAD
 from function.date_time import datetime_to_string
+from rpgram.enums.emojis import EmojiEnum
 
 
 class Player:
@@ -73,6 +74,10 @@ class Player:
     # Getters
     _id = property(lambda self: self.__id)
 
+    @property
+    def trocado_text(self) -> str:
+        return f'{self.__trocado}{EmojiEnum.TROCADO.value}'
+
     def __setitem__(self, key, value):
         key = key.upper()
 
@@ -101,7 +106,7 @@ class Player:
         return (
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
-            f'Trocado: {self.__trocado}\n'
+            f'Trocado: {self.trocado_text}\n'
             f'ID: {self.__id}\n'
             f'Player ID: {self.player_id}\n'
             f'Verbose: {self.verbose}\n'
