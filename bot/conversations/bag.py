@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from random import choice
 from time import sleep
 from typing import List
 
@@ -19,10 +20,15 @@ from telegram.ext import (
 
 from bot.constants.bag import (
     ACCESS_DENIED,
+    ALL_RESTORE_CONSUMABLES_TUPLE,
     CALLBACK_CLOSE_BAG,
     CALLBACK_TEXT_DESTROY_ITEM,
     CALLBACK_TEXT_SORT_ITEMS,
     CANCEL_COMMANDS,
+    CHRYSUS_EQUIPMENT_SELL,
+    CHRYSUS_GEMSTONE_SELL,
+    CHRYSUS_OTHERS_SELL,
+    CHRYSUS_POTION_SELL,
     CLOSE_BAG_BUTTON_TEXT,
     COLLECT_MANY_BUTTON_TEXT,
     COMMANDS,
@@ -62,7 +68,7 @@ from bot.constants.bag import (
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
     SEND_DROP_MESSAGE_TIME_SLEEP,
-    USE_MANY_BUTTON_TEXT
+    USE_MANY_BUTTON_TEXT,
 )
 
 from bot.constants.filters import (
@@ -121,6 +127,7 @@ from rpgram import Bag, Item
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter
 from rpgram.consumables import Consumable, TrocadoPouchConsumable
+from rpgram.consumables.other import GemstoneConsumable
 from rpgram.enums import EmojiEnum, EquipmentEnum
 
 
@@ -772,13 +779,25 @@ async def sell_item(
         markdown_text = (
             f'Você coletou {trocado}{EmojiEnum.TROCADO.value} de '
             f'"{sell}x {item.name}" e esta com um total de '
-            f'{player.trocado}{EmojiEnum.TROCADO.value}.'
+            f'{player.trocado_text}.'
         )
     else:
+        chrysus_quote = '>*Chrysus*: '
+        if isinstance(item.item, Equipment):
+            chrysus_quote += choice(CHRYSUS_EQUIPMENT_SELL)
+        elif isinstance(item.item, ALL_RESTORE_CONSUMABLES_TUPLE):
+            chrysus_quote += choice(CHRYSUS_POTION_SELL)
+        elif isinstance(item.item, GemstoneConsumable):
+            chrysus_quote += choice(CHRYSUS_GEMSTONE_SELL)
+        else:
+            chrysus_quote += choice(CHRYSUS_OTHERS_SELL)
+            
+
         markdown_text = (
+            f'{chrysus_quote}\n\n'
             f'Você vendeu "{sell}x {item.name}" e faturou '
             f'{trocado}{EmojiEnum.TROCADO.value}.\n'
-            f'Você tem {player.trocado}{EmojiEnum.TROCADO.value}.'
+            f'Agora você tem {player.trocado_text}.'
         )
     markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
