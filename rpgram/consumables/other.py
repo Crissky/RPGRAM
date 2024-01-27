@@ -163,7 +163,6 @@ class TrocadoPouchConsumable(Consumable):
         super_dict = super().to_dict()
         return dict(
             name=super_dict['name'],
-            description=super_dict['description'],
             weight=super_dict['weight'],
             rarity=super_dict['rarity'],
             _id=super_dict['_id'],
@@ -229,7 +228,6 @@ class GemstoneConsumable(Consumable):
         super_dict = super().to_dict()
         return dict(
             name=super_dict['name'],
-            description=super_dict['description'],
             weight=super_dict['weight'],
             rarity=super_dict['rarity'],
             _id=super_dict['_id'],
