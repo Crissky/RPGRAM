@@ -1,4 +1,5 @@
 from random import choice, randint
+from typing import Iterable
 
 from telegram import (
     InlineKeyboardButton,
@@ -206,7 +207,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.MARKDOWN_V2
     )
 
-    if isinstance(items, list):
+    if isinstance(items, (list, Iterable)):
         for item in items:
             if isinstance(item.item, Equipment):
                 items_model.save(item.item)

@@ -1,7 +1,7 @@
 from bson import ObjectId
 from collections import defaultdict
 from random import choice, random, randint
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Iterable, List, Tuple, Union
 from repository.mongo import ItemModel
 from repository.mongo.populate.tools import random_group_level, weighted_choice
 from repository.mongo.populate.item_constants import (
@@ -645,18 +645,19 @@ def create_random_item(
     group_level: int,
     min_items: int = 1,
     max_items: int = 5,
-) -> Union[Consumable, Equipment]:
+    no_trap: bool = False,
+) -> Union[int, Iterable[Union[Consumable, Equipment]]]:
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
-    
+
     base_level = group_level
-    choiced_item = choice_type_item()
+    choiced_item = choice_type_item(no_trap=no_trap)
     equipment_types = [e.name for e in EquipmentEnum]
     if choiced_item == 'TRAP':
-        items = create_random_trap(group_level)
+        trap_level = create_random_trap(group_level)
+        return trap_level
     else:
         total_items = choice_total_items(min_items, max_items)
-        items = []
         for _ in range(total_items):
             group_level = random_group_level(base_level)
             choiced_item = choice_type_item(no_trap=True)
@@ -668,9 +669,7 @@ def create_random_item(
                 raise ValueError(
                     f'O item "{choiced_item}" não foi encontrado.'
                 )
-            items.append(item)
-
-    return items
+            yield item
 
 
 if __name__ == '__main__':
@@ -693,8 +692,16 @@ if __name__ == '__main__':
 
     # print(create_random_item(100))
 
-    for _ in range(1000):
-        create_random_item(1001)
+    random_items = create_random_item(
+        group_level=1001,
+        min_items=1000,
+        max_items=1000,
+        no_trap=True
+    )
+    print(f'random_items type(): {type(random_items)}')
+    print(isinstance(random_items, Iterable))
+    for item in random_items:
+        pass
 
     # print(
     #     create_random_equipment(
