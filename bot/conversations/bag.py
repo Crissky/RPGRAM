@@ -24,6 +24,7 @@ from bot.constants.bag import (
     CALLBACK_TEXT_SORT_ITEMS,
     CANCEL_COMMANDS,
     CLOSE_BAG_BUTTON_TEXT,
+    COLLECT_MANY_BUTTON_TEXT,
     COMMANDS,
     CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
     CONSUMABLE_SORT_UP_BUTTON_TEXT,
@@ -119,7 +120,7 @@ from repository.mongo import (
 from rpgram import Bag, Item
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter
-from rpgram.consumables import Consumable
+from rpgram.consumables import Consumable, TrocadoPouchConsumable
 from rpgram.enums import EmojiEnum, EquipmentEnum
 
 
@@ -726,6 +727,7 @@ async def sell_item(
 ) -> None:
     '''Vende o item do jogador.
     '''
+
     query = update.callback_query
 
     try:
@@ -737,9 +739,7 @@ async def sell_item(
 
     bag_model = BagModel()
     player_model = PlayerModel()
-    chat_id = update.effective_chat.id
     user_id = update.effective_user.id
-    user_name = update.effective_user.name
     data = callback_data_to_dict(query.data)
     item_pos = data['item']
     page = data['page']
@@ -768,11 +768,18 @@ async def sell_item(
         retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
-    markdown_text = (
-        f'Você vendeu "{sell}x {item.name}" e faturou '
-        f'{trocado}{EmojiEnum.TROCADO.value}.\n'
-        f'Você tem {player.trocado}{EmojiEnum.TROCADO.value}.'
-    )
+    if isinstance(item.item, TrocadoPouchConsumable):
+        markdown_text = (
+            f'Você coletou {trocado}{EmojiEnum.TROCADO.value} de '
+            f'"{sell}x {item.name}" e esta com um total de '
+            f'{player.trocado}{EmojiEnum.TROCADO.value}.'
+        )
+    else:
+        markdown_text = (
+            f'Você vendeu "{sell}x {item.name}" e faturou '
+            f'{trocado}{EmojiEnum.TROCADO.value}.\n'
+            f'Você tem {player.trocado}{EmojiEnum.TROCADO.value}.'
+        )
     markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
         text=markdown_text,
@@ -1404,9 +1411,14 @@ def get_sell_buttons(
     quantity = item.quantity
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
-            text = SELL_MANY_BUTTON_TEXT.format(
-                quantity_option=quantity_option
-            )
+            if isinstance(item.item, TrocadoPouchConsumable):
+                text = COLLECT_MANY_BUTTON_TEXT.format(
+                    quantity_option=quantity_option
+                )
+            else:
+                text = SELL_MANY_BUTTON_TEXT.format(
+                    quantity_option=quantity_option
+                )
             sell_buttons.append(
                 InlineKeyboardButton(
                     text=text,

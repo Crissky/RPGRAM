@@ -172,10 +172,10 @@ class TrocadoPouchConsumable(Consumable):
 
     @property
     def description(self) -> str:
+        rarity = self.rarity.value.lower()
         return (
-            f'Um monedero cheio de trocados. Se você vender, receberá '
-            f'{self.price}{EmojiEnum.TROCADO.value}.\n'
-            f'{EmojiEnum.UE.value}{EmojiEnum.UE.value}{EmojiEnum.UE.value}'
+            f'Um monedero {rarity} contendo '
+            f'{self.price}{EmojiEnum.TROCADO.value}.'
         )
 
     @property
@@ -237,8 +237,9 @@ class GemstoneConsumable(Consumable):
 
     @property
     def description(self) -> str:
+        rarity = self.rarity.value.lower()
         return (
-            f'{self.name} é uma pedra preciosa {self.rarity.value} que pode '
+            f'{self.name} é uma pedra preciosa {rarity} que pode '
             f'ser vendida para garantir uns Trocados{EmojiEnum.TROCADO.value}.'
         )
 
