@@ -46,16 +46,24 @@ class Player:
         else:
             raise ValueError(f'O chat ID {chat_id} já está na lista.')
 
-    def add_trocado(self, value: int) -> int:
+    def add_trocado(self, value: int) -> dict:
         value = int(value)
         if value <= 0:
             raise ValueError(f'O valor "{value}" não pode ser negativo.')
 
         self.__trocado += value
+        report = {
+            'value': value,
+            'total': self.__trocado,
+            'text': (
+                f'Você faturou {value}{EmojiEnum.TROCADO.value} e agora está '
+                f'com {self.__trocado}{EmojiEnum.TROCADO.value}.'
+            ),
+        }
 
-        return self.__trocado
+        return report
 
-    def sub_trocado(self, value: int) -> int:
+    def sub_trocado(self, value: int) -> dict:
         value = int(value)
         if value <= 0:
             raise ValueError(f'O valor "{value}" não pode ser negativo.')
@@ -68,8 +76,16 @@ class Player:
 
         sub_total = self.__trocado - value
         self.__trocado = max(sub_total, 0)
+        report = {
+            'value': value,
+            'total': self.__trocado,
+            'text': (
+                f'Você perdeu {value}{EmojiEnum.TROCADO.value} e agora está '
+                f'com {self.__trocado}{EmojiEnum.TROCADO.value}.'
+            ),
+        }
 
-        return self.__trocado
+        return report
 
     # Getters
     _id = property(lambda self: self.__id)

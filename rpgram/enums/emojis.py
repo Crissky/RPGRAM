@@ -95,6 +95,7 @@ class EmojiEnum(Enum):
     UNDER_ZERO = '🈴'
     TROCADO = '💰'
     SELL = '🏷️'
+    UE = '🤷'
 
 
 class FaceEmojiEnum(Enum):

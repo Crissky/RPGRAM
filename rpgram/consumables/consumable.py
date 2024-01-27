@@ -60,11 +60,11 @@ class Consumable:
 
     def to_dict(self):
         return dict(
-            name=self.__name,
-            description=self.__description,
-            weight=self.__weight,
-            rarity=self.__rarity.name,
-            usable=self.__usable,
+            name=self.name,
+            description=self.description,
+            weight=self.weight,
+            rarity=self.rarity.name,
+            usable=self.usable,
             _id=self.__id,
             created_at=self.__created_at,
             updated_at=self.__updated_at,
@@ -79,9 +79,9 @@ class Consumable:
         if verbose:
             text += (
                 f'*Valor*: {self.sell_price_text}\n'
-                f'*Peso*: {self.__weight}{EmojiEnum.WEIGHT.value}\n'
-                f'*Descrição*: {self.__description}\n'
-                f'*Raridade*: {self.__rarity.value}\n'
+                f'*Peso*: {self.weight}{EmojiEnum.WEIGHT.value}\n'
+                f'*Descrição*: {self.description}\n'
+                f'*Raridade*: {self.rarity.value}\n'
             )
 
         if not markdown:
