@@ -81,7 +81,7 @@ class Item:
     @property
     def power(self) -> int:
         power = 0
-        if hasattr(self.item, 'power'):
+        if hasattr(self.item, 'power') and isinstance(self.item, Equipment):
             power = self.item.power
 
         return power

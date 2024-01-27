@@ -81,60 +81,66 @@ class Bag:
         if reverse:  # Consumable first
             self.__items.sort(
                 key=lambda x: (
-                    x.item_type_order,
-                    x.power,
-                    x.rarity_order,
-                    x.name
-                ), reverse=True
+                    -x.item_type_order,
+                    -x.power,
+                    -x.rarity_order,
+                    -x.sell_price,
+                    x.name,
+                ), reverse=False
             )
         else:  # Equipment first
             self.__items.sort(
                 key=lambda x: (
-                    -x.item_type_order,
-                    x.power,
-                    x.rarity_order,
-                    x.name
-                ), reverse=True
+                    x.item_type_order,
+                    -x.power,
+                    -x.rarity_order,
+                    -x.sell_price,
+                    x.name,
+                ), reverse=False
             )
 
     def sort_by_power(self, reverse: bool = True):
         if reverse:  # Greater power first
             self.__items.sort(
                 key=lambda x: (
-                    x.power,
-                    x.item_type_order,
-                    x.rarity_order,
+                    -x.power,
+                    -x.item_type_order,
+                    -x.rarity_order,
+                    -x.sell_price,
                     x.name
-                ), reverse=True
+                ), reverse=False
             )
         else:  # Lower power first
             self.__items.sort(
                 key=lambda x: (
-                    -x.power,
-                    x.item_type_order,
-                    x.rarity_order,
+                    x.power,
+                    -x.item_type_order,
+                    -x.rarity_order,
+                    -x.sell_price,
                     x.name
-                ), reverse=True
+                ), reverse=False
             )
 
     def sort_by_rarity(self, reverse: bool = True):
         if reverse:  # More rare first
             self.__items.sort(
                 key=lambda x: (
-                    x.rarity_order,
-                    x.power,
-                    x.item_type_order,
+                    -x.rarity_order,
+                    -x.power,
+                    -x.item_type_order,
+                    -x.sell_price,
                     x.name
-                ), reverse=True
+                ), reverse=False
             )
         else:  # Less rare first
             self.__items.sort(
                 key=lambda x: (
-                    -x.rarity_order,
-                    x.power,
-                    x.item_type_order,
+                    x.rarity_order,
+                    -x.power,
+                    -x.item_type_order,
+                    -x.sell_price,
                     x.name
-                ), reverse=True
+                ), reverse=False
             )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
