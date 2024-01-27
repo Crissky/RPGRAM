@@ -12,9 +12,11 @@ from rpgram.conditions import (
 )
 from rpgram.consumables import (
     CureConsumable,
-    IdentifyingConsumable,
+    GemstoneConsumable,
     HealingConsumable,
+    IdentifyingConsumable,
     ReviveConsumable,
+    TrocadoPouchConsumable,
     XPConsumable,
 )
 from rpgram.consumables.heal import (
@@ -34,7 +36,7 @@ from rpgram.consumables.other import (
     LEGENDARY_PROFICIENCY_ELIXIR_POWER,
     MYTHIC_PROFICIENCY_ELIXIR_POWER,
     PROFICIENCY_ELIXIR_POWER,
-    RARE_PROFICIENCY_ELIXIR_POWER
+    RARE_PROFICIENCY_ELIXIR_POWER,
 )
 from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
 from rpgram.enums.debuff import (
@@ -654,6 +656,263 @@ CONSUMABLES = [
         'rarity': RarityEnum.MYTHIC.name,
         'class': XPConsumable
     },
+
+    #  Trocado Pouch Items
+    {
+        'name': 'Tiny Tax Trocado Pouch',
+        'weight': 0.10,
+        'rarity': RarityEnum.COMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Tiny Monarch Trocado Pouch',
+        'weight': 0.15,
+        'rarity': RarityEnum.COMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Tiny Emperor Trocado Pouch',
+        'weight': 0.20,
+        'rarity': RarityEnum.COMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Tiny Overlord Trocado Pouch',
+        'weight': 0.25,
+        'rarity': RarityEnum.COMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Minor Tax Trocado Pouch',
+        'weight': 0.50,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Minor Monarch Trocado Pouch',
+        'weight': 0.55,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Minor Emperor Trocado Pouch',
+        'weight': 0.60,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Minor Overlord Trocado Pouch',
+        'weight': 0.65,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Tax Trocado Pouch',
+        'weight': 1.00,
+        'rarity': RarityEnum.RARE.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Monarch Trocado Pouch',
+        'weight': 1.15,
+        'rarity': RarityEnum.RARE.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Emperor Trocado Pouch',
+        'weight': 1.30,
+        'rarity': RarityEnum.RARE.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Overlord Trocado Pouch',
+        'weight': 1.50,
+        'rarity': RarityEnum.RARE.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Greater Tax Trocado Pouch',
+        'weight': 3.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Greater Monarch Trocado Pouch',
+        'weight': 4.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Greater Emperor Trocado Pouch',
+        'weight': 5.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Greater Overlord Trocado Pouch',
+        'weight': 6.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Major Tax Trocado Pouch',
+        'weight': 10.00,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Major Monarch Trocado Pouch',
+        'weight': 20.00,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Major Emperor Trocado Pouch',
+        'weight': 35.00,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Major Overlord Trocado Pouch',
+        'weight': 50.00,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Superior Tax Trocado Pouch',
+        'weight': 100.00,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Superior Monarch Trocado Pouch',
+        'weight': 200.00,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Superior Emperor Trocado Pouch',
+        'weight': 350.00,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
+        'name': 'Superior Overlord Trocado Pouch',
+        'weight': 500.00,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': TrocadoPouchConsumable
+    },
+
+    #  Gemstone Items
+    {
+        'name': 'Minor Opal',
+        'weight': 0.10,
+        'rarity': RarityEnum.COMMON.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Opal',
+        'weight': 0.15,
+        'rarity': RarityEnum.COMMON.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Greater Opal',
+        'weight': 0.20,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Minor Jadeite',
+        'weight': 0.15,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Jadeite',
+        'weight': 0.20,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Greater Jadeite',
+        'weight': 0.25,
+        'rarity': RarityEnum.RARE.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Minor Sapphire',
+        'weight': 0.20,
+        'rarity': RarityEnum.RARE.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Sapphire',
+        'weight': 0.25,
+        'rarity': RarityEnum.RARE.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Greater Sapphire',
+        'weight': 0.30,
+        'rarity': RarityEnum.EPIC.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Minor Ruby',
+        'weight': 0.25,
+        'rarity': RarityEnum.RARE.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Ruby',
+        'weight': 0.30,
+        'rarity': RarityEnum.EPIC.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Greater Ruby',
+        'weight': 0.35,
+        'rarity': RarityEnum.EPIC.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Minor Emerald',
+        'weight': 0.30,
+        'rarity': RarityEnum.EPIC.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Emerald',
+        'weight': 0.35,
+        'rarity': RarityEnum.EPIC.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Greater Emerald',
+        'weight': 0.40,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Minor Diamond',
+        'weight': 0.40,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Diamond',
+        'weight': 0.50,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Greater Diamond',
+        'weight': 0.60,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': GemstoneConsumable
+    },
+
 ]
 
 if __name__ == "__main__":

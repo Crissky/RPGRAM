@@ -16,6 +16,7 @@ CALLBACK_KEY_LIST = [
     'item',
     'page',
     'retry_state',
+    'sell',
     'sort',
     'use',
     '_id',

@@ -8,6 +8,7 @@ from rpgram.conditions.heal import Heal5Condition
 from rpgram.conditions.heal import Heal6Condition
 from rpgram.conditions.heal import Heal7Condition
 from rpgram.conditions.heal import Heal8Condition
+from rpgram.conditions.debuff import DebuffCondition
 from rpgram.conditions.debuff import BerserkerCondition
 from rpgram.conditions.debuff import BleedingCondition
 from rpgram.conditions.debuff import BlindnessCondition

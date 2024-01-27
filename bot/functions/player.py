@@ -24,6 +24,10 @@ def get_player_name(_id: Any) -> str:
     return get_player_attribute_by_id(_id=_id, attribute='name')
 
 
+def get_player_trocado(_id: Any) -> str:
+    return get_player_attribute_by_id(_id=_id, attribute='trocado')
+
+
 def get_player_attribute_by_chat_id(chat_id: int, attribute: str) -> List[Any]:
     player_model = PlayerModel()
     query = {'chat_ids': chat_id}

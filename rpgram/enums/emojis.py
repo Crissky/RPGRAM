@@ -94,6 +94,8 @@ class EmojiEnum(Enum):
     ALIGNMENT = '🗣️'
     UNDER_ZERO = '🈴'
     TROCADO = '💰'
+    SELL = '🏷️'
+    UE = '🤷'
 
 
 class FaceEmojiEnum(Enum):
