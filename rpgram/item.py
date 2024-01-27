@@ -8,20 +8,22 @@ from rpgram.boosters.equipment import Equipment
 from rpgram.consumables.consumable import Consumable
 from rpgram.consumables.cure import CureConsumable
 from rpgram.consumables.heal import HealingConsumable, ReviveConsumable
-from rpgram.consumables.other import IdentifyingConsumable, XPConsumable
+from rpgram.consumables.other import GemstoneConsumable, IdentifyingConsumable, TrocadoPouchConsumable, XPConsumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
 
-ItemsTypes = Union[Equipment, Consumable]
-ItemsTypesTuple = (Equipment, Consumable)
+
+ITEMS_TYPES = Union[Equipment, Consumable]
+ITEMS_TYPES_TUPLE = (Equipment, Consumable)
+SALABLE_ITEMS_TUPLE = (TrocadoPouchConsumable, GemstoneConsumable)
 
 
 class Item:
-    def __init__(self, item: ItemsTypes, quantity: int = 1):
-        if not isinstance(item, ItemsTypesTuple):
+    def __init__(self, item: ITEMS_TYPES, quantity: int = 1):
+        if not isinstance(item, ITEMS_TYPES_TUPLE):
             raise TypeError(
-                f'Item precisa ser de algum desses tipos: {ItemsTypesTuple}.\n'
+                f'Item precisa ser de algum desses tipos: {ITEMS_TYPES_TUPLE}.\n'
                 f'Mas o item fornecido é do tipo: ({type(item)}).'
             )
 
@@ -104,16 +106,18 @@ class Item:
     def item_type_order(self) -> int:
         if isinstance(self.item, Consumable):
             order = len(EquipmentEnumOrder)
-            if isinstance(self.item, IdentifyingConsumable):
+            if isinstance(self.item, SALABLE_ITEMS_TUPLE):
                 order += 1
-            elif isinstance(self.item, XPConsumable):
+            elif isinstance(self.item, IdentifyingConsumable):
                 order += 2
-            elif isinstance(self.item, CureConsumable):
+            elif isinstance(self.item, XPConsumable):
                 order += 3
-            elif isinstance(self.item, ReviveConsumable):
+            elif isinstance(self.item, CureConsumable):
                 order += 4
-            elif isinstance(self.item, HealingConsumable):
+            elif isinstance(self.item, ReviveConsumable):
                 order += 5
+            elif isinstance(self.item, HealingConsumable):
+                order += 6
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 
@@ -207,7 +211,6 @@ if __name__ == '__main__':
         name='Potion',
         description='Cura 100 de HP.',
         weight=0.1,
-        function='target.combat_stats.hp = 100'
     )
     sword = Equipment(
         name='Espada de Aço',
