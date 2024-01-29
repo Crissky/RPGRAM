@@ -77,7 +77,7 @@ def add_xp(
     xp = int((base_xp + level_bonus) * multiplier_xp)
 
     if group_level > level:
-        handicap = randint(110, 125) / 100
+        handicap = randint(150, 200) / 100
         xp = int(xp + (group_level * handicap))
 
     report_xp = char.base_stats.add_xp(xp, user_name)
