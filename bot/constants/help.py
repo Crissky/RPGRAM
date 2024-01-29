@@ -17,6 +17,8 @@ CALLBACK_HEALING_CONSUMABLE = 'callback_healing_consumable'
 CALLBACK_CURE_CONSUMABLE = 'callback_cure_consumable'
 CALLBACK_REVIVE_CONSUMABLE = 'callback_revive_consumable'
 CALLBACK_OTHER_CONSUMABLE = 'callback_other_consumable'
+CALLBACK_TROCADOPOUCH_CONSUMABLE = 'callback_trocado_consumable'
+CALLBACK_GEMSTONE_CONSUMABLE = 'callback_gemstone_consumable'
 
 # TEXTS
 SECTION_TEXT_HELP = 'AJUDA'

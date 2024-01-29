@@ -2,6 +2,7 @@
 Módulo responsável por gerenciar os comandos de ajuda.
 '''
 
+import re
 from enum import Enum
 from operator import attrgetter
 from typing import Iterable
@@ -12,7 +13,6 @@ from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
     ContextTypes,
-    ConversationHandler,
     PrefixHandler,
 )
 
@@ -23,6 +23,7 @@ from bot.constants.help import (
     CALLBACK_CURE_CONSUMABLE,
     CALLBACK_DEBUFFS,
     CALLBACK_EQUIPS,
+    CALLBACK_GEMSTONE_CONSUMABLE,
     CALLBACK_GENERAL,
     CALLBACK_COMBAT_ATTRIBUTES,
     CALLBACK_GROUP,
@@ -34,6 +35,7 @@ from bot.constants.help import (
     CALLBACK_RACES,
     CALLBACK_REVIVE_CONSUMABLE,
     CALLBACK_STATS,
+    CALLBACK_TROCADOPOUCH_CONSUMABLE,
     COMMANDS,
     SECTION_TEXT_HELP
 )
@@ -66,7 +68,7 @@ from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP
 
 from function.text import create_text_in_box, escape_basic_markdown_v2
 
-from repository.mongo import ItemModel
+from repository.mongo import ClasseModel, ItemModel, RaceModel
 
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.heal import HEALSTATUS
@@ -84,7 +86,6 @@ from rpgram.enums import (
     TacticalWearableMaterialEnum,
     RarityEnum
 )
-from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.debuff import DebuffEnum
 
 
@@ -601,15 +602,59 @@ def get_details_text(option: str) -> str:
             text += f'*Descrição*: {heal_status.description}\n\n'
         text = text.strip()
     elif option == CALLBACK_CLASSES:
+        classe_model = ClasseModel()
+        query = {}
+        all_classes = classe_model.get_all(query)
         text = (
-            f'Página de ajuda das CLASSES ainda não foi escrita. '
-            f'Contacte do admininastrô.'
+            f'A classe é a definição principal daquilo que o per­sonagem é '
+            f'capaz de realizar no cenário mágico e extraor­dinário. '
+            f'Uma classe é mais que uma profissão; ela é a vocação do seu '
+            f'personagem. A escolha de classe modelará todas as ações do '
+            f'herói durante suas aventuras através de um mun­do de fantasia '
+            f'repleto de magias, assolado por monstros e '
+            f'imerso em batalhas.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'{EmojiEnum.CLASS.value}*CLASSES*\n\n'
         )
+
+        keys = attrgetter('name')
+        for classe in sorted(all_classes, key=keys):
+            description = classe.description.split('\n')[0]
+            text += f'*Nome*: {classe.name}\n'
+            text += f'*Descrição*: {description}\n\n'
+        text = text.strip()
     elif option == CALLBACK_RACES:
+        race_model = RaceModel()
+        query = {}
+        all_races = race_model.get_all(query)
         text = (
-            f'Página de ajuda das RAÇAS ainda não foi escrita. '
-            f'Contacte do admininastrô.'
+            f'Diversas culturas e sociedades povoam o mundo; algumas são '
+            f'formadas por humanos, mas existem outras que são compostas por '
+            f'raças fantásticas, como elfos e anões. '
+            f'Os aventureiros e heróis podem surgir dentre esses vários '
+            f'povos. A raça escolhida fornece ao personagem um conjunto '
+            f'básico de vantagens e habilidades especiais. '
+            f'Se optar por um guerreiro, seu personagem será um anão matador '
+            f'de monstros muito teimoso, uma graciosa elfa com domínio da '
+            f'esgrima ou um obstinado gladiador Orque? Caso escolha um mago, '
+            f'ele será um corajoso humano mercenário ou um astuto Halfling '
+            f'conjurador? A raça não afeta somente os valores de atributo e '
+            f'os poderes do personagem, mas também fornece as primeiras '
+            f'pistas para construir sua história.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'{EmojiEnum.RACE.value}*RAÇAS*\n\n'
         )
+
+        keys = attrgetter('name')
+        for race in sorted(all_races, key=keys):
+            description = race.description.split('.')[0]
+            text += f'*Nome*: {race.name}\n'
+            text += f'*Descrição*: {description}.\n\n'
+        text = text.strip()
     elif option == CALLBACK_HEALING_CONSUMABLE:
         item_model = ItemModel()
         query = {'_class': 'HealingConsumable'}
@@ -636,7 +681,11 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_CURE_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'CureConsumable'}
+        description_pattern = re.compile('^Cura 1 ')
+        query = {
+            '_class': 'CureConsumable',
+            'description': description_pattern
+        }
         all_cure_consumables = item_model.get_all(query)
         text = (
             f'Os itens que curam Condições (Status) negativas atuam na '
@@ -691,10 +740,40 @@ def get_details_text(option: str) -> str:
             'Equipment',
             'HealingConsumable',
             'ReviveConsumable',
+            'TrocadoPouchConsumable',
+            'GemstoneConsumable'
         ]}}
         all_other_consumables = item_model.get_all(query)
         text = (
             f'{EmojiEnum.OTHER_CONSUMABLE.value}*Outros Itens*\n\n'
+        )
+
+        def keys(x): return (x.__class__.__name__, x.name)
+        for other_consumable in sorted(all_other_consumables, key=keys):
+            text += f'*Nome*: {other_consumable.name}\n'
+            text += f'*Descrição*: {other_consumable.description}\n'
+            text += f'*Raridade*: {other_consumable.rarity.value}\n\n'
+        text = text.strip()
+    elif option == CALLBACK_TROCADOPOUCH_CONSUMABLE:
+        item_model = ItemModel()
+        query = {'_class': 'TrocadoPouchConsumable'}
+        all_other_consumables = item_model.get_all(query)
+        text = (
+            f'{EmojiEnum.OTHER_CONSUMABLE.value}*Bolsas de Ouro*\n\n'
+        )
+
+        def keys(x): return (x.__class__.__name__, x.name)
+        for other_consumable in sorted(all_other_consumables, key=keys):
+            text += f'*Nome*: {other_consumable.name}\n'
+            text += f'*Descrição*: {other_consumable.description}\n'
+            text += f'*Raridade*: {other_consumable.rarity.value}\n\n'
+        text = text.strip()
+    elif option == CALLBACK_GEMSTONE_CONSUMABLE:
+        item_model = ItemModel()
+        query = {'_class': 'GemstoneConsumable'}
+        all_other_consumables = item_model.get_all(query)
+        text = (
+            f'{EmojiEnum.OTHER_CONSUMABLE.value}*Pedras Preciosas*\n\n'
         )
 
         def keys(x): return (x.__class__.__name__, x.name)
@@ -743,6 +822,12 @@ def get_help_reply_markup(update: Update):
     other_consumable_text = (
         f'Outros Itens{EmojiEnum.OTHER_CONSUMABLE.value}'
     )
+    trocadopouch_text = (
+        f'{EmojiEnum.TROCADO.value}Bolsas de Ouro'
+    )
+    gemstone_text = (
+        f'Pedras Preciosas{EmojiEnum.GEMSTONE.value}'
+    )
 
     (
         buttons1,
@@ -752,8 +837,9 @@ def get_help_reply_markup(update: Update):
         buttons5,
         buttons6,
         buttons7,
-        buttons8
-    ) = [], [], [], [], [], [], [], []
+        buttons8,
+        buttons9
+    ) = [], [], [], [], [], [], [], [], []
     if option != CALLBACK_PLAYER:
         buttons1.append(
             InlineKeyboardButton(
@@ -904,12 +990,32 @@ def get_help_reply_markup(update: Update):
                 )
             )
         )
+    if option != CALLBACK_TROCADOPOUCH_CONSUMABLE:
+        buttons9.append(
+            InlineKeyboardButton(
+                text=trocadopouch_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_TROCADOPOUCH_CONSUMABLE}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_GEMSTONE_CONSUMABLE:
+        buttons9.append(
+            InlineKeyboardButton(
+                text=gemstone_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_GEMSTONE_CONSUMABLE}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
 
     close_button = [get_close_button(user_id=user_id)]
     reply_markup = InlineKeyboardMarkup([
         buttons1, buttons2, buttons3,
         buttons4, buttons5, buttons6,
-        buttons7, buttons8,
+        buttons7, buttons8, buttons9,
         close_button
     ])
     return reply_markup
