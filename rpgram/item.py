@@ -8,7 +8,12 @@ from rpgram.boosters.equipment import Equipment
 from rpgram.consumables.consumable import Consumable
 from rpgram.consumables.cure import CureConsumable
 from rpgram.consumables.heal import HealingConsumable, ReviveConsumable
-from rpgram.consumables.other import GemstoneConsumable, IdentifyingConsumable, TrocadoPouchConsumable, XPConsumable
+from rpgram.consumables.other import (
+    GemstoneConsumable,
+    IdentifyingConsumable,
+    TrocadoPouchConsumable,
+    XPConsumable
+)
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
@@ -16,7 +21,6 @@ from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
 
 ITEMS_TYPES = Union[Equipment, Consumable]
 ITEMS_TYPES_TUPLE = (Equipment, Consumable)
-SALABLE_ITEMS_TUPLE = (TrocadoPouchConsumable, GemstoneConsumable)
 
 
 class Item:
@@ -106,18 +110,20 @@ class Item:
     def item_type_order(self) -> int:
         if isinstance(self.item, Consumable):
             order = len(EquipmentEnumOrder)
-            if isinstance(self.item, SALABLE_ITEMS_TUPLE):
+            if isinstance(self.item, TrocadoPouchConsumable):
                 order += 1
-            elif isinstance(self.item, IdentifyingConsumable):
+            if isinstance(self.item, GemstoneConsumable):
                 order += 2
-            elif isinstance(self.item, XPConsumable):
+            elif isinstance(self.item, IdentifyingConsumable):
                 order += 3
-            elif isinstance(self.item, CureConsumable):
+            elif isinstance(self.item, XPConsumable):
                 order += 4
-            elif isinstance(self.item, ReviveConsumable):
+            elif isinstance(self.item, CureConsumable):
                 order += 5
-            elif isinstance(self.item, HealingConsumable):
+            elif isinstance(self.item, ReviveConsumable):
                 order += 6
+            elif isinstance(self.item, HealingConsumable):
+                order += 7
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 
