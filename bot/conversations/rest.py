@@ -11,6 +11,7 @@ from telegram.ext import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.rest import (
     COMMANDS,
+    REPLY_TEXT_REST_MIDDAY,
     REPLY_TEXT_REST_MIDNIGHT,
     REPLY_TEXTS_ALREADY_RESTING,
     REPLY_TEXTS_NO_NEED_REST,
@@ -29,10 +30,13 @@ from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_id_by_chat_id
 from constant.text import (
     SECTION_HEAD_REST_END,
+    SECTION_HEAD_REST_MIDDAY_END,
+    SECTION_HEAD_REST_MIDDAY_START,
     SECTION_HEAD_REST_MIDNIGHT_END,
     SECTION_HEAD_REST_MIDNIGHT_START,
     SECTION_HEAD_REST_START
 )
+from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
 from repository.mongo import BattleModel, CharacterModel, PlayerModel
@@ -200,9 +204,17 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
 
     if texts:
         players_hp = '\n'.join(texts)
-        reply_text_rest_midnight = choice(REPLY_TEXT_REST_MIDNIGHT)
+        now = get_brazil_time_now()
+        if now.hour in [11, 12, 13]:
+            reply_text_rest = choice(REPLY_TEXT_REST_MIDDAY)
+            section_start = SECTION_HEAD_REST_MIDDAY_START
+            section_end = SECTION_HEAD_REST_MIDDAY_END
+        else:
+            reply_text_rest = choice(REPLY_TEXT_REST_MIDNIGHT)
+            section_start = SECTION_HEAD_REST_MIDNIGHT_START
+            section_end = SECTION_HEAD_REST_MIDNIGHT_END
         text = (
-            f'{reply_text_rest_midnight}\n\n'
+            f'{reply_text_rest}\n\n'
             f'{players_hp}\n\n'
             f'Os personagens irão recuperar HP a cada hora.'
         )
@@ -210,8 +222,8 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         text = create_text_in_box(
             text=text,
             section_name=SECTION_TEXT_REST_MIDNIGHT,
-            section_start=SECTION_HEAD_REST_MIDNIGHT_START,
-            section_end=SECTION_HEAD_REST_MIDNIGHT_END,
+            section_start=section_start,
+            section_end=section_end,
             clean_func=None,
         )
 

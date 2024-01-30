@@ -130,3 +130,66 @@ REPLY_TEXT_REST_MIDNIGHT = [
     'seus ombros. Cada ferida pulsando é um lembrete constante de que o '
     'repouso é essencial para a recuperação.',
 ]
+REPLY_TEXT_REST_MIDDAY = [
+    'Enquanto o sol atinge seu ponto mais alto no céu, o meio dia chegou. '
+    'Seus personagens, feridos pela jornada, começam a sentir o peso da '
+    'fadiga. Seria prudente considerar um descanso para recarregar suas '
+    'energias e curar as feridas.',
+    'A luz do meio dia banha o cenário ao redor, revelando a fadiga nos '
+    'rostos de seus heróis. Talvez seja hora de buscar um local seguro, '
+    'descansar e permitir que suas habilidades se recuperem antes da próxima '
+    'etapa da jornada.',
+    'O calor do meio dia é intenso, e seus personagens sentem a exaustão da '
+    'batalha. Pensar em um breve repouso pode ser a chave para restaurar as '
+    'forças antes de enfrentarem os desafios que ainda os aguardam.',
+    'Sob o sol ardente do meio dia, os sinais de cansaço são evidentes nos '
+    'olhos de seus aventureiros. Um breve descanso pode ser crucial para '
+    'garantir que estejam prontos para os desafios futuros.',
+    'O relógio solar indica que o meio dia chegou, e seus heróis estão '
+    'visivelmente fatigados. Encontrar um local seguro para descansar pode '
+    'ser a decisão mais sábia neste momento.',
+    'O sol atinge o pico no céu, e seus personagens, marcados pelas batalhas '
+    'recentes, sentem a necessidade de uma pausa. Considerem um breve '
+    'descanso para recuperar as energias e curar as feridas.',
+    'Ao meio dia, o calor é implacável, e seus aventureiros começam a '
+    'demonstrar sinais de exaustão. Pode ser a hora certa para procurar '
+    'abrigo e permitir que seus corpos se recuperem.',
+    'Sob a luz forte do meio dia, seus heróis estão claramente desgastados. '
+    'Talvez seja o momento ideal para um descanso estratégico e restaurador.',
+    'Enquanto o sol alcança o zênite, seus personagens sentem o peso da '
+    'jornada. Uma pausa ao meio dia pode ser a oportunidade perfeita para '
+    'recuperar forças e vitalidade.',
+    'O meio dia está sobre vocês, e os efeitos das batalhas passadas se '
+    'fazem sentir. Considerem descansar para que possam enfrentar os '
+    'desafios vindouros com renovada determinação.',
+    'Sob a luz intensa do meio dia, seus aventureiros sentem o cansaço '
+    'acumulado. Um breve repouso pode ser a chave para enfrentar os perigos '
+    'futuros com vigor renovado.',
+    'O relógio solar indica que é meio dia, e seus heróis, mesmo corajosos, '
+    'não são imunes à fadiga. Pensar em um breve descanso pode ser uma '
+    'escolha sábia neste momento.',
+    'Com o sol atingindo o pico no céu, seus personagens mostram sinais '
+    'de cansaço. Talvez seja prudente encontrar um local seguro e repousar '
+    'antes da próxima etapa da jornada.',
+    'O calor do meio dia se faz presente, e seus heróis, mesmo os mais '
+    'resilientes, começam a sentir a exaustão. Considerar um descanso '
+    'agora pode ser crucial para a continuidade da jornada.',
+    'Enquanto o sol está diretamente acima, seus aventureiros percebem a '
+    'necessidade de um intervalo. Um breve descanso ao meio dia pode ser a '
+    'chave para superar os desafios subsequentes.',
+    'Sob a luz do meio dia, seus heróis exibem sinais visíveis de desgaste. '
+    'Encontrar um local seguro para descansar pode ser a decisão mais sensata '
+    'neste momento.',
+    'O meio dia traz consigo o calor intenso, e seus personagens, embora '
+    'valentes, começam a sentir a exaustão. Um breve repouso pode ser a '
+    'solução para enfrentar os perigos que ainda virão.',
+    'Com o sol no auge, seus aventureiros sentem a necessidade de uma pausa. '
+    'Pensar em descansar ao meio dia pode ser fundamental para a saúde e '
+    'vigor do grupo.',
+    'O relógio solar aponta para o meio dia, e seus heróis, mesmo os mais '
+    'resilientes, não podem ignorar a fadiga. Um descanso estratégico pode '
+    'ser a resposta para renovar as energias.',
+    'Ao meio dia, seus personagens, marcados por batalhas e desafios, '
+    'sentem a necessidade de um breve descanso. Considerem encontrar um '
+    'refúgio para recarregar as energias antes da próxima jornada.',
+]
