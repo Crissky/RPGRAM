@@ -209,18 +209,19 @@ async def add_xp_group(
 ):
     char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
 
+    total_allies = len(char_list)
+
     sum_level = sum([enemy.level for enemy in enemy_list])
     sum_multiplier = sum([enemy.points_multiplier for enemy in enemy_list])
 
     avg_level = sum_level // len(enemy_list)
-    avg_multiplier = sum_multiplier // len(char_list)
 
-    multiplied_level = (avg_level * avg_multiplier)
+    multiplied_level = (avg_level * sum_multiplier)
 
     full_text = ''
     for char in char_list:
         level_diff = multiplied_level - (char.level * 2)
-        base_xp = int(max(level_diff, 10) / len(char_list))
+        base_xp = int(max(level_diff, 10) / total_allies)
         report_xp = add_xp(
             chat_id=chat_id,
             char=char,
