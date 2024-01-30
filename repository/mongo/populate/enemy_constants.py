@@ -12,9 +12,9 @@ MAGICIAN_EQUIPMENTS = {
         'STAFF', 'GRIMOIRE', 'SCEPTER', 'HARP', 'CRYSTAL', 'RIKUDŌKON'
     ],
     EquipmentEnum.ARMOR.name: ['ROBE'],
-    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDAL'],
-    EquipmentEnum.RING.name: ['RING'],
-    EquipmentEnum.AMULET.name: ['NECKLACE', 'AMULET', 'CHARM'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDALS', 'SHOES'],
+    EquipmentEnum.RING.name: ['RING', 'HECATE\'S_RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'AMULET', 'CHARM', 'COIN'],
 }
 DUELIST_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD'],
@@ -25,10 +25,10 @@ DUELIST_EQUIPMENTS = {
     EquipmentEnum.TWO_HANDS.name: [
         'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER'
     ],
-    EquipmentEnum.ARMOR.name: ['CLOAK'],
-    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDAL'],
-    EquipmentEnum.RING.name: ['RING'],
-    EquipmentEnum.AMULET.name: ['NECKLACE'],
+    EquipmentEnum.ARMOR.name: ['CLOAK', 'SPAULDER'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDALS', 'GREAVES'],
+    EquipmentEnum.RING.name: ['RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF'],
 }
 FIGHTER_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['HELMET'],
@@ -40,10 +40,10 @@ FIGHTER_EQUIPMENTS = {
         'GREAT_SWORD', 'DOUBLE_AXE', 'HALBERD', 'WARHAMMER', 'FLAIL', 'PIKE',
         'LANCE'
     ],
-    EquipmentEnum.ARMOR.name: ['ARMOR', 'BRIGANDINE'],
-    EquipmentEnum.BOOTS.name: ['BOOTS'],
-    EquipmentEnum.RING.name: ['RING'],
-    EquipmentEnum.AMULET.name: ['NECKLACE'],
+    EquipmentEnum.ARMOR.name: ['ARMOR', 'BRIGANDINE', 'SPAULDER'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'GREAVES'],
+    EquipmentEnum.RING.name: ['RING', 'KRATOS\'S_RING', 'GAIA\'S_RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'COIN'],
 }
 BARBARIAN_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['KRÁNOS'],
@@ -55,10 +55,10 @@ BARBARIAN_EQUIPMENTS = {
         'GREAT_SWORD', 'DOUBLE_AXE', 'WARHAMMER', 'FLAIL', 'PIKE', 'LANCE',
         'SHARUR'
     ],
-    EquipmentEnum.ARMOR.name: ['SPIKED_ARMOR'],
-    EquipmentEnum.BOOTS.name: ['BOOTS'],
-    EquipmentEnum.RING.name: ['RING'],
-    EquipmentEnum.AMULET.name: ['NECKLACE'],
+    EquipmentEnum.ARMOR.name: ['SPIKED_ARMOR', 'SPIKED_SPAULDER'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'GREAVES', 'SPIKED_GREAVES'],
+    EquipmentEnum.RING.name: ['RING', 'KRATOS\'S_RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'COIN'],
 }
 
 ARCHETYPES_EQUIPMENTS = {
