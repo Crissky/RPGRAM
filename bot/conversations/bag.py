@@ -1,5 +1,6 @@
 from itertools import zip_longest
 from random import choice
+from time import sleep
 from typing import List
 
 from telegram import (
@@ -62,6 +63,7 @@ from bot.constants.bag import (
     SECTION_TEXT_CONSUMABLE,
     SECTION_TEXT_EQUIPMENT,
     SELL_MANY_BUTTON_TEXT,
+    SEND_DROP_MESSAGE_TIME_SLEEP,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -1219,6 +1221,7 @@ async def send_drop_message(
             drops[drops_message_id] = True
         else:
             create_and_put_drop_dict(context, drops_message_id)
+        sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
 def create_and_put_drop_dict(
