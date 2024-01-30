@@ -1,6 +1,5 @@
 from itertools import zip_longest
 from random import choice
-from time import sleep
 from typing import List
 
 from telegram import (
@@ -67,7 +66,6 @@ from bot.constants.bag import (
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
-    SEND_DROP_MESSAGE_TIME_SLEEP,
     USE_MANY_BUTTON_TEXT,
 )
 
@@ -103,7 +101,11 @@ from bot.functions.chat import (
 )
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import remove_buttons_by_text, reshape_row_buttons
-from bot.functions.player import get_player_id_by_name, get_player_name, get_player_trocado
+from bot.functions.player import (
+    get_player_id_by_name,
+    get_player_name,
+    get_player_trocado
+)
 from constant.text import (
     SECTION_HEAD_CONSUMABLE_END,
     SECTION_HEAD_CONSUMABLE_START,
@@ -115,7 +117,11 @@ from constant.text import (
     TITLE_HEAD
 )
 from constant.time import TEN_MINUTES_IN_SECONDS
-from function.text import create_text_in_box, escape_basic_markdown_v2
+from function.text import (
+    create_text_in_box,
+    escape_basic_markdown_v2,
+    escape_for_citation_markdown_v2
+)
 from repository.mongo import (
     BagModel,
     CharacterModel,
@@ -791,7 +797,6 @@ async def sell_item(
             chrysus_quote += choice(CHRYSUS_GEMSTONE_SELL)
         else:
             chrysus_quote += choice(CHRYSUS_OTHERS_SELL)
-            
 
         markdown_text = (
             f'{chrysus_quote}\n\n'
@@ -799,7 +804,7 @@ async def sell_item(
             f'{trocado}{EmojiEnum.TROCADO.value}.\n'
             f'Agora você tem {player.trocado_text}.'
         )
-    markdown_text = escape_basic_markdown_v2(markdown_text)
+    markdown_text = escape_for_citation_markdown_v2(markdown_text)
     await query.edit_message_text(
         text=markdown_text,
         reply_markup=reply_markup,
@@ -1214,7 +1219,6 @@ async def send_drop_message(
             drops[drops_message_id] = True
         else:
             create_and_put_drop_dict(context, drops_message_id)
-        sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
 def create_and_put_drop_dict(

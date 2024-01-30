@@ -650,26 +650,27 @@ def create_random_item(
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
 
-    base_level = group_level
-    choiced_item = choice_type_item(no_trap=no_trap)
-    equipment_types = [e.name for e in EquipmentEnum]
-    if choiced_item == 'TRAP':
+    def random_item_generator(group_level: int):
+        equipment_types = [e.name for e in EquipmentEnum]
+        group_level = random_group_level(group_level)
+        choiced_item = choice_type_item(no_trap=True)
+        if choiced_item == 'CONSUMABLE':
+            item = create_random_consumable(group_level)
+        elif choiced_item in equipment_types:
+            item = create_random_equipment(choiced_item, group_level)
+        else:
+            raise ValueError(
+                f'O item "{choiced_item}" não foi encontrado.'
+            )
+        return item
+
+    choiced_item_or_trap = choice_type_item(no_trap=no_trap)
+    if choiced_item_or_trap == 'TRAP':
         trap_level = create_random_trap(group_level)
         return trap_level
     else:
         total_items = choice_total_items(min_items, max_items)
-        for _ in range(total_items):
-            group_level = random_group_level(base_level)
-            choiced_item = choice_type_item(no_trap=True)
-            if choiced_item == 'CONSUMABLE':
-                item = create_random_consumable(group_level)
-            elif choiced_item in equipment_types:
-                item = create_random_equipment(choiced_item, group_level)
-            else:
-                raise ValueError(
-                    f'O item "{choiced_item}" não foi encontrado.'
-                )
-            yield item
+        return (random_item_generator(group_level) for _ in range(total_items))
 
 
 if __name__ == '__main__':

@@ -49,7 +49,9 @@ class Player:
     def add_trocado(self, value: int) -> dict:
         value = int(value)
         if value <= 0:
-            raise ValueError(f'O valor "{value}" não pode ser negativo.')
+            raise ValueError(
+                f'O valor "{value}" não pode ser menor ou igual a zero.'
+            )
 
         self.__trocado += value
         report = {
@@ -66,7 +68,9 @@ class Player:
     def sub_trocado(self, value: int) -> dict:
         value = int(value)
         if value <= 0:
-            raise ValueError(f'O valor "{value}" não pode ser negativo.')
+            raise ValueError(
+                f'O valor "{value}" não pode ser menor ou igual a zero.'
+            )
         if value > self.__trocado:
             raise ValueError(
                 f'O valor "{value}" para subtrair é maior que o valor total '

@@ -50,10 +50,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_date = utc_to_brazil_datetime(message_date)
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
-    if user_id in context.user_data:
-        player = context.user_data[user_id]
-    else:
-        player = player_model.get(user_id)
+    player = player_model.get(user_id)
 
     if (xp_cooldown := player.xp_cooldown):
         xp_cooldown = replace_tzinfo(xp_cooldown)
@@ -62,7 +59,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return None
 
     player.xp_cooldown = add_random_minutes_now(message_date)
-    context.user_data[user_id] = player
     player_model.save(player)
 
     report_xp = add_xp(chat_id, user_id)
