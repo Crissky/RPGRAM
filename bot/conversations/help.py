@@ -745,10 +745,10 @@ def get_details_text(option: str) -> str:
         ]}}
         all_other_consumables = item_model.get_all(query)
         text = (
-            f'{EmojiEnum.OTHER_CONSUMABLE.value}*Outros Itens*\n\n'
+            f'{EmojiEnum.OTHER_CONSUMABLE.value}*OUTROS ITENS*\n\n'
         )
 
-        def keys(x): return (x.__class__.__name__, x.name)
+        keys = lambda x: (x.__class__.__name__, x.name)
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -759,10 +759,31 @@ def get_details_text(option: str) -> str:
         query = {'_class': 'TrocadoPouchConsumable'}
         all_other_consumables = item_model.get_all(query)
         text = (
-            f'{EmojiEnum.OTHER_CONSUMABLE.value}*Bolsas de Ouro*\n\n'
+            f'As Trocado Pouches são bolsas especiais projetadas para '
+            f'armazenar o Trocado{EmojiEnum.TROCADO.value}, '
+            f'a moeda valiosa do jogo. '
+            f'Essas bolsas são distintas por sua capacidade de armazenar '
+            f'diferentes quantidades de Trocado{EmojiEnum.TROCADO.value}, '
+            f'dependendo do tipo e '
+            f'tamanho específicos. Elas podem ser obtidas de baús.\n\n'
+
+            f'Existem quatro tipos principais de Trocado Pouches, '
+            f'cada um correspondendo a uma hierarquia diferente de valores '
+            f'monetários. O tipo Tax é a bolsa de menor valor, seguido por '
+            f'Monarch, Emperor e, no ápice, Overlord.\n\n'
+
+            f'Além disso, as Trocado Pouches também variam em tamanho, '
+            f'apresentando seis categorias distintas: Tiny, Minor, Normal, '
+            f'Greater, Major e Superior. Cada tamanho representa a capacidade '
+            f'da bolsa de armazenar Trocado{EmojiEnum.TROCADO.value}, '
+            f'sendo Tiny a menor e Superior a maior.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'{EmojiEnum.TROCADO.value}*BOLSAS DE TROCADO*\n\n'
         )
 
-        def keys(x): return (x.__class__.__name__, x.name)
+        keys = lambda x: x.price
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -773,10 +794,27 @@ def get_details_text(option: str) -> str:
         query = {'_class': 'GemstoneConsumable'}
         all_other_consumables = item_model.get_all(query)
         text = (
-            f'{EmojiEnum.OTHER_CONSUMABLE.value}*Pedras Preciosas*\n\n'
+            f'As Gemstones, ou Pedras Preciosas, são itens valiosos e '
+            f'cobiçados no vasto mundo, oferecendo aos aventureiros uma '
+            f'fonte de Trocados{EmojiEnum.TROCADO.value} substancial quando '
+            f'vendidas. Essas gemas são classificadas em três tamanhos '
+            f'distintos: Minor, Normal e Greater, representando a raridade '
+            f'e o valor relativo de cada pedra.\n\n'
+
+            f'Dentro de cada categoria de tamanho, as Gemstones são '
+            f'diferenciadas pelos tipos de pedras preciosas que incorporam. '
+            f'As variedades incluem Opal, Jadeite, Sapphire, Ruby, Emerald e '
+            f'Diamond. Cada tipo de pedra possui suas próprias '
+            f'características únicas, proporcionando uma variedade de '
+            f'opções aos jogadores que desejam maximizar seus ganhos ao '
+            f'vender esses itens valiosos.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'{EmojiEnum.GEMSTONE.value}*PEDRAS PRECIOSAS*\n\n'
         )
 
-        def keys(x): return (x.__class__.__name__, x.name)
+        keys = lambda x: x.price
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
