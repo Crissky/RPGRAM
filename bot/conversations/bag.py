@@ -1,5 +1,6 @@
 from itertools import zip_longest
 from random import choice
+from time import sleep
 from typing import List
 
 from telegram import (
@@ -62,6 +63,7 @@ from bot.constants.bag import (
     SECTION_TEXT_CONSUMABLE,
     SECTION_TEXT_EQUIPMENT,
     SELL_MANY_BUTTON_TEXT,
+    SEND_DROP_MESSAGE_TIME_SLEEP,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -73,6 +75,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.constants.seller import SELLER_NAME
 from bot.conversations.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
     need_not_in_battle,
@@ -204,6 +207,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     markdown_text = (
         f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
+        f'*Peso*: {player_bag.weight_text}\n'
     )
     markdown_text += get_trocado_and_target_text(
         user_id=user_id,
@@ -788,7 +792,7 @@ async def sell_item(
             f'{player.trocado_text}.'
         )
     else:
-        chrysus_quote = '>*Chrysus*: '
+        chrysus_quote = f'>*{SELLER_NAME}*: '
         if isinstance(item.item, Equipment):
             chrysus_quote += choice(CHRYSUS_EQUIPMENT_SELL)
         elif isinstance(item.item, ALL_RESTORE_CONSUMABLES_TUPLE):
@@ -1219,6 +1223,7 @@ async def send_drop_message(
             drops[drops_message_id] = True
         else:
             create_and_put_drop_dict(context, drops_message_id)
+        sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
 def create_and_put_drop_dict(

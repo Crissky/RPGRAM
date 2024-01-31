@@ -103,6 +103,21 @@ def choice_type_item(no_trap: bool = False) -> str:
     return weighted_choice(**types_item)
 
 
+def choice_equip_type() -> str:
+    '''Função que retorna um tipo de equipamento aleatório.
+    O tipo do equipamento é retornado com base em sua propabilidade.
+    '''
+
+    types_item = {
+        EquipmentEnum.HELMET.name: 100,
+        EquipmentEnum.ONE_HAND.name: 100, EquipmentEnum.TWO_HANDS.name: 100,
+        EquipmentEnum.ARMOR.name: 100, EquipmentEnum.BOOTS.name: 100,
+        EquipmentEnum.RING.name: 100, EquipmentEnum.AMULET.name: 100,
+    }
+
+    return weighted_choice(**types_item)
+
+
 def choice_total_items(min_items: int = 1, max_items: int = 5) -> int:
     '''Função que retorna um valor inteiro aleatério entre 
     min_times e max_times de maneira poderada, em que os valores mais próximos 
@@ -565,6 +580,10 @@ def create_random_equipment(
 ) -> Item:
     '''Retorna um equipamento aleatório.
     '''
+
+    if equip_type is None:
+        equip_type = choice_equip_type()
+
     if isinstance(rarity, RarityEnum):
         rarity = rarity.name
     elif rarity not in RarityEnum.__members__:
@@ -620,12 +639,22 @@ def create_random_equipment(
     return item
 
 
-def create_random_consumable(group_level: int):
+def create_random_consumable(
+    group_level: int,
+    ignore_list: List[Consumable] = []
+):
     '''Retorna um item consumível aleatório.
     '''
+
     item_model = ItemModel()
+    ignore_list = [
+        i.__name__
+        for i in ignore_list
+        if issubclass(i, Consumable)
+    ]
+
     rarity = choice_rarity(group_level)
-    query = dict(rarity=rarity, _class={'$ne': 'Equipment'})
+    query = dict(rarity=rarity, _class={'$nin': ['Equipment', *ignore_list]})
     item_list = item_model.get_all(query=query)
     quantity = randint(MIN_CONSUMABLE_QUANTITY, MAX_CONSUMABLE_QUANTITY)
     item = choice(item_list)

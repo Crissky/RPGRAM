@@ -75,6 +75,10 @@ class Item:
         return self.item.name
 
     @property
+    def emoji_name(self) -> str:
+        return f'{self.item.emoji_type}{self.name}'
+
+    @property
     def weight(self) -> float:
         return self.item.weight * self.quantity
 
@@ -147,7 +151,8 @@ class Item:
             error_quantity = self.__quantity
             self.__quantity = quantity
             raise ValueError(
-                f'Item não pode ter um valor negativo ({error_quantity}).'
+                f'Item não pode ter uma quantidade negativa '
+                f'({error_quantity}).'
             )
 
     def get_sheet(

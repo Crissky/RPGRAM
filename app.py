@@ -35,6 +35,7 @@ from bot.conversations.enemy import job_create_enemy_attack
 from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.rest import autorest_midnight
+from bot.conversations.seller import job_create_new_items
 from bot.conversations.status import job_activate_conditions
 from function.date_time import get_last_hour, get_midnight_hour
 
@@ -107,6 +108,12 @@ def main() -> None:
         when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
         name='JOB_INFO_DEPLOY_BOT',
+    )
+    application.job_queue.run_once(
+        callback=job_create_new_items,
+        when=timedelta(minutes=1),
+        chat_id=MY_GROUP_ID,
+        name='JOB_CREATE_NEW_ITEMS',
     )
 
     # Run the bot until the user presses Ctrl-C

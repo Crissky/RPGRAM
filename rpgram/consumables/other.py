@@ -245,7 +245,7 @@ class GemstoneConsumable(Consumable):
 
     @property
     def emoji_type(self) -> str:
-        return EmojiEnum.TROCADO.value
+        return EmojiEnum.GEMSTONE.value
 
     @property
     def price(self) -> int:
