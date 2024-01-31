@@ -75,6 +75,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.constants.seller import SELLER_NAME
 from bot.conversations.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
     need_not_in_battle,
@@ -206,6 +207,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     markdown_text = (
         f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
+        f'*Peso*: {player_bag.weight_text}\n'
     )
     markdown_text += get_trocado_and_target_text(
         user_id=user_id,
@@ -790,7 +792,7 @@ async def sell_item(
             f'{player.trocado_text}.'
         )
     else:
-        chrysus_quote = '>*Chrysus*: '
+        chrysus_quote = f'>*{SELLER_NAME}*: '
         if isinstance(item.item, Equipment):
             chrysus_quote += choice(CHRYSUS_EQUIPMENT_SELL)
         elif isinstance(item.item, ALL_RESTORE_CONSUMABLES_TUPLE):

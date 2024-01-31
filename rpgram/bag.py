@@ -146,8 +146,8 @@ class Bag:
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         if verbose:
             text = '\n'.join([
-                f'{item.quantity:02}x *{item.name}* '
-                f'({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
+                f'{item.quantity:02}x *{item.emoji_name}* '
+                f'({item.weight:.2f}{EmojiEnum.WEIGHT.value})'
                 for item in self.__items
             ])
         else:
@@ -193,7 +193,11 @@ class Bag:
     # Getters
     @property
     def weight(self) -> float:
-        return sum([item.item.weight for item in self.__items])
+        return sum([item.weight for item in self.__items])
+
+    @property
+    def weight_text(self) -> float:
+        return f'{self.weight:.2f}{EmojiEnum.WEIGHT.value}'
 
     @property
     def total_slots(self) -> int:
