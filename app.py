@@ -41,7 +41,7 @@ from function.date_time import get_last_hour, get_midnight_hour
 
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
-MY_GROUP_ID = config('MY_GROUP_ID')
+MY_GROUP_ID = config('MY_GROUP_ID', cast=int)
 
 
 def main() -> None:

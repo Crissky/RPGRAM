@@ -69,7 +69,7 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     Está função é chamada em cada 00 e 30 minutos de cada hora.
     '''
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     now = get_brazil_time_now()
 
     times = randint(1, 2) if is_boosted_day(now) else 1
@@ -92,7 +92,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
     '''
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     text = choice(REPLY_TEXTS_FIND_TREASURE_START)
     text += choice(REPLY_TEXTS_FIND_TREASURE_MIDDLE)

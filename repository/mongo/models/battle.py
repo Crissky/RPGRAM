@@ -28,8 +28,8 @@ class BattleModel(Model):
 if __name__ == '__main__':
     from decouple import config
 
-    MY_ID = config('MY_ID')
-    OTHER_ID = config('OTHER_ID')
+    MY_ID = config('MY_ID', cast=int)
+    OTHER_ID = config('OTHER_ID', cast=int)
 
     character_model = CharacterModel()
     battle_model = BattleModel()

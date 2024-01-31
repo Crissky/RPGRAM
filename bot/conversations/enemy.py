@@ -43,7 +43,7 @@ async def job_create_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     Está função é chamada em cada 3 horas.
     '''
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     now = get_brazil_time_now()
 
     times = randint(1, 2) if is_boosted_day(now) else 1
@@ -67,7 +67,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     '''
 
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     group_level = get_attribute_group_or_player(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)

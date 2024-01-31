@@ -174,7 +174,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     battle_model = BattleModel()
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     user_ids = get_player_id_by_chat_id(chat_id=chat_id)
     silent = get_attribute_group_or_player(chat_id, 'silent')
     texts = []

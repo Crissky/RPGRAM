@@ -1077,7 +1077,7 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
     '''
     print('JOB_INFO_DEPLOY_BOT()')
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     player_name = get_player_name_by_chat_id(chat_id=chat_id)
     await context.bot.send_message(
         chat_id=chat_id,

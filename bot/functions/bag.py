@@ -180,7 +180,7 @@ def is_full_bag(user_id: int) -> bool:
 if __name__ == '__main__':
     from decouple import config
 
-    MY_ID = config('MY_ID')
+    MY_ID = config('MY_ID', cast=int)
 
     # sub_identifying_lens(MY_ID)
     id_lens = get_identifying_lens()
