@@ -26,10 +26,15 @@ class BattleModel(Model):
     )
 
 if __name__ == '__main__':
+    from decouple import config
+
+    MY_ID = config('MY_ID')
+    OTHER_ID = config('OTHER_ID')
+
     character_model = CharacterModel()
     battle_model = BattleModel()
-    blue_char = character_model.get(370221845)
-    red_char = character_model.get(367769029)
+    blue_char = character_model.get(MY_ID)
+    red_char = character_model.get(OTHER_ID)
     battle = Battle(
         blue_team=blue_char,
         red_team=red_char,

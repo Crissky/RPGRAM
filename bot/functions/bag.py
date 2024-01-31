@@ -178,10 +178,14 @@ def is_full_bag(user_id: int) -> bool:
 
 
 if __name__ == '__main__':
-    # sub_identifying_lens(370221845)
+    from decouple import config
+
+    MY_ID = config('MY_ID')
+
+    # sub_identifying_lens(MY_ID)
     id_lens = get_identifying_lens()
     print(type(id_lens))
     print(id_lens)
-    print('have_identifying_lens:', have_identifying_lens(370221845))
-    # print(drop_random_items_from_bag(370221845))
-    print('is_full_bag:', is_full_bag(370221845))
+    print('have_identifying_lens:', have_identifying_lens(MY_ID))
+    # print(drop_random_items_from_bag(MY_ID))
+    print('is_full_bag:', is_full_bag(MY_ID))
