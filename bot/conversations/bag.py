@@ -138,7 +138,7 @@ from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter
 from rpgram.consumables import Consumable, TrocadoPouchConsumable
 from rpgram.consumables.other import GemstoneConsumable
-from rpgram.enums import EmojiEnum, EquipmentEnum
+from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 
 # ROUTES
@@ -1256,7 +1256,7 @@ def get_trocado_and_target_text(user_id: int, target_id: int) -> str:
     trocado = get_player_trocado(user_id)
     target_name = get_player_name(target_id)
     text = (
-        f'*Trocado*: {trocado}{EmojiEnum.TROCADO.value}\n'
+        f'*{TrocadoEnum.TROCADO.value}*: {trocado}{EmojiEnum.TROCADO.value}\n'
         f'*Alvo*: {target_name}\n\n'
     )
 

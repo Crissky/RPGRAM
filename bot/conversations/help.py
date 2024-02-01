@@ -84,7 +84,8 @@ from rpgram.enums import (
     WeaponMaterialEnum,
     WearableMaterialEnum,
     TacticalWearableMaterialEnum,
-    RarityEnum
+    RarityEnum,
+    TrocadoEnum,
 )
 from rpgram.enums.debuff import DebuffEnum
 
@@ -759,28 +760,35 @@ def get_details_text(option: str) -> str:
         query = {'_class': 'TrocadoPouchConsumable'}
         all_other_consumables = item_model.get_all(query)
         text = (
-            f'As Trocado Pouches são bolsas especiais projetadas para '
-            f'armazenar o Trocado{EmojiEnum.TROCADO.value}, '
+            f'As {TrocadoEnum.TROCADO_POUCHES.value}'
+            f'{EmojiEnum.TROCADO_POUCH.value} '
+            f'são bolsas especiais projetadas para '
+            f'armazenar o {TrocadoEnum.TROCADO.value}'
+            f'{EmojiEnum.TROCADO.value}, '
             f'a moeda valiosa do jogo. '
             f'Essas bolsas são distintas por sua capacidade de armazenar '
-            f'diferentes quantidades de Trocado{EmojiEnum.TROCADO.value}, '
+            f'diferentes quantidades de {TrocadoEnum.TROCADO.value}'
+            f'{EmojiEnum.TROCADO.value}, '
             f'dependendo do tipo e '
             f'tamanho específicos. Elas podem ser obtidas de baús.\n\n'
 
-            f'Existem quatro tipos principais de Trocado Pouches, '
+            f'Existem quatro tipos principais de '
+            f'{TrocadoEnum.TROCADO_POUCHES.value}{EmojiEnum.TROCADO_POUCH.value}, '
             f'cada um correspondendo a uma hierarquia diferente de valores '
             f'monetários. O tipo Tax é a bolsa de menor valor, seguido por '
             f'Monarch, Emperor e, no ápice, Overlord.\n\n'
 
-            f'Além disso, as Trocado Pouches também variam em tamanho, '
+            f'Além disso, as {TrocadoEnum.TROCADO_POUCHES.value}{EmojiEnum.TROCADO_POUCH.value} '
+            f'também variam em tamanho, '
             f'apresentando seis categorias distintas: Tiny, Minor, Normal, '
             f'Greater, Major e Superior. Cada tamanho representa a capacidade '
-            f'da bolsa de armazenar Trocado{EmojiEnum.TROCADO.value}, '
+            f'da bolsa de armazenar {TrocadoEnum.TROCADO.value}'
+            f'{EmojiEnum.TROCADO.value}, '
             f'sendo Tiny a menor e Superior a maior.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.TROCADO.value}*BOLSAS DE TROCADO*\n\n'
+            f'{EmojiEnum.TROCADO_POUCH.value}*BOLSAS DE TROCADO*\n\n'
         )
 
         keys = lambda x: x.price
@@ -796,7 +804,8 @@ def get_details_text(option: str) -> str:
         text = (
             f'As Gemstones, ou Pedras Preciosas, são itens valiosos e '
             f'cobiçados no vasto mundo, oferecendo aos aventureiros uma '
-            f'fonte de Trocados{EmojiEnum.TROCADO.value} substancial quando '
+            f'fonte de {TrocadoEnum.TROCADOS.value}{EmojiEnum.TROCADO.value} '
+            f'substancial quando '
             f'vendidas. Essas gemas são classificadas em três tamanhos '
             f'distintos: Minor, Normal e Greater, representando a raridade '
             f'e o valor relativo de cada pedra.\n\n'
@@ -861,7 +870,7 @@ def get_help_reply_markup(update: Update):
         f'Outros Itens{EmojiEnum.OTHER_CONSUMABLE.value}'
     )
     trocadopouch_text = (
-        f'{EmojiEnum.TROCADO.value}Bolsas de Ouro'
+        f'{EmojiEnum.TROCADO_POUCH.value}Bolsas de Ouro'
     )
     gemstone_text = (
         f'Pedras Preciosas{EmojiEnum.GEMSTONE.value}'

@@ -8,6 +8,7 @@ from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
+from rpgram.enums.trocado import TrocadoEnum
 
 
 PROFICIENCY_ELIXIR_POWER = 10
@@ -174,13 +175,13 @@ class TrocadoPouchConsumable(Consumable):
     def description(self) -> str:
         rarity = self.rarity.value.lower()
         return (
-            f'Um monedero {rarity} contendo '
+            f'Um monedero{EmojiEnum.TROCADO_POUCH.value} {rarity} contendo '
             f'{self.price}{EmojiEnum.TROCADO.value}.'
         )
 
     @property
     def emoji_type(self) -> str:
-        return EmojiEnum.TROCADO.value
+        return EmojiEnum.TROCADO_POUCH.value
 
     @property
     def price(self) -> int:
@@ -240,7 +241,8 @@ class GemstoneConsumable(Consumable):
         rarity = self.rarity.value.lower()
         return (
             f'{self.name} é uma pedra preciosa {rarity} que pode '
-            f'ser vendida para garantir uns Trocados{EmojiEnum.TROCADO.value}.'
+            f'ser vendida para garantir uns '
+            f'{TrocadoEnum.TROCADOS.value}{EmojiEnum.TROCADO.value}.'
         )
 
     @property
@@ -274,7 +276,7 @@ if __name__ == '__main__':
         weight=1.0,
     )
     trocado_purse_consumable = TrocadoPouchConsumable(
-        name='Trocado Purse Consumable',
+        name=f'{TrocadoEnum.TROCADO.value} Purse Consumable',
         weight=0.1,
     )
     gemstone_consumable = GemstoneConsumable(

@@ -5,6 +5,7 @@ from typing import List, Union
 from constant.text import SECTION_HEAD
 from function.date_time import datetime_to_string
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.trocado import TrocadoEnum
 
 
 class Player:
@@ -126,7 +127,7 @@ class Player:
         return (
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
-            f'Trocado: {self.trocado_text}\n'
+            f'{TrocadoEnum.TROCADO.value}: {self.trocado_text}\n'
             f'ID: {self.__id}\n'
             f'Player ID: {self.player_id}\n'
             f'Verbose: {self.verbose}\n'

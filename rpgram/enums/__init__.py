@@ -21,4 +21,7 @@ from rpgram.enums.material import TacticalWearableMaterialEnum
 from rpgram.enums.material import CoinMaterialsEnum
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.rarity import RarityEnumOrder
+from rpgram.enums.skill import SkillTypeEnum
+from rpgram.enums.skill import TargetEnum
+from rpgram.enums.trocado import TrocadoEnum
 from rpgram.enums.turn import TurnEnum
