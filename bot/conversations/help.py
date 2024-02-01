@@ -69,9 +69,17 @@ from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP
 from function.text import create_text_in_box, escape_basic_markdown_v2
 
 from repository.mongo import ClasseModel, ItemModel, RaceModel
+from rpgram.boosters import Equipment
 
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.heal import HEALSTATUS
+from rpgram.consumables import (
+    CureConsumable,
+    HealingConsumable,
+    ReviveConsumable,
+    GemstoneConsumable,
+    TrocadoPouchConsumable
+)
 from rpgram.enums import (
     EmojiEnum,
     EquipmentEnum,
@@ -658,7 +666,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_HEALING_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'HealingConsumable'}
+        query = {'_class': HealingConsumable.__name__}
         all_healing_consumables = item_model.get_all(query)
         text = (
             f'Os itens que curam HP desempenham o papel vital de '
@@ -684,7 +692,7 @@ def get_details_text(option: str) -> str:
         item_model = ItemModel()
         description_pattern = re.compile('^Cura 1 ')
         query = {
-            '_class': 'CureConsumable',
+            '_class': CureConsumable.__name__,
             'description': description_pattern
         }
         all_cure_consumables = item_model.get_all(query)
@@ -710,7 +718,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_REVIVE_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'ReviveConsumable'}
+        query = {'_class': ReviveConsumable.__name__}
         all_revive_consumables = item_model.get_all(query)
         text = (
             f'Os itens que revivem personagens exercem um papel crucial ao '
@@ -737,19 +745,19 @@ def get_details_text(option: str) -> str:
     elif option == CALLBACK_OTHER_CONSUMABLE:
         item_model = ItemModel()
         query = {'_class': {'$nin': [
-            'CureConsumable',
-            'Equipment',
-            'HealingConsumable',
-            'ReviveConsumable',
-            'TrocadoPouchConsumable',
-            'GemstoneConsumable'
+            CureConsumable.__name__,
+            Equipment.__name__,
+            HealingConsumable.__name__,
+            ReviveConsumable.__name__,
+            TrocadoPouchConsumable.__name__,
+            GemstoneConsumable.__name__
         ]}}
         all_other_consumables = item_model.get_all(query)
         text = (
             f'{EmojiEnum.OTHER_CONSUMABLE.value}*OUTROS ITENS*\n\n'
         )
 
-        keys = lambda x: (x.__class__.__name__, x.name)
+        def keys(x): return (x.__class__.__name__, x.name)
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -757,7 +765,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_TROCADOPOUCH_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'TrocadoPouchConsumable'}
+        query = {'_class': TrocadoPouchConsumable.__name__}
         all_other_consumables = item_model.get_all(query)
         text = (
             f'As {TrocadoEnum.TROCADO_POUCHES.value}'
@@ -791,7 +799,7 @@ def get_details_text(option: str) -> str:
             f'{EmojiEnum.TROCADO_POUCH.value}*BOLSAS DE TROCADO*\n\n'
         )
 
-        keys = lambda x: x.price
+        def keys(x): return x.price
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -799,7 +807,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_GEMSTONE_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'GemstoneConsumable'}
+        query = {'_class': GemstoneConsumable.__name__}
         all_other_consumables = item_model.get_all(query)
         text = (
             f'As Gemstones, ou Pedras Preciosas, são itens valiosos e '
@@ -823,7 +831,7 @@ def get_details_text(option: str) -> str:
             f'{EmojiEnum.GEMSTONE.value}*PEDRAS PRECIOSAS*\n\n'
         )
 
-        keys = lambda x: x.price
+        def keys(x): return x.price
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'

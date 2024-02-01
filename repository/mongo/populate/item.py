@@ -654,7 +654,10 @@ def create_random_consumable(
     ]
 
     rarity = choice_rarity(group_level)
-    query = dict(rarity=rarity, _class={'$nin': ['Equipment', *ignore_list]})
+    query = dict(
+        rarity=rarity,
+        _class={'$nin': [Equipment.__name__, *ignore_list]}
+    )
     item_list = item_model.get_all(query=query)
     quantity = randint(MIN_CONSUMABLE_QUANTITY, MAX_CONSUMABLE_QUANTITY)
     item = choice(item_list)

@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 from decouple import config
 
+from rpgram.boosters import Equipment
+
 URL_CONNECTION = config('URL_CONNECTION')
 DATABASE_NAME = config('DATABASE_NAME')
 
@@ -13,7 +15,10 @@ if __name__ == '__main__':
     equips = db['equips']
     items = db['items']
 
-    cursor = items.find(filter={'_class': 'Equipment'}, projection={'_id': 1})
+    cursor = items.find(
+        filter={'_class': Equipment.__name__},
+        projection={'_id': 1}
+    )
     ids = []
     for i, doc in enumerate(cursor):
         _id = doc['_id']
