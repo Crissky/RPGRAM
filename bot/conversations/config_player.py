@@ -14,7 +14,7 @@ from bot.decorators import print_basic_infos, need_singup_player
 from bot.functions.general import get_attribute_group_or_player
 from function.text import escape_basic_markdown_v2
 
-from repository.mongo import PlayerModel
+from repository.mongo import CharacterModel, PlayerModel
 
 
 @print_basic_infos
@@ -22,6 +22,7 @@ from repository.mongo import PlayerModel
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     player_model = PlayerModel()
+    char_model = CharacterModel()
     args = context.args
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
@@ -63,6 +64,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         user_name = update.effective_user.name
         player.name = user_name
         player_model.save(player)
+
+        player_char = char_model.get(user_id)
+        if player_char:
+            player_char.update_player_name(new_name=user_name)
+            char_model.save(player_char)
+
         await update.effective_message.reply_text(
             f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
             f'{player}',

@@ -58,6 +58,12 @@ class PlayerCharacter(BaseCharacter):
         self.__player_id = player_id
         self.__player_name = player_name
 
+    def update_player_name(self, new_name: str):
+        if not isinstance(new_name, str):
+            raise TypeError('new_name precisa ser uma string')
+
+        self.__player_name = new_name
+
     # Getters
     player_id = property(lambda self: self.__player_id)
     player_name = property(lambda self: self.__player_name)
