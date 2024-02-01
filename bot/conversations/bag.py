@@ -100,6 +100,7 @@ from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
+    send_alert_or_message,
     send_private_message
 )
 from bot.functions.general import get_attribute_group_or_player
@@ -160,6 +161,7 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Envia ou edita mensagem contendo uma página dos itens do jogador
     '''
+
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     chat_id = update.effective_chat.id
@@ -172,6 +174,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if args and args[0].startswith('@'):
         target_name = args[0]
         target_id = get_player_id_by_name(target_name)
+        if target_id is None:
+            text = (
+                f'O jogador "{target_name}" não existe '
+                f'(Não possui o objeto Player).'
+            )
+            return await send_alert_or_message(
+                function_caller='START_BAG()',
+                context=context,
+                query=query,
+                text=text,
+                chat_id=chat_id,
+                user_id=user_id,
+                show_alert=True
+            )
     else:
         target_id = user_id
 
