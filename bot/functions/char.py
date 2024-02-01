@@ -38,6 +38,7 @@ def add_xp(
         xp: Valor de XP adicionado.
     }
     '''
+
     if all((chat_id is None, user_id is None, group is None, char is None)):
         raise ValueError(
             'Todos os atributos não podem ser None.'
@@ -104,6 +105,7 @@ def add_damage(
 ) -> dict:
     '''Função que adiciona dano ao personagem.
     '''
+
     if all((user_id is None, char is None)):
         raise ValueError(
             'Forneça um "user_id" ou "char". '
@@ -136,6 +138,7 @@ def add_conditions(
 ):
     '''Função que adiciona condições ao personagem
     '''
+
     if all((user_id is None, char is None)):
         raise ValueError(
             'Forneça um "user_id" ou "char". '
@@ -166,6 +169,7 @@ def add_conditions_trap(
 ) -> dict:
     '''Função que adiciona condições ao personagem oriundas de armadilhas.
     '''
+
     if all((user_id is None, char is None)):
         raise ValueError(
             'Forneça um "user_id" ou "char". '
@@ -207,6 +211,7 @@ def activate_conditions(
 ) -> dict:
     '''Função que ativa as condições no Status do personagem.
     '''
+
     if all((user_id is None, char is None)):
         raise ValueError(
             'Forneça um "user_id" ou "char". '
@@ -236,6 +241,9 @@ def activate_conditions(
 
 
 def get_player_ids_from_group(chat_id: int) -> List[int]:
+    '''Retorna os player_ids de todos os jogadores do grupo.
+    '''
+
     player_model = PlayerModel()
     query = {'chat_ids': chat_id}
     fields = ['player_id']
@@ -248,6 +256,9 @@ def get_player_chars_from_group(
     chat_id: int,
     is_alive: bool = False
 ) -> List[BaseCharacter]:
+    '''Retorna os Personagens de todos os jogadores do grupo.
+    '''
+
     char_model = CharacterModel()
     player_id_list = get_player_ids_from_group(chat_id)
     query = {'player_id': {'$in': player_id_list}}
@@ -259,11 +270,27 @@ def get_player_chars_from_group(
     return char_list
 
 
+def get_chars_level_from_group(chat_id: int) -> List[int]:
+    '''Retorna o level de todos os personagens do grupo.
+    '''
+
+    char_model = CharacterModel()
+    player_id_list = get_player_ids_from_group(chat_id)
+    query = {'player_id': {'$in': player_id_list}}
+    fields = ['level']
+    level_char_list = char_model.get_all(query=query, fields=fields)
+
+    return level_char_list
+
+
 def choice_char(
     player_id_list: List[int] = None,
     chat_id: int = None,
     is_alive: bool = False,
 ) -> BaseCharacter:
+    '''Retorna um personagem aleatório do grupo ou de uma lista de player_ids
+    '''
+
     if not player_id_list and not chat_id:
         raise ValueError('Forneça um "player_id_list" ou "chat_id". ')
     elif player_id_list and chat_id:
@@ -303,6 +330,9 @@ def save_char(
     equips: bool = False,
     status: bool = False,
 ):
+    '''Salva o personagem e opcionais caso True
+    '''
+
     char_model = CharacterModel()
     char_model.save(char)
 
@@ -313,3 +343,10 @@ def save_char(
     if status and char.status:
         status_model = StatusModel()
         status_model.save(char.status)
+
+
+if __name__ == '__main__':
+    from decouple import config
+    MY_GROUP_ID = config('MY_GROUP_ID', cast=int)
+    print(MY_GROUP_ID)
+    print(get_chars_level_from_group(MY_GROUP_ID))

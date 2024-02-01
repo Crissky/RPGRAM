@@ -14,6 +14,7 @@ from bot.conversations import (
     BATTLE_HANDLER,
     BAG_HANDLER,
     CLOSE_MSG_HANDLER,
+    SELLER_HANDLER,
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -41,7 +42,7 @@ from function.date_time import get_last_hour, get_midnight_hour
 
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
-MY_GROUP_ID = config('MY_GROUP_ID')
+MY_GROUP_ID = config('MY_GROUP_ID', cast=int)
 
 
 def main() -> None:
@@ -57,6 +58,7 @@ def main() -> None:
     application.add_handler(BATTLE_HANDLER)
     application.add_handler(BAG_HANDLER)
     application.add_handler(CLOSE_MSG_HANDLER)
+    application.add_handler(SELLER_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
@@ -109,12 +111,12 @@ def main() -> None:
         chat_id=MY_GROUP_ID,
         name='JOB_INFO_DEPLOY_BOT',
     )
-    application.job_queue.run_once(
-        callback=job_create_new_items,
-        when=timedelta(minutes=1),
-        chat_id=MY_GROUP_ID,
-        name='JOB_CREATE_NEW_ITEMS',
-    )
+    # application.job_queue.run_once(
+    #     callback=job_create_new_items,
+    #     when=timedelta(minutes=1),
+    #     chat_id=MY_GROUP_ID,
+    #     name='JOB_CREATE_NEW_ITEMS',
+    # )
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()

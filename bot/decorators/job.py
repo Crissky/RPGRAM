@@ -9,7 +9,7 @@ def skip_if_spawn_timeout(callback):
         print('@SKIP_IF_SPAWN_TIMEOUT')
         group_model = GroupModel()
         job = context.job
-        chat_id = int(job.chat_id)  # chat_id vem como string
+        chat_id = job.chat_id
         group = group_model.get(chat_id)
         spawn_start_time = group.spawn_start_time
         spawn_end_time = group.spawn_end_time

@@ -75,7 +75,7 @@ SELL_MANY_BUTTON_TEXT = (
     f'{EmojiEnum.SELL.value}Vender x{{quantity_option}}'
 )
 COLLECT_MANY_BUTTON_TEXT = (
-    f'{EmojiEnum.TROCADO.value}Coletar x{{quantity_option}}'
+    f'{EmojiEnum.TROCADO_POUCH.value}Coletar x{{quantity_option}}'
 )
 EQUIP_BUTTON_TEXT = f'{EmojiEnum.TO_EQUIP.value}Equipar'
 EQUIP_LEFT_BUTTON_TEXT = f'{EmojiEnum.LEFT.value}Equipar'

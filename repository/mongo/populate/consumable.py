@@ -38,7 +38,12 @@ from rpgram.consumables.other import (
     PROFICIENCY_ELIXIR_POWER,
     RARE_PROFICIENCY_ELIXIR_POWER,
 )
-from rpgram.enums import HealingConsumableEnum, RarityEnum, TurnEnum
+from rpgram.enums import (
+    HealingConsumableEnum,
+    RarityEnum,
+    TrocadoEnum,
+    TurnEnum
+    )
 from rpgram.enums.debuff import (
     BERSERKER,
     BLEEDING,
@@ -53,6 +58,7 @@ from rpgram.enums.debuff import (
     POISONING,
     SILENCE,
 )
+from rpgram.enums.trocado import TrocadoEnum
 
 
 CURE_ITEMS_LEVEL = 1
@@ -659,145 +665,145 @@ CONSUMABLES = [
 
     #  Trocado Pouch Items
     {
-        'name': 'Tiny Tax Trocado Pouch',
+        'name': f'Tiny Tax {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Tiny Monarch Trocado Pouch',
+        'name': f'Tiny Monarch {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.15,
         'rarity': RarityEnum.COMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Tiny Emperor Trocado Pouch',
+        'name': f'Tiny Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.20,
         'rarity': RarityEnum.COMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Tiny Overlord Trocado Pouch',
+        'name': f'Tiny Overlord {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.25,
         'rarity': RarityEnum.COMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Minor Tax Trocado Pouch',
+        'name': f'Minor Tax {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.50,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Minor Monarch Trocado Pouch',
+        'name': f'Minor Monarch {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.55,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Minor Emperor Trocado Pouch',
+        'name': f'Minor Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.60,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Minor Overlord Trocado Pouch',
+        'name': f'Minor Overlord {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.65,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Tax Trocado Pouch',
+        'name': f'Tax {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 1.00,
         'rarity': RarityEnum.RARE.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Monarch Trocado Pouch',
+        'name': f'Monarch {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 1.15,
         'rarity': RarityEnum.RARE.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Emperor Trocado Pouch',
+        'name': f'Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 1.30,
         'rarity': RarityEnum.RARE.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Overlord Trocado Pouch',
+        'name': f'Overlord {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 1.50,
         'rarity': RarityEnum.RARE.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Greater Tax Trocado Pouch',
+        'name': f'Greater Tax {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 3.00,
         'rarity': RarityEnum.EPIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Greater Monarch Trocado Pouch',
+        'name': f'Greater Monarch {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 4.00,
         'rarity': RarityEnum.EPIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Greater Emperor Trocado Pouch',
+        'name': f'Greater Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 5.00,
         'rarity': RarityEnum.EPIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Greater Overlord Trocado Pouch',
+        'name': f'Greater Overlord {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 6.00,
         'rarity': RarityEnum.EPIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Major Tax Trocado Pouch',
+        'name': f'Major Tax {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 10.00,
         'rarity': RarityEnum.LEGENDARY.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Major Monarch Trocado Pouch',
+        'name': f'Major Monarch {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 20.00,
         'rarity': RarityEnum.LEGENDARY.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Major Emperor Trocado Pouch',
+        'name': f'Major Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 35.00,
         'rarity': RarityEnum.LEGENDARY.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Major Overlord Trocado Pouch',
+        'name': f'Major Overlord {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 50.00,
         'rarity': RarityEnum.LEGENDARY.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Superior Tax Trocado Pouch',
+        'name': f'Superior Tax {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 100.00,
         'rarity': RarityEnum.MYTHIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Superior Monarch Trocado Pouch',
+        'name': f'Superior Monarch {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 200.00,
         'rarity': RarityEnum.MYTHIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Superior Emperor Trocado Pouch',
+        'name': f'Superior Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 350.00,
         'rarity': RarityEnum.MYTHIC.name,
         'class': TrocadoPouchConsumable
     },
     {
-        'name': 'Superior Overlord Trocado Pouch',
+        'name': f'Superior Overlord {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 500.00,
         'rarity': RarityEnum.MYTHIC.name,
         'class': TrocadoPouchConsumable

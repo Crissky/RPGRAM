@@ -19,7 +19,7 @@ from rpgram.enums import EmojiEnum
 async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
     status_model = StatusModel()
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     now = get_brazil_time_now()
 
     print(f'JOB_ACTIVATE_CONDITIONS() - {now}')

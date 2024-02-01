@@ -100,6 +100,7 @@ from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
+    send_alert_or_message,
     send_private_message
 )
 from bot.functions.general import get_attribute_group_or_player
@@ -137,7 +138,7 @@ from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter
 from rpgram.consumables import Consumable, TrocadoPouchConsumable
 from rpgram.consumables.other import GemstoneConsumable
-from rpgram.enums import EmojiEnum, EquipmentEnum
+from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 
 # ROUTES
@@ -160,6 +161,7 @@ from rpgram.enums import EmojiEnum, EquipmentEnum
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Envia ou edita mensagem contendo uma página dos itens do jogador
     '''
+
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
     chat_id = update.effective_chat.id
@@ -172,6 +174,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if args and args[0].startswith('@'):
         target_name = args[0]
         target_id = get_player_id_by_name(target_name)
+        if target_id is None:
+            text = (
+                f'O jogador "{target_name}" não existe '
+                f'(Não possui o objeto Player).'
+            )
+            return await send_alert_or_message(
+                function_caller='START_BAG()',
+                context=context,
+                query=query,
+                text=text,
+                chat_id=chat_id,
+                user_id=user_id,
+                show_alert=True
+            )
     else:
         target_id = user_id
 
@@ -1240,7 +1256,7 @@ def get_trocado_and_target_text(user_id: int, target_id: int) -> str:
     trocado = get_player_trocado(user_id)
     target_name = get_player_name(target_id)
     text = (
-        f'*Trocado*: {trocado}{EmojiEnum.TROCADO.value}\n'
+        f'*{TrocadoEnum.TROCADO.value}*: {trocado}{EmojiEnum.TROCADO.value}\n'
         f'*Alvo*: {target_name}\n\n'
     )
 

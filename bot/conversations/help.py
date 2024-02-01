@@ -69,9 +69,17 @@ from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP
 from function.text import create_text_in_box, escape_basic_markdown_v2
 
 from repository.mongo import ClasseModel, ItemModel, RaceModel
+from rpgram.boosters import Equipment
 
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.heal import HEALSTATUS
+from rpgram.consumables import (
+    CureConsumable,
+    HealingConsumable,
+    ReviveConsumable,
+    GemstoneConsumable,
+    TrocadoPouchConsumable
+)
 from rpgram.enums import (
     EmojiEnum,
     EquipmentEnum,
@@ -84,7 +92,8 @@ from rpgram.enums import (
     WeaponMaterialEnum,
     WearableMaterialEnum,
     TacticalWearableMaterialEnum,
-    RarityEnum
+    RarityEnum,
+    TrocadoEnum,
 )
 from rpgram.enums.debuff import DebuffEnum
 
@@ -657,7 +666,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_HEALING_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'HealingConsumable'}
+        query = {'_class': HealingConsumable.__name__}
         all_healing_consumables = item_model.get_all(query)
         text = (
             f'Os itens que curam HP desempenham o papel vital de '
@@ -683,7 +692,7 @@ def get_details_text(option: str) -> str:
         item_model = ItemModel()
         description_pattern = re.compile('^Cura 1 ')
         query = {
-            '_class': 'CureConsumable',
+            '_class': CureConsumable.__name__,
             'description': description_pattern
         }
         all_cure_consumables = item_model.get_all(query)
@@ -709,7 +718,7 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_REVIVE_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'ReviveConsumable'}
+        query = {'_class': ReviveConsumable.__name__}
         all_revive_consumables = item_model.get_all(query)
         text = (
             f'Os itens que revivem personagens exercem um papel crucial ao '
@@ -736,19 +745,19 @@ def get_details_text(option: str) -> str:
     elif option == CALLBACK_OTHER_CONSUMABLE:
         item_model = ItemModel()
         query = {'_class': {'$nin': [
-            'CureConsumable',
-            'Equipment',
-            'HealingConsumable',
-            'ReviveConsumable',
-            'TrocadoPouchConsumable',
-            'GemstoneConsumable'
+            CureConsumable.__name__,
+            Equipment.__name__,
+            HealingConsumable.__name__,
+            ReviveConsumable.__name__,
+            TrocadoPouchConsumable.__name__,
+            GemstoneConsumable.__name__
         ]}}
         all_other_consumables = item_model.get_all(query)
         text = (
             f'{EmojiEnum.OTHER_CONSUMABLE.value}*OUTROS ITENS*\n\n'
         )
 
-        keys = lambda x: (x.__class__.__name__, x.name)
+        def keys(x): return (x.__class__.__name__, x.name)
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -756,34 +765,41 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_TROCADOPOUCH_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'TrocadoPouchConsumable'}
+        query = {'_class': TrocadoPouchConsumable.__name__}
         all_other_consumables = item_model.get_all(query)
         text = (
-            f'As Trocado Pouches são bolsas especiais projetadas para '
-            f'armazenar o Trocado{EmojiEnum.TROCADO.value}, '
+            f'As {TrocadoEnum.TROCADO_POUCHES.value}'
+            f'{EmojiEnum.TROCADO_POUCH.value} '
+            f'são bolsas especiais projetadas para '
+            f'armazenar o {TrocadoEnum.TROCADO.value}'
+            f'{EmojiEnum.TROCADO.value}, '
             f'a moeda valiosa do jogo. '
             f'Essas bolsas são distintas por sua capacidade de armazenar '
-            f'diferentes quantidades de Trocado{EmojiEnum.TROCADO.value}, '
+            f'diferentes quantidades de {TrocadoEnum.TROCADO.value}'
+            f'{EmojiEnum.TROCADO.value}, '
             f'dependendo do tipo e '
             f'tamanho específicos. Elas podem ser obtidas de baús.\n\n'
 
-            f'Existem quatro tipos principais de Trocado Pouches, '
+            f'Existem quatro tipos principais de '
+            f'{TrocadoEnum.TROCADO_POUCHES.value}{EmojiEnum.TROCADO_POUCH.value}, '
             f'cada um correspondendo a uma hierarquia diferente de valores '
             f'monetários. O tipo Tax é a bolsa de menor valor, seguido por '
             f'Monarch, Emperor e, no ápice, Overlord.\n\n'
 
-            f'Além disso, as Trocado Pouches também variam em tamanho, '
+            f'Além disso, as {TrocadoEnum.TROCADO_POUCHES.value}{EmojiEnum.TROCADO_POUCH.value} '
+            f'também variam em tamanho, '
             f'apresentando seis categorias distintas: Tiny, Minor, Normal, '
             f'Greater, Major e Superior. Cada tamanho representa a capacidade '
-            f'da bolsa de armazenar Trocado{EmojiEnum.TROCADO.value}, '
+            f'da bolsa de armazenar {TrocadoEnum.TROCADO.value}'
+            f'{EmojiEnum.TROCADO.value}, '
             f'sendo Tiny a menor e Superior a maior.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.TROCADO.value}*BOLSAS DE TROCADO*\n\n'
+            f'{EmojiEnum.TROCADO_POUCH.value}*BOLSAS DE TROCADO*\n\n'
         )
 
-        keys = lambda x: x.price
+        def keys(x): return x.price
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -791,12 +807,13 @@ def get_details_text(option: str) -> str:
         text = text.strip()
     elif option == CALLBACK_GEMSTONE_CONSUMABLE:
         item_model = ItemModel()
-        query = {'_class': 'GemstoneConsumable'}
+        query = {'_class': GemstoneConsumable.__name__}
         all_other_consumables = item_model.get_all(query)
         text = (
             f'As Gemstones, ou Pedras Preciosas, são itens valiosos e '
             f'cobiçados no vasto mundo, oferecendo aos aventureiros uma '
-            f'fonte de Trocados{EmojiEnum.TROCADO.value} substancial quando '
+            f'fonte de {TrocadoEnum.TROCADOS.value}{EmojiEnum.TROCADO.value} '
+            f'substancial quando '
             f'vendidas. Essas gemas são classificadas em três tamanhos '
             f'distintos: Minor, Normal e Greater, representando a raridade '
             f'e o valor relativo de cada pedra.\n\n'
@@ -814,7 +831,7 @@ def get_details_text(option: str) -> str:
             f'{EmojiEnum.GEMSTONE.value}*PEDRAS PRECIOSAS*\n\n'
         )
 
-        keys = lambda x: x.price
+        def keys(x): return x.price
         for other_consumable in sorted(all_other_consumables, key=keys):
             text += f'*Nome*: {other_consumable.name}\n'
             text += f'*Descrição*: {other_consumable.description}\n'
@@ -861,7 +878,7 @@ def get_help_reply_markup(update: Update):
         f'Outros Itens{EmojiEnum.OTHER_CONSUMABLE.value}'
     )
     trocadopouch_text = (
-        f'{EmojiEnum.TROCADO.value}Bolsas de Ouro'
+        f'{EmojiEnum.TROCADO_POUCH.value}Bolsas de Ouro'
     )
     gemstone_text = (
         f'Pedras Preciosas{EmojiEnum.GEMSTONE.value}'
@@ -1077,7 +1094,7 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
     '''
     print('JOB_INFO_DEPLOY_BOT()')
     job = context.job
-    chat_id = int(job.chat_id)  # chat_id vem como string
+    chat_id = job.chat_id
     player_name = get_player_name_by_chat_id(chat_id=chat_id)
     await context.bot.send_message(
         chat_id=chat_id,

@@ -103,6 +103,14 @@ class Item:
         return self.item.sell_price
 
     @property
+    def price_text(self) -> str:
+        return self.item.price_text
+
+    @property
+    def sell_price_text(self) -> str:
+        return self.item.sell_price_text
+
+    @property
     def rarity(self) -> RarityEnum:
         return self.item.rarity
 

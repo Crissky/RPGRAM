@@ -1,4 +1,5 @@
 from bson import ObjectId
+from telegram import CallbackQuery
 
 from telegram.constants import ParseMode
 from telegram.error import Forbidden
@@ -66,6 +67,29 @@ async def send_private_message(
                 f'Function Caller: {function_caller}\n'
                 f'(ERROR: {error})'
             )
+
+
+async def send_alert_or_message(
+    function_caller: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    query: CallbackQuery,
+    text: str,
+    user_id: int,
+    chat_id: int = None,
+    markdown: bool = False,
+    show_alert: bool = False,
+):
+    if query:
+        return await query.answer(text=text, show_alert=show_alert)
+    else:
+        return await send_private_message(
+            function_caller=function_caller,
+            context=context,
+            text=text,
+            user_id=user_id,
+            chat_id=chat_id,
+            markdown=markdown
+        )
 
 
 def callback_data_to_string(callback_data: dict) -> str:
