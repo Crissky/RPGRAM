@@ -221,15 +221,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         bag_model.save(player_bag)
 
-    markdown_text = (
-        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
-        f'*Peso*: {player_bag.weight_text}\n'
-    )
-    markdown_text += get_trocado_and_target_text(
-        user_id=user_id,
-        target_id=target_id
-    )
-
     items = player_bag[:]
     have_back_page = False
     have_next_page = False
@@ -247,7 +238,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return ConversationHandler.END
 
     # Criando os Botões
-    markdown_text += get_item_texts(items=items)
     reshaped_items_buttons = get_item_buttons(
         items=items,
         page=page,
@@ -282,6 +272,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         [sort_items_button + cancel_button]
     )
 
+    markdown_text = (
+        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
+        f'*Peso*: {player_bag.weight_text}\n'
+    )
+    markdown_text += get_trocado_and_target_text(
+        user_id=user_id,
+        target_id=target_id
+    )
+    markdown_text += get_item_texts(items=items)
     markdown_text = TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões

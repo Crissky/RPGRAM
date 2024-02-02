@@ -6,14 +6,15 @@ from rpgram import Bag, Item
 
 
 class BagModel(Model):
-    def add(self, item: Item, player_id: int) -> Any:
+    def add(self, item: Item, player_id: int, quantity: int = None) -> Any:
         query = {'player_id': player_id, 'items_ids._id': item._id}
         exists = bool(self.database.count(self.collection, query, limit=1))
+        quantity = item.quantity if quantity is None else quantity
 
-        if item.quantity <= 0:
+        if quantity <= 0:
             raise ValueError(
                 f'Quantidade inválida. Não pode adicionar uma quantidade '
-                f'menor ou igual a zero. Quantidade: {item.quantity}.'
+                f'menor ou igual a zero. Quantidade: {quantity}.'
             )
 
         if exists:  # incrementa se existir na bag
@@ -22,7 +23,7 @@ class BagModel(Model):
                 query=query,
                 data={
                     '$inc': {
-                        'items_ids.$.quantity': item.quantity
+                        'items_ids.$.quantity': quantity
                     }
                 }
             )
@@ -34,7 +35,7 @@ class BagModel(Model):
                     '$push': {
                         'items_ids': {
                             '_id': item._id,
-                            'quantity': item.quantity
+                            'quantity': quantity
                         }
                     }
                 }

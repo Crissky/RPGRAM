@@ -193,8 +193,13 @@ class Item:
         self, verbose: bool = False,
         markdown: bool = False,
         show_quantity: bool = False,
+        is_sell: bool = False,
     ) -> str:
-        text = self.item.get_sheet(verbose=verbose, markdown=markdown)
+        text = self.item.get_sheet(
+            verbose=verbose,
+            markdown=markdown,
+            is_sell=is_sell,
+        )
         if all((verbose, show_quantity, isinstance(self.item, Consumable))):
             text_quantity = f'*Quantidade*: {self.quantity}\n'
             if not markdown:

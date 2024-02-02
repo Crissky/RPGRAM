@@ -166,7 +166,11 @@ class Equipment(StatsBooster):
         self.__requirements = requirements
         self.__rarity = rarity
 
-    def compare(self, *others_equipment: List[StatsBooster]) -> str:
+    def compare(
+        self,
+        *others_equipment: List[StatsBooster],
+        is_sell: bool = False,
+    ) -> str:
         if isinstance(others_equipment, StatsBooster):
             others_equipment = [others_equipment]
 
@@ -293,6 +297,7 @@ class Equipment(StatsBooster):
         requirements = self.sheet_requirements()
 
         type_icon = EmojiEnum[self.equip_type.name].value
+        price_text = self.price_text if is_sell else self.sell_price_text
         text = (
             f'COMPARANDO COM: {other_names}\n\n'
             f'*Equipamento*: {self.name}\n'
@@ -300,7 +305,7 @@ class Equipment(StatsBooster):
             f'{damage_types}'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{{{power_diff:+}}}{power_multiplier}\n'
-            f'*Valor*: {self.sell_price_text}\n'
+            f'*Valor*: {price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
         )
@@ -383,12 +388,18 @@ class Equipment(StatsBooster):
             requirements = f'*Requisitos*:\n{requirements}\n\n'
         return requirements
 
-    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+    def get_sheet(
+        self,
+        verbose: bool = False,
+        markdown: bool = False,
+        is_sell: bool = False
+    ) -> str:
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
 
         type_icon = EmojiEnum[self.equip_type.name].value
+        price_text = self.price_text if is_sell else self.sell_price_text
         text = (
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.name_type}{type_icon}\n'
@@ -396,7 +407,7 @@ class Equipment(StatsBooster):
             f'*Raridade*: {self.rarity.value}\n'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
-            f'*Valor*: {self.sell_price_text}\n'
+            f'*Valor*: {price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
         )

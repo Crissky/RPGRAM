@@ -10,6 +10,7 @@ from bot.functions.general import get_attribute_group_or_player
 
 CALLBACK_KEY_LIST = [
     'act',
+    'buy',
     'command',
     'drop',
     'hand',
@@ -18,6 +19,8 @@ CALLBACK_KEY_LIST = [
     'page',
     'retry_state',
     'sell',
+    'sell_item',
+    'sell_page',
     'sort',
     'use',
     '_id',

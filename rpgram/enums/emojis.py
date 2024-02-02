@@ -97,7 +97,9 @@ class EmojiEnum(Enum):
     TROCADO_POUCH = '💰'
     GEMSTONE = '💎'
     SELL = '🏷️'
+    BUY = '🛒'
     UE = '🤷'
+    EXIT_SHOP = '👋'
 
 
 class FaceEmojiEnum(Enum):
