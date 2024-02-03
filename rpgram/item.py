@@ -35,9 +35,11 @@ class Item:
         self.quantity = quantity
 
     def add(self, quantity: int = 1) -> None:
+        quantity = abs(int(quantity))
         self.quantity += quantity
 
     def sub(self, quantity: int = 1) -> None:
+        quantity = abs(int(quantity))
         self.quantity -= quantity
 
     def use(self, target) -> dict:

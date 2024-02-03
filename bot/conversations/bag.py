@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from math import sqrt
 from random import choice
 from time import sleep
 from typing import List
@@ -694,6 +695,7 @@ async def identify_item(
 ) -> None:
     '''identifica um equipamento.
     '''
+
     query = update.callback_query
 
     try:
@@ -783,7 +785,7 @@ async def sell_item(
     page = data['page']
     data_user_id = data['user_id']
     target_id = data['target_id']
-    sell = data['sell']
+    sell_quantity = data['sell']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
@@ -792,25 +794,69 @@ async def sell_item(
 
     player = player_model.get(user_id)
     item = get_item_by_position(user_id, page, item_pos)
-    sell = min(sell, item.quantity)
-    trocado = int(sell * item.sell_price)
+    sell_quantity = min(sell_quantity, item.quantity)
+    item_sell_price = get_bonus_price(price=item.sell_price, user_id=user_id)
+    trocado = int(sell_quantity * item_sell_price)
     player.add_trocado(trocado)
 
-    bag_model.sub(item, user_id, quantity=-(sell))
+    bag_model.sub(item, user_id, quantity=sell_quantity)
     player_model.save(player)
 
-    back_button = get_back_button(
-        page=page,
+    item.sub(quantity=sell_quantity)
+
+    if item.quantity <= 0:
+        back_button = get_back_button(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            retry_state=START_ROUTES
+        )
+        reply_markup = InlineKeyboardMarkup([back_button])
+    else:
+        use_buttons = get_use_consumable_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            item=item
+        )
+        discard_buttons = get_discard_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            item=item
+        )
+        sell_buttons = get_sell_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            item=item
+        )
+        back_button = get_back_button(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            retry_state=USE_ROUTES
+        )
+        reply_markup = InlineKeyboardMarkup([
+            *use_buttons,
+            *discard_buttons,
+            *sell_buttons,
+            back_button
+        ])
+
+    markdown_text = get_trocado_and_target_text(
         user_id=user_id,
-        target_id=target_id,
-        retry_state=START_ROUTES
+        target_id=target_id
     )
-    reply_markup = InlineKeyboardMarkup([back_button])
+
     if isinstance(item.item, TrocadoPouchConsumable):
-        markdown_text = (
+        markdown_text += (
             f'Você coletou {trocado}{EmojiEnum.TROCADO.value} de '
-            f'"{sell}x {item.name}" e esta com um total de '
-            f'{player.trocado_text}.'
+            f'"{sell_quantity}x {item.name}" e esta com um total de '
+            f'{player.trocado_text}.\n\n'
         )
     else:
         chrysus_quote = f'>*{SELLER_NAME}*: '
@@ -825,10 +871,17 @@ async def sell_item(
 
         markdown_text = (
             f'{chrysus_quote}\n\n'
-            f'Você vendeu "{sell}x {item.name}" e faturou '
+            f'{markdown_text}'
+            f'Você vendeu "{sell_quantity}x {item.name}" e faturou '
             f'{trocado}{EmojiEnum.TROCADO.value}.\n'
-            f'Agora você tem {player.trocado_text}.'
+            f'Agora você tem {player.trocado_text}.\n\n'
         )
+
+    markdown_text += item.get_all_sheets(
+        verbose=True,
+        markdown=True,
+        show_quantity=True
+    )
     markdown_text = escape_for_citation_markdown_v2(markdown_text)
     await query.edit_message_text(
         text=markdown_text,
@@ -836,7 +889,7 @@ async def sell_item(
         parse_mode=ParseMode.MARKDOWN_V2,
     )
 
-    return START_ROUTES
+    return USE_ROUTES
 
 
 @skip_if_dead_char
@@ -1280,6 +1333,24 @@ def get_trocado_and_target_text(user_id: int, target_id: int) -> str:
     )
 
     return text
+
+
+def get_bonus_price(
+    price: int,
+    user_id: int = None,
+    player_character: BaseCharacter = None
+) -> int:
+    if user_id is None and player_character is None:
+        raise ValueError('user_id or player_character precisa ser definido.')
+    if player_character is None:
+        char_model = CharacterModel()
+        player_character = char_model.get(user_id)
+
+    charisma = player_character.bs.charisma
+    charisma_price_bonus = (sqrt(charisma) / 100) + 1
+    final_price = price * charisma_price_bonus
+
+    return int(final_price)
 
 
 def get_item_texts(items: List[Item]) -> str:
