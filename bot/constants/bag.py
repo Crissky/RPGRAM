@@ -7,6 +7,7 @@ from rpgram.consumables import (
 )
 
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.trocado import TrocadoEnum
 
 
 ALL_RESTORE_CONSUMABLES_TUPLE = (
@@ -29,6 +30,8 @@ DROPUSE_QUANTITY_OPTION_LIST = [1, 3, 5, 10, 30, 50]
 
 # SECTIONS TEXTs
 SECTION_TEXT_CONSUMABLE = 'CONSUMÍVEL'
+SECTION_TEXT_TROCADO_POUCH = f'BOLSA DE {TrocadoEnum.TROCADO.value}'.upper()
+SECTION_TEXT_GEMSTONE = f'PEDRA PRECIOSA'
 SECTION_TEXT_EQUIPMENT = 'EQUIPAMENTO'
 
 

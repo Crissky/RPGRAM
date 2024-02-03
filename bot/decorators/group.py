@@ -1,4 +1,5 @@
 from telegram import Update
+from telegram.constants import ChatType
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.sign_up_group import COMMANDS
@@ -21,6 +22,21 @@ def need_singup_group(callback):
                 allow_sending_without_reply=True
             )
             return ConversationHandler.END
+    return wrapper
+
+
+def allow_only_in_group(callback):
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        print('@NEED_USE_IN_GROUP')
+        if update.effective_chat.type == ChatType.PRIVATE:
+            await update.effective_message.reply_text(
+                f'Esse comando só pode ser usado em um grupo.',
+                allow_sending_without_reply=True
+            )
+            return ConversationHandler.END
+        else:
+            return await callback(update, context)
+
     return wrapper
 
 

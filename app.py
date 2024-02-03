@@ -111,12 +111,13 @@ def main() -> None:
         chat_id=MY_GROUP_ID,
         name='JOB_INFO_DEPLOY_BOT',
     )
-    # application.job_queue.run_once(
-    #     callback=job_create_new_items,
-    #     when=timedelta(minutes=1),
-    #     chat_id=MY_GROUP_ID,
-    #     name='JOB_CREATE_NEW_ITEMS',
-    # )
+    application.job_queue.run_repeating(
+        callback=job_create_new_items,
+        interval=timedelta(hours=8),
+        first=get_midnight_hour(get_yesterday=True),
+        chat_id=MY_GROUP_ID,
+        name='JOB_CREATE_NEW_ITEMS',
+    )
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()

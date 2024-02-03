@@ -94,6 +94,7 @@ class Player:
 
     # Getters
     _id = property(lambda self: self.__id)
+    trocado = property(lambda self: self.__trocado)
 
     @property
     def trocado_text(self) -> str:

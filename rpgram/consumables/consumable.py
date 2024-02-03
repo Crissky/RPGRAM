@@ -73,12 +73,18 @@ class Consumable:
     def __call__(self, target):
         return self.use(target)
 
-    def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+    def get_sheet(
+        self,
+        verbose: bool = False,
+        markdown: bool = False,
+        is_sell: bool = False,
+    ) -> str:
         text = f'*Item*: {self.__name}\n'
 
         if verbose:
+            price_text = self.price_text if is_sell else self.sell_price_text
             text += (
-                f'*Valor*: {self.sell_price_text}\n'
+                f'*Valor*: {price_text}\n'
                 f'*Peso*: {self.weight}{EmojiEnum.WEIGHT.value}\n'
                 f'*Descrição*: {self.description}\n'
                 f'*Raridade*: {self.rarity.value}\n'

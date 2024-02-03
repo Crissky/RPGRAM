@@ -62,6 +62,8 @@ from bot.constants.bag import (
     PATTERN_USE,
     SECTION_TEXT_CONSUMABLE,
     SECTION_TEXT_EQUIPMENT,
+    SECTION_TEXT_GEMSTONE,
+    SECTION_TEXT_TROCADO_POUCH,
     SELL_MANY_BUTTON_TEXT,
     SEND_DROP_MESSAGE_TIME_SLEEP,
     SORT_ITEMS_BUTTON_TEXT,
@@ -115,6 +117,10 @@ from constant.text import (
     SECTION_HEAD_CONSUMABLE_START,
     SECTION_HEAD_EQUIPMENT_END,
     SECTION_HEAD_EQUIPMENT_START,
+    SECTION_HEAD_GEMSTONE_END,
+    SECTION_HEAD_GEMSTONE_START,
+    SECTION_HEAD_TROCADO_POUCH_END,
+    SECTION_HEAD_TROCADO_POUCH_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
     TEXT_SEPARATOR,
@@ -221,15 +227,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         bag_model.save(player_bag)
 
-    markdown_text = (
-        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
-        f'*Peso*: {player_bag.weight_text}\n'
-    )
-    markdown_text += get_trocado_and_target_text(
-        user_id=user_id,
-        target_id=target_id
-    )
-
     items = player_bag[:]
     have_back_page = False
     have_next_page = False
@@ -247,7 +244,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return ConversationHandler.END
 
     # Criando os Botões
-    markdown_text += get_item_texts(items=items)
     reshaped_items_buttons = get_item_buttons(
         items=items,
         page=page,
@@ -282,6 +278,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         [sort_items_button + cancel_button]
     )
 
+    markdown_text = (
+        f'\n*Bolsa de {user_name}* — {EmojiEnum.PAGE.value}: {page + 1:02}\n'
+        f'*Peso*: {player_bag.weight_text}\n'
+    )
+    markdown_text += get_trocado_and_target_text(
+        user_id=user_id,
+        target_id=target_id
+    )
+    markdown_text += get_item_texts(items=items)
     markdown_text = TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
@@ -1200,7 +1205,21 @@ async def send_drop_message(
         markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
         markdown_item_sheet = f'{text}:\n\n{markdown_item_sheet}'
 
-        if isinstance(item.item, Consumable):
+        if isinstance(item.item, GemstoneConsumable):
+            markdown_item_sheet = create_text_in_box(
+                text=markdown_item_sheet,
+                section_name=SECTION_TEXT_GEMSTONE,
+                section_start=SECTION_HEAD_GEMSTONE_START,
+                section_end=SECTION_HEAD_GEMSTONE_END,
+            )
+        elif isinstance(item.item, TrocadoPouchConsumable):
+            markdown_item_sheet = create_text_in_box(
+                text=markdown_item_sheet,
+                section_name=SECTION_TEXT_TROCADO_POUCH,
+                section_start=SECTION_HEAD_TROCADO_POUCH_START,
+                section_end=SECTION_HEAD_TROCADO_POUCH_END,
+            )
+        elif isinstance(item.item, Consumable):
             markdown_item_sheet = create_text_in_box(
                 text=markdown_item_sheet,
                 section_name=SECTION_TEXT_CONSUMABLE,

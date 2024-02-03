@@ -294,7 +294,7 @@ class Equips:
 
         self.notify_observers()
 
-    def compare(self, equipment: Equipment) -> str:
+    def compare(self, equipment: Equipment, is_sell: bool = False) -> str:
         other_equipment = []
         if equipment.equip_type == EquipmentEnum.HELMET:
             other_equipment.append(self.helmet)
@@ -315,20 +315,30 @@ class Equips:
         other_equipment = [e for e in other_equipment if e is not None]
 
         if not other_equipment:
-            return equipment.get_sheet(True, True)
+            return equipment.get_sheet(
+                verbose=True,
+                markdown=True,
+                is_sell=True
+            )
         elif equipment.equip_type == EquipmentEnum.ONE_HAND and (
             self.left_hand is not None or self.right_hand is not None
         ):
             texts = []
             if self.left_hand is not None:
-                compare_text = equipment.compare(self.left_hand)
+                compare_text = equipment.compare(
+                    self.left_hand,
+                    is_sell=is_sell
+                )
                 texts.append(f'{EmojiEnum.LEFT.value}{compare_text}')
             if self.right_hand is not None:
-                compare_text = equipment.compare(self.right_hand)
+                compare_text = equipment.compare(
+                    self.right_hand,
+                    is_sell=is_sell
+                )
                 texts.append(f'{EmojiEnum.RIGHT.value}{compare_text}')
             return f'\n{TEXT_SEPARATOR}\n\n'.join(texts)
         else:
-            return equipment.compare(*other_equipment)
+            return equipment.compare(*other_equipment, is_sell=is_sell)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = (
