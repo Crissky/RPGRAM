@@ -34,6 +34,7 @@ from bot.constants.seller import (
     PATTERN_SELL_ITEM,
     PATTERN_SELL_PAGE,
     REPLY_TEXT_NEW_ITEMS_ARRIVED,
+    REPLY_TEXT_NO_HAVE_ITEMS,
     SECTION_TEXT_SHOP,
     SELLER_NAME,
     TOTAL_CONSUMABLES,
@@ -47,27 +48,40 @@ from bot.decorators.char import (
     skip_if_immobilized,
     skip_if_no_have_char
 )
-from bot.decorators.job import skip_if_spawn_timeout
-from bot.decorators.player import skip_if_no_singup_player
-from bot.decorators.print import print_basic_infos
-from bot.decorators.retry import retry_after
+from bot.decorators import (
+    allow_only_in_group,
+    need_singup_group,
+    skip_if_spawn_timeout,
+    skip_if_no_singup_player,
+    print_basic_infos,
+    retry_after,
+)
 from bot.functions.bag import get_item_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
     callback_data_to_dict,
-    callback_data_to_string,
-    send_alert_or_message
+    callback_data_to_string
 )
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from bot.functions.player import get_player_trocado
-from constant.text import SECTION_SHOP_END, SECTION_SHOP_START, TITLE_HEAD
+from constant.text import SECTION_SHOP_END, SECTION_SHOP_START, SHOP_TITLE_HEAD
 from constant.time import TEN_MINUTES_IN_SECONDS
 from function.lista import mean_level
 
-from function.text import create_text_in_box, escape_basic_markdown_v2, escape_for_citation_markdown_v2
+from function.text import (
+    create_text_in_box,
+    escape_basic_markdown_v2,
+    escape_for_citation_markdown_v2
+)
 
-from repository.mongo import BagModel, EquipsModel, ItemModel, PlayerModel
+from repository.mongo import (
+    BagModel,
+    CharacterModel,
+    EquipsModel,
+    ItemModel,
+    PlayerModel
+)
 from repository.mongo.populate.item import (
     create_random_consumable,
     create_random_equipment
@@ -75,20 +89,22 @@ from repository.mongo.populate.item import (
 
 from rpgram import Bag, Item
 from rpgram.boosters import Equipment
+from rpgram.characters.char_base import BaseCharacter
 from rpgram.consumables import GemstoneConsumable, TrocadoPouchConsumable
 from rpgram.consumables.consumable import Consumable
-from rpgram.enums import EmojiEnum, EquipmentEnum
+from rpgram.enums import EmojiEnum
 
 
 # ROUTES
 (
     START_ROUTES,
     CHECK_ROUTES,
-    USE_ROUTES,
-    SORT_ROUTES,
-) = range(4)
+    BUY_ROUTES,
+) = range(3)
 
 
+@allow_only_in_group
+@need_singup_group
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion(START_ROUTES)
@@ -107,7 +123,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user_name = update.effective_user.name
     query = update.callback_query
-    args = context.args
     silent = get_attribute_group_or_player(chat_id, 'silent')
     trocado = get_player_trocado(user_id)
 
@@ -131,23 +146,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         fields={'items_ids': {'$slice': [skip_slice, size_slice]}},
         partial=False
     )
-    if not seller_bag:  # Cria uma bolsa caso o jogador não tenha uma.
-        text = (
-            f'Desculpe, {user_name}, mas eu não tenho itens para vender no '
-            f'momento. Volte mais tarde.'
-        )
-        await send_alert_or_message(
-            function_caller='START_SELLER()',
-            context=context,
-            query=query,
-            text=text,
-            chat_id=chat_id,
-            user_id=user_id,
-            show_alert=True
-        )
-        return
 
-    items = seller_bag[:]
+    items = seller_bag[:] if seller_bag else []
     have_back_page = False
     have_next_page = False
     if page > 0:
@@ -156,12 +156,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         items = seller_bag[:-1]
         have_next_page = True
     elif all((len(items) == 0, not query)):
-        text = (
-            f'Desculpe, {user_name}, mas eu não tenho itens para vender no '
-            f'momento. Volte mais tarde.'
-        )
+        text = f'>{SELLER_NAME}: ' + choice(REPLY_TEXT_NO_HAVE_ITEMS)
+        text = escape_for_citation_markdown_v2(text)
         await update.effective_message.reply_text(
             text=text,
+            parse_mode=ParseMode.MARKDOWN_V2,
             disable_notification=silent,
             allow_sending_without_reply=True
         )
@@ -200,7 +199,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n\n'
     )
     markdown_text += get_item_texts(items=items)
-    markdown_text = TITLE_HEAD.format(markdown_text)
+    markdown_text = SHOP_TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
         await update.effective_message.reply_text(
@@ -248,8 +247,10 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return CHECK_ROUTES
 
     item = get_item_by_position(chat_id, page, item_pos)
+    price_text = get_discount_price_text(price=item.price, user_id=user_id)
     markdown_text = (
-        f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n\n'
+        f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n'
+        f'*Preço*: {price_text}\n\n'
     )
     if isinstance(item.item, Equipment):
         equips_model = EquipsModel()
@@ -274,7 +275,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     back_button = get_sell_back_button(
         page=page,
         user_id=user_id,
-        retry_state=USE_ROUTES
+        retry_state=BUY_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([
         *buy_buttons,
@@ -302,12 +303,12 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         await query.delete_message()
 
-    return USE_ROUTES
+    return BUY_ROUTES
 
 
 @skip_if_dead_char
 @skip_if_immobilized
-@confusion(USE_ROUTES)
+@confusion(BUY_ROUTES)
 @print_basic_infos
 @retry_after
 async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -324,6 +325,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     bag_model = BagModel()
     player_model = PlayerModel()
+    char_model = CharacterModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
@@ -336,13 +338,18 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
-        return USE_ROUTES
+        return BUY_ROUTES
 
     player = player_model.get(user_id)
+    player_character = char_model.get(user_id)
     trocado = player.trocado
     item = get_item_by_position(chat_id, page, item_pos)
     buy_quantity = min(item.quantity, buy_quantity)
-    total_price = item.price * buy_quantity
+    item_price = get_discount_price(
+        price=item.price,
+        player_character=player_character
+    )
+    total_price = item_price * buy_quantity
     markdown_text = ''
 
     if total_price > trocado:
@@ -354,8 +361,13 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         player_model.save(player)
         trocado = player.trocado
         item.sub(buy_quantity)
+        item_price_text = get_discount_price_text(
+            price=item.price,
+            player_character=player_character
+        )
         markdown_text = (
-            f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n\n'
+            f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n'
+            f'*Preço*: {item_price_text}\n\n'
             f'Você comprou *{buy_quantity}x{item.name}* '
             f'por *{total_price}*{EmojiEnum.TROCADO.value}\n\n'
         )
@@ -385,7 +397,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     back_button = get_sell_back_button(
         page=page,
         user_id=user_id,
-        retry_state=USE_ROUTES
+        retry_state=BUY_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([
         *buy_buttons,
@@ -412,7 +424,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         await query.delete_message()
     if item.quantity > 0:
-        return USE_ROUTES
+        return BUY_ROUTES
     else:
         return START_ROUTES
 
@@ -455,6 +467,7 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     chars_level_list = get_chars_level_from_group(chat_id)
     mean_level_list = mean_level(chars_level_list, TOTAL_MEAN_LEVELS)
+    multiply_quantity = max(1, len(mean_level_list))
 
     seller_bag = Bag(
         items=[],
@@ -476,16 +489,16 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
             group_level=group_level,
             ignore_list=[TrocadoPouchConsumable, GemstoneConsumable]
         )
-        new_quantity = consumable_item.quantity * 2
+        new_quantity = consumable_item.quantity * multiply_quantity
         consumable_item.add(new_quantity)
         seller_bag.add(consumable_item)
 
     seller_bag.sort_by_equip_type()
     bag_model.save(seller_bag)
 
-
     text = escape_for_citation_markdown_v2(
-        f'>{SELLER_NAME}: {choice(REPLY_TEXT_NEW_ITEMS_ARRIVED)}'
+        f'>{SELLER_NAME}: {choice(REPLY_TEXT_NEW_ITEMS_ARRIVED)}\n\n'
+        f'Use o comando /{COMMANDS[0]} para acessar a *LOJA*.'
     )
     await context.bot.send_message(
         chat_id=chat_id,
@@ -501,13 +514,13 @@ def get_item_texts(items: List[Item]) -> str:
     if items:
         zero_fill = max(len(str(item.quantity)) for item in items)
     for index, item in enumerate(items):
-        markdown_text += f'*Ⅰ{(index + 1):02}:* '
+        markdown_text += f'*Ⅰ{(index + 1):02}:*'
         markdown_text += item.get_sheet(
             verbose=True,
             markdown=True,
             zero_fill=zero_fill
         )
-        markdown_text += f'*Preço*: {item.price_text}\n\n'
+        markdown_text += f'*Preço*: {item.price_text}\n'
 
     return markdown_text.strip() + '\n'
 
@@ -667,6 +680,40 @@ def get_buy_buttons(
     return reshape_row_buttons(buy_buttons, buttons_per_row=2)
 
 
+def get_discount_price(
+    price: int,
+    user_id: int = None,
+    player_character: BaseCharacter = None
+) -> int:
+    if user_id is None and player_character is None:
+        raise ValueError('user_id or player_character precisa ser definido.')
+    if player_character is None:
+        char_model = CharacterModel()
+        player_character = char_model.get(user_id)
+
+    charisma = player_character.bs.charisma
+    mod_charisma = player_character.bs.mod_charisma
+    lowest_price = price // 2
+    discount = price - (charisma + (mod_charisma * 2))
+    final_price = max(lowest_price, discount)
+
+    return int(final_price)
+
+
+def get_discount_price_text(
+    price: int,
+    user_id: int = None,
+    player_character: BaseCharacter = None
+) -> str:
+    discount_price = get_discount_price(
+        price=price,
+        user_id=user_id,
+        player_character=player_character
+    )
+
+    return f'{discount_price}{EmojiEnum.TROCADO.value}'
+
+
 SELLER_HANDLER = ConversationHandler(
     entry_points=[
         PrefixHandler(
@@ -686,7 +733,7 @@ SELLER_HANDLER = ConversationHandler(
             CallbackQueryHandler(check_sell_item, pattern=PATTERN_SELL_ITEM),
             CallbackQueryHandler(cancel, pattern=PATTERN_LEAVE_SHOP),
         ],
-        USE_ROUTES: [
+        BUY_ROUTES: [
             CallbackQueryHandler(buy_item, pattern=PATTERN_BUY),
             CallbackQueryHandler(start, pattern=PATTERN_SELL_PAGE),
         ],

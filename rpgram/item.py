@@ -14,7 +14,6 @@ from rpgram.consumables.other import (
     TrocadoPouchConsumable,
     XPConsumable
 )
-from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnumOrder
 from rpgram.enums.rarity import RarityEnum, RarityEnumOrder
 
@@ -170,15 +169,15 @@ class Item:
         zero_fill: int = 2
     ) -> str:
         formated_quantity = f'{self.quantity}'.zfill(zero_fill)
-        text = f'{formated_quantity}x {self.item.emoji_type}*{self.name}*'
+        text = f'{formated_quantity}x{self.item.emoji_type}*{self.name}*'
 
         if verbose:
             if isinstance(self.item, Equipment):
                 text += (
                     f' {self.item.power_and_level}'
                 )
-            elif isinstance(self.item, Consumable):
-                text += f' ({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
+            # elif isinstance(self.item, Consumable):
+            #     text += f' ({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
         text += f'\n'
 
         if not markdown:

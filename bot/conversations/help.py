@@ -54,6 +54,7 @@ from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
 from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
+from bot.constants.seller import COMMANDS as seller_commands, SELLER_NAME
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -64,7 +65,12 @@ from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_name_by_chat_id
 
-from constant.text import SECTION_HEAD, SECTION_HEAD_HELP_END, SECTION_HEAD_HELP_START, TEXT_SEPARATOR
+from constant.text import (
+    SECTION_HEAD,
+    SECTION_HEAD_HELP_END,
+    SECTION_HEAD_HELP_START,
+    TEXT_SEPARATOR
+)
 
 from function.text import create_text_in_box, escape_basic_markdown_v2
 
@@ -150,6 +156,7 @@ def get_details_text(option: str) -> str:
         view_char_cmd = command_to_string(view_char_commands)
         view_group_cmd = command_to_string(view_group_commands)
         view_player_cmd = command_to_string(view_player_commands)
+        seller_cmd = command_to_string(seller_commands)
         text = (
             f'{SECTION_HEAD.format("COMANDOS")}\n\n'
 
@@ -223,7 +230,11 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.EQUIPS.value}*EQUIPAMENTOS*: /{equips_commands[0]}\n'
             f'INFO: Exibe os itens equipados no personagem.\n'
-            f'Atalhos: {equips_cmd}'
+            f'Atalhos: {equips_cmd}\n\n'
+
+            f'{EmojiEnum.CHRYSUS_1.value}*LOJA*: /{seller_commands[0]}\n'
+            f'INFO: Abre a loja do {SELLER_NAME}.\n'
+            f'Atalhos: {seller_cmd}'
         )
     elif option == CALLBACK_STATS:
         add_stats_cmd = command_to_string(add_stats_commands)

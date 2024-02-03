@@ -21,7 +21,7 @@ CANCEL_COMMANDS = ['cancel', 'close']
 # ALERT BUTTON TEXTS
 ACCESS_DENIED = (
     f'⛔VOCÊ NÃO TEM ACESSO A ESSA LOJA⛔\n\n'
-    f'Use o comando !{COMMANDS[0]} para acessar A 🛍️LOJA.'
+    f'Use o comando !{COMMANDS[0]} para acessar A 🉐LOJA.'
 )
 
 
@@ -114,7 +114,6 @@ REPLY_TEXT_NEW_ITEMS_ARRIVED = [
     f'Novidades quentes na loja de {SELLER_NAME}! Itens excepcionais foram '
     f'recentemente adicionados. Aventureiros, corram para conferir e '
     f'adquirir algo que fará toda a diferença em suas futuras conquistas!',
-
     f'Prezados aventureiros, é com grande alegria que informo a chegada de '
     f'novos tesouros à loja {SELLER_NAME}! Venham explorar as '
     f'maravilhas que acabaram de chegar e encontrem o equipamento '
@@ -185,3 +184,115 @@ REPLY_TEXT_NEW_ITEMS_ARRIVED = [
     f'em nossa loja. Corram até aqui e escolham entre as últimas adições '
     f'que podem moldar o destino de suas aventuras.',
 ]
+
+REPLY_TEXT_NO_HAVE_ITEMS = [
+    f'A loja {SELLER_NAME} ainda não tem itens disponíveis. '
+    f'Por favor, volte mais tarde.',
+    f'Oh, nobre aventureiro, lamentavelmente estamos temporariamente '
+    f'esgotados de estoque. Pedimos desculpas pela inconveniência e '
+    f'sugerimos que retorne '
+    f'mais tarde para conferir nossas novas mercadorias.',
+    f'Caro cliente, infelizmente estamos com nossas prateleiras vazias no '
+    f'momento. Pedimos desculpas e contamos com sua compreensão. Volte em '
+    f'breve para descobrir nossas novas aquisições.',
+    f'Aventureiro valente, {SELLER_NAME} se desculpa por não ter mais itens '
+    f'disponíveis no momento. Por favor, aceite nossas desculpas e volte mais '
+    f'tarde para encontrar tesouros frescos em nossa loja.',
+    f'Caríssimo cliente, estamos temporariamente sem estoque para oferecer a '
+    f'você. Pedimos desculpas pelo transtorno e esperamos sua compreensão. '
+    f'Não deixe de voltar quando tivermos mais novidades!',
+    f'Oh, explorador intrépido, lamentamos informar que nossos estoques estão '
+    f'vazios neste momento. Pedimos desculpas e sugerimos que volte em breve '
+    f'para conferir as novidades que teremos para você.',
+    f'Nobre aventureiro, {SELLER_NAME} expressa sinceras desculpas pela falta '
+    f'de itens neste momento. Esperamos contar com sua paciência e '
+    f'pedimos que retorne mais tarde para descobrir as '
+    f'novas maravilhas em nossa loja.',
+    f'Cliente valioso, estamos temporariamente sem mercadorias para oferecer. '
+    f'Pedimos desculpas pelo inconveniente e aguardamos ansiosos para '
+    f'recebê-lo novamente quando tivermos novos itens em estoque.',
+    f'Prezado aventureiro, {SELLER_NAME} lamenta informar que estamos '
+    f'temporariamente sem produtos. Pedimos desculpas e sugerimos que retorne '
+    f'mais tarde para conferir as incríveis adições que teremos em breve.',
+    f'Oh, destemido explorador, lamentamos dizer que nossas prateleiras estão '
+    f'vazias no momento. Aceite nossas desculpas e volte em breve para '
+    f'encontrar itens empolgantes em sua próxima visita.',
+    f'Caro cliente, nossos estoques estão temporariamente esgotados. '
+    f'Pedimos desculpas pelo transtorno e esperamos que compreenda. '
+    f'Conte conosco para novas surpresas quando retornar.',
+    f'Nobre aventureiro, {SELLER_NAME} pede desculpas pela falta de itens '
+    f'disponíveis agora. Agradecemos sua compreensão e convidamos você a '
+    f'voltar mais tarde para explorar nossos novos achados.',
+    f'Caríssimo cliente, nossos estoques estão temporariamente esgotados, '
+    f'e pedimos desculpas pelo inconveniente. Esteja certo de que estamos '
+    f'trabalhando para trazer novas maravilhas em breve. Volte e confira!',
+    f'Oh, bravos exploradores, lamentamos informar que nossas mercadorias se '
+    f'esgotaram momentaneamente. Pedimos desculpas e esperamos recebê-los '
+    f'novamente quando tivermos mais itens à disposição.',
+    f'Aventureiro corajoso, {SELLER_NAME} se desculpa por não ter mais itens '
+    f'no momento. Agradecemos por sua compreensão e aguardamos sua próxima '
+    f'visita, quando teremos novidades fresquinhas para oferecer.',
+    f'Cliente valioso, infelizmente estamos temporariamente sem estoque. '
+    f'Pedimos desculpas pelo transtorno e contamos com sua paciência. '
+    f'Esteja certo de que voltaremos com novidades emocionantes.',
+    f'Prezado aventureiro, {SELLER_NAME} sente muito por não ter mais itens '
+    f'disponíveis neste momento. Pedimos desculpas e convidamos '
+    f'você a retornar em breve para explorar os novos '
+    f'tesouros que teremos em estoque.',
+    f'Oh, destemidos exploradores, lamentamos informar que nossos produtos '
+    f'estão temporariamente esgotados. Pedimos desculpas pelo inconveniente e '
+    f'esperamos recebê-los novamente em breve.',
+    f'Caro cliente, nossas prateleiras estão temporariamente vazias, e '
+    f'{SELLER_NAME} pede desculpas por isso. Agradecemos sua compreensão '
+    f'e esperamos ansiosos por sua próxima visita, quando teremos novos '
+    f'itens para encantar você.',
+    f'Nobre aventureiro, lamentamos dizer que nossos estoques estão '
+    f'momentaneamente esgotados. Pedimos desculpas pelo transtorno '
+    f'e esperamos contar com sua visita '
+    f'em breve para conferir nossas novidades.',
+    f'Caríssimo cliente, {SELLER_NAME} está temporariamente sem itens para '
+    f'oferecer. Pedimos desculpas pelo inconveniente e garantimos que estamos '
+    f'trabalhando para repor nosso estoque. Volte em breve para descobrir as '
+    f'surpresas que teremos para você.',
+    f'Oh, bravos exploradores, {SELLER_NAME} sente muito por não ter mais '
+    f'itens disponíveis no momento. Pedimos desculpas e esperamos que '
+    f'retorne em breve para conferir os tesouros que em breve '
+    f'estarão em nossas prateleiras.',
+    f'Aventureiro corajoso, infelizmente estamos temporariamente sem estoque. '
+    f'Pedimos desculpas pelo transtorno e garantimos que estamos empenhados '
+    f'em trazer novidades emocionantes para você. Volte em breve!',
+    f'Cliente valioso, nossos produtos se esgotaram temporariamente, e '
+    f'{SELLER_NAME} pede desculpas por isso. Agradecemos sua compreensão e '
+    f'aguardamos ansiosamente sua próxima visita, quando teremos '
+    f'novos itens para encantar você.',
+    f'Prezado aventureiro, lamentamos informar que estamos temporariamente '
+    f'sem produtos em estoque. Pedimos desculpas pelo inconveniente e '
+    f'convidamos você a voltar em breve para explorar as novas maravilhas '
+    f'que teremos para oferecer.',
+    f'Oh, destemidos exploradores, {SELLER_NAME} sente muito por não ter '
+    f'mais itens disponíveis neste momento. Pedimos desculpas e contamos '
+    f'com sua compreensão. Esteja certo de que trabalhamos para trazer '
+    f'novidades em breve.',
+    f'Caro cliente, nossos estoques estão temporariamente vazios, e '
+    f'{SELLER_NAME} lamenta por isso. Pedimos desculpas pelo transtorno e '
+    f'esperamos contar com sua visita em breve, quando teremos '
+    f'novos tesouros para encantar você.',
+    f'Nobre aventureiro, infelizmente estamos temporariamente sem estoque. '
+    f'Pedimos desculpas e garantimos que estamos empenhados em trazer '
+    f'novidades emocionantes para você. Volte em breve e confira!',
+    f'Caríssimo cliente, {SELLER_NAME} está temporariamente sem '
+    f'itens para oferecer. Pedimos desculpas pelo inconveniente e contamos '
+    f'com sua paciência. Esteja certo de que voltaremos com novidades '
+    f'incríveis para sua próxima visita.',
+    f'Oh, bravos exploradores, lamentamos dizer que nossos estoques '
+    f'estão momentaneamente esgotados. Pedimos desculpas pelo '
+    f'inconveniente e esperamos recebê-los novamente '
+    f'em breve para descobrir nossas novidades.',
+    f'Aventureiro corajoso, {SELLER_NAME} sente muito por não ter mais itens '
+    f'disponíveis no momento. Pedimos desculpas e garantimos que estamos '
+    f'trabalhando duro para repor nosso estoque. Volte em breve e descubra as '
+    f'surpresas que teremos para você.',
+]
+
+if __name__ == '__main__':
+    print(max(REPLY_TEXT_NO_HAVE_ITEMS, key=len))

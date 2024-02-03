@@ -100,6 +100,8 @@ class EmojiEnum(Enum):
     BUY = '🛒'
     UE = '🤷'
     EXIT_SHOP = '👋'
+    CHRYSUS_1 = '🉐'
+    CHRYSUS_2 = '🈹'
 
 
 class FaceEmojiEnum(Enum):

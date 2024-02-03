@@ -62,6 +62,8 @@ from bot.constants.bag import (
     PATTERN_USE,
     SECTION_TEXT_CONSUMABLE,
     SECTION_TEXT_EQUIPMENT,
+    SECTION_TEXT_GEMSTONE,
+    SECTION_TEXT_TROCADO_POUCH,
     SELL_MANY_BUTTON_TEXT,
     SEND_DROP_MESSAGE_TIME_SLEEP,
     SORT_ITEMS_BUTTON_TEXT,
@@ -115,6 +117,10 @@ from constant.text import (
     SECTION_HEAD_CONSUMABLE_START,
     SECTION_HEAD_EQUIPMENT_END,
     SECTION_HEAD_EQUIPMENT_START,
+    SECTION_HEAD_GEMSTONE_END,
+    SECTION_HEAD_GEMSTONE_START,
+    SECTION_HEAD_TROCADO_POUCH_END,
+    SECTION_HEAD_TROCADO_POUCH_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
     TEXT_SEPARATOR,
@@ -1199,7 +1205,21 @@ async def send_drop_message(
         markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
         markdown_item_sheet = f'{text}:\n\n{markdown_item_sheet}'
 
-        if isinstance(item.item, Consumable):
+        if isinstance(item.item, GemstoneConsumable):
+            markdown_item_sheet = create_text_in_box(
+                text=markdown_item_sheet,
+                section_name=SECTION_TEXT_GEMSTONE,
+                section_start=SECTION_HEAD_GEMSTONE_START,
+                section_end=SECTION_HEAD_GEMSTONE_END,
+            )
+        elif isinstance(item.item, TrocadoPouchConsumable):
+            markdown_item_sheet = create_text_in_box(
+                text=markdown_item_sheet,
+                section_name=SECTION_TEXT_TROCADO_POUCH,
+                section_start=SECTION_HEAD_TROCADO_POUCH_START,
+                section_end=SECTION_HEAD_TROCADO_POUCH_END,
+            )
+        elif isinstance(item.item, Consumable):
             markdown_item_sheet = create_text_in_box(
                 text=markdown_item_sheet,
                 section_name=SECTION_TEXT_CONSUMABLE,
