@@ -15,6 +15,7 @@ from bot.conversations import (
     BAG_HANDLER,
     CLOSE_MSG_HANDLER,
     SELLER_HANDLER,
+    DEFEND_MSG_HANDLER,
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -32,7 +33,7 @@ from bot.conversations import (
     RACES_HANDLERS,
     CLASSES_HANDLERS,
 )
-from bot.conversations.enemy import job_create_enemy_attack
+from bot.conversations.enemy import job_create_ambush
 from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.item import job_create_find_treasure
 from bot.conversations.rest import autorest_midnight
@@ -59,6 +60,7 @@ def main() -> None:
     application.add_handler(BAG_HANDLER)
     application.add_handler(CLOSE_MSG_HANDLER)
     application.add_handler(SELLER_HANDLER)
+    application.add_handler(DEFEND_MSG_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
@@ -92,11 +94,11 @@ def main() -> None:
         name='JOB_ACTIVATE_CONDITIONS',
     )
     application.job_queue.run_repeating(
-        callback=job_create_enemy_attack,
+        callback=job_create_ambush,
         interval=timedelta(hours=3),
         first=get_midnight_hour(),
         chat_id=MY_GROUP_ID,
-        name='JOB_ENEMY_ATTACK',
+        name='JOB_CREATE_AMBUSH',
     )
     application.job_queue.run_repeating(
         callback=autorest_midnight,

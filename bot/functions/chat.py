@@ -26,6 +26,7 @@ CALLBACK_KEY_LIST = [
     '_id',
     'user_id',
     'target_id',
+    'message_id',
 ]
 
 
