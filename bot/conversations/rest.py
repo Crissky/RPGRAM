@@ -242,6 +242,7 @@ def stop_resting(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
         return False
     for job in current_jobs:
         job.schedule_removal()
+
     return True
 
 
