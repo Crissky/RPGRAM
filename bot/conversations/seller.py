@@ -65,7 +65,11 @@ from bot.functions.chat import (
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from bot.functions.player import get_player_trocado
-from constant.text import SECTION_SHOP_END, SECTION_SHOP_START, SHOP_TITLE_HEAD
+from constant.text import (
+    SECTION_HEAD_SHOP_END,
+    SECTION_HEAD_SHOP_START,
+    SHOP_TITLE_HEAD
+)
 from constant.time import TEN_MINUTES_IN_SECONDS
 from function.lista import mean_level
 
@@ -286,8 +290,8 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     markdown_text = create_text_in_box(
         text=markdown_text,
         section_name=SECTION_TEXT_SHOP,
-        section_start=SECTION_SHOP_START,
-        section_end=SECTION_SHOP_END,
+        section_start=SECTION_HEAD_SHOP_START,
+        section_end=SECTION_HEAD_SHOP_END,
     )
     if user_id == chat_id:
         await query.edit_message_text(
@@ -331,6 +335,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_name = update.effective_user.name
     data = callback_data_to_dict(query.data)
     item_pos = data['sell_item']
+    item_id = data['sell_item_id']
     page = data['sell_page']
     data_user_id = data['user_id']
     buy_quantity = data['buy']
@@ -344,6 +349,18 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player_character = char_model.get(user_id)
     trocado = player.trocado
     item = get_item_by_position(chat_id, page, item_pos)
+
+    if item_id != str(item._id):
+        query.answer('O item não está mais disponível')
+        back_button = get_sell_back_button(
+            page=page,
+            user_id=user_id,
+            retry_state=START_ROUTES
+        )
+        reply_markup = InlineKeyboardMarkup([back_button])
+        query.edit_message_reply_markup(reply_markup=reply_markup)
+        return START_ROUTES
+
     buy_quantity = min(item.quantity, buy_quantity)
     item_price = get_discount_price(
         price=item.price,
@@ -407,8 +424,8 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     markdown_text = create_text_in_box(
         text=markdown_text,
         section_name=SECTION_TEXT_SHOP,
-        section_start=SECTION_SHOP_START,
-        section_end=SECTION_SHOP_END,
+        section_start=SECTION_HEAD_SHOP_START,
+        section_end=SECTION_HEAD_SHOP_END,
     )
     if user_id == chat_id:
         await query.edit_message_text(
@@ -660,6 +677,7 @@ def get_buy_buttons(
     buy_buttons = []
     how_much_can_i_buy = int(trocado // item.price)
     quantity = min(item.quantity, how_much_can_i_buy)
+    item_id = str(item._id)
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
             text = BUY_MANY_BUTTON_TEXT.format(
@@ -672,6 +690,7 @@ def get_buy_buttons(
                         'buy': quantity_option,
                         'sell_item': item_pos,
                         'sell_page': page,
+                        'sell_item_id': item_id,
                         'user_id': user_id,
                     })
                 )
