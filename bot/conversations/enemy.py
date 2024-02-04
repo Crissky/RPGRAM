@@ -1,47 +1,78 @@
+from datetime import timedelta
 from random import choice, randint
+from time import sleep
 from typing import List
 
-from telegram.ext import ContextTypes
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import (
+    CallbackQueryHandler,
+    ContextTypes,
+    ConversationHandler
+)
 from telegram.constants import ParseMode
 
-from bot.constants.enemy import AMBUSH_TEXTS
+from bot.constants.enemy import (
+    AMBUSH_TEXTS,
+    CALLBACK_TEXT_DEFEND,
+    DEFEND_BUTTON_TEXT,
+    MAX_MINUTES_FOR_ATTACK,
+    MIN_MINUTES_FOR_ATTACK,
+    PATTERN_DEFEND,
+    SECTION_END_DICT,
+    SECTION_START_DICT,
+    SECTION_TEXT_AMBUSH,
+    SECTION_TEXT_AMBUSH_ATTACK,
+    SECTION_TEXT_AMBUSH_DEFENSE,
+    SECTION_TEXT_AMBUSH_XP
+)
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
+from bot.decorators.battle import need_not_in_battle
+from bot.decorators.char import (
+    confusion,
+    skip_if_dead_char,
+    skip_if_immobilized,
+    skip_if_no_have_char
+)
+from bot.decorators.player import skip_if_no_singup_player
+from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
+from bot.functions.chat import callback_data_to_dict, callback_data_to_string
 from constant.text import (
+    SECTION_HEAD_ATTACK_END,
+    SECTION_HEAD_ATTACK_START,
     SECTION_HEAD_ENEMY_END,
     SECTION_HEAD_ENEMY_START,
-    SECTION_HEAD_MAGICAL_ATTACK_END,
-    SECTION_HEAD_MAGICAL_ATTACK_START,
-    SECTION_HEAD_PHYSICAL_ATTACK_END,
-    SECTION_HEAD_PHYSICAL_ATTACK_START,
-    SECTION_HEAD_PRECISION_ATTACK_END,
-    SECTION_HEAD_PRECISION_ATTACK_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START
 )
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import add_xp, choice_char, get_player_chars_from_group, save_char
+from bot.functions.char import (
+    add_xp,
+    choice_char,
+    get_base_xp_from_enemy_attack,
+    get_player_chars_from_group,
+    save_char
+)
 from bot.functions.date_time import is_boosted_day
-from function.date_time import get_brazil_time_now
 from bot.functions.general import get_attribute_group_or_player
+
+from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
+
+from repository.mongo import CharacterModel
 from repository.mongo.populate.enemy import create_random_enemies
 
 from rpgram import Dice
-from rpgram.characters import BaseCharacter
+from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
 
 
-SECTION_TEXT_AMBUSH = 'EMBOSCADA'
-SECTION_TEXT_AMBUSH_ATTACK = 'ATAQUE EMBOSCADA'
-SECTION_TEXT_AMBUSH_XP = 'XP EMBOSCADA'
-
-
-async def job_create_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
+async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
     '''Cria um evento de ataque de inimigo que ocorrerá entre 1 e 299 minutos.
     Está função é chamada em cada 3 horas.
     '''
+
     job = context.job
     chat_id = job.chat_id
     now = get_brazil_time_now()
@@ -50,39 +81,29 @@ async def job_create_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     for i in range(times):
         minutes_in_seconds = randint(1, 179) * 60
         print(
-            f'JOB_CREATE_ENEMY_ATTACK() - {now}: '
+            f'JOB_CREATE_AMBUSH() - {now}: '
             f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
         )
         context.job_queue.run_once(
-            callback=job_enemy_attack,
+            callback=job_start_ambush,
             when=minutes_in_seconds,
-            name=f'JOB_CREATE_ENEMY_ATTACK_{i}',
+            name=f'JOB_CREATE_AMBUSH_{i}',
             chat_id=chat_id,
         )
 
 
 @skip_if_spawn_timeout
-async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
-    '''Um grupo de inimigos ataca os jogadores de maneira aleatória.
+async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
+    '''Um grupo de inimigos irá atacar os jogadores de maneira aleatória.
     '''
 
+    print('JOB_START_AMBUSH()')
     job = context.job
     chat_id = job.chat_id
     group_level = get_attribute_group_or_player(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
-    dead_player_list = []
     message_id = None
-    section_start_dict = {
-        'Physical Attack': SECTION_HEAD_PHYSICAL_ATTACK_START,
-        'Precision Attack': SECTION_HEAD_PRECISION_ATTACK_START,
-        'Magical Attack': SECTION_HEAD_MAGICAL_ATTACK_START,
-    }
-    section_end_dict = {
-        'Physical Attack': SECTION_HEAD_PHYSICAL_ATTACK_END,
-        'Precision Attack': SECTION_HEAD_PRECISION_ATTACK_END,
-        'Magical Attack': SECTION_HEAD_MAGICAL_ATTACK_END,
-    }
 
     for enemy_char in enemy_list:
         try:
@@ -93,7 +114,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             print(f'JOB_ENEMY_ATTACK(): {error}')
             if message_id:
                 break
-            return
+            return ConversationHandler.END
 
         if not message_id:
             message_id = await send_ambush_message(
@@ -101,40 +122,19 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
                 context=context,
                 silent=silent,
             )
+            sleep(1)
 
-        attack_report = enemy_char.to_attack(
-            defenser_char=defenser_char,
-            attacker_dice=Dice(20),
-            defenser_dice=Dice(20),
-            to_dodge=True,
-            to_defend=True,
-            rest_command=REST_COMMANDS[0],
-            verbose=True,
-            markdown=True
+        text_report = (
+            f'{enemy_char.full_name_with_level} iniciou um ataque contra '
+            f'{player_name}.'
         )
-        text_report = attack_report['text']
-        attacker_action_name = attack_report['attack']['action']
-
-        if not attack_report['dead']:
-            base_xp = int(
-                enemy_char.points_multiplier *
-                max(enemy_char.level - defenser_char.level, 10)
-            )
-            report_xp = add_xp(
-                chat_id=chat_id,
-                char=defenser_char,
-                base_xp=base_xp,
-            )
-            text_report += f'{report_xp["text"]}\n\n'
-        else:
-            save_char(defenser_char)
-
         text_report = create_text_in_box(
             text=text_report,
             section_name=SECTION_TEXT_AMBUSH_ATTACK,
-            section_start=section_start_dict[attacker_action_name],
-            section_end=section_end_dict[attacker_action_name]
+            section_start=SECTION_HEAD_ATTACK_START,
+            section_end=SECTION_HEAD_ATTACK_END
         )
+
         response = await context.bot.send_message(
             chat_id=chat_id,
             text=text_report,
@@ -143,13 +143,35 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             reply_to_message_id=message_id,
             allow_sending_without_reply=True,
         )
+        sleep(1)
+        defend_button = get_defend_button(
+            user_id=user_id,
+            message_id=response.message_id
+        )
+        reply_markup = InlineKeyboardMarkup([defend_button])
+        await response.edit_reply_markup(reply_markup)
 
-        if attack_report['dead']:
-            dead_player_list.append({
-                'user_id': user_id,
-                'player_name': player_name,
-                'message_id': response.message_id,
-            })
+        minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
+        job_name = get_enemy_attack_jobname(user_id, response.message_id)
+        context.job_queue.run_once(
+            callback=job_enemy_attack,
+            when=timedelta(minutes=minutes),
+            data=response.message_id,
+            name=job_name,
+            chat_id=chat_id,
+            user_id=user_id,
+        )
+        put_ambush_dict(
+            context=context,
+            ambush_message_id=response.message_id,
+            enemy=enemy_char,
+        )
+        print(
+            f'{enemy_char.full_name_with_level} ira atacar '
+            f'{defenser_char.player_name} em {minutes} minutos.'
+        )
+
+    # ---------- END FOR ---------- #
 
     await add_xp_group(
         chat_id=chat_id,
@@ -159,10 +181,154 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         message_id=message_id,
     )
 
-    for dead_player_dict in dead_player_list:
-        user_id = dead_player_dict['user_id']
-        player_name = dead_player_dict['player_name']
-        message_id = dead_player_dict['message_id']
+
+async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
+    '''Após um breve tempo aleatório, o inimigo atacara um aliado.
+    '''
+
+    print('JOB_ENEMY_ATTACK()')
+    char_model = CharacterModel()
+    job = context.job
+    chat_id = job.chat_id
+    user_id = job.user_id
+    message_id = job.data
+    ambush_dict = context.chat_data['ambushes'].get(message_id)
+    enemy_char = ambush_dict['enemy']
+    defenser_char = char_model.get(user_id)
+    await enemy_attack(
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        enemy_char=enemy_char,
+        defenser_char=defenser_char,
+        to_dodge=True
+    )
+
+
+@skip_if_no_singup_player
+@skip_if_no_have_char
+@need_not_in_battle
+@skip_if_dead_char
+@skip_if_immobilized
+@confusion()
+@print_basic_infos
+async def defense_enemy_attack(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    '''Defende aliado de um ataque. Caso sobreviva, ambos receberão XP.
+    '''
+
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    defenser_user_id = update.effective_user.id
+    query = update.callback_query
+    data = callback_data_to_dict(query.data)
+    target_user_id = data['user_id']
+    message_id = data['message_id']
+
+    if not 'ambushes' in context.chat_data:
+        await query.answer('Essa emboscada já terminou', show_alert=True)
+        await query.delete_message()
+        return ConversationHandler.END
+
+    if defenser_user_id == target_user_id:
+        await query.answer(
+            'Você não pode defender a si mesmo.',
+            show_alert=True
+        )
+        return ConversationHandler.END
+
+    ambush_dict = context.chat_data['ambushes'].get(message_id)
+    enemy_char = ambush_dict['enemy']
+    defenser_char = char_model.get(defenser_user_id)
+    target_char = char_model.get(target_user_id)
+    await enemy_attack(
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        enemy_char=enemy_char,
+        defenser_char=defenser_char,
+        target_char=target_char,
+        to_dodge=True
+    )
+    remove_job_enemy_attack(
+        context=context,
+        user_id=target_user_id,
+        message_id=message_id
+    )
+
+
+async def enemy_attack(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    message_id: int,
+    enemy_char: NPCharacter,
+    defenser_char: PlayerCharacter,
+    target_char: PlayerCharacter = None,
+    to_dodge: bool = False,
+):
+    '''Função que o Inimigo ataca um jogador
+    '''
+
+    text_report = ''
+    if target_char and target_char.is_alive:
+        section_name = SECTION_TEXT_AMBUSH_DEFENSE
+        text_report = (
+            f'{defenser_char.player_name} defendeu '
+            f'{target_char.player_name}.\n\n'
+        )
+    else:
+        section_name = SECTION_TEXT_AMBUSH_ATTACK
+
+    attack_report = enemy_char.to_attack(
+        defenser_char=defenser_char,
+        attacker_dice=Dice(20),
+        defenser_dice=Dice(20),
+        to_dodge=to_dodge,
+        to_defend=True,
+        rest_command=REST_COMMANDS[0],
+        verbose=True,
+        markdown=True
+    )
+    text_report += attack_report['text']
+    attacker_action_name = attack_report['attack']['action']
+
+    if not attack_report['dead']:
+        base_xp = get_base_xp_from_enemy_attack(enemy_char, defenser_char)
+        report_xp = add_xp(
+            chat_id=chat_id,
+            char=defenser_char,
+            base_xp=base_xp,
+        )
+        if target_char and target_char.is_alive:
+            base_xp = get_base_xp_from_enemy_attack(enemy_char, target_char)
+            target_report_xp = add_xp(
+                chat_id=chat_id,
+                char=target_char,
+                base_xp=base_xp,
+            )
+            text_report += f'{target_report_xp["text"]}\n'
+        text_report += f'{report_xp["text"]}\n\n'
+    else:
+        save_char(defenser_char)
+
+    text_report = create_text_in_box(
+        text=text_report,
+        section_name=section_name,
+        section_start=SECTION_START_DICT[attacker_action_name],
+        section_end=SECTION_END_DICT[attacker_action_name]
+    )
+    await context.bot.edit_message_text(
+        text=text_report,
+        chat_id=chat_id,
+        message_id=message_id,
+        parse_mode=ParseMode.MARKDOWN_V2,
+    )
+
+    if attack_report['dead']:
+        user_id = defenser_char.player_id
+        player_name = defenser_char.player_name
         drop_items = drop_random_items_from_bag(user_id=user_id)
         await send_drop_message(
             context=context,
@@ -172,6 +338,47 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             message_id=message_id,
             silent=True,
         )
+
+
+def get_defend_button(
+    user_id: int,
+    message_id: int
+) -> List[InlineKeyboardButton]:
+    '''Retorna o botão para defender um aliado.
+    '''
+
+    return [
+        InlineKeyboardButton(
+            text=DEFEND_BUTTON_TEXT,
+            callback_data=callback_data_to_string({
+                'command': CALLBACK_TEXT_DEFEND,
+                'message_id': message_id,
+                'user_id': user_id,
+            })
+        )
+    ]
+
+
+def get_enemy_attack_jobname(user_id: int, message_id: int) -> str:
+    '''Nome do job do ataque inimigo
+    '''
+
+    return f'JOB_ENEMY_ATTACK_{user_id}_{message_id}'
+
+
+def put_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    ambush_message_id: int,
+    enemy: NPCharacter,
+):
+    '''Adiciona o inimigo ao dicionário de ambushes, em que a chave é a 
+    ambush_message_id.
+    '''
+
+    ambushes = context.chat_data.get('ambushes', {})
+    ambushes[ambush_message_id] = {'enemy': enemy}
+    if not 'ambushes' in context.chat_data:
+        context.chat_data['ambushes'] = ambushes
 
 
 async def send_ambush_message(
@@ -207,6 +414,9 @@ async def add_xp_group(
     silent: bool,
     message_id: int = None,
 ):
+    '''Adiciona XP aos jogadores vivos durante a emboscada.
+    '''
+
     char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
 
     total_allies = len(char_list)
@@ -248,3 +458,28 @@ async def add_xp_group(
         reply_to_message_id=message_id,
         allow_sending_without_reply=True,
     )
+
+
+def remove_job_enemy_attack(
+    context: ContextTypes.DEFAULT_TYPE,
+    user_id: int,
+    message_id: int,
+) -> bool:
+    '''Remove o job de ataque do inimigo.
+    '''
+
+    job_name = get_enemy_attack_jobname(user_id=user_id, message_id=message_id)
+    current_jobs = context.job_queue.get_jobs_by_name(job_name)
+    print('current_jobs', current_jobs)
+    if not current_jobs:
+        return False
+    for job in current_jobs:
+        job.schedule_removal()
+
+    return True
+
+
+DEFEND_MSG_HANDLER = CallbackQueryHandler(
+    defense_enemy_attack,
+    pattern=PATTERN_DEFEND
+)

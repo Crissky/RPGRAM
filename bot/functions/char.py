@@ -9,7 +9,7 @@ from repository.mongo import (
     StatusModel,
 )
 from rpgram import Group
-from rpgram.characters import BaseCharacter
+from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
 from rpgram.conditions.factory import factory_condition
 from rpgram.enums.damage import (
     DamageEnum,
@@ -205,6 +205,21 @@ def add_conditions_trap(
     return condition_trap_report
 
 
+def get_base_xp_from_enemy_attack(
+    enemy_char: NPCharacter,
+    defenser_char: PlayerCharacter
+) -> int:
+    '''Retorna o XP base para o personagem que sobreviveu a um ataque.
+    '''
+
+    base_xp = int(
+        enemy_char.points_multiplier *
+        max(enemy_char.level - defenser_char.level, 10)
+    )
+
+    return base_xp
+
+
 def activate_conditions(
     user_id: int = None,
     char: BaseCharacter = None,
@@ -287,7 +302,7 @@ def choice_char(
     player_id_list: List[int] = None,
     chat_id: int = None,
     is_alive: bool = False,
-) -> BaseCharacter:
+) -> PlayerCharacter:
     '''Retorna um personagem aleatório do grupo ou de uma lista de player_ids
     '''
 
