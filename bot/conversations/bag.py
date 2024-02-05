@@ -809,7 +809,7 @@ async def sell_item(
 
     item.sub(quantity=sell_quantity)
 
-    if item.quantity <= 0:
+    if item.quantity <= 0 or isinstance(item.item, Equipment):
         back_button = get_back_button(
             page=page,
             user_id=user_id,
