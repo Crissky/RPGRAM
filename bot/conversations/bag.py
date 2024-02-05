@@ -1017,7 +1017,8 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if is_full_bag(user_id) and not exists_in_bag(user_id, item_id=item_id):
         await query.answer(
             f'Você não pode pegar mais itens, pois sua bolsa está cheia. '
-            f'A bolsa não pode ter mais de {LIMIT_ITEM_IN_BAG} tipos de itens diferentes.',
+            f'A bolsa não pode ter mais de {LIMIT_ITEM_IN_BAG} '
+            f'tipos de itens diferentes.',
             show_alert=True
         )
         return ConversationHandler.END
