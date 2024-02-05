@@ -16,17 +16,19 @@ CALLBACK_KEY_LIST = [
     'hand',
     'identify',
     'item',
+    'item_id',
     'page',
     'retry_state',
     'sell',
     'sell_item',
+    'sell_item_id',
     'sell_page',
     'sort',
     'use',
     '_id',
     'user_id',
     'target_id',
-    'message_id',
+    'enemy_id',
 ]
 
 

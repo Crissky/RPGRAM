@@ -9,7 +9,7 @@ from telegram.ext import (
     ContextTypes,
     ConversationHandler
 )
-from telegram.constants import ParseMode
+from telegram.constants import ChatAction, ParseMode
 
 from bot.constants.enemy import (
     AMBUSH_TEXTS,
@@ -23,7 +23,8 @@ from bot.constants.enemy import (
     SECTION_TEXT_AMBUSH,
     SECTION_TEXT_AMBUSH_ATTACK,
     SECTION_TEXT_AMBUSH_DEFENSE,
-    SECTION_TEXT_AMBUSH_XP
+    SECTION_TEXT_AMBUSH_XP,
+    SECTION_TEXT_FAIL
 )
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
@@ -43,6 +44,8 @@ from constant.text import (
     SECTION_HEAD_ATTACK_START,
     SECTION_HEAD_ENEMY_END,
     SECTION_HEAD_ENEMY_START,
+    SECTION_HEAD_FAIL_END,
+    SECTION_HEAD_FAIL_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START
 )
@@ -104,6 +107,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
     message_id = None
+    context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
 
     for enemy_char in enemy_list:
         try:
@@ -135,6 +139,11 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_ATTACK_END
         )
 
+        defend_button = get_defend_button(
+            user_id=user_id,
+            enemy=enemy_char
+        )
+        reply_markup = InlineKeyboardMarkup([defend_button])
         response = await context.bot.send_message(
             chat_id=chat_id,
             text=text_report,
@@ -142,30 +151,25 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_to_message_id=message_id,
             allow_sending_without_reply=True,
+            reply_markup=reply_markup,
         )
-        sleep(1)
-        defend_button = get_defend_button(
-            user_id=user_id,
-            message_id=response.message_id
-        )
-        reply_markup = InlineKeyboardMarkup([defend_button])
-        await response.edit_reply_markup(reply_markup)
+        sleep(2)
 
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
         job_name = get_enemy_attack_jobname(user_id, response.message_id)
+        job_data = {
+            'enemy_id': str(enemy_char.player_id),
+            'message_id': response.message_id
+        }
         context.job_queue.run_once(
             callback=job_enemy_attack,
             when=timedelta(minutes=minutes),
-            data=response.message_id,
+            data=job_data,
             name=job_name,
             chat_id=chat_id,
             user_id=user_id,
         )
-        put_ambush_dict(
-            context=context,
-            ambush_message_id=response.message_id,
-            enemy=enemy_char,
-        )
+        put_ambush_dict(context=context, enemy=enemy_char)
         print(
             f'{enemy_char.full_name_with_level} ira atacar '
             f'{defenser_char.player_name} em {minutes} minutos.'
@@ -191,18 +195,36 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     chat_id = job.chat_id
     user_id = job.user_id
-    message_id = job.data
-    ambush_dict = context.chat_data['ambushes'].get(message_id)
-    enemy_char = ambush_dict['enemy']
+    job_data = job.data
+    enemy_id = job_data['enemy_id']
+    message_id = job_data['message_id']
+    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
     defenser_char = char_model.get(user_id)
-    await enemy_attack(
-        context=context,
-        chat_id=chat_id,
-        message_id=message_id,
-        enemy_char=enemy_char,
-        defenser_char=defenser_char,
-        to_dodge=True
-    )
+
+    if enemy_char and defenser_char and defenser_char.is_alive:
+        await enemy_attack(
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            enemy_char=enemy_char,
+            defenser_char=defenser_char,
+            to_dodge=True
+        )
+    elif defenser_char and defenser_char.is_dead:
+        text = f'{defenser_char.player_name} está morto.'
+        print(text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FAIL,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+        await context.bot.edit_message_text(
+            text=text,
+            chat_id=chat_id,
+            message_id=message_id,
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
 
 
 @skip_if_no_singup_player
@@ -223,9 +245,10 @@ async def defense_enemy_attack(
     chat_id = update.effective_chat.id
     defenser_user_id = update.effective_user.id
     query = update.callback_query
+    message_id = query.message.message_id
     data = callback_data_to_dict(query.data)
     target_user_id = data['user_id']
-    message_id = data['message_id']
+    enemy_id = data['enemy_id']
 
     if not 'ambushes' in context.chat_data:
         await query.answer('Essa emboscada já terminou', show_alert=True)
@@ -239,8 +262,7 @@ async def defense_enemy_attack(
         )
         return ConversationHandler.END
 
-    ambush_dict = context.chat_data['ambushes'].get(message_id)
-    enemy_char = ambush_dict['enemy']
+    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
     defenser_char = char_model.get(defenser_user_id)
     target_char = char_model.get(target_user_id)
     await enemy_attack(
@@ -313,6 +335,7 @@ async def enemy_attack(
     else:
         save_char(defenser_char)
 
+    text_report += f'O inimigo fugiu!'
     text_report = create_text_in_box(
         text=text_report,
         section_name=section_name,
@@ -342,17 +365,18 @@ async def enemy_attack(
 
 def get_defend_button(
     user_id: int,
-    message_id: int
+    enemy: NPCharacter
 ) -> List[InlineKeyboardButton]:
     '''Retorna o botão para defender um aliado.
     '''
 
+    enemy_id = str(enemy.player_id)
     return [
         InlineKeyboardButton(
             text=DEFEND_BUTTON_TEXT,
             callback_data=callback_data_to_string({
                 'command': CALLBACK_TEXT_DEFEND,
-                'message_id': message_id,
+                'enemy_id': enemy_id,
                 'user_id': user_id,
             })
         )
@@ -366,19 +390,27 @@ def get_enemy_attack_jobname(user_id: int, message_id: int) -> str:
     return f'JOB_ENEMY_ATTACK_{user_id}_{message_id}'
 
 
-def put_ambush_dict(
-    context: ContextTypes.DEFAULT_TYPE,
-    ambush_message_id: int,
-    enemy: NPCharacter,
-):
+def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
     '''Adiciona o inimigo ao dicionário de ambushes, em que a chave é a 
-    ambush_message_id.
+    enemy_id.
     '''
 
+    enemy_id = str(enemy.player_id)
     ambushes = context.chat_data.get('ambushes', {})
-    ambushes[ambush_message_id] = {'enemy': enemy}
+    ambushes[enemy_id] = enemy
     if not 'ambushes' in context.chat_data:
         context.chat_data['ambushes'] = ambushes
+
+
+def get_enemy_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str
+) -> NPCharacter:
+    '''Retorna um NPCharacter do dicionário ambushes a partir do enemy_id e o 
+    remove do dicionário.
+    '''
+
+    return context.chat_data['ambushes'].pop(enemy_id)
 
 
 async def send_ambush_message(
@@ -439,11 +471,6 @@ async def add_xp_group(
         )
         full_text += f'{report_xp["text"]}\n'
 
-    full_text += '\n' + (
-        f'Os inimigos fugiram!'
-        if len(enemy_list) > 1
-        else f'O inimigo fugiu!'
-    )
     full_text = create_text_in_box(
         text=full_text,
         section_name=SECTION_TEXT_AMBUSH_XP,

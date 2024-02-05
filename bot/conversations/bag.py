@@ -508,6 +508,8 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             item_pos=item_pos,
             query=query,
         )
+        if item.quantity <= 0:
+            return START_ROUTES
         return USE_ROUTES
     elif isinstance(item.item, Equipment):  # Tenta equipar o item
         old_equipments = await use_item_equipment(
@@ -722,7 +724,10 @@ async def identify_item(
 
     item_equipment = get_item_by_position(user_id, page, item_pos)
     equipment = item_equipment.item
-    if have_identifying_lens(user_id):
+    if not equipment.identifiable:
+        text = '⛔ESSE EQUIPAMENTO NÃO PODE SER IDENTIFICADO⛔'
+        await query.answer(text=text, show_alert=True)
+    elif have_identifying_lens(user_id):
         consumable_identifier = get_identifying_lens()
         report = consumable_identifier.use(equipment)
         report_text = report['text']
@@ -889,6 +894,8 @@ async def sell_item(
         parse_mode=ParseMode.MARKDOWN_V2,
     )
 
+    if item.quantity <= 0:
+        return START_ROUTES
     return USE_ROUTES
 
 

@@ -53,6 +53,7 @@ class BaseCharacter:
         self.__id = _id
         self.__classe = classe
         self.__race = race
+        self.__player_id = player_id
         self.__equips = equips
         self.__status = status
         self.__base_stats = BaseStats(
@@ -356,6 +357,7 @@ class BaseCharacter:
     combat_stats: CombatStats = property(fget=lambda self: self.__combat_stats)
     classe: Classe = property(fget=lambda self: self.__classe)
     race: Race = property(fget=lambda self: self.__race)
+    player_id = property(lambda self: self.__player_id)
     equips: Equips = property(fget=lambda self: self.__equips)
     status: Status = property(fget=lambda self: self.__status)
     created_at: datetime = property(lambda self: self.__created_at)
