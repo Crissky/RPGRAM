@@ -128,12 +128,12 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             )
             sleep(1)
 
-        text_report = (
+        text = (
             f'*{enemy_char.full_name_with_level}* iniciou um *ATAQUE* contra '
             f'{player_name}.'
         )
-        text_report = create_text_in_box(
-            text=text_report,
+        text = create_text_in_box(
+            text=text,
             section_name=SECTION_TEXT_AMBUSH_ATTACK,
             section_start=SECTION_HEAD_ATTACK_START,
             section_end=SECTION_HEAD_ATTACK_END
@@ -146,8 +146,8 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         reply_markup = InlineKeyboardMarkup([defend_button])
         response = await context.bot.send_message(
             chat_id=chat_id,
-            text=text_report,
-            disable_notification=silent,
+            text=text,
+            # disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_to_message_id=message_id,
             allow_sending_without_reply=True,
