@@ -129,7 +129,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             sleep(1)
 
         text_report = (
-            f'{enemy_char.full_name_with_level} iniciou um ataque contra '
+            f'*{enemy_char.full_name_with_level}* iniciou um *ATAQUE* contra '
             f'{player_name}.'
         )
         text_report = create_text_in_box(
