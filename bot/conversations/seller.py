@@ -239,6 +239,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     trocado = get_player_trocado(user_id)
     data = callback_data_to_dict(query.data)
     item_pos = data['sell_item']
@@ -303,6 +304,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.effective_chat.send_message(
             text=markdown_text,
             reply_markup=reply_markup,
+            disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2
         )
         await query.delete_message()
@@ -333,6 +335,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     data = callback_data_to_dict(query.data)
     item_pos = data['sell_item']
     item_id = data['sell_item_id']
@@ -437,6 +440,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.effective_chat.send_message(
             text=markdown_text,
             reply_markup=reply_markup,
+            disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2
         )
         await query.delete_message()

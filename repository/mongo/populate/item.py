@@ -54,6 +54,11 @@ from rpgram.enums import (
 # CONSTANTS
 MIN_CONSUMABLE_QUANTITY = 1
 MAX_CONSUMABLE_QUANTITY = 5
+EQUIPS_NO_REDUCE_SECRET_STATS = [
+    EquipmentEnum.TWO_HANDS.name,
+    EquipmentEnum.ARMOR.name
+]
+
 
 WEAPON_EQUIPMENTS_ENUM = [
     EquipmentEnum.ONE_HAND.name, EquipmentEnum.TWO_HANDS.name
@@ -468,7 +473,7 @@ def get_equipment_damage_type_name(damage_types: List[DamageEnum]) -> str:
     return text
 
 
-def add_secret_stats(rarity: str, group_level: int):
+def add_secret_stats(rarity: str, group_level: int, equip_type: str):
     '''Retorna os atributos bônus do equipamento. 
     Esses atributos estarão disponíveis para o personagem quando 
     o item for identificado.
@@ -477,7 +482,9 @@ def add_secret_stats(rarity: str, group_level: int):
     '''
     secret_stats = defaultdict(int)
     bonus = BONUS_RARITY[rarity] - 2
-    bonus = max(bonus, 0) * (group_level // 2)
+    level_divisor = 0.75 if equip_type in EQUIPS_NO_REDUCE_SECRET_STATS else 2
+    bonus = max(bonus, 0) * (group_level // level_divisor)
+    bonus = int(bonus)
     attr_probs = {}
     secret_base_stats = [
         'secret_bonus_strength', 'secret_bonus_dexterity',
@@ -622,7 +629,7 @@ def create_random_equipment(
         f'{equip_name}'
         f'{damage_type_name}'
     ).replace("_", " ").title().replace("'S", "'s")
-    secret_stats = add_secret_stats(rarity, group_level)
+    secret_stats = add_secret_stats(rarity, group_level, equip_type)
     equipment_dict.update(secret_stats)
     equipment = Equipment(
         name=name,

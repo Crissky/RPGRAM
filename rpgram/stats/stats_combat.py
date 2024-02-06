@@ -296,7 +296,8 @@ class CombatStats:
             10 +
             (self.constitution * 15) +
             (self.strength * 8) +
-            self.bonus_hit_points
+            self.bonus_hit_points +
+            (self.level * 10)
         )
 
     @property
@@ -337,7 +338,8 @@ class CombatStats:
             (self.dexterity * 2) +
             (self.wisdom * 3) +
             (self.charisma * 3) +
-            self.bonus_initiative
+            self.bonus_initiative +
+            (self.level * 2)
         )
 
     @property
@@ -345,14 +347,16 @@ class CombatStats:
         return int(
             (self.strength * 3) +
             (self.dexterity * 2) +
-            self.bonus_physical_attack
+            self.bonus_physical_attack +
+            (self.level * 2)
         )
 
     @property
     def precision_attack(self) -> int:
         return int(
             (self.dexterity * 4) +
-            self.bonus_precision_attack
+            self.bonus_precision_attack +
+            (self.level * 2)
         )
 
     @property
@@ -360,7 +364,8 @@ class CombatStats:
         return int(
             (self.intelligence * 4) +
             (self.wisdom * 2) +
-            self.bonus_magical_attack
+            self.bonus_magical_attack +
+            (self.level * 2)
         )
 
     @property
@@ -368,7 +373,8 @@ class CombatStats:
         return int(
             (self.constitution * 3) +
             (self.dexterity * 2) +
-            self.bonus_physical_defense
+            self.bonus_physical_defense +
+            (self.level * 2)
         )
 
     @property
@@ -377,7 +383,8 @@ class CombatStats:
             (self.wisdom * 4) +
             (self.intelligence * 2) +
             (self.constitution * 2) +
-            self.bonus_magical_defense
+            self.bonus_magical_defense +
+            (self.level * 2)
         )
 
     @property
@@ -386,7 +393,8 @@ class CombatStats:
             (self.dexterity * 3) +
             (self.wisdom * 2) +
             (self.charisma * 2) +
-            self.bonus_hit
+            self.bonus_hit +
+            (self.level * 2)
         )
 
     @property
@@ -395,7 +403,8 @@ class CombatStats:
             (self.dexterity * 3) +
             (self.wisdom * 2) +
             (self.charisma * 2) +
-            self.bonus_evasion
+            self.bonus_evasion +
+            (self.level * 2)
         )
 
     # Setters
@@ -423,6 +432,7 @@ class CombatStats:
 
     # Getters
     # Base Attributes
+    level = property(fget=lambda self: self.__base_stats.level)
     strength = property(fget=lambda self: self.__base_stats.strength)
     dexterity = property(fget=lambda self: self.__base_stats.dexterity)
     constitution = property(fget=lambda self: self.__base_stats.constitution)
