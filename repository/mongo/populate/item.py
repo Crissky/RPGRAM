@@ -482,7 +482,7 @@ def add_secret_stats(rarity: str, group_level: int, equip_type: str):
     '''
     secret_stats = defaultdict(int)
     bonus = BONUS_RARITY[rarity] - 2
-    level_divisor = 0.75 if equip_type in EQUIPS_NO_REDUCE_SECRET_STATS else 2
+    level_divisor = 0.80 if equip_type in EQUIPS_NO_REDUCE_SECRET_STATS else 2
     bonus = max(bonus, 0) * (group_level // level_divisor)
     bonus = int(bonus)
     attr_probs = {}
