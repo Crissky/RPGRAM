@@ -100,6 +100,7 @@ from rpgram.enums import (
     TacticalWearableMaterialEnum,
     RarityEnum,
     TrocadoEnum,
+    CoinMaterialsEnum,
 )
 from rpgram.enums.debuff import DebuffEnum
 
@@ -401,7 +402,8 @@ def get_details_text(option: str) -> str:
             f'*Vestes Mágicas* : {help_enum(MagicalWearableMaterialEnum)}.\n\n'
             f'*Máscaras* : {help_enum(MagicalMaskMaterialEnum)}.\n\n'
             f'*Capas* : {help_enum(TacticalWearableMaterialEnum)}.\n\n'
-            f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.'
+            f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.\n\n'
+            f'*Moedas* : {help_enum(CoinMaterialsEnum)}.'
         )
     elif option == CALLBACK_BASE_ATTRIBUTES:
         text = (
