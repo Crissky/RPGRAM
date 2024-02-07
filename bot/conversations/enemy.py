@@ -156,7 +156,10 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         sleep(2)
 
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
-        job_name = get_enemy_attack_jobname(user_id, response.message_id)
+        job_name = get_enemy_attack_jobname(
+            user_id=user_id,
+            enemy_char=enemy_char
+        )
         job_data = {
             'enemy_id': str(enemy_char.player_id),
             'message_id': response.message_id
@@ -277,7 +280,7 @@ async def defense_enemy_attack(
     remove_job_enemy_attack(
         context=context,
         user_id=target_user_id,
-        message_id=message_id
+        enemy_char=enemy_char
     )
 
 
@@ -383,11 +386,12 @@ def get_defend_button(
     ]
 
 
-def get_enemy_attack_jobname(user_id: int, message_id: int) -> str:
+def get_enemy_attack_jobname(user_id: int, enemy_char: NPCharacter) -> str:
     '''Nome do job do ataque inimigo
     '''
 
-    return f'JOB_ENEMY_ATTACK_{user_id}_{message_id}'
+    enemy_id = str(enemy_char.player_id)
+    return f'JOB_ENEMY_ATTACK_{user_id}_{enemy_id}'
 
 
 def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
@@ -490,12 +494,12 @@ async def add_xp_group(
 def remove_job_enemy_attack(
     context: ContextTypes.DEFAULT_TYPE,
     user_id: int,
-    message_id: int,
+    enemy_char: NPCharacter
 ) -> bool:
     '''Remove o job de ataque do inimigo.
     '''
 
-    job_name = get_enemy_attack_jobname(user_id=user_id, message_id=message_id)
+    job_name = get_enemy_attack_jobname(user_id=user_id, enemy_char=enemy_char)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
     if not current_jobs:
