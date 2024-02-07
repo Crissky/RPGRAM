@@ -1,7 +1,8 @@
 '''
 Classe responsável por gerenciar a Batalha
 '''
-from random import random
+
+from random import random, choice
 
 from copy import deepcopy
 from datetime import datetime
@@ -11,6 +12,7 @@ from typing import List, Union
 from bson import ObjectId
 
 from rpgram.characters.char_base import BaseCharacter
+from rpgram.characters.char_non_player import NPCharacter
 from rpgram.dice import Dice
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.errors import (
@@ -83,7 +85,9 @@ class Battle:
             self.pass_turn()
 
     def reorder_turn(self):
-        '''Ordena os jogadores pela iniciativa'''
+        '''Ordena os jogadores pela iniciativa
+        '''
+
         self.__turn_order.sort(
             key=attrgetter('combat_stats.initiative'),
             reverse=True
@@ -92,6 +96,9 @@ class Battle:
     def enter_battle(
         self, player: BaseCharacter, team: str, reorder: bool = False
     ) -> None:
+        '''Adiciona Personagem na Batalha.
+        '''
+
         if player in self.__blue_team:
             self.__blue_team.remove(player)
         elif player in self.__red_team:
@@ -116,17 +123,18 @@ class Battle:
         if self.blue_team_empty():
             raise EmptyTeamError(
                 'A batalha não pode começar porque a '
-                'equipe azul está vazia.'
+                'equipe AZUL está vazia.'
             )
         elif self.red_team_empty():
             raise EmptyTeamError(
                 'A batalha não pode começar porque a '
-                'equipe vermelha está vazia.'
+                'equipe VERMELHA está vazia.'
             )
         self.started = True
 
     def skip_player(self):
-        self.__turn_order.append(self.__turn_order.pop(0))
+        current_player = self.__turn_order.pop(0)
+        self.__turn_order.append(current_player)
 
     def pass_turn(self):
         for _ in range(len(self.__turn_order)):
@@ -139,7 +147,7 @@ class Battle:
         self.pass_turn()
 
     def action(
-        self, 
+        self,
         attacker_char: BaseCharacter = None,
         defenser: Union[str, BaseCharacter] = 'self',
         action: str = 'attack',
@@ -196,7 +204,11 @@ class Battle:
 
         return report
 
-    def get_defenser(self, character: BaseCharacter, defenser: str) -> BaseCharacter:
+    def get_defenser(
+        self,
+        character: BaseCharacter,
+        defenser: str
+    ) -> BaseCharacter:
         if defenser == 'self':
             defenser = character
         else:
@@ -385,6 +397,18 @@ class Battle:
             'red': red_xp
         }
 
+    def get_opposite_team(self, char: BaseCharacter) -> List[BaseCharacter]:
+        '''Retorna o Time Inimigo ao qual o Personagem está.
+        '''
+
+        opposite_team = None
+        if self.in_blue_team(char):
+            opposite_team = self.__red_team
+        elif self.in_red_team(char):
+            opposite_team = self.__blue_team
+
+        return opposite_team
+
     def in_battle(self, character: BaseCharacter) -> bool:
         return character in self.__turn_order
 
@@ -404,6 +428,22 @@ class Battle:
     in_red = in_red_team
     blue_empty = blue_team_empty
     red_empty = red_team_empty
+
+    # NPC Functions
+    def npc_choice_target(self, npc_char: NPCharacter) -> BaseCharacter:
+        '''NPC escolhe um alvo para atacar do Time Inimigo.
+        '''
+        opposite_team = self.get_opposite_team(npc_char)
+        target_char = choice(opposite_team)
+
+        return target_char
+
+    def npc_choice_action(self, npc_char: NPCharacter) -> str:
+        '''NPC escolhe uma ação para executar.
+        '''
+
+        action = choice(ACTION_LIST)
+        return action
 
     def get_char_emojis(self, character: BaseCharacter) -> str:
         text = ''
