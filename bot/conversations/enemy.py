@@ -1,5 +1,6 @@
 from datetime import timedelta
-from random import choice, randint
+from math import ceil
+from random import choice, randint, shuffle
 from time import sleep
 from typing import List
 
@@ -66,9 +67,14 @@ from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel
 from repository.mongo.populate.enemy import create_random_enemies
+from repository.mongo.populate.item import (
+    create_random_consumable,
+    create_random_equipment
+)
 
 from rpgram import Dice
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
+from rpgram.item import Item
 
 
 async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
@@ -156,7 +162,10 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         sleep(2)
 
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
-        job_name = get_enemy_attack_jobname(user_id, response.message_id)
+        job_name = get_enemy_attack_jobname(
+            user_id=user_id,
+            enemy_char=enemy_char
+        )
         job_data = {
             'enemy_id': str(enemy_char.player_id),
             'message_id': response.message_id
@@ -277,8 +286,14 @@ async def defense_enemy_attack(
     remove_job_enemy_attack(
         context=context,
         user_id=target_user_id,
-        message_id=message_id
+        enemy_char=enemy_char
     )
+    if defenser_char.is_alive and target_char.is_alive:
+        await enemy_drop_random_loot(
+            context=context,
+            update=update,
+            enemy_char=enemy_char,
+        )
 
 
 async def enemy_attack(
@@ -383,11 +398,12 @@ def get_defend_button(
     ]
 
 
-def get_enemy_attack_jobname(user_id: int, message_id: int) -> str:
+def get_enemy_attack_jobname(user_id: int, enemy_char: NPCharacter) -> str:
     '''Nome do job do ataque inimigo
     '''
 
-    return f'JOB_ENEMY_ATTACK_{user_id}_{message_id}'
+    enemy_id = str(enemy_char.player_id)
+    return f'JOB_ENEMY_ATTACK_{user_id}_{enemy_id}'
 
 
 def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
@@ -490,12 +506,12 @@ async def add_xp_group(
 def remove_job_enemy_attack(
     context: ContextTypes.DEFAULT_TYPE,
     user_id: int,
-    message_id: int,
+    enemy_char: NPCharacter
 ) -> bool:
     '''Remove o job de ataque do inimigo.
     '''
 
-    job_name = get_enemy_attack_jobname(user_id=user_id, message_id=message_id)
+    job_name = get_enemy_attack_jobname(user_id=user_id, enemy_char=enemy_char)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
     if not current_jobs:
@@ -505,6 +521,47 @@ def remove_job_enemy_attack(
 
     return True
 
+
+async def enemy_drop_random_loot(
+    context: ContextTypes.DEFAULT_TYPE,
+    update: Update,
+    enemy_char: NPCharacter,
+):
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    points_multiplier = enemy_char.bs.points_multiplier
+    group_level = enemy_char.level + (points_multiplier * 10)
+    equipment = choice(list(enemy_char.equips))
+    item_equipment = Item(equipment) if equipment else None
+    total_consumables = randint(0, points_multiplier)
+    total_equipments = randint(0, ceil(points_multiplier / 2))
+    consumable_list = list(create_random_consumable(
+        group_level=group_level,
+        random_level=True,
+        total_items=total_consumables
+    ))
+    equipment_list = [
+        create_random_equipment(
+            equip_type=None,
+            group_level=group_level,
+            random_level=True,
+        )
+        for _ in range(total_equipments)
+    ]
+    drops = [
+        item
+        for item in ([item_equipment] + consumable_list + equipment_list)
+        if item is not None
+    ]
+    shuffle(drops)
+    text = f'{enemy_char.full_name_with_level} fugiu e deixou para trás'
+    await send_drop_message(
+        context=context,
+        items=drops,
+        text=text,
+        update=update,
+        silent=silent,
+    )
 
 DEFEND_MSG_HANDLER = CallbackQueryHandler(
     defense_enemy_attack,

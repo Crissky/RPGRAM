@@ -584,6 +584,7 @@ def create_random_equipment(
     rarity: Union[RarityEnum, str] = None,
     weapon: str = None,
     material: str = None,
+    random_level: bool = False,
 ) -> Item:
     '''Retorna um equipamento aleatório.
     '''
@@ -595,6 +596,9 @@ def create_random_equipment(
         rarity = rarity.name
     elif rarity not in RarityEnum.__members__:
         rarity = choice_rarity(group_level)
+
+    if random_level:
+        group_level = random_group_level(group_level)
 
     _weapon, _material = get_equipment_and_material(equip_type, group_level)
     weapon = weapon if weapon else _weapon
@@ -648,10 +652,17 @@ def create_random_equipment(
 
 def create_random_consumable(
     group_level: int,
-    ignore_list: List[Consumable] = []
-):
-    '''Retorna um item consumível aleatório.
+    ignore_list: List[Consumable] = [],
+    min_consumable_quantity: int = MIN_CONSUMABLE_QUANTITY,
+    max_consumable_quantity: int = MAX_CONSUMABLE_QUANTITY,
+    random_level: bool = False,
+    total_items: int = None,
+) -> Union[Item, Iterable[Item]]:
+    '''Retorna um itens consumíveis aleatórios.
     '''
+
+    if random_level:
+        group_level = random_group_level(group_level)
 
     item_model = ItemModel()
     ignore_list = [
@@ -666,11 +677,21 @@ def create_random_consumable(
         _class={'$nin': [Equipment.__name__, *ignore_list]}
     )
     item_list = item_model.get_all(query=query)
-    quantity = randint(MIN_CONSUMABLE_QUANTITY, MAX_CONSUMABLE_QUANTITY)
-    item = choice(item_list)
-    item = Item(item, quantity)
 
-    return item
+    if total_items is None:
+        quantity = randint(min_consumable_quantity, max_consumable_quantity)
+        item = choice(item_list)
+        item = Item(item, quantity)
+        return item
+    else:
+        total_items = int(total_items)
+        return (
+            Item(
+                choice(item_list),
+                randint(min_consumable_quantity, max_consumable_quantity)
+            )
+            for _ in range(total_items)
+        )
 
 
 def create_random_trap(group_level: int) -> int:
@@ -691,12 +712,15 @@ def create_random_item(
 
     def random_item_generator(group_level: int):
         equipment_types = [e.name for e in EquipmentEnum]
-        group_level = random_group_level(group_level)
         choiced_item = choice_type_item(no_trap=True)
         if choiced_item == 'CONSUMABLE':
-            item = create_random_consumable(group_level)
+            item = create_random_consumable(group_level, random_level=True)
         elif choiced_item in equipment_types:
-            item = create_random_equipment(choiced_item, group_level)
+            item = create_random_equipment(
+                choiced_item,
+                group_level,
+                random_level=True
+            )
         else:
             raise ValueError(
                 f'O item "{choiced_item}" não foi encontrado.'
