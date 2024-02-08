@@ -1,5 +1,6 @@
 from datetime import timedelta
-from random import choice, randint
+from math import ceil
+from random import choice, randint, shuffle
 from time import sleep
 from typing import List
 
@@ -66,9 +67,14 @@ from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel
 from repository.mongo.populate.enemy import create_random_enemies
+from repository.mongo.populate.item import (
+    create_random_consumable,
+    create_random_equipment
+)
 
 from rpgram import Dice
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
+from rpgram.item import Item
 
 
 async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
@@ -282,6 +288,12 @@ async def defense_enemy_attack(
         user_id=target_user_id,
         enemy_char=enemy_char
     )
+    if defenser_char.is_alive and target_char.is_alive:
+        await enemy_drop_random_loot(
+            context=context,
+            update=update,
+            enemy_char=enemy_char,
+        )
 
 
 async def enemy_attack(
@@ -509,6 +521,46 @@ def remove_job_enemy_attack(
 
     return True
 
+
+async def enemy_drop_random_loot(
+    context: ContextTypes.DEFAULT_TYPE,
+    update: Update,
+    enemy_char: NPCharacter,
+):
+    chat_id = update.effective_chat.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    points_multiplier = enemy_char.bs.points_multiplier
+    group_level = enemy_char.level + (points_multiplier * 10)
+    equipment = choice(list(enemy_char.equips))
+    item_equipment = Item(equipment) if equipment else None
+    total_consumables = randint(0, points_multiplier)
+    total_equipments = randint(0, ceil(points_multiplier / 2))
+    consumable_list = [
+        create_random_consumable(group_level=group_level, random_level=True)
+        for _ in range(total_consumables)
+    ]
+    equipment_list = [
+        create_random_equipment(
+            equip_type=None,
+            group_level=group_level,
+            random_level=True,
+        )
+        for _ in range(total_equipments)
+    ]
+    drops = [
+        item
+        for item in ([item_equipment] + consumable_list + equipment_list)
+        if item is not None
+    ]
+    shuffle(drops)
+    text = f'{enemy_char.full_name_with_level} fugiu e deixou para trás'
+    await send_drop_message(
+        context=context,
+        items=drops,
+        text=text,
+        update=update,
+        silent=silent,
+    )
 
 DEFEND_MSG_HANDLER = CallbackQueryHandler(
     defense_enemy_attack,

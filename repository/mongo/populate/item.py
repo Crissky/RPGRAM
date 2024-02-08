@@ -584,6 +584,7 @@ def create_random_equipment(
     rarity: Union[RarityEnum, str] = None,
     weapon: str = None,
     material: str = None,
+    random_level: bool = False,
 ) -> Item:
     '''Retorna um equipamento aleatório.
     '''
@@ -595,6 +596,9 @@ def create_random_equipment(
         rarity = rarity.name
     elif rarity not in RarityEnum.__members__:
         rarity = choice_rarity(group_level)
+
+    if random_level:
+        group_level = random_group_level(group_level)
 
     _weapon, _material = get_equipment_and_material(equip_type, group_level)
     weapon = weapon if weapon else _weapon
@@ -648,10 +652,16 @@ def create_random_equipment(
 
 def create_random_consumable(
     group_level: int,
-    ignore_list: List[Consumable] = []
+    ignore_list: List[Consumable] = [],
+    min_consumable_quantity: int = MIN_CONSUMABLE_QUANTITY,
+    max_consumable_quantity: int = MAX_CONSUMABLE_QUANTITY,
+    random_level: bool = False,
 ):
     '''Retorna um item consumível aleatório.
     '''
+
+    if random_level:
+        group_level = random_group_level(group_level)
 
     item_model = ItemModel()
     ignore_list = [
@@ -666,7 +676,7 @@ def create_random_consumable(
         _class={'$nin': [Equipment.__name__, *ignore_list]}
     )
     item_list = item_model.get_all(query=query)
-    quantity = randint(MIN_CONSUMABLE_QUANTITY, MAX_CONSUMABLE_QUANTITY)
+    quantity = randint(min_consumable_quantity, max_consumable_quantity)
     item = choice(item_list)
     item = Item(item, quantity)
 
