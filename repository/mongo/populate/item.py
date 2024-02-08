@@ -701,12 +701,15 @@ def create_random_item(
 
     def random_item_generator(group_level: int):
         equipment_types = [e.name for e in EquipmentEnum]
-        group_level = random_group_level(group_level)
         choiced_item = choice_type_item(no_trap=True)
         if choiced_item == 'CONSUMABLE':
-            item = create_random_consumable(group_level)
+            item = create_random_consumable(group_level, random_level=True)
         elif choiced_item in equipment_types:
-            item = create_random_equipment(choiced_item, group_level)
+            item = create_random_equipment(
+                choiced_item,
+                group_level,
+                random_level=True
+            )
         else:
             raise ValueError(
                 f'O item "{choiced_item}" não foi encontrado.'
