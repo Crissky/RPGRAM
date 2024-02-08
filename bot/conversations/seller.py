@@ -505,11 +505,12 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
             item_model.save(equipment)
             seller_bag.add(equipment_item)
 
-    for _ in range(TOTAL_CONSUMABLES):
-        consumable_item = create_random_consumable(
-            group_level=group_level,
-            ignore_list=[TrocadoPouchConsumable, GemstoneConsumable]
-        )
+    consumable_items_generator = create_random_consumable(
+        group_level=group_level,
+        ignore_list=[TrocadoPouchConsumable, GemstoneConsumable],
+        total_items=TOTAL_CONSUMABLES
+    )
+    for consumable_item in consumable_items_generator:
         new_quantity = consumable_item.quantity * multiply_quantity
         consumable_item.add(new_quantity)
         seller_bag.add(consumable_item)

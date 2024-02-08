@@ -656,8 +656,9 @@ def create_random_consumable(
     min_consumable_quantity: int = MIN_CONSUMABLE_QUANTITY,
     max_consumable_quantity: int = MAX_CONSUMABLE_QUANTITY,
     random_level: bool = False,
-):
-    '''Retorna um item consumível aleatório.
+    total_items: int = None,
+) -> Union[Item, Iterable[Item]]:
+    '''Retorna um itens consumíveis aleatórios.
     '''
 
     if random_level:
@@ -676,11 +677,21 @@ def create_random_consumable(
         _class={'$nin': [Equipment.__name__, *ignore_list]}
     )
     item_list = item_model.get_all(query=query)
-    quantity = randint(min_consumable_quantity, max_consumable_quantity)
-    item = choice(item_list)
-    item = Item(item, quantity)
 
-    return item
+    if total_items is None:
+        quantity = randint(min_consumable_quantity, max_consumable_quantity)
+        item = choice(item_list)
+        item = Item(item, quantity)
+        return item
+    else:
+        total_items = int(total_items)
+        return (
+            Item(
+                choice(item_list),
+                randint(min_consumable_quantity, max_consumable_quantity)
+            )
+            for _ in range(total_items)
+        )
 
 
 def create_random_trap(group_level: int) -> int:

@@ -535,10 +535,11 @@ async def enemy_drop_random_loot(
     item_equipment = Item(equipment) if equipment else None
     total_consumables = randint(0, points_multiplier)
     total_equipments = randint(0, ceil(points_multiplier / 2))
-    consumable_list = [
-        create_random_consumable(group_level=group_level, random_level=True)
-        for _ in range(total_consumables)
-    ]
+    consumable_list = list(create_random_consumable(
+        group_level=group_level,
+        random_level=True,
+        total_items=total_consumables
+    ))
     equipment_list = [
         create_random_equipment(
             equip_type=None,
