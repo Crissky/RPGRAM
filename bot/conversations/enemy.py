@@ -531,7 +531,7 @@ async def enemy_drop_random_loot(
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     points_multiplier = enemy_char.bs.points_multiplier
-    group_level = enemy_char.level + (points_multiplier * 10)
+    group_level = enemy_char.level + (points_multiplier * 5)
     equipment = choice(list(enemy_char.equips))
     item_equipment = Item(equipment) if equipment else None
     total_consumables = randint(0, points_multiplier)
