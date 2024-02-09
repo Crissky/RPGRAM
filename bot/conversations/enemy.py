@@ -65,7 +65,7 @@ from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
 
-from repository.mongo import CharacterModel
+from repository.mongo import CharacterModel, ItemModel
 from repository.mongo.populate.enemy import create_random_enemies
 from repository.mongo.populate.item import (
     create_random_consumable,
@@ -527,6 +527,7 @@ async def enemy_drop_random_loot(
     update: Update,
     enemy_char: NPCharacter,
 ):
+    item_model = ItemModel()
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     points_multiplier = enemy_char.bs.points_multiplier
@@ -548,9 +549,16 @@ async def enemy_drop_random_loot(
         )
         for _ in range(total_equipments)
     ]
+    equipment_list.append(item_equipment)
+
+    for equipment_item in equipment_list:
+        if isinstance(equipment_item, Item):
+            equipment = equipment_item.item
+            item_model.save(equipment)
+
     drops = [
         item
-        for item in ([item_equipment] + consumable_list + equipment_list)
+        for item in (consumable_list + equipment_list)
         if item is not None
     ]
     shuffle(drops)

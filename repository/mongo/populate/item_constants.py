@@ -15,7 +15,8 @@ PIERCING_WEAPONS = [
 ]
 MAGIC_WEAPONS = [
     'WAND', 'GRIMOIRE', 'ORB', 'SCEPTER', 'QUILL', 'CHALICE',
-    'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR', 'RIKUDŌKON'
+    'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR', 'RIKUDŌKON',
+    'PRISMATIC_SHIELD'
 ]
 
 ALL_WEAPONS = []
@@ -41,7 +42,8 @@ LIGHT_EQUIPMENTS = [
 HEAVY_EQUIPMENTS = [
     'GREAT_SWORD', 'SHIELD', 'SPIKED_SHIELD', 'DOUBLE_AXE', 'HALBERD', 'FLAIL',
     'SLEDGEHAMMER', 'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL',
-    'RIKUDŌKON', 'SPAULDER', 'SPIKED_SPAULDER', 'GREAVES', 'SPIKED_GREAVES'
+    'RIKUDŌKON', 'SPAULDER', 'SPIKED_SPAULDER', 'GREAVES', 'SPIKED_GREAVES',
+    'PRISMATIC_SHIELD'
 ]
 VERY_HEAVY_EQUIPMENTS = [
     'ARMOR', 'SPIKED_ARMOR', 'WARHAMMER', 'PIKE', 'BRIGANDINE', 'SHARUR'
@@ -51,7 +53,7 @@ VERY_HEAVY_EQUIPMENTS = [
 # Especial Materials Equipments
 MAGICAL_QUILL_EQUIPMENTS = ['QUILL']
 MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE', 'SHOES']
-MAGICAL_STONES_EQUIPMENTS = ['ORB', 'CRYSTAL']
+MAGICAL_STONES_EQUIPMENTS = ['ORB', 'CRYSTAL', 'PRISMATIC_SHIELD']
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
 TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'SCARF']
@@ -137,6 +139,22 @@ ONE_HAND_EQUIPMENTS = {
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
+            'bonus_evasion': 1,
+        }
+    ),
+    'PRISMATIC_SHIELD': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 10,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 5,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 5,
             'bonus_evasion': 1,
         }
     ),
