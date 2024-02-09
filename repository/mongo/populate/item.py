@@ -661,37 +661,66 @@ def create_random_consumable(
     '''Retorna um itens consumíveis aleatórios.
     '''
 
-    if random_level:
-        group_level = random_group_level(group_level)
-
-    item_model = ItemModel()
-    ignore_list = [
-        i.__name__
-        for i in ignore_list
-        if issubclass(i, Consumable)
-    ]
-
-    rarity = choice_rarity(group_level)
-    query = dict(
-        rarity=rarity,
-        _class={'$nin': [Equipment.__name__, *ignore_list]}
-    )
-    item_list = item_model.get_all(query=query)
-
     if total_items is None:
-        quantity = randint(min_consumable_quantity, max_consumable_quantity)
-        item = choice(item_list)
-        item = Item(item, quantity)
-        return item
+        return choice_consumable(
+            group_level=group_level,
+            ignore_list=ignore_list,
+            min_consumable_quantity=min_consumable_quantity,
+            max_consumable_quantity=max_consumable_quantity,
+            random_level=random_level,
+        )
     else:
-        total_items = int(total_items)
+        items_dict = {}
         return (
-            Item(
-                choice(item_list),
-                randint(min_consumable_quantity, max_consumable_quantity)
+            choice_consumable(
+                group_level=group_level,
+                ignore_list=ignore_list,
+                min_consumable_quantity=min_consumable_quantity,
+                max_consumable_quantity=max_consumable_quantity,
+                random_level=random_level,
+                items_dict=items_dict,
             )
             for _ in range(total_items)
         )
+
+
+def choice_consumable(
+    group_level: int,
+    ignore_list: List[Consumable] = [],
+    min_consumable_quantity: int = MIN_CONSUMABLE_QUANTITY,
+    max_consumable_quantity: int = MAX_CONSUMABLE_QUANTITY,
+    random_level: bool = False,
+    items_dict: dict = {},
+) -> Item:
+    '''Retorna um item consumível para a função create_random_consumable()
+    Arg: items_dict é usando para evitar de baixar novamente a lista de itens 
+    obtidas de uma chamada de anterior. Isso deixa a função muito mais rápida 
+    para loop longos.
+    '''
+
+    if random_level:
+        group_level = random_group_level(group_level)
+
+    rarity = choice_rarity(group_level)
+    if rarity not in items_dict:
+        item_model = ItemModel()
+        ignore_list = [
+            i.__name__
+            for i in ignore_list
+            if issubclass(i, Consumable)
+        ]
+        query = dict(
+            rarity=rarity,
+            _class={'$nin': [Equipment.__name__, *ignore_list]}
+        )
+        items_dict[rarity] = item_model.get_all(query=query)
+
+    item_list = items_dict[rarity]
+    quantity = randint(min_consumable_quantity, max_consumable_quantity)
+    item = choice(item_list)
+    item = Item(item, quantity)
+
+    return item
 
 
 def create_random_trap(group_level: int) -> int:
