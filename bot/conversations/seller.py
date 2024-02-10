@@ -56,7 +56,7 @@ from bot.decorators import (
     print_basic_infos,
     retry_after,
 )
-from bot.functions.bag import get_item_by_position
+from bot.functions.bag import get_item_from_bag_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
     callback_data_to_dict,
@@ -251,7 +251,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
-    item = get_item_by_position(chat_id, page, item_pos)
+    item = get_item_from_bag_by_position(chat_id, page, item_pos)
     price_text = get_discount_price_text(price=item.price, user_id=user_id)
     markdown_text = (
         f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n'
@@ -351,7 +351,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player = player_model.get(user_id)
     player_character = char_model.get(user_id)
     trocado = player.trocado
-    item = get_item_by_position(chat_id, page, item_pos)
+    item = get_item_from_bag_by_position(chat_id, page, item_pos)
 
     if item_id != str(item._id):
         query.answer('O item não está mais disponível')
