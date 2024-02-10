@@ -94,10 +94,10 @@ from bot.functions.bag import (
     LIMIT_ITEM_IN_BAG,
     exists_in_bag,
     get_identifying_lens,
-    get_item_by_position,
+    get_item_from_bag_by_position,
     have_identifying_lens,
     is_full_bag,
-    sub_identifying_lens
+    sub_identifying_lens_from_bag
 )
 from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
@@ -158,7 +158,6 @@ from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 
 @skip_if_no_singup_player
-@skip_if_no_have_char
 @skip_if_dead_char
 @need_not_in_battle
 @skip_if_immobilized
@@ -335,7 +334,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
-    item = get_item_by_position(user_id, page, item_pos)
+    item = get_item_from_bag_by_position(user_id, page, item_pos)
     target_name = get_player_name(target_id)
     markdown_text = get_trocado_and_target_text(
         user_id=user_id,
@@ -491,7 +490,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    item = get_item_by_position(user_id, page, item_pos)
+    item = get_item_from_bag_by_position(user_id, page, item_pos)
     if isinstance(item.item, Equipment):
         player_character = char_model.get(user_id)
     elif isinstance(item.item, Consumable):
@@ -556,6 +555,7 @@ async def use_item_equipment(
         await query.edit_message_reply_markup(
             reply_markup=old_reply_markup
         )
+        return USE_ROUTES
 
     bag_model.sub(item, user_id)
     # Adiciona na bolsa os equipamentos que já estavam equipados
@@ -722,7 +722,7 @@ async def identify_item(
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    item_equipment = get_item_by_position(user_id, page, item_pos)
+    item_equipment = get_item_from_bag_by_position(user_id, page, item_pos)
     equipment = item_equipment.item
     if not equipment.identifiable:
         text = '⛔ESSE EQUIPAMENTO NÃO PODE SER IDENTIFICADO⛔'
@@ -732,7 +732,7 @@ async def identify_item(
         report = consumable_identifier.use(equipment)
         report_text = report['text']
         item_model.save(equipment)
-        sub_identifying_lens(user_id)
+        sub_identifying_lens_from_bag(user_id)
         name = consumable_identifier.name
         description = consumable_identifier.description
         text = (
@@ -798,7 +798,7 @@ async def sell_item(
         return USE_ROUTES
 
     player = player_model.get(user_id)
-    item = get_item_by_position(user_id, page, item_pos)
+    item = get_item_from_bag_by_position(user_id, page, item_pos)
     sell_quantity = min(sell_quantity, item.quantity)
     item_sell_price = get_bonus_price(price=item.sell_price, user_id=user_id)
     trocado = int(sell_quantity * item_sell_price)
@@ -936,7 +936,7 @@ async def drop_item(
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
-    item = get_item_by_position(user_id, page, item_pos)
+    item = get_item_from_bag_by_position(user_id, page, item_pos)
     drop = min(drop, item.quantity)
 
     bag_model.sub(item, user_id, quantity=-(drop))
@@ -1047,7 +1047,6 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     return ConversationHandler.END
 
 
-@skip_if_no_have_char
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()

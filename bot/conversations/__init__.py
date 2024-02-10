@@ -20,3 +20,4 @@ from bot.conversations.race import RACES_HANDLERS
 from bot.conversations.classe import CLASSES_HANDLERS
 from bot.conversations.seller import SELLER_HANDLER
 from bot.conversations.enemy import DEFEND_MSG_HANDLER
+from bot.conversations.quest_item import ITEM_QUEST_HANDLER

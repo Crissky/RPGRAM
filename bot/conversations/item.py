@@ -42,6 +42,7 @@ from bot.decorators.char import confusion
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
+from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import (
@@ -164,7 +165,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
-    group_level = get_attribute_group_or_player(chat_id, 'group_level')
+    group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     bag_exists = bag_model.exists(user_id)
 
@@ -209,9 +210,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if isinstance(items, (list, Iterable)):
         for item in items:
-            if isinstance(item.item, Equipment):
-                items_model.save(item.item)
-            elif not isinstance(item.item, (Consumable, Equipment)):
+            if not isinstance(item.item, (Consumable, Equipment)):
                 raise TypeError(
                     f'Variável item é do tipo "{type(item.item)}", '
                     f'mas precisa ser do tipo "Consumable" ou "Equipment".\n'

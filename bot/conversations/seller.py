@@ -56,12 +56,13 @@ from bot.decorators import (
     print_basic_infos,
     retry_after,
 )
-from bot.functions.bag import get_item_by_position
+from bot.functions.bag import get_item_from_bag_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string
 )
+from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from bot.functions.player import get_player_trocado
@@ -110,7 +111,6 @@ from rpgram.enums import EmojiEnum
 @allow_only_in_group
 @need_singup_group
 @skip_if_no_singup_player
-@skip_if_no_have_char
 @need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
@@ -251,7 +251,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
-    item = get_item_by_position(chat_id, page, item_pos)
+    item = get_item_from_bag_by_position(chat_id, page, item_pos)
     price_text = get_discount_price_text(price=item.price, user_id=user_id)
     markdown_text = (
         f'*{user_name}*: {trocado}{EmojiEnum.TROCADO.value}\n'
@@ -351,7 +351,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player = player_model.get(user_id)
     player_character = char_model.get(user_id)
     trocado = player.trocado
-    item = get_item_by_position(chat_id, page, item_pos)
+    item = get_item_from_bag_by_position(chat_id, page, item_pos)
 
     if item_id != str(item._id):
         query.answer('O item não está mais disponível')
@@ -481,10 +481,9 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
 
     print('JOB_CREATE_NEW_ITEMS()')
     bag_model = BagModel()
-    item_model = ItemModel()
     job = context.job
     chat_id = job.chat_id
-    group_level = get_attribute_group_or_player(chat_id, 'group_level')
+    group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     chars_level_list = get_chars_level_from_group(chat_id)
     mean_level_list = mean_level(chars_level_list, TOTAL_MEAN_LEVELS)
@@ -500,9 +499,8 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
             equipment_item = create_random_equipment(
                 equip_type=None,
                 group_level=char_level,
+                save_in_database=True
             )
-            equipment = equipment_item.item
-            item_model.save(equipment)
             seller_bag.add(equipment_item)
 
     consumable_items_generator = create_random_consumable(

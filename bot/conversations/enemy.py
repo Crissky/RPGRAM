@@ -40,6 +40,7 @@ from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.chat import callback_data_to_dict, callback_data_to_string
+from bot.functions.config import get_attribute_group
 from constant.text import (
     SECTION_HEAD_ATTACK_END,
     SECTION_HEAD_ATTACK_START,
@@ -109,11 +110,15 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_START_AMBUSH()')
     job = context.job
     chat_id = job.chat_id
-    group_level = get_attribute_group_or_player(chat_id, 'group_level')
+    group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
     message_id = None
-    context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
+
+    await context.bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING
+    )
 
     for enemy_char in enemy_list:
         try:
@@ -162,7 +167,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         sleep(2)
 
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
-        job_name = get_enemy_attack_jobname(
+        job_name = get_enemy_attack_job_name(
             user_id=user_id,
             enemy_char=enemy_char
         )
@@ -203,6 +208,12 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     job = context.job
     chat_id = job.chat_id
+
+    await context.bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING
+    )
+
     user_id = job.user_id
     job_data = job.data
     enemy_id = job_data['enemy_id']
@@ -220,7 +231,22 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             to_dodge=True
         )
     elif defenser_char and defenser_char.is_dead:
-        text = f'{defenser_char.player_name} está morto.'
+        text = f'*{defenser_char.player_name}* está morto.'
+        print(text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FAIL,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+        await context.bot.edit_message_text(
+            text=text,
+            chat_id=chat_id,
+            message_id=message_id,
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
+    elif not enemy_char:
+        text = f'O inimigo "{enemy_id}" não existe mais.'
         print(text)
         text = create_text_in_box(
             text=text,
@@ -237,7 +263,6 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
 
 @skip_if_no_singup_player
-@skip_if_no_have_char
 @need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
@@ -250,6 +275,7 @@ async def defense_enemy_attack(
     '''Defende aliado de um ataque. Caso sobreviva, ambos receberão XP.
     '''
 
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
     defenser_user_id = update.effective_user.id
@@ -258,10 +284,12 @@ async def defense_enemy_attack(
     data = callback_data_to_dict(query.data)
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
+    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
 
-    if not 'ambushes' in context.chat_data:
+    if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
         await query.delete_message()
+
         return ConversationHandler.END
 
     if defenser_user_id == target_user_id:
@@ -269,9 +297,9 @@ async def defense_enemy_attack(
             'Você não pode defender a si mesmo.',
             show_alert=True
         )
+
         return ConversationHandler.END
 
-    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
     defenser_char = char_model.get(defenser_user_id)
     target_char = char_model.get(target_user_id)
     await enemy_attack(
@@ -283,7 +311,7 @@ async def defense_enemy_attack(
         target_char=target_char,
         to_dodge=True
     )
-    remove_job_enemy_attack(
+    remove_enemy_attack_job(
         context=context,
         user_id=target_user_id,
         enemy_char=enemy_char
@@ -398,7 +426,7 @@ def get_defend_button(
     ]
 
 
-def get_enemy_attack_jobname(user_id: int, enemy_char: NPCharacter) -> str:
+def get_enemy_attack_job_name(user_id: int, enemy_char: NPCharacter) -> str:
     '''Nome do job do ataque inimigo
     '''
 
@@ -426,7 +454,8 @@ def get_enemy_from_ambush_dict(
     remove do dicionário.
     '''
 
-    return context.chat_data['ambushes'].pop(enemy_id)
+    ambushes = context.chat_data.get('ambushes', {})
+    return ambushes.pop(enemy_id, None)
 
 
 async def send_ambush_message(
@@ -503,15 +532,18 @@ async def add_xp_group(
     )
 
 
-def remove_job_enemy_attack(
+def remove_enemy_attack_job(
     context: ContextTypes.DEFAULT_TYPE,
     user_id: int,
     enemy_char: NPCharacter
 ) -> bool:
-    '''Remove o job de ataque do inimigo.
+    '''Remove o job de Ataque do Inimigo.
     '''
 
-    job_name = get_enemy_attack_jobname(user_id=user_id, enemy_char=enemy_char)
+    job_name = get_enemy_attack_job_name(
+        user_id=user_id,
+        enemy_char=enemy_char
+    )
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
     if not current_jobs:
@@ -527,11 +559,14 @@ async def enemy_drop_random_loot(
     update: Update,
     enemy_char: NPCharacter,
 ):
+    '''Envia uma mensagens de drops de itens quando um aliado defende outro.
+    '''
+
     item_model = ItemModel()
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     points_multiplier = enemy_char.bs.points_multiplier
-    group_level = enemy_char.level + (points_multiplier * 10)
+    group_level = enemy_char.level + (points_multiplier * 5)
     equipment = choice(list(enemy_char.equips))
     item_equipment = Item(equipment) if equipment else None
     total_consumables = randint(0, points_multiplier)

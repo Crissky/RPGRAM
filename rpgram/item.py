@@ -104,6 +104,14 @@ class Item:
         return self.item.sell_price
 
     @property
+    def full_price(self) -> int:
+        return self.price * self.quantity
+
+    @property
+    def full_sell_price(self) -> int:
+        return self.sell_price * self.quantity
+
+    @property
     def price_text(self) -> str:
         return self.item.price_text
 

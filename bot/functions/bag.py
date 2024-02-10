@@ -13,7 +13,11 @@ IDENTIFYING_LENS = 'Identifying Lens'
 LIMIT_ITEM_IN_BAG = 100
 
 
-def get_item_by_position(user_id: int, page: int, item_pos: int) -> Item:
+def get_item_from_bag_by_position(
+    user_id: int,
+    page: int,
+    item_pos: int
+) -> Item:
     '''Retorna um Item da Bag pela posição.
     '''
 
@@ -26,6 +30,37 @@ def get_item_by_position(user_id: int, page: int, item_pos: int) -> Item:
     )
     item = player_bag[0]
     return item
+
+
+def get_item_from_bag_by_id(
+    user_id: int,
+    item_id: Union[str, ObjectId]
+) -> Item:
+    '''Retorna um Item da Bag pelo _id.
+    '''
+
+    if isinstance(item_id, str):
+        item_id = ObjectId(item_id)
+    bag_model = BagModel()
+    item_model = ItemModel()
+    query = {'player_id': user_id}
+    fields = {
+        '_id': 0,
+        'items_ids': {
+            '$elemMatch': {
+                '_id': item_id
+            }
+        }
+    }
+    bag_dict = bag_model.get(query=query, fields=fields)
+    if bag_dict:
+        items_ids = bag_dict['items_ids']
+        item_dict = items_ids[0]
+        quantity = item_dict['quantity']
+        item = item_model.get(item_id)
+        item = Item(item, quantity=quantity)
+
+        return item
 
 
 def get_item_by_name(item_name: str) -> Union[Consumable, Equipment]:
@@ -103,7 +138,7 @@ def have_identifying_lens(user_id: int) -> bool:
     return exists_in_bag(user_id, item_name=IDENTIFYING_LENS)
 
 
-def sub_item_by_name(item_name: str, user_id: int):
+def sub_item_from_bag_by_name(item_name: str, user_id: int):
     '''Subtrai um item da bag pelo nome.
     '''
 
@@ -121,11 +156,11 @@ def sub_item_by_name(item_name: str, user_id: int):
     bag_model.sub(item, user_id)
 
 
-def sub_identifying_lens(user_id: int) -> bool:
+def sub_identifying_lens_from_bag(user_id: int) -> bool:
     '''Subtrai um "Identifying Lens" da bag.
     '''
 
-    return sub_item_by_name(IDENTIFYING_LENS, user_id)
+    return sub_item_from_bag_by_name(IDENTIFYING_LENS, user_id)
 
 
 def drop_random_items_from_bag(user_id: int) -> List[Item]:

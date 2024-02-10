@@ -23,6 +23,7 @@ from bot.decorators import (
     print_basic_infos,
 )
 from bot.functions.char import add_conditions
+from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import TEXT_SEPARATOR
 from function.text import escape_basic_markdown_v2
@@ -44,7 +45,7 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for key, value in chat_data.items():
             text += f'{key}: {value}\n'
     elif len(args) > 0 and args[0] in ['enemy', 'inimigo']:
-        group_level = get_attribute_group_or_player(chat_id, 'group_level')
+        group_level = get_attribute_group(chat_id, 'group_level')
         enemy_list = create_random_enemies(group_level=group_level)
         text = f'{TEXT_SEPARATOR}\n\n'.join(
             enemy.get_all_sheets()
