@@ -556,6 +556,7 @@ async def use_item_equipment(
         await query.edit_message_reply_markup(
             reply_markup=old_reply_markup
         )
+        return USE_ROUTES
 
     bag_model.sub(item, user_id)
     # Adiciona na bolsa os equipamentos que já estavam equipados
