@@ -40,6 +40,7 @@ from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.chat import callback_data_to_dict, callback_data_to_string
+from bot.functions.config import get_attribute_group
 from constant.text import (
     SECTION_HEAD_ATTACK_END,
     SECTION_HEAD_ATTACK_START,
@@ -109,7 +110,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_START_AMBUSH()')
     job = context.job
     chat_id = job.chat_id
-    group_level = get_attribute_group_or_player(chat_id, 'group_level')
+    group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
     message_id = None

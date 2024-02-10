@@ -62,6 +62,7 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string
 )
+from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from bot.functions.player import get_player_trocado
@@ -484,7 +485,7 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
     item_model = ItemModel()
     job = context.job
     chat_id = job.chat_id
-    group_level = get_attribute_group_or_player(chat_id, 'group_level')
+    group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     chars_level_list = get_chars_level_from_group(chat_id)
     mean_level_list = mean_level(chars_level_list, TOTAL_MEAN_LEVELS)
