@@ -102,6 +102,7 @@ class EmojiEnum(Enum):
     EXIT_SHOP = '👋'
     CHRYSUS_1 = '🉐'
     CHRYSUS_2 = '🈹'
+    HELP_QUEST = '🆘'
 
 
 class FaceEmojiEnum(Enum):

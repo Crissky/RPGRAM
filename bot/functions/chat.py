@@ -29,6 +29,7 @@ CALLBACK_KEY_LIST = [
     'user_id',
     'target_id',
     'enemy_id',
+    'item_quest_job_name',
 ]
 
 
