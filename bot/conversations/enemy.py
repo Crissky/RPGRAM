@@ -263,7 +263,6 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
 
 @skip_if_no_singup_player
-@skip_if_no_have_char
 @need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized

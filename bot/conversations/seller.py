@@ -111,7 +111,6 @@ from rpgram.enums import EmojiEnum
 @allow_only_in_group
 @need_singup_group
 @skip_if_no_singup_player
-@skip_if_no_have_char
 @need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
