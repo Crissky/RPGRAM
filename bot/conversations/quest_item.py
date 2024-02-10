@@ -76,8 +76,7 @@ async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
     now = get_brazil_time_now()
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        # minutes_in_seconds = randint(1, 179) * 60
-        minutes_in_seconds = randint(1, 1) * 60
+        minutes_in_seconds = randint(1, 60) * 60
         print(
             f'JOB_CREATE_ITEM_QUEST() - {now}: '
             f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
