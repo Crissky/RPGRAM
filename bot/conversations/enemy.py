@@ -167,7 +167,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         sleep(2)
 
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
-        job_name = get_enemy_attack_jobname(
+        job_name = get_enemy_attack_job_name(
             user_id=user_id,
             enemy_char=enemy_char
         )
@@ -312,7 +312,7 @@ async def defense_enemy_attack(
         target_char=target_char,
         to_dodge=True
     )
-    remove_job_enemy_attack(
+    remove_enemy_attack_job(
         context=context,
         user_id=target_user_id,
         enemy_char=enemy_char
@@ -427,7 +427,7 @@ def get_defend_button(
     ]
 
 
-def get_enemy_attack_jobname(user_id: int, enemy_char: NPCharacter) -> str:
+def get_enemy_attack_job_name(user_id: int, enemy_char: NPCharacter) -> str:
     '''Nome do job do ataque inimigo
     '''
 
@@ -533,15 +533,18 @@ async def add_xp_group(
     )
 
 
-def remove_job_enemy_attack(
+def remove_enemy_attack_job(
     context: ContextTypes.DEFAULT_TYPE,
     user_id: int,
     enemy_char: NPCharacter
 ) -> bool:
-    '''Remove o job de ataque do inimigo.
+    '''Remove o job de Ataque do Inimigo.
     '''
 
-    job_name = get_enemy_attack_jobname(user_id=user_id, enemy_char=enemy_char)
+    job_name = get_enemy_attack_job_name(
+        user_id=user_id,
+        enemy_char=enemy_char
+    )
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
     if not current_jobs:
@@ -557,6 +560,9 @@ async def enemy_drop_random_loot(
     update: Update,
     enemy_char: NPCharacter,
 ):
+    '''Envia uma mensagens de drops de itens quando um aliado defende outro.
+    '''
+
     item_model = ItemModel()
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
