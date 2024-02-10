@@ -113,7 +113,11 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(group_level)
     message_id = None
-    context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
+
+    await context.bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING
+    )
 
     for enemy_char in enemy_list:
         try:
@@ -203,6 +207,12 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     job = context.job
     chat_id = job.chat_id
+
+    await context.bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING
+    )
+
     user_id = job.user_id
     job_data = job.data
     enemy_id = job_data['enemy_id']
@@ -220,7 +230,22 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             to_dodge=True
         )
     elif defenser_char and defenser_char.is_dead:
-        text = f'{defenser_char.player_name} está morto.'
+        text = f'*{defenser_char.player_name}* está morto.'
+        print(text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FAIL,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+        await context.bot.edit_message_text(
+            text=text,
+            chat_id=chat_id,
+            message_id=message_id,
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
+    elif not enemy_char:
+        text = f'O inimigo "{enemy_id}" não existe mais.'
         print(text)
         text = create_text_in_box(
             text=text,
@@ -250,6 +275,7 @@ async def defense_enemy_attack(
     '''Defende aliado de um ataque. Caso sobreviva, ambos receberão XP.
     '''
 
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
     defenser_user_id = update.effective_user.id
@@ -258,10 +284,12 @@ async def defense_enemy_attack(
     data = callback_data_to_dict(query.data)
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
+    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
 
-    if not 'ambushes' in context.chat_data:
+    if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
         await query.delete_message()
+
         return ConversationHandler.END
 
     if defenser_user_id == target_user_id:
@@ -269,9 +297,9 @@ async def defense_enemy_attack(
             'Você não pode defender a si mesmo.',
             show_alert=True
         )
+
         return ConversationHandler.END
 
-    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
     defenser_char = char_model.get(defenser_user_id)
     target_char = char_model.get(target_user_id)
     await enemy_attack(
@@ -426,7 +454,8 @@ def get_enemy_from_ambush_dict(
     remove do dicionário.
     '''
 
-    return context.chat_data['ambushes'].pop(enemy_id)
+    ambushes = context.chat_data.get('ambushes', {})
+    return ambushes.pop(enemy_id, None)
 
 
 async def send_ambush_message(
