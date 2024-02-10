@@ -210,9 +210,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if isinstance(items, (list, Iterable)):
         for item in items:
-            if isinstance(item.item, Equipment):
-                items_model.save(item.item)
-            elif not isinstance(item.item, (Consumable, Equipment)):
+            if not isinstance(item.item, (Consumable, Equipment)):
                 raise TypeError(
                     f'Variável item é do tipo "{type(item.item)}", '
                     f'mas precisa ser do tipo "Consumable" ou "Equipment".\n'

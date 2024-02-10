@@ -753,7 +753,8 @@ def create_random_item(
             item = create_random_equipment(
                 choiced_item,
                 group_level,
-                random_level=True
+                random_level=True,
+                save_in_database=True,
             )
         else:
             raise ValueError(

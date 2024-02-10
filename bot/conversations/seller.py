@@ -482,7 +482,6 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
 
     print('JOB_CREATE_NEW_ITEMS()')
     bag_model = BagModel()
-    item_model = ItemModel()
     job = context.job
     chat_id = job.chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
@@ -501,9 +500,8 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
             equipment_item = create_random_equipment(
                 equip_type=None,
                 group_level=char_level,
+                save_in_database=True
             )
-            equipment = equipment_item.item
-            item_model.save(equipment)
             seller_bag.add(equipment_item)
 
     consumable_items_generator = create_random_consumable(
