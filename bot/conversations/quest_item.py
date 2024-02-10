@@ -1,24 +1,43 @@
 from datetime import timedelta
 from random import choice, randint
+from bson import ObjectId
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
-from telegram.ext import CallbackQueryHandler, ContextTypes
+from telegram.ext import (
+    CallbackQueryHandler,
+    ContextTypes,
+    ConversationHandler,
+)
 
 from bot.constants.quest_item import (
     ARRIVAL_NARRATION,
     CALLBACK_QUEST_PREFIX,
+    LEAVE_NARRATION,
     PATTERN_ITEM_QUEST,
     QUEST_BUTTON_TEXT,
     REPLY_TEXT_GEMSTONE_ITEM,
     REPLY_TEXT_HEAL_CURE_ITEM,
     REPLY_TEXT_IDENTIFY_ITEM,
     REPLY_TEXT_REVIVE_ITEM,
+    REPLY_TEXT_THANKS,
     REPLY_TEXT_TROCADO_ITEM,
     REPLY_TEXT_XP_ITEM,
     SECTION_TEXT_QUEST
 )
-from bot.functions.chat import callback_data_to_string
+from bot.conversations.bag import send_drop_message
+from bot.decorators import (
+    confusion,
+    need_not_in_battle,
+    print_basic_infos,
+    skip_if_dead_char,
+    skip_if_immobilized,
+    skip_if_no_have_char,
+    skip_if_no_singup_player,
+)
+from bot.functions.bag import get_item_from_bag_by_id
+from bot.functions.char import add_xp
+from bot.functions.chat import callback_data_to_dict, callback_data_to_string
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
@@ -27,12 +46,14 @@ from constant.text import SECTION_QUEST_END, SECTION_QUEST_START
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
+from repository.mongo import ItemModel
+from repository.mongo.models.bag import BagModel
 from repository.mongo.populate.enemy import (
     choice_enemy_name,
     choice_enemy_race_name
 )
 
-from repository.mongo.populate.item import create_random_consumable
+from repository.mongo.populate.item import create_random_consumable, create_random_equipment
 
 from rpgram.consumables import (
     CureConsumable,
@@ -117,7 +138,7 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     job_data['response'] = response
     context.job_queue.run_once(
         callback=job_end_item_quest,
-        when=timedelta(minutes=randint(1, 2)),
+        when=timedelta(minutes=randint(60, 120)),
         data=job_data,
         name=job_name,
         chat_id=chat_id,
@@ -133,17 +154,110 @@ async def job_end_item_quest(context: ContextTypes.DEFAULT_TYPE):
     response = data['response']
     helped_name = data['helped_name']
 
-    await response.edit_text(
-        text=f'{helped_name} foi embora.'
+    text = f'{helped_name} foi embora.'
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_QUEST,
+        section_start=SECTION_QUEST_START,
+        section_end=SECTION_QUEST_END,
     )
 
+    await response.edit_text(text=text)
 
+
+@skip_if_no_singup_player
+@skip_if_no_have_char
+@need_not_in_battle
+@skip_if_dead_char
+@skip_if_immobilized
+@confusion()
+@print_basic_infos
 async def complete_item_quest(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    '''Checa se o objetivo da quest é satisfeito e dropa a recompensa.
+    '''
+
+    user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
     query = update.callback_query
-    await query.answer('BUTÃO DA FUNFANDO', show_alert=True)
+    group_level = get_attribute_group(chat_id, 'group_level')
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    data = callback_data_to_dict(query.data)
+
+    job_name = data['item_quest_job_name']
+    current_jobs = context.job_queue.get_jobs_by_name(job_name)
+    if not current_jobs:
+        await query.answer('Essa quest não existe mais.', show_alert=True)
+        await query.delete_message()
+        return ConversationHandler.END
+
+    job = current_jobs[0]
+    job_data = job.data
+    job_item = job_data['item']
+    job_item_id = job_item._id
+    job_item_name = job_item.name
+    job_item_quantity = job_item.quantity
+    user_item = get_item_from_bag_by_id(
+        user_id=user_id,
+        item_id=job_item_id
+    )
+    if user_item and user_item.quantity >= job_item_quantity:
+        helped_name = job_data['helped_name']
+        bag_model = BagModel()
+        bag_model.sub(
+            item=user_item,
+            player_id=user_id,
+            quantity=job_item_quantity
+        )
+        base_xp = int(job_item.full_price // 10)
+        report_xp = add_xp(
+            chat_id=chat_id,
+            user_id=user_id,
+            base_xp=base_xp,
+        )
+        text_xp = report_xp['text']
+        thanks_text = choice(REPLY_TEXT_THANKS)
+        narration_text = choice(LEAVE_NARRATION)
+        narration_text = narration_text.format(helped_name=helped_name)
+        text = (
+            f'>{helped_name}: {thanks_text}\n\n'
+            f'{narration_text}\n\n'
+            f'{text_xp}'
+        )
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_QUEST,
+            section_start=SECTION_QUEST_START,
+            section_end=SECTION_QUEST_END,
+            clean_func=escape_for_citation_markdown_v2
+        )
+        await query.edit_message_text(
+            text=text,
+            parse_mode=ParseMode.MARKDOWN_V2
+        )
+        job_item_rarity = job_item.rarity.name
+        equipment = create_random_equipment(
+            equip_type=None,
+            group_level=group_level,
+            rarity=job_item_rarity,
+            random_level=True,
+            save_in_database=True,
+        )
+        text = f'*{helped_name}* deixou'
+        await send_drop_message(
+            context=context,
+            items=equipment,
+            text=text,
+            update=update,
+            silent=silent,
+        )
+    else:
+        text = f'Você não tem "{job_item_quantity}x {job_item_name}".'
+        await query.answer(text, show_alert=True)
+
+    remove_quest_item_job(context, job_name)
 
 
 def get_quest_text(item: Item) -> str:
@@ -160,9 +274,9 @@ def get_quest_text(item: Item) -> str:
     elif isinstance(item.item, GemstoneConsumable):
         text = choice(REPLY_TEXT_GEMSTONE_ITEM)
 
-    name = item.name
-    quantidade = item.quantity
-    item_text = f'{quantidade}x{name}'
+    item_name = item.name
+    item_quantity = item.quantity
+    item_text = f'{item_quantity}x {item_name}'
     text = text.format(item=item_text)
 
     return text
@@ -183,6 +297,23 @@ def get_job_quest_name(job_data: dict) -> str:
     name = job_data['name']
 
     return f'{CALLBACK_QUEST_PREFIX}{name}'.replace(' ', '_')
+
+
+def remove_quest_item_job(
+    context: ContextTypes.DEFAULT_TYPE,
+    job_name: str
+) -> bool:
+    '''Remove o job de Quest de Item.
+    '''
+
+    current_jobs = context.job_queue.get_jobs_by_name(job_name)
+    print('current_jobs', current_jobs)
+    if not current_jobs:
+        return False
+    for job in current_jobs:
+        job.schedule_removal()
+
+    return True
 
 
 ITEM_QUEST_HANDLER = CallbackQueryHandler(

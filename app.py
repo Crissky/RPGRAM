@@ -16,6 +16,7 @@ from bot.conversations import (
     CLOSE_MSG_HANDLER,
     SELLER_HANDLER,
     DEFEND_MSG_HANDLER,
+    ITEM_QUEST_HANDLER,
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -36,6 +37,7 @@ from bot.conversations import (
 from bot.conversations.enemy import job_create_ambush
 from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.item import job_create_find_treasure
+from bot.conversations.quest_item import job_create_item_quest
 from bot.conversations.rest import autorest_midnight
 from bot.conversations.seller import job_create_new_items
 from bot.conversations.status import job_activate_conditions
@@ -61,6 +63,7 @@ def main() -> None:
     application.add_handler(CLOSE_MSG_HANDLER)
     application.add_handler(SELLER_HANDLER)
     application.add_handler(DEFEND_MSG_HANDLER)
+    application.add_handler(ITEM_QUEST_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
@@ -119,6 +122,13 @@ def main() -> None:
         first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_NEW_ITEMS',
+    )
+    application.job_queue.run_repeating(
+        callback=job_create_item_quest,
+        interval=timedelta(hours=4),
+        first=get_midnight_hour(get_yesterday=True),
+        chat_id=MY_GROUP_ID,
+        name='JOB_CREATE_QUEST_ITEM',
     )
 
     # Run the bot until the user presses Ctrl-C

@@ -585,6 +585,7 @@ def create_random_equipment(
     weapon: str = None,
     material: str = None,
     random_level: bool = False,
+    save_in_database: bool = False,
 ) -> Item:
     '''Retorna um equipamento aleatório.
     '''
@@ -646,6 +647,10 @@ def create_random_equipment(
         **equipment_dict
     )
     item = Item(equipment)
+
+    if save_in_database is True:
+        item_model = ItemModel()
+        item_model.save(equipment)
 
     return item
 
