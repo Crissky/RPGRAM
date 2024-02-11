@@ -12,6 +12,7 @@ from telegram.ext import (
 from bot.constants.quest_item import (
     ARRIVAL_NARRATION,
     CALLBACK_QUEST_PREFIX,
+    DISAPPOINTED_NARRATION,
     LEAVE_NARRATION,
     PATTERN_ITEM_QUEST,
     QUEST_BUTTON_TEXT,
@@ -35,6 +36,7 @@ from bot.decorators import (
     skip_if_immobilized,
     skip_if_no_singup_player,
 )
+from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import get_item_from_bag_by_id
 from bot.functions.char import add_xp
 from bot.functions.chat import callback_data_to_dict, callback_data_to_string
@@ -98,6 +100,7 @@ async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+@skip_if_spawn_timeout
 async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     '''Envia a mensagem de pedido de ajuda para o grupo.
     '''
@@ -145,7 +148,7 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     )
     job_data['response'] = response
     context.job_queue.run_once(
-        callback=job_end_item_quest,
+        callback=job_fail_item_quest,
         when=timedelta(minutes=randint(60, 120)),
         data=job_data,
         name=job_name,
@@ -153,7 +156,7 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def job_end_item_quest(context: ContextTypes.DEFAULT_TYPE):
+async def job_fail_item_quest(context: ContextTypes.DEFAULT_TYPE):
     '''Encerra a quest de pedido de ajuda por falta de ajuda.
     '''
 
@@ -162,15 +165,20 @@ async def job_end_item_quest(context: ContextTypes.DEFAULT_TYPE):
     response = data['response']
     helped_name = data['helped_name']
 
-    text = f'{helped_name} foi embora.'
-    text = create_text_in_box(
-        text=text,
+    narration_text = choice(DISAPPOINTED_NARRATION)
+    narration_text.format(helped_name=helped_name)
+
+    narration_text = create_text_in_box(
+        text=narration_text,
         section_name=SECTION_TEXT_QUEST_FAIL,
         section_start=SECTION_HEAD_QUEST_FAIL_START,
         section_end=SECTION_HEAD_QUEST_FAIL_END,
     )
 
-    await response.edit_text(text=text)
+    await response.edit_text(
+        text=narration_text,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
 
 
 @skip_if_no_singup_player
