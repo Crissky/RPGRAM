@@ -1,6 +1,5 @@
 from datetime import timedelta
 from random import choice, randint
-from bson import ObjectId
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
@@ -23,7 +22,9 @@ from bot.constants.quest_item import (
     REPLY_TEXT_THANKS,
     REPLY_TEXT_TROCADO_ITEM,
     REPLY_TEXT_XP_ITEM,
-    SECTION_TEXT_QUEST
+    SECTION_TEXT_QUEST,
+    SECTION_TEXT_QUEST_COMPLETE,
+    SECTION_TEXT_QUEST_FAIL
 )
 from bot.conversations.bag import send_drop_message
 from bot.decorators import (
@@ -32,7 +33,6 @@ from bot.decorators import (
     print_basic_infos,
     skip_if_dead_char,
     skip_if_immobilized,
-    skip_if_no_have_char,
     skip_if_no_singup_player,
 )
 from bot.functions.bag import get_item_from_bag_by_id
@@ -42,18 +42,27 @@ from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
 
-from constant.text import SECTION_QUEST_END, SECTION_QUEST_START
+from constant.text import (
+    SECTION_HEAD_QUEST_COMPLETE_END,
+    SECTION_HEAD_QUEST_COMPLETE_START,
+    SECTION_HEAD_QUEST_END,
+    SECTION_HEAD_QUEST_FAIL_END,
+    SECTION_HEAD_QUEST_FAIL_START,
+    SECTION_HEAD_QUEST_START
+)
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
-from repository.mongo import ItemModel
 from repository.mongo.models.bag import BagModel
 from repository.mongo.populate.enemy import (
     choice_enemy_name,
     choice_enemy_race_name
 )
 
-from repository.mongo.populate.item import create_random_consumable, create_random_equipment
+from repository.mongo.populate.item import (
+    create_random_consumable,
+    create_random_equipment
+)
 
 from rpgram.consumables import (
     CureConsumable,
@@ -113,8 +122,8 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     text = create_text_in_box(
         text=text,
         section_name=SECTION_TEXT_QUEST,
-        section_start=SECTION_QUEST_START,
-        section_end=SECTION_QUEST_END,
+        section_start=SECTION_HEAD_QUEST_START,
+        section_end=SECTION_HEAD_QUEST_END,
         clean_func=escape_for_citation_markdown_v2
     )
     job_data = {
@@ -156,9 +165,9 @@ async def job_end_item_quest(context: ContextTypes.DEFAULT_TYPE):
     text = f'{helped_name} foi embora.'
     text = create_text_in_box(
         text=text,
-        section_name=SECTION_TEXT_QUEST,
-        section_start=SECTION_QUEST_START,
-        section_end=SECTION_QUEST_END,
+        section_name=SECTION_TEXT_QUEST_FAIL,
+        section_start=SECTION_HEAD_QUEST_FAIL_START,
+        section_end=SECTION_HEAD_QUEST_FAIL_END,
     )
 
     await response.edit_text(text=text)
@@ -226,9 +235,9 @@ async def complete_item_quest(
         )
         text = create_text_in_box(
             text=text,
-            section_name=SECTION_TEXT_QUEST,
-            section_start=SECTION_QUEST_START,
-            section_end=SECTION_QUEST_END,
+            section_name=SECTION_TEXT_QUEST_COMPLETE,
+            section_start=SECTION_HEAD_QUEST_COMPLETE_START,
+            section_end=SECTION_HEAD_QUEST_COMPLETE_END,
             clean_func=escape_for_citation_markdown_v2
         )
         await query.edit_message_text(
