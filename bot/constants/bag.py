@@ -91,6 +91,8 @@ USE_MANY_BUTTON_TEXT = f'{EmojiEnum.USE_POTION.value}Usar x{{quantity_option}}'
 NAV_BACK_BUTTON_TEXT = f'Voltar{EmojiEnum.BACK.value}'
 NAV_PREVIOUS_BUTTON_TEXT = f'{EmojiEnum.PREVIOUS_PAGE.value} Anterior'
 NAV_NEXT_BUTTON_TEXT = f'Próxima {EmojiEnum.NEXT_PAGE.value}'
+NAV_PREVIOUS_ITEM_BUTTON_TEXT = f'{EmojiEnum.PREVIOUS_PAGE.value} Anterior'
+NAV_NEXT_ITEM_BUTTON_TEXT = f'Próximo {EmojiEnum.NEXT_PAGE.value}'
 NAV_START_BUTTON_TEXT = f'{EmojiEnum.FIRST_PAGE.value} Primeira'
 NAV_END_BUTTON_TEXT = f'Última {EmojiEnum.LAST_PAGE.value}'
 

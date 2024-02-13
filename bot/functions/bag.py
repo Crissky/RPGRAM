@@ -13,6 +13,21 @@ IDENTIFYING_LENS = 'Identifying Lens'
 LIMIT_ITEM_IN_BAG = 100
 
 
+def get_page_and_item_pos(page, item_pos):
+    if item_pos < 0:
+        page -= 1
+        item_pos = ITEMS_PER_PAGE - 1
+    elif item_pos >= ITEMS_PER_PAGE:
+        page += 1
+        item_pos = 0
+
+    if page < 0:
+        page = 0
+        item_pos = 0
+
+    return page, item_pos
+
+
 def get_item_from_bag_by_position(
     user_id: int,
     page: int,
@@ -30,6 +45,26 @@ def get_item_from_bag_by_position(
     )
     item = player_bag[0]
     return item
+
+
+def exist_item_in_bag_by_position(
+    user_id: int,
+    page: int,
+    item_pos: int
+) -> Item:
+    '''Retorna True se o Item da posição passada existe na Bag e retorna 
+    False, caso contrário.
+    '''
+
+    bag_model = BagModel()
+    item_index = (ITEMS_PER_PAGE * page) + item_pos
+    player_bag = bag_model.get(
+        query={'player_id': user_id},
+        fields={'items_ids': {'$slice': [item_index, 1]}},
+        partial=False
+    )
+
+    return bool(player_bag)
 
 
 def get_item_from_bag_by_id(
@@ -207,7 +242,6 @@ def is_full_bag(user_id: int) -> bool:
         f'items_ids.{LIMIT_ITEM_IN_BAG}': {'$exists': True}
     }
     bag_dict = bag_model.get(query=query, fields=['player_id'])
-    print(bag_dict)
 
     return bool(bag_dict)
 
@@ -224,3 +258,11 @@ if __name__ == '__main__':
     print('have_identifying_lens:', have_identifying_lens(MY_ID))
     # print(drop_random_items_from_bag(MY_ID))
     print('is_full_bag:', is_full_bag(MY_ID))
+
+    print(
+        get_item_from_bag_by_position(
+            user_id=MY_ID,
+            page=7,
+            item_pos=1
+        )
+    )
