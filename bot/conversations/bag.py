@@ -46,9 +46,11 @@ from bot.constants.bag import (
     ITEMS_PER_PAGE,
     EQUIP_LEFT_BUTTON_TEXT,
     NAV_BACK_BUTTON_TEXT,
+    NAV_NEXT_ITEM_BUTTON_TEXT,
     NAV_PREVIOUS_BUTTON_TEXT,
     NAV_END_BUTTON_TEXT,
     NAV_NEXT_BUTTON_TEXT,
+    NAV_PREVIOUS_ITEM_BUTTON_TEXT,
     NAV_START_BUTTON_TEXT,
     PATTERN_CLOSE_BAG,
     PATTERN_DESTROY_ITEM,
@@ -92,9 +94,11 @@ from bot.decorators import (
 )
 from bot.functions.bag import (
     LIMIT_ITEM_IN_BAG,
+    exist_item_in_bag_by_position,
     exists_in_bag,
     get_identifying_lens,
     get_item_from_bag_by_position,
+    get_page_and_item_pos,
     have_identifying_lens,
     is_full_bag,
     sub_identifying_lens_from_bag
@@ -426,6 +430,13 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         item_pos=item_pos,
         item=item
     )
+    navigation_item_buttons = get_navigation_item_buttons(
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        item_pos=item_pos,
+        quantity=item.quantity
+    )
     back_button = get_back_button(
         page=page,
         user_id=user_id,
@@ -438,6 +449,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         identify_button,
         *discard_buttons,
         *sell_buttons,
+        navigation_item_buttons,
         back_button
     ])
     # Edita mensagem com as informações do item escolhido
@@ -518,6 +530,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             character=player_character,
             hand=hand,
             page=page,
+            item_pos=item_pos,
             query=query,
             old_reply_markup=old_reply_markup,
         )
@@ -534,6 +547,7 @@ async def use_item_equipment(
     character: BaseCharacter,
     hand: str,
     page: int,
+    item_pos: int,
     query: CallbackQuery,
     old_reply_markup: InlineKeyboardMarkup
 ) -> List[Equipment]:
@@ -571,13 +585,23 @@ async def use_item_equipment(
         markdown=True
     )
     markdown_player_sheet = escape_basic_markdown_v2(markdown_player_sheet)
+    navigation_item_buttons = get_navigation_item_buttons(
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        item_pos=item_pos,
+        quantity=0
+    )
     back_button = get_back_button(
         page=page,
         user_id=user_id,
         target_id=target_id,
         retry_state=START_ROUTES
     )
-    reply_markup = InlineKeyboardMarkup([back_button])
+    reply_markup = InlineKeyboardMarkup([
+        navigation_item_buttons,
+        back_button
+    ])
     await query.edit_message_text(
         text=markdown_player_sheet,
         reply_markup=reply_markup,
@@ -637,13 +661,23 @@ async def use_item_consumable(
             f'{all_report_text}'
         )
         if item.quantity <= 0:
+            navigation_item_buttons = get_navigation_item_buttons(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                item_pos=item_pos,
+                quantity=item.quantity
+            )
             back_button = get_back_button(
                 page=page,
                 user_id=user_id,
                 target_id=target_id,
                 retry_state=USE_ROUTES
             )
-            reply_markup = InlineKeyboardMarkup([back_button])
+            reply_markup = InlineKeyboardMarkup([
+                navigation_item_buttons,
+                back_button
+            ])
         else:
             use_buttons = get_use_consumable_buttons(
                 page=page,
@@ -666,6 +700,13 @@ async def use_item_consumable(
                 item_pos=item_pos,
                 item=item
             )
+            navigation_item_buttons = get_navigation_item_buttons(
+                page=page,
+                user_id=user_id,
+                target_id=target_id,
+                item_pos=item_pos,
+                quantity=item.quantity
+            )
             back_button = get_back_button(
                 page=page,
                 user_id=user_id,
@@ -676,6 +717,7 @@ async def use_item_consumable(
                 *use_buttons,
                 *discard_buttons,
                 *sell_buttons,
+                navigation_item_buttons,
                 back_button
             ])
         markdown_text = escape_basic_markdown_v2(markdown_text)
@@ -810,13 +852,23 @@ async def sell_item(
     item.sub(quantity=sell_quantity)
 
     if item.quantity <= 0 or isinstance(item.item, Equipment):
+        navigation_item_buttons = get_navigation_item_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            quantity=item.quantity
+        )
         back_button = get_back_button(
             page=page,
             user_id=user_id,
             target_id=target_id,
             retry_state=START_ROUTES
         )
-        reply_markup = InlineKeyboardMarkup([back_button])
+        reply_markup = InlineKeyboardMarkup([
+            navigation_item_buttons,
+            back_button
+        ])
     else:
         use_buttons = get_use_consumable_buttons(
             page=page,
@@ -839,6 +891,13 @@ async def sell_item(
             item_pos=item_pos,
             item=item
         )
+        navigation_item_buttons = get_navigation_item_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            quantity=item.quantity
+        )
         back_button = get_back_button(
             page=page,
             user_id=user_id,
@@ -849,6 +908,7 @@ async def sell_item(
             *use_buttons,
             *discard_buttons,
             *sell_buttons,
+            navigation_item_buttons,
             back_button
         ])
 
@@ -941,13 +1001,23 @@ async def drop_item(
 
     bag_model.sub(item, user_id, quantity=-(drop))
 
+    navigation_item_buttons = get_navigation_item_buttons(
+        page=page,
+        user_id=user_id,
+        target_id=target_id,
+        item_pos=item_pos,
+        quantity=(item.quantity - drop),
+    )
     back_button = get_back_button(
         page=page,
         user_id=user_id,
         target_id=target_id,
         retry_state=START_ROUTES
     )
-    reply_markup = InlineKeyboardMarkup([back_button])
+    reply_markup = InlineKeyboardMarkup([
+        navigation_item_buttons,
+        back_button
+    ])
     markdown_text = f'Você dropou o item "{drop}x {item.name}".'
     markdown_text = escape_basic_markdown_v2(markdown_text)
     await query.edit_message_text(
@@ -1480,6 +1550,57 @@ def get_extremes_navigation_buttons(
     return extremes_navigation_keyboard
 
 
+def get_navigation_item_buttons(
+    page: int,
+    user_id: int,
+    target_id: int,
+    item_pos: int,
+    quantity: int = None,
+) -> List[InlineKeyboardButton]:
+    navigation_item_buttons = []
+    have_next_item = exist_item_in_bag_by_position(
+        user_id=user_id,
+        page=page,
+        item_pos=item_pos + 1
+    )
+
+    if item_pos > 0 or page > 0:
+        back_item_pos = (item_pos - 1)
+        back_page, back_item_pos = get_page_and_item_pos(page, back_item_pos)
+        navigation_item_buttons.append(
+            InlineKeyboardButton(
+                text=NAV_PREVIOUS_ITEM_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'item': back_item_pos,
+                    'page': back_page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
+            )
+        )
+
+    if have_next_item:
+        fwd_item_pos = (item_pos + 1)
+        fwd_page = page
+        fwd_page, fwd_item_pos = get_page_and_item_pos(page, fwd_item_pos)
+        if quantity <= 0:
+            fwd_item_pos = item_pos
+            fwd_page = page
+        navigation_item_buttons.append(
+            InlineKeyboardButton(
+                text=NAV_NEXT_ITEM_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'item': fwd_item_pos,
+                    'page': fwd_page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
+            )
+        )
+
+    return navigation_item_buttons
+
+
 def get_use_consumable_buttons(
     page: int,
     user_id: int,
@@ -1731,6 +1852,7 @@ BAG_HANDLER = ConversationHandler(
     states={
         START_ROUTES: [
             CallbackQueryHandler(start, pattern=PATTERN_PAGE),
+            CallbackQueryHandler(check_item, pattern=PATTERN_ITEM),
         ],
         CHECK_ROUTES: [
             CallbackQueryHandler(start, pattern=PATTERN_PAGE),
@@ -1745,6 +1867,7 @@ BAG_HANDLER = ConversationHandler(
         ],
         USE_ROUTES: [
             CallbackQueryHandler(start, pattern=PATTERN_PAGE),
+            CallbackQueryHandler(check_item, pattern=PATTERN_ITEM),
             CallbackQueryHandler(use_item, pattern=PATTERN_USE),
             CallbackQueryHandler(drop_item, pattern=PATTERN_DROP),
             CallbackQueryHandler(sell_item, pattern=PATTERN_SELL),

@@ -169,7 +169,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([BERSERKER] * CURE_ITEMS_LEVEL),
         'weight': 0.05,
-        'rarity': RarityEnum.UNCOMMON.name,
+        'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
     {
@@ -219,7 +219,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([CURSE] * CURE_ITEMS_LEVEL),
         'weight': 0.20,
-        'rarity': RarityEnum.RARE.name,
+        'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
     {
@@ -229,7 +229,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([EXHAUSTION] * CURE_ITEMS_LEVEL),
         'weight': 0.25,
-        'rarity': RarityEnum.UNCOMMON.name,
+        'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
     {
@@ -239,7 +239,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([FROZEN] * CURE_ITEMS_LEVEL),
         'weight': 0.25,
-        'rarity': RarityEnum.UNCOMMON.name,
+        'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
     {
@@ -249,7 +249,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([PARALYSIS] * CURE_ITEMS_LEVEL),
         'weight': 0.55,
-        'rarity': RarityEnum.UNCOMMON.name,
+        'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
     {
@@ -259,7 +259,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([PETRIFIED] * CURE_ITEMS_LEVEL),
         'weight': 0.15,
-        'rarity': RarityEnum.RARE.name,
+        'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
     },
     {
@@ -295,7 +295,7 @@ CONSUMABLES = [
             EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
         ] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 1.23,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
 
@@ -309,7 +309,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([BERSERKER] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 0.10,
-        'rarity': RarityEnum.RARE.name,
+        'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
     },
 
@@ -365,7 +365,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([CURSE] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 0.40,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
     },
     {
@@ -376,7 +376,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([EXHAUSTION] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 0.50,
-        'rarity': RarityEnum.RARE.name,
+        'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
     },
     {
@@ -387,7 +387,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([FROZEN] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 0.50,
-        'rarity': RarityEnum.RARE.name,
+        'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
     },
     {
@@ -398,7 +398,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([PARALYSIS] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 1.10,
-        'rarity': RarityEnum.RARE.name,
+        'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
     },
     {
@@ -409,7 +409,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([PETRIFIED] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 0.30,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
     },
     {
@@ -447,7 +447,7 @@ CONSUMABLES = [
             EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
         ] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 3.14,
-        'rarity': RarityEnum.LEGENDARY.name,
+        'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
     },
 
@@ -460,7 +460,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([BERSERKER] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 0.20,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
 
@@ -516,7 +516,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([CURSE] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 0.80,
-        'rarity': RarityEnum.LEGENDARY.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
     {
@@ -527,7 +527,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([EXHAUSTION] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 1.00,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
     {
@@ -538,7 +538,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([FROZEN] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 1.00,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
     {
@@ -549,7 +549,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([PARALYSIS] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 2.20,
-        'rarity': RarityEnum.EPIC.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
     {
@@ -560,7 +560,7 @@ CONSUMABLES = [
         ),
         'condition_target': ([PETRIFIED] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 0.60,
-        'rarity': RarityEnum.LEGENDARY.name,
+        'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
     },
     {
@@ -598,7 +598,7 @@ CONSUMABLES = [
             EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
         ] * SUPERIOR_CURE_ITEMS_LEVEL),
         'weight': 6.66,
-        'rarity': RarityEnum.MYTHIC.name,
+        'rarity': RarityEnum.LEGENDARY.name,
         'class': CureConsumable
     },
 

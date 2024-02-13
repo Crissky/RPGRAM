@@ -190,6 +190,9 @@ class Bag:
         if isinstance(items, (int, slice)):
             return self.__items[items]
 
+    def __len__(self):
+        return len(self.__items)
+
     # Getters
     @property
     def weight(self) -> float:
