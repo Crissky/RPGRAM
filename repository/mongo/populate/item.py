@@ -162,11 +162,11 @@ def choice_rarity(group_level: int) -> str:
     rarities = {RarityEnum.COMMON.name: 100, RarityEnum.UNCOMMON.name: 50}
     if group_level >= 50:
         rarities[RarityEnum.RARE.name] = min(rare_probs, 50)
-    if group_level >= 100:
-        rarities[RarityEnum.EPIC.name] = min(epic_probs, 50)
-    if group_level >= 250:
-        rarities[RarityEnum.LEGENDARY.name] = min(legendary_probs, 50)
     if group_level >= 500:
+        rarities[RarityEnum.EPIC.name] = min(epic_probs, 50)
+    if group_level >= 1500:
+        rarities[RarityEnum.LEGENDARY.name] = min(legendary_probs, 50)
+    if group_level >= 2000:
         rarities[RarityEnum.MYTHIC.name] = min(mythic_probs, 50)
 
     return weighted_choice(**rarities)
@@ -193,12 +193,23 @@ def choice_material(
         "chance_reducer": Redutor de propabilidade dos materiais mais raros.
         "total_materials": Número máximo de materiais mais raros que ficarão 
             na lista para serem escolhidos.
+
+    level_base: 25      level_base: 50
+    M:1, LV: 0          M:1, LV:0
+    M:2, LV: 25         M:2, LV:50
+    M:3, LV: 100        M:3, LV:200
+    M:4, LV: 225        M:4, LV:450
+    M:5, LV: 400        M:5, LV:800
+    M:6, LV: 625        M:6, LV:1250
+    M:7, LV: 900        M:7, LV:1800
+    M:8, LV: 1225       M:8, LV:2450
+    M:9, LV: 1600       M:9, LV:3200
     '''
 
     materials = {}
     chance = 100 + (len(equipment_materials) * chance_reducer)
     for material, multiplier in equipment_materials.items():
-        level_threshold = level_base * (multiplier - 1)
+        level_threshold = level_base * ((multiplier - 1) ** 2)
         if group_level >= level_threshold or not materials:
             materials[material] = chance
             chance -= chance_reducer
