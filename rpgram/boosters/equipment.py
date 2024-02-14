@@ -39,6 +39,7 @@ class Equipment(StatsBooster):
         weight: float = 10,
         requirements: Dict[str, Any] = {},
         rarity: Union[RarityEnum, str] = 'COMMON',
+        material_level: int = None,
         _id: Union[str, ObjectId] = None,
         bonus_strength: int = 0,
         bonus_dexterity: int = 0,
@@ -158,6 +159,11 @@ class Equipment(StatsBooster):
 
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
+        if not isinstance(rarity, RarityEnum):
+            raise ValueError(
+                f'rarity precisa ser uma string ou RarityEnum. '
+                f'({type(rarity)})'
+            )
 
         self.__name = name
         self.__equip_type = equip_type
@@ -165,6 +171,7 @@ class Equipment(StatsBooster):
         self.__weight = weight
         self.__requirements = requirements
         self.__rarity = rarity
+        self.__material_level = material_level
 
     def compare(
         self,
@@ -190,6 +197,8 @@ class Equipment(StatsBooster):
         # DIFFs
         other_names = []
         other_power = 0
+        other_rarity_level = 0
+        other_material_level = 0
         other_strength = 0
         other_dexterity = 0
         other_constitution = 0
@@ -215,6 +224,14 @@ class Equipment(StatsBooster):
         for other_equipment in others_equipment:
             other_names.append(other_equipment.name_and_power)
             other_power += other_equipment.power
+            other_rarity_level = max(
+                other_rarity_level,
+                other_equipment.rarity_level
+            )
+            other_rarity_level = max(
+                other_rarity_level,
+                other_equipment.material_level
+            )
             other_strength += other_equipment.strength
             other_dexterity += other_equipment.dexterity
             other_constitution += other_equipment.constitution
@@ -250,6 +267,8 @@ class Equipment(StatsBooster):
             other_evasion += other_equipment.evasion
 
         other_names = ' e '.join(other_names)
+        rarity_level_diff = (self.rarity_level - other_rarity_level)
+        material_level_diff = (self.material_level - other_material_level)
         power_diff = (self.power - other_power)
 
         strength_diff = (self.strength - other_strength)
@@ -303,6 +322,11 @@ class Equipment(StatsBooster):
             f'*Equipamento*: {self.name}\n'
             f'*Tipo*: {self.equip_type.value}{type_icon}\n'
             f'{damage_types}'
+            f'*Raridade*: {self.rarity.value}\n'
+            f'*Nível de Raridade*: {self.rarity_level} '
+            f'{{{rarity_level_diff:+}}}\n'
+            f'*Nível do Material*: {self.material_level} '
+            f'{{{material_level_diff:+}}}\n'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{{{power_diff:+}}}{power_multiplier}\n'
             f'*Valor*: {price_text}\n'
@@ -397,6 +421,11 @@ class Equipment(StatsBooster):
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
+        material_level = (
+            self.material_level
+            if self.material_level
+            else 'Nível não identificado'
+        )
 
         type_icon = EmojiEnum[self.equip_type.name].value
         price_text = self.price_text if is_sell else self.sell_price_text
@@ -405,6 +434,8 @@ class Equipment(StatsBooster):
             f'*Tipo*: {self.name_type}{type_icon}\n'
             f'{damage_types}'
             f'*Raridade*: {self.rarity.value}\n'
+            f'*Nível de Raridade*: {self.rarity_level}\n'
+            f'*Nível do Material*: {material_level}\n'
             f'*Poder*: {self.power}{EmojiEnum.EQUIPMENT_POWER.value} '
             f'{power_multiplier}\n'
             f'*Valor*: {price_text}\n'
@@ -570,12 +601,17 @@ class Equipment(StatsBooster):
     def sell_price_text(self) -> str:
         return f'{self.sell_price}{EmojiEnum.TROCADO.value}'
 
+    @property
+    def rarity_level(self):
+        return get_enum_index(self.rarity) + 1
+
     name = property(lambda self: self.identifiable_tag + self.__name)
     equip_type = property(lambda self: self.__equip_type)
     damage_types = property(lambda self: self.__damage_types)
     weight = property(lambda self: self.__weight)
     requirements = property(lambda self: self.__requirements)
     rarity = property(lambda self: self.__rarity)
+    material_level = property(lambda self: self.__material_level or 0)
 
 
 if __name__ == '__main__':
