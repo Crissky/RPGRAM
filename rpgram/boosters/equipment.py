@@ -476,6 +476,7 @@ class Equipment(StatsBooster):
             requirements=self.__requirements,
             weight=self.__weight,
             rarity=self.__rarity.name,
+            material_level=self.__material_level,
         )
         _dict.update(super().to_dict())
 
