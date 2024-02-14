@@ -1327,7 +1327,7 @@ async def send_drop_message(
         raise ValueError('update ou chat_id são requeridos')
     if isinstance(items, Item):
         items = [items]
-    for item in items:
+    for i, item in enumerate(items):
         item_id = str(item._id)
         drop = item.quantity
         take_break_buttons = get_take_break_buttons(drop, item_id)
@@ -1388,7 +1388,9 @@ async def send_drop_message(
             drops[drops_message_id] = True
         else:
             create_and_put_drop_dict(context, drops_message_id)
-        sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
+
+        if i % 3 == 0:
+            sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
 def create_and_put_drop_dict(
