@@ -305,6 +305,22 @@ def get_equipment_and_material(
     return weapon, material
 
 
+def get_material_level(equip_type: str, material: str,) -> int:
+    if equip_type in WEAPON_EQUIPMENTS_ENUM:
+        material_bonus = WEAPON_MATERIALS[material]
+    elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
+        material_bonus = WEARABLE_MATERIALS[material]
+    elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
+        material_bonus = ACCESSORY_MATERIALS[material]
+    else:
+        raise ValueError(
+            f'Não foi possível definir o Nível do Material, pois o '
+            f'tipo de equipamento "{equip_type}" não foi encontrado.'
+        )
+
+    return material_bonus
+
+
 def check_equipment_type(equip_type: str, weapon: str):
     error_message = (
         f'Arma "{weapon}" não encontrada para o tipo de equipamento '
@@ -366,12 +382,7 @@ def get_bonus_and_penality(
         else 1
     )
 
-    if equip_type in WEAPON_EQUIPMENTS_ENUM:
-        material_bonus = WEAPON_MATERIALS[material]
-    elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
-        material_bonus = WEARABLE_MATERIALS[material]
-    elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
-        material_bonus = ACCESSORY_MATERIALS[material]
+    material_bonus = get_material_level(equip_type, material)
 
     bonus_multiplier = (equip_type_bonus + rarity_bonus + material_bonus)
     penality_multiplier = bonus_multiplier // 3
@@ -615,6 +626,10 @@ def create_random_equipment(
     _weapon, _material = get_equipment_and_material(equip_type, group_level)
     weapon = weapon if weapon else _weapon
     material = material if material else _material
+    material_level = get_material_level(
+        equip_type=equip_type,
+        material=material
+    )
 
     check_equipment_type(equip_type, weapon)
 
@@ -654,6 +669,7 @@ def create_random_equipment(
         weight=weight,
         requirements={'level': group_level},
         rarity=rarity,
+        material_level=material_level,
         _id=ObjectId(),
         **equipment_dict
     )

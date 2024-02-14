@@ -97,6 +97,7 @@ class TacticalWearableMaterialEnum(Enum):
     CHAIN_MITHRIL = 'Anéis de Mitril'
 
 
+# ACCESSORIES
 class AccessoryMaterialsEnum(Enum):
     BRONZE = 'Bronze'
     SILVER = 'Prata'
