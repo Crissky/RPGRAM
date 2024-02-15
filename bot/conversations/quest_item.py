@@ -268,11 +268,12 @@ async def complete_item_quest(
             update=update,
             silent=silent,
         )
+        remove_quest_item_job(context, job_name)
+        return ConversationHandler.END
     else:
         text = f'Você não tem "{job_item_quantity}x {job_item_name}".'
         await query.answer(text, show_alert=True)
-
-    remove_quest_item_job(context, job_name)
+        return ConversationHandler.END
 
 
 def get_quest_text(item: Item) -> str:
