@@ -11,3 +11,4 @@ class TargetEnum(Enum):
 class SkillTypeEnum(Enum):
     ATTACK = 'attack'
     DEFENSE = 'defense'
+    HEALING = 'healing'
