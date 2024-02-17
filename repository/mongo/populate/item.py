@@ -164,7 +164,7 @@ def choice_rarity(group_level: int) -> str:
         rarities[RarityEnum.RARE.name] = min(rare_probs, 50)
     if group_level >= 500:
         rarities[RarityEnum.EPIC.name] = min(epic_probs, 50)
-    if group_level >= 1500:
+    if group_level >= 1250:
         rarities[RarityEnum.LEGENDARY.name] = min(legendary_probs, 50)
     if group_level >= 2000:
         rarities[RarityEnum.MYTHIC.name] = min(mythic_probs, 50)
