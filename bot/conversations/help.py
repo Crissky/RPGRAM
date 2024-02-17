@@ -388,6 +388,13 @@ def get_details_text(option: str) -> str:
             f'As raridades são:\n'
             f'{help_enum(RarityEnum)}.\n\n'
 
+            f'Níveis de equipamentos que as raridades começam a aparecer:\n'
+            f'Nível 1: {RarityEnum.COMMON.value} e {RarityEnum.UNCOMMON.value}\n'
+            f'Nível 50: {RarityEnum.RARE.value}\n'
+            f'Nível 500: {RarityEnum.EPIC.value}\n'
+            f'Nível 1250: {RarityEnum.LEGENDARY.value}\n'
+            f'Nível 2000: {RarityEnum.MYTHIC.value}\n\n'
+
             f'{EmojiEnum.EQUIPMENT_MATERIAL.value}*MATERIAIS*\n\n'
 
             f'Os materias variam de acordo com o `Tipo do Equipamento` '
@@ -403,7 +410,26 @@ def get_details_text(option: str) -> str:
             f'*Máscaras* : {help_enum(MagicalMaskMaterialEnum)}.\n\n'
             f'*Capas* : {help_enum(TacticalWearableMaterialEnum)}.\n\n'
             f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.\n\n'
-            f'*Moedas* : {help_enum(CoinMaterialsEnum)}.'
+            f'*Moedas* : {help_enum(CoinMaterialsEnum)}.\n\n'
+
+            f'Níveis de aparição dos Materiais dos Equipamentos:\n'
+            f'Nível 1: Primeiro Material\n'
+            f'Nível 25: Segundo Material\n'
+            f'Nível 100: Terceiro Material\n'
+            f'Nível 225: Quarto Material\n'
+            f'Nível 400: Quinto Material\n'
+            f'Nível 625: Sexto Material\n'
+            f'Nível 900: Sétimo Material\n'
+            f'Nível 1225: Oitavo Material\n'
+            f'Nível 1600: Nono Material\n\n'
+
+            f'Níveis de aparição dos Materiais dos Acessórios:\n'
+            f'Nível 1: Primeiro Material\n'
+            f'Nível 50: Segundo Material\n'
+            f'Nível 200: Terceiro Material\n'
+            f'Nível 450: Quarto Material\n'
+            f'Nível 800: Quinto Material\n'
+            f'Nível 1250: Sexto Material\n\n'
         )
     elif option == CALLBACK_BASE_ATTRIBUTES:
         text = (
