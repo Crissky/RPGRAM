@@ -318,13 +318,16 @@ class Equips:
             return equipment.get_sheet(
                 verbose=True,
                 markdown=True,
-                is_sell=True
+                is_sell=is_sell,
             )
         elif equipment.equip_type == EquipmentEnum.ONE_HAND and (
             self.left_hand is not None or self.right_hand is not None
         ):
             texts = []
-            if self.left_hand is not None:
+            if (
+                self.left_hand is not None and
+                not self.equiped_two_handed_weapon()
+            ):
                 compare_text = equipment.compare(
                     self.left_hand,
                     is_sell=is_sell
