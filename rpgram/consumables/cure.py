@@ -41,7 +41,7 @@ class CureConsumable(Consumable):
             target.status.remove_condition(condition_target)["text"]
             for condition_target in self.condition_target
         ]
-        report_list = set(report_list)
+        report_list = list(dict.fromkeys(report_list))
         report = {"text": "\n".join(report_list)}
 
         return report
