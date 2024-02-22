@@ -105,11 +105,11 @@ class Item:
 
     @property
     def full_price(self) -> int:
-        return self.price * self.quantity
+        return int(self.price * self.quantity)
 
     @property
     def full_sell_price(self) -> int:
-        return self.sell_price * self.quantity
+        return int(self.sell_price * self.quantity)
 
     @property
     def price_text(self) -> str:
