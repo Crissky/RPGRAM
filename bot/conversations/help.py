@@ -63,7 +63,7 @@ from bot.conversations.close import get_close_button
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
-from bot.functions.player import get_player_name_by_chat_id
+from bot.functions.player import get_players_name_by_chat_id
 
 from constant.text import (
     SECTION_HEAD,
@@ -1134,7 +1134,7 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_INFO_DEPLOY_BOT()')
     job = context.job
     chat_id = job.chat_id
-    player_name = get_player_name_by_chat_id(chat_id=chat_id)
+    player_name = get_players_name_by_chat_id(chat_id=chat_id)
     await context.bot.send_message(
         chat_id=chat_id,
         text=(

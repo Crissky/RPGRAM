@@ -27,7 +27,7 @@ from bot.decorators import (
 )
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
-from bot.functions.player import get_player_id_by_chat_id
+from bot.functions.player import get_players_id_by_chat_id
 from constant.text import (
     SECTION_HEAD_REST_END,
     SECTION_HEAD_REST_MIDDAY_END,
@@ -175,7 +175,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     job = context.job
     chat_id = job.chat_id
-    user_ids = get_player_id_by_chat_id(chat_id=chat_id)
+    user_ids = get_players_id_by_chat_id(chat_id=chat_id)
     silent = get_attribute_group_or_player(chat_id, 'silent')
     texts = []
     for user_id in user_ids:
