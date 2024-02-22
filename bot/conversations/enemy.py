@@ -293,6 +293,7 @@ async def defense_enemy_attack(
         return ConversationHandler.END
 
     if defenser_user_id == target_user_id:
+        put_ambush_dict(context=context, enemy=enemy_char)
         await query.answer(
             'Você não pode defender a si mesmo.',
             show_alert=True
