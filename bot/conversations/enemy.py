@@ -112,7 +112,11 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     chat_id = job.chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
-    enemy_list = create_random_enemies(group_level)
+    enemy_list = create_random_enemies(
+        group_level=group_level,
+        num_min_enemies=3,
+        num_max_enemies=10,
+    )
     message_id = None
 
     await context.bot.send_chat_action(

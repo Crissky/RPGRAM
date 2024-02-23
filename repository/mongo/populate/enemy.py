@@ -18,11 +18,26 @@ from rpgram.characters import NPCharacter
 from rpgram.enums import AlignmentEnum, EnemyStarsEnum, EquipmentEnum
 
 
-def get_total_enemy(max_number_enemies: int = 5) -> int:
+def get_total_enemy(
+    min_number_enemies: int = 1,
+    max_number_enemies: int = 5
+) -> int:
     '''Retorna o número total de inimigos que serão criados'''
+
+    min_number_enemies -= 1
+    if min_number_enemies == max_number_enemies:
+        return min_number_enemies
+    elif min_number_enemies > max_number_enemies:
+        raise ValueError(
+            'min_number_enemies deve ser menor que max_number_enemies'
+        )
+
+    probs_and_num_enemies = enumerate(range(
+        max_number_enemies, min_number_enemies, -1
+    ))
     number_enemies_probs = {
-        f'{num_enemies+1}': probs
-        for num_enemies, probs in enumerate(range(max_number_enemies, 0, -1))
+        f'{num_enemies}': probs + 1
+        for probs, num_enemies in probs_and_num_enemies
     }
     return int(weighted_choice(**number_enemies_probs))
 
@@ -189,10 +204,11 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
 def create_random_enemies(
     group_level: int,
     no_boss: bool = False,
+    num_min_enemies: int = 1,
     num_max_enemies: int = 5,
 ) -> List[NPCharacter]:
     '''Cria inimigos de maneira aleatória.'''
-    total_enemy = get_total_enemy(num_max_enemies)
+    total_enemy = get_total_enemy(num_min_enemies, num_max_enemies)
     enemy_list = []
     for _ in range(total_enemy):
         enemy_level = random_group_level(group_level)
