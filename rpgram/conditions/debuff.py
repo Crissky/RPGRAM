@@ -128,7 +128,7 @@ class BlindnessCondition(DebuffCondition):
     def description(self) -> str:
         return (
             'Reduz o multiplicador de Destreza em '
-            f'"{self.multiplier_dexterity:.2f}x" (10% x Nível).'
+            f'"{self.multiplier_dexterity - 1:.2f}x" (10% x Nível).'
         )
 
     @property
@@ -161,7 +161,7 @@ class BurnCondition(DebuffCondition):
     def description(self) -> str:
         return (
             f'Reduz o multiplicador de Constituição em '
-            f'"{self.multiplier_constitution:.2f}x" (10% x Nível).'
+            f'"{self.multiplier_constitution - 1:.2f}x" (10% x Nível).'
         )
 
     @property
@@ -222,8 +222,8 @@ class CurseCondition(DebuffCondition):
     def description(self) -> str:
         return (
             f'Reduz os multiplicadores de Inteligência e Sabedoria em '
-            f'"{self.multiplier_intelligence:.2f}x" e '
-            f'"{self.multiplier_wisdom:.2f}x" (10% x Nível).'
+            f'"{self.multiplier_intelligence - 1:.2f}x" e '
+            f'"{self.multiplier_wisdom - 1:.2f}x" (10% x Nível).'
         )
 
     @property
@@ -261,8 +261,8 @@ class ExhaustionCondition(DebuffCondition):
     def description(self) -> str:
         return (
             f'Reduz os multiplicadores de Força e Destreza em '
-            f'"{self.multiplier_strength:.2f}x" e '
-            f'"{self.multiplier_dexterity:.2f}x" '
+            f'"{self.multiplier_strength - 1:.2f}x" e '
+            f'"{self.multiplier_dexterity - 1:.2f}x" '
             f'(10% x Nível).'
         )
 

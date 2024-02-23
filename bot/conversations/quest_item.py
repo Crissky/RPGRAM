@@ -55,7 +55,7 @@ from constant.text import (
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
-from repository.mongo.models.bag import BagModel
+from repository.mongo import BagModel, PlayerModel
 from repository.mongo.populate.enemy import (
     choice_enemy_name,
     choice_enemy_race_name
@@ -76,6 +76,7 @@ from rpgram.consumables import (
     XPConsumable
 )
 from rpgram import Item
+from rpgram.enums import EmojiEnum, TrocadoEnum
 
 
 async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
@@ -197,8 +198,6 @@ async def complete_item_quest(
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     query = update.callback_query
-    group_level = get_attribute_group(chat_id, 'group_level')
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     data = callback_data_to_dict(query.data)
 
     job_name = data['item_quest_job_name']
@@ -210,70 +209,136 @@ async def complete_item_quest(
 
     job = current_jobs[0]
     job_data = job.data
-    job_item = job_data['item']
-    job_item_id = job_item._id
-    job_item_name = job_item.name
-    job_item_quantity = job_item.quantity
+    quest_item = job_data['item']
+    helped_name = job_data['helped_name']
     user_item = get_item_from_bag_by_id(
         user_id=user_id,
-        item_id=job_item_id
+        item_id=quest_item._id
     )
-    if user_item and user_item.quantity >= job_item_quantity:
-        helped_name = job_data['helped_name']
+
+    if isinstance(quest_item.item, TrocadoPouchConsumable):
+        is_complete = await complete_trocado_pouch_quest(
+            trocado_pouch_item=quest_item,
+            user_id=user_id,
+            query=query
+        )
+        if is_complete is True:
+            await send_item_quest_reward(
+                job_name=job_name,
+                helped_name=helped_name,
+                quest_item=quest_item,
+                update=update,
+                context=context
+            )
+    elif user_item and user_item.quantity >= quest_item.quantity:
         bag_model = BagModel()
         bag_model.sub(
             item=user_item,
             player_id=user_id,
-            quantity=job_item_quantity
+            quantity=quest_item.quantity
         )
-        base_xp = int(job_item.full_price // 10)
-        report_xp = add_xp(
-            chat_id=chat_id,
-            user_id=user_id,
-            base_xp=base_xp,
-        )
-        text_xp = report_xp['text']
-        thanks_text = choice(REPLY_TEXT_THANKS)
-        narration_text = choice(LEAVE_NARRATION)
-        narration_text = narration_text.format(helped_name=helped_name)
-        text = (
-            f'>{helped_name}: {thanks_text}\n\n'
-            f'{narration_text}\n\n'
-            f'{text_xp}'
-        )
-        text = create_text_in_box(
-            text=text,
-            section_name=SECTION_TEXT_QUEST_COMPLETE,
-            section_start=SECTION_HEAD_QUEST_COMPLETE_START,
-            section_end=SECTION_HEAD_QUEST_COMPLETE_END,
-            clean_func=escape_for_citation_markdown_v2
-        )
-        await query.edit_message_text(
-            text=text,
-            parse_mode=ParseMode.MARKDOWN_V2
-        )
-        job_item_rarity = job_item.rarity.name
-        equipment = create_random_equipment(
-            equip_type=None,
-            group_level=group_level,
-            rarity=job_item_rarity,
-            random_level=True,
-            save_in_database=True,
-        )
-        text = f'*{helped_name}* deixou'
-        await send_drop_message(
-            context=context,
-            items=equipment,
-            text=text,
+        await send_item_quest_reward(
+            job_name=job_name,
+            helped_name=helped_name,
+            quest_item=quest_item,
             update=update,
-            silent=silent,
+            context=context
         )
-        remove_quest_item_job(context, job_name)
-        return ConversationHandler.END
     else:
-        text = f'Você não tem "{job_item_quantity}x {job_item_name}".'
+        text = f'Você não tem "{quest_item.quantity}x {quest_item.name}".'
         await query.answer(text, show_alert=True)
         return ConversationHandler.END
+
+
+async def complete_trocado_pouch_quest(
+    trocado_pouch_item: Item,
+    user_id: int,
+    query: CallbackQueryHandler
+):
+    '''Verifica se o Jogador possui o dinheiro suficiente para completar a 
+    quest. Se sim, subtrai o dinheiro do Jogador e retorna True. Se não,
+    retorna False e exibe uma mensagem de erro.
+    '''
+
+    player_model = PlayerModel()
+    player = player_model.get(user_id)
+    quest_trocado = trocado_pouch_item.full_price
+    is_complete = False
+    if player.trocado >= quest_trocado:
+        player.sub_trocado(quest_trocado)
+        player_model.save(player)
+        is_complete = True
+    else:
+        text = (
+            f'Você não tem {TrocadoEnum.TROCADOS.value} suficiente.\n'
+            f'Possui apenas {player.trocado}{EmojiEnum.TROCADO.value}.\n'
+            f'Precisa de {quest_trocado}{EmojiEnum.TROCADO.value}.'
+        )
+        await query.answer(text, show_alert=True)
+
+    return is_complete
+
+
+async def send_item_quest_reward(
+    job_name: str,
+    helped_name: str,
+    quest_item: Item,
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    '''Edita a mensagem da quest para narrar o agradecimento e envia um 
+    Equipamento como recompensa.
+    '''
+
+    user_id = update.effective_user.id
+    chat_id = update.effective_chat.id
+    query = update.callback_query
+    group_level = get_attribute_group(chat_id, 'group_level')
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    base_xp = int(quest_item.full_price // 10)
+    report_xp = add_xp(
+        chat_id=chat_id,
+        user_id=user_id,
+        base_xp=base_xp,
+    )
+    text_xp = report_xp['text']
+    thanks_text = choice(REPLY_TEXT_THANKS)
+    narration_text = choice(LEAVE_NARRATION)
+    narration_text = narration_text.format(helped_name=helped_name)
+    text = (
+        f'>{helped_name}: {thanks_text}\n\n'
+        f'{narration_text}\n\n'
+        f'{text_xp}'
+    )
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_QUEST_COMPLETE,
+        section_start=SECTION_HEAD_QUEST_COMPLETE_START,
+        section_end=SECTION_HEAD_QUEST_COMPLETE_END,
+        clean_func=escape_for_citation_markdown_v2
+    )
+    await query.edit_message_text(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
+    job_item_rarity = quest_item.rarity.name
+    equipment = create_random_equipment(
+        equip_type=None,
+        group_level=group_level,
+        rarity=job_item_rarity,
+        random_level=True,
+        save_in_database=True,
+    )
+    text = f'*{helped_name}* deixou'
+    await send_drop_message(
+        context=context,
+        items=equipment,
+        text=text,
+        update=update,
+        silent=silent,
+    )
+    remove_quest_item_job(context, job_name)
+    return ConversationHandler.END
 
 
 def get_quest_text(item: Item) -> str:
