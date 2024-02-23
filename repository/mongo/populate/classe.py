@@ -103,7 +103,7 @@ CLASSES = [
         'multiplier_constitution': 1,
         'multiplier_intelligence': 1.5,
         'multiplier_wisdom': 2,
-        'multiplier_charisma': 1.5,
+        'multiplier_charisma': 1.4,
     },
     {
         'name': 'Druida',
@@ -145,7 +145,7 @@ CLASSES = [
         'multiplier_dexterity': 1,
         'multiplier_constitution': 1.7,
         'multiplier_intelligence': 0.1,
-        'multiplier_wisdom': 1.7,
+        'multiplier_wisdom': 1.5,
         'multiplier_charisma': 0.5,
     },
     {
@@ -202,7 +202,7 @@ CLASSES = [
         'multiplier_constitution': 0.5,
         'multiplier_intelligence': 2,
         'multiplier_wisdom': 2,
-        'multiplier_charisma': 1,
+        'multiplier_charisma': 0.9,
     },
     {
         'name': 'Guerreiro',
@@ -280,12 +280,12 @@ CLASSES = [
         'bonus_intelligence': 5,
         'bonus_wisdom': 5,
         'bonus_charisma': 5,
-        'multiplier_strength': 1.5,
-        'multiplier_dexterity': 2,
-        'multiplier_constitution': 1,
+        'multiplier_strength': 1,
+        'multiplier_dexterity': 2.5,
+        'multiplier_constitution': 1.2,
         'multiplier_intelligence': 0.5,
-        'multiplier_wisdom': 1,
-        'multiplier_charisma': 0.5,
+        'multiplier_wisdom': 1.2,
+        'multiplier_charisma': 0.1,
     },
     {
         'name': 'Mago',
@@ -317,7 +317,7 @@ CLASSES = [
             'eles experimentam e crescem em experiência. Também '
             'podem aprender magias de outros magos, de tomos '
             'antigos ou escrituras, e de criaturas anciãs (como as '
-            'fadas) que são imersas em magia.\n\n'
+            'fadas) que são imersas em magia.'
         ),
         'enemy': False,
         'bonus_strength': 5,
@@ -332,6 +332,116 @@ CLASSES = [
         'multiplier_intelligence': 2.5,
         'multiplier_wisdom': 1.5,
         'multiplier_charisma': 1,
+    },
+    {
+        'name': 'Paladino',
+        'description': (
+            'Os paladinos treinam por anos para aprender as perícias de '
+            'combate, dominando uma variedade de armas e armaduras. '
+            'Mesmo assim, suas perícias marciais são secundárias ao poder '
+            'mágico que ele empunha: o poder de curar os doentes e feridos, '
+            'de destruir os cruéis e os mortos-vivos e de proteger os '
+            'inocentes e aqueles que se unirem à eles na '
+            'luta pela justiça.\n\n'
+
+            'Seja lá quais forem suas origens e suas missões, paladinos são '
+            'unidos pelos seus juramentos de se imporem contra as forças do '
+            'mal. '
+            'Quer seja jurado ante o altar de um deus com um clérigo '
+            'como testemunha, quer seja em uma clareira sagrada diante dos '
+            'espíritos da natureza e seres feéricos, ou em um momento de '
+            'desespero e aflição com os mortos como únicas testemunhas, o '
+            'juramento de um paladino é um laço poderoso. '
+            'Ele é uma fonte de poder que transforma um guerreiro devotado '
+            'em um campeão abençoado.'
+        ),
+        'enemy': False,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1.2,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 1,
+        'multiplier_wisdom': 1.3,
+        'multiplier_charisma': 1,
+    },
+    {
+        'name': 'Guardião',
+        'description': (
+            'Os Guardiões são mestres na arte da proteção, '
+            'dedicando suas habilidades e vida à defesa de seus aliados. '
+            'Armados com escudos imponentes e uma determinação inabalável, '
+            'eles se destacam no campo de batalha como baluartes da '
+            'segurança, capazes de suportar os ataques mais ferozes com '
+            'bravura e resiliência. Seu principal objetivo é garantir a '
+            'sobrevivência daqueles que juraram proteger, colocando suas '
+            'próprias vidas em risco para cumprir esse dever sagrado.\n\n'
+
+            'Com um treinamento rigoroso em técnicas de defesa e resistência, '
+            'os Guardiões são capazes de enfrentar qualquer ameaça de frente, '
+            'usando sua armadura pesada e escudos maciços para bloquear '
+            'ataques e desviar perigos iminentes. '
+            'Além de sua habilidade física, os Guardiões também são '
+            'conhecidos por sua coragem e lealdade inabaláveis, '
+            'dispostos a enfrentar qualquer desafio para proteger seus '
+            'protegidos. '
+            'Sua presença no campo de batalha inspira confiança e '
+            'segurança naqueles que lutam ao seu lado, tornando-os '
+            'indispensáveis em qualquer grupo.'
+        ),
+        'enemy': False,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1.5,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 3,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Duelista',
+        'description': (
+            'Os Duelistas são mestres da agilidade e da destreza, '
+            'especialistas em combate corpo a corpo com armas '
+            'leves e rápidas. '
+            'Sua habilidade em esquivar-se de golpes e atacar com precisão '
+            'faz deles adversários temíveis em duelos individuais, '
+            'onde sua destreza e rapidez são colocadas à prova. '
+            'Eles são conhecidos por sua habilidade em desferir golpes '
+            'rápidos e precisos, causando danos significativos aos seus '
+            'oponentes enquanto evitam seus ataques.\n\n'
+
+            'Além de suas habilidades físicas superiores, os Duelistas '
+            'também são mestres na arte da estratégia e da astúcia. '
+            'Eles são capazes de ler seus oponentes e antecipar seus '
+            'movimentos, dando-lhes uma vantagem significativa em combate. '
+            'Sua capacidade de improvisar e se adaptar rapidamente às '
+            'mudanças no campo de batalha os torna combatentes '
+            'versáteis e imprevisíveis, capazes de superar até mesmo os '
+            'adversários mais poderosos.\n\n'
+        ),
+        'enemy': False,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 3.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 0.5,
     },
 ]
 
