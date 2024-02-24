@@ -31,7 +31,7 @@ DUELIST_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF'],
 }
 FIGHTER_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['HELMET'],
+    EquipmentEnum.HELMET.name: ['HELMET', 'KRÁNOS'],
     EquipmentEnum.ONE_HAND.name: [
         'SWORD', 'SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'FALCHION', 'MACE',
         'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT'
@@ -60,6 +60,18 @@ BARBARIAN_EQUIPMENTS = {
     EquipmentEnum.RING.name: ['RING', 'KRATOS\'S_RING'],
     EquipmentEnum.AMULET.name: ['NECKLACE', 'COIN'],
 }
+PROTECTOR_EQUIPMENTS = {
+    EquipmentEnum.HELMET.name: ['HELMET'],
+    EquipmentEnum.ONE_HAND.name: [
+        'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'MACE', 'CLUB',
+        'SLEDGEHAMMER', 'TRIDENT'
+    ],
+    EquipmentEnum.TWO_HANDS.name: ['WARHAMMER', 'LANCE', 'SHARUR'],
+    EquipmentEnum.ARMOR.name: ['ARMOR', 'SPIKED_ARMOR', 'BRIGANDINE'],
+    EquipmentEnum.BOOTS.name: ['GREAVES', 'SPIKED_GREAVES'],
+    EquipmentEnum.RING.name: ['RING', 'GAIA\'S_RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'CHARM', 'COIN'],
+}
 
 ARCHETYPES_EQUIPMENTS = {
     'Clérigo': MAGICIAN_EQUIPMENTS,
@@ -69,6 +81,9 @@ ARCHETYPES_EQUIPMENTS = {
     'Druida': FIGHTER_EQUIPMENTS,
     'Guerreiro': FIGHTER_EQUIPMENTS,
     'Bárbaro': BARBARIAN_EQUIPMENTS,
+    'Paladino': FIGHTER_EQUIPMENTS,
+    'Guardião': PROTECTOR_EQUIPMENTS,
+    'Duelista': DUELIST_EQUIPMENTS,
 }
 RACES_ALIGNMENT = {
     'Humano': [
@@ -1732,6 +1747,7 @@ if __name__ == '__main__':
         DUELIST_EQUIPMENTS,
         FIGHTER_EQUIPMENTS,
         BARBARIAN_EQUIPMENTS,
+        PROTECTOR_EQUIPMENTS,
     ]
 
     def get_archetype_equipment_names(key: str) -> List[str]:
