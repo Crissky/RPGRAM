@@ -351,6 +351,8 @@ def get_quest_text(item: Item) -> str:
     elif isinstance(item.item, XPConsumable):
         text = choice(REPLY_TEXT_XP_ITEM)
     elif isinstance(item.item, TrocadoPouchConsumable):
+        add_quantity = randint(5, 50)
+        item.quantity.add(add_quantity)
         text = choice(REPLY_TEXT_TROCADO_ITEM)
     elif isinstance(item.item, GemstoneConsumable):
         text = choice(REPLY_TEXT_GEMSTONE_ITEM)
