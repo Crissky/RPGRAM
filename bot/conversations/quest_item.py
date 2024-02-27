@@ -167,7 +167,7 @@ async def job_fail_item_quest(context: ContextTypes.DEFAULT_TYPE):
     helped_name = data['helped_name']
 
     narration_text = choice(DISAPPOINTED_NARRATION)
-    narration_text.format(helped_name=helped_name)
+    narration_text = narration_text.format(helped_name=helped_name)
 
     narration_text = create_text_in_box(
         text=narration_text,
