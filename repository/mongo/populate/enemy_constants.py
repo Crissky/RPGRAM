@@ -112,6 +112,19 @@ RACES_ALIGNMENT = {
     'Ogro': [AlignmentEnum.BERSERK, AlignmentEnum.PROTECTOR],
     'Licantropo': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
     'Harpia': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Lâmia': [AlignmentEnum.ASSASSIN],
+    'Draconiano': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Dríade': [AlignmentEnum.ASSASSIN, AlignmentEnum.SUPPORTER],
+    'Sílfide': [AlignmentEnum.ASSASSIN, AlignmentEnum.SUPPORTER],
+    'Gnoll': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Fomori': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Nefilim': [
+        AlignmentEnum.ASSASSIN,
+        AlignmentEnum.BERSERK,
+        AlignmentEnum.CAREGIVER,
+        AlignmentEnum.PROTECTOR,
+        AlignmentEnum.SUPPORTER,
+    ],
 }
 
 NAMES = [

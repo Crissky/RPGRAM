@@ -241,7 +241,11 @@ if __name__ == '__main__':
     for item in result.most_common():
         print(f'{item[0]}: {item[1]},', end=' ')
     print()
-    enemy_list = create_random_enemies(100)
+    enemy_list = create_random_enemies(
+        group_level=1000,
+        num_min_enemies=900,
+        num_max_enemies=1000,
+    )
     for enemy in enemy_list:
         print(enemy.get_all_sheets(verbose=False))
         print(enemy.to_dict())

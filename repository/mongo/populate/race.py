@@ -603,6 +603,256 @@ RACES = [
         'multiplier_wisdom': 1,
         'multiplier_charisma': 0.25,
     },
+    {
+        'name': 'Lâmia',
+        'description': (
+            'As Lâmias são criaturas místicas com corpo de serpente da '
+            'cintura para baixo e torso humano da cintura para cima. '
+            'Conhecidas por sua beleza sedutora e habilidades encantadoras, '
+            'as Lâmias habitam regiões selvagens e secretas, '
+            'muitas vezes associadas a mitos e lendas. '
+            'Sua natureza mítica lhes confere habilidades especiais, '
+            'como uma incrível agilidade e a capacidade de hipnotizar e '
+            'seduzir aqueles que se aproximam, '
+            'tornando-as tanto temidas quanto admiradas.\n\n'
+
+            'Apesar de sua aparência exótica e muitas vezes intimidante, '
+            'as Lâmias são seres inteligentes e astutos, com uma cultura '
+            'rica e complexa. '
+            'Elas são conhecidas por sua habilidade em adivinhação, '
+            'sendo consideradas guardiãs de segredos antigos e conhecimentos '
+            'ocultos. '
+            'Embora sejam criaturas solitárias por natureza, '
+            'as Lâmias são capazes de formar laços fortes com aqueles que '
+            'ganham sua confiança, mostrando-se leais e protetoras com seus '
+            'aliados mais próximos.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.25,
+        'multiplier_dexterity': 2.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 1,
+        'multiplier_wisdom': 0.25,
+        'multiplier_charisma': 1.5,
+    },
+    {
+        'name': 'Draconiano',
+        'description': (
+            'Os Draconianos são uma raça mística e poderosa, '
+            'com características que lembram os lendários dragões. '
+            'Possuem escamas resistentes que cobrem seus corpos, '
+            'asas membranosas que lhes permitem voar e garras afiadas que '
+            'servem como armas naturais. '
+            'Sua aparência imponente e majestosa inspira respeito e temor, '
+            'refletindo a nobreza de seu sangue ancestral.\n\n'
+
+            'Esses seres são conhecidos por sua grande força e habilidades '
+            'mágicas, muitas vezes associadas aos dragões. '
+            'Alguns Draconianos possuem a capacidade de lançar feitiços '
+            'de fogo, gelo ou eletricidade, enquanto outros são adeptos em '
+            'formas mais sutis de magia, como a manipulação de ilusões ou a '
+            'comunicação telepática. '
+            'Sua sociedade é organizada em clãs liderados por indivíduos '
+            'poderosos, cada um com sua própria linhagem e tradições antigas. '
+            'Apesar de sua reputação de ferocidade em batalha, '
+            'os Draconianos são seres complexos, com uma cultura rica e uma '
+            'forte conexão com a honra e a lealdade.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 10,
+        'bonus_dexterity': 10,
+        'bonus_constitution': 10,
+        'bonus_intelligence': 10,
+        'bonus_wisdom': 10,
+        'bonus_charisma': 10,
+        # Soma de 10,5 pontos nos multiplicadores, ao invés de 6,5 pontos
+        'multiplier_strength': 2,
+        'multiplier_dexterity': 2,
+        'multiplier_constitution': 2,
+        'multiplier_intelligence': 2,
+        'multiplier_wisdom': 2,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Dríade',
+        'description': (
+            'As Dríades são seres feéricos da floresta, '
+            'conhecidas por sua ligação íntima com a natureza e sua '
+            'aparência que mescla características humanas e vegetais. '
+            'Elas possuem a capacidade de se fundir com as árvores, '
+            'tornando-se indistinguíveis da flora ao seu redor. '
+            'Sua pele é suave como a casca de uma árvore e seus cabelos '
+            'muitas vezes se assemelham a folhagem verdejante.\n\n'
+
+            'Essas criaturas guardiãs das florestas são protetoras e '
+            'reverenciadoras do mundo natural, '
+            'muitas vezes sendo consideradas as próprias manifestações '
+            'da alma das árvores. '
+            'Elas são dotadas de habilidades relacionadas ao '
+            'crescimento e cura das plantas, sendo capazes de acelerar o '
+            'crescimento de uma semente ou curar uma árvore doente com um '
+            'simples toque. '
+            'Apesar de sua natureza pacífica, '
+            'as Dríades são ferozmente protetoras de seus lares, '
+            'utilizando sua ligação com a natureza para afastar '
+            'qualquer ameaça que se aproxime de suas florestas.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 2,
+        'multiplier_constitution': 0.5,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 1.5,
+        'multiplier_charisma': 1.5,
+    },
+    {
+        'name': 'Sílfide',
+        'description': (
+            'As Sílfides são seres etéreos e graciosos, '
+            'dotados de asas transparentes que lhes permitem voar com '
+            'facilidade pelos céus. '
+            'Sua pele brilha suavemente como a luz da lua, e seus olhos '
+            'refletem a sabedoria dos ventos. '
+            'São conhecidos por sua ligação profunda com a natureza e '
+            'sua habilidade de controlar os elementos, '
+            'especialmente o vento.\n\n'
+
+            'Vivendo em comunidades aéreas nas regiões mais altas das '
+            'montanhas ou em bosques encantados, '
+            'as Sílfides são guardiãs dos segredos do ar. '
+            'Elas são reverenciadas como mensageiras dos deuses e '
+            'protetoras das criaturas aladas. '
+            'Sua sociedade é baseada em um forte senso de comunidade e '
+            'respeito pela natureza, e são habilidosas em artes místicas '
+            'e na cura de ferimentos com ervas e magia.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 0.5,
+        'multiplier_intelligence': 2,
+        'multiplier_wisdom': 2,
+        'multiplier_charisma': 1,
+    },
+    {
+        'name': 'Gnoll',
+        'description': (
+            'Os Gnolls são criaturas humanoides híbridas, '
+            'com características físicas que lembram hienas. '
+            'Possuem corpos robustos, cobertos por uma pelagem áspera e '
+            'manchada, além de cabeças alongadas, mandíbulas poderosas e '
+            'olhos amarelos que brilham com malícia. '
+            'São conhecidos por sua agressividade e natureza predatória, '
+            'muitas vezes vivendo em bandos liderados '
+            'por um líder dominante.\n\n'
+
+            'Apesar de sua reputação como saqueadores e bandidos, '
+            'os Gnolls possuem uma sociedade própria, '
+            'com rituais e tradições únicas. '
+            'Eles são habilidosos caçadores e rastreadores, '
+            'capazes de sobreviver em ambientes hostis. '
+            'Seus acampamentos são muitas vezes improvisados e móveis, '
+            'refletindo sua natureza nômade e adaptável. '
+            'Em combate, os Gnolls são ferozes e implacáveis, '
+            'usando táticas brutais para subjugar seus inimigos.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2.5,
+        'multiplier_dexterity': 1.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Fomori',
+        'description': (
+            'Os Fomori são seres grotescos e deformados, '
+            'conhecidos por sua aparência monstruosa e tamanho imponente. '
+            'Possuem corpos distorcidos e disformes, com membros '
+            'desproporcionais e pele áspera e escamosa. '
+            'Seus rostos são marcados por feições brutais, '
+            'com presas afiadas e olhos selvagens que refletem sua natureza '
+            'selvagem e primitiva.\n\n'
+
+            'Apesar de sua aparência assustadora, '
+            'os Fomori possuem uma cultura própria, '
+            'com tradições e rituais que são passados de geração em geração. '
+            'Vivem em comunidades isoladas, longe das civilizações humanas, '
+            'e são conhecidos por sua hostilidade em relação a estranhos. '
+            'São habilidosos em artes marciais e muitas vezes usam sua força '
+            'bruta em combate, sendo temidos por sua ferocidade e '
+            'resistência.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2.65,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 2,
+        'multiplier_intelligence': 0.25,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 0.1,
+    },
+    {
+        'name': 'Nefilim',
+        'description': (
+            'Os Nefilim são seres de linhagem divina, '
+            'fruto da união entre humanos e entidades celestiais. '
+            'Possuem uma aparência impressionante, com traços angélicos '
+            'mesclados com características humanas.\n\n'
+
+            'Além de sua beleza física, '
+            'os Nefilim possuem habilidades especiais, '
+            'como a capacidade de canalizar energia divina e '
+            'realizar milagres. '
+            'São vistos como seres de grande importância e muitas vezes '
+            'são considerados como messias ou salvadores em suas '
+            'comunidades.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        # Soma de 10,5 pontos nos multiplicadores, ao invés de 6,5 pontos
+        'multiplier_strength': 1.5,
+        'multiplier_dexterity': 1.5,
+        'multiplier_constitution': 1.5,
+        'multiplier_intelligence': 1.75,
+        'multiplier_wisdom': 1.75,
+        'multiplier_charisma': 2.5,
+    },
 ]
 
 if __name__ == '__main__':
