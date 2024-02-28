@@ -34,7 +34,7 @@ FIGHTER_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['HELMET', 'KRÁNOS'],
     EquipmentEnum.ONE_HAND.name: [
         'SWORD', 'SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'FALCHION', 'MACE',
-        'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT'
+        'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT', 'SCUTUM'
     ],
     EquipmentEnum.TWO_HANDS.name: [
         'GREAT_SWORD', 'DOUBLE_AXE', 'HALBERD', 'WARHAMMER', 'FLAIL', 'PIKE',
@@ -66,7 +66,10 @@ PROTECTOR_EQUIPMENTS = {
         'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'MACE', 'CLUB',
         'SLEDGEHAMMER', 'TRIDENT'
     ],
-    EquipmentEnum.TWO_HANDS.name: ['WARHAMMER', 'LANCE', 'SHARUR'],
+    EquipmentEnum.TWO_HANDS.name: [
+        'WARHAMMER', 'LANCE', 'SHARUR', 'GREATSHIELD', 'SPIKED_GREATSHIELD',
+        'PRISMATIC_GREATSHIELD', 'GREATSCUTUM'
+    ],
     EquipmentEnum.ARMOR.name: ['ARMOR', 'SPIKED_ARMOR', 'BRIGANDINE'],
     EquipmentEnum.BOOTS.name: ['GREAVES', 'SPIKED_GREAVES'],
     EquipmentEnum.RING.name: ['RING', 'GAIA\'S_RING'],
@@ -109,6 +112,19 @@ RACES_ALIGNMENT = {
     'Ogro': [AlignmentEnum.BERSERK, AlignmentEnum.PROTECTOR],
     'Licantropo': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
     'Harpia': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Lâmia': [AlignmentEnum.ASSASSIN],
+    'Draconiano': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Dríade': [AlignmentEnum.ASSASSIN, AlignmentEnum.SUPPORTER],
+    'Sílfide': [AlignmentEnum.ASSASSIN, AlignmentEnum.SUPPORTER],
+    'Gnoll': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Fomori': [AlignmentEnum.ASSASSIN, AlignmentEnum.BERSERK],
+    'Nefilim': [
+        AlignmentEnum.ASSASSIN,
+        AlignmentEnum.BERSERK,
+        AlignmentEnum.CAREGIVER,
+        AlignmentEnum.PROTECTOR,
+        AlignmentEnum.SUPPORTER,
+    ],
 }
 
 NAMES = [
