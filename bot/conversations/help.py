@@ -664,7 +664,9 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.CLASS.value}*CLASSES*\n\n'
+            f'{EmojiEnum.CLASS.value}*CLASSES*: /{classe_commands[0]}\n'
+            f'Use o argumento *"all"* ou *"a"* para exibir todas as classes.'
+            f'\n\n'
         )
 
         keys = attrgetter('name')
@@ -694,7 +696,8 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.RACE.value}*RAÇAS*\n\n'
+            f'{EmojiEnum.RACE.value}*RAÇAS*: /{race_commands[0]}\n'
+            f'Use o argumento *"all"* ou *"a"* para exibir todas as raças.\n\n'
         )
 
         keys = attrgetter('name')
