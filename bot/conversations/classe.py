@@ -8,7 +8,14 @@ from telegram.ext import (
     PrefixHandler,
 )
 from bot.conversations.close import get_close_button
-from bot.decorators.player import alert_if_not_chat_owner
+from bot.decorators.player import (
+    alert_if_not_chat_owner_to_callback_data_to_dict
+)
+from bot.functions.chat import (
+    CALLBACK_KEY_LIST,
+    callback_data_to_dict,
+    callback_data_to_string
+)
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 
@@ -16,7 +23,7 @@ from bot.constants.classe import ACCESS_DENIED, COMMANDS
 from repository.mongo import ClasseModel
 
 
-@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
@@ -27,9 +34,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = 'Escolha uma classe para exibir suas informações.'
 
     if query:
-        data = eval(query.data)
+        data = callback_data_to_dict(query.data)
         classe_name = data['classe_name']
-        _all = data['_all']
+        _all = bool(data['_all'])
         classe_model = ClasseModel()
         classe = classe_model.get(classe_name)
         text = classe.get_sheet(verbose=True)
@@ -69,14 +76,17 @@ def get_classe_buttons(
     classe_names = classe_model.get_all(query=query, fields=['name'])
 
     for classe_name in classe_names:
+        callback_data = callback_data_to_string({
+            'classe_name': classe_name,
+            '_all': _all,
+            'user_id': user_id
+        })
+        print(classe_name, len(callback_data), callback_data)
+
         classe_buttons.append(
             InlineKeyboardButton(
                 text=classe_name,
-                callback_data=(
-                    f'{{"classe_name":"{classe_name}",'
-                    f'"_all": {_all},'
-                    f'"user_id":{user_id}}}'
-                )
+                callback_data=callback_data
             )
         )
 
@@ -98,5 +108,8 @@ CLASSES_HANDLERS = [
         start,
         BASIC_COMMAND_FILTER
     ),
-    CallbackQueryHandler(start, pattern=r'^{"classe_name":'),
+    CallbackQueryHandler(
+        start,
+        pattern=fr'^{{{CALLBACK_KEY_LIST.index("classe_name")}:'
+    ),
 ]

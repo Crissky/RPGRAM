@@ -30,6 +30,9 @@ CALLBACK_KEY_LIST = [
     'target_id',
     'enemy_id',
     'item_quest_job_name',
+    '_all',
+    'classe_name',
+    'race_name',
 ]
 
 

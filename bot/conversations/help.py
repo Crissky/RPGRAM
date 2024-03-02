@@ -670,11 +670,9 @@ def get_details_text(option: str) -> str:
         )
 
         keys = attrgetter('name')
-        for classe in sorted(all_classes, key=keys):
-            description = classe.description.split('.')[0]
-            text += f'*Nome*: {classe.name}\n'
-            text += f'*Descrição*: {description}.\n\n'
-        text = text.strip()
+        sorted_all_classes = sorted(all_classes, key=keys)
+        text += ', '.join([classe.name for classe in sorted_all_classes])
+        text = text.strip() + '.'
     elif option == CALLBACK_RACES:
         race_model = RaceModel()
         query = {}
@@ -701,11 +699,9 @@ def get_details_text(option: str) -> str:
         )
 
         keys = attrgetter('name')
-        for race in sorted(all_races, key=keys):
-            description = race.description.split('.')[0]
-            text += f'*Nome*: {race.name}\n'
-            text += f'*Descrição*: {description}.\n\n'
-        text = text.strip()
+        sorted_all_races = sorted(all_races, key=keys)
+        text += ', '.join([race.name for race in sorted_all_races])
+        text = text.strip() + '.'
     elif option == CALLBACK_HEALING_CONSUMABLE:
         item_model = ItemModel()
         query = {'_class': HealingConsumable.__name__}

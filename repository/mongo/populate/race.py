@@ -8,6 +8,7 @@ from repository.mongo import RaceModel
 from rpgram.boosters import Race
 
 RACES = [
+    # Player 6.5 Points
     {
         'name': 'Anão',
         'description': (

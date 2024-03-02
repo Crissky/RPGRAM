@@ -411,6 +411,10 @@ async def enemy_attack(
         )
 
 
+async def player_attack():
+    ...
+
+
 def get_defend_button(
     user_id: int,
     enemy: NPCharacter

@@ -8,7 +8,10 @@ from telegram.ext import (
     PrefixHandler,
 )
 from bot.conversations.close import get_close_button
-from bot.decorators.player import alert_if_not_chat_owner
+from bot.decorators.player import (
+    alert_if_not_chat_owner_to_callback_data_to_dict
+)
+from bot.functions.chat import CALLBACK_KEY_LIST, callback_data_to_dict, callback_data_to_string
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 
@@ -16,7 +19,7 @@ from bot.constants.race import ACCESS_DENIED, COMMANDS
 from repository.mongo import RaceModel
 
 
-@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
@@ -27,7 +30,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     text = 'Escolha uma raça para exibir suas informações.'
     if query:
-        data = eval(query.data)
+        data = callback_data_to_dict(query.data)
         race_name = data['race_name']
         _all = data['_all']
 
@@ -70,14 +73,16 @@ def get_race_buttons(
     race_names = race_model.get_all(query=query, fields=['name'])
 
     for race_name in race_names:
+        callback_data = callback_data_to_string({
+            'race_name': race_name,
+            '_all': _all,
+            'user_id': user_id
+        })
+
         race_buttons.append(
             InlineKeyboardButton(
                 text=race_name,
-                callback_data=(
-                    f'{{"race_name":"{race_name}",'
-                    f'"_all": {_all},'
-                    f'"user_id":{user_id}}}'
-                )
+                callback_data=callback_data
             )
         )
 
@@ -99,5 +104,8 @@ RACES_HANDLERS = [
         start,
         BASIC_COMMAND_FILTER
     ),
-    CallbackQueryHandler(start, pattern=r'^{"race_name":'),
+    CallbackQueryHandler(
+        start,
+        pattern=fr'^{{{CALLBACK_KEY_LIST.index("race_name")}:'
+    ),
 ]
