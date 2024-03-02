@@ -87,6 +87,23 @@ ARCHETYPES_EQUIPMENTS = {
     'Paladino': FIGHTER_EQUIPMENTS,
     'Guardião': PROTECTOR_EQUIPMENTS,
     'Duelista': DUELIST_EQUIPMENTS,
+    # Enemies
+    'Arauto': PROTECTOR_EQUIPMENTS,
+    'Arcanista': MAGICIAN_EQUIPMENTS,
+    'Bardo': MAGICIAN_EQUIPMENTS,
+    'Caçador de Recompensas': FIGHTER_EQUIPMENTS,
+    'Cavaleiro': DUELIST_EQUIPMENTS,
+    'Curandeiro': MAGICIAN_EQUIPMENTS,
+    'Gladiador': FIGHTER_EQUIPMENTS,
+    'Invocador': MAGICIAN_EQUIPMENTS,
+    'Mercenário': FIGHTER_EQUIPMENTS,
+    'Necromante': MAGICIAN_EQUIPMENTS,
+    'Patrulheiro': DUELIST_EQUIPMENTS,
+    'Xamã': MAGICIAN_EQUIPMENTS,
+    'Berserker': BARBARIAN_EQUIPMENTS,
+    'Mestre das Armas': FIGHTER_EQUIPMENTS,
+    'Feiticeiro Supremo': MAGICIAN_EQUIPMENTS,
+    'Senhor dos Ladinos': DUELIST_EQUIPMENTS,
 }
 RACES_ALIGNMENT = {
     'Humano': [

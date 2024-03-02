@@ -8,6 +8,7 @@ from repository.mongo import ClasseModel
 from rpgram.boosters import Classe
 
 CLASSES = [
+    # Player 6.5 Points
     {
         'name': 'Bárbaro',
         'description': (
@@ -442,6 +443,600 @@ CLASSES = [
         'multiplier_intelligence': 0.5,
         'multiplier_wisdom': 0.5,
         'multiplier_charisma': 0.5,
+    },
+    # Enemies 8 Points
+    {
+        'name': 'Arauto',
+        'description': (
+            'O Arauto é um mestre na arte da defesa, '
+            'dedicando-se a proteger seus aliados e garantir a segurança do '
+            'grupo em batalha. '
+            'Com habilidades defensivas, '
+            'o Arauto é capaz de absorver ataques e mitigar danos, '
+            'tornando-se uma muralha impenetrável diante dos inimigos.\n\n'
+
+            'Além de sua proficiência defensiva, '
+            'o Arauto também possui habilidades que inspiram coragem e '
+            'determinação em seus companheiros, '
+            'elevando sua moral e resistência. '
+            'Sua presença no campo de batalha é reconfortante, '
+            'pois os aliados sabem que podem confiar na sua proteção e '
+            'liderança para enfrentar qualquer desafio com mais '
+            'confiança e segurança.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 3,
+        'multiplier_intelligence': 1,
+        'multiplier_wisdom': 1,
+        'multiplier_charisma': 1,
+    },
+    {
+        'name': 'Arcanista',
+        'description': (
+            'Os Arcanistas são estudiosos dedicados à arte da magia arcana, '
+            'uma forma poderosa de magia que manipula os elementos '
+            'fundamentais do universo. '
+            'Compreendem os segredos dos planos de existência e '
+            'são capazes de canalizar essa energia para realizar '
+            'feitos incríveis. '
+            'Suas habilidades variam desde lançar bolas de fogo até '
+            'controlar mentes e alterar a própria realidade.\n\n'
+
+            'Esses praticantes da magia são frequentemente vistos como '
+            'sábios e eruditos, passando longos anos em estudo e prática '
+            'para dominar seus poderes. '
+            'Suas vestes muitas vezes são adornadas com símbolos arcanos '
+            'e suas mentes são afiadas como lâminas, '
+            'capazes de resolver os enigmas mais complexos e superar os '
+            'desafios mais difíceis com sua magia. '
+            'Em combate, os Arcanistas podem se posicionar '
+            'como uma força formidável, '
+            'capazes de virar o curso de uma batalha com um único '
+            'feitiço poderoso.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.1,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 0.5,
+        'multiplier_intelligence': 4,
+        'multiplier_wisdom': 1.9,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Bardo',
+        'description': (
+            'Os bardos são artistas itinerantes e contadores de histórias, '
+            'cuja magia se manifesta através da música, '
+            'poesia e encantamento. '
+            'São mestres na arte da performance, capazes de cativar plateias '
+            'e influenciar mentes com suas habilidades. '
+            'Além de entreter, os bardos também possuem um profundo '
+            'conhecimento sobre o mundo e suas histórias, '
+            'sendo fontes valiosas de informações e sabedoria.\n\n'
+
+            'Em batalha, '
+            'os bardos utilizam sua música para inspirar aliados e '
+            'desmoralizar inimigos, '
+            'podendo também lançar feitiços mágicos através de suas canções. '
+            'Sua versatilidade os torna capazes de se adaptar a '
+            'diversas situações, '
+            'seja no campo de batalha, '
+            'em negociações diplomáticas ou na resolução '
+            'de enigmas e mistérios. '
+            'Os bardos são, portanto, tanto artistas quanto heróis, '
+            'cujas canções ecoam através do tempo, '
+            'inspirando gerações futuras.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 0.5,
+        'multiplier_intelligence': 1,
+        'multiplier_wisdom': 2,
+        'multiplier_charisma': 3.5,
+    },
+    {
+        'name': 'Caçador de Recompensas',
+        'description': (
+            'Os Caçadores de Recompensas são mestres na arte da captura '
+            'de fugitivos e criminosos procurados. '
+            'Com habilidades de rastreamento altamente desenvolvidas, '
+            'eles são capazes de localizar seus alvos em qualquer lugar, '
+            'seja em florestas densas, '
+            'cidades labirínticas ou desertos escaldantes. '
+            'Além disso, possuem habilidades de combate excepcionais, '
+            'tornando-os formidáveis adversários em confrontos diretos.\n\n'
+
+            'Esses profissionais são conhecidos por sua determinação '
+            'e sagacidade, muitas vezes aceitando missões perigosas '
+            'em troca de recompensas substanciais. '
+            'Eles podem trabalhar de forma independente ou serem '
+            'contratados por autoridades locais ou organizações '
+            'para lidar com ameaças específicas. '
+            'Sua reputação é construída com base em sua eficácia e no '
+            'cumprimento bem-sucedido de contratos, '
+            'tornando-os figuras respeitadas e '
+            'temidas no mundo mercenário.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2,
+        'multiplier_dexterity': 1.5,
+        'multiplier_constitution': 1.5,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 1,
+        'multiplier_charisma': 1.5,
+    },
+    {
+        'name': 'Cavaleiro',
+        'description': (
+            'Os Cavaleiros são guerreiros treinados na arte da equitação '
+            'e da guerra montada, '
+            'cuja destreza e habilidade com a espada são igualadas apenas '
+            'pela sua habilidade no controle de seus imponentes corcéis. '
+            'Eles são uma visão impressionante no campo de batalha, '
+            'galopando com graça e poder enquanto lideram suas tropas em '
+            'cargas audaciosas ou engajam os inimigos em combate '
+            'corpo a corpo.\n\n'
+
+            'Com suas montarias como extensões de si mesmos, '
+            'os Cavaleiros são capazes de realizar manobras habilidosas e '
+            'ataques precisos, '
+            'aproveitando a velocidade e a força de seus cavalos para '
+            'superar seus oponentes. '
+            'Além de sua proficiência no combate montado, '
+            'muitos Cavaleiros também juram fidelidade a um código de honra '
+            'e lealdade, dedicando suas vidas à defesa de seu reino e '
+            'à proteção dos indefesos.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1,
+        'multiplier_dexterity': 3,
+        'multiplier_constitution': 1.5,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 1.5,
+    },
+    {
+        'name': 'Curandeiro',
+        'description': (
+            'O Curandeiro é um especialista em cura e restauração, '
+            'dedicado a manter seus aliados saudáveis e '
+            'prontos para o combate. '
+            'Com habilidades de cura divinas ou naturais, '
+            'o Curandeiro pode fechar ferimentos, '
+            'remover doenças e até mesmo trazer os mortos de volta à vida. '
+            'Sua presença em um grupo é essencial, '
+            'pois sua capacidade de manter a equipe saudável pode fazer a '
+            'diferença entre a vitória e a derrota em batalhas difíceis.\n\n'
+
+            'Além de suas habilidades de cura, '
+            'o Curandeiro também pode ser treinado em técnicas de '
+            'proteção e suporte, como criar barreiras mágicas para '
+            'proteger seus aliados ou fortalecer sua resistência '
+            'contra ataques. '
+            'Sua dedicação ao bem-estar dos outros muitas vezes o '
+            'torna um líder natural, '
+            'inspirando confiança e coragem naqueles ao seu redor.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.1,
+        'multiplier_dexterity': 0.1,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 2.3,
+        'multiplier_wisdom': 3,
+        'multiplier_charisma': 1.5,
+    },
+    {
+        'name': 'Gladiador',
+        'description': (
+            'Os gladiadores são mestres na arte do combate, '
+            'treinados desde jovens para enfrentar adversários em '
+            'arenas em batalhas épicas. '
+            'São habilidosos com uma variedade de armas e técnicas de luta, '
+            'adaptando-se a diferentes estilos de combate '
+            'conforme necessário. '
+            'Sua destreza e agilidade são tão importantes quanto sua '
+            'força bruta, permitindo-lhes desferir golpes precisos e '
+            'esquivar-se de ataques inimigos com facilidade.\n\n'
+
+            'Além de suas habilidades físicas, '
+            'os gladiadores também possuem uma forte presença mental, '
+            'capaz de manter a calma e a concentração mesmo nas '
+            'situações mais adversas. '
+            'São resistentes e determinados, capazes de suportar ferimentos '
+            'e continuar lutando até o fim. '
+            'Sua coragem e determinação os tornam figuras admiradas e '
+            'respeitadas, tanto dentro quanto fora da arena.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 1.5,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 1.5,
+        'multiplier_charisma': 1.5,
+    },
+    {
+        'name': 'Invocador',
+        'description': (
+            'Os Invocadores são mestres das artes arcanas que se '
+            'especializam em convocar e controlar criaturas de outras '
+            'dimensões ou planos de existência para auxiliá-los em batalha. '
+            'Utilizando rituais complexos e poderosos feitiços de invocação, '
+            'eles são capazes de trazer seres mágicos e elementais para o '
+            'mundo físico, para servir como guardiões, '
+            'combatentes ou mesmo como fonte de conhecimento e sabedoria.\n\n'
+
+            'Essa classe geralmente requer um profundo conhecimento '
+            'das criaturas que pretendem invocar, '
+            'bem como habilidades de comunicação e controle mental para '
+            'garantir que as criaturas convocadas ajam de acordo com a '
+            'vontade do Invocador. '
+            'Muitos veem os Invocadores com desconfiança, '
+            'devido ao seu poder de manipular seres de outros planos, '
+            'e há aqueles que os temem pela imprevisibilidade e perigosidade '
+            'das criaturas que podem convocar.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.1,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 4,
+        'multiplier_wisdom': 2.3,
+        'multiplier_charisma': 0.1,
+    },
+    {
+        'name': 'Mercenário',
+        'description': (
+            'Os Mercenários são guerreiros contratados para realizar '
+            'tarefas que vão desde proteção pessoal até missões '
+            'de extermínio. '
+            'Conhecidos por sua versatilidade e pragmatismo, '
+            'eles não seguem um código de honra rígido como os paladinos, '
+            'mas sim a lógica de que o trabalho deve ser feito, '
+            'desde que o preço seja justo.\n\n'
+
+            'Esses combatentes são habilidosos em várias formas de combate, '
+            'adaptando-se a diferentes situações com facilidade. '
+            'Sua lealdade é para com quem os contratou, '
+            'e não costumam se envolver em questões morais ou políticas, '
+            'a menos que isso afete diretamente seu pagamento. '
+            'Os Mercenários são uma presença comum em áreas de conflito e '
+            'muitas vezes são vistos como indivíduos pragmáticos, '
+            'dispostos a fazer o que for preciso para sobreviver e '
+            'prosperar em um mundo perigoso.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2.4,
+        'multiplier_dexterity': 1.5,
+        'multiplier_constitution': 2.5,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 1,
+        'multiplier_charisma': 0.1,
+    },
+    {
+        'name': 'Necromante',
+        'description': (
+            'O Necromante é um praticante das artes obscuras da necromancia, '
+            'um ramo da magia que lida com a manipulação da '
+            'morte e dos mortos. '
+            'Estudioso e muitas vezes isolado, '
+            'o Necromante busca compreender os segredos da vida e da morte, '
+            'utilizando seu conhecimento para controlar cadáveres e '
+            'canalizar energia negra para diversos fins.\n\n'
+
+            'Por meio de rituais e feitiços proibidos, '
+            'o Necromante é capaz de criar e controlar servos mortos-vivos, '
+            'como zumbis e esqueletos, que obedecem às suas ordens. '
+            'Além disso, ele pode lançar maldições poderosas sobre '
+            'seus inimigos, enfraquecendo-os e trazendo ruína aos que '
+            'ousam desafiá-lo.\n\n'
+
+            'Apesar de ser frequentemente visto com desconfiança e medo '
+            'pelas sociedades mais tradicionais, '
+            'o Necromante muitas vezes enxerga a si mesmo como um estudioso '
+            'em busca do equilíbrio entre vida e morte, '
+            'explorando os limites da magia e da moralidade em sua busca '
+            'pelo conhecimento supremo.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.1,
+        'multiplier_dexterity': 1,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 3.3,
+        'multiplier_wisdom': 2.5,
+        'multiplier_charisma': 0.1,
+    },
+    {
+        'name': 'Patrulheiro',
+        'description': (
+            'Os Patrulheiros são mestres dos ermos, '
+            'hábeis caçadores e rastreadores que guardam as fronteiras '
+            'selvagens contra as ameaças que espreitam nas sombras. '
+            'Com um profundo conhecimento da natureza, '
+            'eles são capazes de se mover com facilidade em terrenos '
+            'difíceis, encontrando trilhas e passagens secretas que '
+            'passam despercebidas pelos olhos menos treinados.\n\n'
+
+            'Além de suas habilidades de sobrevivência, '
+            'os Patrulheiros são exímios arqueiros e combatentes furtivos, '
+            'capazes de emboscar seus inimigos com precisão mortal. '
+            'Sua ligação com a natureza também lhes confere a capacidade '
+            'de invocar aliados animais para auxiliá-los em suas missões, '
+            'tornando-os ainda mais formidáveis em combate.\n\n'
+
+            'Apesar de sua preferência pela solidão das fronteiras, '
+            'os Patrulheiros são aliados valiosos para qualquer grupo '
+            'que busque explorar terras desconhecidas ou enfrentar perigos '
+            'naturais e sobrenaturais. '
+            'Sua dedicação em proteger a natureza e suas habilidades '
+            'únicas fazem deles guardiões essenciais em qualquer jornada.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 1,
+        'multiplier_dexterity': 3,
+        'multiplier_constitution': 2,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 1,
+        'multiplier_charisma': 0.5,
+    },
+    {
+        'name': 'Xamã',
+        'description': (
+            'O Xamã é um mestre das artes espirituais, '
+            'um mediador entre o mundo físico e o espiritual. '
+            'Por meio de rituais ancestrais e comunhão com os espíritos '
+            'da natureza, o Xamã invoca poderes divinos para curar '
+            'ferimentos, proteger os companheiros e conjurar elementos '
+            'da natureza para auxiliar em batalhas.\n\n'
+
+            'Além de suas habilidades de cura e proteção, '
+            'o Xamã também possui o dom da previsão, '
+            'podendo ter visões do futuro e orientar seu grupo em '
+            'direções mais seguras. '
+            'Sua conexão com os espíritos também lhe confere conhecimento '
+            'sobre criaturas sobrenaturais e como lidar com elas, '
+            'tornando-o um guia valioso em terras '
+            'desconhecidas e perigosas.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.1,
+        'multiplier_dexterity': 0.5,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 2,
+        'multiplier_wisdom': 3,
+        'multiplier_charisma': 1.4,
+    },
+    # Enemies 13 Points
+    {
+        'name': 'Berserker',
+        'description': (
+            'O Berserker é um guerreiro feroz e destemido que entra '
+            'em um estado de fúria incontrolável durante o combate. '
+            'Movido pela intensa emoção da batalha, ele ignora dor e medo, '
+            'buscando apenas destruir seus inimigos com pura força bruta.\n\n'
+
+            'Durante sua fúria, '
+            'o Berserker se torna uma força imparável, '
+            'capaz de infligir danos devastadores e superar adversidades '
+            'que seriam insuperáveis em condições normais. '
+            'No entanto, essa fúria vem com um preço, '
+            'pois o Berserker muitas vezes perde o controle de si mesmo, '
+            'colocando em risco não apenas seus inimigos, '
+            'mas também seus aliados e até mesmo sua própria vida.\n\n'
+
+            'Apesar de sua natureza selvagem, '
+            'o Berserker é frequentemente reverenciado por sua coragem e '
+            'determinação inabaláveis, '
+            'sendo visto como um símbolo de força e bravura no '
+            'campo de batalha.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 5,
+        'multiplier_dexterity': 2.5,
+        'multiplier_constitution': 4,
+        'multiplier_intelligence': 0.1,
+        'multiplier_wisdom': 1.3,
+        'multiplier_charisma': 0.1,
+    },
+    {
+        'name': 'Mestre das Armas',
+        'description': (
+            'O Mestre das Armas é um especialista na arte do combate '
+            'corpo a corpo, dominando uma variedade de '
+            'armas e estilos de luta. '
+            'Sua perícia e treinamento excepcionais o tornam um '
+            'combatente formidável, '
+            'capaz de enfrentar inimigos de todas as formas e '
+            'tamanhos com confiança e habilidade. '
+            'Ele é conhecido por sua destreza com armas de todas as formas, '
+            'desde espadas e machados até lanças e martelos, '
+            'adaptando-se a cada situação de combate com maestria.\n\n'
+
+            'Além de sua proficiência no manejo de armas, '
+            'o Mestre das Armas também possui um profundo conhecimento '
+            'sobre o campo de batalha e táticas de combate. '
+            'Ele é capaz de avaliar rapidamente uma situação e '
+            'tomar decisões estratégicas que podem virar o curso '
+            'de uma batalha a seu favor. '
+            'Sua presença no campo de batalha inspira aliados e '
+            'intimida inimigos, tornando-o um líder natural '
+            'em situações de conflito.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 4,
+        'multiplier_dexterity': 3,
+        'multiplier_constitution': 3,
+        'multiplier_intelligence': 1,
+        'multiplier_wisdom': 1,
+        'multiplier_charisma': 1,
+    },
+    {
+        'name': 'Feiticeiro Supremo',
+        'description': (
+            'O Feiticeiro Supremo é o ápice do poder arcano, '
+            'um mestre absoluto das artes mágicas. '
+            'Seu conhecimento sobre os segredos do universo e sua '
+            'habilidade em manipular a energia mística são incomparáveis. '
+            'Com um simples gesto, ele pode desencadear tempestades de fogo, '
+            'erguer barreiras impenetráveis ou até mesmo distorcer a '
+            'realidade ao seu redor.\n\n'
+
+            'Além de seu poder impressionante, '
+            'o Feiticeiro Supremo também é um guardião do equilíbrio mágico. '
+            'Ele usa sua sabedoria para evitar que o uso irresponsável '
+            'da magia cause danos ao mundo. '
+            'Sua presença é muitas vezes vista como uma garantia de paz '
+            'e segurança, mas também como um lembrete do poder avassalador '
+            'que a magia pode ter em mãos erradas.\n\n'
+
+            'A jornada para se tornar um Feiticeiro Supremo é longa e árdua, '
+            'exigindo anos de estudo e prática dedicada. '
+            'Aqueles que alcançam esse nível de maestria são poucos '
+            'e geralmente são figuras lendárias, '
+            'cujos feitos são contados em histórias e '
+            'canções por gerações.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.2,
+        'multiplier_dexterity': 2,
+        'multiplier_constitution': 1,
+        'multiplier_intelligence': 4,
+        'multiplier_wisdom': 4,
+        'multiplier_charisma': 1.8,
+    },
+    {
+        'name': 'Senhor dos Ladinos',
+        'description': (
+            'O Senhor dos Ladinos é um mestre na arte da astúcia e da '
+            'furtividade, combinando habilidades de luta com técnicas de '
+            'engano e dissimulação. '
+            'Este mestre dos ladinos não apenas domina o combate '
+            'corpo a corpo, mas também é um líder entre os ladrões, '
+            'capaz de orquestrar ataques coordenados e '
+            'elaborar planos complexos.\n\n'
+
+            'Com sua destreza e perspicácia, o Senhor dos Ladinos '
+            'é capaz de contornar até mesmo as defesas mais sólidas, '
+            'encontrando pontos fracos em armaduras e estratégias inimigas. '
+            'Além disso, ele possui um talento especial para '
+            'identificar e desarmar armadilhas, '
+            'tornando-o essencial em missões que exigem furtividade '
+            'e agilidade.\n\n'
+
+            'Seu conhecimento extenso sobre o submundo e suas conexões '
+            'com outras figuras do crime lhe conferem uma vantagem '
+            'única em lidar com situações de conflito e intriga. '
+            'Por meio de sua inteligência afiada e sua habilidade de '
+            'improvisar, o Senhor dos Ladinos se destaca como um '
+            'líder entre os marginais, capaz de superar desafios '
+            'com sagacidade e astúcia.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 2,
+        'multiplier_dexterity': 5,
+        'multiplier_constitution': 2.4,
+        'multiplier_intelligence': 1,
+        'multiplier_wisdom': 2.4,
+        'multiplier_charisma': 0.2,
     },
 ]
 
