@@ -224,7 +224,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         fields={'items_ids': {'$slice': [skip_slice, size_slice]}},
         partial=False
     )
-    if not player_bag:  # Cria uma bolsa caso o jogador não tenha uma.
+    if not isinstance(player_bag, Bag):  # Cria uma bolsa caso o jogador não tenha uma.
         player_bag = Bag(
             items=[],
             player_id=user_id
