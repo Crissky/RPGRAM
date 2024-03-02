@@ -664,14 +664,16 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.CLASS.value}*CLASSES*\n\n'
+            f'{EmojiEnum.CLASS.value}*CLASSES*: /{classe_commands[0]}\n'
+            f'Use o argumento *"all"* ou *"a"* para exibir todas as classes.'
+            f'\n\n'
         )
 
         keys = attrgetter('name')
         for classe in sorted(all_classes, key=keys):
-            description = classe.description.split('\n')[0]
+            description = classe.description.split('.')[0]
             text += f'*Nome*: {classe.name}\n'
-            text += f'*Descrição*: {description}\n\n'
+            text += f'*Descrição*: {description}.\n\n'
         text = text.strip()
     elif option == CALLBACK_RACES:
         race_model = RaceModel()
@@ -694,7 +696,8 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.RACE.value}*RAÇAS*\n\n'
+            f'{EmojiEnum.RACE.value}*RAÇAS*: /{race_commands[0]}\n'
+            f'Use o argumento *"all"* ou *"a"* para exibir todas as raças.\n\n'
         )
 
         keys = attrgetter('name')
