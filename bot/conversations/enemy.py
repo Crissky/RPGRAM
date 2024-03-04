@@ -14,10 +14,13 @@ from telegram.constants import ChatAction, ParseMode
 
 from bot.constants.enemy import (
     AMBUSH_TEXTS,
+    ATTACK_BUTTON_TEXT,
+    CALLBACK_TEXT_ATTACK,
     CALLBACK_TEXT_DEFEND,
     DEFEND_BUTTON_TEXT,
     MAX_MINUTES_FOR_ATTACK,
     MIN_MINUTES_FOR_ATTACK,
+    PATTERN_ATTACK,
     PATTERN_DEFEND,
     SECTION_END_DICT,
     SECTION_START_DICT,
@@ -411,8 +414,13 @@ async def enemy_attack(
         )
 
 
-async def player_attack():
-    ...
+async def player_attack(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    '''Função que o jogador ataca um Inimigo
+    '''
+
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    query = update.callback_query
+    await query.answer('Comando ainda não foi implementado.')
 
 
 def get_defend_button(
@@ -424,14 +432,26 @@ def get_defend_button(
 
     enemy_id = str(enemy.player_id)
     return [
-        InlineKeyboardButton(
-            text=DEFEND_BUTTON_TEXT,
-            callback_data=callback_data_to_string({
-                'command': CALLBACK_TEXT_DEFEND,
-                'enemy_id': enemy_id,
-                'user_id': user_id,
-            })
-        )
+        [
+            InlineKeyboardButton(
+                text=DEFEND_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'command': CALLBACK_TEXT_DEFEND,
+                    'enemy_id': enemy_id,
+                    'user_id': user_id,
+                })
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=ATTACK_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'command': CALLBACK_TEXT_ATTACK,
+                    'enemy_id': enemy_id,
+                    'user_id': user_id,
+                })
+            )
+        ]
     ]
 
 
@@ -615,7 +635,13 @@ async def enemy_drop_random_loot(
         silent=silent,
     )
 
-DEFEND_MSG_HANDLER = CallbackQueryHandler(
-    defense_enemy_attack,
-    pattern=PATTERN_DEFEND
-)
+AMBUSH_HANDLERS = [
+    CallbackQueryHandler(
+        defense_enemy_attack,
+        pattern=PATTERN_DEFEND
+    ),
+    CallbackQueryHandler(
+        player_attack,
+        pattern=PATTERN_ATTACK
+    )
+]

@@ -16,16 +16,24 @@ MAX_MINUTES_FOR_ATTACK = 50
 
 # ACTIONS
 CALLBACK_TEXT_DEFEND = 'defend'
+CALLBACK_TEXT_ATTACK = 'attack'
 
 # BUTTON TEXTS
 DEFEND_BUTTON_TEXT = (
     f'{EmojiEnum.DEFEND.value}DEFENDER ALIADO{EmojiEnum.DEFEND.value}'
+)
+ATTACK_BUTTON_TEXT = (
+    f'{EmojiEnum.ATTACK.value}ATACAR INIMIGO{EmojiEnum.ATTACK.value}'
 )
 
 # PATTERNS
 PATTERN_DEFEND = (
     f'{{{CALLBACK_KEY_LIST.index("command")}:'
     f'"{CALLBACK_TEXT_DEFEND}"'
+)
+PATTERN_ATTACK = (
+    f'{{{CALLBACK_KEY_LIST.index("command")}:'
+    f'"{CALLBACK_TEXT_ATTACK}"'
 )
 
 # SECTION_TEXT
