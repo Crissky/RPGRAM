@@ -157,11 +157,11 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_ATTACK_END
         )
 
-        defend_button = get_defend_button(
+        defend_button = get_action_buttons(
             user_id=user_id,
             enemy=enemy_char
         )
-        reply_markup = InlineKeyboardMarkup([defend_button])
+        reply_markup = InlineKeyboardMarkup(defend_button)
         response = await context.bot.send_message(
             chat_id=chat_id,
             text=text,
@@ -420,10 +420,10 @@ async def player_attack(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     query = update.callback_query
-    await query.answer('Comando ainda não foi implementado.')
+    await query.answer('Comando ainda não foi implementado.', show_alert=True)
 
 
-def get_defend_button(
+def get_action_buttons(
     user_id: int,
     enemy: NPCharacter
 ) -> List[InlineKeyboardButton]:
@@ -434,6 +434,16 @@ def get_defend_button(
     return [
         [
             InlineKeyboardButton(
+                text=ATTACK_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'command': CALLBACK_TEXT_ATTACK,
+                    'enemy_id': enemy_id,
+                    'user_id': user_id,
+                })
+            )
+        ],
+        [
+            InlineKeyboardButton(
                 text=DEFEND_BUTTON_TEXT,
                 callback_data=callback_data_to_string({
                     'command': CALLBACK_TEXT_DEFEND,
@@ -442,16 +452,6 @@ def get_defend_button(
                 })
             )
         ],
-        [
-            InlineKeyboardButton(
-                text=ATTACK_BUTTON_TEXT,
-                callback_data=callback_data_to_string({
-                    'command': CALLBACK_TEXT_ATTACK,
-                    'enemy_id': enemy_id,
-                    'user_id': user_id,
-                })
-            )
-        ]
     ]
 
 
