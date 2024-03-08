@@ -10,6 +10,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
+from rpgram.conditions.factory import factory_condition
 from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
@@ -91,25 +92,30 @@ class Status:
             )
 
         if isinstance(condition, Condition):
-            name = condition.name
+            condition_name = condition.name
+            condition_level = condition.level
         elif isinstance(condition, str):
-            name = condition
+            condition_name = condition
+            condition_level = 1
 
         report = {}
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
-            new_condition = new_condition.remove_level()
+            new_condition = new_condition.remove_level(condition_level)
             if not new_condition:
-                report['text'] = f'A Condição "{name}" foi removida.'
+                report['text'] = f'A Condição "{condition_name}" foi removida.'
                 self.__conditions.pop(index)
             else:
-                level = new_condition.level
+                new_condition_level = new_condition.level
                 report['text'] = (
-                    f'O nível da Condição "{name}" foi reduzido para {level}.'
+                    f'O nível da Condição "{condition_name}" '
+                    f'foi reduzido para {new_condition_level}.'
                 )
         else:
-            report['text'] = f'O status não possui a condição "{name}".'
+            report['text'] = (
+                f'O status não possui a condição "{condition_name}".'
+            )
         self.__update_stats()
 
         return report
@@ -120,7 +126,13 @@ class Status:
         self, *conditions: Union[Condition, str]
     ) -> List[dict]:
         reports = []
-        for condition in conditions:
+        unique_conditions = sorted(set(conditions))
+        for condition_name in unique_conditions:
+            condition_level = conditions.count(condition_name)
+            condition = factory_condition(
+                name=condition_name,
+                level=condition_level
+            )
             report = self.remove_condition(condition)
             reports.append(report)
 
