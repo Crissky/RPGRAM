@@ -297,7 +297,7 @@ class CombatStats:
             (self.constitution * 15) +
             (self.strength * 8) +
             self.bonus_hit_points +
-            (self.level * 10)
+            (self.level * 20)
         )
 
     @property

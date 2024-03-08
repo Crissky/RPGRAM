@@ -6,6 +6,7 @@ class EmojiEnum(Enum):
     CLOSE_BAG = '🎒'
     DEAD = '☠️'
     DEFEND = '🛡'
+    ATTACK = '💥'
     DICE = '🎲'
     DISCARD = '🗑️'
     DODGE = '🥾'

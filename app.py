@@ -15,7 +15,6 @@ from bot.conversations import (
     BAG_HANDLER,
     CLOSE_MSG_HANDLER,
     SELLER_HANDLER,
-    DEFEND_MSG_HANDLER,
     ITEM_QUEST_HANDLER,
 )
 from bot.conversations import (
@@ -33,6 +32,7 @@ from bot.conversations import (
     DEBUG_HANDLERS,
     RACES_HANDLERS,
     CLASSES_HANDLERS,
+    AMBUSH_HANDLERS,
 )
 from bot.conversations.enemy import job_create_ambush
 from bot.conversations.help import job_info_deploy_bot
@@ -62,7 +62,6 @@ def main() -> None:
     application.add_handler(BAG_HANDLER)
     application.add_handler(CLOSE_MSG_HANDLER)
     application.add_handler(SELLER_HANDLER)
-    application.add_handler(DEFEND_MSG_HANDLER)
     application.add_handler(ITEM_QUEST_HANDLER)
 
     # Add Multiple Handlers
@@ -80,6 +79,7 @@ def main() -> None:
     application.add_handlers(DEBUG_HANDLERS)
     application.add_handlers(RACES_HANDLERS)
     application.add_handlers(CLASSES_HANDLERS)
+    application.add_handlers(AMBUSH_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(

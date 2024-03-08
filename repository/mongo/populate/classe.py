@@ -883,24 +883,24 @@ CLASSES = [
     },
     # Enemies 13 Points
     {
-        'name': 'Berserker',
+        'name': 'Berserkir',
         'description': (
-            'O Berserker é um guerreiro feroz e destemido que entra '
+            'O Berserkir é um guerreiro feroz e destemido que entra '
             'em um estado de fúria incontrolável durante o combate. '
             'Movido pela intensa emoção da batalha, ele ignora dor e medo, '
             'buscando apenas destruir seus inimigos com pura força bruta.\n\n'
 
             'Durante sua fúria, '
-            'o Berserker se torna uma força imparável, '
+            'o Berserkir se torna uma força imparável, '
             'capaz de infligir danos devastadores e superar adversidades '
             'que seriam insuperáveis em condições normais. '
             'No entanto, essa fúria vem com um preço, '
-            'pois o Berserker muitas vezes perde o controle de si mesmo, '
+            'pois o Berserkir muitas vezes perde o controle de si mesmo, '
             'colocando em risco não apenas seus inimigos, '
             'mas também seus aliados e até mesmo sua própria vida.\n\n'
 
             'Apesar de sua natureza selvagem, '
-            'o Berserker é frequentemente reverenciado por sua coragem e '
+            'o Berserkir é frequentemente reverenciado por sua coragem e '
             'determinação inabaláveis, '
             'sendo visto como um símbolo de força e bravura no '
             'campo de batalha.\n\n'
