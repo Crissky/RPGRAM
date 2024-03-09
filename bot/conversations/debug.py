@@ -29,6 +29,7 @@ from constant.text import TEXT_SEPARATOR
 from function.text import escape_basic_markdown_v2
 from repository.mongo.populate.enemy import create_random_enemies
 from rpgram.conditions.debuff import DEBUFFS
+from rpgram.conditions.factory import factory_condition
 
 
 @skip_if_no_singup_player
@@ -71,12 +72,29 @@ async def get_random_debuff(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    ''' Comando que adiciona debuffs no personagem do jogador.
+    Caso não seja passado nenhum argumento, adiciona 1 nível de 
+    todos os debuffs.
+    O primeiro argumento é o nome do debuff, o segundo é o nível.
+    Se o nível não for passado, será considerado 1.
+    '''
+
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
 
-    report = add_conditions(*DEBUFFS, user_id=user_id)
+    if args:
+        condition_name = args.pop(0).title()
+        condition_level = args.pop(0) if args else 1
+        condition_level = abs(int(condition_level))
+        condition = factory_condition(
+            condition_name=condition_name,
+            level=condition_level
+        )
+        report = add_conditions(condition, user_id=user_id)
+    else:
+        report = add_conditions(*DEBUFFS, user_id=user_id)
     char = report['char']
     text = report['text']
     text += char.get_all_sheets(verbose=False, markdown=True)
