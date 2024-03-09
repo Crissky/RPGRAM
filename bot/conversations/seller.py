@@ -506,8 +506,8 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
     consumable_items_generator = create_random_consumable(
         group_level=group_level,
         ignore_list=[TrocadoPouchConsumable, GemstoneConsumable],
-        min_consumable_quantity=(2 * multiply_quantity),
-        max_consumable_quantity=(5 * multiply_quantity),
+        min_consumable_quantity=(5 * multiply_quantity),
+        max_consumable_quantity=(10 * multiply_quantity),
         total_items=TOTAL_CONSUMABLES
     )
     for consumable_item in consumable_items_generator:

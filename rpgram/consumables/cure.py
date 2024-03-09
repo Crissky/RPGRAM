@@ -37,10 +37,8 @@ class CureConsumable(Consumable):
         self.condition_target = condition_target
 
     def function(self, target) -> dict:
-        report_list = [
-            target.status.remove_condition(condition_target)["text"]
-            for condition_target in self.condition_target
-        ]
+        report_list = target.status.remove_conditions(*self.condition_target)
+        report_list = [report['text'] for report in report_list]
         report_list = list(dict.fromkeys(report_list))
         report = {"text": "\n".join(report_list)}
 
