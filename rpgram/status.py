@@ -125,7 +125,7 @@ class Status:
     def remove_conditions(
         self, *conditions: Union[Condition, str]
     ) -> List[dict]:
-        reports = []
+        report_list = []
         unique_conditions = sorted(set(conditions))
         for condition_name in unique_conditions:
             condition_level = conditions.count(condition_name)
@@ -134,9 +134,9 @@ class Status:
                 level=condition_level
             )
             report = self.remove_condition(condition)
-            reports.append(report)
+            report_list.append(report)
 
-        return reports
+        return report_list
 
     def activate(self, char) -> List[dict]:
         reports = []
