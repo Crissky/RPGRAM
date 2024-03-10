@@ -176,7 +176,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
         job_name = get_enemy_attack_job_name(
             user_id=user_id,
-            enemy_char=enemy_char
+            enemy=enemy_char
         )
         job_data = {
             'enemy_id': str(enemy_char.player_id),
@@ -254,7 +254,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         )
     elif not enemy_char:
         text = f'O inimigo "{enemy_id}" não existe mais.'
-        print(text)
+        print(user_id, text)
         text = create_text_in_box(
             text=text,
             section_name=SECTION_TEXT_FAIL,
@@ -267,6 +267,8 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             message_id=message_id,
             parse_mode=ParseMode.MARKDOWN_V2,
         )
+
+    remove_ambush_enemy(context=context, enemy_id=enemy_id)
 
 
 @skip_if_no_singup_player
@@ -300,7 +302,6 @@ async def defense_enemy_attack(
         return ConversationHandler.END
 
     if defenser_user_id == target_user_id:
-        put_ambush_dict(context=context, enemy=enemy_char)
         await query.answer(
             'Você não pode defender a si mesmo.',
             show_alert=True
@@ -324,6 +325,7 @@ async def defense_enemy_attack(
         user_id=target_user_id,
         enemy_char=enemy_char
     )
+    remove_ambush_enemy(context=context, enemy_id=enemy_id)
     if defenser_char.is_alive and target_char.is_alive:
         await enemy_drop_random_loot(
             context=context,
@@ -455,11 +457,11 @@ def get_action_buttons(
     ]
 
 
-def get_enemy_attack_job_name(user_id: int, enemy_char: NPCharacter) -> str:
+def get_enemy_attack_job_name(user_id: int, enemy: NPCharacter) -> str:
     '''Nome do job do ataque inimigo
     '''
 
-    enemy_id = str(enemy_char.player_id)
+    enemy_id = str(enemy.player_id)
     return f'JOB_ENEMY_ATTACK_{user_id}_{enemy_id}'
 
 
@@ -470,9 +472,46 @@ def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
 
     enemy_id = str(enemy.player_id)
     ambushes = context.chat_data.get('ambushes', {})
-    ambushes[enemy_id] = enemy
+    ambushes[enemy_id] = {
+        'enemy': enemy,
+        'attacker_id_list': [],
+    }
     if not 'ambushes' in context.chat_data:
         context.chat_data['ambushes'] = ambushes
+
+
+def add_attacker_id_to_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str,
+    attacker_id: int,
+):
+    '''Adiciona o attacker_id ao dicionário ambushes.
+    '''
+
+    ambushes = context.chat_data.get('ambushes', {})
+    enemy_ambush = ambushes.get(enemy_id, {})
+    if enemy_ambush:
+        attacker_id_list = enemy_ambush['attacker_id_list']
+        attacker_id_list.append(attacker_id)
+
+
+def check_attacker_id_in_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str,
+    attacker_id: int,
+) -> bool:
+    '''Verifica se o attacker_id está no dicionário de uma emboscada inimiga.
+    Retorna True se estiver, False caso contrário.
+    '''
+
+    in_ambush = False
+    ambushes = context.chat_data.get('ambushes', {})
+    enemy_ambush = ambushes.get(enemy_id, {})
+    if enemy_ambush:
+        attacker_id_list = enemy_ambush['attacker_id_list']
+        in_ambush = attacker_id in attacker_id_list
+
+    return in_ambush
 
 
 def get_enemy_from_ambush_dict(
@@ -484,7 +523,19 @@ def get_enemy_from_ambush_dict(
     '''
 
     ambushes = context.chat_data.get('ambushes', {})
-    return ambushes.pop(enemy_id, None)
+    return ambushes.get(enemy_id, {}).get('enemy', None)
+
+
+def remove_ambush_enemy(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str
+):
+    '''Remove o inimigo do dicionário ambushes.
+    '''
+
+    ambushes = context.chat_data.get('ambushes', {})
+    ambushes.pop(enemy_id, None)
+    context.chat_data['ambushes'] = ambushes
 
 
 async def send_ambush_message(
@@ -571,7 +622,7 @@ def remove_enemy_attack_job(
 
     job_name = get_enemy_attack_job_name(
         user_id=user_id,
-        enemy_char=enemy_char
+        enemy=enemy_char
     )
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
