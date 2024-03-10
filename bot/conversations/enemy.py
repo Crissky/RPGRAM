@@ -176,7 +176,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
         job_name = get_enemy_attack_job_name(
             user_id=user_id,
-            enemy_char=enemy_char
+            enemy=enemy_char
         )
         job_data = {
             'enemy_id': str(enemy_char.player_id),
@@ -455,11 +455,11 @@ def get_action_buttons(
     ]
 
 
-def get_enemy_attack_job_name(user_id: int, enemy_char: NPCharacter) -> str:
+def get_enemy_attack_job_name(user_id: int, enemy: NPCharacter) -> str:
     '''Nome do job do ataque inimigo
     '''
 
-    enemy_id = str(enemy_char.player_id)
+    enemy_id = str(enemy.player_id)
     return f'JOB_ENEMY_ATTACK_{user_id}_{enemy_id}'
 
 
@@ -571,7 +571,7 @@ def remove_enemy_attack_job(
 
     job_name = get_enemy_attack_job_name(
         user_id=user_id,
-        enemy_char=enemy_char
+        enemy=enemy_char
     )
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     print('current_jobs', current_jobs)
