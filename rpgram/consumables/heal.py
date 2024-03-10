@@ -81,9 +81,11 @@ class HealingConsumable(Consumable):
 
     @property
     def price(self) -> int:
-        base_value = self.power / 2
         if self.power == MYTHIC_HEALING_POTION_POWER:
             base_value = LEGENDARY_HEALING_POTION_POWER * 2
+        else:
+            base_value = self.power / 2
+
         rarity_multiplier = get_enum_index(self.rarity) + 1
         price = base_value * rarity_multiplier
 
