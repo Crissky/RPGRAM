@@ -672,19 +672,19 @@ CONSUMABLES = [
     },
     {
         'name': f'Tiny Monarch {TrocadoEnum.TROCADO_POUCH.value}',
-        'weight': 0.15,
-        'rarity': RarityEnum.COMMON.name,
-        'class': TrocadoPouchConsumable
-    },
-    {
-        'name': f'Tiny Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.20,
         'rarity': RarityEnum.COMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
+        'name': f'Tiny Emperor {TrocadoEnum.TROCADO_POUCH.value}',
+        'weight': 0.30,
+        'rarity': RarityEnum.COMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
         'name': f'Tiny Overlord {TrocadoEnum.TROCADO_POUCH.value}',
-        'weight': 0.25,
+        'weight': 0.40,
         'rarity': RarityEnum.COMMON.name,
         'class': TrocadoPouchConsumable
     },
@@ -696,19 +696,19 @@ CONSUMABLES = [
     },
     {
         'name': f'Minor Monarch {TrocadoEnum.TROCADO_POUCH.value}',
-        'weight': 0.55,
-        'rarity': RarityEnum.UNCOMMON.name,
-        'class': TrocadoPouchConsumable
-    },
-    {
-        'name': f'Minor Emperor {TrocadoEnum.TROCADO_POUCH.value}',
         'weight': 0.60,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': TrocadoPouchConsumable
     },
     {
+        'name': f'Minor Emperor {TrocadoEnum.TROCADO_POUCH.value}',
+        'weight': 0.70,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': TrocadoPouchConsumable
+    },
+    {
         'name': f'Minor Overlord {TrocadoEnum.TROCADO_POUCH.value}',
-        'weight': 0.65,
+        'weight': 0.80,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': TrocadoPouchConsumable
     },
