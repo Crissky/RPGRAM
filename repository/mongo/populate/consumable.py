@@ -866,55 +866,55 @@ CONSUMABLES = [
     },
     {
         'name': 'Minor Ruby',
-        'weight': 0.25,
+        'weight': 0.30,
         'rarity': RarityEnum.RARE.name,
         'class': GemstoneConsumable
     },
     {
         'name': 'Ruby',
-        'weight': 0.30,
+        'weight': 0.35,
         'rarity': RarityEnum.EPIC.name,
         'class': GemstoneConsumable
     },
     {
         'name': 'Greater Ruby',
-        'weight': 0.35,
+        'weight': 0.40,
         'rarity': RarityEnum.EPIC.name,
         'class': GemstoneConsumable
     },
     {
         'name': 'Minor Emerald',
-        'weight': 0.30,
+        'weight': 0.40,
         'rarity': RarityEnum.EPIC.name,
         'class': GemstoneConsumable
     },
     {
         'name': 'Emerald',
-        'weight': 0.35,
+        'weight': 0.45,
         'rarity': RarityEnum.EPIC.name,
         'class': GemstoneConsumable
     },
     {
         'name': 'Greater Emerald',
-        'weight': 0.40,
-        'rarity': RarityEnum.LEGENDARY.name,
-        'class': GemstoneConsumable
-    },
-    {
-        'name': 'Minor Diamond',
-        'weight': 0.40,
-        'rarity': RarityEnum.LEGENDARY.name,
-        'class': GemstoneConsumable
-    },
-    {
-        'name': 'Diamond',
         'weight': 0.50,
         'rarity': RarityEnum.LEGENDARY.name,
         'class': GemstoneConsumable
     },
     {
+        'name': 'Minor Diamond',
+        'weight': 0.50,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': GemstoneConsumable
+    },
+    {
+        'name': 'Diamond',
+        'weight': 0.65,
+        'rarity': RarityEnum.LEGENDARY.name,
+        'class': GemstoneConsumable
+    },
+    {
         'name': 'Greater Diamond',
-        'weight': 0.60,
+        'weight': 0.80,
         'rarity': RarityEnum.MYTHIC.name,
         'class': GemstoneConsumable
     },
