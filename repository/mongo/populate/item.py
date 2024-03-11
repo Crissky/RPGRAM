@@ -555,7 +555,7 @@ def add_secret_stats(rarity: str, group_level: int, equip_type: str):
             attr_probs[attribute] += 10
 
     if 'secret_bonus_hit_points' in secret_stats:
-        secret_stats['secret_bonus_hit_points'] *= randint(2, 5)
+        secret_stats['secret_bonus_hit_points'] *= randint(5, 10)
 
     if len(secret_stats) > 0:
         secret_stats['identified'] = False
@@ -649,6 +649,10 @@ def create_random_equipment(
     for _ in range(penality):
         attribute = weighted_choice(**attr_penality_prob)
         equipment_dict[attribute] -= 1
+
+    if 'bonus_hit_points' in equipment_dict:
+        if equipment_dict['bonus_hit_points'] > 0:
+            equipment_dict['bonus_hit_points'] *= randint(2, 5)
 
     weight = get_equipment_weight(equip_type, rarity, material, weapon)
     material_name = translate_material_name(equip_type, weapon, material)

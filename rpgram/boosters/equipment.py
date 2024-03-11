@@ -491,25 +491,24 @@ class Equipment(StatsBooster):
     # Getters
     @property
     def power(self) -> int:
-        return int(
-            (self.bonus_strength * 13) +
-            (self.bonus_dexterity * 16) +
-            (self.bonus_constitution * 25) +
-            (self.bonus_intelligence * 10) +
-            (self.bonus_wisdom * 15) +
-            (self.bonus_charisma * 15) +
-            sum([
-                self.bonus_hit_points,
-                self.bonus_initiative,
-                self.bonus_physical_attack,
-                self.bonus_precision_attack,
-                self.bonus_magical_attack,
-                self.bonus_physical_defense,
-                self.bonus_magical_defense,
-                self.bonus_hit,
-                self.bonus_evasion,
-            ])
-        )
+        return int(sum([
+            (self.bonus_strength * 13),
+            (self.bonus_dexterity * 16),
+            (self.bonus_constitution * 25),
+            (self.bonus_intelligence * 10),
+            (self.bonus_wisdom * 15),
+            (self.bonus_charisma * 15),
+
+            (self.bonus_hit_points / 2.5),
+            self.bonus_initiative,
+            self.bonus_physical_attack,
+            self.bonus_precision_attack,
+            self.bonus_magical_attack,
+            self.bonus_physical_defense,
+            self.bonus_magical_defense,
+            self.bonus_hit,
+            self.bonus_evasion,
+        ]))
 
     @property
     def power_multiplier(self) -> float:
