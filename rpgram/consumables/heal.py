@@ -10,17 +10,17 @@ from rpgram.enums.rarity import RarityEnum
 from rpgram.stats.stats_combat import FULL_HEAL_VALUE
 
 
-MINOR_HEALING_POTION_POWER = 50
-LIGHT_HEALING_POTION_POWER = 100
-HEALING_POTION_POWER = 200
-GREATER_HEALING_POTION_POWER = 500
-RARE_HEALING_POTION_POWER = 1000
-EPIC_HEALING_POTION_POWER = 2500
-LEGENDARY_HEALING_POTION_POWER = 5000
+MINOR_HEALING_POTION_POWER = 100
+LIGHT_HEALING_POTION_POWER = 500
+HEALING_POTION_POWER = 1_000
+GREATER_HEALING_POTION_POWER = 5_000
+RARE_HEALING_POTION_POWER = 10_000
+EPIC_HEALING_POTION_POWER = 50_000
+LEGENDARY_HEALING_POTION_POWER = 100_000
 MYTHIC_HEALING_POTION_POWER = FULL_HEAL_VALUE
 
 MINOR_REVIVE_POWER = 1
-REVIVE_POWER = 500
+REVIVE_POWER = 1000
 
 
 class HealingConsumable(Consumable):
@@ -81,9 +81,11 @@ class HealingConsumable(Consumable):
 
     @property
     def price(self) -> int:
-        base_value = self.power / 2
         if self.power == MYTHIC_HEALING_POTION_POWER:
             base_value = LEGENDARY_HEALING_POTION_POWER * 2
+        else:
+            base_value = self.power / 4
+
         rarity_multiplier = get_enum_index(self.rarity) + 1
         price = base_value * rarity_multiplier
 

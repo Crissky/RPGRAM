@@ -251,10 +251,10 @@ class GemstoneConsumable(Consumable):
 
     @property
     def price(self) -> int:
-        base_value = 1000 * uniform(0.95, 1.05)
+        base_value = 2500 * uniform(0.95, 1.05)
         trocado_multiplier = self.weight
         rarity_multiplier = get_enum_index(self.rarity) + 1
-        price = base_value * trocado_multiplier * rarity_multiplier
+        price = base_value * trocado_multiplier * (rarity_multiplier ** 2)
 
         return int(price)
 

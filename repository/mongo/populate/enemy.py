@@ -112,39 +112,39 @@ def get_enemy_equips(
     equips_dict['left_hand'] = create_random_equipment(
         equip_type=hand.name,
         group_level=random_enemy_level(enemy_level),
-        weapon=choice(hand_list),
+        equip_class=choice(hand_list),
     ).item
     equips_dict['right_hand'] = None
     if hand == EquipmentEnum.ONE_HAND:
         equips_dict['right_hand'] = create_random_equipment(
             equip_type=hand.name,
             group_level=random_enemy_level(enemy_level),
-            weapon=choice(hand_list),
+            equip_class=choice(hand_list),
         ).item
     equips_dict['helmet'] = create_random_equipment(
         equip_type=EquipmentEnum.HELMET.name,
         group_level=random_enemy_level(enemy_level),
-        weapon=choice(helmet_list),
+        equip_class=choice(helmet_list),
     ).item
     equips_dict['armor'] = create_random_equipment(
         equip_type=EquipmentEnum.ARMOR.name,
         group_level=random_enemy_level(enemy_level),
-        weapon=choice(armor_list),
+        equip_class=choice(armor_list),
     ).item
     equips_dict['boots'] = create_random_equipment(
         equip_type=EquipmentEnum.BOOTS.name,
         group_level=random_enemy_level(enemy_level),
-        weapon=choice(boots_list),
+        equip_class=choice(boots_list),
     ).item
     equips_dict['ring'] = create_random_equipment(
         equip_type=EquipmentEnum.RING.name,
         group_level=random_enemy_level(enemy_level),
-        weapon=choice(ring_list),
+        equip_class=choice(ring_list),
     ).item
     equips_dict['amulet'] = create_random_equipment(
         equip_type=EquipmentEnum.AMULET.name,
         group_level=random_enemy_level(enemy_level),
-        weapon=choice(amulet_list),
+        equip_class=choice(amulet_list),
     ).item
 
     for equipment in equips_dict.values():

@@ -265,44 +265,42 @@ def choice_accessory_material(group_level: int) -> str:
     )
 
 
-def get_equipment_and_material(
+def get_equip_class_and_material(
     equip_type: str,
     group_level: int
 ) -> Tuple[str, str]:
-    '''Retorna uma tupla com o nome da arma na primeira posição, 
-    caso o tipo do equipamento seja de UMA ou de DUAS MÃOS
-    ou None caso contrário. 
-    Na segunda posição será retornado o material do equipamento
+    '''Retorna uma tupla com a classe do equipamento na primeira posição e o 
+    material do equipamento na segunda posição.
     '''
-    weapon = None
+
+    equip_class = None
 
     if equip_type in WEAPON_EQUIPMENTS_ENUM:
         material = choice_weapon_material(group_level)
         if equip_type == EquipmentEnum.ONE_HAND.name:
-            weapon = choice(list(ONE_HAND_EQUIPMENTS))
+            equip_class = choice(list(ONE_HAND_EQUIPMENTS))
         elif equip_type == EquipmentEnum.TWO_HANDS.name:
-            weapon = choice(list(TWO_HANDS_EQUIPMENTS))
+            equip_class = choice(list(TWO_HANDS_EQUIPMENTS))
     elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
         material = choice_armor_material(group_level)
         if equip_type == EquipmentEnum.HELMET.name:
-            weapon = choice(list(HELMET_EQUIPMENTS))
+            equip_class = choice(list(HELMET_EQUIPMENTS))
         elif equip_type == EquipmentEnum.ARMOR.name:
-            weapon = choice(list(ARMOR_EQUIPMENTS))
+            equip_class = choice(list(ARMOR_EQUIPMENTS))
         elif equip_type == EquipmentEnum.BOOTS.name:
-            weapon = choice(list(BOOTS_EQUIPMENTS))
+            equip_class = choice(list(BOOTS_EQUIPMENTS))
     elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
         material = choice_accessory_material(group_level)
         if equip_type == EquipmentEnum.RING.name:
-            weapon = choice(list(RING_EQUIPMENTS))
+            equip_class = choice(list(RING_EQUIPMENTS))
         elif equip_type == EquipmentEnum.AMULET.name:
-            weapon = choice(list(AMULET_EQUIPMENTS))
-
+            equip_class = choice(list(AMULET_EQUIPMENTS))
     else:
         raise ValueError(
             f'Material do equipamento "{equip_type}" não encontrado.'
         )
 
-    return weapon, material
+    return equip_class, material
 
 
 def get_material_level(equip_type: str, material: str,) -> int:
@@ -321,36 +319,36 @@ def get_material_level(equip_type: str, material: str,) -> int:
     return material_bonus
 
 
-def check_equipment_type(equip_type: str, weapon: str):
+def check_equipment_type(equip_type: str, equip_class: str):
     error_message = (
-        f'Arma "{weapon}" não encontrada para o tipo de equipamento '
-        f'"{equip_type}".'
+        f'Classe de Equipamento "{equip_class}" não encontrada para '
+        f'o tipo de equipamento "{equip_type}".'
     )
 
     if equip_type == EquipmentEnum.ONE_HAND.name:
-        if weapon not in ONE_HAND_EQUIPMENTS:
+        if equip_class not in ONE_HAND_EQUIPMENTS:
             raise ValueError(error_message)
     elif equip_type == EquipmentEnum.TWO_HANDS.name:
-        if weapon not in TWO_HANDS_EQUIPMENTS:
+        if equip_class not in TWO_HANDS_EQUIPMENTS:
             raise ValueError(error_message)
     elif equip_type == EquipmentEnum.HELMET.name:
-        if weapon not in HELMET_EQUIPMENTS:
+        if equip_class not in HELMET_EQUIPMENTS:
             raise ValueError(error_message)
     elif equip_type == EquipmentEnum.ARMOR.name:
-        if weapon not in ARMOR_EQUIPMENTS:
+        if equip_class not in ARMOR_EQUIPMENTS:
             raise ValueError(error_message)
     elif equip_type == EquipmentEnum.BOOTS.name:
-        if weapon not in BOOTS_EQUIPMENTS:
+        if equip_class not in BOOTS_EQUIPMENTS:
             raise ValueError(error_message)
     elif equip_type == EquipmentEnum.RING.name:
-        if weapon not in RING_EQUIPMENTS:
+        if equip_class not in RING_EQUIPMENTS:
             raise ValueError(error_message)
     elif equip_type == EquipmentEnum.AMULET.name:
-        if weapon not in AMULET_EQUIPMENTS:
+        if equip_class not in AMULET_EQUIPMENTS:
             raise ValueError(error_message)
     else:
         raise ValueError(
-            f'Tipo de equipamento "{equip_type}" não encontrado.'
+            f'Tipo de Equipamento "{equip_type}" não encontrado.'
         )
 
 
@@ -402,14 +400,15 @@ def get_bonus_and_penality(
     return bonus, penality
 
 
-def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
+def get_attribute_probabilities(equip_class: str) -> Dict[str, int]:
     '''Retorna uma tupla contendo dois dicionários com as probabilidades 
     de distribuição dos bônus e penalidades dos atributos de um equipamento, 
     respectivamente.
     '''
-    equipment = ALL_EQUIPMENTS_DEFINITIONS.get(weapon, None)
+    equipment = ALL_EQUIPMENTS_DEFINITIONS.get(equip_class, None)
     if equipment is None:
-        raise ValueError(f'"{weapon}" não é um tipo de equipamento válido.')
+        raise ValueError(
+            f'"{equip_class}" não é um tipo de equipamento válido.')
 
     attr_bonus_prob = equipment['attr_bonus_prob']
     attr_penality_prob = equipment['attr_penality_prob']
@@ -417,26 +416,26 @@ def get_attribute_probabilities(weapon: str) -> Dict[str, int]:
     return attr_bonus_prob, attr_penality_prob
 
 
-def get_equipment_weight(equip_type, rarity, material, weapon) -> float:
+def get_equipment_weight(equip_type, rarity, material, equip_class) -> float:
     '''Retorna o peso do equipamento com base no seu bônus e 
     no tipo de equipamento.
     '''
     weight, _ = get_bonus_and_penality(equip_type, rarity, material, 5)
-    if weapon in HEAVY_EQUIPMENTS:
+    if equip_class in HEAVY_EQUIPMENTS:
         weight *= 2
-    elif weapon in VERY_HEAVY_EQUIPMENTS:
+    elif equip_class in VERY_HEAVY_EQUIPMENTS:
         weight *= 3
-    elif weapon in LIGHT_EQUIPMENTS:
+    elif equip_class in LIGHT_EQUIPMENTS:
         weight /= 10
 
     return weight
 
 
-def get_equipment_damage_type(weapon: str, rarity: str):
+def get_equipment_damage_type(equip_class: str, rarity: str):
     '''Retorna uma lista com os tipos de dano de uma arma.
     '''
     damage_types = None
-    if weapon in ALL_WEAPONS:
+    if equip_class in ALL_WEAPONS:
         damage_types = []
         chance = .5
         turns = BONUS_RARITY[rarity] - 1
@@ -445,17 +444,17 @@ def get_equipment_damage_type(weapon: str, rarity: str):
             if e not in [DamageEnum.SLASHING, DamageEnum.BLUDGEONING,
                          DamageEnum.HITTING, DamageEnum.PIERCING]
         ]
-        if weapon in SLASHING_WEAPONS:
+        if equip_class in SLASHING_WEAPONS:
             damage_types = [DamageEnum.SLASHING]
-        elif weapon in BLUDGEONING_WEAPONS:
+        elif equip_class in BLUDGEONING_WEAPONS:
             damage_types = [DamageEnum.BLUDGEONING]
-        elif weapon in PIERCING_WEAPONS:
+        elif equip_class in PIERCING_WEAPONS:
             damage_types = [DamageEnum.PIERCING]
-        elif weapon in MAGIC_WEAPONS:
+        elif equip_class in MAGIC_WEAPONS:
             damage_types = [DamageEnum.MAGIC]
             damages_list.remove(DamageEnum.MAGIC)
 
-        if weapon in ENCHANTED_WEAPONS:
+        if equip_class in ENCHANTED_WEAPONS:
             turns += 1
             chance = .9
 
@@ -555,7 +554,7 @@ def add_secret_stats(rarity: str, group_level: int, equip_type: str):
             attr_probs[attribute] += 10
 
     if 'secret_bonus_hit_points' in secret_stats:
-        secret_stats['secret_bonus_hit_points'] *= randint(2, 5)
+        secret_stats['secret_bonus_hit_points'] *= randint(5, 10)
 
     if len(secret_stats) > 0:
         secret_stats['identified'] = False
@@ -564,7 +563,7 @@ def add_secret_stats(rarity: str, group_level: int, equip_type: str):
 
 
 def translate_material_name(
-    equip_type: str, weapon: str, material: str,
+    equip_type: str, equip_class: str, material: str,
 ) -> str:
     if equip_type in WEAPON_EQUIPMENTS_ENUM:
         index = WEAPON_MATERIALS[material] - 1
@@ -573,25 +572,25 @@ def translate_material_name(
     elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
         index = ACCESSORY_MATERIALS[material] - 1
 
-    if weapon in MAGICAL_QUILL_EQUIPMENTS:
+    if equip_class in MAGICAL_QUILL_EQUIPMENTS:
         material_name = list(MagicalQuillMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif weapon in MAGICAL_GRIMOIRE_EQUIPMENTS:
+    elif equip_class in MAGICAL_GRIMOIRE_EQUIPMENTS:
         material_name = list(MagicalGrimoireMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
-    elif weapon in MAGICAL_STONES_EQUIPMENTS:
+    elif equip_class in MAGICAL_STONES_EQUIPMENTS:
         material_name = list(MagicalStonesMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif weapon in MAGICAL_WEARABLE_EQUIPMENTS:
+    elif equip_class in MAGICAL_WEARABLE_EQUIPMENTS:
         material_name = list(MagicalWearableMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
-    elif weapon in MAGICAL_MASK_EQUIPMENTS:
+    elif equip_class in MAGICAL_MASK_EQUIPMENTS:
         material_name = list(MagicalMaskMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif weapon in TATICAL_WEARABLE_EQUIPMENTS:
+    elif equip_class in TATICAL_WEARABLE_EQUIPMENTS:
         material_name = list(TacticalWearableMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif weapon in COIN_EQUIPMENTS:
+    elif equip_class in COIN_EQUIPMENTS:
         material_name = list(CoinMaterialsEnum)[index].name
         material_name = material_name.replace("_", " ").title()
     else:
@@ -604,7 +603,7 @@ def create_random_equipment(
     equip_type: str,
     group_level: int,
     rarity: Union[RarityEnum, str] = None,
-    weapon: str = None,
+    equip_class: str = None,
     material: str = None,
     random_level: bool = False,
     save_in_database: bool = False,
@@ -623,18 +622,21 @@ def create_random_equipment(
     if random_level:
         group_level = random_group_level(group_level)
 
-    _weapon, _material = get_equipment_and_material(equip_type, group_level)
-    weapon = weapon if weapon else _weapon
+    _equip_class, _material = get_equip_class_and_material(
+        equip_type,
+        group_level
+    )
+    equip_class = equip_class if equip_class else _equip_class
     material = material if material else _material
     material_level = get_material_level(
         equip_type=equip_type,
         material=material
     )
 
-    check_equipment_type(equip_type, weapon)
+    check_equipment_type(equip_type, equip_class)
 
-    equip_name = weapon if weapon else equip_type
-    print(f'Equipamento: {weapon}', end=' ')
+    equip_name = equip_class if equip_class else equip_type
+    print(f'Equipamento: {equip_class}', end=' ')
     bonus, penality = get_bonus_and_penality(
         equip_type, rarity, material, group_level, True
     )
@@ -650,9 +652,13 @@ def create_random_equipment(
         attribute = weighted_choice(**attr_penality_prob)
         equipment_dict[attribute] -= 1
 
-    weight = get_equipment_weight(equip_type, rarity, material, weapon)
-    material_name = translate_material_name(equip_type, weapon, material)
-    damage_types = get_equipment_damage_type(weapon, rarity)
+    if 'bonus_hit_points' in equipment_dict:
+        if equipment_dict['bonus_hit_points'] > 0:
+            equipment_dict['bonus_hit_points'] *= randint(2, 5)
+
+    weight = get_equipment_weight(equip_type, rarity, material, equip_class)
+    material_name = translate_material_name(equip_type, equip_class, material)
+    damage_types = get_equipment_damage_type(equip_class, rarity)
     damage_type_name = get_equipment_damage_type_name(damage_types)
     name = (
         f'{rarity} '
