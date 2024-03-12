@@ -64,6 +64,40 @@ TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'SCARF']
 COIN_EQUIPMENTS = ['COIN']
 
 
+# Requirements for Equipments
+FOR_REQUIREMENTS = [
+    'SWORD', 'SPIKED_SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'FALCHION', 'MACE',
+    'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT', 'GREAT_SWORD',
+    'DOUBLE_AXE', 'HALBERD', 'WARHAMMER', 'FLAIL', 'PIKE', 'LANCE', 'SHARUR',
+    'SPIKED_GREATSHIELD', 'KRÁNOS', 'SPIKED_ARMOR', 'SPIKED_SPAULDER',
+    'SPIKED_GREAVES', 'KRATOS\'S_RING',
+]
+DES_REQUIREMENTS = [
+    'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN', 'RAPIER',
+    'ESTOQUE', 'SAI', 'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER',
+    'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
+    'ARTEMIS\'S_RING', 'SCARF'
+]
+CON_REQUIREMENTS = [
+    'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'SCUTUM', 'GREATSHIELD',
+    'SPIKED_GREATSHIELD', 'PRISMATIC_GREATSHIELD', 'GREATSCUTUM', 'HELMET',
+    'KRÁNOS', 'GUGEL', 'HOOD', 'POINTED_HAT', 'ARMOR', 'SPIKED_ARMOR',
+    'BRIGANDINE', 'ROBE', 'CLOAK', 'SPAULDER', 'SPIKED_SPAULDER', 'BOOTS',
+    'SANDALS', 'GREAVES', 'SPIKED_GREAVES', 'SHOES', 'RING', 'KRATOS\'S_RING',
+    'GAIA\'S_RING', 'NECKLACE', 'CHARM', 'COIN'
+]
+INT_REQUIREMENTS = [
+    'WAND', 'ORB', 'QUILL', 'CHALICE', 'ROD', 'VAJRA', 'STAFF', 'GRIMOIRE',
+    'SCEPTER', 'HARP', 'CRYSTAL', 'RIKUDŌKON', 'MASK', 'HECATE\'S_RING',
+    'AMULET'
+]
+WIS_REQUIREMENTS = [
+    'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD', 'POINTED_HAT', 'MASK', 'ROBE',
+    'SHOES', 'HECATE\'S_RING', 'GAIA\'S_RING', 'AMULET', 'CHARM', 'COIN'
+]
+CAR_REQUIREMENTS = []
+
+
 # EQUIPMENTS DEFINITIONS
 ONE_HAND_EQUIPMENTS = {
     'SWORD': dict(
@@ -1386,18 +1420,38 @@ ALL_EQUIPMENTS_DEFINITIONS.update(BOOTS_EQUIPMENTS)
 ALL_EQUIPMENTS_DEFINITIONS.update(RING_EQUIPMENTS)
 ALL_EQUIPMENTS_DEFINITIONS.update(AMULET_EQUIPMENTS)
 
+ALL_EQUIPMENT_REQUIREMENTS = (
+    FOR_REQUIREMENTS +
+    DES_REQUIREMENTS +
+    CON_REQUIREMENTS +
+    INT_REQUIREMENTS +
+    WIS_REQUIREMENTS +
+    CAR_REQUIREMENTS
+)
 
-for weapon in ALL_WEAPONS:
-    if not weapon in ALL_EQUIPMENTS_DEFINITIONS.keys():
-        raise ValueError(f'Weapon {weapon} not defined.')
+for equip_class in ALL_WEAPONS:
+    if not equip_class in ALL_EQUIPMENTS_DEFINITIONS.keys():
+        raise ValueError(f'Weapon {equip_class} not defined.')
 print('WEAPONS DEFINED OK!!!')
 
-for weapon in ONE_HAND_EQUIPMENTS.keys():
-    if not weapon in ALL_WEAPONS:
-        raise ValueError(f'One hand weapon {weapon} not defined.')
+for equip_class in ONE_HAND_EQUIPMENTS.keys():
+    if not equip_class in ALL_WEAPONS:
+        raise ValueError(f'One hand weapon {equip_class} not defined.')
 print('ONE HAND WEAPONS DEFINED OK!!!')
 
-for weapon in TWO_HANDS_EQUIPMENTS.keys():
-    if not weapon in ALL_WEAPONS:
-        raise ValueError(f'Two hands weapon {weapon} not defined.')
+for equip_class in TWO_HANDS_EQUIPMENTS.keys():
+    if not equip_class in ALL_WEAPONS:
+        raise ValueError(f'Two hands weapon {equip_class} not defined.')
 print('TWO HANDS WEAPONS DEFINED OK!!!')
+
+for equip_class in ALL_EQUIPMENTS_DEFINITIONS.keys():
+    if not equip_class in ALL_EQUIPMENT_REQUIREMENTS:
+        raise ValueError(f'Requirements to {equip_class} not defined.')
+print('EQUIPMENT REQUIREMENTS DEFINED TO ALL EQUIPMENTS!!!')
+
+for equip_class in ALL_EQUIPMENT_REQUIREMENTS:
+    if not equip_class in ALL_EQUIPMENTS_DEFINITIONS.keys():
+        raise ValueError(
+            f'Equipment {equip_class} not defined to receive requirements.'
+        )
+print('ALL EQUIPMENT REQUIREMENTS HAVE A DEFINITION!!!')
