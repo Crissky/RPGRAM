@@ -131,18 +131,18 @@ class BaseCharacter:
 
     def get_accuracy(
         self,
-        defenser_char,
+        defender_char,
         attacker_dice: Dice,
-        defenser_dice: Dice,
+        defender_dice: Dice,
     ) -> float:
         hit = self.cs.hit
-        evasion = defenser_char.cs.evasion
+        evasion = defender_char.cs.evasion
         attacker_dice.throw(rethrow=False)
-        defenser_dice.throw(rethrow=False)
+        defender_dice.throw(rethrow=False)
 
         accuracy = hit / evasion
         accuracy = min(accuracy, 1.0)
-        dice_bonus = (attacker_dice.value - defenser_dice.value) / 100
+        dice_bonus = (attacker_dice.value - defender_dice.value) / 100
         accuracy = accuracy + dice_bonus
         accuracy = min(accuracy, 0.95)
         accuracy = max(accuracy, 0.1)
@@ -151,27 +151,27 @@ class BaseCharacter:
 
     def test_dodge(
         self,
-        defenser_char,
+        defender_char,
         attacker_dice: Dice,
-        defenser_dice: Dice,
+        defender_dice: Dice,
     ) -> dict:
         '''Testa se o inimigo esquivou do ataque, retornando True 
         caso tenha esquivado e False, caso contrário. '''
         accuracy = self.get_accuracy(
-            defenser_char=defenser_char,
+            defender_char=defender_char,
             attacker_dice=attacker_dice,
-            defenser_dice=defenser_dice,
+            defender_dice=defender_dice,
         )
         dodge_score = random()
         is_dodged = False
-        if not defenser_char.is_immobilized:
+        if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)
 
         return {
             'attacker_accuracy': accuracy,
             'defender_dodge_score': dodge_score,
             'is_dodged': is_dodged,
-            'is_immobilized': defenser_char.is_immobilized,
+            'is_immobilized': defender_char.is_immobilized,
         }
 
     def calculate_damage(
@@ -193,9 +193,9 @@ class BaseCharacter:
 
     def to_attack(
         self,
-        defenser_char,
+        defender_char,
         attacker_dice: Dice = Dice(20),
-        defenser_dice: Dice = Dice(20),
+        defender_dice: Dice = Dice(20),
         attacker_action_name: str = None,
         to_dodge: bool = False,
         to_defend: bool = True,
@@ -209,14 +209,14 @@ class BaseCharacter:
 
         report = {'text': ''}
         damage = 0
-        defenser_player_name = defenser_char.player_name
+        defender_player_name = defender_char.player_name
         attacker_dice.throw(rethrow=False)
-        defenser_dice.throw(rethrow=False)
+        defender_dice.throw(rethrow=False)
 
         dodge_report = self.test_dodge(
-            defenser_char=defenser_char,
+            defender_char=defender_char,
             attacker_dice=attacker_dice,
-            defenser_dice=defenser_dice,
+            defender_dice=defender_dice,
         )
 
         if not isinstance(attacker_action_name, str):
@@ -227,18 +227,18 @@ class BaseCharacter:
         (
             defense_value,
             defense_action_name
-        ) = defenser_char.get_action_defense(attacker_action_name)
-        defense_value_boosted = defenser_dice.boost_value(defense_value)
+        ) = defender_char.get_action_defense(attacker_action_name)
+        defense_value_boosted = defender_dice.boost_value(defense_value)
 
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
-                f'{defenser_player_name} *ESQUIVOU DO ATAQUE* de '
+                f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
                 f'*{self.full_name_with_level}*.\n\n'
             )
-            report.update(defenser_char.cs.basic_report)
+            report.update(defender_char.cs.basic_report)
         else:
             damage = attack_value_boosted
-            if to_defend and not defenser_char.is_immobilized:
+            if to_defend and not defender_char.is_immobilized:
                 damage = self.calculate_damage(
                     defense_value=defense_value,
                     defense_value_boosted=defense_value_boosted,
@@ -247,7 +247,7 @@ class BaseCharacter:
                 attack_value_boosted - defense_value_boosted
 
             damage = max(damage, 0)
-            damage_report = defenser_char.cs.damage_hit_points(
+            damage_report = defender_char.cs.damage_hit_points(
                 value=damage,
                 markdown=markdown
             )
@@ -263,7 +263,7 @@ class BaseCharacter:
                 damage_or_defend_text = f' e causou *{damage}* pontos de dano'
             report['text'] = (
                 f'*{self.full_name_with_level}* *ATACOU* '
-                f'{defenser_player_name}{damage_or_defend_text}.\n\n'
+                f'{defender_player_name}{damage_or_defend_text}.\n\n'
             )
             if verbose:
                 report['text'] += (
@@ -271,23 +271,23 @@ class BaseCharacter:
                     f'{attack_value_boosted}({attack_value}), '
                     f'{attacker_dice.text}\n'
                 )
-                if defenser_char.is_immobilized:
+                if defender_char.is_immobilized:
                     report['text'] += (
                         f'*Vulnerável*: Personagem não pôde se defender pois '
-                        f'está com {defenser_char.status.immobilized_names()}.'
+                        f'está com {defender_char.status.immobilized_names()}.'
                         f'\n'
                     )
                 else:
                     report['text'] += (
                         f'*{defense_action_name}*: '
                         f'{defense_value_boosted}({defense_value}), '
-                        f'{defenser_dice.text}\n'
+                        f'{defender_dice.text}\n'
                     )
 
             report['text'] += damage_report['text']
             if damage_report['dead']:
                 report['text'] += (
-                    f'\n\n{defenser_player_name} morreu! '
+                    f'\n\n{defender_player_name} morreu! '
                     f'Use o comando /{rest_command} para descansar.'
                 )
             report['text'] += '\n\n'
@@ -312,14 +312,14 @@ class BaseCharacter:
                 'atk': attack_value,
                 'boosted_atk': attack_value_boosted,
             },
-            'defenser': defenser_char,
-            'defenser_char': defenser_char,
+            'defender': defender_char,
+            'defender_char': defender_char,
             'defense': {
                 'action': defense_action_name,
                 'dodge_score': (dodge_report['defender_dodge_score'] * 100),
-                'dice_value': defenser_dice.value,
-                'dice_text': defenser_dice.text,
-                'is_critical': defenser_dice.is_critical,
+                'dice_value': defender_dice.value,
+                'dice_text': defender_dice.text,
+                'is_critical': defender_dice.is_critical,
                 'def': defense_value,
                 'boosted_def': defense_value_boosted,
                 'damage': (damage * -1),

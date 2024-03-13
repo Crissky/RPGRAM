@@ -129,9 +129,9 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
 
     for enemy_char in enemy_list:
         try:
-            defenser_char = choice_char(chat_id=chat_id, is_alive=True)
-            user_id = defenser_char.player_id
-            player_name = defenser_char.player_name
+            defender_char = choice_char(chat_id=chat_id, is_alive=True)
+            user_id = defender_char.player_id
+            player_name = defender_char.player_name
         except ValueError as error:
             print(f'JOB_ENEMY_ATTACK(): {error}')
             if message_id:
@@ -193,7 +193,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         put_ambush_dict(context=context, enemy=enemy_char)
         print(
             f'{enemy_char.full_name_with_level} ira atacar '
-            f'{defenser_char.player_name} em {minutes} minutos.'
+            f'{defender_char.player_name} em {minutes} minutos.'
         )
 
     # ---------- END FOR ---------- #
@@ -226,19 +226,19 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     enemy_id = job_data['enemy_id']
     message_id = job_data['message_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
-    defenser_char = char_model.get(user_id)
+    defender_char = char_model.get(user_id)
 
-    if enemy_char and defenser_char and defenser_char.is_alive:
+    if enemy_char and defender_char and defender_char.is_alive:
         await enemy_attack(
             context=context,
             chat_id=chat_id,
             message_id=message_id,
             enemy_char=enemy_char,
-            defenser_char=defenser_char,
+            defender_char=defender_char,
             to_dodge=True
         )
-    elif defenser_char and defenser_char.is_dead:
-        text = f'*{defenser_char.player_name}* está morto.'
+    elif defender_char and defender_char.is_dead:
+        text = f'*{defender_char.player_name}* está morto.'
         print(text)
         text = create_text_in_box(
             text=text,
@@ -277,7 +277,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 @skip_if_immobilized
 @confusion()
 @print_basic_infos
-async def defense_enemy_attack(
+async def defend_enemy_attack(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
@@ -287,7 +287,7 @@ async def defense_enemy_attack(
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
-    defenser_user_id = update.effective_user.id
+    defender_user_id = update.effective_user.id
     query = update.callback_query
     message_id = query.message.message_id
     data = callback_data_to_dict(query.data)
@@ -301,7 +301,7 @@ async def defense_enemy_attack(
 
         return ConversationHandler.END
 
-    if defenser_user_id == target_user_id:
+    if defender_user_id == target_user_id:
         await query.answer(
             'Você não pode defender a si mesmo.',
             show_alert=True
@@ -309,14 +309,14 @@ async def defense_enemy_attack(
 
         return ConversationHandler.END
 
-    defenser_char = char_model.get(defenser_user_id)
+    defender_char = char_model.get(defender_user_id)
     target_char = char_model.get(target_user_id)
     await enemy_attack(
         context=context,
         chat_id=chat_id,
         message_id=message_id,
         enemy_char=enemy_char,
-        defenser_char=defenser_char,
+        defender_char=defender_char,
         target_char=target_char,
         to_dodge=True
     )
@@ -326,7 +326,7 @@ async def defense_enemy_attack(
         enemy_char=enemy_char
     )
     remove_ambush_enemy(context=context, enemy_id=enemy_id)
-    if defenser_char.is_alive and target_char.is_alive:
+    if defender_char.is_alive and target_char.is_alive:
         await enemy_drop_random_loot(
             context=context,
             update=update,
@@ -339,7 +339,7 @@ async def enemy_attack(
     chat_id: int,
     message_id: int,
     enemy_char: NPCharacter,
-    defenser_char: PlayerCharacter,
+    defender_char: PlayerCharacter,
     target_char: PlayerCharacter = None,
     to_dodge: bool = False,
 ):
@@ -350,16 +350,16 @@ async def enemy_attack(
     if target_char and target_char.is_alive:
         section_name = SECTION_TEXT_AMBUSH_DEFENSE
         text_report = (
-            f'{defenser_char.player_name} defendeu '
+            f'{defender_char.player_name} defendeu '
             f'{target_char.player_name}.\n\n'
         )
     else:
         section_name = SECTION_TEXT_AMBUSH_ATTACK
 
     attack_report = enemy_char.to_attack(
-        defenser_char=defenser_char,
+        defender_char=defender_char,
         attacker_dice=Dice(20),
-        defenser_dice=Dice(20),
+        defender_dice=Dice(20),
         to_dodge=to_dodge,
         to_defend=True,
         rest_command=REST_COMMANDS[0],
@@ -370,10 +370,10 @@ async def enemy_attack(
     attacker_action_name = attack_report['attack']['action']
 
     if not attack_report['dead']:
-        base_xp = get_base_xp_from_enemy_attack(enemy_char, defenser_char)
+        base_xp = get_base_xp_from_enemy_attack(enemy_char, defender_char)
         report_xp = add_xp(
             chat_id=chat_id,
-            char=defenser_char,
+            char=defender_char,
             base_xp=base_xp,
         )
         if target_char and target_char.is_alive:
@@ -386,7 +386,7 @@ async def enemy_attack(
             text_report += f'{target_report_xp["text"]}\n'
         text_report += f'{report_xp["text"]}\n\n'
     else:
-        save_char(defenser_char)
+        save_char(defender_char)
 
     text_report += f'O inimigo fugiu!'
     text_report = create_text_in_box(
@@ -403,8 +403,8 @@ async def enemy_attack(
     )
 
     if attack_report['dead']:
-        user_id = defenser_char.player_id
-        player_name = defenser_char.player_name
+        user_id = defender_char.player_id
+        player_name = defender_char.player_name
         drop_items = drop_random_items_from_bag(user_id=user_id)
         await send_drop_message(
             context=context,
@@ -688,7 +688,7 @@ async def enemy_drop_random_loot(
 
 AMBUSH_HANDLERS = [
     CallbackQueryHandler(
-        defense_enemy_attack,
+        defend_enemy_attack,
         pattern=PATTERN_DEFEND
     ),
     CallbackQueryHandler(

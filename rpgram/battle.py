@@ -149,11 +149,11 @@ class Battle:
     def action(
         self,
         attacker_char: BaseCharacter = None,
-        defenser: Union[str, BaseCharacter] = 'self',
+        defender: Union[str, BaseCharacter] = 'self',
         action: str = 'attack',
         reaction: str = 'defend',
         attacker_dice: Dice = None,
-        defenser_dice: Dice = None,
+        defender_dice: Dice = None,
     ) -> None:
         if not self.started:
             self.start_battle()
@@ -167,32 +167,32 @@ class Battle:
             )
 
         # Definindo o alvo
-        if isinstance(defenser, str):
-            defenser_char = self.get_defenser(attacker_char, defenser)
-        elif isinstance(defenser, BaseCharacter):
-            index = self.__turn_order.index(defenser)
-            defenser_char = self.__turn_order[index]
+        if isinstance(defender, str):
+            defender_char = self.get_defender(attacker_char, defender)
+        elif isinstance(defender, BaseCharacter):
+            index = self.__turn_order.index(defender)
+            defender_char = self.__turn_order[index]
         else:
             raise TypeError(
-                f'Defenser não é de um tipo válido. '
+                f'defender não é de um tipo válido. '
                 f'Deve ser uma string ou um objeto do tipo BaseCharacter. '
-                f'defenser fornecido: {defenser}.'
+                f'defender fornecido: {defender}.'
             )
 
         if attacker_dice is None:
             attacker_dice = Dice(1)
-        if defenser_dice is None:
-            defenser_dice = Dice(1)
+        if defender_dice is None:
+            defender_dice = Dice(1)
 
         # Executando Ação
         if action in ACTION_LIST:
             report = self.basic_attack(
                 attacker_char=attacker_char,
-                defenser_char=defenser_char,
+                defender_char=defender_char,
                 action=action,
                 reaction=reaction,
                 attacker_dice=attacker_dice,
-                defenser_dice=defenser_dice
+                defender_dice=defender_dice
             )
         else:
             raise ValueError(
@@ -204,51 +204,51 @@ class Battle:
 
         return report
 
-    def get_defenser(
+    def get_defender(
         self,
         character: BaseCharacter,
-        defenser: str
+        defender: str
     ) -> BaseCharacter:
-        if defenser == 'self':
-            defenser = character
+        if defender == 'self':
+            defender = character
         else:
-            team_name, team_index = defenser.split()
+            team_name, team_index = defender.split()
             team_index = int(team_index)
             if team_name == 'blue':
-                defenser = self.__blue_team[team_index]
+                defender = self.__blue_team[team_index]
             elif team_name == 'red':
-                defenser = self.__red_team[team_index]
+                defender = self.__red_team[team_index]
             elif team_name == 'ally':
                 if character in self.__blue_team:
-                    defenser = self.__blue_team[team_index]
+                    defender = self.__blue_team[team_index]
                 else:
-                    defenser = self.__red_team[team_index]
+                    defender = self.__red_team[team_index]
             elif team_name == 'enemy':
                 if character in self.__blue_team:
-                    defenser = self.__red_team[team_index]
+                    defender = self.__red_team[team_index]
                 else:
-                    defenser = self.__blue_team[team_index]
+                    defender = self.__blue_team[team_index]
 
-        return defenser
+        return defender
 
     def basic_attack(
         self,
         attacker_char: BaseCharacter,
-        defenser_char: BaseCharacter,
+        defender_char: BaseCharacter,
         action: str,
         reaction: str,
         attacker_dice: Dice,
-        defenser_dice: Dice,
+        defender_dice: Dice,
     ) -> str:
         if action == 'physical_attack':
             atk = attacker_char.combat_stats.physical_attack
-            _def = defenser_char.combat_stats.physical_defense
+            _def = defender_char.combat_stats.physical_defense
         elif action == 'precision_attack':
             atk = attacker_char.combat_stats.precision_attack
-            _def = defenser_char.combat_stats.physical_defense
+            _def = defender_char.combat_stats.physical_defense
         elif action == 'magical_attack':
             atk = attacker_char.combat_stats.magical_attack
-            _def = defenser_char.combat_stats.magical_defense
+            _def = defender_char.combat_stats.magical_defense
         else:
             raise ValueError(
                 f'"{action}" não é uma ação válida. '
@@ -256,15 +256,15 @@ class Battle:
             )
 
         hit = attacker_char.combat_stats.hit
-        evasion = defenser_char.combat_stats.evasion
+        evasion = defender_char.combat_stats.evasion
 
         attacker_dice.throw()
-        defenser_dice.throw()
+        defender_dice.throw()
 
         total_atk = self.get_total_value(atk, attacker_dice)
         total_hit = self.get_total_value(hit, attacker_dice)
-        total_def = self.get_total_value(_def, defenser_dice)
-        total_evasion = self.get_total_value(evasion, defenser_dice)
+        total_def = self.get_total_value(_def, defender_dice)
+        total_evasion = self.get_total_value(evasion, defender_dice)
 
         is_miss = False
         dodge_score = random()
@@ -272,7 +272,7 @@ class Battle:
             hit=total_hit,
             evasion=total_evasion,
             attacker_dice=attacker_dice,
-            defenser_dice=defenser_dice
+            defender_dice=defender_dice
         )
         if reaction == 'dodge':
             if dodge_score >= accuracy:
@@ -290,7 +290,7 @@ class Battle:
 
         damage = min(damage, 0)
         damage = damage
-        defenser_char.combat_stats.hp = damage
+        defender_char.combat_stats.hp = damage
 
         self.report[self.turn_count] = {
             'attacker': attacker_char,
@@ -306,14 +306,14 @@ class Battle:
                 'total_atk': total_atk,
                 'total_hit': total_hit,
             },
-            'defenser': defenser_char,
-            'defenser_char': defenser_char,
+            'defender': defender_char,
+            'defender_char': defender_char,
             'defense': {
                 'reaction': reaction,
                 'dodge_score': (dodge_score * 100),
-                'dice_value': defenser_dice.value,
-                'dice_text': defenser_dice.text,
-                'is_critical': defenser_dice.is_critical,
+                'dice_value': defender_dice.value,
+                'dice_text': defender_dice.text,
+                'is_critical': defender_dice.is_critical,
                 'def': _def,
                 'evasion': evasion,
                 'total_def': total_def,
@@ -341,11 +341,11 @@ class Battle:
         hit: int,
         evasion: int,
         attacker_dice: Dice,
-        defenser_dice: Dice
+        defender_dice: Dice
     ) -> float:
         accuracy = hit / evasion
         accuracy = min(accuracy, 1.0)
-        dice_bonus = (attacker_dice.value - defenser_dice.value) / 100
+        dice_bonus = (attacker_dice.value - defender_dice.value) / 100
         accuracy = accuracy + dice_bonus
         accuracy = min(accuracy, 0.95)
         accuracy = max(accuracy, 0.1)
@@ -581,19 +581,19 @@ if __name__ == '__main__':
     )
     print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    report = battle.action(action='magical_attack', defenser='enemy 1')
+    report = battle.action(action='magical_attack', defender='enemy 1')
     print(report)
     print(f'O vencedor é o time "{battle.get_winner()}"\n')
 
     print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    report = battle.action(action='precision_attack', defenser='enemy 0')
+    report = battle.action(action='precision_attack', defender='enemy 0')
     print(report)
     print(f'O vencedor é o time "{battle.get_winner()}"\n')
 
     print(f'Turno: {battle.turn_count}')
     print(battle.turn_order)
-    report = battle.action(action='physical_attack', defenser='enemy 0')
+    report = battle.action(action='physical_attack', defender='enemy 0')
     print(report)
     print(f'O vencedor é o time "{battle.get_winner()}"\n')
 

@@ -207,14 +207,14 @@ def add_conditions_trap(
 
 def get_base_xp_from_enemy_attack(
     enemy_char: NPCharacter,
-    defenser_char: PlayerCharacter
+    defender_char: PlayerCharacter
 ) -> int:
     '''Retorna o XP base para o personagem que sobreviveu a um ataque.
     '''
 
     base_xp = int(
         enemy_char.points_multiplier *
-        max(enemy_char.level - defenser_char.level, 10)
+        max(enemy_char.level - defender_char.level, 10)
     )
 
     return base_xp
