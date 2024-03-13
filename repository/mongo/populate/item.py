@@ -527,6 +527,7 @@ def get_requirements(
     requirements['level'] = group_level
     material_bonus = get_material_level(equip_type, material)
     rarity_bonus = BONUS_RARITY[rarity]
+    percent_bonus = 1 + ((material_bonus + rarity_bonus) / 10)
 
     if equip_type in [EquipmentEnum.ARMOR.name]:
         equip_group_lvl = group_level // 2
@@ -598,9 +599,7 @@ def get_requirements(
     for attribute in requirements.keys():
         if attribute == 'level':
             continue
-        requirements[attribute] = int(
-            requirements[attribute] * ((material_bonus + rarity_bonus) / 10)
-        )
+        requirements[attribute] = int(requirements[attribute] * percent_bonus)
 
     requirements
     requirements = {
