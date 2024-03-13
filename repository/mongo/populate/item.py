@@ -524,7 +524,7 @@ def get_requirements(
     '''
 
     requirements = defaultdict(int)
-    requirements['Level'] = group_level
+    requirements['level'] = group_level
     material_bonus = get_material_level(equip_type, material)
     rarity_bonus = BONUS_RARITY[rarity]
 
@@ -540,66 +540,66 @@ def get_requirements(
         equip_group_lvl = group_level // 6
 
     if equip_class in STR_REQUIREMENTS:
-        requirements['Força'] += random_group_level(equip_group_lvl)
+        requirements['FOR'] += random_group_level(equip_group_lvl)
     if equip_class in DEX_REQUIREMENTS:
-        requirements['Destreza'] += random_group_level(equip_group_lvl)
+        requirements['DES'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in CON_REQUIREMENTS:
-        requirements['Constituição'] += random_group_level(equip_group_lvl)
+        requirements['CON'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Destreza'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Inteligência'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Sabedoria'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['DES'] -= random_group_level(equip_group_lvl) / 2
+        requirements['INT'] -= random_group_level(equip_group_lvl) / 2
+        requirements['SAB'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in INT_REQUIREMENTS:
-        requirements['Inteligência'] += random_group_level(equip_group_lvl)
+        requirements['INT'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in WIS_REQUIREMENTS:
-        requirements['Sabedoria'] += random_group_level(equip_group_lvl)
+        requirements['SAB'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in CHA_REQUIREMENTS:
-        requirements['Carisma'] += random_group_level(equip_group_lvl)
+        requirements['CAR'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
 
     if equip_class in ALL_MAGICAL_EQUIPMENTS:
-        requirements['Inteligência'] += random_group_level(equip_group_lvl)
-        requirements['Sabedoria'] += random_group_level(equip_group_lvl)
+        requirements['INT'] += random_group_level(equip_group_lvl)
+        requirements['SAB'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl)
-        requirements['Constituição'] -= random_group_level(equip_group_lvl)
+        requirements['FOR'] -= random_group_level(equip_group_lvl)
+        requirements['CON'] -= random_group_level(equip_group_lvl)
     if equip_class in ALL_TATICAL_EQUIPMENTS:
-        requirements['Destreza'] += random_group_level(equip_group_lvl)
+        requirements['DES'] += random_group_level(equip_group_lvl)
 
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
 
     if equip_class in LIGHT_EQUIPMENTS:
-        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in HEAVY_EQUIPMENTS:
-        requirements['Força'] += random_group_level(equip_group_lvl)
+        requirements['FOR'] += random_group_level(equip_group_lvl)
 
-        requirements['Inteligência'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Sabedoria'] -= random_group_level(equip_group_lvl) / 2
+        requirements['INT'] -= random_group_level(equip_group_lvl) / 2
+        requirements['SAB'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in VERY_HEAVY_EQUIPMENTS:
-        requirements['Constituição'] += random_group_level(equip_group_lvl)
+        requirements['CON'] += random_group_level(equip_group_lvl)
 
-        requirements['Inteligência'] -= random_group_level(equip_group_lvl) / 2
-        requirements['Sabedoria'] -= random_group_level(equip_group_lvl) / 2
+        requirements['INT'] -= random_group_level(equip_group_lvl) / 2
+        requirements['SAB'] -= random_group_level(equip_group_lvl) / 2
 
     for attribute in requirements.keys():
-        if attribute == 'Level':
+        if attribute == 'level':
             continue
         requirements[attribute] = int(
-            requirements[attribute] * ((material_bonus + rarity_bonus) / 3)
+            requirements[attribute] * ((material_bonus + rarity_bonus) / 10)
         )
 
     requirements
