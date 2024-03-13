@@ -334,6 +334,45 @@ async def defend_enemy_attack(
         )
 
 
+async def player_attack_enemy(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    '''Função que o jogador ataca um Inimigo
+    '''
+
+    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    attacker_user_id = update.effective_user.id
+    query = update.callback_query
+
+    message_id = query.message.message_id
+    data = callback_data_to_dict(query.data)
+    target_user_id = data['user_id']
+    enemy_id = data['enemy_id']
+    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+
+    if not enemy_char:
+        await query.answer('Essa emboscada já terminou', show_alert=True)
+        await query.delete_message()
+
+        return ConversationHandler.END
+
+    if attacker_user_id == target_user_id:
+        await query.answer(
+            'Você não tem a habilidade de contra atacar.',
+            show_alert=True
+        )
+
+        return ConversationHandler.END
+
+    # TODO
+    await player_attack()
+
+    await query.answer('Comando ainda não foi implementado.', show_alert=True)
+
+
 async def enemy_attack(
     context: ContextTypes.DEFAULT_TYPE,
     chat_id: int,
@@ -416,13 +455,8 @@ async def enemy_attack(
         )
 
 
-async def player_attack(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    '''Função que o jogador ataca um Inimigo
-    '''
-
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
-    query = update.callback_query
-    await query.answer('Comando ainda não foi implementado.', show_alert=True)
+async def player_attack():
+    ...
 
 
 def get_action_buttons(
@@ -692,7 +726,7 @@ AMBUSH_HANDLERS = [
         pattern=PATTERN_DEFEND
     ),
     CallbackQueryHandler(
-        player_attack,
+        player_attack_enemy,
         pattern=PATTERN_ATTACK
     )
 ]
