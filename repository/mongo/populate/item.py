@@ -28,7 +28,15 @@ from repository.mongo.populate.item_constants import (
     SLASHING_WEAPONS,
     TATICAL_WEARABLE_EQUIPMENTS,
     TWO_HANDS_EQUIPMENTS,
-    VERY_HEAVY_EQUIPMENTS
+    VERY_HEAVY_EQUIPMENTS,
+    STR_REQUIREMENTS,
+    DEX_REQUIREMENTS,
+    CON_REQUIREMENTS,
+    INT_REQUIREMENTS,
+    WIS_REQUIREMENTS,
+    CHA_REQUIREMENTS,
+    ALL_MAGICAL_EQUIPMENTS,
+    ALL_TATICAL_EQUIPMENTS,
 )
 
 from rpgram.boosters import Equipment
@@ -303,7 +311,7 @@ def get_equip_class_and_material(
     return equip_class, material
 
 
-def get_material_level(equip_type: str, material: str,) -> int:
+def get_material_level(equip_type: str, material: str) -> int:
     if equip_type in WEAPON_EQUIPMENTS_ENUM:
         material_bonus = WEAPON_MATERIALS[material]
     elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
@@ -416,10 +424,16 @@ def get_attribute_probabilities(equip_class: str) -> Dict[str, int]:
     return attr_bonus_prob, attr_penality_prob
 
 
-def get_equipment_weight(equip_type, rarity, material, equip_class) -> float:
+def get_equipment_weight(
+    equip_type: str,
+    rarity: str,
+    material: str,
+    equip_class: str
+) -> float:
     '''Retorna o peso do equipamento com base no seu bônus e 
     no tipo de equipamento.
     '''
+
     weight, _ = get_bonus_and_penality(equip_type, rarity, material, 5)
     if equip_class in HEAVY_EQUIPMENTS:
         weight *= 2
@@ -431,9 +445,13 @@ def get_equipment_weight(equip_type, rarity, material, equip_class) -> float:
     return weight
 
 
-def get_equipment_damage_type(equip_class: str, rarity: str):
+def get_equipment_damage_type(
+    equip_class: str,
+    rarity: str
+) -> List[DamageEnum]:
     '''Retorna uma lista com os tipos de dano de uma arma.
     '''
+
     damage_types = None
     if equip_class in ALL_WEAPONS:
         damage_types = []
@@ -494,13 +512,118 @@ def get_equipment_damage_type_name(damage_types: List[DamageEnum]) -> str:
     return text
 
 
-def add_secret_stats(rarity: str, group_level: int, equip_type: str):
+def get_requirements(
+    group_level: int,
+    equip_class: str,
+    equip_type: str,
+    material: str,
+    rarity: str,
+) -> Dict[str, int]:
+    '''Retorna um dicionário com os requisitos necessários para 
+    equiapar o equipamento.
+    '''
+
+    requirements = defaultdict(int)
+    requirements['Level'] = group_level
+    material_bonus = get_material_level(equip_type, material)
+    rarity_bonus = BONUS_RARITY[rarity]
+
+    if equip_type in [EquipmentEnum.ARMOR.name]:
+        equip_group_lvl = group_level // 2
+    elif equip_type in [EquipmentEnum.TWO_HANDS.name]:
+        equip_group_lvl = group_level // 3
+    elif equip_type in [EquipmentEnum.ONE_HAND.name]:
+        equip_group_lvl = group_level // 4
+    elif equip_type in [EquipmentEnum.HELMET.name, EquipmentEnum.BOOTS.name]:
+        equip_group_lvl = group_level // 5
+    elif equip_type in [EquipmentEnum.RING.name, EquipmentEnum.AMULET.name]:
+        equip_group_lvl = group_level // 6
+
+    if equip_class in STR_REQUIREMENTS:
+        requirements['Força'] += random_group_level(equip_group_lvl)
+    if equip_class in DEX_REQUIREMENTS:
+        requirements['Destreza'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in CON_REQUIREMENTS:
+        requirements['Constituição'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Destreza'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Inteligência'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Sabedoria'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in INT_REQUIREMENTS:
+        requirements['Inteligência'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in WIS_REQUIREMENTS:
+        requirements['Sabedoria'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in CHA_REQUIREMENTS:
+        requirements['Carisma'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+
+    if equip_class in ALL_MAGICAL_EQUIPMENTS:
+        requirements['Inteligência'] += random_group_level(equip_group_lvl)
+        requirements['Sabedoria'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl)
+        requirements['Constituição'] -= random_group_level(equip_group_lvl)
+    if equip_class in ALL_TATICAL_EQUIPMENTS:
+        requirements['Destreza'] += random_group_level(equip_group_lvl)
+
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+
+    if equip_class in LIGHT_EQUIPMENTS:
+        requirements['Força'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Constituição'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in HEAVY_EQUIPMENTS:
+        requirements['Força'] += random_group_level(equip_group_lvl)
+
+        requirements['Inteligência'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Sabedoria'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in VERY_HEAVY_EQUIPMENTS:
+        requirements['Constituição'] += random_group_level(equip_group_lvl)
+
+        requirements['Inteligência'] -= random_group_level(equip_group_lvl) / 2
+        requirements['Sabedoria'] -= random_group_level(equip_group_lvl) / 2
+
+    for attribute in requirements.keys():
+        if attribute == 'Level':
+            continue
+        requirements[attribute] = int(
+            requirements[attribute] * ((material_bonus + rarity_bonus) / 3)
+        )
+
+    requirements
+    requirements = {
+        attribute: value
+        for attribute, value in requirements.items()
+        if value > 0
+    }
+
+    return requirements
+
+
+def add_secret_stats(
+    rarity: str,
+    group_level: int,
+    equip_type: str
+) -> Dict[str, int]:
     '''Retorna os atributos bônus do equipamento. 
     Esses atributos estarão disponíveis para o personagem quando 
     o item for identificado.
     Os bônus são selecionado de maneira aleatórios. O total de bônus é baseado 
     na raridade do item em na metade do nível de grupo.
     '''
+
     secret_stats = defaultdict(int)
     bonus = BONUS_RARITY[rarity] - 2
     level_divisor = 0.80 if equip_type in EQUIPS_NO_REDUCE_SECRET_STATS else 2
@@ -563,7 +686,9 @@ def add_secret_stats(rarity: str, group_level: int, equip_type: str):
 
 
 def translate_material_name(
-    equip_type: str, equip_class: str, material: str,
+    equip_type: str,
+    equip_class: str,
+    material: str,
 ) -> str:
     if equip_type in WEAPON_EQUIPMENTS_ENUM:
         index = WEAPON_MATERIALS[material] - 1
@@ -643,6 +768,13 @@ def create_random_equipment(
     attr_bonus_prob, attr_penality_prob = get_attribute_probabilities(
         equip_name
     )
+    requirements = get_requirements(
+        group_level=group_level,
+        equip_class=equip_class,
+        equip_type=equip_type,
+        material=material,
+        rarity=rarity,
+    )
     equipment_dict = defaultdict(int)
     for _ in range(bonus):
         attribute = weighted_choice(**attr_bonus_prob)
@@ -673,7 +805,7 @@ def create_random_equipment(
         equip_type=equip_type,
         damage_types=damage_types,
         weight=weight,
-        requirements={'level': group_level},
+        requirements=requirements,
         rarity=rarity,
         material_level=material_level,
         _id=ObjectId(),
@@ -777,7 +909,7 @@ def create_random_item(
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
 
-    def random_item_generator(group_level: int):
+    def random_item_generator(group_level: int) -> Item:
         equipment_types = [e.name for e in EquipmentEnum]
         choiced_item = choice_type_item(no_trap=True)
         if choiced_item == 'CONSUMABLE':

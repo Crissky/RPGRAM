@@ -65,14 +65,14 @@ COIN_EQUIPMENTS = ['COIN']
 
 
 # Requirements for Equipments
-FOR_REQUIREMENTS = [
+STR_REQUIREMENTS = [
     'SWORD', 'SPIKED_SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'FALCHION', 'MACE',
     'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT', 'GREAT_SWORD',
     'DOUBLE_AXE', 'HALBERD', 'WARHAMMER', 'FLAIL', 'PIKE', 'LANCE', 'SHARUR',
     'SPIKED_GREATSHIELD', 'KRÁNOS', 'SPIKED_ARMOR', 'SPIKED_SPAULDER',
     'SPIKED_GREAVES', 'KRATOS\'S_RING',
 ]
-DES_REQUIREMENTS = [
+DEX_REQUIREMENTS = [
     'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN', 'RAPIER',
     'ESTOQUE', 'SAI', 'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER',
     'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
@@ -95,7 +95,7 @@ WIS_REQUIREMENTS = [
     'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD', 'POINTED_HAT', 'MASK', 'ROBE',
     'SHOES', 'HECATE\'S_RING', 'GAIA\'S_RING', 'AMULET', 'CHARM', 'COIN'
 ]
-CAR_REQUIREMENTS = []
+CHA_REQUIREMENTS = []
 
 
 # EQUIPMENTS DEFINITIONS
@@ -1365,7 +1365,7 @@ AMULET_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 10, 'bonus_initiative': 1,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
-            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 10, 'bonus_hit': 1,
             'bonus_evasion': 1,
         },
@@ -1379,11 +1379,11 @@ AMULET_EQUIPMENTS = {
     ),
     'COIN': dict(
         attr_bonus_prob={
-            'bonus_hit_points': 10, 'bonus_initiative': 0,
+            'bonus_hit_points': 10, 'bonus_initiative': 1,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
-            'bonus_magical_defense': 10, 'bonus_hit': 0,
-            'bonus_evasion': 0,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
         },
         attr_penality_prob={
             'bonus_hit_points': 0, 'bonus_initiative': 0,
@@ -1421,12 +1421,23 @@ ALL_EQUIPMENTS_DEFINITIONS.update(RING_EQUIPMENTS)
 ALL_EQUIPMENTS_DEFINITIONS.update(AMULET_EQUIPMENTS)
 
 ALL_EQUIPMENT_REQUIREMENTS = (
-    FOR_REQUIREMENTS +
-    DES_REQUIREMENTS +
+    STR_REQUIREMENTS +
+    DEX_REQUIREMENTS +
     CON_REQUIREMENTS +
     INT_REQUIREMENTS +
     WIS_REQUIREMENTS +
-    CAR_REQUIREMENTS
+    CHA_REQUIREMENTS
+)
+ALL_MAGICAL_EQUIPMENTS = (
+    MAGIC_WEAPONS +
+    MAGICAL_QUILL_EQUIPMENTS +
+    MAGICAL_GRIMOIRE_EQUIPMENTS +
+    MAGICAL_STONES_EQUIPMENTS +
+    MAGICAL_WEARABLE_EQUIPMENTS +
+    MAGICAL_MASK_EQUIPMENTS
+)
+ALL_TATICAL_EQUIPMENTS = (
+    TATICAL_WEARABLE_EQUIPMENTS
 )
 
 for equip_class in ALL_WEAPONS:
