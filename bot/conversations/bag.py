@@ -338,6 +338,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
+    silent = get_attribute_group_or_player(chat_id, 'silent')
     item = get_item_from_bag_by_position(user_id, page, item_pos)
     target_name = get_player_name(target_id)
     markdown_text = get_trocado_and_target_text(
@@ -463,6 +464,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.effective_chat.send_message(
             text=markdown_text,
+            disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
         )
