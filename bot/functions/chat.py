@@ -1,11 +1,12 @@
 from bson import ObjectId
-from telegram import CallbackQuery
+from telegram import CallbackQuery, Message
 
 from telegram.constants import ParseMode
 from telegram.error import Forbidden
 from telegram.ext import ContextTypes
 
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.player import get_player_attribute_by_id
 
 
 CALLBACK_KEY_LIST = [
@@ -47,7 +48,7 @@ async def send_private_message(
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
 
     try:
-        silent = get_attribute_group_or_player(user_id, 'silent')
+        silent = get_player_attribute_by_id(user_id, 'silent')
         await context.bot.send_message(
             chat_id=user_id,
             text=text,
@@ -100,6 +101,39 @@ async def send_alert_or_message(
             chat_id=chat_id,
             markdown=markdown
         )
+
+
+async def forward_message(
+    function_caller: str,
+    user_id: int,
+    message: Message = None,
+    context: ContextTypes.DEFAULT_TYPE = None,
+    chat_id: int = None,
+    message_id: int = None,
+):
+    if context and not chat_id:
+        raise ValueError('chat_id é necessário quando passado um context.')
+    if context and not message_id:
+        raise ValueError('message_id é necessário quando passado um context.')
+    if not message and not context:
+        raise ValueError('message ou context deve ser passado.')
+
+    user_silent = get_player_attribute_by_id(user_id, 'silent')
+    try:
+        if message:
+            await message.forward(
+                chat_id=user_id,
+                disable_notification=user_silent
+            )
+        elif context:
+            await context.bot.forward_message(
+                chat_id=user_id,
+                from_chat_id=chat_id,
+                message_id=message_id,
+                disable_notification=user_silent
+            )
+    except Exception as error:
+        print(f'{function_caller}: {error}')
 
 
 def callback_data_to_string(callback_data: dict) -> str:
