@@ -1391,7 +1391,7 @@ async def send_drop_message(
         else:
             create_and_put_drop_dict(context, drops_message_id)
 
-        if i % 3 == 0:
+        if i % 3 == 2:
             sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
