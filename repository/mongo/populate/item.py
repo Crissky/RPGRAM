@@ -532,13 +532,13 @@ def get_requirements(
     if equip_type in [EquipmentEnum.ARMOR.name]:
         equip_group_lvl = group_level // 2
     elif equip_type in [EquipmentEnum.TWO_HANDS.name]:
-        equip_group_lvl = group_level // 3
+        equip_group_lvl = group_level // 2.5
     elif equip_type in [EquipmentEnum.ONE_HAND.name]:
-        equip_group_lvl = group_level // 4
+        equip_group_lvl = group_level // 3
     elif equip_type in [EquipmentEnum.HELMET.name, EquipmentEnum.BOOTS.name]:
-        equip_group_lvl = group_level // 5
+        equip_group_lvl = group_level // 3
     elif equip_type in [EquipmentEnum.RING.name, EquipmentEnum.AMULET.name]:
-        equip_group_lvl = group_level // 6
+        equip_group_lvl = group_level // 4
 
     if equip_class in STR_REQUIREMENTS:
         requirements['FOR'] += random_group_level(equip_group_lvl)
@@ -550,24 +550,24 @@ def get_requirements(
     if equip_class in CON_REQUIREMENTS:
         requirements['CON'] += random_group_level(equip_group_lvl)
 
-        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        # requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
         requirements['DES'] -= random_group_level(equip_group_lvl) / 2
         requirements['INT'] -= random_group_level(equip_group_lvl) / 2
         requirements['SAB'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in INT_REQUIREMENTS:
         requirements['INT'] += random_group_level(equip_group_lvl)
 
-        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl)
         requirements['CON'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in WIS_REQUIREMENTS:
         requirements['SAB'] += random_group_level(equip_group_lvl)
 
-        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl)
         requirements['CON'] -= random_group_level(equip_group_lvl) / 2
     if equip_class in CHA_REQUIREMENTS:
         requirements['CAR'] += random_group_level(equip_group_lvl)
 
-        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['FOR'] -= random_group_level(equip_group_lvl)
         requirements['CON'] -= random_group_level(equip_group_lvl) / 2
 
     if equip_class in ALL_MAGICAL_EQUIPMENTS:

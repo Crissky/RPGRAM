@@ -328,9 +328,9 @@ def confusion(retry_state=ConversationHandler.END):
                 confuse_action = confuse_char.weighted_choice_action_attack()
 
                 attack_report = confuse_char.to_attack(
-                    defenser_char=target_char,
+                    defender_char=target_char,
                     attacker_dice=confuse_char_dice,
-                    defenser_dice=target_char_dice,
+                    defender_dice=target_char_dice,
                     attacker_action_name=confuse_action,
                     to_dodge=True,
                     to_defend=True,
