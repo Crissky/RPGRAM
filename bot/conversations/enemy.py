@@ -36,13 +36,16 @@ from bot.decorators.battle import need_not_in_battle
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
-    skip_if_immobilized,
-    skip_if_no_have_char
+    skip_if_immobilized
 )
 from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
-from bot.functions.chat import callback_data_to_dict, callback_data_to_string
+from bot.functions.chat import (
+    callback_data_to_dict,
+    callback_data_to_string,
+    forward_message
+)
 from bot.functions.config import get_attribute_group
 from constant.text import (
     SECTION_HEAD_ATTACK_END,
@@ -191,6 +194,13 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             user_id=user_id,
         )
         put_ambush_dict(context=context, enemy=enemy_char)
+
+        await forward_message(
+            function_caller='JOB_START_AMBUSH()',
+            user_id=user_id,
+            message=response
+        )
+
         print(
             f'{enemy_char.full_name_with_level} ira atacar '
             f'{defender_char.player_name} em {minutes} minutos.'
@@ -385,8 +395,10 @@ async def enemy_attack(
     '''Função que o Inimigo ataca um jogador
     '''
 
+    target_id = defender_char.player_id
     text_report = ''
     if target_char and target_char.is_alive:
+        target_id = target_char.player_id
         section_name = SECTION_TEXT_AMBUSH_DEFENSE
         text_report = (
             f'{defender_char.player_name} defendeu '
@@ -439,6 +451,14 @@ async def enemy_attack(
         chat_id=chat_id,
         message_id=message_id,
         parse_mode=ParseMode.MARKDOWN_V2,
+    )
+
+    await forward_message(
+        function_caller='ENEMY_ATTACK()',
+        user_id=target_id,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
     )
 
     if attack_report['dead']:
