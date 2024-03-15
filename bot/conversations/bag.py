@@ -1,6 +1,6 @@
 from itertools import zip_longest
 from math import sqrt
-from random import choice
+from random import choice, randint
 from time import sleep
 from typing import List
 
@@ -11,6 +11,7 @@ from telegram import (
     Update
 )
 from telegram.constants import ChatAction, ParseMode
+from telegram.error import RetryAfter, TimedOut
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -224,7 +225,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         fields={'items_ids': {'$slice': [skip_slice, size_slice]}},
         partial=False
     )
-    if not isinstance(player_bag, Bag):  # Cria uma bolsa caso o jogador não tenha uma.
+    # Cria uma bolsa caso o jogador não tenha uma.
+    if not isinstance(player_bag, Bag):
         player_bag = Bag(
             items=[],
             player_id=user_id
@@ -1366,23 +1368,48 @@ async def send_drop_message(
                 section_end=SECTION_HEAD_EQUIPMENT_END,
             )
 
-        if isinstance(update, Update):
-            response = await update.effective_message.reply_text(
-                text=markdown_item_sheet,
-                disable_notification=silent,
-                reply_markup=reply_markup_drop,
-                parse_mode=ParseMode.MARKDOWN_V2,
-                allow_sending_without_reply=True
-            )
-        else:
-            response = await context.bot.send_message(
-                chat_id=chat_id,
-                text=markdown_item_sheet,
-                disable_notification=silent,
-                reply_to_message_id=message_id,
-                reply_markup=reply_markup_drop,
-                parse_mode=ParseMode.MARKDOWN_V2,
-            )
+        for _ in range(3):
+            try:
+                if isinstance(update, Update):
+                    response = await update.effective_message.reply_text(
+                        text=markdown_item_sheet,
+                        disable_notification=silent,
+                        reply_markup=reply_markup_drop,
+                        parse_mode=ParseMode.MARKDOWN_V2,
+                        allow_sending_without_reply=True
+                    )
+                    break
+                else:
+                    response = await context.bot.send_message(
+                        chat_id=chat_id,
+                        text=markdown_item_sheet,
+                        disable_notification=silent,
+                        reply_to_message_id=message_id,
+                        reply_markup=reply_markup_drop,
+                        parse_mode=ParseMode.MARKDOWN_V2,
+                    )
+                    break
+            except RetryAfter as error:
+                sleep_time = error.retry_after + randint(1, 3)
+                remaining = len(items) - i
+                print(
+                    f'RetryAfter: retrying SEND_DROP_MESSAGE() '
+                    f'in {sleep_time} seconds. remaining {remaining} items.'
+                )
+                await update.effective_message.reply_chat_action(
+                    ChatAction.TYPING
+                )
+                sleep(sleep_time)
+                continue
+            except TimedOut as error:
+                remaining = len(items) - i
+                print(
+                    f'TimedOut: retrying SEND_DROP_MESSAGE() '
+                    f'in {SEND_DROP_MESSAGE_TIME_SLEEP} seconds. '
+                    f'remaining {remaining} items.'
+                )
+                sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
+                continue
 
         drops_message_id = response.message_id
         drops = context.chat_data.get('drops', None)
@@ -1390,9 +1417,6 @@ async def send_drop_message(
             drops[drops_message_id] = True
         else:
             create_and_put_drop_dict(context, drops_message_id)
-
-        if i % 3 == 2:
-            sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
 
 
 def create_and_put_drop_dict(
