@@ -220,6 +220,25 @@ def get_base_xp_from_enemy_attack(
     return base_xp
 
 
+def get_base_xp_from_player_attack(
+    enemy_char: NPCharacter,
+    attacker_char: PlayerCharacter,
+) -> int:
+    '''Retorna o XP base para o personagem que atacou um inimigo.
+    '''
+
+    level_divisor = 2 if enemy_char.is_alive else 0.5
+    base_xp = int(
+        enemy_char.points_multiplier *
+        max(
+            (enemy_char.level / level_divisor) - attacker_char.level,
+            10
+        )
+    )
+
+    return base_xp
+
+
 def activate_conditions(
     user_id: int = None,
     char: BaseCharacter = None,

@@ -26,6 +26,7 @@ from bot.constants.enemy import (
     SECTION_START_DICT,
     SECTION_TEXT_AMBUSH,
     SECTION_TEXT_AMBUSH_ATTACK,
+    SECTION_TEXT_AMBUSH_COUNTER,
     SECTION_TEXT_AMBUSH_DEFENSE,
     SECTION_TEXT_AMBUSH_XP,
     SECTION_TEXT_FAIL
@@ -62,6 +63,7 @@ from bot.functions.char import (
     add_xp,
     choice_char,
     get_base_xp_from_enemy_attack,
+    get_base_xp_from_player_attack,
     get_player_chars_from_group,
     save_char
 )
@@ -378,8 +380,31 @@ async def player_attack_enemy(
         return ConversationHandler.END
 
     # TODO
-    await player_attack()
+    attacker_char = char_model.get(attacker_user_id)
+    target_char = char_model.get(target_user_id)
+    await player_attack(
+        update=update,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        enemy_char=enemy_char,
+        attacker_char=attacker_char,
+        target_char=target_char,
+        to_dodge=True
+    )
 
+    if enemy_char.is_dead:
+        remove_enemy_attack_job(
+            context=context,
+            user_id=target_user_id,
+            enemy_char=enemy_char
+        )
+        remove_ambush_enemy(context=context, enemy_id=enemy_id)
+        await enemy_drop_random_loot(
+            context=context,
+            update=update,
+            enemy_char=enemy_char,
+        )
     await query.answer('Comando ainda não foi implementado.', show_alert=True)
 
 
@@ -475,8 +500,68 @@ async def enemy_attack(
         )
 
 
-async def player_attack():
-    ...
+async def player_attack(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    message_id: int,
+    enemy_char: NPCharacter,
+    attacker_char: PlayerCharacter,
+    target_char: PlayerCharacter,
+    to_dodge: bool = False,
+):
+    target_id = target_char.player_id
+    text_report = update.effective_message.text_markdown_v2
+    text_report = text_report.split('\n')
+    text_report = '\n'.join(text_report[1:-1])
+    text_report += '\n\n'
+    attack_report = attacker_char.to_attack(
+        defender_char=enemy_char,
+        attacker_dice=Dice(20),
+        defender_dice=Dice(20),
+        to_dodge=to_dodge,
+        to_defend=True,
+        verbose=True,
+        markdown=True
+    )
+    text_report += attack_report['text']
+    attacker_action_name = attack_report['attack']['action']
+    base_xp = get_base_xp_from_player_attack(enemy_char, attacker_char)
+    report_xp = add_xp(
+        chat_id=chat_id,
+        char=attacker_char,
+        base_xp=base_xp,
+    )
+    text_report += f'{report_xp["text"]}\n'
+    if attack_report['dead']:
+        base_xp = get_base_xp_from_player_attack(enemy_char, target_char)
+        target_report_xp = add_xp(
+            chat_id=chat_id,
+            char=target_char,
+            base_xp=base_xp,
+        )
+        text_report += f'{target_report_xp["text"]}\n'
+        text_report += f'O inimigo foi derrotado!!!\n\n'
+
+    text_report = create_text_in_box(
+        text=text_report,
+        section_name=SECTION_TEXT_AMBUSH_COUNTER,
+        section_start=SECTION_START_DICT[attacker_action_name],
+        section_end=SECTION_END_DICT[attacker_action_name]
+    )
+    await context.bot.edit_message_text(
+        text=text_report,
+        chat_id=chat_id,
+        message_id=message_id,
+        parse_mode=ParseMode.MARKDOWN_V2,
+    )
+    await forward_message(
+        function_caller='PLAYER_ATTACK()',
+        user_id=target_id,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+    )
 
 
 def get_action_buttons(
