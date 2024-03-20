@@ -286,10 +286,10 @@ class BaseCharacter:
 
             report['text'] += damage_report['text']
             if damage_report['dead']:
-                report['text'] += f'\n\n{defender_player_name} morreu! '
+                report['text'] += f'\n\n{defender_player_name} morreu!'
                 if rest_command:
                     report['text'] += (
-                        f'Use o comando /{rest_command} para descansar.'
+                        f' Use o comando /{rest_command} para descansar.'
                     )
             report['text'] += '\n\n'
 

@@ -223,11 +223,13 @@ def get_base_xp_from_enemy_attack(
 def get_base_xp_from_player_attack(
     enemy_char: NPCharacter,
     attacker_char: PlayerCharacter,
+    is_miss: bool
 ) -> int:
     '''Retorna o XP base para o personagem que atacou um inimigo.
     '''
 
     level_divisor = 2 if enemy_char.is_alive else 0.5
+    level_divisor *= 2 if is_miss else 1
     base_xp = int(
         enemy_char.points_multiplier *
         max(

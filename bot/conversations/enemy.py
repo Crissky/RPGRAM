@@ -49,6 +49,7 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group
 from constant.text import (
+    SECTION_HEAD,
     SECTION_HEAD_ATTACK_END,
     SECTION_HEAD_ATTACK_START,
     SECTION_HEAD_ENEMY_END,
@@ -56,7 +57,8 @@ from constant.text import (
     SECTION_HEAD_FAIL_END,
     SECTION_HEAD_FAIL_START,
     SECTION_HEAD_XP_END,
-    SECTION_HEAD_XP_START
+    SECTION_HEAD_XP_START,
+    TEXT_SEPARATOR
 )
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import (
@@ -514,7 +516,8 @@ async def player_attack(
     text_report = update.effective_message.text_markdown_v2
     text_report = text_report.split('\n')
     text_report = '\n'.join(text_report[1:-1])
-    text_report += '\n\n'
+    text_report = text_report.strip()
+    text_report += f'\n\n{TEXT_SEPARATOR}\n\n'
     attack_report = attacker_char.to_attack(
         defender_char=enemy_char,
         attacker_dice=Dice(20),
@@ -526,7 +529,11 @@ async def player_attack(
     )
     text_report += attack_report['text']
     attacker_action_name = attack_report['attack']['action']
-    base_xp = get_base_xp_from_player_attack(enemy_char, attacker_char)
+    base_xp = get_base_xp_from_player_attack(
+        enemy_char=enemy_char,
+        attacker_char=attacker_char,
+        is_miss=attack_report['is_miss']
+    )
     report_xp = add_xp(
         chat_id=chat_id,
         char=attacker_char,
@@ -534,14 +541,31 @@ async def player_attack(
     )
     text_report += f'{report_xp["text"]}\n'
     if attack_report['dead']:
-        base_xp = get_base_xp_from_player_attack(enemy_char, target_char)
+        base_xp = get_base_xp_from_player_attack(
+            enemy_char=enemy_char,
+            attacker_char=target_char,
+            is_miss=attack_report['is_miss']
+        )
         target_report_xp = add_xp(
             chat_id=chat_id,
             char=target_char,
             base_xp=base_xp,
         )
-        text_report += f'{target_report_xp["text"]}\n'
+        text_report += f'{target_report_xp["text"]}\n\n'
         text_report += f'O inimigo foi derrotado!!!\n\n'
+    elif attack_report['is_miss']:
+        section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
+        text_report += f'\n\n{section_head}\n\n'
+        counter_report = enemy_char.to_attack(
+            defender_char=attacker_char,
+            attacker_dice=Dice(20),
+            defender_dice=Dice(10),
+            to_dodge=True,
+            to_defend=True,
+            verbose=True,
+            markdown=True
+        )
+        text_report += counter_report['text']
 
     text_report = create_text_in_box(
         text=text_report,
