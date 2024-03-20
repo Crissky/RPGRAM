@@ -369,7 +369,9 @@ class BaseCharacter:
     race_name: str = property(lambda self: self.race.name)
     classe_name: str = property(lambda self: self.classe.name)
     full_name: str = property(
-        lambda self: f'{self.name}, O {self.race_name} {self.classe_name}'
+        lambda self: (
+            f'{self.player_name}, O {self.race_name} {self.classe_name}'
+        )
     )
     full_name_with_level = property(
         lambda self: f'{self.full_name} (LV: {self.bs.level})'
