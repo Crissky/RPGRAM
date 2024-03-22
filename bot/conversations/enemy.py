@@ -29,7 +29,9 @@ from bot.constants.enemy import (
     SECTION_TEXT_AMBUSH_COUNTER,
     SECTION_TEXT_AMBUSH_DEFENSE,
     SECTION_TEXT_AMBUSH_XP,
-    SECTION_TEXT_FAIL
+    SECTION_TEXT_FAIL,
+    SECTION_TEXT_FAIL_AMBUSH_COUNTER,
+    SECTION_TEXT_FAIL_AMBUSH_DEFENSE
 )
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
@@ -75,7 +77,6 @@ from bot.functions.general import get_attribute_group_or_player
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
-
 from repository.mongo import CharacterModel, ItemModel
 from repository.mongo.populate.enemy import create_random_enemies
 from repository.mongo.populate.item import (
@@ -83,9 +84,9 @@ from repository.mongo.populate.item import (
     create_random_equipment
 )
 
-from rpgram import Dice
+from rpgram import Dice, Item
+from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
-from rpgram.item import Item
 
 
 async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
@@ -308,6 +309,11 @@ async def defend_enemy_attack(
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    already_attacked = check_attacker_id_in_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+        attacker_id=defender_user_id
+    )
 
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
@@ -323,17 +329,44 @@ async def defend_enemy_attack(
 
         return ConversationHandler.END
 
+    if already_attacked:
+        await query.answer(
+            'Você não pode defender este ataque, '
+            'pois já atacou este INIMIGO!!!',
+            show_alert=True
+        )
+
+        return ConversationHandler.END
+
     defender_char = char_model.get(defender_user_id)
     target_char = char_model.get(target_user_id)
-    await enemy_attack(
-        context=context,
-        chat_id=chat_id,
-        message_id=message_id,
-        enemy_char=enemy_char,
-        defender_char=defender_char,
-        target_char=target_char,
-        to_dodge=True
-    )
+    if target_char.is_alive:
+        await enemy_attack(
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            enemy_char=enemy_char,
+            defender_char=defender_char,
+            target_char=target_char,
+            to_dodge=True
+        )
+    else:
+        text = (
+            f'Defesa falhou, pois '
+            f'*{target_char.player_name}* está morto.'
+        )
+        print(text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FAIL_AMBUSH_DEFENSE,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+        await query.message.edit_text(
+            text=text,
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
+
     remove_enemy_attack_job(
         context=context,
         user_id=target_user_id,
@@ -345,6 +378,7 @@ async def defend_enemy_attack(
             context=context,
             update=update,
             enemy_char=enemy_char,
+            from_attack=False,
         )
 
 
@@ -366,6 +400,11 @@ async def player_attack_enemy(
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    already_attacked = check_attacker_id_in_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+        attacker_id=attacker_user_id
+    )
 
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
@@ -381,32 +420,69 @@ async def player_attack_enemy(
 
         return ConversationHandler.END
 
+    if already_attacked:
+        await query.answer(
+            'Você já atacou este INIMIGO!!!',
+            show_alert=True
+        )
+
+        return ConversationHandler.END
+
     # TODO
     attacker_char = char_model.get(attacker_user_id)
     target_char = char_model.get(target_user_id)
-    await player_attack(
-        update=update,
-        context=context,
-        chat_id=chat_id,
-        message_id=message_id,
-        enemy_char=enemy_char,
-        attacker_char=attacker_char,
-        target_char=target_char,
-        to_dodge=True
-    )
 
-    if enemy_char.is_dead:
+    if target_char.is_alive:
+        await player_attack(
+            update=update,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            enemy_char=enemy_char,
+            attacker_char=attacker_char,
+            target_char=target_char,
+            to_dodge=True
+        )
+
+        add_attacker_id_to_ambush_dict(
+            context=context,
+            enemy_id=enemy_id,
+            attacker_id=attacker_user_id,
+        )
+    else:
+        text = (
+            f'Ataque falhou, pois '
+            f'*{enemy_char.full_name_with_level}* fugiu já que '
+            f'*{target_char.player_name}* está morto.'
+        )
+        print(text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FAIL_AMBUSH_COUNTER,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+        await query.message.edit_text(
+            text=text,
+            parse_mode=ParseMode.MARKDOWN_V2,
+        )
+
+    if enemy_char.is_dead or not target_char.is_alive:
         remove_enemy_attack_job(
             context=context,
             user_id=target_user_id,
             enemy_char=enemy_char
         )
         remove_ambush_enemy(context=context, enemy_id=enemy_id)
-        await enemy_drop_random_loot(
-            context=context,
-            update=update,
-            enemy_char=enemy_char,
-        )
+
+        if target_char.is_alive:
+            await enemy_drop_random_loot(
+                context=context,
+                update=update,
+                enemy_char=enemy_char,
+                from_attack=True,
+            )
+
     await query.answer('Comando ainda não foi implementado.', show_alert=True)
 
 
@@ -513,11 +589,13 @@ async def player_attack(
     to_dodge: bool = False,
 ):
     target_id = target_char.player_id
+    reply_markup = update.effective_message.reply_markup
     text_report = update.effective_message.text_markdown_v2
     text_report = text_report.split('\n')
     text_report = '\n'.join(text_report[1:-1])
     text_report = text_report.strip()
     text_report += f'\n\n{TEXT_SEPARATOR}\n\n'
+
     attack_report = attacker_char.to_attack(
         defender_char=enemy_char,
         attacker_dice=Dice(20),
@@ -529,10 +607,12 @@ async def player_attack(
     )
     text_report += attack_report['text']
     attacker_action_name = attack_report['attack']['action']
+    is_miss = attack_report['defense']['is_miss']
+
     base_xp = get_base_xp_from_player_attack(
         enemy_char=enemy_char,
         attacker_char=attacker_char,
-        is_miss=attack_report['is_miss']
+        is_miss=is_miss
     )
     report_xp = add_xp(
         chat_id=chat_id,
@@ -540,11 +620,13 @@ async def player_attack(
         base_xp=base_xp,
     )
     text_report += f'{report_xp["text"]}\n'
+
     if attack_report['dead']:
+        reply_markup = None
         base_xp = get_base_xp_from_player_attack(
             enemy_char=enemy_char,
             attacker_char=target_char,
-            is_miss=attack_report['is_miss']
+            is_miss=is_miss
         )
         target_report_xp = add_xp(
             chat_id=chat_id,
@@ -553,9 +635,9 @@ async def player_attack(
         )
         text_report += f'{target_report_xp["text"]}\n\n'
         text_report += f'O inimigo foi derrotado!!!\n\n'
-    elif attack_report['is_miss']:
+    elif is_miss:
         section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
-        text_report += f'\n\n{section_head}\n\n'
+        text_report += f'\n{section_head}\n\n'
         counter_report = enemy_char.to_attack(
             defender_char=attacker_char,
             attacker_dice=Dice(20),
@@ -578,14 +660,17 @@ async def player_attack(
         chat_id=chat_id,
         message_id=message_id,
         parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=reply_markup
     )
-    await forward_message(
-        function_caller='PLAYER_ATTACK()',
-        user_id=target_id,
-        context=context,
-        chat_id=chat_id,
-        message_id=message_id,
-    )
+
+    if attack_report['dead']:
+        await forward_message(
+            function_caller='PLAYER_ATTACK()',
+            user_id=target_id,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+        )
 
 
 def get_action_buttons(
@@ -801,6 +886,7 @@ async def enemy_drop_random_loot(
     context: ContextTypes.DEFAULT_TYPE,
     update: Update,
     enemy_char: NPCharacter,
+    from_attack: bool,
 ):
     '''Envia uma mensagens de drops de itens quando um aliado defende outro.
     '''
@@ -809,17 +895,34 @@ async def enemy_drop_random_loot(
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     points_multiplier = enemy_char.bs.points_multiplier
-    group_level = enemy_char.level + (points_multiplier * 5)
-    equipment = choice(list(enemy_char.equips))
-    item_equipment = Item(equipment) if equipment else None
-    total_consumables = randint(1, points_multiplier)
-    total_equipments = randint(1, ceil(points_multiplier / 2))
+
+    if from_attack:
+        group_level = enemy_char.level + (points_multiplier * 5)
+        total_consumables = randint(1, points_multiplier)
+        total_equipments = randint(1, ceil(points_multiplier / 2))
+    else:
+        group_level = ceil(enemy_char.level * 0.90)
+        total_consumables = 1
+        total_equipments = randint(0, 1)
+
     consumable_list = list(create_random_consumable(
         group_level=group_level,
         random_level=True,
         total_items=total_consumables
     ))
-    equipment_list = [
+
+    if from_attack:
+        equips_list = list(enemy_char.equips)
+    else:
+        equips_list = [choice(list(enemy_char.equips))]
+
+    equips_list = [
+        Item(equipment)
+        for equipment in equips_list
+        if isinstance(equipment, Equipment)
+    ]
+
+    all_equipment_list = [
         create_random_equipment(
             equip_type=None,
             group_level=group_level,
@@ -827,16 +930,16 @@ async def enemy_drop_random_loot(
         )
         for _ in range(total_equipments)
     ]
-    equipment_list.append(item_equipment)
+    all_equipment_list.extend(equips_list)
 
-    for equipment_item in equipment_list:
+    for equipment_item in all_equipment_list:
         if isinstance(equipment_item, Item):
             equipment = equipment_item.item
             item_model.save(equipment)
 
     drops = [
         item
-        for item in (consumable_list + equipment_list)
+        for item in (consumable_list + all_equipment_list)
         if item is not None
     ]
     shuffle(drops)
