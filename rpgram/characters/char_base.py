@@ -286,10 +286,11 @@ class BaseCharacter:
 
             report['text'] += damage_report['text']
             if damage_report['dead']:
-                report['text'] += (
-                    f'\n\n{defender_player_name} morreu! '
-                    f'Use o comando /{rest_command} para descansar.'
-                )
+                report['text'] += f'\n\n{defender_player_name} morreu!'
+                if rest_command:
+                    report['text'] += (
+                        f' Use o comando /{rest_command} para descansar.'
+                    )
             report['text'] += '\n\n'
 
         if not markdown:
@@ -351,6 +352,7 @@ class BaseCharacter:
         return self.status.immobilized
 
     name: str = property(lambda self: self.__name)
+    player_name: str = property(lambda self: self.__name)
     level: int = property(lambda self: self.__base_stats.level)
     _id: ObjectId = property(lambda self: self.__id)
     base_stats: BaseStats = property(fget=lambda self: self.__base_stats)
@@ -367,7 +369,9 @@ class BaseCharacter:
     race_name: str = property(lambda self: self.race.name)
     classe_name: str = property(lambda self: self.classe.name)
     full_name: str = property(
-        lambda self: f'{self.name}, O {self.race_name} {self.classe_name}'
+        lambda self: (
+            f'{self.player_name}, O {self.race_name} {self.classe_name}'
+        )
     )
     full_name_with_level = property(
         lambda self: f'{self.full_name} (LV: {self.bs.level})'

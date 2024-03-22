@@ -93,6 +93,10 @@ class NPCharacter(BaseCharacter):
         return super().name + f'({self.emoji_stars})'
 
     @property
+    def player_name(self) -> str:
+        return super().player_name + f'({self.emoji_stars})'
+    
+    @property
     def alignment(self) -> AlignmentEnum:
         return self.__alignment
 
