@@ -382,6 +382,12 @@ async def defend_enemy_attack(
         )
 
 
+@skip_if_no_singup_player
+@need_not_in_battle
+@skip_if_dead_char
+@skip_if_immobilized
+@confusion()
+@print_basic_infos
 async def player_attack_enemy(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
