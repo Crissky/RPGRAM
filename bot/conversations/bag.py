@@ -1101,12 +1101,14 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if item:
         item = Item(item, quantity=drop)
         bag_model.add(item, user_id)
+        drops.pop(message_id, None)
 
         await query.answer(
             f'Você pegou "{drop}x {item.name}".',
             show_alert=True
         )
     else:
+        drops.pop(message_id, None)
         print(
             f'get_drop() - Item não existe mais: _id: {item_id} item: {item}.'
         )
@@ -1115,7 +1117,6 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             show_alert=True
         )
 
-    drops.pop(message_id, None)
     await query.delete_message()
 
     return ConversationHandler.END
