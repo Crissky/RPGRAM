@@ -521,6 +521,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             use_quantity=use_quantity,
             page=page,
             item_pos=item_pos,
+            context=context,
             query=query,
         )
         if item.quantity <= 0:
@@ -623,6 +624,7 @@ async def use_item_consumable(
     use_quantity: int,
     page: int,
     item_pos: int,
+    context: ContextTypes.DEFAULT_TYPE,
     query: CallbackQuery,
 ) -> None:
     '''Usa o item consumível
@@ -633,6 +635,7 @@ async def use_item_consumable(
     use_quantity = min(item.quantity, use_quantity)
     all_report_text = [f'Reporting({use_quantity:02}):']
     target_name = get_player_name(target_id)
+    user_name = get_player_name(user_id)
     try:
         for i in range(use_quantity):
             report = item.use(character)
@@ -730,6 +733,18 @@ async def use_item_consumable(
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
         )
+        
+        if user_id != target_id:
+            private_text = escape_basic_markdown_v2(
+                f'{user_name} usou item em você.\n\n{all_report_text}'
+            )
+            await send_private_message(
+                function_caller='USE_ITEM_CONSUMABLE()',
+                context=context,
+                text=private_text,
+                user_id=target_id,
+                markdown=True,
+            )
 
 
 @skip_if_dead_char
@@ -1101,12 +1116,14 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if item:
         item = Item(item, quantity=drop)
         bag_model.add(item, user_id)
+        drops.pop(message_id, None)
 
         await query.answer(
             f'Você pegou "{drop}x {item.name}".',
             show_alert=True
         )
     else:
+        drops.pop(message_id, None)
         print(
             f'get_drop() - Item não existe mais: _id: {item_id} item: {item}.'
         )
@@ -1115,7 +1132,6 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             show_alert=True
         )
 
-    drops.pop(message_id, None)
     await query.delete_message()
 
     return ConversationHandler.END
