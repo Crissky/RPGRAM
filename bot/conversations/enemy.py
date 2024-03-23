@@ -428,7 +428,6 @@ async def player_attack_enemy(
 
         return ConversationHandler.END
 
-    # TODO
     attacker_char = char_model.get(attacker_user_id)
     target_char = char_model.get(target_user_id)
 
@@ -482,8 +481,6 @@ async def player_attack_enemy(
                 enemy_char=enemy_char,
                 from_attack=True,
             )
-
-    await query.answer('Comando ainda não foi implementado.', show_alert=True)
 
 
 async def enemy_attack(
@@ -595,6 +592,7 @@ async def player_attack(
     text_report = '\n'.join(text_report[1:-1])
     text_report = text_report.strip()
     text_report += f'\n\n{TEXT_SEPARATOR}\n\n'
+    counter_report = None
 
     attack_report = attacker_char.to_attack(
         defender_char=enemy_char,
@@ -648,6 +646,7 @@ async def player_attack(
             markdown=True
         )
         text_report += counter_report['text']
+        save_char(attacker_char)
 
     text_report = create_text_in_box(
         text=text_report,
@@ -670,6 +669,19 @@ async def player_attack(
             context=context,
             chat_id=chat_id,
             message_id=message_id,
+        )
+
+    if counter_report and counter_report['dead']:
+        user_id = attacker_char.player_id
+        player_name = attacker_char.player_name
+        drop_items = drop_random_items_from_bag(user_id=user_id)
+        await send_drop_message(
+            context=context,
+            items=drop_items,
+            text=f'{player_name} morreu e dropou o item',
+            chat_id=chat_id,
+            message_id=message_id,
+            silent=True,
         )
 
 
