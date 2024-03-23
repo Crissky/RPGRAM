@@ -16,7 +16,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-from bot.conversations.close import get_close_keyboard
+from bot.functions.chat import get_close_keyboard
 from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,

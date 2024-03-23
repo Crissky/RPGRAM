@@ -16,7 +16,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
-from bot.conversations.close import get_close_keyboard
+from bot.functions.chat import get_close_keyboard
 from bot.decorators import print_basic_infos, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_GROUP_END, SECTION_HEAD_GROUP_START

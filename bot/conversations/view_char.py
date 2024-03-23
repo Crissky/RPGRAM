@@ -21,7 +21,7 @@ from bot.constants.view_char import (
 )
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
-from bot.conversations.close import (
+from bot.functions.chat import (
     get_close_keyboard,
     get_random_refresh_text,
     get_refresh_close_keyboard

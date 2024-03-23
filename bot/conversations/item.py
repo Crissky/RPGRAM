@@ -6,7 +6,7 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
@@ -42,6 +42,7 @@ from bot.decorators.char import confusion
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.char import add_conditions_trap, add_damage, add_xp
+from bot.functions.chat import edit_message_text_and_forward
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
@@ -148,16 +149,16 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Checa se o baú pode ser aberto, se não, cancela a ação e apaga a mensagem
     # Só pode ser aberto se no dicionário drop contiver o message_id como chave
     # e True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if 'treasures' in context.chat_data:
+    if context.chat_data is not None and 'treasures' in context.chat_data:
         treasures = context.chat_data['treasures']
-        if treasures.get(message_id, None) is not True:
-            treasures.pop(message_id, None)
-            await query.answer(
-                f'Este tesouro já foi descoberto.', show_alert=True
-            )
-            await query.delete_message()
+    if treasures.get(message_id, None) is not True:
+        treasures.pop(message_id, None)
+        await query.answer(
+            f'Este tesouro já foi descoberto.', show_alert=True
+        )
+        await query.delete_message()
 
-            return ConversationHandler.END
+        return ConversationHandler.END
 
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
@@ -203,9 +204,12 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_OPEN_TREASURE_END,
     )
 
-    await query.edit_message_text(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2
+    await edit_message_text_and_forward(
+        function_caller='INSPECT_TREASURE()',
+        new_text=text,
+        user_id=user_id,
+        query=query,
+        markdown=True,
     )
 
     if isinstance(items, (list, Iterable)):
