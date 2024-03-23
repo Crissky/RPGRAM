@@ -59,7 +59,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
-from bot.conversations.close import get_close_button
+from bot.functions.chat import get_close_button
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player

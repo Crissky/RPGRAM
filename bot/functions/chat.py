@@ -1,12 +1,29 @@
+from random import choice
+from typing import List
 from bson import ObjectId
-from telegram import CallbackQuery, Message
+from telegram import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message
+)
 
 from telegram.constants import ParseMode
 from telegram.error import Forbidden
 from telegram.ext import ContextTypes
 
+from bot.constants.close import CALLBACK_CLOSE
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_attribute_by_id
+from rpgram.enums import EmojiEnum, FaceEmojiEnum
+
+
+# TEXTS
+REPLY_MARKUP_DEFAULT = 'DEFAULT'
+LEFT_CLOSE_BUTTON_TEXT = f'{EmojiEnum.CLOSE.value}Fechar'
+RIGHT_CLOSE_BUTTON_TEXT = f'Fechar{EmojiEnum.CLOSE.value}'
+REFRESH_BUTTON_TEXT = f'{EmojiEnum.REFRESH.value}Atualizar'
+DETAIL_BUTTON_TEXT = f'{EmojiEnum.DETAIL.value}Detalhar'
 
 
 CALLBACK_KEY_LIST = [
@@ -44,8 +61,18 @@ async def send_private_message(
     user_id: int,
     chat_id: int = None,
     markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
 ):
+    ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
+    envia mensagem para o grupo marcando o nome do jogador.
+    '''
+
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    reply_markup = (
+        reply_markup
+        if reply_markup != REPLY_MARKUP_DEFAULT
+        else get_close_keyboard(user_id=user_id)
+    )
 
     try:
         silent = get_player_attribute_by_id(user_id, 'silent')
@@ -53,7 +80,8 @@ async def send_private_message(
             chat_id=user_id,
             text=text,
             parse_mode=markdown,
-            disable_notification=silent
+            disable_notification=silent,
+            reply_markup=reply_markup,
         )
     except Forbidden as error:
         if isinstance(chat_id, int):
@@ -69,6 +97,7 @@ async def send_private_message(
                 text=text,
                 parse_mode=markdown,
                 disable_notification=silent,
+                reply_markup=reply_markup,
             )
         else:
             print(
@@ -88,8 +117,13 @@ async def send_alert_or_message(
     user_id: int,
     chat_id: int = None,
     markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     show_alert: bool = False,
 ):
+    '''Envia um alert se uma query for passado, caso contrário, enviará 
+    uma mensagem privada.
+    '''
+
     if query:
         return await query.answer(text=text, show_alert=show_alert)
     else:
@@ -99,7 +133,8 @@ async def send_alert_or_message(
             text=text,
             user_id=user_id,
             chat_id=chat_id,
-            markdown=markdown
+            markdown=markdown,
+            reply_markup=reply_markup
         )
 
 
@@ -111,6 +146,9 @@ async def forward_message(
     chat_id: int = None,
     message_id: int = None,
 ):
+    '''Encaminha uma mensagem usando um Message ou um ContextTypes
+    '''
+
     if context and not chat_id:
         raise ValueError('chat_id é necessário quando passado um context.')
     if context and not message_id:
@@ -136,7 +174,68 @@ async def forward_message(
         print(f'{function_caller}: {error}')
 
 
+async def edit_message_text_and_forward(
+    function_caller: str,
+    new_text: str,
+    user_id: int,
+    context: ContextTypes.DEFAULT_TYPE = None,
+    chat_id: int = None,
+    message_id: int = None,
+    query: CallbackQuery = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    markdown: bool = False,
+):
+    '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha 
+    a mesma para o usuário.
+    '''
+
+    if context and not chat_id:
+        raise ValueError('chat_id é necessário quando passado um context.')
+    if context and not message_id:
+        raise ValueError('message_id é necessário quando passado um context.')
+    if not query and not context:
+        raise ValueError('query ou context deve ser passado.')
+
+    markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    reply_markup = (
+        reply_markup
+        if reply_markup != REPLY_MARKUP_DEFAULT
+        else get_close_keyboard(user_id=user_id)
+    )
+
+    if query:
+        response = await query.edit_message_text(
+            text=new_text,
+            parse_mode=markdown,
+            reply_markup=reply_markup,
+        )
+    elif context:
+        response = await context.bot.edit_message_text(
+            text=new_text,
+            chat_id=chat_id,
+            message_id=message_id,
+            parse_mode=ParseMode.MARKDOWN_V2,
+            reply_markup=reply_markup,
+        )
+    else:
+        raise ValueError(
+            'Mensagem não foi editada. query ou context deve ser passado.'
+        )
+
+    await forward_message(
+        function_caller=function_caller,
+        user_id=user_id,
+        message=response
+    )
+
+# CALLBACK FUNCTIONS
+
+
 def callback_data_to_string(callback_data: dict) -> str:
+    '''Transforma um dicionário em uma string compactada usada no campo data 
+    de um botão.
+    '''
+
     items = []
     for key, value in callback_data.items():
         key_int = CALLBACK_KEY_LIST.index(key)
@@ -151,12 +250,91 @@ def callback_data_to_string(callback_data: dict) -> str:
 
 
 def callback_data_to_dict(callback_data_str: str) -> dict:
+    '''Transforma de volta uma string compactada usada no campo data 
+    de um botão em um dicionário.
+    '''
+
     callback_data = eval(callback_data_str)
     callback_data = {
         CALLBACK_KEY_LIST[key]: value
         for key, value in callback_data.items()
     }
     return callback_data
+
+
+# BUTTONS FUNCTIONS
+def get_close_button(
+    user_id: int,
+    text: str = None,
+    right_icon: bool = False,
+) -> InlineKeyboardButton:
+    if text is None:
+        text = LEFT_CLOSE_BUTTON_TEXT
+        if right_icon:
+            text = RIGHT_CLOSE_BUTTON_TEXT
+
+    return InlineKeyboardButton(
+        text=text,
+        callback_data=(
+            f'{{"command":"{CALLBACK_CLOSE}",'
+            f'"user_id":{user_id}}}'
+        )
+    )
+
+
+def get_refresh_close_button(
+    user_id: int,
+    refresh_data: str = 'refresh',
+    to_detail: bool = False,
+) -> List[InlineKeyboardButton]:
+    button_list = []
+    button_list.append(
+        InlineKeyboardButton(
+            REFRESH_BUTTON_TEXT,
+            callback_data=(
+                f'{{"{refresh_data}":1,'
+                f'"user_id":{user_id}}}'
+            )
+        )
+    )
+    if to_detail:
+        button_list.append(
+            InlineKeyboardButton(
+                DETAIL_BUTTON_TEXT,
+                callback_data=(
+                    f'{{"{refresh_data}":1,"verbose":"v",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+    button_list.append(get_close_button(user_id=user_id, right_icon=True))
+
+    return button_list
+
+
+def get_random_refresh_text() -> str:
+    emoji = choice(list(FaceEmojiEnum)).value
+    return f'Atualizado{emoji}'
+
+
+def get_close_keyboard(user_id: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([[
+        get_close_button(user_id=user_id)
+    ]])
+
+
+def get_refresh_close_keyboard(
+    user_id: int,
+    refresh_data: str = 'refresh',
+    to_detail: bool = False,
+) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        get_refresh_close_button(
+            user_id=user_id,
+            refresh_data=refresh_data,
+            to_detail=to_detail
+        )
+    ])
 
 
 if __name__ == '__main__':

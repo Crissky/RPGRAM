@@ -12,7 +12,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
-from bot.conversations.close import get_close_keyboard
+from bot.functions.chat import get_close_keyboard
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 from function.text import escape_basic_markdown_v2

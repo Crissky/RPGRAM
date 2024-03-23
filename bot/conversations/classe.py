@@ -7,7 +7,7 @@ from telegram.ext import (
     ContextTypes,
     PrefixHandler,
 )
-from bot.conversations.close import get_close_button
+from bot.functions.chat import get_close_button
 from bot.decorators.player import (
     alert_if_not_chat_owner_to_callback_data_to_dict
 )
