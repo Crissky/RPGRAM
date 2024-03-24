@@ -45,8 +45,10 @@ from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.chat import (
+    REPLY_MARKUP_DEFAULT,
     callback_data_to_dict,
     callback_data_to_string,
+    edit_message_text_and_forward,
     forward_message
 )
 from bot.functions.config import get_attribute_group
@@ -202,7 +204,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
 
         await forward_message(
             function_caller='JOB_START_AMBUSH()',
-            user_id=user_id,
+            user_ids=user_id,
             message=response
         )
 
@@ -261,11 +263,14 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             section_start=SECTION_HEAD_FAIL_START,
             section_end=SECTION_HEAD_FAIL_END,
         )
-        await context.bot.edit_message_text(
-            text=text,
+        await edit_message_text_and_forward(
+            function_caller='JOB_ENEMY_ATTACK()',
+            new_text=text,
+            user_ids=user_id,
+            context=context,
             chat_id=chat_id,
             message_id=message_id,
-            parse_mode=ParseMode.MARKDOWN_V2,
+            markdown=True
         )
     elif not enemy_char:
         text = f'O inimigo "{enemy_id}" não existe mais.'
@@ -276,11 +281,14 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             section_start=SECTION_HEAD_FAIL_START,
             section_end=SECTION_HEAD_FAIL_END,
         )
-        await context.bot.edit_message_text(
-            text=text,
+        await edit_message_text_and_forward(
+            function_caller='JOB_ENEMY_ATTACK()',
+            new_text=text,
+            user_ids=user_id,
+            context=context,
             chat_id=chat_id,
             message_id=message_id,
-            parse_mode=ParseMode.MARKDOWN_V2,
+            markdown=True
         )
 
     remove_ambush_enemy(context=context, enemy_id=enemy_id)
@@ -362,9 +370,12 @@ async def defend_enemy_attack(
             section_start=SECTION_HEAD_FAIL_START,
             section_end=SECTION_HEAD_FAIL_END,
         )
-        await query.message.edit_text(
-            text=text,
-            parse_mode=ParseMode.MARKDOWN_V2,
+        await edit_message_text_and_forward(
+            function_caller='DEFEND_ENEMY_ATTACK()',
+            new_text=text,
+            user_ids=[defender_user_id, target_user_id],
+            query=query,
+            markdown=True,
         )
 
     remove_enemy_attack_job(
@@ -467,9 +478,12 @@ async def player_attack_enemy(
             section_start=SECTION_HEAD_FAIL_START,
             section_end=SECTION_HEAD_FAIL_END,
         )
-        await query.message.edit_text(
-            text=text,
-            parse_mode=ParseMode.MARKDOWN_V2,
+        await edit_message_text_and_forward(
+            function_caller='PLAYER_ATTACK_ENEMY()',
+            new_text=text,
+            user_ids=[attacker_user_id, target_user_id],
+            query=query,
+            markdown=True,
         )
 
     if enemy_char.is_dead or not target_char.is_alive:
@@ -501,12 +515,13 @@ async def enemy_attack(
     '''Função que o Inimigo ataca um jogador
     '''
 
+    defender_id = defender_char.player_id
     target_id = defender_char.player_id
-    text_report = ''
+    report_text = ''
     if target_char and target_char.is_alive:
         target_id = target_char.player_id
         section_name = SECTION_TEXT_AMBUSH_DEFENSE
-        text_report = (
+        report_text = (
             f'{defender_char.player_name} defendeu '
             f'{target_char.player_name}.\n\n'
         )
@@ -523,7 +538,7 @@ async def enemy_attack(
         verbose=True,
         markdown=True
     )
-    text_report += attack_report['text']
+    report_text += attack_report['text']
     attacker_action_name = attack_report['attack']['action']
 
     if not attack_report['dead']:
@@ -540,31 +555,27 @@ async def enemy_attack(
                 char=target_char,
                 base_xp=base_xp,
             )
-            text_report += f'{target_report_xp["text"]}\n'
-        text_report += f'{report_xp["text"]}\n\n'
+            report_text += f'{target_report_xp["text"]}\n'
+        report_text += f'{report_xp["text"]}\n\n'
     else:
         save_char(defender_char)
 
-    text_report += f'O inimigo fugiu!'
-    text_report = create_text_in_box(
-        text=text_report,
+    report_text += f'O inimigo fugiu!'
+    report_text = create_text_in_box(
+        text=report_text,
         section_name=section_name,
         section_start=SECTION_START_DICT[attacker_action_name],
         section_end=SECTION_END_DICT[attacker_action_name]
     )
-    await context.bot.edit_message_text(
-        text=text_report,
-        chat_id=chat_id,
-        message_id=message_id,
-        parse_mode=ParseMode.MARKDOWN_V2,
-    )
 
-    await forward_message(
+    await edit_message_text_and_forward(
         function_caller='ENEMY_ATTACK()',
-        user_id=target_id,
+        new_text=report_text,
+        user_ids=[target_id, defender_id],
         context=context,
         chat_id=chat_id,
         message_id=message_id,
+        markdown=True,
     )
 
     if attack_report['dead']:
@@ -591,13 +602,14 @@ async def player_attack(
     target_char: PlayerCharacter,
     to_dodge: bool = False,
 ):
+    attacker_id = attacker_char.player_id
     target_id = target_char.player_id
     reply_markup = update.effective_message.reply_markup
-    text_report = update.effective_message.text_markdown_v2
-    text_report = text_report.split('\n')
-    text_report = '\n'.join(text_report[1:-1])
-    text_report = text_report.strip()
-    text_report += f'\n\n{TEXT_SEPARATOR}\n\n'
+    report_text = update.effective_message.text_markdown_v2
+    report_text = report_text.split('\n')
+    report_text = '\n'.join(report_text[1:-1])
+    report_text = report_text.strip()
+    report_text += f'\n\n{TEXT_SEPARATOR}\n\n'
     counter_report = None
 
     attack_report = attacker_char.to_attack(
@@ -609,7 +621,7 @@ async def player_attack(
         verbose=True,
         markdown=True
     )
-    text_report += attack_report['text']
+    report_text += attack_report['text']
     attacker_action_name = attack_report['attack']['action']
     is_miss = attack_report['defense']['is_miss']
 
@@ -623,10 +635,10 @@ async def player_attack(
         char=attacker_char,
         base_xp=base_xp,
     )
-    text_report += f'{report_xp["text"]}\n'
+    report_text += f'{report_xp["text"]}\n'
 
     if attack_report['dead']:
-        reply_markup = None
+        reply_markup = REPLY_MARKUP_DEFAULT
         base_xp = get_base_xp_from_player_attack(
             enemy_char=enemy_char,
             attacker_char=target_char,
@@ -637,11 +649,11 @@ async def player_attack(
             char=target_char,
             base_xp=base_xp,
         )
-        text_report += f'{target_report_xp["text"]}\n\n'
-        text_report += f'O inimigo foi derrotado!!!\n\n'
+        report_text += f'{target_report_xp["text"]}\n\n'
+        report_text += f'O inimigo foi derrotado!!!\n\n'
     elif is_miss:
         section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
-        text_report += f'\n{section_head}\n\n'
+        report_text += f'\n{section_head}\n\n'
         counter_report = enemy_char.to_attack(
             defender_char=attacker_char,
             attacker_dice=Dice(20),
@@ -651,31 +663,25 @@ async def player_attack(
             verbose=True,
             markdown=True
         )
-        text_report += counter_report['text']
+        report_text += counter_report['text']
         save_char(attacker_char)
 
-    text_report = create_text_in_box(
-        text=text_report,
+    report_text = create_text_in_box(
+        text=report_text,
         section_name=SECTION_TEXT_AMBUSH_COUNTER,
         section_start=SECTION_START_DICT[attacker_action_name],
         section_end=SECTION_END_DICT[attacker_action_name]
     )
-    await context.bot.edit_message_text(
-        text=text_report,
+    await edit_message_text_and_forward(
+        function_caller='PLAYER_ATTACK()',
+        new_text=report_text,
+        user_ids=[attacker_id, target_id],
+        context=context,
         chat_id=chat_id,
         message_id=message_id,
-        parse_mode=ParseMode.MARKDOWN_V2,
+        markdown=True,
         reply_markup=reply_markup
     )
-
-    if attack_report['dead']:
-        await forward_message(
-            function_caller='PLAYER_ATTACK()',
-            user_id=target_id,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-        )
 
     if counter_report and counter_report['dead']:
         user_id = attacker_char.player_id

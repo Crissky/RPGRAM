@@ -62,16 +62,18 @@ async def send_private_message(
     chat_id: int = None,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = False,
 ):
     ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
     envia mensagem para o grupo marcando o nome do jogador.
     '''
 
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    owner_id = user_id if close_by_owner is True else None
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=user_id)
+        else get_close_keyboard(user_id=owner_id)
     )
 
     try:
@@ -140,7 +142,7 @@ async def send_alert_or_message(
 
 async def forward_message(
     function_caller: str,
-    user_id: int,
+    user_ids: List[int],
     message: Message = None,
     context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
@@ -156,34 +158,40 @@ async def forward_message(
     if not message and not context:
         raise ValueError('message ou context deve ser passado.')
 
-    user_silent = get_player_attribute_by_id(user_id, 'silent')
-    try:
-        if message:
-            await message.forward(
-                chat_id=user_id,
-                disable_notification=user_silent
-            )
-        elif context:
-            await context.bot.forward_message(
-                chat_id=user_id,
-                from_chat_id=chat_id,
-                message_id=message_id,
-                disable_notification=user_silent
-            )
-    except Exception as error:
-        print(f'{function_caller}: {error}')
+    if isinstance(user_ids, int):
+        user_ids = [user_ids]
+    user_ids = list(set(user_ids))
+
+    for user_id in user_ids:
+        user_silent = get_player_attribute_by_id(user_id, 'silent')
+        try:
+            if message:
+                await message.forward(
+                    chat_id=user_id,
+                    disable_notification=user_silent
+                )
+            elif context:
+                await context.bot.forward_message(
+                    chat_id=user_id,
+                    from_chat_id=chat_id,
+                    message_id=message_id,
+                    disable_notification=user_silent
+                )
+        except Exception as error:
+            print(f'{function_caller}: {error}')
 
 
 async def edit_message_text_and_forward(
     function_caller: str,
     new_text: str,
-    user_id: int,
+    user_ids: List[int],
     context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
     message_id: int = None,
     query: CallbackQuery = None,
-    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = False,
 ):
     '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha 
     a mesma para o usuário.
@@ -196,11 +204,15 @@ async def edit_message_text_and_forward(
     if not query and not context:
         raise ValueError('query ou context deve ser passado.')
 
+    if isinstance(user_ids, int):
+        user_ids = [user_ids]
+
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    owner_id = user_ids[0] if close_by_owner is True else None
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=user_id)
+        else get_close_keyboard(user_id=owner_id)
     )
 
     if query:
@@ -224,7 +236,7 @@ async def edit_message_text_and_forward(
 
     await forward_message(
         function_caller=function_caller,
-        user_id=user_id,
+        user_ids=user_ids,
         message=response
     )
 
