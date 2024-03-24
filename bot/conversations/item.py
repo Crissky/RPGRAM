@@ -207,7 +207,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await edit_message_text_and_forward(
         function_caller='INSPECT_TREASURE()',
         new_text=text,
-        user_id=user_id,
+        user_ids=user_id,
         query=query,
         markdown=True,
     )
