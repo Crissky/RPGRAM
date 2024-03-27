@@ -5,6 +5,7 @@ from bot.functions.char import (
     get_player_ids_from_group,
     save_char
 )
+from bot.functions.chat import get_close_keyboard
 from bot.functions.config import get_attribute_group
 from bot.functions.general import activated_condition
 from telegram import Update
@@ -373,7 +374,8 @@ def confusion(retry_state=ConversationHandler.END):
                 await update.effective_message.reply_text(
                     text,
                     parse_mode=ParseMode.MARKDOWN_V2,
-                    allow_sending_without_reply=True
+                    allow_sending_without_reply=True,
+                    reply_markup=get_close_keyboard(None),
                 )
                 return retry_state
         return wrapper
