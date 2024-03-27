@@ -304,7 +304,13 @@ async def activated_trap(
         clean_func=None
     )
 
-    await query.edit_message_text(text=text)
+    await edit_message_text_and_forward(
+        function_caller='ACTIVATED_TRAP()',
+        new_text=text,
+        user_ids=user_id,
+        query=query,
+        markdown=True,
+    )
 
     return ConversationHandler.END
 
