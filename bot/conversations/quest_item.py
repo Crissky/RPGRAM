@@ -39,7 +39,7 @@ from bot.decorators import (
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import get_item_from_bag_by_id
 from bot.functions.char import add_xp
-from bot.functions.chat import callback_data_to_dict, callback_data_to_string
+from bot.functions.chat import callback_data_to_dict, callback_data_to_string, edit_message_text_and_forward
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
@@ -317,9 +317,12 @@ async def send_item_quest_reward(
         section_end=SECTION_HEAD_QUEST_COMPLETE_END,
         clean_func=escape_for_citation_markdown_v2
     )
-    await query.edit_message_text(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2
+    await edit_message_text_and_forward(
+        function_caller='SEND_ITEM_QUEST_REWARD()',
+        new_text=text,
+        user_ids=user_id,
+        query=query,
+        markdown=True,
     )
     job_item_rarity = quest_item.rarity.name
     equipment = create_random_equipment(
