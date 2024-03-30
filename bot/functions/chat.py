@@ -5,7 +5,8 @@ from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    Message
+    Message,
+    Update
 )
 
 from telegram.constants import ParseMode
@@ -226,7 +227,7 @@ async def edit_message_text_and_forward(
             text=new_text,
             chat_id=chat_id,
             message_id=message_id,
-            parse_mode=ParseMode.MARKDOWN_V2,
+            parse_mode=markdown,
             reply_markup=reply_markup,
         )
     else:
@@ -240,9 +241,46 @@ async def edit_message_text_and_forward(
         message=response
     )
 
+
+async def reply_text_and_forward(
+    function_caller: str,
+    new_text: str,
+    user_ids: List[int],
+    update: Update,
+    allow_sending_without_reply=True,
+    markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = False,
+):
+    '''Responde uma mensagem e a encaminha para o usuário.
+    '''
+
+    if isinstance(user_ids, int):
+        user_ids = [user_ids]
+
+    markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    owner_id = user_ids[0] if close_by_owner is True else None
+    reply_markup = (
+        reply_markup
+        if reply_markup != REPLY_MARKUP_DEFAULT
+        else get_close_keyboard(user_id=owner_id)
+    )
+
+    response = await update.effective_message.reply_text(
+        text=new_text,
+        parse_mode=markdown,
+        reply_markup=reply_markup,
+        allow_sending_without_reply=allow_sending_without_reply,
+    )
+
+    await forward_message(
+        function_caller=function_caller,
+        user_ids=user_ids,
+        message=response
+    )
+
+
 # CALLBACK FUNCTIONS
-
-
 def callback_data_to_string(callback_data: dict) -> str:
     '''Transforma um dicionário em uma string compactada usada no campo data 
     de um botão.
