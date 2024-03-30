@@ -69,7 +69,7 @@ from bot.constants.bag import (
     SECTION_TEXT_GEMSTONE,
     SECTION_TEXT_TROCADO_POUCH,
     SELL_MANY_BUTTON_TEXT,
-    SEND_DROP_MESSAGE_TIME_SLEEP,
+    SEND_DROP_MESSAGE_SLEEP_TIME,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -1421,10 +1421,10 @@ async def send_drop_message(
                 remaining = len(items) - i
                 print(
                     f'TimedOut: retrying SEND_DROP_MESSAGE() '
-                    f'in {SEND_DROP_MESSAGE_TIME_SLEEP} seconds. '
+                    f'in {SEND_DROP_MESSAGE_SLEEP_TIME} seconds. '
                     f'remaining {remaining} items.'
                 )
-                sleep(SEND_DROP_MESSAGE_TIME_SLEEP)
+                sleep(SEND_DROP_MESSAGE_SLEEP_TIME)
                 continue
 
         drops_message_id = response.message_id
