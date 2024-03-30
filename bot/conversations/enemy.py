@@ -183,24 +183,13 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         )
         sleep(2)
 
-        minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
-        job_name = get_enemy_attack_job_name(
-            user_id=user_id,
-            enemy=enemy_char
-        )
-        job_data = {
-            'enemy_id': str(enemy_char.player_id),
-            'message_id': response.message_id
-        }
-        context.job_queue.run_once(
-            callback=job_enemy_attack,
-            when=timedelta(minutes=minutes),
-            data=job_data,
-            name=job_name,
+        create_job_enemy_attack(
+            context=context,
             chat_id=chat_id,
             user_id=user_id,
+            message_id=response.message_id,
+            enemy_char=enemy_char,
         )
-        put_ambush_dict(context=context, enemy=enemy_char)
 
         await forward_message(
             function_caller='JOB_START_AMBUSH()',
@@ -222,6 +211,33 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         silent=silent,
         message_id=message_id,
     )
+
+
+def create_job_enemy_attack(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    user_id: int,
+    message_id: int,
+    enemy_char: NPCharacter,
+):
+    minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
+    job_name = get_enemy_attack_job_name(
+        user_id=user_id,
+        enemy=enemy_char
+    )
+    job_data = {
+        'enemy_id': str(enemy_char.player_id),
+        'message_id': message_id
+    }
+    context.job_queue.run_once(
+        callback=job_enemy_attack,
+        when=timedelta(minutes=minutes),
+        data=job_data,
+        name=job_name,
+        chat_id=chat_id,
+        user_id=user_id,
+    )
+    put_ambush_dict(context=context, enemy=enemy_char)
 
 
 async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
@@ -975,6 +991,7 @@ async def enemy_drop_random_loot(
         update=update,
         silent=silent,
     )
+
 
 AMBUSH_HANDLERS = [
     CallbackQueryHandler(
