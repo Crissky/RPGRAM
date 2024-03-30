@@ -1,6 +1,7 @@
 COMMANDS = ['descanso', 'rest']
 SECTION_TEXT_REST = 'DESCANSO'
 SECTION_TEXT_REST_MIDNIGHT = 'A MIMIR'
+MINUTES_TO_RECOVERY_ACTION_POINTS = 10
 REPLY_TEXTS_ALREADY_RESTING = [
     'Seu personagem já está descansando.',
     'Seu personagem já está aproveitando uma merecida pausa.',

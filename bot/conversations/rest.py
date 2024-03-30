@@ -11,6 +11,7 @@ from telegram.ext import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.rest import (
     COMMANDS,
+    MINUTES_TO_RECOVERY_ACTION_POINTS,
     REPLY_TEXT_REST_MIDDAY,
     REPLY_TEXT_REST_MIDNIGHT,
     REPLY_TEXTS_ALREADY_RESTING,
@@ -163,6 +164,46 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+def create_job_rest_action_point(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    user_id: int,
+):
+    job_name = get_rest_action_points_jobname(user_id=user_id)
+    current_jobs = context.job_queue.get_jobs_by_name(job_name)
+    if not current_jobs:
+        context.job_queue.run_repeating(
+            callback=job_rest_action_point,
+            when=timedelta(minutes=MINUTES_TO_RECOVERY_ACTION_POINTS),
+            name=job_name,
+            user_id=user_id,
+            chat_id=chat_id
+        )
+
+
+async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
+    print('JOB_REST_ACTION()')
+    player_model = PlayerModel()
+    job = context.job
+    user_id = job.user_id
+    chat_id = job.chat_id
+    player = player_model.get(user_id)
+    report = player.add_action_points(1)
+    text = report['text']
+    player_model.save(player)
+
+    if player.full_action_points:
+        job.schedule_removal()
+
+    await send_private_message(
+        function_caller='JOB_REST_ACTION_POINT()',
+        context=context,
+        text=text,
+        user_id=user_id,
+        chat_id=chat_id,
+    )
+
+
 async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso de todos os personagens do grupo que 
     não estão com o HP cheio.
@@ -248,6 +289,10 @@ def stop_resting(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
 
 def get_rest_jobname(user_id):
     return f'REST-{user_id}'
+
+
+def get_rest_action_points_jobname(user_id):
+    return f'REST-ACTION-POINTS{user_id}'
 
 
 REST_HANDLERS = [
