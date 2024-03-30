@@ -1,4 +1,5 @@
-from random import choice
+from random import choice, randint
+from time import sleep
 from typing import List
 from bson import ObjectId
 from telegram import (
@@ -9,8 +10,8 @@ from telegram import (
     Update
 )
 
-from telegram.constants import ParseMode
-from telegram.error import Forbidden
+from telegram.constants import ChatAction, ParseMode
+from telegram.error import Forbidden, RetryAfter, TimedOut
 from telegram.ext import ContextTypes
 
 from bot.constants.close import CALLBACK_CLOSE
@@ -216,24 +217,48 @@ async def edit_message_text_and_forward(
         else get_close_keyboard(user_id=owner_id)
     )
 
-    if query:
-        response = await query.edit_message_text(
-            text=new_text,
-            parse_mode=markdown,
-            reply_markup=reply_markup,
-        )
-    elif context:
-        response = await context.bot.edit_message_text(
-            text=new_text,
-            chat_id=chat_id,
-            message_id=message_id,
-            parse_mode=markdown,
-            reply_markup=reply_markup,
-        )
-    else:
-        raise ValueError(
-            'Mensagem não foi editada. query ou context deve ser passado.'
-        )
+    for _ in range(3):
+        try:
+            if query:
+                response = await query.edit_message_text(
+                    text=new_text,
+                    parse_mode=markdown,
+                    reply_markup=reply_markup,
+                )
+            elif context:
+                response = await context.bot.edit_message_text(
+                    text=new_text,
+                    chat_id=chat_id,
+                    message_id=message_id,
+                    parse_mode=markdown,
+                    reply_markup=reply_markup,
+                )
+            else:
+                raise ValueError(
+                    'Mensagem não foi editada. '
+                    'query ou context deve ser passado.'
+                )
+            break
+        except RetryAfter as error:
+            sleep_time = error.retry_after + randint(1, 3)
+            print(
+                f'RetryAfter: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            await context.bot.send_chat_action(
+                chat_id=chat_id,
+                action=ChatAction.TYPING
+            )
+            sleep(sleep_time)
+            continue
+        except TimedOut as error:
+            sleep_time = 3
+            print(
+                f'TimedOut: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
 
     await forward_message(
         function_caller=function_caller,
@@ -266,12 +291,34 @@ async def reply_text_and_forward(
         else get_close_keyboard(user_id=owner_id)
     )
 
-    response = await update.effective_message.reply_text(
-        text=new_text,
-        parse_mode=markdown,
-        reply_markup=reply_markup,
-        allow_sending_without_reply=allow_sending_without_reply,
-    )
+    for _ in range(3):
+        try:
+            response = await update.effective_message.reply_text(
+                text=new_text,
+                parse_mode=markdown,
+                reply_markup=reply_markup,
+                allow_sending_without_reply=allow_sending_without_reply,
+            )
+            break
+        except RetryAfter as error:
+            sleep_time = error.retry_after + randint(1, 3)
+            print(
+                f'RetryAfter: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            await update.effective_message.reply_chat_action(
+                action=ChatAction.TYPING
+            )
+            sleep(sleep_time)
+            continue
+        except TimedOut as error:
+            sleep_time = 3
+            print(
+                f'TimedOut: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
 
     await forward_message(
         function_caller=function_caller,
