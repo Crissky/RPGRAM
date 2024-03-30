@@ -156,6 +156,14 @@ class Player:
             f'{self.__current_action_points}/{self.__max_action_points}'
         )
 
+    @property
+    def is_full_action_points(self) -> bool:
+        return self.__current_action_points >= self.__max_action_points
+
+    @property
+    def have_action_points(self) -> bool:
+        return self.__current_action_points > 0
+
     def __setitem__(self, key, value):
         key = key.upper()
 
