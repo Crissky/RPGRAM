@@ -309,7 +309,7 @@ async def activated_trap(
         new_text=text,
         user_ids=user_id,
         query=query,
-        markdown=True,
+        markdown=False,
     )
 
     return ConversationHandler.END
