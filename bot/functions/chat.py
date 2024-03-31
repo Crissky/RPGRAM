@@ -1,15 +1,17 @@
-from random import choice
+from random import choice, randint
+from time import sleep
 from typing import List
 from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    Message
+    Message,
+    Update
 )
 
-from telegram.constants import ParseMode
-from telegram.error import Forbidden
+from telegram.constants import ChatAction, ParseMode
+from telegram.error import Forbidden, RetryAfter, TimedOut
 from telegram.ext import ContextTypes
 
 from bot.constants.close import CALLBACK_CLOSE
@@ -215,24 +217,48 @@ async def edit_message_text_and_forward(
         else get_close_keyboard(user_id=owner_id)
     )
 
-    if query:
-        response = await query.edit_message_text(
-            text=new_text,
-            parse_mode=markdown,
-            reply_markup=reply_markup,
-        )
-    elif context:
-        response = await context.bot.edit_message_text(
-            text=new_text,
-            chat_id=chat_id,
-            message_id=message_id,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            reply_markup=reply_markup,
-        )
-    else:
-        raise ValueError(
-            'Mensagem não foi editada. query ou context deve ser passado.'
-        )
+    for _ in range(3):
+        try:
+            if query:
+                response = await query.edit_message_text(
+                    text=new_text,
+                    parse_mode=markdown,
+                    reply_markup=reply_markup,
+                )
+            elif context:
+                response = await context.bot.edit_message_text(
+                    text=new_text,
+                    chat_id=chat_id,
+                    message_id=message_id,
+                    parse_mode=markdown,
+                    reply_markup=reply_markup,
+                )
+            else:
+                raise ValueError(
+                    'Mensagem não foi editada. '
+                    'query ou context deve ser passado.'
+                )
+            break
+        except RetryAfter as error:
+            sleep_time = error.retry_after + randint(1, 3)
+            print(
+                f'RetryAfter: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            await context.bot.send_chat_action(
+                chat_id=chat_id,
+                action=ChatAction.TYPING
+            )
+            sleep(sleep_time)
+            continue
+        except TimedOut as error:
+            sleep_time = 3
+            print(
+                f'TimedOut: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
 
     await forward_message(
         function_caller=function_caller,
@@ -240,9 +266,68 @@ async def edit_message_text_and_forward(
         message=response
     )
 
+
+async def reply_text_and_forward(
+    function_caller: str,
+    new_text: str,
+    user_ids: List[int],
+    update: Update,
+    allow_sending_without_reply=True,
+    markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = False,
+):
+    '''Responde uma mensagem e a encaminha para o usuário.
+    '''
+
+    if isinstance(user_ids, int):
+        user_ids = [user_ids]
+
+    markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    owner_id = user_ids[0] if close_by_owner is True else None
+    reply_markup = (
+        reply_markup
+        if reply_markup != REPLY_MARKUP_DEFAULT
+        else get_close_keyboard(user_id=owner_id)
+    )
+
+    for _ in range(3):
+        try:
+            response = await update.effective_message.reply_text(
+                text=new_text,
+                parse_mode=markdown,
+                reply_markup=reply_markup,
+                allow_sending_without_reply=allow_sending_without_reply,
+            )
+            break
+        except RetryAfter as error:
+            sleep_time = error.retry_after + randint(1, 3)
+            print(
+                f'RetryAfter: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            await update.effective_message.reply_chat_action(
+                action=ChatAction.TYPING
+            )
+            sleep(sleep_time)
+            continue
+        except TimedOut as error:
+            sleep_time = 3
+            print(
+                f'TimedOut: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
+                f'{function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
+
+    await forward_message(
+        function_caller=function_caller,
+        user_ids=user_ids,
+        message=response
+    )
+
+
 # CALLBACK FUNCTIONS
-
-
 def callback_data_to_string(callback_data: dict) -> str:
     '''Transforma um dicionário em uma string compactada usada no campo data 
     de um botão.

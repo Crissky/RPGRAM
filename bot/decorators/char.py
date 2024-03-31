@@ -5,7 +5,7 @@ from bot.functions.char import (
     get_player_ids_from_group,
     save_char
 )
-from bot.functions.chat import get_close_keyboard
+from bot.functions.chat import get_close_keyboard, reply_text_and_forward
 from bot.functions.config import get_attribute_group
 from bot.functions.general import activated_condition
 from telegram import Update
@@ -319,6 +319,8 @@ def confusion(retry_state=ConversationHandler.END):
                 )
                 confuse_player_name = confuse_char.player_name
                 target_player_name = target_char.player_name
+                confuse_player_id = confuse_char.player_id
+                target_player_id = target_char.player_id
                 if confuse_char.player_id == target_char.player_id:
                     target_player_name = 'a si mesmo'
                     target_char_dice = Dice(1)
@@ -371,11 +373,13 @@ def confusion(retry_state=ConversationHandler.END):
                     section_end=SECTION_HEAD_CONFUSION_END
                 )
 
-                await update.effective_message.reply_text(
-                    text,
-                    parse_mode=ParseMode.MARKDOWN_V2,
+                await reply_text_and_forward(
+                    function_caller='CONFUSION()',
+                    new_text=text,
+                    user_ids=[confuse_player_id, target_player_id],
+                    update=update,
                     allow_sending_without_reply=True,
-                    reply_markup=get_close_keyboard(None),
+                    markdown=True,
                 )
                 return retry_state
         return wrapper

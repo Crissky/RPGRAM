@@ -19,6 +19,8 @@ class Player:
         silent: bool = False,
         xp_cooldown: datetime = None,
         trocado: int = 0,
+        current_action_points: int = 0,
+        max_action_points: int = 3,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -38,6 +40,8 @@ class Player:
         self.silent = silent
         self.xp_cooldown = xp_cooldown
         self.__trocado = trocado
+        self.__current_action_points = current_action_points
+        self.__max_action_points = max_action_points
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -92,6 +96,51 @@ class Player:
 
         return report
 
+    def add_action_points(self, value: int = 1) -> dict:
+        value = abs(value)
+        if value <= 0:
+            raise ValueError(
+                f'O valor "{value}" não pode ser menor ou igual a zero.'
+            )
+
+        current_value = self.__max_action_points - self.__current_action_points
+        current_value = min(current_value, value)
+        self.__current_action_points += current_value
+        self.__current_action_points = min(
+            self.__current_action_points, self.__max_action_points
+        )
+        report = {
+            'value': value,
+            'current_value': current_value,
+            'text': (
+                f'Adicionado(s) {current_value} ponto(s) de ação.\n'
+                f'{self.current_action_points_text}'
+            )
+        }
+
+        return report
+
+    def sub_action_points(self, value: int = 1) -> dict:
+        value = abs(value)
+        if value <= 0:
+            raise ValueError(
+                f'O valor "{value}" não pode ser menor ou igual a zero.'
+            )
+
+        current_value = self.__current_action_points - value
+        current_value = max(current_value, 0)
+        self.__current_action_points = current_value
+        report = {
+            'value': value,
+            'current_value': current_value,
+            'text': (
+                f'Removido(s) {value} ponto(s) de ação.\n'
+                f'{self.current_action_points_text}'
+            )
+        }
+
+        return report
+
     # Getters
     _id = property(lambda self: self.__id)
     trocado = property(lambda self: self.__trocado)
@@ -99,6 +148,21 @@ class Player:
     @property
     def trocado_text(self) -> str:
         return f'{self.__trocado}{EmojiEnum.TROCADO.value}'
+
+    @property
+    def current_action_points_text(self) -> str:
+        return (
+            f'Pontos de Ação: '
+            f'{self.__current_action_points}/{self.__max_action_points}'
+        )
+
+    @property
+    def is_full_action_points(self) -> bool:
+        return self.__current_action_points >= self.__max_action_points
+
+    @property
+    def have_action_points(self) -> bool:
+        return self.__current_action_points > 0
 
     def __setitem__(self, key, value):
         key = key.upper()
@@ -133,6 +197,7 @@ class Player:
             f'Player ID: {self.player_id}\n'
             f'Verbose: {self.verbose}\n'
             f'Silencioso: {self.silent}\n'
+            f'{self.current_action_points_text}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
         )
@@ -147,6 +212,8 @@ class Player:
             silent=self.silent,
             xp_cooldown=self.xp_cooldown,
             trocado=self.__trocado,
+            current_action_points=self.__current_action_points,
+            max_action_points=self.__max_action_points,
             created_at=self.created_at,
             updated_at=self.updated_at
         )

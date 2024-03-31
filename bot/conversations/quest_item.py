@@ -39,7 +39,11 @@ from bot.decorators import (
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import get_item_from_bag_by_id
 from bot.functions.char import add_xp
-from bot.functions.chat import callback_data_to_dict, callback_data_to_string, edit_message_text_and_forward
+from bot.functions.chat import (
+    callback_data_to_dict,
+    callback_data_to_string,
+    edit_message_text_and_forward
+)
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
