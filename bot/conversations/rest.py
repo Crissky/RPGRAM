@@ -139,9 +139,11 @@ def create_job_rest_action_point(
     chat_id: int,
     user_id: int,
 ):
+    player_model = PlayerModel()
+    player = player_model.get(user_id)
     job_name = get_rest_action_points_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
-    if not current_jobs:
+    if not current_jobs and not player.is_full_action_points:
         context.job_queue.run_repeating(
             callback=job_rest_action_point,
             interval=timedelta(minutes=MINUTES_TO_RECOVERY_ACTION_POINTS),
@@ -224,14 +226,15 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
     if player.is_full_action_points:
         job.schedule_removal()
 
-    await send_private_message(
-        function_caller='JOB_REST_ACTION_POINT()',
-        context=context,
-        text=text,
-        user_id=user_id,
-        chat_id=chat_id,
-        markdown=True,
-    )
+    if player.verbose or player.is_full_action_points:
+        await send_private_message(
+            function_caller='JOB_REST_ACTION_POINT()',
+            context=context,
+            text=text,
+            user_id=user_id,
+            chat_id=chat_id,
+            markdown=True,
+        )
 
 
 async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
