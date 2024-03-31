@@ -35,6 +35,7 @@ from bot.constants.enemy import (
 )
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
+from bot.conversations.rest import create_job_rest_action_point
 from bot.decorators.battle import need_not_in_battle
 from bot.decorators.char import (
     confusion,
@@ -79,7 +80,7 @@ from bot.functions.general import get_attribute_group_or_player
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
-from repository.mongo import CharacterModel, ItemModel
+from repository.mongo import CharacterModel, ItemModel, PlayerModel
 from repository.mongo.populate.enemy import create_random_enemies
 from repository.mongo.populate.item import (
     create_random_consumable,
@@ -189,17 +190,13 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             user_id=user_id,
             message_id=response.message_id,
             enemy_char=enemy_char,
+            player_name=defender_char.player_name
         )
 
         await forward_message(
             function_caller='JOB_START_AMBUSH()',
             user_ids=user_id,
             message=response
-        )
-
-        print(
-            f'{enemy_char.full_name_with_level} ira atacar '
-            f'{defender_char.player_name} em {minutes} minutos.'
         )
 
     # ---------- END FOR ---------- #
@@ -219,6 +216,7 @@ def create_job_enemy_attack(
     user_id: int,
     message_id: int,
     enemy_char: NPCharacter,
+    player_name: str = 'NOME NÃO INFORMADO',
 ):
     minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
     job_name = get_enemy_attack_job_name(
@@ -238,6 +236,10 @@ def create_job_enemy_attack(
         user_id=user_id,
     )
     put_ambush_dict(context=context, enemy=enemy_char)
+    print(
+        f'{enemy_char.full_name_with_level} ira atacar '
+        f'{player_name} em {minutes} minutos.'
+    )
 
 
 async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
@@ -339,6 +341,20 @@ async def defend_enemy_attack(
         attacker_id=defender_user_id
     )
 
+    if not can_player_act(defender_user_id):
+        create_job_rest_action_point(
+            context=context,
+            chat_id=chat_id,
+            user_id=defender_user_id,
+        )
+        await query.answer(
+            'Você não possui PONTO(S) DE AÇÃO suficiente(s) '
+            'para realizar essa AÇÃO!',
+            show_alert=True
+        )
+
+        return ConversationHandler.END
+
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
         await query.delete_message()
@@ -408,6 +424,12 @@ async def defend_enemy_attack(
             from_attack=False,
         )
 
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=defender_user_id,
+    )
+
 
 @skip_if_no_singup_player
 @need_not_in_battle
@@ -433,11 +455,20 @@ async def player_attack_enemy(
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
-    already_attacked = check_attacker_id_in_ambush_dict(
-        context=context,
-        enemy_id=enemy_id,
-        attacker_id=attacker_user_id
-    )
+
+    if not can_player_act(attacker_user_id):
+        create_job_rest_action_point(
+            context=context,
+            chat_id=chat_id,
+            user_id=attacker_user_id,
+        )
+        await query.answer(
+            'Você não possui PONTO(S) DE AÇÃO suficiente(s) '
+            'para realizar essa AÇÃO!',
+            show_alert=True
+        )
+
+        return ConversationHandler.END
 
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
@@ -448,14 +479,6 @@ async def player_attack_enemy(
     if attacker_user_id == target_user_id:
         await query.answer(
             'Você não tem a habilidade de contra atacar.',
-            show_alert=True
-        )
-
-        return ConversationHandler.END
-
-    if already_attacked:
-        await query.answer(
-            'Você já atacou este INIMIGO!!!',
             show_alert=True
         )
 
@@ -502,7 +525,7 @@ async def player_attack_enemy(
             markdown=True,
         )
 
-    if enemy_char.is_dead or not target_char.is_alive:
+    if enemy_char.is_dead or target_char.is_dead:
         remove_enemy_attack_job(
             context=context,
             user_id=target_user_id,
@@ -517,6 +540,12 @@ async def player_attack_enemy(
                 enemy_char=enemy_char,
                 from_attack=True,
             )
+
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=attacker_user_id,
+    )
 
 
 async def enemy_attack(
@@ -800,6 +829,13 @@ def check_attacker_id_in_ambush_dict(
         in_ambush = attacker_id in attacker_id_list
 
     return in_ambush
+
+
+def can_player_act(user_id: int):
+    player_model = PlayerModel()
+    player = player_model.get(user_id)
+
+    return player.have_action_points
 
 
 def get_enemy_from_ambush_dict(

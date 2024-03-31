@@ -17,6 +17,7 @@ from bot.constants.rest import (
     REPLY_TEXTS_ALREADY_RESTING,
     REPLY_TEXTS_NO_NEED_REST,
     REPLY_TEXTS_STARTING_REST,
+    SECTION_TEXT_ACTION_PONTOS,
     SECTION_TEXT_REST,
     SECTION_TEXT_REST_MIDNIGHT
 )
@@ -30,6 +31,8 @@ from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_players_id_by_chat_id
 from constant.text import (
+    SECTION_HEAD_ACTION_POINTS_END,
+    SECTION_HEAD_ACTION_POINTS_START,
     SECTION_HEAD_REST_END,
     SECTION_HEAD_REST_MIDDAY_END,
     SECTION_HEAD_REST_MIDDAY_START,
@@ -57,7 +60,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
-    job_name = get_rest_jobname(user_id)
+    job_name = get_rest_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     silent = get_attribute_group_or_player(chat_id, 'silent')
     player_character = char_model.get(user_id)
@@ -82,13 +85,10 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'HP: {current_hp}'
         )
     else:
-        context.job_queue.run_repeating(
-            callback=job_rest_cure,
-            interval=timedelta(hours=1),
+        create_job_rest_cure(
+            context=context,
             chat_id=chat_id,
             user_id=user_id,
-            name=job_name,
-            data=user_id
         )
         reply_text_starting_rest = choice(REPLY_TEXTS_STARTING_REST)
         text = (
@@ -110,6 +110,45 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         disable_notification=silent,
         allow_sending_without_reply=True
     )
+
+
+def create_job_rest_cure(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    user_id: int,
+):
+    job_name = get_rest_jobname(user_id)
+    context.job_queue.run_repeating(
+        callback=job_rest_cure,
+        interval=timedelta(hours=1),
+        chat_id=chat_id,
+        user_id=user_id,
+        name=job_name,
+        data=user_id
+    )
+
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=user_id,
+    )
+
+
+def create_job_rest_action_point(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    user_id: int,
+):
+    job_name = get_rest_action_points_jobname(user_id=user_id)
+    current_jobs = context.job_queue.get_jobs_by_name(job_name)
+    if not current_jobs:
+        context.job_queue.run_repeating(
+            callback=job_rest_action_point,
+            interval=timedelta(minutes=MINUTES_TO_RECOVERY_ACTION_POINTS),
+            name=job_name,
+            user_id=user_id,
+            chat_id=chat_id
+        )
 
 
 async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
@@ -164,23 +203,6 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-def create_job_rest_action_point(
-    context: ContextTypes.DEFAULT_TYPE,
-    chat_id: int,
-    user_id: int,
-):
-    job_name = get_rest_action_points_jobname(user_id=user_id)
-    current_jobs = context.job_queue.get_jobs_by_name(job_name)
-    if not current_jobs:
-        context.job_queue.run_repeating(
-            callback=job_rest_action_point,
-            when=timedelta(minutes=MINUTES_TO_RECOVERY_ACTION_POINTS),
-            name=job_name,
-            user_id=user_id,
-            chat_id=chat_id
-        )
-
-
 async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_REST_ACTION()')
     player_model = PlayerModel()
@@ -189,10 +211,17 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
     chat_id = job.chat_id
     player = player_model.get(user_id)
     report = player.add_action_points(1)
-    text = report['text']
     player_model.save(player)
 
-    if player.full_action_points:
+    text = report['text']
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_ACTION_PONTOS,
+        section_start=SECTION_HEAD_ACTION_POINTS_START,
+        section_end=SECTION_HEAD_ACTION_POINTS_END,
+    )
+
+    if player.is_full_action_points:
         job.schedule_removal()
 
     await send_private_message(
@@ -201,6 +230,7 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
         text=text,
         user_id=user_id,
         chat_id=chat_id,
+        markdown=True,
     )
 
 
@@ -233,13 +263,10 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         if battle or current_jobs or player_character.is_healed:
             continue
         else:
-            context.job_queue.run_repeating(
-                callback=job_rest_cure,
-                interval=timedelta(hours=1),
+            create_job_rest_cure(
+                context=context,
                 chat_id=chat_id,
                 user_id=user_id,
-                name=job_name,
-                data=user_id
             )
             texts.append(f'{player_name} - HP: {current_hp}')
 
