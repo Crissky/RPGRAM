@@ -100,7 +100,7 @@ ARCHETYPES_EQUIPMENTS = {
     'Necromante': MAGICIAN_EQUIPMENTS,
     'Patrulheiro': DUELIST_EQUIPMENTS,
     'Xamã': MAGICIAN_EQUIPMENTS,
-    'Berserker': BARBARIAN_EQUIPMENTS,
+    'Berserkir': BARBARIAN_EQUIPMENTS,
     'Mestre das Armas': FIGHTER_EQUIPMENTS,
     'Feiticeiro Supremo': MAGICIAN_EQUIPMENTS,
     'Senhor dos Ladinos': DUELIST_EQUIPMENTS,
