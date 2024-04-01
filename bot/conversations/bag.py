@@ -733,7 +733,7 @@ async def use_item_consumable(
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
         )
-        
+
         if user_id != target_id:
             private_text = escape_basic_markdown_v2(
                 f'{user_name} usou item em você.\n\n{all_report_text}'
@@ -795,11 +795,9 @@ async def identify_item(
         item_model.save(equipment)
         sub_identifying_lens_from_bag(user_id)
         name = consumable_identifier.name
-        description = consumable_identifier.description
         text = (
+            f'{report_text}\n\n'
             f'Você usou {use_quantity} "{name}".\n'
-            f'Descrição: "{description}".\n\n'
-            f'{report_text}\n'
         )
         await query.answer(text=text, show_alert=True)
     else:
