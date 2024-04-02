@@ -50,7 +50,8 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
     edit_message_text_and_forward,
-    forward_message
+    forward_message,
+    call_telegram_message_function
 )
 from bot.functions.config import get_attribute_group
 from constant.text import (
@@ -173,7 +174,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             enemy=enemy_char
         )
         reply_markup = InlineKeyboardMarkup(defend_button)
-        response = await context.bot.send_message(
+        send_message_kwargs = dict(
             chat_id=chat_id,
             text=text,
             # disable_notification=silent,
@@ -182,6 +183,13 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
             allow_sending_without_reply=True,
             reply_markup=reply_markup,
         )
+
+        response = await call_telegram_message_function(
+            function_caller='JOB_START_AMBUSH()',
+            function=context.bot.send_message,
+            **send_message_kwargs
+        )
+
         sleep(2)
 
         create_job_enemy_attack(
@@ -712,7 +720,7 @@ async def player_attack(
         )
         report_text += counter_report['text']
         save_char(attacker_char)
-
+    report_text = resize_text(report_text)
     report_text = create_text_in_box(
         text=report_text,
         section_name=SECTION_TEXT_AMBUSH_COUNTER,
@@ -742,6 +750,28 @@ async def player_attack(
             message_id=message_id,
             silent=True,
         )
+
+
+def resize_text(
+    text: str,
+    spliter: str = TEXT_SEPARATOR,
+    length_limit: int = 4000
+) -> str:
+    '''Reduz o tamanho do texto para que a mensagem não ultrapasse 
+    o limite de caracteres.
+    '''
+
+    copy_text = ''
+    while len(text) > length_limit and text != copy_text:
+        copy_text = text
+        text_list = text.split(spliter)
+        if len(text_list) > 1:
+            text_list.pop(1)
+            text = spliter.join(text_list).strip()
+        else:
+            text = text[-length_limit:].strip()
+
+    return text
 
 
 def get_action_buttons(
@@ -886,11 +916,17 @@ async def send_ambush_message(
         section_start=SECTION_HEAD_ENEMY_START,
         section_end=SECTION_HEAD_ENEMY_END
     )
-    response = await context.bot.send_message(
+    send_message_kwargs = dict(
         chat_id=chat_id,
         text=ambush_text,
         disable_notification=silent,
         parse_mode=ParseMode.MARKDOWN_V2,
+    )
+
+    response = await call_telegram_message_function(
+        function_caller='SEND_AMBUSH_MESSAGE()',
+        function=context.bot.send_message,
+        **send_message_kwargs
     )
     message_id = response.message_id
 
@@ -935,13 +971,19 @@ async def add_xp_group(
         section_start=SECTION_HEAD_XP_START,
         section_end=SECTION_HEAD_XP_END
     )
-    await context.bot.send_message(
+    send_message_kwargs = dict(
         chat_id=chat_id,
         text=full_text,
         disable_notification=silent,
         parse_mode=ParseMode.MARKDOWN_V2,
         reply_to_message_id=message_id,
         allow_sending_without_reply=True,
+    )
+
+    await call_telegram_message_function(
+        function_caller='ADD_XP_GROUP()',
+        function=context.bot.send_message,
+        **send_message_kwargs
     )
 
 

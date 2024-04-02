@@ -1,6 +1,6 @@
 from random import choice, randint
 from time import sleep
-from typing import List
+from typing import Any, Callable, List, Union
 from bson import ObjectId
 from telegram import (
     CallbackQuery,
@@ -285,46 +285,64 @@ async def reply_text_and_forward(
 
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
     owner_id = user_ids[0] if close_by_owner is True else None
+    both_function_caller = f'{function_caller} and REPLY_TEXT_AND_FORWARD()'
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
         else get_close_keyboard(user_id=owner_id)
     )
-
-    for _ in range(3):
-        try:
-            response = await update.effective_message.reply_text(
-                text=new_text,
-                parse_mode=markdown,
-                reply_markup=reply_markup,
-                allow_sending_without_reply=allow_sending_without_reply,
-            )
-            break
-        except RetryAfter as error:
-            sleep_time = error.retry_after + randint(1, 3)
-            print(
-                f'RetryAfter: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
-                f'{function_caller} in {sleep_time} seconds.'
-            )
-            await update.effective_message.reply_chat_action(
-                action=ChatAction.TYPING
-            )
-            sleep(sleep_time)
-            continue
-        except TimedOut as error:
-            sleep_time = 3
-            print(
-                f'TimedOut: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
-                f'{function_caller} in {sleep_time} seconds.'
-            )
-            sleep(sleep_time)
-            continue
+    reply_text_kwargs = dict(
+        text=new_text,
+        parse_mode=markdown,
+        reply_markup=reply_markup,
+        allow_sending_without_reply=allow_sending_without_reply,
+    )
+    response = await call_telegram_message_function(
+        function_caller=both_function_caller,
+        function=update.effective_message.reply_text,
+        **reply_text_kwargs
+    )
 
     await forward_message(
         function_caller=function_caller,
         user_ids=user_ids,
         message=response
     )
+
+
+async def call_telegram_message_function(
+    function_caller: str,
+    function: Callable,
+    *args,
+    **kwargs
+) -> Union[Any, Message]:
+    '''Função que chama qualquer função de mensagem do telegram. 
+    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
+    alguns segundos tentará novamente com um número máximo de 3 tentativas.
+    '''
+
+    for i in range(3):
+        try:
+            response = await function(*args, **kwargs)
+            break
+        except RetryAfter as error:
+            sleep_time = error.retry_after + randint(1, 3)
+            print(
+                f'RetryAfter({i}): retrying activate "{function.__name__}" '
+                f'from {function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
+        except TimedOut as error:
+            sleep_time = 3
+            print(
+                f'TimedOut({i}): retrying activate "{function.__name__}" '
+                f'from {function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
+
+    return response
 
 
 # CALLBACK FUNCTIONS
