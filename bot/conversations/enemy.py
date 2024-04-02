@@ -720,7 +720,7 @@ async def player_attack(
         )
         report_text += counter_report['text']
         save_char(attacker_char)
-
+    report_text = resize_text(report_text)
     report_text = create_text_in_box(
         text=report_text,
         section_name=SECTION_TEXT_AMBUSH_COUNTER,
@@ -750,6 +750,28 @@ async def player_attack(
             message_id=message_id,
             silent=True,
         )
+
+
+def resize_text(
+    text: str,
+    spliter: str = TEXT_SEPARATOR,
+    length_limit: int = 4000
+) -> str:
+    '''Reduz o tamanho do texto para que a mensagem não ultrapasse 
+    o limite de caracteres.
+    '''
+
+    copy_text = ''
+    while len(text) > length_limit and text != copy_text:
+        copy_text = text
+        text_list = text.split(spliter)
+        if len(text_list) > 1:
+            text_list.pop(1)
+            text = spliter.join(text_list).strip()
+        else:
+            text = text[-length_limit:].strip()
+
+    return text
 
 
 def get_action_buttons(
