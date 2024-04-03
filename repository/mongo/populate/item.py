@@ -373,12 +373,14 @@ def get_bonus_and_penality(
     somente com base no nível de grupo.
     '''
     rarity_bonus = BONUS_RARITY[rarity]
-    if equip_type in [EquipmentEnum.TWO_HANDS.name, EquipmentEnum.ARMOR.name]:
-        equip_type_bonus = 2.5
+    if equip_type in [EquipmentEnum.TWO_HANDS.name]:
+        equip_type_bonus = 3.50
     elif equip_type in [EquipmentEnum.ONE_HAND.name]:
-        equip_type_bonus = 1
+        equip_type_bonus = 1.50
+    elif equip_type in [EquipmentEnum.ARMOR.name]:
+        equip_type_bonus = 2.50
     elif equip_type in [EquipmentEnum.HELMET.name, EquipmentEnum.BOOTS.name]:
-        equip_type_bonus = 0.5
+        equip_type_bonus = 0.50
     elif equip_type in [EquipmentEnum.RING.name, EquipmentEnum.AMULET.name]:
         equip_type_bonus = 0.25
 
