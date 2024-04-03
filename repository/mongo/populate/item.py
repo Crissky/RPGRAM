@@ -374,7 +374,7 @@ def get_bonus_and_penality(
     '''
     rarity_bonus = BONUS_RARITY[rarity]
     if equip_type in [EquipmentEnum.TWO_HANDS.name]:
-        equip_type_bonus = 3.50
+        equip_type_bonus = 3.75
     elif equip_type in [EquipmentEnum.ONE_HAND.name]:
         equip_type_bonus = 1.50
     elif equip_type in [EquipmentEnum.ARMOR.name]:
