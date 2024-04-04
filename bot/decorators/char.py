@@ -7,7 +7,7 @@ from bot.functions.char import (
 )
 from bot.functions.chat import get_close_keyboard, reply_text_and_forward
 from bot.functions.config import get_attribute_group
-from bot.functions.general import activated_condition
+from bot.functions.status import activated_condition
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import ContextTypes, ConversationHandler

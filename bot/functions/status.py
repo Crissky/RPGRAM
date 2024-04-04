@@ -1,3 +1,4 @@
+from random import random
 from repository.mongo.models.status import StatusModel
 from rpgram.enums.debuff import (
     CONFUSION_DEBUFFS_NAMES,
@@ -31,3 +32,8 @@ def confusion_status(user_id: int) -> dict:
     }
     status = status_model.get(query=query, fields=['condition_args'])
     return status
+
+
+def activated_condition(condition_score: float = 0.5) -> bool:
+    resist_score = random()
+    return resist_score < condition_score
