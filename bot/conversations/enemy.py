@@ -18,8 +18,11 @@ from bot.constants.enemy import (
     CALLBACK_TEXT_ATTACK,
     CALLBACK_TEXT_DEFEND,
     DEFEND_BUTTON_TEXT,
+    ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT,
     MAX_MINUTES_FOR_ATTACK,
+    MAX_MINUTES_FOR_ATTACK_FROM_RANK_DICT,
     MIN_MINUTES_FOR_ATTACK,
+    MIN_MINUTES_FOR_ATTACK_FROM_RANK_DICT,
     PATTERN_ATTACK,
     PATTERN_DEFEND,
     SECTION_END_DICT,
@@ -76,7 +79,7 @@ from bot.functions.char import (
     save_char
 )
 from bot.functions.date_time import is_boosted_day
-from bot.functions.general import get_attribute_group_or_player
+from bot.functions.general import get_attribute_group_or_player, luck_test
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
@@ -91,6 +94,7 @@ from repository.mongo.populate.item import (
 from rpgram import Dice, Item
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
+from rpgram.enums.function import get_enum_index
 
 
 async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
@@ -225,8 +229,20 @@ def create_job_enemy_attack(
     message_id: int,
     enemy_char: NPCharacter,
     player_name: str = 'NOME NÃO INFORMADO',
+    is_first_attack: bool = True,
 ):
-    minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
+    enemy_rank = get_enum_index(enemy_char.stars)
+    enemy_stars_name = enemy_char.stars.name
+    if not is_first_attack:
+        '''sortear se o inimigo vai realizar um novo ataque de acordo com o 
+        rank do inimigo.
+        '''
+        threshold = ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT[enemy_stars_name]
+        is_new_attack = luck_test(threshold)
+
+    min_minutes = MIN_MINUTES_FOR_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    max_minutes = MAX_MINUTES_FOR_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    minutes = randint(min_minutes, max_minutes)
     job_name = get_enemy_attack_job_name(
         user_id=user_id,
         enemy=enemy_char

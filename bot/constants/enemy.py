@@ -7,12 +7,39 @@ from constant.text import (
     SECTION_HEAD_PRECISION_ATTACK_END,
     SECTION_HEAD_PRECISION_ATTACK_START
 )
-from rpgram.enums import EmojiEnum
+from rpgram.enums import EmojiEnum, EnemyStarsEnum
 
 
 # TIME FOR ATTACK ALLY
 MIN_MINUTES_FOR_ATTACK = 60
 MAX_MINUTES_FOR_ATTACK = 90
+
+MIN_MINUTES_FOR_ATTACK_FROM_RANK_DICT = {
+    EnemyStarsEnum.ONE.name: 30,
+    EnemyStarsEnum.TWO.name: 40,
+    EnemyStarsEnum.THREE.name: 50,
+    EnemyStarsEnum.FOUR.name: 60,
+    EnemyStarsEnum.FIVE.name: 70,
+    EnemyStarsEnum.BOSS.name: 90,
+}
+MAX_MINUTES_FOR_ATTACK_FROM_RANK_DICT = {
+    EnemyStarsEnum.ONE.name: 60,
+    EnemyStarsEnum.TWO.name: 70,
+    EnemyStarsEnum.THREE.name: 80,
+    EnemyStarsEnum.FOUR.name: 90,
+    EnemyStarsEnum.FIVE.name: 100,
+    EnemyStarsEnum.BOSS.name: 120,
+}
+
+ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT = {
+    EnemyStarsEnum.ONE.name: 0.50,
+    EnemyStarsEnum.TWO.name: 0.60,
+    EnemyStarsEnum.THREE.name: 0.70,
+    EnemyStarsEnum.FOUR.name: 0.80,
+    EnemyStarsEnum.FIVE.name: 0.95,
+    EnemyStarsEnum.BOSS.name: 1.00,
+}
+
 
 # ACTIONS
 CALLBACK_TEXT_DEFEND = 'defend'
