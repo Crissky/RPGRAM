@@ -19,10 +19,10 @@ from bot.constants.enemy import (
     CALLBACK_TEXT_DEFEND,
     DEFEND_BUTTON_TEXT,
     ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT,
-    MAX_MINUTES_FOR_ATTACK,
-    MAX_MINUTES_FOR_ATTACK_FROM_RANK_DICT,
-    MIN_MINUTES_FOR_ATTACK,
-    MIN_MINUTES_FOR_ATTACK_FROM_RANK_DICT,
+    MAX_MINUTES_TO_ATTACK,
+    MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT,
+    MIN_MINUTES_TO_ATTACK,
+    MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT,
     PATTERN_ATTACK,
     PATTERN_DEFEND,
     SECTION_END_DICT,
@@ -54,7 +54,8 @@ from bot.functions.chat import (
     callback_data_to_string,
     edit_message_text_and_forward,
     forward_message,
-    call_telegram_message_function
+    call_telegram_message_function,
+    reply_text_and_forward
 )
 from bot.functions.config import get_attribute_group
 from constant.text import (
@@ -196,7 +197,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
 
         sleep(2)
 
-        create_job_enemy_attack(
+        await create_job_enemy_attack(
             context=context,
             chat_id=chat_id,
             user_id=user_id,
@@ -222,7 +223,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def create_job_enemy_attack(
+async def create_job_enemy_attack(
     context: ContextTypes.DEFAULT_TYPE,
     chat_id: int,
     user_id: int,
@@ -231,29 +232,51 @@ def create_job_enemy_attack(
     player_name: str = 'NOME NÃO INFORMADO',
     is_first_attack: bool = True,
 ):
+    '''Cria um job do ataque de um inimigo.
+    O inimigo irá atacar o jogador em um intervalo aleatório definido de 
+    acordo com o seu rank.
+    '''
+
+    make_new_attack = False
     enemy_rank = get_enum_index(enemy_char.stars)
     enemy_stars_name = enemy_char.stars.name
-    if not is_first_attack:
-        '''sortear se o inimigo vai realizar um novo ataque de acordo com o 
-        rank do inimigo.
-        '''
-        threshold = ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT[enemy_stars_name]
-        is_new_attack = luck_test(threshold)
 
-    min_minutes = MIN_MINUTES_FOR_ATTACK_FROM_RANK_DICT[enemy_stars_name]
-    max_minutes = MAX_MINUTES_FOR_ATTACK_FROM_RANK_DICT[enemy_stars_name]
-    minutes = randint(min_minutes, max_minutes)
+    if not is_first_attack:
+        threshold = ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT[enemy_stars_name]
+        make_new_attack = luck_test(threshold)
+
+    if is_first_attack is not True and make_new_attack is not True:
+        text = f'*{enemy_char.full_name_with_level}* fugiu!'
+        reply_text_and_forward(
+            function_caller='CREATE_JOB_ENEMY_ATTACK()',
+            new_text=text,
+            user_ids=user_id,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            markdown=True,
+        )
+
+        return ConversationHandler.END
+
+    min_minutes = MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    max_minutes = MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    minutes_to_attack = randint(min_minutes, max_minutes)
     job_name = get_enemy_attack_job_name(
         user_id=user_id,
         enemy=enemy_char
     )
+
+    # TODO: CRIAR FUNÇÃO QUE ENVIE A MENSAGEM PARA O GRUPO INFORMANDO QUE O
+    # JOGADOR SERÁ ALVO DE UM ATAQUE.
+
     job_data = {
         'enemy_id': str(enemy_char.player_id),
         'message_id': message_id
     }
     context.job_queue.run_once(
         callback=job_enemy_attack,
-        when=timedelta(minutes=minutes),
+        when=timedelta(minutes=minutes_to_attack),
         data=job_data,
         name=job_name,
         chat_id=chat_id,
@@ -262,8 +285,9 @@ def create_job_enemy_attack(
     put_ambush_dict(context=context, enemy=enemy_char)
     print(
         f'{enemy_char.full_name_with_level} ira atacar '
-        f'{player_name} em {minutes} minutos.'
+        f'{player_name} em {minutes_to_attack} minutos.'
     )
+
 
 
 async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
