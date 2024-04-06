@@ -18,7 +18,7 @@ POINTS_MULTIPLIER = {
     EnemyStarsEnum.THREE.name: 3,
     EnemyStarsEnum.FOUR.name: 5,
     EnemyStarsEnum.FIVE.name: 7,
-    EnemyStarsEnum.BOSS.name: 13,
+    EnemyStarsEnum.BOSS.name: 11,
 }
 
 
