@@ -494,7 +494,7 @@ def get_details_text(option: str) -> str:
             f'zero o personagem ficará incapacidado até que recupere ao menos '
             f'um `Ponto de Vida`.\n'
             f'Os Atributos Base que compoem os `Pontos de Vida` são:\n'
-            f'A `Constituição`(x20), a `Força`(x10) e o `Nível`(x50).\n\n'
+            f'A `Constituição`(x20), a `Força`(x12) e o `Nível`(x50).\n\n'
 
             f'{EmojiEnum.INITIATIVE.value}'
             f'*Iniciativa*: Representa o quão rápido e sagaz um '
@@ -530,7 +530,7 @@ def get_details_text(option: str) -> str:
             f'relação ao da `Defesa Mágica` do alvo, maior será o dano '
             f'causado aos `Pontos de Vida` do inimigo.\n'
             f'Os Atributos Base que compoem o `Ataque Mágico` são:\n'
-            f'A `Inteligência`(x6), a `Sabedoria`(x4) e o `Nível`(x5).\n\n'
+            f'A `Inteligência`(x8), a `Sabedoria`(x4) e o `Nível`(x5).\n\n'
 
             f'{EmojiEnum.PHYSICAL_DEFENSE.value}'
             f'*Defesa Física*: Representa a habilidade '
@@ -546,7 +546,7 @@ def get_details_text(option: str) -> str:
             f'de ataques sobrenaturais (aqueles baseados em '
             f'`Ataque Mágico`).\n'
             f'Os Atributos Base que compoem a `Defesa Mágica` são:\n'
-            f'A `Sabedoria`(x6), a `Constituição`(x5), a `Inteligência`(x4) '
+            f'A `Sabedoria`(x8), a `Constituição`(x5), a `Inteligência`(x4) '
             f'e o `Nível`(x5).\n\n'
 
             f'{EmojiEnum.HIT.value}'
@@ -555,7 +555,7 @@ def get_details_text(option: str) -> str:
             f'os seus ataques. Quanto maior o valor do `Acerto` em relação '
             f'ao da `Evasão` do alvo, maior será a chance de acerto.\n'
             f'Os Atributos Base que compoem o `Acerto` são:\n'
-            f'O `Carisma`(x6), a `Destreza`(x4), a `Inteligência`(x3), '
+            f'O `Carisma`(x7), a `Destreza`(x4), a `Inteligência`(x3), '
             f'a `Sabedoria`(x2) e o `Nível`(x5).\n\n'
 
             f'{EmojiEnum.EVASION.value}'
@@ -564,7 +564,7 @@ def get_details_text(option: str) -> str:
             f'o valor da `Evasão` em relação ao do `Acerto` do atacante, '
             f'maior será a chance de evitar o ataque.\n'
             f'Os Atributos Base que compoem o `Evasão` são:\n'
-            f'O `Carisma`(x6), a `Destreza`(x4), `Sabedoria`(x3), '
+            f'O `Carisma`(x7), a `Destreza`(x4), `Sabedoria`(x3), '
             f'a `Inteligência`(x2) e o `Nível`(x5).'
         )
     elif option == CALLBACK_ITEMS:

@@ -295,7 +295,7 @@ class CombatStats:
         return int(
             10 +
             (self.constitution * 20) +
-            (self.strength * 10) +
+            (self.strength * 12) +
             self.bonus_hit_points +
             (self.level * 50)
         )
@@ -364,7 +364,7 @@ class CombatStats:
     @property
     def magical_attack(self) -> int:
         return int(
-            (self.intelligence * 6) +
+            (self.intelligence * 8) +
             (self.wisdom * 4) +
             self.bonus_magical_attack +
             (self.level * 5)
@@ -382,7 +382,7 @@ class CombatStats:
     @property
     def magical_defense(self) -> int:
         return int(
-            (self.wisdom * 6) +
+            (self.wisdom * 8) +
             (self.intelligence * 4) +
             (self.constitution * 5) +
             self.bonus_magical_defense +
@@ -395,7 +395,7 @@ class CombatStats:
             (self.dexterity * 4) +
             (self.intelligence * 3) +
             (self.wisdom * 2) +
-            (self.charisma * 6) +
+            (self.charisma * 7) +
             self.bonus_hit +
             (self.level * 5)
         )
@@ -406,7 +406,7 @@ class CombatStats:
             (self.dexterity * 4) +
             (self.intelligence * 2) +
             (self.wisdom * 3) +
-            (self.charisma * 6) +
+            (self.charisma * 7) +
             self.bonus_evasion +
             (self.level * 5)
         )
