@@ -5,6 +5,7 @@ from time import sleep
 from typing import List, Union
 
 from telegram import (
+    CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
@@ -491,7 +492,7 @@ async def defend_enemy_attack(
     #         from_attack=False,
     #     )
 
-    sub_action_point(user_id=defender_user_id)
+    await sub_action_point(user_id=defender_user_id, query=query)
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
@@ -618,7 +619,7 @@ async def player_attack_enemy(
                 from_attack=True,
             )
 
-    sub_action_point(user_id=attacker_user_id)
+    await sub_action_point(user_id=attacker_user_id, query=query)
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
@@ -939,11 +940,13 @@ def can_player_act(user_id: int):
     return player.have_action_points
 
 
-def sub_action_point(user_id: int):
+async def sub_action_point(user_id: int, query: CallbackQuery):
     player_model = PlayerModel()
     player = player_model.get(user_id)
     player.sub_action_points(1)
     player_model.save(player)
+
+    await query.answer(player.current_action_points_text)
 
 
 def get_enemy_from_ambush_dict(
