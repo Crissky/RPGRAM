@@ -194,7 +194,7 @@ async def edit_message_text_and_forward(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = False,
-):
+) -> Union[Message, bool]:
     '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha 
     a mesma para o usuário.
     '''
@@ -266,6 +266,8 @@ async def edit_message_text_and_forward(
         message=response
     )
 
+    return response
+
 
 async def reply_text_and_forward(
     function_caller: str,
@@ -313,14 +315,14 @@ async def reply_text_and_forward(
         reply_markup=reply_markup,
         allow_sending_without_reply=allow_sending_without_reply,
     )
-    
+
     if update:
         function = update.effective_message.reply_text
     elif context:
         function = context.bot.send_message
         reply_text_kwargs['chat_id'] = chat_id
         reply_text_kwargs['reply_to_message_id'] = message_id
-    
+
     response = await call_telegram_message_function(
         function_caller=both_function_caller,
         function=function,
