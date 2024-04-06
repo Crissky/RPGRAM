@@ -1432,6 +1432,8 @@ async def send_drop_message(
         else:
             create_and_put_drop_dict(context, drops_message_id)
 
+        sleep(1)
+
 
 def create_and_put_drop_dict(
     context: ContextTypes.DEFAULT_TYPE,

@@ -89,15 +89,17 @@ class BleedingCondition(DebuffCondition):
             turn=-1,
             level=level,
         )
+        self.__power_constant = 0.02
 
     @property
     def power(self):
-        return self.level * 0.02
+        return self.level * self.__power_constant
 
     @property
     def description(self) -> str:
         return (
-            f'Causa {self.power * 100}% do HP (2% x Nível) '
+            f'Causa {(self.power * 100):.2f}% do HP '
+            f'({self.__power_constant * 100:.2f}% x Nível) '
             f'como dano a cada turno.'
         )
 

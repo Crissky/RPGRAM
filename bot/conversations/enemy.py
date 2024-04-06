@@ -2,9 +2,15 @@ from datetime import timedelta
 from math import ceil
 from random import choice, randint, shuffle
 from time import sleep
-from typing import List
+from typing import List, Union
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+    Update
+)
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
@@ -18,8 +24,9 @@ from bot.constants.enemy import (
     CALLBACK_TEXT_ATTACK,
     CALLBACK_TEXT_DEFEND,
     DEFEND_BUTTON_TEXT,
-    MAX_MINUTES_FOR_ATTACK,
-    MIN_MINUTES_FOR_ATTACK,
+    ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT,
+    MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT,
+    MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT,
     PATTERN_ATTACK,
     PATTERN_DEFEND,
     SECTION_END_DICT,
@@ -31,7 +38,8 @@ from bot.constants.enemy import (
     SECTION_TEXT_AMBUSH_XP,
     SECTION_TEXT_FAIL,
     SECTION_TEXT_FAIL_AMBUSH_COUNTER,
-    SECTION_TEXT_FAIL_AMBUSH_DEFENSE
+    SECTION_TEXT_FAIL_AMBUSH_DEFENSE,
+    SECTION_TEXT_FLEE
 )
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
@@ -51,7 +59,8 @@ from bot.functions.chat import (
     callback_data_to_string,
     edit_message_text_and_forward,
     forward_message,
-    call_telegram_message_function
+    call_telegram_message_function,
+    get_close_keyboard
 )
 from bot.functions.config import get_attribute_group
 from constant.text import (
@@ -62,6 +71,8 @@ from constant.text import (
     SECTION_HEAD_ENEMY_START,
     SECTION_HEAD_FAIL_END,
     SECTION_HEAD_FAIL_START,
+    SECTION_HEAD_FLEE_END,
+    SECTION_HEAD_FLEE_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
     TEXT_SEPARATOR
@@ -76,7 +87,7 @@ from bot.functions.char import (
     save_char
 )
 from bot.functions.date_time import is_boosted_day
-from bot.functions.general import get_attribute_group_or_player
+from bot.functions.general import get_attribute_group_or_player, luck_test
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
@@ -129,8 +140,8 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(
         group_level=group_level,
-        num_min_enemies=3,
-        num_max_enemies=10,
+        num_min_enemies=1,
+        num_max_enemies=3,
     )
     message_id = None
 
@@ -140,71 +151,20 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     )
 
     for enemy_char in enemy_list:
-        try:
-            defender_char = choice_char(chat_id=chat_id, is_alive=True)
-            user_id = defender_char.player_id
-            player_name = defender_char.player_name
-        except ValueError as error:
-            print(f'JOB_ENEMY_ATTACK(): {error}')
-            if message_id:
-                break
-            return ConversationHandler.END
-
         if not message_id:
             message_id = await send_ambush_message(
                 chat_id=chat_id,
                 context=context,
                 silent=silent,
             )
-            sleep(1)
+            sleep(2)
 
-        text = (
-            f'*{enemy_char.full_name_with_level}* iniciou um *ATAQUE* contra '
-            f'{player_name}.'
-        )
-        text = create_text_in_box(
-            text=text,
-            section_name=SECTION_TEXT_AMBUSH_ATTACK,
-            section_start=SECTION_HEAD_ATTACK_START,
-            section_end=SECTION_HEAD_ATTACK_END
-        )
-
-        defend_button = get_action_buttons(
-            user_id=user_id,
-            enemy=enemy_char
-        )
-        reply_markup = InlineKeyboardMarkup(defend_button)
-        send_message_kwargs = dict(
-            chat_id=chat_id,
-            text=text,
-            # disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            reply_to_message_id=message_id,
-            allow_sending_without_reply=True,
-            reply_markup=reply_markup,
-        )
-
-        response = await call_telegram_message_function(
-            function_caller='JOB_START_AMBUSH()',
-            function=context.bot.send_message,
-            **send_message_kwargs
-        )
-
-        sleep(2)
-
-        create_job_enemy_attack(
+        await create_job_enemy_attack(
             context=context,
             chat_id=chat_id,
-            user_id=user_id,
-            message_id=response.message_id,
+            message_id=message_id,
             enemy_char=enemy_char,
-            player_name=defender_char.player_name
-        )
-
-        await forward_message(
-            function_caller='JOB_START_AMBUSH()',
-            user_ids=user_id,
-            message=response
+            is_first_attack=True,
         )
 
     # ---------- END FOR ---------- #
@@ -218,35 +178,126 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def create_job_enemy_attack(
+async def create_job_enemy_attack(
     context: ContextTypes.DEFAULT_TYPE,
     chat_id: int,
-    user_id: int,
     message_id: int,
     enemy_char: NPCharacter,
-    player_name: str = 'NOME NÃO INFORMADO',
+    user_id: int = None,
+    is_first_attack: bool = True,
 ):
-    minutes = randint(MIN_MINUTES_FOR_ATTACK, MAX_MINUTES_FOR_ATTACK)
+    '''Cria um job do ataque de um inimigo.
+    O inimigo irá atacar o jogador em um intervalo aleatório definido de 
+    acordo com o seu rank.
+    '''
+
+    make_new_attack = False
+    enemy_stars_name = enemy_char.stars.name
+
+    if not is_first_attack:
+        threshold = ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT[enemy_stars_name]
+        make_new_attack = luck_test(threshold)
+
+    # INIMIGO FUGIU
+    if is_first_attack is not True and make_new_attack is not True:
+        text = f'*{enemy_char.full_name_with_level}* fugiu!'
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FLEE,
+            section_start=SECTION_HEAD_FLEE_START,
+            section_end=SECTION_HEAD_FLEE_END,
+        )
+        reply_text_kwargs = dict(
+            chat_id=chat_id,
+            text=text,
+            parse_mode=ParseMode.MARKDOWN_V2,
+            reply_to_message_id=message_id,
+            allow_sending_without_reply=True,
+            reply_markup=get_close_keyboard(None),
+        )
+        response = await call_telegram_message_function(
+            function_caller='CREATE_JOB_ENEMY_ATTACK()',
+            function=context.bot.send_message,
+            **reply_text_kwargs
+        )
+
+        return ConversationHandler.END
+
+    # ESCOLHENDO JOGADOR ALVO DO ATAQUE
+    try:
+        if not isinstance(user_id, int):
+            defender_char = choice_char(chat_id=chat_id, is_alive=True)
+        else:
+            char_model = CharacterModel()
+            defender_char = char_model.get(user_id)
+
+        user_id = defender_char.player_id
+        player_name = defender_char.player_name
+    except ValueError as error:
+        print(f'CREATE_JOB_ENEMY_ATTACK(): {error}')
+        return ConversationHandler.END
+
+    # ENVIA MENSAGEM DE QUE O INIMIGO VAI ATACAR O JOGADOR
+    text = (
+        f'*{enemy_char.full_name_with_level}* iniciou um *ATAQUE* contra '
+        f'{player_name}.'
+    )
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_AMBUSH_ATTACK,
+        section_start=SECTION_HEAD_ATTACK_START,
+        section_end=SECTION_HEAD_ATTACK_END
+    )
+    defend_button = get_action_buttons(
+        user_id=user_id,
+        enemy=enemy_char
+    )
+    reply_markup = InlineKeyboardMarkup(defend_button)
+    send_message_kwargs = dict(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_to_message_id=message_id,
+        allow_sending_without_reply=True,
+        reply_markup=reply_markup,
+    )
+    response = await call_telegram_message_function(
+        function_caller='JOB_START_AMBUSH()',
+        function=context.bot.send_message,
+        **send_message_kwargs
+    )
+    sleep(2)
+    await forward_message(
+        function_caller='JOB_START_AMBUSH()',
+        user_ids=user_id,
+        message=response
+    )
+
+    # CRIA JOB DE ATAQUE DO INIMIGO
+    min_minutes = MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    max_minutes = MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    minutes_to_attack = randint(min_minutes, max_minutes)
+    job_data = {
+        'enemy_id': str(enemy_char.player_id),
+        'message_id': response.message_id
+    }
     job_name = get_enemy_attack_job_name(
         user_id=user_id,
         enemy=enemy_char
     )
-    job_data = {
-        'enemy_id': str(enemy_char.player_id),
-        'message_id': message_id
-    }
     context.job_queue.run_once(
         callback=job_enemy_attack,
-        when=timedelta(minutes=minutes),
+        when=timedelta(minutes=minutes_to_attack),
         data=job_data,
         name=job_name,
         chat_id=chat_id,
         user_id=user_id,
     )
     put_ambush_dict(context=context, enemy=enemy_char)
+
     print(
         f'{enemy_char.full_name_with_level} ira atacar '
-        f'{player_name} em {minutes} minutos.'
+        f'{player_name} em {minutes_to_attack} minutos.'
     )
 
 
@@ -318,6 +369,15 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         )
 
     remove_ambush_enemy(context=context, enemy_id=enemy_id)
+
+    if enemy_char and enemy_char.is_alive and message_id:
+        await create_job_enemy_attack(
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            enemy_char=enemy_char,
+            is_first_attack=False,
+        )
 
 
 @skip_if_no_singup_player
@@ -424,20 +484,29 @@ async def defend_enemy_attack(
         enemy_char=enemy_char
     )
     remove_ambush_enemy(context=context, enemy_id=enemy_id)
-    if defender_char.is_alive and target_char.is_alive:
-        await enemy_drop_random_loot(
-            context=context,
-            update=update,
-            enemy_char=enemy_char,
-            from_attack=False,
-        )
+    # if defender_char.is_alive and target_char.is_alive:
+    #     await enemy_drop_random_loot(
+    #         context=context,
+    #         update=update,
+    #         enemy_char=enemy_char,
+    #         from_attack=False,
+    #     )
 
-    sub_action_point(user_id=defender_user_id)
+    await sub_action_point(user_id=defender_user_id, query=query)
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
         user_id=defender_user_id,
     )
+
+    if enemy_char and enemy_char.is_alive and message_id:
+        await create_job_enemy_attack(
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            enemy_char=enemy_char,
+            is_first_attack=False,
+        )
 
 
 @skip_if_no_singup_player
@@ -542,7 +611,7 @@ async def player_attack_enemy(
         )
         remove_ambush_enemy(context=context, enemy_id=enemy_id)
 
-        if target_char.is_alive:
+        if enemy_char.is_dead and attacker_char.is_alive:
             await enemy_drop_random_loot(
                 context=context,
                 update=update,
@@ -550,7 +619,7 @@ async def player_attack_enemy(
                 from_attack=True,
             )
 
-    sub_action_point(user_id=attacker_user_id)
+    await sub_action_point(user_id=attacker_user_id, query=query)
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
@@ -566,7 +635,7 @@ async def enemy_attack(
     defender_char: PlayerCharacter,
     target_char: PlayerCharacter = None,
     to_dodge: bool = False,
-):
+) -> Union[Message, bool]:
     '''Função que o Inimigo ataca um jogador
     '''
 
@@ -615,7 +684,6 @@ async def enemy_attack(
     else:
         save_char(defender_char)
 
-    report_text += f'O inimigo fugiu!'
     report_text = create_text_in_box(
         text=report_text,
         section_name=section_name,
@@ -623,7 +691,7 @@ async def enemy_attack(
         section_end=SECTION_END_DICT[attacker_action_name]
     )
 
-    await edit_message_text_and_forward(
+    response = await edit_message_text_and_forward(
         function_caller='ENEMY_ATTACK()',
         new_text=report_text,
         user_ids=[target_id, defender_id],
@@ -645,6 +713,8 @@ async def enemy_attack(
             message_id=message_id,
             silent=True,
         )
+
+    return response
 
 
 async def player_attack(
@@ -870,11 +940,13 @@ def can_player_act(user_id: int):
     return player.have_action_points
 
 
-def sub_action_point(user_id: int):
+async def sub_action_point(user_id: int, query: CallbackQuery):
     player_model = PlayerModel()
     player = player_model.get(user_id)
     player.sub_action_points(1)
     player_model.save(player)
+
+    await query.answer(player.current_action_points_text)
 
 
 def get_enemy_from_ambush_dict(

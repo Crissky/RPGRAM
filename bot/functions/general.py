@@ -1,7 +1,7 @@
+from random import random
 from typing import Any
 
 from repository.mongo import GroupModel, PlayerModel
-from random import random
 
 
 def get_attribute_group_or_player(_id: Any, attribute: str):
@@ -14,6 +14,7 @@ def get_attribute_group_or_player(_id: Any, attribute: str):
     elif (value := player_model.get(_id=_id, fields=[attribute])):
         return value[attribute]
 
-def activated_condition(condition_score: float = 0.5) -> bool:
-    resist_score = random()
-    return resist_score < condition_score
+
+def luck_test(threshold_value: float = 0.5) -> bool:
+    test_score = random()
+    return test_score < threshold_value
