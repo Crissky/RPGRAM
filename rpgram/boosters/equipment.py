@@ -492,12 +492,12 @@ class Equipment(StatsBooster):
     @property
     def power(self) -> int:
         return int(sum([
-            (self.bonus_strength * 13),
-            (self.bonus_dexterity * 16),
-            (self.bonus_constitution * 25),
-            (self.bonus_intelligence * 10),
-            (self.bonus_wisdom * 15),
-            (self.bonus_charisma * 15),
+            (self.bonus_strength * 18),
+            (self.bonus_dexterity * 20),
+            (self.bonus_constitution * 30),
+            (self.bonus_intelligence * 18),
+            (self.bonus_wisdom * 18),
+            (self.bonus_charisma * 18),
 
             (self.bonus_hit_points / 2.5),
             self.bonus_initiative,

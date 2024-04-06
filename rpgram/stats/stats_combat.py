@@ -335,9 +335,10 @@ class CombatStats:
     @property
     def initiative(self) -> int:
         return int(
-            (self.dexterity * 2) +
+            (self.dexterity * 3) +
+            (self.intelligence * 3) +
             (self.wisdom * 3) +
-            (self.charisma * 5) +
+            (self.charisma * 6) +
             self.bonus_initiative +
             (self.level * 5)
         )
@@ -345,7 +346,7 @@ class CombatStats:
     @property
     def physical_attack(self) -> int:
         return int(
-            (self.strength * 3) +
+            (self.strength * 6) +
             (self.dexterity * 2) +
             self.bonus_physical_attack +
             (self.level * 5)
@@ -354,7 +355,8 @@ class CombatStats:
     @property
     def precision_attack(self) -> int:
         return int(
-            (self.dexterity * 4) +
+            (self.strength * 2) +
+            (self.dexterity * 5) +
             self.bonus_precision_attack +
             (self.level * 5)
         )
@@ -363,7 +365,7 @@ class CombatStats:
     def magical_attack(self) -> int:
         return int(
             (self.intelligence * 6) +
-            (self.wisdom * 3) +
+            (self.wisdom * 4) +
             self.bonus_magical_attack +
             (self.level * 5)
         )
@@ -371,7 +373,7 @@ class CombatStats:
     @property
     def physical_defense(self) -> int:
         return int(
-            (self.constitution * 3) +
+            (self.constitution * 5) +
             (self.dexterity * 2) +
             self.bonus_physical_defense +
             (self.level * 5)
@@ -380,9 +382,9 @@ class CombatStats:
     @property
     def magical_defense(self) -> int:
         return int(
-            (self.wisdom * 5) +
+            (self.wisdom * 6) +
             (self.intelligence * 4) +
-            (self.constitution * 2) +
+            (self.constitution * 5) +
             self.bonus_magical_defense +
             (self.level * 5)
         )
@@ -390,9 +392,10 @@ class CombatStats:
     @property
     def hit(self) -> int:
         return int(
-            (self.dexterity * 3) +
+            (self.dexterity * 4) +
+            (self.intelligence * 3) +
             (self.wisdom * 2) +
-            (self.charisma * 5) +
+            (self.charisma * 6) +
             self.bonus_hit +
             (self.level * 5)
         )
@@ -400,9 +403,10 @@ class CombatStats:
     @property
     def evasion(self) -> int:
         return int(
-            (self.dexterity * 3) +
-            (self.wisdom * 2) +
-            (self.charisma * 5) +
+            (self.dexterity * 4) +
+            (self.intelligence * 2) +
+            (self.wisdom * 3) +
+            (self.charisma * 6) +
             self.bonus_evasion +
             (self.level * 5)
         )
