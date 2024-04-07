@@ -36,7 +36,7 @@ ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT = {
     EnemyStarsEnum.THREE.name: 0.70,
     EnemyStarsEnum.FOUR.name: 0.80,
     EnemyStarsEnum.FIVE.name: 0.90,
-    EnemyStarsEnum.BOSS.name: 1.00,
+    EnemyStarsEnum.BOSS.name: 0.95,
 }
 
 
