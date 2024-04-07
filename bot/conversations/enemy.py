@@ -825,23 +825,16 @@ async def player_attack(
 def resize_text(
     text: str,
     spliter: str = TEXT_SEPARATOR,
-    length_limit: int = 4000
 ) -> str:
     '''Reduz o tamanho do texto para que a mensagem não ultrapasse 
     o limite de caracteres.
     '''
 
-    copy_text = ''
-    while len(text) > length_limit and text != copy_text:
-        copy_text = text
-        text_list = text.split(spliter)
-        if len(text_list) > 1:
-            text_list.pop(1)
-            text = spliter.join(text_list).strip()
-        else:
-            text = text[-length_limit:].strip()
+    text_list = text.split(spliter)
+    start_text_list = [text_list[0]]
+    final_text_list = start_text_list + text_list[-2:]
 
-    return text
+    return spliter.join(final_text_list).strip()
 
 
 def get_action_buttons(
