@@ -152,7 +152,6 @@ async def forward_message(
 ):
     '''Encaminha uma mensagem usando um Message ou um ContextTypes
     '''
-
     if context and not chat_id:
         raise ValueError('chat_id é necessário quando passado um context.')
     if context and not message_id:
@@ -160,12 +159,15 @@ async def forward_message(
     if not message and not context:
         raise ValueError('message ou context deve ser passado.')
 
+    message_chat_id = message.chat_id if message else None
     if isinstance(user_ids, int):
         user_ids = [user_ids]
     user_ids = list(set(user_ids))
 
     for user_id in user_ids:
         user_silent = get_player_attribute_by_id(user_id, 'silent')
+        if message_chat_id == user_id:
+            continue  # Evita encaminhamento para o próprio chat privado
         try:
             if message:
                 await message.forward(
