@@ -194,6 +194,7 @@ async def create_job_enemy_attack(
     acordo com o seu rank.
     '''
 
+    print('CREATE_JOB_ENEMY_ATTACK()')
     make_new_attack = False
     enemy_stars_name = enemy_char.stars.name
 
@@ -203,6 +204,7 @@ async def create_job_enemy_attack(
 
     # INIMIGO FUGIU
     if is_first_attack is not True and make_new_attack is not True:
+        print(f'\t{enemy_char.full_name_with_level} FUGIU!')
         text = f'*{enemy_char.full_name_with_level}* fugiu!'
         text = create_text_in_box(
             text=text,
