@@ -19,6 +19,10 @@ from bot.decorators import (
 @print_basic_infos
 @skip_if_no_have_char
 async def close(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Fecha uma mensagem.
+    """
+
+    print('CLOSE() - FECHANDO MENSAGEM')
     query = update.callback_query
 
     if query:
