@@ -556,7 +556,7 @@ def get_details_text(option: str) -> str:
             f'ao da `Evasão` do alvo, maior será a chance de acerto.\n'
             f'Os Atributos Base que compoem o `Acerto` são:\n'
             f'O `Carisma`(x7), a `Destreza`(x4), a `Inteligência`(x3), '
-            f'a `Sabedoria`(x2) e o `Nível`(x5).\n\n'
+            f'a `Sabedoria`(x3) e o `Nível`(x5).\n\n'
 
             f'{EmojiEnum.EVASION.value}'
             f'*Evasão*: Representa a maestria que o '
@@ -564,7 +564,7 @@ def get_details_text(option: str) -> str:
             f'o valor da `Evasão` em relação ao do `Acerto` do atacante, '
             f'maior será a chance de evitar o ataque.\n'
             f'Os Atributos Base que compoem o `Evasão` são:\n'
-            f'O `Carisma`(x7), a `Destreza`(x4), `Sabedoria`(x3), '
+            f'O `Carisma`(x7), a `Destreza`(x4), `Sabedoria`(x2), '
             f'a `Inteligência`(x2) e o `Nível`(x5).'
         )
     elif option == CALLBACK_ITEMS:
