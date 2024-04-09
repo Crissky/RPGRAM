@@ -3,6 +3,7 @@ from datetime import date, datetime
 
 BOOSTED_DAYS = [
     date(year=2000, month=1, day=1),  # Confraternização Universal
+    date(year=2000, month=3, day=6),  # Data Magna
     date(year=2000, month=4, day=21),  # Tiradentes
     date(year=2000, month=5, day=1),  # Dia do Trabalho
     date(year=2000, month=9, day=7),  # Independência do Brasil
