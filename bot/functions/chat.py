@@ -144,7 +144,7 @@ async def send_alert_or_message(
 
 async def forward_message(
     function_caller: str,
-    user_ids: List[int],
+    user_ids: Union[int, List[int]],
     message: Message = None,
     context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
@@ -185,20 +185,18 @@ async def forward_message(
             print(f'{function_caller}: {error}')
 
 
-async def edit_message_text_and_forward(
+async def edit_message_text(
     function_caller: str,
     new_text: str,
-    user_ids: List[int],
+    user_id: int = None,
     context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
     message_id: int = None,
     query: CallbackQuery = None,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
-    close_by_owner: bool = False,
 ) -> Union[Message, bool]:
-    '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha 
-    a mesma para o usuário.
+    '''Edita uma mensagem usando um Message ou um ContextTypes.
     '''
 
     if context and not chat_id:
@@ -208,15 +206,11 @@ async def edit_message_text_and_forward(
     if not query and not context:
         raise ValueError('query ou context deve ser passado.')
 
-    if isinstance(user_ids, int):
-        user_ids = [user_ids]
-
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
-    owner_id = user_ids[0] if close_by_owner is True else None
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=owner_id)
+        else get_close_keyboard(user_id=user_id)
     )
 
     for _ in range(3):
@@ -262,8 +256,47 @@ async def edit_message_text_and_forward(
             sleep(sleep_time)
             continue
 
+    return response
+
+
+async def edit_message_text_and_forward(
+    function_caller: str,
+    new_text: str,
+    user_ids: Union[int, List[int]],
+    context: ContextTypes.DEFAULT_TYPE = None,
+    chat_id: int = None,
+    message_id: int = None,
+    query: CallbackQuery = None,
+    markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = False,
+) -> Union[Message, bool]:
+    '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha 
+    a mesma para o usuário.
+    '''
+
+    if isinstance(user_ids, int):
+        user_ids = [user_ids]
+
+    owner_id = user_ids[0] if close_by_owner is True else None
+    both_function_caller = (
+        f'{function_caller} and EDIT_MESSAGE_TEXT_AND_FORWARD()'
+    )
+
+    response = await edit_message_text(
+        function_caller=both_function_caller,
+        new_text=new_text,
+        user_id=owner_id,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        query=query,
+        markdown=markdown,
+        reply_markup=reply_markup
+    )
+
     await forward_message(
-        function_caller=function_caller,
+        function_caller=both_function_caller,
         user_ids=user_ids,
         message=response
     )
@@ -271,20 +304,19 @@ async def edit_message_text_and_forward(
     return response
 
 
-async def reply_text_and_forward(
+async def reply_text(
     function_caller: str,
     new_text: str,
-    user_ids: List[int],
+    user_id: int = None,
     update: Update = None,
-    context: ContextTypes = None,
+    context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
     message_id: int = None,
     allow_sending_without_reply=True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
-    close_by_owner: bool = False,
-):
-    '''Responde uma mensagem e a encaminha para o usuário.
+) -> Message:
+    '''Responde uma mensagem.
     '''
 
     if update is None and context is None:
@@ -300,16 +332,11 @@ async def reply_text_and_forward(
             'Quando usar context, message_id deve ser um inteiro.'
         )
 
-    if isinstance(user_ids, int):
-        user_ids = [user_ids]
-
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
-    owner_id = user_ids[0] if close_by_owner is True else None
-    both_function_caller = f'{function_caller} and REPLY_TEXT_AND_FORWARD()'
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=owner_id)
+        else get_close_keyboard(user_id=user_id)
     )
     reply_text_kwargs = dict(
         text=new_text,
@@ -326,16 +353,56 @@ async def reply_text_and_forward(
         reply_text_kwargs['reply_to_message_id'] = message_id
 
     response = await call_telegram_message_function(
-        function_caller=both_function_caller,
+        function_caller=function_caller,
         function=function,
         **reply_text_kwargs
     )
 
+    return response
+
+
+async def reply_text_and_forward(
+    function_caller: str,
+    new_text: str,
+    user_ids: Union[int, List[int]],
+    update: Update = None,
+    context: ContextTypes.DEFAULT_TYPE = None,
+    chat_id: int = None,
+    message_id: int = None,
+    allow_sending_without_reply=True,
+    markdown: bool = False,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = False,
+) -> Message:
+    '''Responde uma mensagem e a encaminha para o usuário.
+    '''
+
+    if isinstance(user_ids, int):
+        user_ids = [user_ids]
+
+    owner_id = user_ids[0] if close_by_owner is True else None
+    both_function_caller = f'{function_caller} and REPLY_TEXT_AND_FORWARD()'
+
+    response = await reply_text(
+        function_caller=both_function_caller,
+        new_text=new_text,
+        user_id=owner_id,
+        update=update,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        allow_sending_without_reply=allow_sending_without_reply,
+        markdown=markdown,
+        reply_markup=reply_markup,
+    )
+
     await forward_message(
-        function_caller=function_caller,
+        function_caller=both_function_caller,
         user_ids=user_ids,
         message=response
     )
+
+    return response
 
 
 async def call_telegram_message_function(

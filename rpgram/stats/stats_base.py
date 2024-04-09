@@ -33,7 +33,7 @@ class BaseStats:
         base_intelligence: int = 0,
         base_wisdom: int = 0,
         base_charisma: int = 0,
-        points_multiplier: int = 3,
+        points_multiplier: int = 5,
         stats_boosters: List[StatsBooster] = []
     ) -> None:
         if level < 1 and isinstance(level, int):

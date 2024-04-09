@@ -57,6 +57,7 @@ from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     callback_data_to_dict,
     callback_data_to_string,
+    edit_message_text,
     edit_message_text_and_forward,
     forward_message,
     call_telegram_message_function,
@@ -73,6 +74,8 @@ from constant.text import (
     SECTION_HEAD_FAIL_START,
     SECTION_HEAD_FLEE_END,
     SECTION_HEAD_FLEE_START,
+    SECTION_HEAD_TIMEOUT_SPAWN_END,
+    SECTION_HEAD_TIMEOUT_SPAWN_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
     TEXT_SEPARATOR
@@ -92,7 +95,7 @@ from bot.functions.general import get_attribute_group_or_player, luck_test
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
-from repository.mongo import CharacterModel, ItemModel, PlayerModel
+from repository.mongo import CharacterModel, GroupModel, ItemModel, PlayerModel
 from repository.mongo.populate.enemy import create_random_enemies
 from repository.mongo.populate.item import (
     create_random_consumable,
@@ -191,6 +194,7 @@ async def create_job_enemy_attack(
     acordo com o seu rank.
     '''
 
+    print('CREATE_JOB_ENEMY_ATTACK()')
     make_new_attack = False
     enemy_stars_name = enemy_char.stars.name
 
@@ -200,6 +204,7 @@ async def create_job_enemy_attack(
 
     # INIMIGO FUGIU
     if is_first_attack is not True and make_new_attack is not True:
+        print(f'\t{enemy_char.full_name_with_level} FUGIU!')
         text = f'*{enemy_char.full_name_with_level}* fugiu!'
         text = create_text_in_box(
             text=text,
@@ -307,20 +312,49 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
     print('JOB_ENEMY_ATTACK()')
     char_model = CharacterModel()
+    group_model = GroupModel()
     job = context.job
     chat_id = job.chat_id
-
-    await context.bot.send_chat_action(
-        chat_id=chat_id,
-        action=ChatAction.TYPING
-    )
-
+    group = group_model.get(chat_id)
+    spawn_start_time = group.spawn_start_time
+    spawn_end_time = group.spawn_end_time
+    now = get_brazil_time_now()
+    is_spawn_time = now.hour >= spawn_start_time and now.hour < spawn_end_time
     user_id = job.user_id
     job_data = job.data
     enemy_id = job_data['enemy_id']
     message_id = job_data['message_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
     defender_char = char_model.get(user_id)
+
+    await context.bot.send_chat_action(
+        chat_id=chat_id,
+        action=ChatAction.TYPING
+    )
+
+    if not is_spawn_time:
+        remove_ambush_enemy(context=context, enemy_id=enemy_id)
+        text = (
+            f'Já está tarde e *{enemy_char.full_name_with_level}* precisa ir '
+            f'para casa.\n\n'
+            f'O inimigo fugiu!!!'
+        )
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FLEE,
+            section_start=SECTION_HEAD_TIMEOUT_SPAWN_START,
+            section_end=SECTION_HEAD_TIMEOUT_SPAWN_END,
+        )
+        await edit_message_text(
+            function_caller='JOB_ENEMY_ATTACK()',
+            new_text=text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            markdown=True
+        )
+
+        return ConversationHandler.END
 
     if enemy_char and defender_char and defender_char.is_alive:
         await enemy_attack(

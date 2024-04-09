@@ -394,7 +394,7 @@ class CombatStats:
         return int(
             (self.dexterity * 4) +
             (self.intelligence * 3) +
-            (self.wisdom * 2) +
+            (self.wisdom * 3) +
             (self.charisma * 7) +
             self.bonus_hit +
             (self.level * 5)
@@ -405,7 +405,7 @@ class CombatStats:
         return int(
             (self.dexterity * 4) +
             (self.intelligence * 2) +
-            (self.wisdom * 3) +
+            (self.wisdom * 2) +
             (self.charisma * 7) +
             self.bonus_evasion +
             (self.level * 5)
