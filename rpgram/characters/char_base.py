@@ -354,6 +354,7 @@ class BaseCharacter:
     name: str = property(lambda self: self.__name)
     player_name: str = property(lambda self: self.__name)
     level: int = property(lambda self: self.__base_stats.level)
+    xp: int = property(lambda self: self.__base_stats.xp)
     _id: ObjectId = property(lambda self: self.__id)
     base_stats: BaseStats = property(fget=lambda self: self.__base_stats)
     combat_stats: CombatStats = property(fget=lambda self: self.__combat_stats)

@@ -1,5 +1,6 @@
 from datetime import timedelta
 from math import ceil
+from operator import attrgetter
 from random import choice, randint, shuffle
 from time import sleep
 from typing import List, Union
@@ -1056,7 +1057,12 @@ async def add_xp_group(
     multiplied_level = (avg_level * sum_multiplier)
 
     full_text = ''
-    for char in char_list:
+    sorted_char_list = sorted(
+        char_list,
+        key=attrgetter('level', 'xp'),
+        reverse=True
+    )
+    for i, char in enumerate(sorted_char_list):
         level_diff = multiplied_level - (char.level * 2)
         base_xp = int(max(level_diff, 10) / total_allies)
         report_xp = add_xp(
@@ -1064,7 +1070,7 @@ async def add_xp_group(
             char=char,
             base_xp=base_xp,
         )
-        full_text += f'{report_xp["text"]}\n'
+        full_text += f'{i:02}: {report_xp["text"]}\n'
 
     full_text = create_text_in_box(
         text=full_text,
