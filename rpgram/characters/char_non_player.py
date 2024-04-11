@@ -42,6 +42,7 @@ class NPCharacter(BaseCharacter):
         base_charisma: int = 0,
         stars: Union[EnemyStarsEnum, str] = EnemyStarsEnum.THREE,
         combat_damage: int = 0,
+        combat_death_counter: int = 0,
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -79,6 +80,7 @@ class NPCharacter(BaseCharacter):
             base_charisma=base_charisma,
             points_multiplier=points_multiplier,
             combat_damage=combat_damage,
+            combat_death_counter=combat_death_counter,
             _id=_id,
             created_at=created_at,
             updated_at=updated_at
@@ -95,7 +97,7 @@ class NPCharacter(BaseCharacter):
     @property
     def player_name(self) -> str:
         return super().player_name + f'({self.emoji_stars})'
-    
+
     @property
     def alignment(self) -> AlignmentEnum:
         return self.__alignment

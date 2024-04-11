@@ -30,6 +30,7 @@ class PlayerCharacter(BaseCharacter):
         base_charisma: int = 0,
         points_multiplier: int = 3,
         combat_damage: int = 0,
+        combat_death_counter: int = 0,
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -51,6 +52,7 @@ class PlayerCharacter(BaseCharacter):
             base_charisma=base_charisma,
             points_multiplier=points_multiplier,
             combat_damage=combat_damage,
+            combat_death_counter=combat_death_counter,
             _id=_id,
             created_at=created_at,
             updated_at=updated_at

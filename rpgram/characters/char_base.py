@@ -38,6 +38,7 @@ class BaseCharacter:
         base_charisma: int = 0,
         points_multiplier: int = 3,
         combat_damage: int = 0,
+        combat_death_counter: int = 0,
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -75,7 +76,8 @@ class BaseCharacter:
         )
         self.__combat_stats = CombatStats(
             base_stats=self.__base_stats,
-            damage=combat_damage
+            damage=combat_damage,
+            death_counter=combat_death_counter,
         )
         self.__equips.attach_observer(self.__base_stats)
         self.__equips.attach_observer(self.__combat_stats)
@@ -404,6 +406,7 @@ class BaseCharacter:
             text = (
                 f'{self.get_sheet(verbose, markdown)}'
                 f'{self.status.get_all_sheets(verbose, markdown)}\n'
+                f'{self.combat_stats.death_counter_text}\n'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.race.get_sheet(verbose, markdown)}\n'
@@ -427,6 +430,7 @@ class BaseCharacter:
                 f'{self.get_sheet(verbose, markdown)}'
                 f'{self.status.get_all_sheets(verbose, markdown)}\n'
                 f'{race_classe_text}'
+                f'{self.combat_stats.death_counter_text}\n'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.equips.get_sheet(verbose, markdown)}'
@@ -463,6 +467,7 @@ class BaseCharacter:
             base_charisma=self.base_stats.base_charisma,
             points_multiplier=self.base_stats.points_multiplier,
             combat_damage=(self.cs.hit_points - self.cs.current_hit_points),
+            combat_death_counter=self.cs.death_counter,
             race_name=self.race.name,
             classe_name=self.classe.name,
             equips_id=self.equips._id,
