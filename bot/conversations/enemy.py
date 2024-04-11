@@ -600,7 +600,7 @@ async def player_attack_enemy(
     attacker_char = char_model.get(attacker_user_id)
     target_char = char_model.get(target_user_id)
 
-    if target_char.is_alive:
+    if target_char.is_alive and enemy_char.is_alive:
         await player_attack(
             update=update,
             context=context,
@@ -617,12 +617,23 @@ async def player_attack_enemy(
             enemy_id=enemy_id,
             attacker_id=attacker_user_id,
         )
-    else:
-        text = (
-            f'Ataque falhou, pois '
-            f'*{enemy_char.full_name_with_level}* fugiu já que '
-            f'*{target_char.player_name}* está morto.'
+        add_enemy_counter(
+            user_id=attacker_user_id,
+            enemy=enemy_char,
+            query=query
         )
+    else:
+        if target_char.is_dead:
+            text = (
+                f'O ataque falhou, pois '
+                f'*{enemy_char.full_name_with_level}* fugiu já que '
+                f'*{target_char.player_name}* está morto.'
+            )
+        elif enemy_char.is_dead:
+            text = (
+                f'O ataque falhou, pois '
+                f'*{enemy_char.full_name_with_level}* está morto.'
+            )
         print(text)
         text = create_text_in_box(
             text=text,
@@ -977,6 +988,20 @@ async def sub_action_point(user_id: int, query: CallbackQuery):
     player_model.save(player)
 
     await query.answer(player.current_action_points_text)
+
+
+async def add_enemy_counter(
+    user_id: int,
+    enemy: NPCharacter,
+    query: CallbackQuery
+):
+    if enemy.is_dead:
+        player_model = PlayerModel()
+        player = player_model.get(user_id)
+        player.add_enemy_counter(enemy=enemy)
+        report = player_model.save(player)
+
+        await query.answer(report['text'])
 
 
 def get_enemy_from_ambush_dict(

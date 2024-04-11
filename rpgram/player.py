@@ -4,8 +4,20 @@ from typing import List, Union
 
 from constant.text import SECTION_HEAD
 from function.date_time import datetime_to_string
+from rpgram.characters.char_non_player import NPCharacter
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.enemy import EnemyStarsEnum
 from rpgram.enums.trocado import TrocadoEnum
+
+
+DEFAULT_ENEMY_COUNTER = {
+    EnemyStarsEnum.ONE.name: 0,
+    EnemyStarsEnum.TWO.name: 0,
+    EnemyStarsEnum.THREE.name: 0,
+    EnemyStarsEnum.FOUR.name: 0,
+    EnemyStarsEnum.FIVE.name: 0,
+    EnemyStarsEnum.BOSS.name: 0,
+}
 
 
 class Player:
@@ -21,6 +33,7 @@ class Player:
         trocado: int = 0,
         current_action_points: int = 0,
         max_action_points: int = 3,
+        enemy_counter: dict = DEFAULT_ENEMY_COUNTER.copy(),
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -42,6 +55,7 @@ class Player:
         self.__trocado = trocado
         self.__current_action_points = current_action_points
         self.__max_action_points = max_action_points
+        self.__enemy_counter = enemy_counter
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -141,6 +155,20 @@ class Player:
 
         return report
 
+    def add_enemy_counter(self, enemy: NPCharacter) -> dict:
+        key = enemy.stars.name
+        value = self.__enemy_counter.get(key, 0)
+        value += 1
+        self.__enemy_counter[key] = value
+        report = {
+            'text': f'Matou {value} inimigo(s) rank "{enemy.emoji_stars}".',
+            'enemy': enemy.full_name_with_level,
+            'stars': enemy.emoji_stars,
+            'total': self.__enemy_counter[key],
+        }
+
+        return report
+
     # Getters
     _id = property(lambda self: self.__id)
     trocado = property(lambda self: self.__trocado)
@@ -163,6 +191,14 @@ class Player:
     @property
     def have_action_points(self) -> bool:
         return self.__current_action_points > 0
+    
+    @property
+    def total_enemy_counter(self) -> int:
+        return sum(self.__enemy_counter.values())
+    
+    @property
+    def total_enemy_counter_text(self) -> int:
+        return f'Inimigos Derrotados: {self.total_enemy_counter}'
 
     def __setitem__(self, key, value):
         key = key.upper()
@@ -193,11 +229,12 @@ class Player:
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
             f'{TrocadoEnum.TROCADO.value}: {self.trocado_text}\n'
+            f'{self.current_action_points_text}\n'
+            f'{self.total_enemy_counter_text}\n'
             f'ID: {self.__id}\n'
             f'Player ID: {self.player_id}\n'
             f'Verbose: {self.verbose}\n'
             f'Silencioso: {self.silent}\n'
-            f'{self.current_action_points_text}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
         )
@@ -214,6 +251,7 @@ class Player:
             trocado=self.__trocado,
             current_action_points=self.__current_action_points,
             max_action_points=self.__max_action_points,
+            enemy_counter=self.__enemy_counter,
             created_at=self.created_at,
             updated_at=self.updated_at
         )
