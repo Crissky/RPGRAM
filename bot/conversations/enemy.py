@@ -1062,7 +1062,7 @@ async def add_xp_group(
         key=attrgetter('level', 'xp'),
         reverse=True
     )
-    for i, char in enumerate(sorted_char_list):
+    for char in sorted_char_list:
         level_diff = multiplied_level - (char.level * 2)
         base_xp = int(max(level_diff, 10) / total_allies)
         report_xp = add_xp(
@@ -1070,7 +1070,7 @@ async def add_xp_group(
             char=char,
             base_xp=base_xp,
         )
-        full_text += f'{i:02}: {report_xp["text"]}\n'
+        full_text += f'{report_xp["text"]}\n'
 
     full_text = create_text_in_box(
         text=full_text,
