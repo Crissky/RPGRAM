@@ -865,8 +865,10 @@ def resize_text(
     '''
 
     text_list = text.split(spliter)
-    start_text_list = [text_list[0]]
-    final_text_list = start_text_list + text_list[-2:]
+    final_text_list = text_list
+    if len(text_list) > 3:
+        start_text_list = [text_list[0]]
+        final_text_list = start_text_list + text_list[-2:]
 
     return spliter.join(final_text_list).strip()
 
