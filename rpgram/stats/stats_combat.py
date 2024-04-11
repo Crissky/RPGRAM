@@ -35,6 +35,7 @@ class CombatStats:
         base_wisdom: int = 0,
         base_charisma: int = 0,
         damage: int = 0,
+        death_counter: int = 0,
         stats_boosters: List[StatsBooster] = []
     ) -> None:
         if not isinstance(base_stats, BaseStats):
@@ -50,11 +51,13 @@ class CombatStats:
             )
         self.__base_stats = base_stats
         self.__damage = int(damage)
+        self.__death_counter = int(death_counter)
 
         self.__stats_boosters = set(base_stats.stats_boosters)
         self.update()
 
     def set_damage(self, value: int) -> None:
+        is_dead_start = self.dead
         value = int(value * -1)
         if value > 0:
             print(f'Recebeu {value} de Dano!!!', end=' ')
@@ -69,6 +72,10 @@ class CombatStats:
         elif self.__damage < 0:
             self.__damage = 0
         print(f'HP: {self.show_hp}')
+        is_dead_end = self.dead
+        if not is_dead_start and is_dead_end:
+            print(f'Morreu!!!')
+            self.__add_death_counter()
 
     def damage_hit_points(
         self,
@@ -288,6 +295,9 @@ class CombatStats:
             self.__bonus_hit += int(sb.bonus_hit)
             self.__bonus_evasion += int(sb.bonus_evasion)
 
+    def __add_death_counter(self):
+        self.__death_counter += 1
+
     # Getters
     # Combat Attributes
     @property
@@ -481,6 +491,14 @@ class CombatStats:
     @property
     def bonus_evasion(self) -> int:
         return self.__bonus_evasion
+
+    @property
+    def death_counter(self) -> int:
+        return self.__death_counter
+
+    @property
+    def death_counter_text(self) -> str:
+        return f'{EmojiEnum.DEAD.value}Mortes: {self.__death_counter}'
 
     # Getters
     # Stats Boosters
