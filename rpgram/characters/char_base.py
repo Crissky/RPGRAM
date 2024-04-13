@@ -182,8 +182,8 @@ class BaseCharacter:
         defense_value_boosted: int,
         attack_value_boosted: int,
     ) -> int:
-        BLOCK_MULTIPLIER = 0.80
-        MIN_DAMAGE_MULTIPLIER = 0.20
+        BLOCK_MULTIPLIER = 0.50
+        MIN_DAMAGE_MULTIPLIER = 0.25
 
         damage = attack_value_boosted - defense_value_boosted
         min_damage = int(attack_value_boosted * MIN_DAMAGE_MULTIPLIER)
