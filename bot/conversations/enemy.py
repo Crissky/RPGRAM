@@ -22,13 +22,18 @@ from telegram.constants import ChatAction, ParseMode
 from bot.constants.enemy import (
     AMBUSH_TEXTS,
     ATTACK_BUTTON_TEXT,
+    BASE_ATTRIBUTES_BUTTON_TEXT,
     CALLBACK_TEXT_ATTACK,
+    CALLBACK_TEXT_BASE_ATTRIBUTES,
+    CALLBACK_TEXT_COMBAT_ATTRIBUTES,
     CALLBACK_TEXT_DEFEND,
+    COMBAT_ATTRIBUTES_BUTTON_TEXT,
     DEFEND_BUTTON_TEXT,
     ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT,
     MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT,
     MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT,
     PATTERN_ATTACK,
+    PATTERN_ATTRIBUTES,
     PATTERN_DEFEND,
     SECTION_END_DICT,
     SECTION_START_DICT,
@@ -673,6 +678,31 @@ async def player_attack_enemy(
     )
 
 
+async def check_enemy_attributes(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    query = update.callback_query
+    data = callback_data_to_dict(query.data)
+    attr_name = data['command']
+    enemy_id = data['enemy_id']
+    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    text = f'enemy_char: {enemy_char}'
+
+    if not enemy_char:
+        await query.answer('Essa emboscada já terminou', show_alert=True)
+        await query.delete_message()
+
+        return ConversationHandler.END
+
+    if attr_name == CALLBACK_TEXT_BASE_ATTRIBUTES:
+        text = enemy_char.base_stats.alert_sheet()
+    elif attr_name == CALLBACK_TEXT_COMBAT_ATTRIBUTES:
+        text = enemy_char.combat_stats.alert_sheet()
+
+    await query.answer(text, show_alert=True)
+
+
 async def enemy_attack(
     context: ContextTypes.DEFAULT_TYPE,
     chat_id: int,
@@ -902,9 +932,7 @@ def get_action_buttons(
                     'enemy_id': enemy_id,
                     'user_id': user_id,
                 })
-            )
-        ],
-        [
+            ),
             InlineKeyboardButton(
                 text=DEFEND_BUTTON_TEXT,
                 callback_data=callback_data_to_string({
@@ -914,6 +942,24 @@ def get_action_buttons(
                 })
             )
         ],
+        [
+            InlineKeyboardButton(
+                text=BASE_ATTRIBUTES_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'command': CALLBACK_TEXT_BASE_ATTRIBUTES,
+                    'enemy_id': enemy_id,
+                    'user_id': user_id,
+                })
+            ),
+            InlineKeyboardButton(
+                text=COMBAT_ATTRIBUTES_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'command': CALLBACK_TEXT_COMBAT_ATTRIBUTES,
+                    'enemy_id': enemy_id,
+                    'user_id': user_id,
+                })
+            )
+        ]
     ]
 
 
@@ -1220,5 +1266,9 @@ AMBUSH_HANDLERS = [
     CallbackQueryHandler(
         player_attack_enemy,
         pattern=PATTERN_ATTACK
-    )
+    ),
+    CallbackQueryHandler(
+        check_enemy_attributes,
+        pattern=PATTERN_ATTRIBUTES
+    ),
 ]

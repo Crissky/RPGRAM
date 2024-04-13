@@ -28,7 +28,7 @@ from bot.constants.item import (
     SECTION_TEXT_ACTIVATED_TRAP,
     SECTION_TEXT_DROP_TREASURE,
     SECTION_TEXT_OPEN_TREASURE,
-    TRAP_TYPE_DAMAGE_MULTIPLIER,
+    TRAP_DAMAGE_TYPE_RATIO,
 )
 from bot.constants.rest import COMMANDS as rest_commands
 from bot.conversations.bag import send_drop_message
@@ -41,7 +41,11 @@ from bot.decorators import (
 from bot.decorators.char import confusion
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import drop_random_items_from_bag
-from bot.functions.char import add_conditions_trap, add_damage, add_xp
+from bot.functions.char import (
+    add_conditions_from_trap,
+    add_trap_damage,
+    add_xp
+)
 from bot.functions.chat import edit_message_text_and_forward
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
@@ -162,7 +166,6 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     bag_model = BagModel()
-    items_model = ItemModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
@@ -250,34 +253,38 @@ async def activated_trap(
 ):
     query = update.callback_query
     (
-        text_find_trap_open,
-        trap_type_damage,
-        trap_conditions
+        text_open_trap,
+        trap_type_damage_enum,
+        trap_condition_list
     ) = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
-    text_find_trap_damage = choice(REPLY_TEXTS_FIND_TRAP_DAMAGE).format(
-        user_name=user_name
-    )
-    type_damage_name = trap_type_damage.name
-    type_damage_multiplier = TRAP_TYPE_DAMAGE_MULTIPLIER[type_damage_name]
-    damage = int(type_damage_multiplier * damage)
+    text_find_trap_damage = choice(
+        REPLY_TEXTS_FIND_TRAP_DAMAGE
+    ).format(user_name=user_name)
+    type_damage_name = trap_type_damage_enum.name
+    type_damage_ratio = TRAP_DAMAGE_TYPE_RATIO[type_damage_name]
 
-    damage_report = add_damage(
-        damage,
+    damage_report = add_trap_damage(
+        min_ratio=type_damage_ratio,
         user_id=user_id,
-        type_damage=trap_type_damage
+        type_damage=trap_type_damage_enum
     )
-    condition_report = add_conditions_trap(
-        conditions_trap=trap_conditions,
+    condition_report = add_conditions_from_trap(
+        condition_list=trap_condition_list,
         group_level=group_level,
         char=damage_report['char']
     )
 
+    damage = (
+        damage_report['attack']
+        if 'attack' in damage_report
+        else damage_report['damage']
+    )
     absolute_damage = damage_report['absolute_damage']
     condition_report_text = condition_report["text"]
     text = (
-        f'{text_find_trap_open}\n\n'
+        f'{text_open_trap}\n\n'
         f'{text_find_trap_damage} "{absolute_damage}"({damage}) '
-        f'pontos de dano do tipo "{trap_type_damage.value}".\n\n'
+        f'pontos de dano do tipo "{trap_type_damage_enum.value}".\n\n'
         f'{condition_report_text}'
     )
     if damage_report['dead']:

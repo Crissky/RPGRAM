@@ -1,4 +1,4 @@
-from random import choice, randint, random
+from random import choice, randint, random, triangular
 from typing import List
 
 from repository.mongo import (
@@ -122,11 +122,59 @@ def add_damage(
         damage_report = char.combat_stats.magical_damage_hit_points(damage)
     else:
         damage_report = char.combat_stats.damage_hit_points(damage)
+
     save_char(char)
 
     return dict(
         char=char,
         type_damage=type_damage,
+        **damage_report,
+    )
+
+
+def add_trap_damage(
+    min_ratio: float,
+    user_id: int = None,
+    char: BaseCharacter = None,
+    type_damage: DamageEnum = None,
+) -> dict:
+    '''Função que adiciona dano ao personagem.
+    '''
+
+    if all((user_id is None, char is None)):
+        raise ValueError(
+            'Forneça um "user_id" ou "char". '
+            'Ao menos um dos dois não podem ser None.'
+        )
+
+    if user_id and char is None:
+        char_model = CharacterModel()
+        char = char_model.get(user_id)
+
+    boosted_ratio = triangular(min_ratio, min_ratio*2)
+    boosted_ratio = round(boosted_ratio, 2)
+    boosted_ratio = min(0.99, boosted_ratio)
+    base_damage = int(char.combat_stats.hit_points * boosted_ratio)
+
+    if type_damage in PHYSICAL_DAMAGE_TYPES:
+        defense = char.combat_stats.physical_defense
+        damage = int(base_damage + defense)
+        damage_report = char.combat_stats.physical_damage_hit_points(damage)
+    elif type_damage in MAGICAL_DAMAGE_TYPES:
+        defense = char.combat_stats.magical_defense
+        damage = int(base_damage + defense)
+        damage_report = char.combat_stats.magical_damage_hit_points(damage)
+    else:
+        damage = base_damage
+        damage_report = char.combat_stats.damage_hit_points(damage)
+
+    save_char(char)
+
+    return dict(
+        char=char,
+        type_damage=type_damage,
+        min_ratio=min_ratio,
+        boosted_ratio=boosted_ratio,
         **damage_report,
     )
 
@@ -161,8 +209,8 @@ def add_conditions(
     return condition_report
 
 
-def add_conditions_trap(
-    conditions_trap: List[dict],
+def add_conditions_from_trap(
+    condition_list: List[dict],
     group_level: int,
     user_id: int = None,
     char: BaseCharacter = None,
@@ -182,7 +230,7 @@ def add_conditions_trap(
 
     condition_level_base = (group_level // 10) + 1
     condition_trap_report = {'text': '', 'char': char}
-    for condition_trap in conditions_trap:
+    for condition_trap in condition_list:
         condition_level = randint(
             condition_level_base // 2,
             condition_level_base

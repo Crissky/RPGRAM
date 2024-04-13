@@ -562,6 +562,17 @@ class BaseStats:
     ) -> str:
         return self.get_sheet(verbose=verbose, markdown=markdown)
 
+    def alert_sheet(self) -> str:
+        text = f"{SECTION_HEAD.format('ATRIBUTOS BASE')}\n\n"
+        text += f'{STRENGTH_EMOJI_TEXT}: {self.strength:02}\n'
+        text += f'{DEXTERITY_EMOJI_TEXT}: {self.dexterity:02}\n'
+        text += f'{CONSTITUTION_EMOJI_TEXT}: {self.constitution:02}\n'
+        text += f'{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:02}\n'
+        text += f'{WISDOM_EMOJI_TEXT}: {self.wisdom:02}\n'
+        text += f'{CHARISMA_EMOJI_TEXT}: {self.charisma:02}\n'
+
+        return text
+
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
