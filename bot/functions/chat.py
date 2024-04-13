@@ -35,6 +35,7 @@ CALLBACK_KEY_LIST = [
     'drop',
     'hand',
     'identify',
+    'equip_info',
     'item',
     'item_id',
     'page',
