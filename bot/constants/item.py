@@ -34,26 +34,26 @@ ESCAPED_CALLBACK_TEXT_GET = re.escape(CALLBACK_TEXT_GET)
 ESCAPED_CALLBACK_TEXT_IGNORE = re.escape(CALLBACK_TEXT_IGNORE)
 
 
-TRAP_TYPE_DAMAGE_MULTIPLIER = {
-    DamageEnum.BLUDGEONING.name: 1.5,
-    DamageEnum.HITTING.name: 1.5,
-    DamageEnum.SLASHING.name: 2.0,
-    DamageEnum.PIERCING.name: 2.0,
-    DamageEnum.MAGIC.name: 2.0,
-    DamageEnum.BLESSING.name: 1.0,
-    DamageEnum.DIVINE.name: 5.0,
-    DamageEnum.LIGHT.name: 1.0,
-    DamageEnum.DARK.name: 2.0,
-    DamageEnum.FIRE.name: 1.5,
-    DamageEnum.WATER.name: 1.5,
-    DamageEnum.COLD.name: 1.5,
-    DamageEnum.LIGHTNING.name: 2.0,
-    DamageEnum.WIND.name: 1.5,
-    DamageEnum.ROCK.name: 1.5,
-    DamageEnum.GROUND.name: 1.5,
-    DamageEnum.ACID.name: 2.0,
-    DamageEnum.POISON.name: 2.0,
-    DamageEnum.CHAOS.name: 2.5,
+TRAP_DAMAGE_TYPE_RATIO = {
+    DamageEnum.BLUDGEONING.name: 0.10,
+    DamageEnum.HITTING.name: 0.10,
+    DamageEnum.SLASHING.name: 0.20,
+    DamageEnum.PIERCING.name: 0.25,
+    DamageEnum.MAGIC.name: 0.40,
+    DamageEnum.BLESSING.name: 0.05,
+    DamageEnum.DIVINE.name: 0.50,
+    DamageEnum.LIGHT.name: 0.12,
+    DamageEnum.DARK.name: 0.40,
+    DamageEnum.FIRE.name: 0.30,
+    DamageEnum.WATER.name: 0.30,
+    DamageEnum.COLD.name: 0.30,
+    DamageEnum.LIGHTNING.name: 0.40,
+    DamageEnum.WIND.name: 0.30,
+    DamageEnum.ROCK.name: 0.30,
+    DamageEnum.GROUND.name: 0.30,
+    DamageEnum.ACID.name: 0.40,
+    DamageEnum.POISON.name: 0.40,
+    DamageEnum.CHAOS.name: 0.45,
 }
 
 
