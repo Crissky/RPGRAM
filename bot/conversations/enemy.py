@@ -998,8 +998,8 @@ async def add_enemy_counter(
     if enemy.is_dead:
         player_model = PlayerModel()
         player = player_model.get(user_id)
-        player.add_enemy_counter(enemy=enemy)
-        report = player_model.save(player)
+        report = player.add_enemy_counter(enemy=enemy)
+        player_model.save(player)
 
         await query.answer(report['text'])
 
