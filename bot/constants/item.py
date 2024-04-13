@@ -1697,6 +1697,139 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.25},
         ]
     ),
+    (
+        'Ao desvendar o objeto sagrado, um vento gélido emerge, ecoando um '
+        'sussurro antigo: "Belendë ar mornië!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Enquanto abre o artefato sagrado, uma chama divina emerge, e uma '
+        'voz etérea proclama: "Fëanturi vahai!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Ao tocar o objeto sagrado, uma energia divina irrompe, emitindo uma '
+        'sentença: "Ainuvalë melin!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Ao desvendar o artefato sagrado, uma tempestade mágica se forma, e '
+        'uma voz ecoa: "Nai tiruvantel ar varyuvantel!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Enquanto abre o objeto sagrado, uma aura negra o envolve, e uma voz '
+        'ancestral decreta: "Aina i ahërë!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Ao tocar o artefato sagrado, uma marca negra aparece em sua pele, '
+        'acompanhada por uma voz severa: "Erë enesselmo!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Ao abrir o objeto sagrado, uma energia maligna o envolve, e uma voz '
+        'sinistra murmura: "Nai tiruvantes!"',
+        DamageEnum.DIVINE,
+        [
+            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': BLINDNESS, 'effectiveness': 0.25},
+            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': CONFUSION, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': PARALYSIS, 'effectiveness': 0.25},
+            {'condition': PETRIFIED, 'effectiveness': 0.25},
+            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
 ]
 
 REPLY_TEXTS_FIND_TRAP_DAMAGE = [
