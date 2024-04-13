@@ -588,6 +588,27 @@ class CombatStats:
             f'{combat_stats_sheet}'
         )
 
+    def alert_sheet(self):
+        text = f'{SECTION_HEAD.format("ATRIBUTOS DE COMBATE")}\n\n'
+
+        if self.dead:
+            text += f'{HIT_POINT_DEAD_EMOJI_TEXT}: {self.show_hit_points}\n'
+        elif self.damaged:
+            text += f'{HIT_POINT_INJURED_EMOJI_TEXT}: {self.show_hit_points}\n'
+        else:
+            text += f'{HIT_POINT_FULL_EMOJI_TEXT}: {self.show_hit_points}\n'
+
+        text += f'{INITIATIVE_EMOJI_TEXT}: {self.initiative:02}\n'
+        text += f'{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:02}\n'
+        text += f'{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:02}\n'
+        text += f'{MAGICAL_ATTACK_EMOJI_TEXT}: {self.magical_attack:02}\n'
+        text += f'{PHYSICAL_DEFENSE_EMOJI_TEXT}: {self.physical_defense:02}\n'
+        text += f'{MAGICAL_DEFENSE_EMOJI_TEXT}: {self.magical_defense:02}\n'
+        text += f'{HIT_EMOJI_TEXT}: {self.hit:02}\n'
+        text += f'{EVASION_EMOJI_TEXT}: {self.evasion:02}\n'
+
+        return text
+
     def __repr__(self) -> str:
         return (
             f'{TEXT_DELIMITER}\n'
