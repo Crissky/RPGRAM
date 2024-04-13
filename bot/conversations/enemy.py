@@ -617,7 +617,7 @@ async def player_attack_enemy(
             enemy_id=enemy_id,
             attacker_id=attacker_user_id,
         )
-        add_enemy_counter(
+        await add_enemy_counter(
             user_id=attacker_user_id,
             enemy=enemy_char,
             query=query

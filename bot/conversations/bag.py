@@ -34,11 +34,13 @@ from bot.constants.bag import (
     CLOSE_BAG_BUTTON_TEXT,
     COLLECT_MANY_BUTTON_TEXT,
     COMMANDS,
+    COMPARE_INFO_BUTTON_TEXT,
     CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
     CONSUMABLE_SORT_UP_BUTTON_TEXT,
     DESTROY_ITEM_BUTTON_TEXT,
     DISCARD_MANY_BUTTON_TEXT,
     EQUIP_BUTTON_TEXT,
+    EQUIP_INFO_BUTTON_TEXT,
     EQUIPMENT_POWER_SORT_DOWN_BUTTON_TEXT,
     EQUIPMENT_POWER_SORT_UP_BUTTON_TEXT,
     EQUIPMENT_RARITY_SORT_DOWN_BUTTON_TEXT,
@@ -56,6 +58,7 @@ from bot.constants.bag import (
     PATTERN_CLOSE_BAG,
     PATTERN_DESTROY_ITEM,
     PATTERN_DROP,
+    PATTERN_EQUIP_INFO,
     PATTERN_GET_DROP,
     PATTERN_IDENTIFY,
     PATTERN_ITEM,
@@ -334,6 +337,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     page = data['page']
     data_user_id = data['user_id']
     target_id = data['target_id']
+    equip_info = data.get('equip_info')
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await query.answer(text=ACCESS_DENIED, show_alert=True)
@@ -354,10 +358,37 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     equip_buttons = []
     use_buttons = [[]]
-    identify_button = []
+    equip_info_identify_button = []
     if isinstance(item.item, Equipment):
         equips = equips_model.get(user_id)
-        markdown_text = equips.compare(item.item)
+        if not equip_info:
+            markdown_text = equips.compare(item.item)
+            equip_info_identify_button.append(
+                InlineKeyboardButton(
+                    text=EQUIP_INFO_BUTTON_TEXT,
+                    callback_data=callback_data_to_string({
+                        'equip_info': 1,
+                        'item': item_pos,
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
+                )
+            )
+        else:
+            markdown_text = item.item.get_sheet(verbose=True, markdown=True)
+            equip_info_identify_button.append(
+                InlineKeyboardButton(
+                    text=COMPARE_INFO_BUTTON_TEXT,
+                    callback_data=callback_data_to_string({
+                        'equip_info': 0,
+                        'item': item_pos,
+                        'page': page,
+                        'user_id': user_id,
+                        'target_id': target_id
+                    })
+                )
+            )
         if item.item.equip_type == EquipmentEnum.ONE_HAND:
             equip_buttons = [
                 InlineKeyboardButton(
@@ -398,7 +429,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
 
         if have_identifying_lens(user_id) and item.item.identifiable:
-            identify_button = [
+            equip_info_identify_button.append(
                 InlineKeyboardButton(
                     text=IDENTIFY_BUTTON_TEXT,
                     callback_data=callback_data_to_string({
@@ -409,7 +440,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         'target_id': target_id
                     })
                 )
-            ]
+            )
     elif isinstance(item.item, Consumable):
         use_buttons = get_use_consumable_buttons(
             page=page,
@@ -449,7 +480,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup([
         equip_buttons,
         *use_buttons,
-        identify_button,
+        equip_info_identify_button,
         *discard_buttons,
         *sell_buttons,
         navigation_item_buttons,
@@ -1916,6 +1947,7 @@ BAG_HANDLER = ConversationHandler(
             CallbackQueryHandler(drop_item, pattern=PATTERN_DROP),
             CallbackQueryHandler(sell_item, pattern=PATTERN_SELL),
             CallbackQueryHandler(identify_item, pattern=PATTERN_IDENTIFY),
+            CallbackQueryHandler(check_item, pattern=PATTERN_EQUIP_INFO),
         ],
         SORT_ROUTES: [
             CallbackQueryHandler(start, pattern=PATTERN_PAGE),
