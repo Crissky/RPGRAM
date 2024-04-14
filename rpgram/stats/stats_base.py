@@ -1,6 +1,6 @@
 from typing import List
 
-from constant.text import SECTION_HEAD, TEXT_DELIMITER
+from constant.text import ALERT_SECTION_HEAD, SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.boosters import StatsBooster
 from rpgram.constants.text import (
@@ -563,7 +563,7 @@ class BaseStats:
         return self.get_sheet(verbose=verbose, markdown=markdown)
 
     def alert_sheet(self) -> str:
-        text = f"{SECTION_HEAD.format('ATRIBUTOS BASE')}\n\n"
+        text = f"{ALERT_SECTION_HEAD.format('A. BASE')}\n\n"
         text += f'{STRENGTH_EMOJI_TEXT}: {self.strength:02}\n'
         text += f'{DEXTERITY_EMOJI_TEXT}: {self.dexterity:02}\n'
         text += f'{CONSTITUTION_EMOJI_TEXT}: {self.constitution:02}\n'

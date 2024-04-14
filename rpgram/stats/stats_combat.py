@@ -1,19 +1,27 @@
 from typing import List
 
-from constant.text import SECTION_HEAD, TEXT_DELIMITER
+from constant.text import ALERT_SECTION_HEAD, SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
+    EVASION_EMOJI_TEXT_ABB,
     HIT_EMOJI_TEXT,
+    HIT_EMOJI_TEXT_ABB,
     HIT_POINT_DEAD_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
     HIT_POINT_INJURED_EMOJI_TEXT,
     INITIATIVE_EMOJI_TEXT,
+    INITIATIVE_EMOJI_TEXT_ABB,
     MAGICAL_ATTACK_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT_ABB,
     MAGICAL_DEFENSE_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT_ABB,
     PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_ATTACK_EMOJI_TEXT_ABB,
     PHYSICAL_DEFENSE_EMOJI_TEXT,
-    PRECISION_ATTACK_EMOJI_TEXT
+    PHYSICAL_DEFENSE_EMOJI_TEXT_ABB,
+    PRECISION_ATTACK_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT_ABB
 )
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.stats import BaseStats
@@ -589,7 +597,7 @@ class CombatStats:
         )
 
     def alert_sheet(self):
-        text = f'{SECTION_HEAD.format("ATRIBUTOS DE COMBATE")}\n\n'
+        text = f'{ALERT_SECTION_HEAD.format("A. CBT")}\n\n'
 
         if self.dead:
             text += f'{HIT_POINT_DEAD_EMOJI_TEXT}: {self.show_hit_points}\n'
@@ -598,14 +606,14 @@ class CombatStats:
         else:
             text += f'{HIT_POINT_FULL_EMOJI_TEXT}: {self.show_hit_points}\n'
 
-        text += f'{INITIATIVE_EMOJI_TEXT}: {self.initiative:02}\n'
-        text += f'{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:02}\n'
-        text += f'{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:02}\n'
-        text += f'{MAGICAL_ATTACK_EMOJI_TEXT}: {self.magical_attack:02}\n'
-        text += f'{PHYSICAL_DEFENSE_EMOJI_TEXT}: {self.physical_defense:02}\n'
-        text += f'{MAGICAL_DEFENSE_EMOJI_TEXT}: {self.magical_defense:02}\n'
-        text += f'{HIT_EMOJI_TEXT}: {self.hit:02}\n'
-        text += f'{EVASION_EMOJI_TEXT}: {self.evasion:02}\n'
+        text += f'{INITIATIVE_EMOJI_TEXT_ABB}: {self.initiative}\n'
+        text += f'{PHYSICAL_ATTACK_EMOJI_TEXT_ABB}: {self.physical_attack}\n'
+        text += f'{PRECISION_ATTACK_EMOJI_TEXT_ABB}: {self.precision_attack}\n'
+        text += f'{MAGICAL_ATTACK_EMOJI_TEXT_ABB}: {self.magical_attack}\n'
+        text += f'{PHYSICAL_DEFENSE_EMOJI_TEXT_ABB}: {self.physical_defense}\n'
+        text += f'{MAGICAL_DEFENSE_EMOJI_TEXT_ABB}: {self.magical_defense}\n'
+        text += f'{HIT_EMOJI_TEXT_ABB}: {self.hit}\n'
+        text += f'{EVASION_EMOJI_TEXT_ABB}: {self.evasion}\n'
 
         return text
 
