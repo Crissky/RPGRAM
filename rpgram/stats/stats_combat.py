@@ -312,7 +312,7 @@ class CombatStats:
     def hit_points(self) -> int:
         return int(
             10 +
-            (self.constitution * 20) +
+            (self.constitution * 23) +
             (self.strength * 12) +
             self.bonus_hit_points +
             (self.level * 50)
@@ -402,7 +402,7 @@ class CombatStats:
         return int(
             (self.wisdom * 8) +
             (self.intelligence * 4) +
-            (self.constitution * 5) +
+            (self.constitution * 2) +
             self.bonus_magical_defense +
             (self.level * 5)
         )

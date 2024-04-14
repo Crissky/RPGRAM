@@ -494,7 +494,7 @@ def get_details_text(option: str) -> str:
             f'zero o personagem ficará incapacidado até que recupere ao menos '
             f'um `Ponto de Vida`.\n'
             f'Os Atributos Base que compoem os `Pontos de Vida` são:\n'
-            f'A `Constituição`(x20), a `Força`(x12) e o `Nível`(x50).\n\n'
+            f'A `Constituição`(x23), a `Força`(x12) e o `Nível`(x50).\n\n'
 
             f'{EmojiEnum.INITIATIVE.value}'
             f'*Iniciativa*: Representa o quão rápido e sagaz um '
@@ -546,7 +546,7 @@ def get_details_text(option: str) -> str:
             f'de ataques sobrenaturais (aqueles baseados em '
             f'`Ataque Mágico`).\n'
             f'Os Atributos Base que compoem a `Defesa Mágica` são:\n'
-            f'A `Sabedoria`(x8), a `Constituição`(x5), a `Inteligência`(x4) '
+            f'A `Sabedoria`(x8), a `Constituição`(x2), a `Inteligência`(x4) '
             f'e o `Nível`(x5).\n\n'
 
             f'{EmojiEnum.HIT.value}'
