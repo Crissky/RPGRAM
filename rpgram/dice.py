@@ -30,6 +30,7 @@ class Dice:
         self.__faces = faces
         self.__base_multiplier = base_multiplier
         self.__value = None
+        self.__boosted_value = None
 
     def throw(self, rethrow=False) -> int:
         if self.is_throwed and not rethrow:
@@ -56,7 +57,9 @@ class Dice:
         elif self.is_critical_fail:
             result = result / self.critical_multiplier
 
-        return int(result)
+        self.__boosted_value = int(result)
+
+        return self.__boosted_value
 
     @property
     def value(self) -> int:
@@ -66,6 +69,15 @@ class Dice:
     @property
     def base_multiplier(self) -> float:
         return self.__base_multiplier
+
+    @property
+    def boosted_value(self) -> int:
+        if self.__boosted_value is None:
+            raise ValueError(
+                'Valor não foi boostado, use o método boost_value.'
+            )
+
+        return self.__boosted_value
 
     @property
     def is_critical(self) -> int:
