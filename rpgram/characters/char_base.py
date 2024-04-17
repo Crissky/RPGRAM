@@ -179,16 +179,23 @@ class BaseCharacter:
     def calculate_damage(
         self,
         defense_value: int,
-        defense_value_boosted: int,
-        attack_value_boosted: int,
+        defender_dice: Dice,
+        attacker_dice: Dice,
     ) -> int:
         BLOCK_MULTIPLIER = 0.50
         MIN_DAMAGE_MULTIPLIER = 0.25
 
+        defense_value_boosted = defender_dice.boosted_value
+        attack_value_boosted = attacker_dice.boosted_value
+
         damage = attack_value_boosted - defense_value_boosted
         min_damage = int(attack_value_boosted * MIN_DAMAGE_MULTIPLIER)
         block_value = int(defense_value * BLOCK_MULTIPLIER)
-        if attack_value_boosted > block_value:
+        if all((
+            attack_value_boosted > block_value,
+            not defender_dice.is_critical,
+            not attacker_dice.is_critical_fail,
+        )):
             damage = max(damage, min_damage)
 
         return max(damage, 0)
@@ -243,8 +250,8 @@ class BaseCharacter:
             if to_defend and not defender_char.is_immobilized:
                 damage = self.calculate_damage(
                     defense_value=defense_value,
-                    defense_value_boosted=defense_value_boosted,
-                    attack_value_boosted=attack_value_boosted
+                    defender_dice=defender_dice,
+                    attacker_dice=attacker_dice,
                 )
                 attack_value_boosted - defense_value_boosted
 
