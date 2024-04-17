@@ -30,6 +30,7 @@ class Dice:
         self.__faces = faces
         self.__base_multiplier = base_multiplier
         self.__value = None
+        self.__boosted_base_value = None
         self.__boosted_value = None
 
     def throw(self, rethrow=False) -> int:
@@ -46,6 +47,7 @@ class Dice:
         '''Retorna o valor boostado conforme o resultado do dado.
         '''
 
+        self.__boosted_base_value = base_value
         self.throw(rethrow=False)
         multiplier = (1 + (self.value * self.base_multiplier))
         boosted_value = base_value * multiplier
@@ -78,6 +80,15 @@ class Dice:
             )
 
         return self.__boosted_value
+
+    @property
+    def boosted_base_value(self) -> int:
+        if self.__boosted_base_value is None:
+            raise ValueError(
+                'Não há boosted_base_value, use o método boost_value.'
+            )
+
+        return self.__boosted_base_value
 
     @property
     def is_critical(self) -> int:
