@@ -316,6 +316,7 @@ class Equipment(StatsBooster):
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
+        special_damages = self.sheet_special_damages()
 
         type_icon = EmojiEnum[self.equip_type.name].value
         price_text = self.price_text if is_sell else self.sell_price_text
@@ -334,6 +335,7 @@ class Equipment(StatsBooster):
             f'*Valor*: {price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
+            f'{special_damages}'
         )
         text += (
             f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
@@ -390,7 +392,10 @@ class Equipment(StatsBooster):
 
         return escape_basic_markdown_v2(text)
 
-    def get_status_from_damage_type(damage_type: DamageEnum) -> List[dict]:
+    def get_status_from_damage_type(
+        self,
+        damage_type: DamageEnum
+    ) -> List[dict]:
         status_list = []
         if damage_type == DamageEnum.HITTING:
             status_list.extend([
@@ -518,8 +523,19 @@ class Equipment(StatsBooster):
             requirements = '\n'.join(
                 [f'  {k}: {v}' for k, v in self.__requirements.items()]
             )
-            requirements = f'*Requisitos*:\n{requirements}\n\n'
+            requirements = f'*Requisitos*:\n{requirements}\n'
         return requirements
+
+    def sheet_special_damages(self):
+        special_damages = ''
+        if self.special_damage_definition_list:
+            special_damages += f'*Dano Especial*:\n'
+            for type_damage in self.special_damage_definition_list:
+                damage_type_text = type_damage['text']
+                special_damages += f'  {damage_type_text}\n'
+        special_damages += f'\n'
+
+        return special_damages
 
     def get_sheet(
         self,
@@ -530,6 +546,7 @@ class Equipment(StatsBooster):
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
+        special_damages = self.sheet_special_damages()
         material_level = (
             self.material_level
             if self.material_level
@@ -550,6 +567,7 @@ class Equipment(StatsBooster):
             f'*Valor*: {price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
+            f'{special_damages}'
         )
 
         if not markdown:
@@ -719,24 +737,45 @@ class Equipment(StatsBooster):
         return max(
             self.physical_attack,
             self.precision_attack,
-            self.magical_attack
+            self.magical_attack,
+            self.level,
+            1,
         )
 
     @property
-    def type_damages(self) -> List[dict]:
+    def special_damage_definition_list(self) -> List[dict]:
+        '''Retorna um dicionário as definições de dano do equipamento.
+
+        Return {
+            min_damage: Dano Mínimo - int
+            max_damage: Dano Máximo - int
+            get_damage: Função que retorna o dano - callable
+            damage_type: Tipo de dano - DamageEnum
+            damage_type_name: Nome do tipo de dano - str
+            status: Lista de status e o Ratio - 
+                    List[dict(status=DebuffEnum, ratio=float)]
+            text: Texto com o nome do tipo de dano e o range do dano - str
+        }
+        '''
+
         type_damages_list = []
-        for damage_type in self.damage_types:
+        damage_types = self.damage_types if self.damage_types is not None else []
+        for damage_type in damage_types:
             min_damage = int(self.max_attack_value * 0.25)
             max_damage = int(self.max_attack_value * 0.50)
-            def damage(): return randint(min_damage, max_damage)
+            def get_damage(): return randint(min_damage, max_damage)
             status = self.get_status_from_damage_type(damage_type)
-            type_damages_list.append(dict(
-                min_damage=min_damage,
-                max_damage=max_damage,
-                damage=damage,
-                damage_type=damage_type,
-                status=status,
-            ))
+            damage_type_name = damage_type.value
+            if max_damage > 0:
+                type_damages_list.append(dict(
+                    min_damage=min_damage,
+                    max_damage=max_damage,
+                    get_damage=get_damage,
+                    damage_type=damage_type,
+                    damage_type_name=damage_type_name,
+                    status=status,
+                    text=f'{damage_type_name}: {min_damage}-{max_damage}',
+                ))
 
         return type_damages_list
 
