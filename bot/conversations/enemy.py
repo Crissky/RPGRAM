@@ -1203,7 +1203,7 @@ async def enemy_drop_random_loot(
 
     if from_attack:
         group_level = enemy_char.level + (points_multiplier * 5)
-        total_consumables = randint(1, points_multiplier)
+        total_consumables = randint(1, int(points_multiplier + 2))
         total_equipments = randint(1, ceil(points_multiplier / 2))
     else:
         group_level = ceil(enemy_char.level * 0.90)
