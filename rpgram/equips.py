@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import randint
 from typing import List, Union
 
 from bson import ObjectId
@@ -343,11 +344,24 @@ class Equips:
         else:
             return equipment.compare(*other_equipment, is_sell=is_sell)
 
+    def sheet_special_damages(self):
+        special_damages = ''
+        if self.special_damage_definition_list:
+            special_damages += f'*Dano Especial*:\n'
+            for type_damage in self.special_damage_definition_list:
+                damage_type_text = type_damage['text']
+                special_damages += f'  {damage_type_text}\n'
+        special_damages += f'\n'
+
+        return special_damages
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
+        special_damages = self.sheet_special_damages()
         text = (
             f'*{SECTION_HEAD.format("EQUIPAMENTOS")}*\n'
             f'*Poder*: {self.power:}{EmojiEnum.EQUIPMENT_POWER.value}\n'
-            f'*Peso*: {self.equipments_weight:.2f}{EmojiEnum.WEIGHT.value}\n\n'
+            f'*Peso*: {self.equipments_weight:.2f}{EmojiEnum.WEIGHT.value}\n'
+            f'{special_damages}'
 
             f'*Capacete*: '
             f'{self.helmet.name_power_level if self.helmet else ""}\n'
@@ -456,6 +470,46 @@ class Equips:
             power += equip.power
 
         return power
+
+    @property
+    def special_damage_definition_list(self) -> List[dict]:
+        hand_equipments = self.get_equipment_hands()
+        special_damages_list = []
+        special_damages_dict = {}
+        special_damages_gen = (
+            special_damage
+            for equipment in hand_equipments
+            for special_damage in equipment.special_damage_definition_list
+        )
+
+        for special_damage in special_damages_gen:
+            damage_type = special_damage['damage_type']
+            damage_dict = special_damages_dict.setdefault(damage_type, {})
+            min_damage = special_damage['min_damage']
+            max_damage = special_damage['max_damage']
+            status = special_damage['status']
+            damage_dict.setdefault('min_damage', []).append(min_damage)
+            damage_dict.setdefault('max_damage', []).append(max_damage)
+            damage_dict.setdefault('status', []).extend(status)
+
+        for damage_type, damage_dict in special_damages_dict.items():
+            min_damage = sum(damage_dict['min_damage'])
+            max_damage = sum(damage_dict['max_damage'])
+            def get_damage(): return randint(min_damage, max_damage)
+            status = damage_dict['status']
+            damage_type_name = damage_type.value
+            if max_damage > 0:
+                special_damages_list.append(dict(
+                    min_damage=min_damage,
+                    max_damage=max_damage,
+                    get_damage=get_damage,
+                    damage_type=damage_type,
+                    damage_type_name=damage_type_name,
+                    status=status,
+                    text=f'{damage_type_name}: {min_damage}-{max_damage}',
+                ))
+
+        return special_damages_list
 
     _id = property(lambda self: self.__id)
     helmet = property(lambda self: self.__helmet)
