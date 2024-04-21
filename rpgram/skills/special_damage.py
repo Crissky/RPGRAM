@@ -35,11 +35,11 @@ class SpecialDamage:
 
     @property
     def min_damage(self) -> int:
-        return int(self.base_damage * self.__get_multipliers[0])
+        return int(self.base_damage * self.__damage_multipliers[0])
 
     @property
     def max_damage(self) -> int:
-        return int(self.base_damage * self.__get_multipliers[1])
+        return int(self.base_damage * self.__damage_multipliers[1])
 
     @property
     def damage_type(self) -> DamageEnum:
@@ -47,18 +47,27 @@ class SpecialDamage:
 
     @property
     def damage_name(self) -> str:
+        '''Retorna o nome do type dano.'''
+
         return self.__damage_type.value
 
     @property
     def damage(self) -> int:
+        '''Retorna o dano obtido aleatóriamente entre o min_damage e o 
+        max_damage.
+        '''
+
         return randint(self.min_damage, self.max_damage)
 
     @property
     def damage_text(self):
+        '''Retorna texto com o nome do dano e o range do dano.'''
+
         return f'{self.damage_name}: {self.min_damage}-{self.max_damage}'
 
     @property
-    def __get_multipliers(self) -> Tuple[float, float]:
+    def __damage_multipliers(self) -> Tuple[float, float]:
+        '''Retorna os multiplicadores do dano mínimo e máximo.'''
 
         if self.damage_type == DamageEnum.HITTING:
             min_multiplier = 0.15
@@ -119,6 +128,10 @@ class SpecialDamage:
 
     @property
     def status_list(self) -> List[dict]:
+        '''Retorna uma lista de status (Dict[status, ratio]) com o 
+        percentual de chance (ratio) de causar o status.
+        '''
+
         status_list = []
         if self.damage_type == DamageEnum.HITTING:
             status_list.extend([

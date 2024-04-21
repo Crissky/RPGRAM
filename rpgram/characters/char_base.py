@@ -1,12 +1,12 @@
 from bson import ObjectId
 from datetime import datetime
 from random import choices, random
-from typing import List, Tuple
+from typing import List, Tuple, TypeVar
 
 from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
-from rpgram.dice import Dice
 
+from rpgram.dice import Dice
 from rpgram.equips import Equips
 from rpgram.status import Status
 from rpgram.boosters.classe import Classe
@@ -17,6 +17,9 @@ from rpgram.constants.text import (
     RACE_EMOJI_TEXT
 )
 from rpgram.stats import BaseStats, CombatStats
+
+
+TBaseCharacter = TypeVar('TBaseCharacter', bound='BaseCharacter')
 
 
 class BaseCharacter:
@@ -133,7 +136,7 @@ class BaseCharacter:
 
     def get_accuracy(
         self,
-        defender_char,
+        defender_char: TBaseCharacter,
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> float:
@@ -153,7 +156,7 @@ class BaseCharacter:
 
     def test_dodge(
         self,
-        defender_char,
+        defender_char: TBaseCharacter,
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> dict:
@@ -202,7 +205,7 @@ class BaseCharacter:
 
     def to_attack(
         self,
-        defender_char,
+        defender_char: TBaseCharacter,
         attacker_dice: Dice = Dice(20),
         defender_dice: Dice = Dice(20),
         attacker_action_name: str = None,
@@ -246,6 +249,10 @@ class BaseCharacter:
             )
             report.update(defender_char.cs.basic_report)
         else:
+            attacker_action_name = attacker_action_name.replace('_', ' ')
+            attacker_action_name = attacker_action_name.title()
+            defense_action_name = defense_action_name.replace('_', ' ')
+            defense_action_name = defense_action_name.title()
             damage = attack_value_boosted
             if to_defend and not defender_char.is_immobilized:
                 damage = self.calculate_damage(
@@ -256,20 +263,31 @@ class BaseCharacter:
                 attack_value_boosted - defense_value_boosted
 
             damage = max(damage, 0)
+            total_damage = damage
+            damage_text_list = [f'{attacker_action_name}({damage})']
+
+            if total_damage > 0:
+                for special_damage in self.equips.special_damage_iter:
+                    damage_name = special_damage.damage_name
+                    spec_damage = special_damage.damage
+                    total_damage += spec_damage
+                    damage_text = f'{damage_name}({spec_damage})'
+                    damage_text_list.append(damage_text)
+
             damage_report = defender_char.cs.damage_hit_points(
-                value=damage,
+                value=total_damage,
                 markdown=markdown
             )
             report.update(damage_report)
-            attacker_action_name = attacker_action_name.replace(
-                '_', ' ').title()
-            defense_action_name = defense_action_name.replace('_', ' ').title()
             damage_or_defend_text = (
-                f' que defendeu recebendo *{damage}* pontos de dano'
+                f' que defendeu recebendo *{total_damage}* pontos de dano'
             )
 
-            if damage > 0:
-                damage_or_defend_text = f' e causou *{damage}* pontos de dano'
+            if total_damage > 0:
+                damage_or_defend_text = (
+                    f' e causou *{total_damage}* pontos de dano.\n'
+                )
+                damage_or_defend_text += ', '.join(damage_text_list)
             report['text'] = (
                 f'*{self.full_name_with_level}* *ATACOU* '
                 f'{defender_player_name}{damage_or_defend_text}.\n\n'
