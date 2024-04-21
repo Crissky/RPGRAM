@@ -74,6 +74,9 @@ class Dice:
 
     @property
     def boosted_value(self) -> int:
+        '''Retorna o valor boostado.
+        '''
+
         if self.__boosted_value is None:
             raise ValueError(
                 'Valor não foi boostado, use o método boost_value.'
@@ -83,6 +86,9 @@ class Dice:
 
     @property
     def boosted_base_value(self) -> int:
+        '''Retorna o valor base boostado (Antes de ser boostado).
+        '''
+
         if self.__boosted_base_value is None:
             raise ValueError(
                 'Não há boosted_base_value, use o método boost_value.'
