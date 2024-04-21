@@ -1,6 +1,6 @@
 from datetime import datetime
 from random import randint
-from typing import List, Union
+from typing import Iterator, List, Union
 
 from bson import ObjectId
 
@@ -28,6 +28,7 @@ from rpgram.constants.text import (
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.errors import EquipmentRequirementError
+from rpgram.skills.special_damage import SpecialDamage
 from rpgram.stats.stats_base import BaseStats
 
 if __name__ in ['__main__', 'equip']:
@@ -344,16 +345,16 @@ class Equips:
         else:
             return equipment.compare(*other_equipment, is_sell=is_sell)
 
-    def sheet_special_damages(self):
-        special_damages = ''
-        if self.special_damage_definition_list:
-            special_damages += f'*Dano Especial*:\n'
-            for type_damage in self.special_damage_definition_list:
-                damage_type_text = type_damage['text']
-                special_damages += f'  {damage_type_text}\n'
-        special_damages += f'\n'
+    def sheet_special_damages(self) -> str:
+        special_damages_text = ''
+        if self.special_damage_iter:
+            special_damages_text += f'*Dano Especial*:\n'
+            for special_damage in self.special_damage_iter:
+                damage_type_text = special_damage.text
+                special_damages_text += f'  {damage_type_text}\n'
+        special_damages_text += f'\n'
 
-        return special_damages
+        return special_damages_text
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         special_damages = self.sheet_special_damages()
@@ -472,44 +473,31 @@ class Equips:
         return power
 
     @property
-    def special_damage_definition_list(self) -> List[dict]:
+    def special_damage_iter(self) -> Iterator[SpecialDamage]:
         hand_equipments = self.get_equipment_hands()
-        special_damages_list = []
         special_damages_dict = {}
         special_damages_gen = (
             special_damage
             for equipment in hand_equipments
-            for special_damage in equipment.special_damage_definition_list
+            for special_damage in equipment.special_damage_iter
         )
 
         for special_damage in special_damages_gen:
-            damage_type = special_damage['damage_type']
+            damage_type = special_damage.damage_type
+            base_damage = special_damage.base_damage
             damage_dict = special_damages_dict.setdefault(damage_type, {})
-            min_damage = special_damage['min_damage']
-            max_damage = special_damage['max_damage']
-            status = special_damage['status']
-            damage_dict.setdefault('min_damage', []).append(min_damage)
-            damage_dict.setdefault('max_damage', []).append(max_damage)
-            damage_dict.setdefault('status', []).extend(status)
+            damage_dict.setdefault('base_damage', []).append(base_damage)
+            damage_dict.setdefault('status_multiplier', []).append(1)
 
         for damage_type, damage_dict in special_damages_dict.items():
-            min_damage = sum(damage_dict['min_damage'])
-            max_damage = sum(damage_dict['max_damage'])
-            def get_damage(): return randint(min_damage, max_damage)
-            status = damage_dict['status']
-            damage_type_name = damage_type.value
-            if max_damage > 0:
-                special_damages_list.append(dict(
-                    min_damage=min_damage,
-                    max_damage=max_damage,
-                    get_damage=get_damage,
+            base_damage = sum(damage_dict['base_damage'])
+            status_multiplier = sum(damage_dict['status_multiplier'])
+            if base_damage > 0:
+                yield SpecialDamage(
+                    base_damage=base_damage,
                     damage_type=damage_type,
-                    damage_type_name=damage_type_name,
-                    status=status,
-                    text=f'{damage_type_name}: {min_damage}-{max_damage}',
-                ))
-
-        return special_damages_list
+                    status_multiplier=status_multiplier,
+                )
 
     _id = property(lambda self: self.__id)
     helmet = property(lambda self: self.__helmet)

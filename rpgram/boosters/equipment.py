@@ -1,6 +1,5 @@
 from datetime import datetime
-from random import randint
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, Iterator, List, Tuple, Union
 from bson import ObjectId
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
@@ -25,11 +24,11 @@ from rpgram.constants.text import (
     WISDOM_EMOJI_TEXT
 )
 from rpgram.enums.damage import DamageEnum
-from rpgram.enums.debuff import DebuffEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.skills.special_damage import SpecialDamage
 
 
 class Equipment(StatsBooster):
@@ -392,184 +391,6 @@ class Equipment(StatsBooster):
 
         return escape_basic_markdown_v2(text)
 
-    def get_dmg_from_damage_type(
-        self,
-        damage_type: DamageEnum
-    ) -> Tuple[int, int]:
-
-        if damage_type == DamageEnum.HITTING:
-            min_multiplier = 0.15
-            max_multiplier = 0.35
-        elif damage_type == DamageEnum.SLASHING:
-            min_multiplier = 0.30
-            max_multiplier = 0.60
-        elif damage_type == DamageEnum.PIERCING:
-            min_multiplier = 0.20
-            max_multiplier = 0.40
-        elif damage_type == DamageEnum.MAGIC:
-            min_multiplier = 0.10
-            max_multiplier = 0.22
-        elif damage_type == DamageEnum.BLESSING:
-            min_multiplier = -0.25
-            max_multiplier = -0.50
-        elif damage_type == DamageEnum.DIVINE:
-            min_multiplier = 0.77
-            max_multiplier = 1.54
-        elif damage_type == DamageEnum.LIGHT:
-            min_multiplier = 0.50
-            max_multiplier = 0.99
-        elif damage_type == DamageEnum.DARK:
-            min_multiplier = 0.42
-            max_multiplier = 0.84
-        elif damage_type == DamageEnum.FIRE:
-            min_multiplier = 0.18
-            max_multiplier = 1.00
-        elif damage_type == DamageEnum.WATER:
-            min_multiplier = 0.23
-            max_multiplier = 0.46
-        elif damage_type == DamageEnum.COLD:
-            min_multiplier = 0.16
-            max_multiplier = 0.33
-        elif damage_type == DamageEnum.LIGHTNING:
-            min_multiplier = 0.37
-            max_multiplier = 0.74
-        elif damage_type == DamageEnum.WIND:
-            min_multiplier = 0.22
-            max_multiplier = 0.41
-        elif damage_type == DamageEnum.ROCK:
-            min_multiplier = 0.25
-            max_multiplier = 0.50
-        elif damage_type == DamageEnum.GROUND:
-            min_multiplier = 0.09
-            max_multiplier = 0.65
-        elif damage_type == DamageEnum.ACID:
-            min_multiplier = 0.32
-            max_multiplier = 0.64
-        elif damage_type == DamageEnum.POISON:
-            min_multiplier = 0.36
-            max_multiplier = 0.71
-        elif damage_type == DamageEnum.CHAOS:
-            min_multiplier = 0.06
-            max_multiplier = 1.32
-
-        min_damage = int(self.max_attack_value * min_multiplier)
-        max_damage = int(self.max_attack_value * max_multiplier)
-
-        return min_damage, max_damage
-
-    def get_status_from_damage_type(
-        self,
-        damage_type: DamageEnum
-    ) -> List[dict]:
-        status_list = []
-        if damage_type == DamageEnum.HITTING:
-            status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.SLASHING:
-            status_list.extend([
-                dict(status=DebuffEnum.BLEEDING, ratio=0.25),
-            ])
-        elif damage_type == DamageEnum.PIERCING:
-            status_list.extend([
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.MAGIC:
-            status_list.extend([
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.05),
-                dict(status=DebuffEnum.BURN, ratio=0.05),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.05),
-                dict(status=DebuffEnum.EXHAUSTION, ratio=0.05),
-                dict(status=DebuffEnum.FROZEN, ratio=0.05),
-                dict(status=DebuffEnum.PARALYSIS, ratio=0.05),
-                dict(status=DebuffEnum.PETRIFIED, ratio=0.05),
-                dict(status=DebuffEnum.POISONING, ratio=0.05),
-                dict(status=DebuffEnum.SILENCE, ratio=0.05),
-                dict(status=DebuffEnum.STUNNED, ratio=0.05),
-            ])
-        elif damage_type == DamageEnum.BLESSING:
-            status_list.extend([
-                dict(status=DebuffEnum.SILENCE, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.DIVINE:
-            status_list.extend([
-                dict(status=DebuffEnum.BERSERKER, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.10),
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-                dict(status=DebuffEnum.EXHAUSTION, ratio=0.10),
-                dict(status=DebuffEnum.FROZEN, ratio=0.10),
-                dict(status=DebuffEnum.PARALYSIS, ratio=0.10),
-                dict(status=DebuffEnum.PETRIFIED, ratio=0.10),
-                dict(status=DebuffEnum.POISONING, ratio=0.10),
-                dict(status=DebuffEnum.SILENCE, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.LIGHT:
-            status_list.extend([
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.10),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.DARK:
-            status_list.extend([
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.10),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.FIRE:
-            status_list.extend([
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.WATER:
-            status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.COLD:
-            status_list.extend([
-                dict(status=DebuffEnum.FROZEN, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.LIGHTNING:
-            status_list.extend([
-                dict(status=DebuffEnum.PARALYSIS, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.WIND:
-            status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.ROCK:
-            status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.GROUND:
-            status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.ACID:
-            status_list.extend([
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-                dict(status=DebuffEnum.POISONING, ratio=0.10),
-            ])
-        elif damage_type == DamageEnum.POISON:
-            status_list.extend([
-                dict(status=DebuffEnum.POISONING, ratio=0.15),
-                dict(status=DebuffEnum.POISONING, ratio=0.15),
-            ])
-        elif damage_type == DamageEnum.CHAOS:
-            status_list.extend([
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-            ])
-
-        return status_list
-
     def sheet_damage_types(self):
         damage_types = ''
         if self.damage_types:
@@ -596,10 +417,10 @@ class Equipment(StatsBooster):
 
     def sheet_special_damages(self):
         special_damages = ''
-        if self.special_damage_definition_list:
+        if self.special_damage_iter:
             special_damages += f'*Dano Especial*:\n'
-            for type_damage in self.special_damage_definition_list:
-                damage_type_text = type_damage['text']
+            for special_damage in self.special_damage_iter:
+                damage_type_text = special_damage.text
                 special_damages += f'  {damage_type_text}\n'
         special_damages += f'\n'
 
@@ -811,45 +632,19 @@ class Equipment(StatsBooster):
         )
 
     @property
-    def special_damage_definition_list(self) -> List[dict]:
-        '''Retorna um dicionário as definições de dano do equipamento.
-
-        Return {
-            min_damage: Dano Mínimo - int
-            max_damage: Dano Máximo - int
-            get_damage: Função que retorna o dano - callable
-            damage_type: Tipo de dano - DamageEnum
-            damage_type_name: Nome do tipo de dano - str
-            status: Lista de status e o Ratio - 
-                    List[dict(status=DebuffEnum, ratio=float)]
-            text: Texto com o nome do tipo de dano e o range do dano - str
-        }
-        '''
-
-        special_damages_list = []
+    def special_damage_iter(self) -> Iterator[SpecialDamage]:
         damage_types = (
             self.damage_types
             if self.damage_types is not None
             else []
         )
         for damage_type in damage_types:
-            min_damage, max_damage = self.get_dmg_from_damage_type(damage_type)
-
-            def get_damage(): return randint(min_damage, max_damage)
-            status = self.get_status_from_damage_type(damage_type)
-            damage_type_name = damage_type.value
-            if max_damage > 0:
-                special_damages_list.append(dict(
-                    min_damage=min_damage,
-                    max_damage=max_damage,
-                    get_damage=get_damage,
+            base_damage = self.max_attack_value
+            if base_damage > 0:
+                yield SpecialDamage(
+                    base_damage=base_damage,
                     damage_type=damage_type,
-                    damage_type_name=damage_type_name,
-                    status=status,
-                    text=f'{damage_type_name}: {min_damage}-{max_damage}',
-                ))
-
-        return special_damages_list
+                )
 
     name = property(lambda self: self.identifiable_tag + self.__name)
     equip_type = property(lambda self: self.__equip_type)
