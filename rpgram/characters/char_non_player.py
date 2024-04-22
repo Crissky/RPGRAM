@@ -115,6 +115,10 @@ class NPCharacter(BaseCharacter):
         return self.stars.value
 
     @property
+    def is_boss(self) -> bool:
+        return self.stars == EnemyStarsEnum.BOSS
+
+    @property
     def enemy_id(self) -> ObjectId:
         return super().player_id
 
