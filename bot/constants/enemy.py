@@ -19,6 +19,7 @@ MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT = {
     EnemyStarsEnum.THREE.name: 50,
     EnemyStarsEnum.FOUR.name: 60,
     EnemyStarsEnum.FIVE.name: 70,
+    EnemyStarsEnum.SUB_BOSS.name: 80,
     EnemyStarsEnum.BOSS.name: 90,
 }
 MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT = {
@@ -27,15 +28,17 @@ MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT = {
     EnemyStarsEnum.THREE.name: 80,
     EnemyStarsEnum.FOUR.name: 90,
     EnemyStarsEnum.FIVE.name: 100,
+    EnemyStarsEnum.SUB_BOSS.name: 110,
     EnemyStarsEnum.BOSS.name: 120,
 }
 
 ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT = {
-    EnemyStarsEnum.ONE.name: 0.50,
-    EnemyStarsEnum.TWO.name: 0.60,
-    EnemyStarsEnum.THREE.name: 0.70,
-    EnemyStarsEnum.FOUR.name: 0.80,
-    EnemyStarsEnum.FIVE.name: 0.90,
+    EnemyStarsEnum.ONE.name: 0.40,
+    EnemyStarsEnum.TWO.name: 0.50,
+    EnemyStarsEnum.THREE.name: 0.60,
+    EnemyStarsEnum.FOUR.name: 0.70,
+    EnemyStarsEnum.FIVE.name: 0.80,
+    EnemyStarsEnum.SUB_BOSS.name: 0.90,
     EnemyStarsEnum.BOSS.name: 0.95,
 }
 

@@ -6,7 +6,6 @@ from rpgram.boosters.classe import Classe
 from rpgram.boosters.race import Race
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.constants.text import ALIGNMENT_EMOJI_TEXT
-from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.enemy import AlignmentEnum, EnemyStarsEnum
 from rpgram.equips import Equips
 from rpgram.status import Status
@@ -18,7 +17,8 @@ POINTS_MULTIPLIER = {
     EnemyStarsEnum.THREE.name: 3,
     EnemyStarsEnum.FOUR.name: 5,
     EnemyStarsEnum.FIVE.name: 7,
-    EnemyStarsEnum.BOSS.name: 11,
+    EnemyStarsEnum.SUB_BOSS.name: 11,
+    EnemyStarsEnum.BOSS.name: 13,
 }
 
 
@@ -117,6 +117,14 @@ class NPCharacter(BaseCharacter):
     @property
     def is_boss(self) -> bool:
         return self.stars == EnemyStarsEnum.BOSS
+
+    @property
+    def is_sub_boss(self) -> bool:
+        return self.stars == EnemyStarsEnum.SUB_BOSS
+
+    @property
+    def is_any_boss(self) -> bool:
+        return self.is_boss or self.is_sub_boss
 
     @property
     def enemy_id(self) -> ObjectId:

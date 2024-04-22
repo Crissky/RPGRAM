@@ -594,7 +594,7 @@ async def player_attack_enemy(
 
         return ConversationHandler.END
 
-    if attacker_user_id == target_user_id and not enemy_char.is_boss:
+    if attacker_user_id == target_user_id and not enemy_char.is_any_boss:
         await query.answer(
             'Você não tem a habilidade de contra atacar.',
             show_alert=True

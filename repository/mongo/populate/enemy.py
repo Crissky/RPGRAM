@@ -60,19 +60,21 @@ def choice_enemy_star(no_boss: bool = False) -> str:
     '''Função que retorna um tipo de item aleatório.
     O tipo do item é retornado com base em sua propabilidade.
     '''
-    types_item = {
+    enemy_stars = {
         EnemyStarsEnum.ONE.name: 1000,
         EnemyStarsEnum.TWO.name: 900,
         EnemyStarsEnum.THREE.name: 800,
         EnemyStarsEnum.FOUR.name: 700,
         EnemyStarsEnum.FIVE.name: 600,
+        EnemyStarsEnum.SUB_BOSS.name: 300,
         EnemyStarsEnum.BOSS.name: 100,
     }
 
     if no_boss:
-        types_item.pop('BOSS')
+        enemy_stars.pop('SUB_BOSS')
+        enemy_stars.pop('BOSS')
 
-    return weighted_choice(**types_item)
+    return weighted_choice(**enemy_stars)
 
 
 def choice_enemy_class_name() -> str:
@@ -224,9 +226,9 @@ def create_random_enemies(
             enemy_race_name=enemy_race_name,
         )
         enemy_char = distribute_stats(enemy_char)
-
         enemy_list.append(enemy_char)
-        if EnemyStarsEnum.BOSS.name == enemy_stars:
+
+        if enemy_char.is_any_boss:
             no_boss = True
 
     return enemy_list

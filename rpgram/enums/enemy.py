@@ -7,7 +7,8 @@ class EnemyStarsEnum(Enum):
     THREE = '⭐⭐⭐'
     FOUR = '⭐⭐⭐⭐'
     FIVE = '🌟🌟🌟🌟🌟'
-    BOSS = '👾'  # 👹👺
+    SUB_BOSS = '👺'
+    BOSS = '👾'  # 👹
 
 
 class AlignmentEnum(Enum):
