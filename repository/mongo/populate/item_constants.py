@@ -2,7 +2,7 @@
 
 SLASHING_WEAPONS = [
     'SWORD', 'DAGGER', 'GREAT_SWORD', 'AXE', 'DOUBLE_AXE', 'KATANA',
-    'SCIMITAR', 'MACHETE', 'CUTLASS', 'FALCHION', 'HALBERD', 'WHIP'
+    'SCIMITAR', 'MACHETE', 'CUTLASS', 'FALCHION', 'HALBERD', 'WHIP', 'KODACHI'
 ]
 BLUDGEONING_WEAPONS = [
     'SHIELD', 'STAFF', 'WARHAMMER', 'MACE', 'CLUB', 'FLAIL',
@@ -76,7 +76,7 @@ DEX_REQUIREMENTS = [
     'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN', 'RAPIER',
     'ESTOQUE', 'SAI', 'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER',
     'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
-    'ARTEMIS\'S_RING', 'SCARF'
+    'ARTEMIS\'S_RING', 'SCARF', 'KODACHI'
 ]
 CON_REQUIREMENTS = [
     'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'SCUTUM', 'GREATSHIELD',
@@ -226,6 +226,22 @@ ONE_HAND_EQUIPMENTS = {
             'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 5, 'bonus_hit': 10,
             'bonus_evasion': 10,
+        }
+    ),
+    'KODACHI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 15,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 3, 'bonus_hit': 3,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 1,
+            'bonus_evasion': 1,
         }
     ),
     'SCIMITAR': dict(

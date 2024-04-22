@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, Iterator, List, Tuple, Union
 from bson import ObjectId
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
@@ -28,6 +28,7 @@ from rpgram.enums.equipment import EquipmentEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.skills.special_damage import SpecialDamage
 
 
 class Equipment(StatsBooster):
@@ -314,6 +315,7 @@ class Equipment(StatsBooster):
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
+        special_damages = self.sheet_special_damages()
 
         type_icon = EmojiEnum[self.equip_type.name].value
         price_text = self.price_text if is_sell else self.sell_price_text
@@ -332,6 +334,7 @@ class Equipment(StatsBooster):
             f'*Valor*: {price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
+            f'{special_damages}'
         )
         text += (
             f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
@@ -409,8 +412,19 @@ class Equipment(StatsBooster):
             requirements = '\n'.join(
                 [f'  {k}: {v}' for k, v in self.__requirements.items()]
             )
-            requirements = f'*Requisitos*:\n{requirements}\n\n'
+            requirements = f'*Requisitos*:\n{requirements}\n'
         return requirements
+
+    def sheet_special_damages(self):
+        special_damages = ''
+        if self.special_damage_iter:
+            special_damages += f'*Dano Especial*:\n'
+            for special_damage in self.special_damage_iter:
+                damage_type_text = special_damage.text
+                special_damages += f'  {damage_type_text}\n'
+        special_damages += f'\n'
+
+        return special_damages
 
     def get_sheet(
         self,
@@ -421,6 +435,7 @@ class Equipment(StatsBooster):
         damage_types = self.sheet_damage_types()
         power_multiplier = self.sheet_power_multiplier()
         requirements = self.sheet_requirements()
+        special_damages = self.sheet_special_damages()
         material_level = (
             self.material_level
             if self.material_level
@@ -441,6 +456,7 @@ class Equipment(StatsBooster):
             f'*Valor*: {price_text}\n'
             f'*Peso*: {self.weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{requirements}'
+            f'{special_damages}'
         )
 
         if not markdown:
@@ -604,6 +620,31 @@ class Equipment(StatsBooster):
     @property
     def rarity_level(self):
         return get_enum_index(self.rarity) + 1
+
+    @property
+    def max_attack_value(self) -> int:
+        return max(
+            self.physical_attack,
+            self.precision_attack,
+            self.magical_attack,
+            self.level,
+            1,
+        )
+
+    @property
+    def special_damage_iter(self) -> Iterator[SpecialDamage]:
+        damage_types = (
+            self.damage_types
+            if self.damage_types is not None
+            else []
+        )
+        for damage_type in damage_types:
+            base_damage = self.max_attack_value
+            if base_damage > 0:
+                yield SpecialDamage(
+                    base_damage=base_damage,
+                    damage_type=damage_type,
+                )
 
     name = property(lambda self: self.identifiable_tag + self.__name)
     equip_type = property(lambda self: self.__equip_type)

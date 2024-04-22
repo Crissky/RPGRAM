@@ -501,7 +501,7 @@ REPLY_TEXT_THANKS = [
     'Estou verdadeiramente tocado com esse gesto gentil, obrigado por me dar essa ajuda incrível.',
     'Que belo presente! Agradeço muito por sua generosidade e amizade.',
     'Estou muito feliz com esse presente, obrigado por sua amizade e apoio contínuo.',
-    'Muito obrigado por essa ajuda maravilhosa, você realmente alegrar meu dia.',
+    'Muito obrigado por essa ajuda maravilhosa, você realmente alegrou o meu dia.',
     'Que gesto gentil! Agradeço muito por me presentear com essa ajuda tão útil.',
     'Estou encantado com esse presente, obrigado por sua generosidade e apoio.',
     'Receber essa ajuda foi uma verdadeira bênção, obrigado por sua amizade e consideração.',
@@ -514,6 +514,6 @@ REPLY_TEXT_THANKS = [
     'Estou verdadeiramente tocado com esse gesto gentil, obrigado por me dar essa ajuda incrível.',
     'Que belo presente! Agradeço muito por sua generosidade e amizade.',
     'Estou muito feliz com esse presente, obrigado por sua amizade e apoio contínuo.',
-    'Muito obrigado por essa ajuda maravilhosa, você realmente alegrar meu dia.',
+    'Muito obrigado por essa ajuda maravilhosa, você realmente alegrou o meu dia.',
     'Que gesto gentil! Agradeço muito por me presentear com essa ajuda tão útil.',
 ]

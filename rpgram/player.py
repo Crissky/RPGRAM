@@ -16,6 +16,7 @@ DEFAULT_ENEMY_COUNTER = {
     EnemyStarsEnum.THREE.name: 0,
     EnemyStarsEnum.FOUR.name: 0,
     EnemyStarsEnum.FIVE.name: 0,
+    EnemyStarsEnum.SUB_BOSS.name: 0,
     EnemyStarsEnum.BOSS.name: 0,
 }
 

@@ -20,7 +20,7 @@ DUELIST_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD'],
     EquipmentEnum.ONE_HAND.name: [
         'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN',
-        'RAPIER', 'ESTOQUE', 'SAI'
+        'RAPIER', 'ESTOQUE', 'SAI', 'KODACHI'
     ],
     EquipmentEnum.TWO_HANDS.name: [
         'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER'

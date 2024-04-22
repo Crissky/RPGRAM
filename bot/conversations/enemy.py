@@ -124,14 +124,14 @@ async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
 
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes_in_seconds = randint(1, 179) * 60
+        minutes = randint(1, 120)
         print(
             f'JOB_CREATE_AMBUSH() - {now}: '
-            f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
+            f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(
             callback=job_start_ambush,
-            when=minutes_in_seconds,
+            when=timedelta(minutes=minutes),
             name=f'JOB_CREATE_AMBUSH_{i}',
             chat_id=chat_id,
         )
@@ -594,7 +594,7 @@ async def player_attack_enemy(
 
         return ConversationHandler.END
 
-    if attacker_user_id == target_user_id:
+    if attacker_user_id == target_user_id and not enemy_char.is_any_boss:
         await query.answer(
             'Você não tem a habilidade de contra atacar.',
             show_alert=True
@@ -1203,7 +1203,7 @@ async def enemy_drop_random_loot(
 
     if from_attack:
         group_level = enemy_char.level + (points_multiplier * 5)
-        total_consumables = randint(1, points_multiplier)
+        total_consumables = randint(1, int(points_multiplier + 2))
         total_equipments = randint(1, ceil(points_multiplier / 2))
     else:
         group_level = ceil(enemy_char.level * 0.90)

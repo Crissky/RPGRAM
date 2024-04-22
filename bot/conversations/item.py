@@ -1,3 +1,4 @@
+from datetime import timedelta
 from random import choice, randint
 from typing import Iterable
 
@@ -80,14 +81,14 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes_in_seconds = randint(1, 29) * 60
+        minutes = randint(1, 29)
         print(
             f'JOB_CREATE_FIND_TREASURE() - {now}: '
-            f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
+            f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(
             callback=job_find_treasure,
-            when=minutes_in_seconds,
+            when=timedelta(minutes=minutes),
             name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
             chat_id=chat_id,
         )
