@@ -124,14 +124,14 @@ async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
 
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes_in_seconds = randint(1, 179) * 60
+        minutes = randint(1, 120)
         print(
             f'JOB_CREATE_AMBUSH() - {now}: '
-            f'Evento de item inicia em {minutes_in_seconds // 60} minutos.'
+            f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(
             callback=job_start_ambush,
-            when=minutes_in_seconds,
+            when=timedelta(minutes=minutes),
             name=f'JOB_CREATE_AMBUSH_{i}',
             chat_id=chat_id,
         )
