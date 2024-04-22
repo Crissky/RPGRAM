@@ -264,14 +264,14 @@ class BaseCharacter:
 
             damage = max(damage, 0)
             total_damage = damage
-            damage_text_list = [f'{attacker_action_name}({damage})']
+            damage_text_list = [f'*{attacker_action_name}*({damage})']
 
             if total_damage > 0:
                 for special_damage in self.equips.special_damage_iter:
                     damage_name = special_damage.damage_name
                     spec_damage = special_damage.damage
                     total_damage += spec_damage
-                    damage_text = f'{damage_name}({spec_damage})'
+                    damage_text = f'*{damage_name}*({spec_damage})'
                     damage_text_list.append(damage_text)
 
             damage_report = defender_char.cs.damage_hit_points(
@@ -285,9 +285,11 @@ class BaseCharacter:
 
             if total_damage > 0:
                 damage_or_defend_text = (
-                    f' e causou *{total_damage}* pontos de dano.\n'
+                    f' e causou *{total_damage}* pontos de dano'
                 )
-                damage_or_defend_text += ', '.join(damage_text_list)
+                if len(damage_text_list) > 1:
+                    damage_or_defend_text += '.\n'
+                    damage_or_defend_text += ', '.join(damage_text_list)
             report['text'] = (
                 f'*{self.full_name_with_level}* *ATACOU* '
                 f'{defender_player_name}{damage_or_defend_text}.\n\n'
