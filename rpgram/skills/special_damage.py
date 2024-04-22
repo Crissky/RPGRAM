@@ -1,8 +1,22 @@
 from random import randint
 from typing import List, Tuple, Union
 
+from rpgram.conditions.debuff import (
+    BerserkerCondition,
+    BleedingCondition,
+    BlindnessCondition,
+    BurnCondition,
+    ConfusionCondition,
+    CurseCondition,
+    ExhaustionCondition,
+    FrozenCondition,
+    ParalysisCondition,
+    PetrifiedCondition,
+    PoisoningCondition,
+    SilenceCondition,
+    StunnedCondition
+)
 from rpgram.enums.damage import DamageEnum
-from rpgram.enums.debuff import DebuffEnum
 
 
 class SpecialDamage:
@@ -129,114 +143,114 @@ class SpecialDamage:
     @property
     def status_list(self) -> List[dict]:
         '''Retorna uma lista de status (Dict[status, ratio]) com o 
-        percentual de chance (ratio) de causar o status.
+        percentual de chance (ratio) de causar o status(Condition).
         '''
 
         status_list = []
         if self.damage_type == DamageEnum.HITTING:
             status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.SLASHING:
             status_list.extend([
-                dict(status=DebuffEnum.BLEEDING, ratio=0.25),
+                dict(status=BleedingCondition, ratio=0.25),
             ])
         elif self.damage_type == DamageEnum.PIERCING:
             status_list.extend([
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
+                dict(status=BleedingCondition, ratio=0.10),
+                dict(status=BleedingCondition, ratio=0.10),
+                dict(status=BleedingCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.MAGIC:
             status_list.extend([
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.05),
-                dict(status=DebuffEnum.BURN, ratio=0.05),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.05),
-                dict(status=DebuffEnum.EXHAUSTION, ratio=0.05),
-                dict(status=DebuffEnum.FROZEN, ratio=0.05),
-                dict(status=DebuffEnum.PARALYSIS, ratio=0.05),
-                dict(status=DebuffEnum.PETRIFIED, ratio=0.05),
-                dict(status=DebuffEnum.POISONING, ratio=0.05),
-                dict(status=DebuffEnum.SILENCE, ratio=0.05),
-                dict(status=DebuffEnum.STUNNED, ratio=0.05),
+                dict(status=BlindnessCondition, ratio=0.05),
+                dict(status=BurnCondition, ratio=0.05),
+                dict(status=ConfusionCondition, ratio=0.05),
+                dict(status=ExhaustionCondition, ratio=0.05),
+                dict(status=FrozenCondition, ratio=0.05),
+                dict(status=ParalysisCondition, ratio=0.05),
+                dict(status=PetrifiedCondition, ratio=0.05),
+                dict(status=PoisoningCondition, ratio=0.05),
+                dict(status=SilenceCondition, ratio=0.05),
+                dict(status=StunnedCondition, ratio=0.05),
             ])
         elif self.damage_type == DamageEnum.BLESSING:
             status_list.extend([
-                dict(status=DebuffEnum.SILENCE, ratio=0.10),
+                dict(status=SilenceCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.DIVINE:
             status_list.extend([
-                dict(status=DebuffEnum.BERSERKER, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.10),
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-                dict(status=DebuffEnum.EXHAUSTION, ratio=0.10),
-                dict(status=DebuffEnum.FROZEN, ratio=0.10),
-                dict(status=DebuffEnum.PARALYSIS, ratio=0.10),
-                dict(status=DebuffEnum.PETRIFIED, ratio=0.10),
-                dict(status=DebuffEnum.POISONING, ratio=0.10),
-                dict(status=DebuffEnum.SILENCE, ratio=0.10),
+                dict(status=BerserkerCondition, ratio=0.10),
+                dict(status=BleedingCondition, ratio=0.10),
+                dict(status=BlindnessCondition, ratio=0.10),
+                dict(status=BurnCondition, ratio=0.10),
+                dict(status=ConfusionCondition, ratio=0.10),
+                dict(status=CurseCondition, ratio=0.10),
+                dict(status=ExhaustionCondition, ratio=0.10),
+                dict(status=FrozenCondition, ratio=0.10),
+                dict(status=ParalysisCondition, ratio=0.10),
+                dict(status=PetrifiedCondition, ratio=0.10),
+                dict(status=PoisoningCondition, ratio=0.10),
+                dict(status=SilenceCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.LIGHT:
             status_list.extend([
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.10),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.10),
+                dict(status=BlindnessCondition, ratio=0.10),
+                dict(status=ConfusionCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.DARK:
             status_list.extend([
-                dict(status=DebuffEnum.BLINDNESS, ratio=0.10),
-                dict(status=DebuffEnum.CONFUSION, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
+                dict(status=BlindnessCondition, ratio=0.10),
+                dict(status=ConfusionCondition, ratio=0.10),
+                dict(status=CurseCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.FIRE:
             status_list.extend([
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-                dict(status=DebuffEnum.BURN, ratio=0.10),
+                dict(status=BurnCondition, ratio=0.10),
+                dict(status=BurnCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.WATER:
             status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.COLD:
             status_list.extend([
-                dict(status=DebuffEnum.FROZEN, ratio=0.10),
+                dict(status=FrozenCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.LIGHTNING:
             status_list.extend([
-                dict(status=DebuffEnum.PARALYSIS, ratio=0.10),
+                dict(status=ParalysisCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.WIND:
             status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-                dict(status=DebuffEnum.BLEEDING, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
+                dict(status=BleedingCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.ROCK:
             status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.GROUND:
             status_list.extend([
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
-                dict(status=DebuffEnum.STUNNED, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
+                dict(status=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.ACID:
             status_list.extend([
-                dict(status=DebuffEnum.BURN, ratio=0.10),
-                dict(status=DebuffEnum.POISONING, ratio=0.10),
+                dict(status=BurnCondition, ratio=0.10),
+                dict(status=PoisoningCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.POISON:
             status_list.extend([
-                dict(status=DebuffEnum.POISONING, ratio=0.15),
-                dict(status=DebuffEnum.POISONING, ratio=0.15),
+                dict(status=PoisoningCondition, ratio=0.15),
+                dict(status=PoisoningCondition, ratio=0.15),
             ])
         elif self.damage_type == DamageEnum.CHAOS:
             status_list.extend([
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
-                dict(status=DebuffEnum.CURSE, ratio=0.10),
+                dict(status=CurseCondition, ratio=0.10),
+                dict(status=CurseCondition, ratio=0.10),
+                dict(status=CurseCondition, ratio=0.10),
             ])
 
         return status_list * self.__status_multiplier
