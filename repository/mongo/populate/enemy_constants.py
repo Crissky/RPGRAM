@@ -30,6 +30,17 @@ DUELIST_EQUIPMENTS = {
     EquipmentEnum.RING.name: ['RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING'],
     EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF'],
 }
+SAMURAI_EQUIPMENTS = {
+    EquipmentEnum.HELMET.name: ['HELMET', 'HOOD'],
+    EquipmentEnum.ONE_HAND.name: [
+        'DAGGER', 'CUTLASS', 'JAVELIN', 'RAPIER', 'SAI', 'KODACHI'
+    ],
+    EquipmentEnum.TWO_HANDS.name: ['BOW', 'KATANA', 'ARBALEST', 'SPEAR'],
+    EquipmentEnum.ARMOR.name: ['KIMONO', 'ARMOR'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDALS', 'GREAVES'],
+    EquipmentEnum.RING.name: ['RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF', 'AMULET'],
+}
 FIGHTER_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['HELMET', 'KRÁNOS'],
     EquipmentEnum.ONE_HAND.name: [
@@ -100,6 +111,7 @@ ARCHETYPES_EQUIPMENTS = {
     'Necromante': MAGICIAN_EQUIPMENTS,
     'Patrulheiro': DUELIST_EQUIPMENTS,
     'Xamã': MAGICIAN_EQUIPMENTS,
+    'Samurai': SAMURAI_EQUIPMENTS,
     'Berserkir': BARBARIAN_EQUIPMENTS,
     'Mestre das Armas': FIGHTER_EQUIPMENTS,
     'Feiticeiro Supremo': MAGICIAN_EQUIPMENTS,
@@ -1778,6 +1790,7 @@ if __name__ == '__main__':
     ALL_ARCHETYPE_EQUIPMENTS = [
         MAGICIAN_EQUIPMENTS,
         DUELIST_EQUIPMENTS,
+        SAMURAI_EQUIPMENTS,
         FIGHTER_EQUIPMENTS,
         BARBARIAN_EQUIPMENTS,
         PROTECTOR_EQUIPMENTS,
