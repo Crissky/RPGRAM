@@ -416,15 +416,15 @@ class Equipment(StatsBooster):
         return requirements
 
     def sheet_special_damages(self):
-        special_damages = ''
-        if next(self.special_damage_iter, None):
-            special_damages += f'*Dano Especial*:\n'
-            for special_damage in self.special_damage_iter:
-                damage_type_text = special_damage.text
-                special_damages += f'  {damage_type_text}\n'
-        special_damages += f'\n'
+        special_damage_text = '\n'.join((
+            f'  {special_damage.text}'
+            for special_damage in self.special_damage_iter
+        ))
+        if special_damage_text:
+            special_damage_text = f'*Dano Especial*:\n{special_damage_text}\n'
+        special_damage_text += f'\n'
 
-        return special_damages
+        return special_damage_text
 
     def get_sheet(
         self,

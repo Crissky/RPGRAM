@@ -49,11 +49,25 @@ class SpecialDamage:
 
     @property
     def min_damage(self) -> int:
-        return int(self.base_damage * self.__damage_multipliers[0])
+        '''Retorna o dano mínimo obtido pelo multiplicador do dano. 
+        Sendo 1 o menor valor possível.
+        '''
+
+        return max(
+            int(self.base_damage * self.__damage_multipliers[0]),
+            1
+        )
 
     @property
     def max_damage(self) -> int:
-        return int(self.base_damage * self.__damage_multipliers[1])
+        '''Retorna o dano máximo obtido pelo multiplicador do dano. 
+        Sendo 2 o menor valor possível.
+        '''
+
+        return max(
+            int(self.base_damage * self.__damage_multipliers[1]),
+            2
+        )
 
     @property
     def damage_type(self) -> DamageEnum:
@@ -266,5 +280,5 @@ class SpecialDamage:
 
 
 if __name__ == '__main__':
-    spec_dmg = SpecialDamage(10, 20, DamageEnum.HITTING)
+    spec_dmg = SpecialDamage(1, DamageEnum.HITTING)
     print(spec_dmg)
