@@ -347,7 +347,7 @@ class Equips:
 
     def sheet_special_damages(self) -> str:
         special_damages_text = ''
-        if self.special_damage_iter:
+        if next(self.special_damage_iter, None):
             special_damages_text += f'*Dano Especial*:\n'
             for special_damage in self.special_damage_iter:
                 damage_type_text = special_damage.text

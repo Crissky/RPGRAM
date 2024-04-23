@@ -417,7 +417,7 @@ class Equipment(StatsBooster):
 
     def sheet_special_damages(self):
         special_damages = ''
-        if self.special_damage_iter:
+        if next(self.special_damage_iter, None):
             special_damages += f'*Dano Especial*:\n'
             for special_damage in self.special_damage_iter:
                 damage_type_text = special_damage.text
@@ -732,7 +732,7 @@ if __name__ == '__main__':
     shield = Equipment(
         name='Escudo Comparativo de Madeira',
         equip_type=EquipmentEnum.ONE_HAND,
-        damage_types=[DamageEnum.SLASHING, 'FIRE'],
+        damage_types=[DamageEnum.HITTING, 'FIRE'],
         weight=15,
         requirements={'Nível': 10, 'FOR': 13},
         rarity='RARE',
