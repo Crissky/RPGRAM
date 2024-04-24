@@ -60,7 +60,7 @@ MAGICAL_STONES_EQUIPMENTS = [
 ]
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
-TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'SCARF']
+TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'SCARF', 'KIMONO']
 COIN_EQUIPMENTS = ['COIN']
 
 
@@ -76,7 +76,7 @@ DEX_REQUIREMENTS = [
     'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN', 'RAPIER',
     'ESTOQUE', 'SAI', 'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER',
     'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
-    'ARTEMIS\'S_RING', 'SCARF', 'KODACHI'
+    'ARTEMIS\'S_RING', 'SCARF', 'KODACHI', 'KIMONO'
 ]
 CON_REQUIREMENTS = [
     'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'SCUTUM', 'GREATSHIELD',
@@ -84,7 +84,7 @@ CON_REQUIREMENTS = [
     'KRÁNOS', 'GUGEL', 'HOOD', 'POINTED_HAT', 'ARMOR', 'SPIKED_ARMOR',
     'BRIGANDINE', 'ROBE', 'CLOAK', 'SPAULDER', 'SPIKED_SPAULDER', 'BOOTS',
     'SANDALS', 'GREAVES', 'SPIKED_GREAVES', 'SHOES', 'RING', 'KRATOS\'S_RING',
-    'GAIA\'S_RING', 'NECKLACE', 'CHARM', 'COIN'
+    'GAIA\'S_RING', 'NECKLACE', 'CHARM', 'COIN', 'KIMONO'
 ]
 INT_REQUIREMENTS = [
     'WAND', 'ORB', 'QUILL', 'CHALICE', 'ROD', 'VAJRA', 'STAFF', 'GRIMOIRE',
@@ -1160,6 +1160,22 @@ ARMOR_EQUIPMENTS = {
             'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
             'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        }
+    ),
+    'KIMONO': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 7,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 7,
+            'bonus_magical_defense': 7, 'bonus_hit': 5,
+            'bonus_evasion': 5,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
             'bonus_evasion': 0,
         }
     ),

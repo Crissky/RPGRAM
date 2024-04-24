@@ -196,6 +196,16 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
         'SAB': enemy_char.base_stats.multiplier_wisdom ** 2,
         'CAR': enemy_char.base_stats.multiplier_charisma ** 2,
     }
+    base_stats_list = list(base_stats_probs.keys())
+    total_base_stats = len(base_stats_list)
+    partial_base_stats_points = int(enemy_char.base_stats.points * 0.30)
+
+    # Distribui os pontos de forma parcial e uniforme
+    for i in range(partial_base_stats_points):
+        stats_name = base_stats_list[i % total_base_stats]
+        enemy_char.base_stats[stats_name] = 1
+
+    # Distribui os pontos de forma ponderada
     for _ in range(enemy_char.base_stats.points):
         stats_name = weighted_choice(**base_stats_probs)
         enemy_char.base_stats[stats_name] = 1
@@ -210,6 +220,7 @@ def create_random_enemies(
     num_max_enemies: int = 5,
 ) -> List[NPCharacter]:
     '''Cria inimigos de maneira aleatória.'''
+
     total_enemy = get_total_enemy(num_min_enemies, num_max_enemies)
     enemy_list = []
     for _ in range(total_enemy):

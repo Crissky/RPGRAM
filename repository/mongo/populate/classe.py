@@ -881,6 +881,50 @@ CLASSES = [
         'multiplier_wisdom': 3,
         'multiplier_charisma': 1.4,
     },
+    {
+        'name': 'Samurai',
+        'description': (
+            'Os samurais são guerreiros honrados e disciplinados, '
+            'cujas habilidades em combate são lendárias. '
+            'Treinados desde jovens nas artes marciais e no código de conduta '
+            'bushido, os samurais são mestres da espada e da estratégia de '
+            'batalha. '
+            'Com um profundo senso de dever e lealdade, eles servem seus '
+            'senhores com devoção, prontos para sacrificar suas vidas em '
+            'nome da honra e do dever.\n\n'
+
+            'Em combate, os samurais são conhecidos por sua habilidade com a '
+            'katana, uma espada longa e afiada, e sua destreza em técnicas de '
+            'combate corpo a corpo. Eles são mestres em usar sua força '
+            'interior para aumentar sua velocidade e precisão em batalha, '
+            'tornando-os adversários formidáveis. '
+            'Além disso, os samurais são habilidosos arqueiros e cavaleiros, '
+            'capazes de se adaptar a diferentes situações de combate com '
+            'facilidade e graça.\n\n'
+
+            'A moralidade e o código de conduta dos samurais são fundamentais '
+            'em sua vida diária e em suas batalhas. '
+            'Eles seguem princípios de justiça, coragem, compaixão, cortesia, '
+            'honestidade e honra, buscando sempre agir com integridade e '
+            'respeito. '
+            'Esses valores não apenas guiam suas ações, '
+            'mas também os distinguem como guerreiros respeitados e '
+            'admirados por seu povo e por seus inimigos.\n\n'
+        ),
+        'enemy': True,
+        'bonus_strength': 5,
+        'bonus_dexterity': 5,
+        'bonus_constitution': 5,
+        'bonus_intelligence': 5,
+        'bonus_wisdom': 5,
+        'bonus_charisma': 5,
+        'multiplier_strength': 0.5,
+        'multiplier_dexterity': 3,
+        'multiplier_constitution': 2,
+        'multiplier_intelligence': 0.5,
+        'multiplier_wisdom': 0.5,
+        'multiplier_charisma': 1.5,
+    },
     # Enemies 13 Points
     {
         'name': 'Berserkir',

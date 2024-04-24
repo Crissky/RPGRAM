@@ -346,15 +346,15 @@ class Equips:
             return equipment.compare(*other_equipment, is_sell=is_sell)
 
     def sheet_special_damages(self) -> str:
-        special_damages_text = ''
-        if self.special_damage_iter:
-            special_damages_text += f'*Dano Especial*:\n'
-            for special_damage in self.special_damage_iter:
-                damage_type_text = special_damage.text
-                special_damages_text += f'  {damage_type_text}\n'
-        special_damages_text += f'\n'
+        special_damage_text = '\n'.join((
+            f'  {special_damage.text}'
+            for special_damage in self.special_damage_iter
+        ))
+        if special_damage_text:
+            special_damage_text = f'*Dano Especial*:\n{special_damage_text}\n'
+        special_damage_text += f'\n'
 
-        return special_damages_text
+        return special_damage_text
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         special_damages = self.sheet_special_damages()
