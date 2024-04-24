@@ -97,6 +97,18 @@ class TacticalWearableMaterialEnum(Enum):
     CHAIN_MITHRIL = 'Anéis de Mitril'
 
 
+class SeishinWearbleMaterialEnum(Enum):
+    BISHAMONTEN = 'Bishamonten'   # deus da justiça, guerra...
+    HACHIMAN = 'Hachiman'  # deus da guerra
+    FUJIN = 'Fujin'  # deus do vento
+    IZANAGI = 'Izanagi'  # deus da terra
+    RAIJIN = 'Raijin'  # deus do trovão
+    SUSANOO = 'Susanoo'  # deus do mar
+    KAGUTSUCHI = 'Kagutsuchi'  # deus do fogo
+    TSUKUYOMI = 'Tsukuyomi'  # deus da lua
+    AMATERASU = 'Amaterasu'  # deusa do Sol
+
+
 # ACCESSORIES
 class AccessoryMaterialsEnum(Enum):
     BRONZE = 'Bronze'

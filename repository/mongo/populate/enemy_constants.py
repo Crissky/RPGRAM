@@ -36,7 +36,7 @@ SAMURAI_EQUIPMENTS = {
         'DAGGER', 'CUTLASS', 'JAVELIN', 'RAPIER', 'SAI', 'KODACHI'
     ],
     EquipmentEnum.TWO_HANDS.name: ['BOW', 'KATANA', 'ARBALEST', 'SPEAR'],
-    EquipmentEnum.ARMOR.name: ['KIMONO', 'ARMOR'],
+    EquipmentEnum.ARMOR.name: ['KIMONO', 'Ō-YOROI', 'DŌ-MARU'],
     EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDALS', 'GREAVES'],
     EquipmentEnum.RING.name: ['RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING'],
     EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF', 'AMULET'],

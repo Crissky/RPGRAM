@@ -25,6 +25,7 @@ from repository.mongo.populate.item_constants import (
     PIERCING_WEAPONS,
     MAGICAL_QUILL_EQUIPMENTS,
     RING_EQUIPMENTS,
+    SEISHIN_WEARBLE_EQUIPMENTS,
     SLASHING_WEAPONS,
     TATICAL_WEARABLE_EQUIPMENTS,
     TWO_HANDS_EQUIPMENTS,
@@ -57,6 +58,7 @@ from rpgram.enums import (
     WearableMaterialEnum,
     TacticalWearableMaterialEnum
 )
+from rpgram.enums.material import SeishinWearbleMaterialEnum
 
 
 # CONSTANTS
@@ -719,6 +721,9 @@ def translate_material_name(
     elif equip_class in COIN_EQUIPMENTS:
         material_name = list(CoinMaterialsEnum)[index].name
         material_name = material_name.replace("_", " ").title()
+    elif equip_class in SEISHIN_WEARBLE_EQUIPMENTS:
+        material_name = list(SeishinWearbleMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
     else:
         material_name = material.replace("_", " ").title()
 
@@ -906,6 +911,7 @@ def create_random_item(
     min_items: int = 1,
     max_items: int = 5,
     no_trap: bool = False,
+    save_in_database: bool = True,
 ) -> Union[int, Iterable[Union[Consumable, Equipment]]]:
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
@@ -920,7 +926,7 @@ def create_random_item(
                 choiced_item,
                 group_level,
                 random_level=True,
-                save_in_database=True,
+                save_in_database=save_in_database,
             )
         else:
             raise ValueError(
@@ -961,7 +967,8 @@ if __name__ == '__main__':
         group_level=1001,
         min_items=1000,
         max_items=1000,
-        no_trap=True
+        no_trap=True,
+        save_in_database=False,
     )
     print(f'random_items type(): {type(random_items)}')
     print(isinstance(random_items, Iterable))
