@@ -6,6 +6,7 @@ from repository.mongo import ItemModel
 from repository.mongo.populate.tools import random_group_level, weighted_choice
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
+    ALL_NIPPON_EQUIPMENTS,
     ALL_WEAPONS,
     ARMOR_EQUIPMENTS,
     BLUDGEONING_WEAPONS,
@@ -22,13 +23,15 @@ from repository.mongo.populate.item_constants import (
     MAGICAL_STONES_EQUIPMENTS,
     MAGICAL_WEARABLE_EQUIPMENTS,
     MAGICAL_MASK_EQUIPMENTS,
+    OMAMORI_EQUIPMENTS,
     ONE_HAND_EQUIPMENTS,
     PIERCING_WEAPONS,
     MAGICAL_QUILL_EQUIPMENTS,
     RING_EQUIPMENTS,
     SEISHIN_WEARBLE_EQUIPMENTS,
     SLASHING_WEAPONS,
-    TATICAL_WEARABLE_EQUIPMENTS,
+    TACTICAL_ACCESSORY_EQUIPMENTS,
+    TACTICAL_WEARABLE_EQUIPMENTS,
     TWO_HANDS_EQUIPMENTS,
     VERY_HEAVY_EQUIPMENTS,
     STR_REQUIREMENTS,
@@ -57,9 +60,12 @@ from rpgram.enums import (
     RarityEnum,
     WeaponMaterialEnum,
     WearableMaterialEnum,
-    TacticalWearableMaterialEnum
+    TacticalWearableMaterialEnum,
+    KajiyaMaterialEnum,
+    OmamoriMaterialEnum,
+    SeishinWearbleMaterialEnum,
+    TacticalAccessoryMaterialEnum,
 )
-from rpgram.enums.material import KajiyaMaterialEnum, SeishinWearbleMaterialEnum
 
 
 # CONSTANTS
@@ -586,6 +592,11 @@ def get_requirements(
 
         requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
         requirements['CON'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in ALL_NIPPON_EQUIPMENTS:
+        requirements['DES'] += random_group_level(equip_group_lvl)
+
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
 
     if equip_class in LIGHT_EQUIPMENTS:
         requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
@@ -716,8 +727,11 @@ def translate_material_name(
     elif equip_class in MAGICAL_MASK_EQUIPMENTS:
         material_name = list(MagicalMaskMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif equip_class in TATICAL_WEARABLE_EQUIPMENTS:
+    elif equip_class in TACTICAL_WEARABLE_EQUIPMENTS:
         material_name = list(TacticalWearableMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
+    elif equip_class in TACTICAL_ACCESSORY_EQUIPMENTS:
+        material_name = list(TacticalAccessoryMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
     elif equip_class in COIN_EQUIPMENTS:
         material_name = list(CoinMaterialsEnum)[index].name
@@ -727,6 +741,9 @@ def translate_material_name(
         material_name = material_name.replace("_", " ").title() + "'s"
     elif equip_class in KAJIYA_EQUIPMENTS:
         material_name = list(KajiyaMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
+    elif equip_class in OMAMORI_EQUIPMENTS:
+        material_name = list(OmamoriMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
     else:
         material_name = material.replace("_", " ").title()

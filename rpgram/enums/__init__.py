@@ -19,6 +19,10 @@ from rpgram.enums.material import MagicalWearableMaterialEnum
 from rpgram.enums.material import MagicalMaskMaterialEnum
 from rpgram.enums.material import TacticalWearableMaterialEnum
 from rpgram.enums.material import CoinMaterialsEnum
+from rpgram.enums.material import KajiyaMaterialEnum
+from rpgram.enums.material import OmamoriMaterialEnum
+from rpgram.enums.material import SeishinWearbleMaterialEnum
+from rpgram.enums.material import TacticalAccessoryMaterialEnum
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.rarity import RarityEnumOrder
 from rpgram.enums.skill import SkillTypeEnum

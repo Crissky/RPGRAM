@@ -98,15 +98,15 @@ class TacticalWearableMaterialEnum(Enum):
 
 
 class SeishinWearbleMaterialEnum(Enum):
-    BISHAMONTEN = 'Bishamonten'   # deus da justiça, guerra...
-    HACHIMAN = 'Hachiman'  # deus da guerra
-    FUJIN = 'Fujin'  # deus do vento
-    IZANAGI = 'Izanagi'  # deus da terra
-    RAIJIN = 'Raijin'  # deus do trovão
-    SUSANOO = 'Susanoo'  # deus do mar
-    KAGUTSUCHI = 'Kagutsuchi'  # deus do fogo
-    TSUKUYOMI = 'Tsukuyomi'  # deus da lua
-    AMATERASU = 'Amaterasu'  # deusa do Sol
+    BISHAMONTEN = 'Bishamonten'     # deus da justiça, guerra...
+    HACHIMAN = 'Hachiman'           # deus da guerra
+    FUJIN = 'Fujin'                 # deus do vento
+    IZANAGI = 'Izanagi'             # deus da terra
+    RAIJIN = 'Raijin'               # deus do trovão
+    SUSANOO = 'Susanoo'             # deus do mar
+    KAGUTSUCHI = 'Kagutsuchi'       # deus do fogo
+    TSUKUYOMI = 'Tsukuyomi'         # deus da lua
+    AMATERASU = 'Amaterasu'         # deusa do Sol
 
 
 class KajiyaMaterialEnum(Enum):
@@ -119,6 +119,7 @@ class KajiyaMaterialEnum(Enum):
     OSAFUNE = 'Osafune'
     MURAMASA = 'Muramasa'
     MASAMUNE = 'Masamune'
+
 
 # ACCESSORIES
 class AccessoryMaterialsEnum(Enum):
@@ -137,3 +138,21 @@ class CoinMaterialsEnum(Enum):
     GUILDER = 'Florim'
     MARAVEDI = 'Maravedi'
     SESTERTIUS = 'Sestércio'
+
+
+class TacticalAccessoryMaterialEnum(Enum):
+    CLOTH = 'Pano'
+    LEATHER = 'Couro'
+    MINK = 'Vison'
+    MOLESKIN = 'Moleskine'
+    CHIFFON = 'Chiffon'  # Musseline
+    SILK = 'Seda'
+
+
+class OmamoriMaterialEnum(Enum):
+    EBISU = 'Ebisu'                 # deus da pesca
+    BENZAITEN = 'Benzaiten'         # deusa da música
+    FUKUROKUJU = 'Fukurokuju'       # deus da sabedoria
+    DAIKOKUTEN = 'Daikokuten'       # deus da riqueza
+    JUROJIN = 'Jurojin'             # deus da longevidade
+    BISHAMONTEN = 'Bishamonten'     # deus da guerra
