@@ -1167,14 +1167,14 @@ ARMOR_EQUIPMENTS = {
         attr_bonus_prob={
             'bonus_hit_points': 5, 'bonus_initiative': 3,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 7,
-            'bonus_magical_attack': 0, 'bonus_physical_defense': 7,
-            'bonus_magical_defense': 7, 'bonus_hit': 5,
-            'bonus_evasion': 5,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 10, 'bonus_hit': 3,
+            'bonus_evasion': 3,
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 0, 'bonus_hit': 0,
             'bonus_evasion': 0,
         }
