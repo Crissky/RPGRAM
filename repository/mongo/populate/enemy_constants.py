@@ -33,9 +33,9 @@ DUELIST_EQUIPMENTS = {
 SAMURAI_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['HELMET', 'HOOD'],
     EquipmentEnum.ONE_HAND.name: [
-        'DAGGER', 'CUTLASS', 'JAVELIN', 'RAPIER', 'SAI', 'KODACHI'
+        'DAGGER', 'CUTLASS', 'JAVELIN', 'SAI', 'KODACHI'
     ],
-    EquipmentEnum.TWO_HANDS.name: ['BOW', 'KATANA', 'ARBALEST', 'SPEAR'],
+    EquipmentEnum.TWO_HANDS.name: ['YUMI', 'KATANA', 'NAGINATA', 'KUSARIGAMA'],
     EquipmentEnum.ARMOR.name: ['KIMONO', 'Ō-YOROI', 'DŌ-MARU'],
     EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDALS', 'GREAVES'],
     EquipmentEnum.RING.name: ['RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING'],

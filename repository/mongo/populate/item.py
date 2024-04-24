@@ -12,6 +12,7 @@ from repository.mongo.populate.item_constants import (
     BOOTS_EQUIPMENTS,
     COIN_EQUIPMENTS,
     ENCHANTED_WEAPONS,
+    KAJIYA_EQUIPMENTS,
     MAGICAL_GRIMOIRE_EQUIPMENTS,
     HEAVY_EQUIPMENTS,
     HELMET_EQUIPMENTS,
@@ -58,7 +59,7 @@ from rpgram.enums import (
     WearableMaterialEnum,
     TacticalWearableMaterialEnum
 )
-from rpgram.enums.material import SeishinWearbleMaterialEnum
+from rpgram.enums.material import KajiyaMaterialEnum, SeishinWearbleMaterialEnum
 
 
 # CONSTANTS
@@ -723,6 +724,9 @@ def translate_material_name(
         material_name = material_name.replace("_", " ").title()
     elif equip_class in SEISHIN_WEARBLE_EQUIPMENTS:
         material_name = list(SeishinWearbleMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
+    elif equip_class in KAJIYA_EQUIPMENTS:
+        material_name = list(KajiyaMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title() + "'s"
     else:
         material_name = material.replace("_", " ").title()

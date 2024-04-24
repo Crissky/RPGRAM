@@ -109,6 +109,17 @@ class SeishinWearbleMaterialEnum(Enum):
     AMATERASU = 'Amaterasu'  # deusa do Sol
 
 
+class KajiyaMaterialEnum(Enum):
+    AWATAGUCHI = 'Awataguchi'
+    NORISHIGE = 'Norishige'
+    KOTETSU = 'Kotetsu'
+    YASUTSUGU = 'Yasutsugu'
+    KUNIYUKI = 'Kuniyuki'
+    KANEUJI = 'Kaneuji'
+    OSAFUNE = 'Osafune'
+    MURAMASA = 'Muramasa'
+    MASAMUNE = 'Masamune'
+
 # ACCESSORIES
 class AccessoryMaterialsEnum(Enum):
     BRONZE = 'Bronze'
