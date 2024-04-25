@@ -6,12 +6,14 @@ from repository.mongo import ItemModel
 from repository.mongo.populate.tools import random_group_level, weighted_choice
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
+    ALL_NIPPON_EQUIPMENTS,
     ALL_WEAPONS,
     ARMOR_EQUIPMENTS,
     BLUDGEONING_WEAPONS,
     BOOTS_EQUIPMENTS,
     COIN_EQUIPMENTS,
     ENCHANTED_WEAPONS,
+    KAJIYA_EQUIPMENTS,
     MAGICAL_GRIMOIRE_EQUIPMENTS,
     HEAVY_EQUIPMENTS,
     HELMET_EQUIPMENTS,
@@ -21,12 +23,15 @@ from repository.mongo.populate.item_constants import (
     MAGICAL_STONES_EQUIPMENTS,
     MAGICAL_WEARABLE_EQUIPMENTS,
     MAGICAL_MASK_EQUIPMENTS,
+    OMAMORI_EQUIPMENTS,
     ONE_HAND_EQUIPMENTS,
     PIERCING_WEAPONS,
     MAGICAL_QUILL_EQUIPMENTS,
     RING_EQUIPMENTS,
+    SEISHIN_WEARBLE_EQUIPMENTS,
     SLASHING_WEAPONS,
-    TATICAL_WEARABLE_EQUIPMENTS,
+    TACTICAL_ACCESSORY_EQUIPMENTS,
+    TACTICAL_WEARABLE_EQUIPMENTS,
     TWO_HANDS_EQUIPMENTS,
     VERY_HEAVY_EQUIPMENTS,
     STR_REQUIREMENTS,
@@ -55,7 +60,11 @@ from rpgram.enums import (
     RarityEnum,
     WeaponMaterialEnum,
     WearableMaterialEnum,
-    TacticalWearableMaterialEnum
+    TacticalWearableMaterialEnum,
+    KajiyaMaterialEnum,
+    OmamoriMaterialEnum,
+    SeishinWearbleMaterialEnum,
+    TacticalAccessoryMaterialEnum,
 )
 
 
@@ -583,6 +592,11 @@ def get_requirements(
 
         requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
         requirements['CON'] -= random_group_level(equip_group_lvl) / 2
+    if equip_class in ALL_NIPPON_EQUIPMENTS:
+        requirements['DES'] += random_group_level(equip_group_lvl)
+
+        requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
+        requirements['CON'] -= random_group_level(equip_group_lvl) / 2
 
     if equip_class in LIGHT_EQUIPMENTS:
         requirements['FOR'] -= random_group_level(equip_group_lvl) / 2
@@ -713,12 +727,24 @@ def translate_material_name(
     elif equip_class in MAGICAL_MASK_EQUIPMENTS:
         material_name = list(MagicalMaskMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
-    elif equip_class in TATICAL_WEARABLE_EQUIPMENTS:
+    elif equip_class in TACTICAL_WEARABLE_EQUIPMENTS:
         material_name = list(TacticalWearableMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title()
+    elif equip_class in TACTICAL_ACCESSORY_EQUIPMENTS:
+        material_name = list(TacticalAccessoryMaterialEnum)[index].name
         material_name = material_name.replace("_", " ").title()
     elif equip_class in COIN_EQUIPMENTS:
         material_name = list(CoinMaterialsEnum)[index].name
         material_name = material_name.replace("_", " ").title()
+    elif equip_class in SEISHIN_WEARBLE_EQUIPMENTS:
+        material_name = list(SeishinWearbleMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
+    elif equip_class in KAJIYA_EQUIPMENTS:
+        material_name = list(KajiyaMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
+    elif equip_class in OMAMORI_EQUIPMENTS:
+        material_name = list(OmamoriMaterialEnum)[index].name
+        material_name = material_name.replace("_", " ").title() + "'s"
     else:
         material_name = material.replace("_", " ").title()
 
@@ -906,6 +932,7 @@ def create_random_item(
     min_items: int = 1,
     max_items: int = 5,
     no_trap: bool = False,
+    save_in_database: bool = True,
 ) -> Union[int, Iterable[Union[Consumable, Equipment]]]:
     '''Função que retorna um item escolhido de maneira aleatória.
     '''
@@ -920,7 +947,7 @@ def create_random_item(
                 choiced_item,
                 group_level,
                 random_level=True,
-                save_in_database=True,
+                save_in_database=save_in_database,
             )
         else:
             raise ValueError(
@@ -961,7 +988,8 @@ if __name__ == '__main__':
         group_level=1001,
         min_items=1000,
         max_items=1000,
-        no_trap=True
+        no_trap=True,
+        save_in_database=False,
     )
     print(f'random_items type(): {type(random_items)}')
     print(isinstance(random_items, Iterable))

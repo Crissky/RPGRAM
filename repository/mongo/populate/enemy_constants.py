@@ -31,15 +31,15 @@ DUELIST_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF'],
 }
 SAMURAI_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['HELMET', 'HOOD'],
+    EquipmentEnum.HELMET.name: ['KABUTO-MENPO', 'SUGEGASA'],
     EquipmentEnum.ONE_HAND.name: [
-        'DAGGER', 'CUTLASS', 'JAVELIN', 'RAPIER', 'SAI', 'KODACHI'
+        'DAGGER', 'CUTLASS', 'JAVELIN', 'SAI', 'KODACHI'
     ],
-    EquipmentEnum.TWO_HANDS.name: ['BOW', 'KATANA', 'ARBALEST', 'SPEAR'],
-    EquipmentEnum.ARMOR.name: ['KIMONO', 'ARMOR'],
-    EquipmentEnum.BOOTS.name: ['BOOTS', 'SANDALS', 'GREAVES'],
+    EquipmentEnum.TWO_HANDS.name: ['YUMI', 'KATANA', 'NAGINATA', 'KUSARIGAMA'],
+    EquipmentEnum.ARMOR.name: ['KIMONO', 'Ō-YOROI', 'DŌ-MARU'],
+    EquipmentEnum.BOOTS.name: ['BOOTS', 'TABI', 'JIKA-TABI', 'ZORI'],
     EquipmentEnum.RING.name: ['RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING'],
-    EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF', 'AMULET'],
+    EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF', 'OMAMORI'],
 }
 FIGHTER_EQUIPMENTS = {
     EquipmentEnum.HELMET.name: ['HELMET', 'KRÁNOS'],

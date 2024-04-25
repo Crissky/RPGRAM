@@ -2,17 +2,18 @@
 
 SLASHING_WEAPONS = [
     'SWORD', 'DAGGER', 'GREAT_SWORD', 'AXE', 'DOUBLE_AXE', 'KATANA',
-    'SCIMITAR', 'MACHETE', 'CUTLASS', 'FALCHION', 'HALBERD', 'WHIP', 'KODACHI'
+    'SCIMITAR', 'MACHETE', 'CUTLASS', 'FALCHION', 'HALBERD', 'WHIP', 'KODACHI',
+    'NAGINATA', 'KUSARIGAMA'
 ]
 BLUDGEONING_WEAPONS = [
     'SHIELD', 'STAFF', 'WARHAMMER', 'MACE', 'CLUB', 'FLAIL',
     'MORNING_STAR', 'SLEDGEHAMMER', 'BLACKJACK', 'SHARUR', 'SCUTUM',
-    'GREATSHIELD', 'GREATSCUTUM'
+    'GREATSHIELD', 'GREATSCUTUM', 'KUSARIGAMA'
 ]
 PIERCING_WEAPONS = [
     'SPIKED_SHIELD', 'BOW', 'HALBERD', 'CROSSBOW', 'ARBALEST', 'SPEAR',
     'JAVELIN', 'PIKE', 'LANCE', 'RAPIER', 'ESTOQUE', 'TRIDENT', 'DART_BLOWER',
-    'SAI', 'SPIKED_GREATSHIELD'
+    'SAI', 'SPIKED_GREATSHIELD', 'YUMI'
 ]
 MAGIC_WEAPONS = [
     'WAND', 'GRIMOIRE', 'ORB', 'SCEPTER', 'QUILL', 'CHALICE',
@@ -30,7 +31,8 @@ ALL_WEAPONS.extend(MAGIC_WEAPONS)
 # Equipamentos com maior chance de ter um tipo de dano extra
 ENCHANTED_WEAPONS = [
     'WAND', 'STAFF', 'DART_BLOWER', 'GRIMOIRE', 'ORB', 'SCEPTER', 'QUILL',
-    'CHALICE', 'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR', 'RIKUDŌKON'
+    'CHALICE', 'HARP', 'ROD', 'CRYSTAL', 'VAJRA', 'SHARUR', 'RIKUDŌKON',
+    'KATANA', 'KODACHI', 'YUMI', 'NAGINATA'
 ]
 
 
@@ -38,17 +40,18 @@ ENCHANTED_WEAPONS = [
 LIGHT_EQUIPMENTS = [
     'RING', 'NECKLACE', 'AMULET', 'QUILL', 'CHARM', 'COIN', 'SCARF',
     'KRATOS\'S_RING', 'HERMES\'S_RING', 'ARTEMIS\'S_RING', 'HECATE\'S_RING',
-    'GAIA\'S_RING',
+    'GAIA\'S_RING', 'OMAMORI'
 ]
 HEAVY_EQUIPMENTS = [
     'GREAT_SWORD', 'SHIELD', 'SPIKED_SHIELD', 'DOUBLE_AXE', 'HALBERD', 'FLAIL',
     'SLEDGEHAMMER', 'ARBALEST', 'SPEAR', 'LANCE', 'SCEPTER', 'CRYSTAL',
     'RIKUDŌKON', 'SPAULDER', 'SPIKED_SPAULDER', 'GREAVES', 'SPIKED_GREAVES',
-    'PRISMATIC_SHIELD', 'SCUTUM'
+    'PRISMATIC_SHIELD', 'SCUTUM', 'DŌ-MARU', 'NAGINATA', 'KABUTO-MENPO'
 ]
 VERY_HEAVY_EQUIPMENTS = [
     'ARMOR', 'SPIKED_ARMOR', 'WARHAMMER', 'PIKE', 'BRIGANDINE', 'SHARUR',
-    'GREATSHIELD', 'SPIKED_GREATSHIELD', 'PRISMATIC_GREATSHIELD', 'GREATSCUTUM'
+    'GREATSHIELD', 'SPIKED_GREATSHIELD', 'PRISMATIC_GREATSHIELD',
+    'GREATSCUTUM', 'Ō-YOROI'
 ]
 
 
@@ -60,8 +63,15 @@ MAGICAL_STONES_EQUIPMENTS = [
 ]
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
-TATICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'SCARF', 'KIMONO']
+TACTICAL_WEARABLE_EQUIPMENTS = ['CLOAK', 'GUGEL', 'HOOD', 'KIMONO']
+TACTICAL_ACCESSORY_EQUIPMENTS = ['SCARF']
+SEISHIN_WEARBLE_EQUIPMENTS = [
+    'Ō-YOROI', 'DŌ-MARU', 'TABI', 'JIKA-TABI', 'ZORI', 'KABUTO-MENPO',
+    'SUGEGASA', 'OMAMORI'
+]
+KAJIYA_EQUIPMENTS = ['KATANA', 'KODACHI', 'YUMI', 'NAGINATA', 'KUSARIGAMA']
 COIN_EQUIPMENTS = ['COIN']
+OMAMORI_EQUIPMENTS = ['OMAMORI']
 
 
 # Requirements for Equipments
@@ -76,7 +86,9 @@ DEX_REQUIREMENTS = [
     'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN', 'RAPIER',
     'ESTOQUE', 'SAI', 'BOW', 'KATANA', 'ARBALEST', 'SPEAR', 'DART_BLOWER',
     'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
-    'ARTEMIS\'S_RING', 'SCARF', 'KODACHI', 'KIMONO'
+    'ARTEMIS\'S_RING', 'SCARF', 'KODACHI', 'KIMONO', 'Ō-YOROI', 'DŌ-MARU',
+    'YUMI', 'NAGINATA', 'KUSARIGAMA', 'TABI', 'JIKA-TABI', 'ZORI',
+    'KABUTO-MENPO', 'SUGEGASA', 'OMAMORI'
 ]
 CON_REQUIREMENTS = [
     'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'SCUTUM', 'GREATSHIELD',
@@ -84,7 +96,8 @@ CON_REQUIREMENTS = [
     'KRÁNOS', 'GUGEL', 'HOOD', 'POINTED_HAT', 'ARMOR', 'SPIKED_ARMOR',
     'BRIGANDINE', 'ROBE', 'CLOAK', 'SPAULDER', 'SPIKED_SPAULDER', 'BOOTS',
     'SANDALS', 'GREAVES', 'SPIKED_GREAVES', 'SHOES', 'RING', 'KRATOS\'S_RING',
-    'GAIA\'S_RING', 'NECKLACE', 'CHARM', 'COIN', 'KIMONO'
+    'GAIA\'S_RING', 'NECKLACE', 'CHARM', 'COIN', 'KIMONO', 'Ō-YOROI',
+    'DŌ-MARU', 'TABI', 'JIKA-TABI', 'ZORI', 'KABUTO-MENPO'
 ]
 INT_REQUIREMENTS = [
     'WAND', 'ORB', 'QUILL', 'CHALICE', 'ROD', 'VAJRA', 'STAFF', 'GRIMOIRE',
@@ -95,7 +108,7 @@ WIS_REQUIREMENTS = [
     'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD', 'POINTED_HAT', 'MASK', 'ROBE',
     'SHOES', 'HECATE\'S_RING', 'GAIA\'S_RING', 'AMULET', 'CHARM', 'COIN'
 ]
-CHA_REQUIREMENTS = []
+CHA_REQUIREMENTS = ['Ō-YOROI']
 
 
 # EQUIPMENTS DEFINITIONS
@@ -592,7 +605,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 10,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 5,
             'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 5, 'bonus_hit': 5,
             'bonus_evasion': 10,
@@ -608,7 +621,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 5, 'bonus_precision_attack': 1,
+            'bonus_physical_attack': 5, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 5, 'bonus_physical_defense': 5,
             'bonus_magical_defense': 5, 'bonus_hit': 1,
             'bonus_evasion': 3,
@@ -625,7 +638,7 @@ TWO_HANDS_EQUIPMENTS = {
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 3,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 5,
         }
@@ -640,7 +653,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 10,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 10,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 10,
             'bonus_evasion': 10,
@@ -672,7 +685,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 5, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 5, 'bonus_hit': 1,
             'bonus_evasion': 10,
@@ -688,7 +701,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 10,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 10,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
             'bonus_magical_attack': 10, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 10, 'bonus_hit': 10,
             'bonus_evasion': 10,
@@ -704,7 +717,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 10,
             'bonus_evasion': 1,
@@ -752,7 +765,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
@@ -833,7 +846,7 @@ TWO_HANDS_EQUIPMENTS = {
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 3, 'bonus_precision_attack': 3,
-            'bonus_magical_attack': 1, 'bonus_physical_defense': 3,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
         }
@@ -912,7 +925,7 @@ TWO_HANDS_EQUIPMENTS = {
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 10,
-            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 5,
             'bonus_evasion': 1,
@@ -950,7 +963,54 @@ TWO_HANDS_EQUIPMENTS = {
             'bonus_evasion': 10,
         }
     ),
-
+    'YUMI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 15,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 5, 'bonus_hit': 3,
+            'bonus_evasion': 1,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 5, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 5, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 1,
+        }
+    ),
+    'NAGINATA': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 15,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 5, 'bonus_hit': 5,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 1,
+        }
+    ),
+    'KUSARIGAMA': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 15,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
 }
 HELMET_EQUIPMENTS = {
     'HELMET': dict(
@@ -1047,6 +1107,38 @@ HELMET_EQUIPMENTS = {
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 1, 'bonus_hit': 1,
             'bonus_evasion': 1,
+        }
+    ),
+    'KABUTO-MENPO': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 7,
+            'bonus_magical_defense': 3, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'SUGEGASA': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 7, 'bonus_hit': 0,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 0,
         }
     ),
 }
@@ -1165,18 +1257,54 @@ ARMOR_EQUIPMENTS = {
     ),
     'KIMONO': dict(
         attr_bonus_prob={
-            'bonus_hit_points': 5, 'bonus_initiative': 3,
+            'bonus_hit_points': 3, 'bonus_initiative': 3,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 7,
-            'bonus_magical_attack': 0, 'bonus_physical_defense': 7,
-            'bonus_magical_defense': 7, 'bonus_hit': 5,
-            'bonus_evasion': 5,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        }
+    ),
+    # Uma armadura completa e pesada, feita de placas de metal unidas por
+    # cordões de couro ou seda.
+    'Ō-YOROI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 10, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 7,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
         },
         attr_penality_prob={
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
-            'bonus_magical_defense': 0, 'bonus_hit': 0,
-            'bonus_evasion': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    # Uma armadura mais leve e flexível que o ō-yoroi, feita de placas de
+    # couro ou metal cobertas por tecido.
+    'DŌ-MARU': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 10, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 7,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 1,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
         }
     ),
 }
@@ -1257,6 +1385,54 @@ BOOTS_EQUIPMENTS = {
             'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
             'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
+    'TABI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 5, 'bonus_hit': 5,
+            'bonus_evasion': 5,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        }
+    ),
+    'JIKA-TABI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 5,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 5,
+            'bonus_magical_defense': 0, 'bonus_hit': 5,
+            'bonus_evasion': 5,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 1, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        }
+    ),
+    'ZORI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 5, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 10,
+            'bonus_magical_defense': 10, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
             'bonus_magical_defense': 0, 'bonus_hit': 1,
             'bonus_evasion': 1,
         }
@@ -1441,6 +1617,22 @@ AMULET_EQUIPMENTS = {
             'bonus_evasion': 0,
         }
     ),
+    'OMAMORI': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 10,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 10, 'bonus_hit': 0,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 1,
+        }
+    ),
 }
 
 ALL_EQUIPMENTS_DEFINITIONS = {}
@@ -1469,7 +1661,10 @@ ALL_MAGICAL_EQUIPMENTS = (
     MAGICAL_MASK_EQUIPMENTS
 )
 ALL_TATICAL_EQUIPMENTS = (
-    TATICAL_WEARABLE_EQUIPMENTS
+    TACTICAL_WEARABLE_EQUIPMENTS + TACTICAL_ACCESSORY_EQUIPMENTS
+)
+ALL_NIPPON_EQUIPMENTS = (
+    SEISHIN_WEARBLE_EQUIPMENTS + KAJIYA_EQUIPMENTS + OMAMORI_EQUIPMENTS
 )
 
 for equip_class in ALL_WEAPONS:
