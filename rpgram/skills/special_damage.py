@@ -155,121 +155,122 @@ class SpecialDamage:
         return min_multiplier, max_multiplier
 
     @property
-    def status_list(self) -> List[dict]:
-        '''Retorna uma lista de status (Dict[status, ratio]) com o 
-        percentual de chance (ratio) de causar o status(Condition).
+    def condition_ratio_list(self) -> List[dict]:
+        '''Retorna uma lista de dicionários, condition_ratio 
+        (Dict[condition, ratio]), com o percentual de chance (ratio: float)
+        de causar a condition(Condition).
         '''
 
-        status_list = []
+        condition_list = []
         if self.damage_type == DamageEnum.HITTING:
-            status_list.extend([
-                dict(status=StunnedCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.SLASHING:
-            status_list.extend([
-                dict(status=BleedingCondition, ratio=0.25),
+            condition_list.extend([
+                dict(condition=BleedingCondition, ratio=0.25),
             ])
         elif self.damage_type == DamageEnum.PIERCING:
-            status_list.extend([
-                dict(status=BleedingCondition, ratio=0.10),
-                dict(status=BleedingCondition, ratio=0.10),
-                dict(status=BleedingCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=BleedingCondition, ratio=0.10),
+                dict(condition=BleedingCondition, ratio=0.10),
+                dict(condition=BleedingCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.MAGIC:
-            status_list.extend([
-                dict(status=BlindnessCondition, ratio=0.05),
-                dict(status=BurnCondition, ratio=0.05),
-                dict(status=ConfusionCondition, ratio=0.05),
-                dict(status=ExhaustionCondition, ratio=0.05),
-                dict(status=FrozenCondition, ratio=0.05),
-                dict(status=ParalysisCondition, ratio=0.05),
-                dict(status=PetrifiedCondition, ratio=0.05),
-                dict(status=PoisoningCondition, ratio=0.05),
-                dict(status=SilenceCondition, ratio=0.05),
-                dict(status=StunnedCondition, ratio=0.05),
+            condition_list.extend([
+                dict(condition=BlindnessCondition, ratio=0.05),
+                dict(condition=BurnCondition, ratio=0.05),
+                dict(condition=ConfusionCondition, ratio=0.05),
+                dict(condition=ExhaustionCondition, ratio=0.05),
+                dict(condition=FrozenCondition, ratio=0.05),
+                dict(condition=ParalysisCondition, ratio=0.05),
+                dict(condition=PetrifiedCondition, ratio=0.05),
+                dict(condition=PoisoningCondition, ratio=0.05),
+                dict(condition=SilenceCondition, ratio=0.05),
+                dict(condition=StunnedCondition, ratio=0.05),
             ])
         elif self.damage_type == DamageEnum.BLESSING:
-            status_list.extend([
-                dict(status=SilenceCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=SilenceCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.DIVINE:
-            status_list.extend([
-                dict(status=BerserkerCondition, ratio=0.10),
-                dict(status=BleedingCondition, ratio=0.10),
-                dict(status=BlindnessCondition, ratio=0.10),
-                dict(status=BurnCondition, ratio=0.10),
-                dict(status=ConfusionCondition, ratio=0.10),
-                dict(status=CurseCondition, ratio=0.10),
-                dict(status=ExhaustionCondition, ratio=0.10),
-                dict(status=FrozenCondition, ratio=0.10),
-                dict(status=ParalysisCondition, ratio=0.10),
-                dict(status=PetrifiedCondition, ratio=0.10),
-                dict(status=PoisoningCondition, ratio=0.10),
-                dict(status=SilenceCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=BerserkerCondition, ratio=0.10),
+                dict(condition=BleedingCondition, ratio=0.10),
+                dict(condition=BlindnessCondition, ratio=0.10),
+                dict(condition=BurnCondition, ratio=0.10),
+                dict(condition=ConfusionCondition, ratio=0.10),
+                dict(condition=CurseCondition, ratio=0.10),
+                dict(condition=ExhaustionCondition, ratio=0.10),
+                dict(condition=FrozenCondition, ratio=0.10),
+                dict(condition=ParalysisCondition, ratio=0.10),
+                dict(condition=PetrifiedCondition, ratio=0.10),
+                dict(condition=PoisoningCondition, ratio=0.10),
+                dict(condition=SilenceCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.LIGHT:
-            status_list.extend([
-                dict(status=BlindnessCondition, ratio=0.10),
-                dict(status=ConfusionCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=BlindnessCondition, ratio=0.10),
+                dict(condition=ConfusionCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.DARK:
-            status_list.extend([
-                dict(status=BlindnessCondition, ratio=0.10),
-                dict(status=ConfusionCondition, ratio=0.10),
-                dict(status=CurseCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=BlindnessCondition, ratio=0.10),
+                dict(condition=ConfusionCondition, ratio=0.10),
+                dict(condition=CurseCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.FIRE:
-            status_list.extend([
-                dict(status=BurnCondition, ratio=0.10),
-                dict(status=BurnCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=BurnCondition, ratio=0.10),
+                dict(condition=BurnCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.WATER:
-            status_list.extend([
-                dict(status=StunnedCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.COLD:
-            status_list.extend([
-                dict(status=FrozenCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=FrozenCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.LIGHTNING:
-            status_list.extend([
-                dict(status=ParalysisCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=ParalysisCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.WIND:
-            status_list.extend([
-                dict(status=StunnedCondition, ratio=0.10),
-                dict(status=BleedingCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=StunnedCondition, ratio=0.10),
+                dict(condition=BleedingCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.ROCK:
-            status_list.extend([
-                dict(status=StunnedCondition, ratio=0.10),
-                dict(status=StunnedCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=StunnedCondition, ratio=0.10),
+                dict(condition=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.GROUND:
-            status_list.extend([
-                dict(status=StunnedCondition, ratio=0.10),
-                dict(status=StunnedCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=StunnedCondition, ratio=0.10),
+                dict(condition=StunnedCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.ACID:
-            status_list.extend([
-                dict(status=BurnCondition, ratio=0.10),
-                dict(status=PoisoningCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=BurnCondition, ratio=0.10),
+                dict(condition=PoisoningCondition, ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.POISON:
-            status_list.extend([
-                dict(status=PoisoningCondition, ratio=0.15),
-                dict(status=PoisoningCondition, ratio=0.15),
+            condition_list.extend([
+                dict(condition=PoisoningCondition, ratio=0.15),
+                dict(condition=PoisoningCondition, ratio=0.15),
             ])
         elif self.damage_type == DamageEnum.CHAOS:
-            status_list.extend([
-                dict(status=CurseCondition, ratio=0.10),
-                dict(status=CurseCondition, ratio=0.10),
-                dict(status=CurseCondition, ratio=0.10),
+            condition_list.extend([
+                dict(condition=CurseCondition, ratio=0.10),
+                dict(condition=CurseCondition, ratio=0.10),
+                dict(condition=CurseCondition, ratio=0.10),
             ])
 
-        return status_list * self.__status_multiplier
+        return condition_list * self.__status_multiplier
 
-    status = status_list
+    status = status_list = condition_list = condition_ratio_list
     text = damage_text
 
     def __str__(self):

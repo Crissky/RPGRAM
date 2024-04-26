@@ -3,7 +3,8 @@ Este módulo gerencia as Condições do Personagem.
 '''
 
 from datetime import datetime
-from typing import List, Union
+from random import random
+from typing import List, Tuple, Union
 
 from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
@@ -84,6 +85,31 @@ class Status:
 
     add = add_condition
 
+    def add_condition_by_ratio(
+        self,
+        *condition_ratio_tuple: Tuple[dict]
+    ) -> dict:
+        '''Testa se o personagem irá receber a condição vinda de 
+        SpecialDamage.condition_list
+        '''
+
+        report = {'text': '', 'effective': False}
+        for condition_ratio in condition_ratio_tuple:
+            condition_class = condition_ratio['contition']
+            ratio = condition_ratio['ratio']
+            resist_score = random()
+            # test
+            if resist_score < ratio:
+                report_text = self.add_condition(condition_class())['text']
+                report['text'] += f'{report_text}\n'
+                report['effective'] = True
+
+        report['text'] = report['text'].rstrip()
+
+        return report
+
+    add_by_ratio = add_condition_by_ratio
+
     def remove_condition(self, condition: Union[Condition, str]) -> dict:
         if not isinstance(condition, (Condition, str)):
             raise TypeError(
@@ -150,7 +176,7 @@ class Status:
                     )
                 reports.append(report)
 
-        # exclui todos as condition con turn igual a zero
+        # exclui todos as condition com turn igual a zero
         self.__conditions = [
             condition
             for condition in self.__conditions

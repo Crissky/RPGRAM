@@ -813,7 +813,10 @@ def create_random_equipment(
 
     if 'bonus_hit_points' in equipment_dict:
         if equipment_dict['bonus_hit_points'] > 0:
-            equipment_dict['bonus_hit_points'] *= randint(2, 5)
+            equipment_dict['bonus_hit_points'] *= randint(
+                Equipment.MIN_HP_MULTIPLIER,
+                Equipment.MAX_HP_MULTIPLIER
+            )
 
     weight = get_equipment_weight(equip_type, rarity, material, equip_class)
     material_name = translate_material_name(equip_type, equip_class, material)

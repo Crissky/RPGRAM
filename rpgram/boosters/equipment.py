@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import Any, Dict, Iterator, List, Tuple, Union
+from statistics import mean
+from typing import Any, Dict, Iterator, List, Union
 from bson import ObjectId
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
@@ -32,6 +33,10 @@ from rpgram.skills.special_damage import SpecialDamage
 
 
 class Equipment(StatsBooster):
+    MIN_HP_MULTIPLIER = 5
+    MAX_HP_MULTIPLIER = 10
+    AVG_HP_MULTIPLIER = mean([MIN_HP_MULTIPLIER, MAX_HP_MULTIPLIER])
+
     def __init__(
         self,
         name: str,
@@ -515,7 +520,7 @@ class Equipment(StatsBooster):
             (self.bonus_wisdom * 20),
             (self.bonus_charisma * 20),
 
-            (self.bonus_hit_points / 2.5),
+            (self.bonus_hit_points / Equipment.AVG_HP_MULTIPLIER),
             self.bonus_initiative,
             self.bonus_physical_attack,
             self.bonus_precision_attack,
