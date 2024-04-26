@@ -150,9 +150,9 @@ class TacticalAccessoryMaterialEnum(Enum):
 
 
 class OmamoriMaterialEnum(Enum):
+    HOTEI = 'Hotei'                 # deus da felicidade
     EBISU = 'Ebisu'                 # deus da pesca
     BENZAITEN = 'Benzaiten'         # deusa da música
     FUKUROKUJU = 'Fukurokuju'       # deus da sabedoria
     DAIKOKUTEN = 'Daikokuten'       # deus da riqueza
     JUROJIN = 'Jurojin'             # deus da longevidade
-    BISHAMONTEN = 'Bishamonten'     # deus da guerra
