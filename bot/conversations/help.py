@@ -101,6 +101,9 @@ from rpgram.enums import (
     RarityEnum,
     TrocadoEnum,
     CoinMaterialsEnum,
+    KajiyaMaterialEnum,
+    OmamoriMaterialEnum,
+    SeishinWearbleMaterialEnum,
 )
 from rpgram.enums.debuff import DebuffEnum
 
@@ -336,8 +339,7 @@ def get_details_text(option: str) -> str:
             f'INFO: Mostra os equipamentos do personagem.\n\n'
 
             f'OBS: Use o argumento "verbose" ou "v" para exibir os '
-            f'equipamentos e as estatísticas que os equipamentos garantem '
-            f'com mais detalhes.\n\n'
+            f'equipamentos com mais detalhes.\n\n'
 
             f'Atalhos: {equips_cmd}\n\n'
 
@@ -405,31 +407,34 @@ def get_details_text(option: str) -> str:
             f'*Penas* : {help_enum(MagicalQuillMaterialEnum)}.\n\n'
             f'*Grimórios* : {help_enum(MagicalGrimoireMaterialEnum)}.\n\n'
             f'*Pedras Mágicas* : {help_enum(MagicalStonesMaterialEnum)}.\n\n'
+            f'*Armas Kajiya* : {help_enum(KajiyaMaterialEnum)}.\n\n'
             f'*Vestes* : {help_enum(WearableMaterialEnum)}.\n\n'
             f'*Vestes Mágicas* : {help_enum(MagicalWearableMaterialEnum)}.\n\n'
+            f'*Vestes Seishin* : {help_enum(SeishinWearbleMaterialEnum)}.\n\n'
             f'*Máscaras* : {help_enum(MagicalMaskMaterialEnum)}.\n\n'
             f'*Capas* : {help_enum(TacticalWearableMaterialEnum)}.\n\n'
             f'*Acessórios* : {help_enum(AccessoryMaterialsEnum)}.\n\n'
             f'*Moedas* : {help_enum(CoinMaterialsEnum)}.\n\n'
+            f'*Omamori* : {help_enum(OmamoriMaterialEnum)}.\n\n'
 
             f'Níveis de aparição dos Materiais dos Equipamentos:\n'
-            f'Nível 1: Primeiro Material\n'
-            f'Nível 25: Segundo Material\n'
-            f'Nível 100: Terceiro Material\n'
-            f'Nível 225: Quarto Material\n'
-            f'Nível 400: Quinto Material\n'
-            f'Nível 625: Sexto Material\n'
-            f'Nível 900: Sétimo Material\n'
-            f'Nível 1225: Oitavo Material\n'
-            f'Nível 1600: Nono Material\n\n'
+            f'1º: NV 1\n'
+            f'2º: NV 25\n'
+            f'3º: NV 100\n'
+            f'4º: NV 225\n'
+            f'5º: NV 400\n'
+            f'6º: NV 625\n'
+            f'7º: NV 900\n'
+            f'8º: NV 1225\n'
+            f'9º: NV 1600\n\n'
 
             f'Níveis de aparição dos Materiais dos Acessórios:\n'
-            f'Nível 1: Primeiro Material\n'
-            f'Nível 50: Segundo Material\n'
-            f'Nível 200: Terceiro Material\n'
-            f'Nível 450: Quarto Material\n'
-            f'Nível 800: Quinto Material\n'
-            f'Nível 1250: Sexto Material\n\n'
+            f'1º: NV 1\n'
+            f'2º: NV 50\n'
+            f'3º: NV 200\n'
+            f'4º: NV 450\n'
+            f'5º: NV 800\n'
+            f'6º: NV 1250\n\n'
         )
     elif option == CALLBACK_BASE_ATTRIBUTES:
         text = (
