@@ -3,7 +3,7 @@ from datetime import datetime
 from random import choices, random
 from typing import List, Tuple, TypeVar
 
-from constant.text import TEXT_DELIMITER
+from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.dice import Dice
@@ -249,10 +249,13 @@ class BaseCharacter:
             )
             report.update(defender_char.cs.basic_report)
         else:
+            # Formating
             attacker_action_name = attacker_action_name.replace('_', ' ')
             attacker_action_name = attacker_action_name.title()
             defense_action_name = defense_action_name.replace('_', ' ')
             defense_action_name = defense_action_name.title()
+
+            # Get Damage
             damage = attack_value_boosted
             if to_defend and not defender_char.is_immobilized:
                 damage = self.calculate_damage(
@@ -260,12 +263,12 @@ class BaseCharacter:
                     defender_dice=defender_dice,
                     attacker_dice=attacker_dice,
                 )
-                attack_value_boosted - defense_value_boosted
-
             damage = max(damage, 0)
             total_damage = damage
             damage_text_list = [f'*{attacker_action_name}*({damage})']
+            status_report_list = []
 
+            # Get Special Damages
             if total_damage > 0:
                 for special_damage in self.equips.special_damage_iter:
                     damage_name = special_damage.damage_name
@@ -274,15 +277,23 @@ class BaseCharacter:
                     damage_text = f'*{damage_name}*({spec_damage})'
                     damage_text_list.append(damage_text)
 
+                    condition_ratio_list = special_damage.condition_ratio_list
+                    status_report = defender_char.status.add_by_ratio(
+                        *condition_ratio_list
+                    )
+                    status_report_list.append(status_report)
+
+            # Apply Damage in Defender
             damage_report = defender_char.cs.damage_hit_points(
                 value=total_damage,
                 markdown=markdown
             )
             report.update(damage_report)
+
+            # Put the General Paragraph of the report['text']
             damage_or_defend_text = (
                 f' que defendeu recebendo *{total_damage}* pontos de dano'
             )
-
             if total_damage > 0:
                 damage_or_defend_text = (
                     f' e causou *{total_damage}* pontos de dano'
@@ -294,6 +305,8 @@ class BaseCharacter:
                 f'*{self.full_name_with_level}* *ATACOU* '
                 f'{defender_player_name}{damage_or_defend_text}.\n\n'
             )
+
+            # Put the Dice Paragraph of the report['text']
             if verbose:
                 report['text'] += (
                     f'*{attacker_action_name}*: '
@@ -313,7 +326,36 @@ class BaseCharacter:
                         f'{defender_dice.text}\n'
                     )
 
+            # Put the Damege Paragraph of the report['text']
             report['text'] += damage_report['text']
+
+            # Put the Status Paragraph of the report['text']
+            if status_report_list:
+                report['text'] += '\n\n'
+                report['text'] += ALERT_SECTION_HEAD.format(
+                    'STATUS ADICIONADOS'
+                )
+                report['text'] += '\n\n'
+                report['text'] += f'{defender_player_name}:\n'
+                for status_report in status_report_list:
+                    report['text'] += status_report['text'] + '\n'
+                report['text'] = report['text'].rstrip()
+
+            # Put the Activate Status of the report['text']
+            activate_status_report_list = defender_char.activate_status()
+            if activate_status_report_list:
+                report['text'] += '\n\n'
+                report['text'] += ALERT_SECTION_HEAD.format(
+                    'STATUS REPORT'
+                )
+                report['text'] += '\n\n'
+                report['text'] += f'{defender_player_name}:\n'
+                for status_report in activate_status_report_list:
+                    report['text'] += status_report['text'] + '\n'
+                report['text'] = report['text'].rstrip()
+
+            # Put the Dead Paragraph of the report['text']
+            damage_report['dead'] = defender_char.is_dead
             if damage_report['dead']:
                 report['text'] += f'\n\n{defender_player_name} morreu!'
                 if rest_command:
@@ -328,8 +370,7 @@ class BaseCharacter:
         else:
             report['text'] = escape_basic_markdown_v2(report['text'])
 
-        attacker_action_name = attacker_action_name.replace('_', ' ').title()
-        defense_action_name = defense_action_name.replace('_', ' ').title()
+        # Update the report
         report.update({
             'attacker': self,
             'attacker_char': self,

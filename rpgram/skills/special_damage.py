@@ -155,7 +155,7 @@ class SpecialDamage:
         return min_multiplier, max_multiplier
 
     @property
-    def condition_list(self) -> List[dict]:
+    def condition_ratio_list(self) -> List[dict]:
         '''Retorna uma lista de dicionários, condition_ratio 
         (Dict[condition, ratio]), com o percentual de chance (ratio: float)
         de causar a condition(Condition).
@@ -270,7 +270,7 @@ class SpecialDamage:
 
         return condition_list * self.__status_multiplier
 
-    status = status_list = condition_list
+    status = status_list = condition_list = condition_ratio_list
     text = damage_text
 
     def __str__(self):

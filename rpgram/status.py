@@ -93,7 +93,7 @@ class Status:
         SpecialDamage.condition_list
         '''
 
-        report = {'text': ''}
+        report = {'text': '', 'effective': False}
         for condition_ratio in condition_ratio_tuple:
             condition_class = condition_ratio['contition']
             ratio = condition_ratio['ratio']
@@ -102,6 +102,9 @@ class Status:
             if resist_score < ratio:
                 report_text = self.add_condition(condition_class())['text']
                 report['text'] += f'{report_text}\n'
+                report['effective'] = True
+
+        report['text'] = report['text'].rstrip()
 
         return report
 
@@ -173,7 +176,7 @@ class Status:
                     )
                 reports.append(report)
 
-        # exclui todos as condition con turn igual a zero
+        # exclui todos as condition com turn igual a zero
         self.__conditions = [
             condition
             for condition in self.__conditions
