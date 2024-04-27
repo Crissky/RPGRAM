@@ -282,7 +282,8 @@ class BaseCharacter:
                     status_report = defender_char.status.add_by_ratio(
                         *condition_ratio_list
                     )
-                    status_report_list.append(status_report)
+                    if status_report['effective'] is True:
+                        status_report_list.append(status_report)
 
             # Apply Damage in Defender
             damage_report = defender_char.cs.damage_hit_points(
@@ -346,9 +347,7 @@ class BaseCharacter:
             activate_status_report_list = defender_char.activate_status()
             if activate_status_report_list:
                 report['text'] += '\n\n'
-                report['text'] += ALERT_SECTION_HEAD.format(
-                    'STATUS REPORT'
-                )
+                report['text'] += ALERT_SECTION_HEAD.format('STATUS REPORT')
                 report['text'] += '\n\n'
                 report['text'] += f'{defender_player_name}:\n'
                 for status_report in activate_status_report_list:
