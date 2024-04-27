@@ -1,6 +1,6 @@
 from bson import ObjectId
 from datetime import datetime
-from random import choices, random
+from random import choices, random, uniform
 from typing import List, Tuple, TypeVar
 
 from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
@@ -192,7 +192,8 @@ class BaseCharacter:
         attack_value_boosted = attacker_dice.boosted_value
 
         damage = attack_value_boosted - defense_value_boosted
-        min_damage = int(attack_value_boosted * MIN_DAMAGE_MULTIPLIER)
+        min_damage = attack_value_boosted * MIN_DAMAGE_MULTIPLIER
+        min_damage = int(min_damage * uniform(0.90, 1.10))
         block_value = int(defense_value * BLOCK_MULTIPLIER)
         if all((
             attack_value_boosted > block_value,
