@@ -1,6 +1,6 @@
 from bson import ObjectId
 from datetime import datetime
-from random import choices, random
+from random import choices, random, uniform
 from typing import List, Tuple, TypeVar
 
 from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
@@ -192,7 +192,8 @@ class BaseCharacter:
         attack_value_boosted = attacker_dice.boosted_value
 
         damage = attack_value_boosted - defense_value_boosted
-        min_damage = int(attack_value_boosted * MIN_DAMAGE_MULTIPLIER)
+        min_damage = attack_value_boosted * MIN_DAMAGE_MULTIPLIER
+        min_damage = int(min_damage * uniform(0.90, 1.10))
         block_value = int(defense_value * BLOCK_MULTIPLIER)
         if all((
             attack_value_boosted > block_value,
@@ -242,6 +243,11 @@ class BaseCharacter:
         ) = defender_char.get_action_defense(attacker_action_name)
         defense_value_boosted = defender_dice.boost_value(defense_value)
 
+        # Formating
+        attacker_action_name = attacker_action_name.replace('_', ' ')
+        attacker_action_name = attacker_action_name.title()
+        defense_action_name = defense_action_name.replace('_', ' ')
+        defense_action_name = defense_action_name.title()
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
                 f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
@@ -249,11 +255,6 @@ class BaseCharacter:
             )
             report.update(defender_char.cs.basic_report)
         else:
-            # Formating
-            attacker_action_name = attacker_action_name.replace('_', ' ')
-            attacker_action_name = attacker_action_name.title()
-            defense_action_name = defense_action_name.replace('_', ' ')
-            defense_action_name = defense_action_name.title()
 
             # Get Damage
             damage = attack_value_boosted
@@ -363,6 +364,7 @@ class BaseCharacter:
                         f' Use o comando /{rest_command} para descansar.'
                     )
             report['text'] += '\n\n'
+        # End Else
 
         if not markdown:
             report['text'] = remove_bold(report['text'])
