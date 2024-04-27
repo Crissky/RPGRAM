@@ -95,7 +95,7 @@ class Status:
 
         report = {'text': '', 'effective': False}
         for condition_ratio in condition_ratio_tuple:
-            condition_class = condition_ratio['contition']
+            condition_class = condition_ratio['condition']
             ratio = condition_ratio['ratio']
             resist_score = random()
             # test
