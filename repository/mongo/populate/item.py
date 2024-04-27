@@ -692,7 +692,10 @@ def add_secret_stats(
             attr_probs[attribute] += 10
 
     if 'secret_bonus_hit_points' in secret_stats:
-        secret_stats['secret_bonus_hit_points'] *= randint(5, 10)
+        secret_stats['secret_bonus_hit_points'] *= randint(
+                int(Equipment.MIN_HP_MULTIPLIER * 1.5),
+                int(Equipment.MAX_HP_MULTIPLIER * 1.5)
+            )
 
     if len(secret_stats) > 0:
         secret_stats['identified'] = False
@@ -811,8 +814,7 @@ def create_random_equipment(
         attribute = weighted_choice(**attr_penality_prob)
         equipment_dict[attribute] -= 1
 
-    if 'bonus_hit_points' in equipment_dict:
-        if equipment_dict['bonus_hit_points'] > 0:
+    if equipment_dict.get('bonus_hit_points', 0) > 0:
             equipment_dict['bonus_hit_points'] *= randint(
                 Equipment.MIN_HP_MULTIPLIER,
                 Equipment.MAX_HP_MULTIPLIER
