@@ -21,13 +21,13 @@ class DebuffEmojiEnum(Enum):
     BERSERKER = '💢'
     BLEEDING = '🩸'
     BLINDNESS = '🕶️'
-    BURN = '🔥'
+    BURN = '❤️‍🔥'  # 🔥
     CONFUSION = '🌀'
     CURSE = '🎃'
     EXHAUSTION = '💧'
-    FROZEN = '❄️'
+    FROZEN = '🥶'  # ❄️
     PARALYSIS = '♒︎'
-    PETRIFIED = '🪨'
+    PETRIFIED = '🗿'  # 🪨
     POISONING = '🍄'
     SILENCE = '💬'
     STUNNED = '🎇'  # ❇️
