@@ -242,6 +242,11 @@ class BaseCharacter:
         ) = defender_char.get_action_defense(attacker_action_name)
         defense_value_boosted = defender_dice.boost_value(defense_value)
 
+        # Formating
+        attacker_action_name = attacker_action_name.replace('_', ' ')
+        attacker_action_name = attacker_action_name.title()
+        defense_action_name = defense_action_name.replace('_', ' ')
+        defense_action_name = defense_action_name.title()
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
                 f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
@@ -249,11 +254,6 @@ class BaseCharacter:
             )
             report.update(defender_char.cs.basic_report)
         else:
-            # Formating
-            attacker_action_name = attacker_action_name.replace('_', ' ')
-            attacker_action_name = attacker_action_name.title()
-            defense_action_name = defense_action_name.replace('_', ' ')
-            defense_action_name = defense_action_name.title()
 
             # Get Damage
             damage = attack_value_boosted
@@ -363,6 +363,7 @@ class BaseCharacter:
                         f' Use o comando /{rest_command} para descansar.'
                     )
             report['text'] += '\n\n'
+        # End Else
 
         if not markdown:
             report['text'] = remove_bold(report['text'])
