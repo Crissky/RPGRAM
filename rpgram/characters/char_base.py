@@ -253,7 +253,6 @@ class BaseCharacter:
                 f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
                 f'*{self.full_name_with_level}*.\n\n'
             )
-            report.update(defender_char.cs.basic_report)
         else:
 
             # Get Damage
@@ -267,7 +266,7 @@ class BaseCharacter:
             damage = max(damage, 0)
             total_damage = damage
             damage_text_list = [f'*{attacker_action_name}*({damage})']
-            status_report_list = []
+            condition_ratio_list = []
 
             # Get Special Damages
             if total_damage > 0:
@@ -277,13 +276,9 @@ class BaseCharacter:
                     total_damage += spec_damage
                     damage_text = f'*{damage_name}*({spec_damage})'
                     damage_text_list.append(damage_text)
-
-                    condition_ratio_list = special_damage.condition_ratio_list
-                    status_report = defender_char.status.add_by_ratio(
-                        *condition_ratio_list
+                    condition_ratio_list.extend(
+                        special_damage.condition_ratio_list
                     )
-                    if status_report['effective'] is True:
-                        status_report_list.append(status_report)
 
             # Apply Damage in Defender
             damage_report = defender_char.cs.damage_hit_points(
@@ -331,32 +326,36 @@ class BaseCharacter:
             # Put the Damege Paragraph of the report['text']
             report['text'] += damage_report['text']
 
-            # Put the Status Paragraph of the report['text']
-            if status_report_list:
-                report['text'] += '\n\n'
-                report['text'] += ALERT_SECTION_HEAD.format(
-                    'STATUS ADICIONADOS'
-                )
-                report['text'] += '\n\n'
-                report['text'] += f'{defender_player_name}:\n'
-                for status_report in status_report_list:
-                    report['text'] += status_report['text'] + '\n'
-                report['text'] = report['text'].rstrip()
-
             # Put the Activate Status of the report['text']
-            activate_status_report_list = defender_char.activate_status()
-            if activate_status_report_list:
-                report['text'] += '\n\n'
-                report['text'] += ALERT_SECTION_HEAD.format('STATUS REPORT')
-                report['text'] += '\n\n'
-                report['text'] += f'{defender_player_name}:\n'
-                for status_report in activate_status_report_list:
-                    report['text'] += status_report['text'] + '\n'
-                report['text'] = report['text'].rstrip()
+            if defender_char.is_alive:
+                activate_status_report_list = defender_char.activate_status()
+                if activate_status_report_list:
+                    report['text'] += '\n\n'
+                    report['text'] += ALERT_SECTION_HEAD.format(
+                        '*STATUS REPORT*'
+                    )
+                    report['text'] += '\n'
+                    report['text'] += f'*{defender_player_name}*:\n'
+                    for status_report in activate_status_report_list:
+                        report['text'] += status_report['text'] + '\n'
+                    report['text'] = report['text'].rstrip()
+
+            # Put the New Status Paragraph of the report['text']
+            if defender_char.is_alive:
+                status_report = defender_char.status.add_condition_by_ratio(
+                    *condition_ratio_list
+                )
+                if status_report['effective'] is True:
+                    report['text'] += '\n\n'
+                    report['text'] += ALERT_SECTION_HEAD.format(
+                        '*STATUS ADICIONADOS*'
+                    )
+                    report['text'] += '\n'
+                    report['text'] += f'*{defender_player_name}*:\n'
+                    report['text'] += status_report['text']
 
             # Put the Dead Paragraph of the report['text']
-            damage_report['dead'] = defender_char.is_dead
-            if damage_report['dead']:
+            if defender_char.is_dead:
                 report['text'] += f'\n\n{defender_player_name} morreu!'
                 if rest_command:
                     report['text'] += (
@@ -372,6 +371,7 @@ class BaseCharacter:
             report['text'] = escape_basic_markdown_v2(report['text'])
 
         # Update the report
+        report.update(defender_char.cs.basic_report)
         report.update({
             'attacker': self,
             'attacker_char': self,

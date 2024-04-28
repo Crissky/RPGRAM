@@ -22,6 +22,27 @@ class DamageEnum(Enum):
     CHAOS = 'Caos'
 
 
+class DamageEmojiEnum(Enum):
+    HITTING = BLUDGEONING = '👊'
+    SLASHING = '🔪'
+    PIERCING = '🏹'
+    MAGIC = '🪄'
+    BLESSING = '😇'
+    DIVINE = '🪬'
+    LIGHT = '🔆'
+    DARK = '🌑'
+    FIRE = '🔥'
+    WATER = '🌊'
+    COLD = '❄️'
+    LIGHTNING = '⚡️'
+    WIND = '🌪'  # 💨
+    ROCK = '🪨'
+    GROUND = '🟤'
+    ACID = '🍋'
+    POISON = '🐍'
+    CHAOS = '🦇'
+
+
 MAGICAL_DAMAGE_TYPES = (
     DamageEnum.MAGIC,
     DamageEnum.BLESSING,

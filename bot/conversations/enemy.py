@@ -433,6 +433,7 @@ async def defend_enemy_attack(
     '''Defende aliado de um ataque. Caso sobreviva, ambos receberão XP.
     '''
 
+    print('DEFEND_ENEMY_ATTACK()')
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
@@ -562,6 +563,7 @@ async def player_attack_enemy(
     '''Função que o jogador ataca um Inimigo
     '''
 
+    print('PLAYER_ATTACK_ENEMY()')
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
@@ -682,6 +684,9 @@ async def check_enemy_attributes(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    '''Exibe um alerta os Atributos de Base ou de Combate'''
+
+    print('CHECK_ENEMY_ATTRIBUTES()')
     query = update.callback_query
     data = callback_data_to_dict(query.data)
     attr_name = data['command']
