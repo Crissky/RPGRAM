@@ -1,5 +1,5 @@
 from random import randint
-from typing import List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 from rpgram.conditions.debuff import (
     BerserkerCondition,
@@ -16,7 +16,7 @@ from rpgram.conditions.debuff import (
     SilenceCondition,
     StunnedCondition
 )
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEmojiEnum, DamageEnum
 
 
 class SpecialDamage:
@@ -42,7 +42,15 @@ class SpecialDamage:
         self.__base_damage = int(base_damage)
         self.__damage_type = damage_type
         self.__status_multiplier = int(status_multiplier)
+        self.__damage = None
 
+    def roll_damage(self, reroll: bool = False) -> int:
+        if self.__damage is None or reroll is True:
+            self.__damage = randint(self.min_damage, self.max_damage)
+
+        return self.__damage
+
+    # Getters
     @property
     def base_damage(self) -> int:
         return self.__base_damage
@@ -54,7 +62,7 @@ class SpecialDamage:
         '''
 
         return max(
-            int(self.base_damage * self.__damage_multipliers[0]),
+            int(self.base_damage * self.__damage_multipliers['min']),
             1
         )
 
@@ -65,7 +73,7 @@ class SpecialDamage:
         '''
 
         return max(
-            int(self.base_damage * self.__damage_multipliers[1]),
+            int(self.base_damage * self.__damage_multipliers['max']),
             2
         )
 
@@ -80,21 +88,39 @@ class SpecialDamage:
         return self.__damage_type.value
 
     @property
+    def damage_emoji(self) -> str:
+        '''Retorna o emoji do type dano.'''
+
+        return DamageEmojiEnum[self.__damage_type.name].value
+
+    @property
     def damage(self) -> int:
         '''Retorna o dano obtido aleatóriamente entre o min_damage e o 
         max_damage.
         '''
 
-        return randint(self.min_damage, self.max_damage)
+        return self.roll_damage()
 
     @property
-    def damage_text(self):
+    def damage_text(self) -> str:
+        '''Retorna o texto com o nome do dano e o dano.'''
+
+        return f'{self.damage_name}: {self.damage}'
+
+    @property
+    def damage_emoji_text(self) -> str:
+        '''Retorna o texto com o emoji do dano e o dano.'''
+
+        return f'{self.damage_emoji}({self.damage})'
+
+    @property
+    def damage_help_text(self) -> str:
         '''Retorna texto com o nome do dano e o range do dano.'''
 
         return f'{self.damage_name}: {self.min_damage}-{self.max_damage}'
 
     @property
-    def __damage_multipliers(self) -> Tuple[float, float]:
+    def __damage_multipliers(self) -> Dict[str, float]:
         '''Retorna os multiplicadores do dano mínimo e máximo.'''
 
         if self.damage_type == DamageEnum.HITTING:
@@ -152,7 +178,7 @@ class SpecialDamage:
             min_multiplier = 0.06
             max_multiplier = 1.32
 
-        return min_multiplier, max_multiplier
+        return {'min': min_multiplier, 'max': max_multiplier}
 
     @property
     def condition_ratio_list(self) -> List[dict]:
@@ -271,15 +297,22 @@ class SpecialDamage:
         return condition_list * self.__status_multiplier
 
     status = status_list = condition_list = condition_ratio_list
-    text = damage_text
+    text = damage_help_text
 
     def __str__(self):
-        return self.damage_text
+        return self.damage_help_text
 
     def __repr__(self):
-        return f'<{self.damage_text}>'
+        return f'<{self.damage_help_text}>'
 
 
 if __name__ == '__main__':
-    spec_dmg = SpecialDamage(1, DamageEnum.HITTING)
+    spec_dmg = SpecialDamage(100, DamageEnum.HITTING)
     print(spec_dmg)
+    print(spec_dmg.damage)
+    print(spec_dmg.damage_text)
+    print(spec_dmg.damage_emoji_text)
+    spec_dmg.roll_damage(True)
+    print(spec_dmg.damage)
+    print(spec_dmg.damage_text)
+    print(spec_dmg.damage_emoji_text)

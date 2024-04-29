@@ -271,10 +271,8 @@ class BaseCharacter:
             # Get Special Damages
             if total_damage > 0:
                 for special_damage in self.equips.special_damage_iter:
-                    damage_name = special_damage.damage_name
-                    spec_damage = special_damage.damage
-                    total_damage += spec_damage
-                    damage_text = f'*{damage_name}*({spec_damage})'
+                    total_damage += special_damage.damage
+                    damage_text = special_damage.damage_emoji_text
                     damage_text_list.append(damage_text)
                     condition_ratio_list.extend(
                         special_damage.condition_ratio_list
