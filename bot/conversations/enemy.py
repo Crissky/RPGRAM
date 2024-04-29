@@ -752,6 +752,7 @@ async def enemy_attack(
             chat_id=chat_id,
             char=defender_char,
             base_xp=base_xp,
+            save_status=True,
         )
         if target_char and target_char.is_alive:
             base_xp = get_base_xp_from_enemy_attack(enemy_char, target_char)
@@ -763,7 +764,7 @@ async def enemy_attack(
             report_text += f'{target_report_xp["text"]}\n'
         report_text += f'{report_xp["text"]}\n\n'
     else:
-        save_char(defender_char)
+        save_char(defender_char, status=True)
 
     report_text = create_text_in_box(
         text=report_text,
@@ -870,7 +871,7 @@ async def player_attack(
             markdown=True
         )
         report_text += counter_report['text']
-        save_char(attacker_char)
+        save_char(attacker_char, status=True)
     report_text = resize_text(report_text)
     report_text = create_text_in_box(
         text=report_text,

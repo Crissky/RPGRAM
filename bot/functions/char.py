@@ -27,6 +27,8 @@ def add_xp(
     max_xp: int = 10,
     base_xp: int = 0,
     to_add_level_bonus: bool = True,
+    save_equips: bool = False,
+    save_status: bool = False,
 ) -> dict:
     '''Função que adiciona xp ao personagem.
     Retorna um dicionário com as informações do novo nível do personagem.
@@ -82,7 +84,7 @@ def add_xp(
         xp = int(xp * handicap)
 
     report_xp = char.base_stats.add_xp(xp, user_name)
-    save_char(char)
+    save_char(char, equips=save_equips, status=save_status)
     new_level = char.base_stats.level
 
     if report_xp['level_up']:
