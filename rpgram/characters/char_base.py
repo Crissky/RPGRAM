@@ -130,6 +130,21 @@ class BaseCharacter:
         reports = self.__status.activate(self)
         return reports
 
+    def activate_status_to_attack(self, defender_char: TBaseCharacter) -> str:
+        text = ''
+        defender_player_name = defender_char.player_name
+        activate_status_report_list = defender_char.activate_status()
+        if activate_status_report_list:
+            text += '\n\n'
+            text += ALERT_SECTION_HEAD.format('*STATUS REPORT*')
+            text += '\n'
+            text += f'*{defender_player_name}*:\n'
+            for status_report in activate_status_report_list:
+                text += status_report['text'] + '\n'
+            text = text.rstrip()
+
+        return text
+
     def battle_activate_status(self) -> List[dict]:
         reports = self.__status.battle_activate(self)
         return reports
@@ -248,13 +263,17 @@ class BaseCharacter:
         attacker_action_name = attacker_action_name.title()
         defense_action_name = defense_action_name.replace('_', ' ')
         defense_action_name = defense_action_name.title()
+
+        # ---------- DODGE ---------- #
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
                 f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
                 f'*{self.full_name_with_level}*.\n\n'
             )
-        else:
+            report['text'] += self.activate_status_to_attack(defender_char)
 
+        # ----------- HIT ----------- #
+        else:
             # Get Damage
             damage = attack_value_boosted
             if to_defend and not defender_char.is_immobilized:
@@ -326,17 +345,7 @@ class BaseCharacter:
 
             # Put the Activate Status of the report['text']
             if defender_char.is_alive:
-                activate_status_report_list = defender_char.activate_status()
-                if activate_status_report_list:
-                    report['text'] += '\n\n'
-                    report['text'] += ALERT_SECTION_HEAD.format(
-                        '*STATUS REPORT*'
-                    )
-                    report['text'] += '\n'
-                    report['text'] += f'*{defender_player_name}*:\n'
-                    for status_report in activate_status_report_list:
-                        report['text'] += status_report['text'] + '\n'
-                    report['text'] = report['text'].rstrip()
+                report['text'] += self.activate_status_to_attack(defender_char)
 
             # Put the New Status Paragraph of the report['text']
             if defender_char.is_alive:
