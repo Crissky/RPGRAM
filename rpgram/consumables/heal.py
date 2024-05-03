@@ -84,10 +84,10 @@ class HealingConsumable(Consumable):
         if self.power == MYTHIC_HEALING_POTION_POWER:
             base_value = LEGENDARY_HEALING_POTION_POWER * 2
         else:
-            base_value = self.power / 4
+            base_value = self.power / 10
 
         rarity_multiplier = get_enum_index(self.rarity) + 1
-        price = base_value * rarity_multiplier
+        price = base_value * (rarity_multiplier * 0.5)
 
         return int(price)
 
