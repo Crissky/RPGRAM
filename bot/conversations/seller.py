@@ -487,7 +487,7 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     chars_level_list = get_chars_level_from_group(chat_id)
     mean_level_list = mean_level(chars_level_list, TOTAL_MEAN_LEVELS)
-    multiply_quantity = max(1, len(mean_level_list))
+    multiply_quantity = max(1, len(chars_level_list))
 
     seller_bag = Bag(
         items=[],
@@ -506,8 +506,8 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
     consumable_items_generator = create_random_consumable(
         group_level=group_level,
         ignore_list=[TrocadoPouchConsumable, GemstoneConsumable],
-        min_consumable_quantity=(5 * multiply_quantity),
-        max_consumable_quantity=(10 * multiply_quantity),
+        min_consumable_quantity=(10 * multiply_quantity),
+        max_consumable_quantity=(20 * multiply_quantity),
         total_items=TOTAL_CONSUMABLES
     )
     for consumable_item in consumable_items_generator:
