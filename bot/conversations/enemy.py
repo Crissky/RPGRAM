@@ -100,7 +100,7 @@ from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player, luck_test
 
 from function.date_time import get_brazil_time_now
-from function.text import create_text_in_box
+from function.text import create_text_in_box, escape_for_citation_markdown_v2
 
 from repository.mongo import CharacterModel, GroupModel, ItemModel, PlayerModel
 from repository.mongo.populate.enemy import create_random_enemies
@@ -879,7 +879,8 @@ async def player_attack(
         text=report_text,
         section_name=SECTION_TEXT_AMBUSH_COUNTER,
         section_start=SECTION_START_DICT[attacker_action_name],
-        section_end=SECTION_END_DICT[attacker_action_name]
+        section_end=SECTION_END_DICT[attacker_action_name],
+        clean_func=escape_for_citation_markdown_v2,
     )
     await edit_message_text_and_forward(
         function_caller='PLAYER_ATTACK()',
