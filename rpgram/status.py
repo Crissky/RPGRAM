@@ -12,7 +12,10 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.factory import factory_condition
-from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
+from rpgram.enums.debuff import (
+    BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
+    IMMOBILIZED_DEBUFFS_NAMES
+)
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
 
@@ -182,6 +185,18 @@ class Status:
             for condition in self.__conditions
             if condition.turn != 0
         ]
+
+        return reports
+
+    def break_condition(self) -> List[dict]:
+        reports = []
+        for condition in self.__conditions:
+            if condition in BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES:
+                condition_ratio = 0.50 + (condition.level / 100)
+                break_score = random()
+                if break_score > condition_ratio:
+                    report = self.remove_condition(condition=condition)
+                    reports.append(report)
 
         return reports
 

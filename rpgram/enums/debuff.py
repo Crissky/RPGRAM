@@ -55,6 +55,7 @@ STUNNED = DebuffEnum.STUNNED.name.title()
 
 CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION]
 IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED, STUNNED]
+BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PETRIFIED]
 
 if __name__ == '__main__':
     debuff_name_list = [debuff.name for debuff in DebuffEnum]
