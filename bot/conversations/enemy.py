@@ -28,6 +28,7 @@ from bot.constants.enemy import (
     CALLBACK_TEXT_COMBAT_ATTRIBUTES,
     CALLBACK_TEXT_DEFEND,
     COMBAT_ATTRIBUTES_BUTTON_TEXT,
+    COUNTER_LINES,
     DEFEND_BUTTON_TEXT,
     ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT,
     MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT,
@@ -860,7 +861,8 @@ async def player_attack(
         report_text += f'O inimigo foi derrotado!!!\n\n'
     elif is_miss:
         section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
-        report_text += f'\n{section_head}\n\n'
+        enemy_speech = get_enemy_counter_speech(enemy_char)
+        report_text += f'\n{section_head}\n>{enemy_speech}\n\n'
         counter_report = enemy_char.to_attack(
             defender_char=attacker_char,
             attacker_dice=Dice(20),
@@ -975,6 +977,13 @@ def get_enemy_attack_job_name(user_id: int, enemy: NPCharacter) -> str:
 
     enemy_id = str(enemy.player_id)
     return f'JOB_ENEMY_ATTACK_{user_id}_{enemy_id}'
+
+
+def get_enemy_counter_speech(enemy: NPCharacter) -> str:
+    enemy_alignment = enemy.alignment.name
+    text = COUNTER_LINES[enemy_alignment]
+
+    return f'>{text}'
 
 
 def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
