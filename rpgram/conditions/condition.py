@@ -56,6 +56,7 @@ class Condition(StatsBooster):
 
     def activate(self, target) -> dict:
         report = self.function(target)
+        report['condition_name'] = self.name
         if self.__turn not in [-1, 0]:
             self.__turn -= 1
 

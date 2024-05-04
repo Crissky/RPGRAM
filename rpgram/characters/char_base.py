@@ -145,7 +145,9 @@ class BaseCharacter:
             text += '\n'
             text += f'*{defender_player_name}*:\n'
             for status_report in break_status_report_list:
-                text += 'Ataque: ' + status_report['text'] + '\n'
+                condition_name = status_report['condition_name']
+                text += f'Ataque quebrou a condição "{condition_name}". '
+                text += status_report['text'] + '\n'
             for status_report in activate_status_report_list:
                 text += status_report['text'] + '\n'
             text = text.rstrip()

@@ -62,8 +62,8 @@ class Status:
                 f'Tipo: {type(new_condition)}.'
             )
 
-        report = {}
         name = new_condition.name
+        report = {'condition_name': new_condition.name}
         if new_condition in self.__conditions:
             new_condition_turn = new_condition.turn
             new_condition_level = new_condition.level
@@ -127,7 +127,7 @@ class Status:
             condition_name = condition
             condition_level = 1
 
-        report = {}
+        report = {'condition_name': condition_name}
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
