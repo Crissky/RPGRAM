@@ -1,10 +1,7 @@
 
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.skill import SkillTypeEnum, TargetEnum
-from rpgram.equips import Equips
 from rpgram.skills.skill_base import BaseSkill
-from rpgram.stats.stats_base import BaseStats
-from rpgram.stats.stats_combat import CombatStats
 
 
 class PhysicalAttack(BaseSkill):
