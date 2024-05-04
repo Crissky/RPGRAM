@@ -982,7 +982,8 @@ def get_enemy_attack_job_name(user_id: int, enemy: NPCharacter) -> str:
 
 def get_enemy_counter_speech(enemy: NPCharacter) -> str:
     enemy_alignment = enemy.alignment.name
-    text = COUNTER_LINES[enemy_alignment]
+    text_list = COUNTER_LINES[enemy_alignment]
+    text = choice(text_list)
 
     return f'>{text}'
 
