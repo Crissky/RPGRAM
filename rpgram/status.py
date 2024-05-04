@@ -173,8 +173,9 @@ class Status:
             if condition.frequency != TurnEnum.CONTINUOUS:
                 report = condition.activate(char)
                 if condition.turn == 0:
+                    if report['text']:
+                        report['text'] += '\n'
                     report['text'] += (
-                        f'\n'
                         f'Condição "{condition.name}" foi removida do Status.'
                     )
                 reports.append(report)
