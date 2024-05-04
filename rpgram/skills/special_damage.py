@@ -114,6 +114,12 @@ class SpecialDamage:
         return f'{self.damage_emoji}({self.damage})'
 
     @property
+    def damage_full_text(self) -> str:
+        '''Retorna o emoji, o nome do dano e o dano'''
+
+        return f'{self.damage_emoji}{self.damage_text}'
+
+    @property
     def damage_help_text(self) -> str:
         '''Retorna texto com o nome do dano e o range do dano.'''
 
@@ -298,6 +304,7 @@ class SpecialDamage:
 
     status = status_list = condition_list = condition_ratio_list
     text = damage_help_text
+    full_text = damage_full_text
 
     def __str__(self):
         return self.damage_help_text
@@ -312,7 +319,9 @@ if __name__ == '__main__':
     print(spec_dmg.damage)
     print(spec_dmg.damage_text)
     print(spec_dmg.damage_emoji_text)
+    print(spec_dmg.damage_full_text)
     spec_dmg.roll_damage(True)
     print(spec_dmg.damage)
     print(spec_dmg.damage_text)
     print(spec_dmg.damage_emoji_text)
+    print(spec_dmg.damage_full_text)

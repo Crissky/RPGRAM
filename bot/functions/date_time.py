@@ -6,6 +6,7 @@ BOOSTED_DAYS = [
     date(year=2000, month=3, day=6),  # Data Magna
     date(year=2000, month=4, day=21),  # Tiradentes
     date(year=2000, month=5, day=1),  # Dia do Trabalho
+    date(year=2000, month=6, day=24),  # São João
     date(year=2000, month=9, day=7),  # Independência do Brasil
     date(year=2000, month=10, day=12),  # Nossa Senhora Aparecida (Crianças)
     date(year=2000, month=11, day=2),  # Finados

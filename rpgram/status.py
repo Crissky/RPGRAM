@@ -12,7 +12,10 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.factory import factory_condition
-from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
+from rpgram.enums.debuff import (
+    BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
+    IMMOBILIZED_DEBUFFS_NAMES
+)
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
 
@@ -59,8 +62,8 @@ class Status:
                 f'Tipo: {type(new_condition)}.'
             )
 
-        report = {}
         name = new_condition.name
+        report = {'condition_name': new_condition.name}
         if new_condition in self.__conditions:
             new_condition_turn = new_condition.turn
             new_condition_level = new_condition.level
@@ -124,7 +127,7 @@ class Status:
             condition_name = condition
             condition_level = 1
 
-        report = {}
+        report = {'condition_name': condition_name}
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
@@ -170,8 +173,9 @@ class Status:
             if condition.frequency != TurnEnum.CONTINUOUS:
                 report = condition.activate(char)
                 if condition.turn == 0:
+                    if report['text']:
+                        report['text'] += '\n'
                     report['text'] += (
-                        f'\n'
                         f'Condição "{condition.name}" foi removida do Status.'
                     )
                 reports.append(report)
@@ -182,6 +186,18 @@ class Status:
             for condition in self.__conditions
             if condition.turn != 0
         ]
+
+        return reports
+
+    def break_condition(self) -> List[dict]:
+        reports = []
+        for condition in self.__conditions:
+            if condition in BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES:
+                condition_ratio = 0.50 + (condition.level / 100)
+                break_score = random()
+                if break_score > condition_ratio:
+                    report = self.remove_condition(condition=condition)
+                    reports.append(report)
 
         return reports
 

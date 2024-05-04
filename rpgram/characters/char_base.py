@@ -130,15 +130,24 @@ class BaseCharacter:
         reports = self.__status.activate(self)
         return reports
 
+    def break_condition(self) -> List[dict]:
+        reports = self.__status.break_condition()
+        return reports
+
     def activate_status_to_attack(self, defender_char: TBaseCharacter) -> str:
         text = ''
         defender_player_name = defender_char.player_name
+        break_status_report_list = defender_char.break_condition()
         activate_status_report_list = defender_char.activate_status()
-        if activate_status_report_list:
+        if break_status_report_list or activate_status_report_list:
             text += '\n\n'
             text += ALERT_SECTION_HEAD.format('*STATUS REPORT*')
             text += '\n'
             text += f'*{defender_player_name}*:\n'
+            for status_report in break_status_report_list:
+                condition_name = status_report['condition_name']
+                text += f'Ataque quebrou a condição "{condition_name}". '
+                text += status_report['text'] + '\n'
             for status_report in activate_status_report_list:
                 text += status_report['text'] + '\n'
             text = text.rstrip()
@@ -165,7 +174,7 @@ class BaseCharacter:
         dice_bonus = (attacker_dice.value - defender_dice.value) / 100
         accuracy = accuracy + dice_bonus
         accuracy = min(accuracy, 0.95)
-        accuracy = max(accuracy, 0.1)
+        accuracy = max(accuracy, 0.10)
 
         return accuracy
 
