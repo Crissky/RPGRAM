@@ -1,8 +1,10 @@
 from typing import Any, Dict, List, Union
 
+from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.skill import SkillTypeEnum, TargetEnum
 from rpgram.equips import Equips
+from rpgram.errors import SkillRequirementError
 from rpgram.stats.stats_base import BaseStats
 from rpgram.stats.stats_combat import CombatStats
 
@@ -17,9 +19,7 @@ class BaseSkill:
         cost: int,
         target_type: TargetEnum,
         skill_type: SkillTypeEnum,
-        base_stats: BaseStats,
-        combat_stats: CombatStats,
-        equips: Equips,
+        char: BaseCharacter,
         requirements: Dict[str, Any] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
     ):
@@ -37,22 +37,6 @@ class BaseSkill:
             raise TypeError(
                 f'skill_type precisa ser uma string ou SkillTypeEnum.'
                 f'"{type(skill_type)}" não é válido.'
-            )
-
-        if not isinstance(base_stats, BaseStats):
-            raise TypeError(
-                f'base_stats precisa ser um objeto BaseStats.'
-                f'"{type(base_stats)}" não é válido.'
-            )
-        if not isinstance(combat_stats, CombatStats):
-            raise TypeError(
-                f'combat_stats precisa ser um objeto CombatStats.'
-                f'"{type(combat_stats)}" não é válido.'
-            )
-        if not isinstance(equips, Equips):
-            raise TypeError(
-                f'equips precisa ser um objeto Equips.'
-                f'"{type(equips)}" não é válido.'
             )
 
         if not isinstance(requirements, dict):
@@ -83,8 +67,29 @@ class BaseSkill:
         self.cost = int(cost)
         self.target_type = target_type
         self.skill_type = skill_type
-        self.base_stats = base_stats
-        self.combat_stats = combat_stats
-        self.equips = equips
+        self.char = char
+        self.base_stats = char.base_stats
+        self.combat_stats = char.combat_stats
+        self.equips = char.equips
         self.requirements = requirements
         self.damage_types = damage_types
+
+        self.check_requirements()
+
+    def check_requirements(self):
+        errors = []
+        for attribute, value in self.requirements.items():
+            if value > self.base_stats[attribute]:
+                errors.append(
+                    f'    {attribute}: '
+                    f'"{value}" ({self.base_stats[attribute]}).'
+                )
+
+        if errors:
+            errors = "\n".join(errors)
+            raise SkillRequirementError(
+                f'Não foi possível aprender/usar a habilidade '
+                f'"{self.name}".\n'
+                f'O personagem não possui os requisitos:\n'
+                f'{errors}'
+            )
