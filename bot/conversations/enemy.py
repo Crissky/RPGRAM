@@ -333,6 +333,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     message_id = job_data['message_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
     defender_char = char_model.get(user_id)
+    is_first_attack = False
 
     await context.bot.send_chat_action(
         chat_id=chat_id,
@@ -363,7 +364,10 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
         return ConversationHandler.END
 
-    if enemy_char and defender_char and defender_char.is_alive:
+    if (
+        enemy_char and not enemy_char.is_immobilized and
+        defender_char and defender_char.is_alive
+    ):
         await enemy_attack(
             context=context,
             chat_id=chat_id,
@@ -408,6 +412,29 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             message_id=message_id,
             markdown=True
         )
+    elif enemy_char.is_immobilized:
+        is_first_attack = True
+        enemy_name = enemy_char.player_name
+        immobilized_names = enemy_char.status.immobilized_names()
+        text = (
+            f'*{enemy_name}* não pôde atacar, pois está {immobilized_names}.'
+        )
+        print(user_id, text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_FAIL,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+        await edit_message_text_and_forward(
+            function_caller='JOB_ENEMY_ATTACK()',
+            new_text=text,
+            user_ids=user_id,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            markdown=True
+        )
 
     remove_ambush_enemy(context=context, enemy_id=enemy_id)
 
@@ -417,7 +444,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             chat_id=chat_id,
             message_id=message_id,
             enemy_char=enemy_char,
-            is_first_attack=False,
+            is_first_attack=is_first_attack,
         )
 
 
