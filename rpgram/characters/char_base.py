@@ -277,7 +277,7 @@ class BaseCharacter:
         if (is_miss := to_dodge and dodge_report['is_dodged']):
             report['text'] = (
                 f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
-                f'*{self.full_name_with_level}*.\n\n'
+                f'*{self.full_name_with_level}*.'
             )
             report['text'] += self.activate_status_to_attack(defender_char)
 
