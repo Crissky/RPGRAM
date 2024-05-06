@@ -153,6 +153,10 @@ ATTACK_TEXT = [
 
 
 def need_have_char(callback):
+    '''Pula ação se o jogador não tiver um personagem e avisa qual o comando 
+    para criar um.
+    '''
+
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@NEED_HAVE_CHAR')
         char_model = CharacterModel()
@@ -172,6 +176,9 @@ def need_have_char(callback):
 
 
 def skip_if_no_have_char(callback):
+    '''Pula ação se o jogador não tiver um personagem.
+    '''
+
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f'@SKIP_IF_NO_HAVE_CHAR')
         char_model = CharacterModel()
@@ -187,6 +194,9 @@ def skip_if_no_have_char(callback):
 
 
 def skip_if_dead_char(callback):
+    '''Pula ação se o personagem estiver morto.
+    '''
+
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f'@SKIP_IF_DEAD_CHAR')
         char_model = CharacterModel()
@@ -227,6 +237,9 @@ def skip_if_dead_char(callback):
 
 
 def skip_if_dead_char_silent(callback):
+    '''Pula ação se o personagem estiver morto sem aviso.
+    '''
+
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f'@SKIP_IF_DEAD_CHAR_SILENT')
         char_model = CharacterModel()
@@ -260,6 +273,9 @@ def skip_if_dead_char_silent(callback):
 
 
 def skip_if_immobilized(callback):
+    '''Pula ação se o personagem estiver imobilizado.
+    '''
+
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@SKIP_IF_IMMOBILIZED')
         chat_id = update.effective_chat.id
@@ -297,6 +313,9 @@ def skip_if_immobilized(callback):
 
 
 def confusion(retry_state=ConversationHandler.END):
+    '''Pula ação e se ataca se o personagem estiver confuso e falhar no teste.
+    '''
+
     def decorator(callback):
         async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
             print('@CONFUSION')
@@ -364,7 +383,7 @@ def confusion(retry_state=ConversationHandler.END):
                             f'Use o comando /{REST_COMMANDS[0]} '
                             f'para descansar.'
                         )
-                    save_char(target_char)
+                    save_char(target_char, status=True)
                 text = escape_basic_markdown_v2(text)
                 text = create_text_in_box(
                     text=text,
