@@ -1138,6 +1138,7 @@ async def send_ambush_message(
         text=ambush_text,
         disable_notification=silent,
         parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=get_close_keyboard(user_id=None)
     )
 
     response = await call_telegram_message_function(
@@ -1200,6 +1201,7 @@ async def add_xp_group(
         parse_mode=ParseMode.MARKDOWN_V2,
         reply_to_message_id=message_id,
         allow_sending_without_reply=True,
+        reply_markup=get_close_keyboard(None),
     )
 
     await call_telegram_message_function(
