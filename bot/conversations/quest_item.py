@@ -40,9 +40,11 @@ from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import get_item_from_bag_by_id
 from bot.functions.char import add_xp
 from bot.functions.chat import (
+    call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
-    edit_message_text_and_forward
+    edit_message_text_and_forward,
+    get_close_keyboard
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
@@ -180,9 +182,16 @@ async def job_fail_item_quest(context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_QUEST_FAIL_END,
     )
 
-    await response.edit_text(
+    send_message_kwargs = dict(
         text=narration_text,
-        parse_mode=ParseMode.MARKDOWN_V2
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=get_close_keyboard(None),
+    )
+
+    await call_telegram_message_function(
+        function_caller='JOB_FAIL_ITEM_QUEST()',
+        function=response.edit_text,
+        **send_message_kwargs
     )
 
 

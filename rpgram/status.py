@@ -73,14 +73,13 @@ class Status:
             current_condition.add_level(new_condition_level)
             current_condition_level = current_condition.level
             report['text'] = (
-                f'O nível da Condição "{name}" foi aumentado '
+                f'O nível de "{name}" foi aumentado '
                 f'para {current_condition_level}.'
             )
         else:
             self.__conditions.append(new_condition)
             report['text'] = (
-                f'A Condição "{name} NV: {new_condition.level}" '
-                f'foi adicionada.'
+                f'"{name}" aumentou para NV: {new_condition.level}.'
             )
         self.__update_stats()
 
@@ -133,13 +132,13 @@ class Status:
             new_condition = self.__conditions[index]
             new_condition = new_condition.remove_level(condition_level)
             if not new_condition:
-                report['text'] = f'A Condição "{condition_name}" foi removida.'
+                report['text'] = f'"{condition_name}" foi removido.'
                 self.__conditions.pop(index)
             else:
                 new_condition_level = new_condition.level
                 report['text'] = (
-                    f'O nível da Condição "{condition_name}" '
-                    f'foi reduzido para {new_condition_level}.'
+                    f'"{condition_name}" reduziu para NV: '
+                    f'{new_condition_level}.'
                 )
         else:
             report['text'] = (
@@ -417,16 +416,10 @@ if __name__ == '__main__':
         conditions=[
             Condition(
                 name='Poison',
-                description='Veneno venenoso',
-                function='print("function:Poison");report={};',
-                battle_function='print("battle_function:Poison");report={};',
                 frequency='CONTINUOUS',
             ),
             Condition(
                 name='Burn',
-                description='Tá pegando fogo',
-                function='print("function:Burn");report={};',
-                battle_function='print("battle_function:Burn");report={};',
                 frequency='CONTINUOUS',
             ),
         ],

@@ -818,7 +818,7 @@ COUNTER_LINES = {
         'SEU FIM SE APROXIMA!',
         'EU SOU A DESTRUIÇÃO!',
         'NÃO HÁ LUZ NA MORTE!',
-        'EU SOU A VERDADE CRU!',
+        'EU SOU A VERDADE CRUA!',
         'EU SOU A FOME ETERNA!',
         'A DOR É A ÚNICA VIDA!',
         'EU SOU A IRA DE DEUS!',

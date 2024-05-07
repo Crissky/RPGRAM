@@ -1,18 +1,11 @@
 
+from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.skill import SkillTypeEnum, TargetEnum
-from rpgram.equips import Equips
 from rpgram.skills.skill_base import BaseSkill
-from rpgram.stats.stats_base import BaseStats
-from rpgram.stats.stats_combat import CombatStats
 
 
 class PhysicalAttack(BaseSkill):
-    def __init__(
-        self,
-        base_stats: BaseStats,
-        combat_stats: CombatStats,
-        equips: Equips
-    ):
+    def __init__(self, char: BaseCharacter):
         name = 'Physical Attack'
         description = 'Ataque Físico baseado em "FOR" e "DES".'
         power = 0
@@ -27,9 +20,7 @@ class PhysicalAttack(BaseSkill):
             cost=cost,
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
-            base_stats=base_stats,
-            combat_stats=combat_stats,
-            equips=equips,
+            char=char,
             requirements={},
             damage_types=None
         )
@@ -40,12 +31,7 @@ class PhysicalAttack(BaseSkill):
 
 
 class PrecisionAttack(BaseSkill):
-    def __init__(
-        self,
-        base_stats: BaseStats,
-        combat_stats: CombatStats,
-        equips: Equips
-    ):
+    def __init__(self, char: BaseCharacter):
         name = 'Precision Attack'
         description = 'Ataque rápido baseado em "DES".'
         power = 0
@@ -60,9 +46,7 @@ class PrecisionAttack(BaseSkill):
             cost=cost,
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
-            base_stats=base_stats,
-            combat_stats=combat_stats,
-            equips=equips,
+            char=char,
             requirements={},
             damage_types=None
         )
@@ -73,12 +57,7 @@ class PrecisionAttack(BaseSkill):
 
 
 class MagicalAttack(BaseSkill):
-    def __init__(
-        self,
-        base_stats: BaseStats,
-        combat_stats: CombatStats,
-        equips: Equips
-    ):
+    def __init__(self, char: BaseCharacter):
         name = 'Magical Attack'
         description = 'Ataque Mágico baseado em "INT" e "WIS".'
         power = 0
@@ -93,9 +72,7 @@ class MagicalAttack(BaseSkill):
             cost=cost,
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
-            base_stats=base_stats,
-            combat_stats=combat_stats,
-            equips=equips,
+            char=char,
             requirements={},
             damage_types=None
         )

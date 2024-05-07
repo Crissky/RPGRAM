@@ -13,3 +13,8 @@ class EmptyTeamError(Exception):
 class EquipmentRequirementError(Exception):
     ''' Erro quando o personagem não tem os requisitos necessários para 
     equipar o item.'''
+
+
+class SkillRequirementError(Exception):
+    ''' Erro quando o personagem não tem os requisitos necessários para 
+    usar a habilidade.'''
