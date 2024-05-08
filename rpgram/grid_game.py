@@ -1,10 +1,14 @@
+from random import randint, sample
+
+
 class GridGame:
     def __init__(self, n_rows: int, n_cols: int):
-        if n_rows < 2 or n_cols < 2:
-            raise ValueError('O Gride deve ter ao menos 2 linhas e 2 colunas.')
+        if n_rows < 3 or n_cols < 3:
+            raise ValueError('O Gride deve ter ao menos 3 linhas e 3 colunas.')
         self.__n_rows = int(n_rows)
         self.__n_cols = int(n_cols)
         self.__grid = [False] * (n_cols * n_rows)
+        self.shuffle()
 
     def switch(self, row: int, col: int):
         if row < 0 or row >= self.n_rows:
@@ -35,6 +39,14 @@ class GridGame:
             index = ((row + 1) * self.n_rows) + col
             self.__grid[index] = not self.__grid[index]
 
+    def shuffle(self):
+        grid_len = len(self.__grid)
+        max_targets = (grid_len // 2)
+        total_shuffle = randint(1, max_targets)
+        target_list = sample(range(grid_len), total_shuffle)
+        for index in target_list:
+            self.__grid[index] = True
+
     def __str__(self):
         data = []
         for i in range(0, self.size, self.n_cols):
@@ -56,5 +68,6 @@ if __name__ == '__main__':
     print(g.n_rows)
     print(g.n_cols)
     print(g)
+    print()
     g.switch(1, 1)
     print(g)
