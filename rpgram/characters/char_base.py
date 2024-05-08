@@ -349,7 +349,7 @@ class BaseCharacter:
                         f'{defender_dice.text}\n'
                     )
 
-            # Put the Damege Paragraph of the report['text']
+            # Put the Damage Paragraph of the report['text']
             report['text'] += damage_report['text']
 
             # Put the Activate Status of the report['text']
