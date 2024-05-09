@@ -12,29 +12,29 @@ class GridGame:
 
     def switch(self, row: int, col: int):
         if row < 0 or row >= self.n_rows:
-            raise IndexError(f'row index out of range [{self.n_rows}]')
+            raise IndexError(f'row index out of range [0:{self.n_rows-1}]')
         if col < 0 or col >= self.n_cols:
-            raise IndexError(f'col index out of range [{self.n_cols}]')
+            raise IndexError(f'col index out of range [0:{self.n_cols-1}]')
 
         index = (row * self.n_rows) + col
         self.__grid[index] = not self.__grid[index]
 
-        # Compare with left neighbor (if exists)
+        # Switch left neighbor (if exists)
         if col > 0:
             index = (row * self.n_rows) + col - 1
             self.__grid[index] = not self.__grid[index]
 
-        # Compare with right neighbor (if exists)
+        # Switch right neighbor (if exists)
         if col < self.n_cols - 1:
             index = (row * self.n_rows) + col + 1
             self.__grid[index] = not self.__grid[index]
 
-        # Compare with upper neighbor (if exists)
+        # Switch upper neighbor (if exists)
         if row > 0:
             index = ((row - 1) * self.n_rows) + col
             self.__grid[index] = not self.__grid[index]
 
-        # Compare with lower neighbor (if exists)
+        # Switch lower neighbor (if exists)
         if row < self.n_rows - 1:
             index = ((row + 1) * self.n_rows) + col
             self.__grid[index] = not self.__grid[index]
@@ -60,6 +60,9 @@ class GridGame:
     grid = property(lambda self: self.__grid.copy())
     size = property(lambda self: len(self.__grid))
     is_solved = property(lambda self: all(self.__grid))
+    is_failed = property(
+        lambda self: self.__grid.count(False) == len(self.__grid)
+    )
 
 
 if __name__ == '__main__':
@@ -68,6 +71,6 @@ if __name__ == '__main__':
     print(g.n_rows)
     print(g.n_cols)
     print(g)
-    print()
+    print(g.is_solved, g.is_failed)
     g.switch(1, 1)
     print(g)
