@@ -7,8 +7,11 @@ from telegram.ext import (
 )
 
 from bot.decorators.job import skip_if_spawn_timeout
+from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from function.date_time import get_brazil_time_now
+from repository.mongo.populate.tools import choice_rarity
+from rpgram import GridGame
 
 
 async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
@@ -43,3 +46,8 @@ async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
 async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
     '''Envia a mensagem com o Puzzle de Thoth & Seshat.
     '''
+    job = context.job
+    chat_id = job.chat_id
+    group_level = get_attribute_group(chat_id, 'group_level')
+    rarity = choice_rarity(group_level)
+    new_grid = GridGame(rarity=rarity)

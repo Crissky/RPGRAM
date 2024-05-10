@@ -1,0 +1,3 @@
+GOD_GREETINGS_LIST = [
+    ''
+]

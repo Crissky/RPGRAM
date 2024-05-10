@@ -1,10 +1,40 @@
 from random import randint, sample
+from typing import Union
+
+from rpgram.enums.rarity import RarityEnum
+
+
+RARITY_RANGE_DICT = {
+    RarityEnum.COMMON: (3, 3),
+    RarityEnum.UNCOMMON: (3, 4),
+    RarityEnum.RARE: (4, 5),
+    RarityEnum.EPIC: (5, 6),
+    RarityEnum.LEGENDARY: (6, 7)
+}
 
 
 class GridGame:
-    def __init__(self, n_rows: int, n_cols: int):
+    def __init__(
+        self,
+        n_rows: int = None,
+        n_cols: int = None,
+        rarity: Union[str, RarityEnum] = None
+    ):
+        if isinstance(rarity, str):
+            rarity = RarityEnum[rarity]
+        if isinstance(rarity, RarityEnum):
+            n_min, n_max = RARITY_RANGE_DICT[rarity]
+            n_rows = randint(n_min, n_max)
+            n_cols = randint(n_min, n_max)
+
+        elif rarity is not None:
+            raise TypeError(
+                f'Rarity deve ser uma RarityEnum. Tipo: {type(rarity)}.'
+            )
+
         if n_rows < 3 or n_cols < 3:
             raise ValueError('O Gride deve ter ao menos 3 linhas e 3 colunas.')
+        self.__rarity = rarity
         self.__n_rows = int(n_rows)
         self.__n_cols = int(n_cols)
         self.__grid = [False] * (n_cols * n_rows)
@@ -55,6 +85,7 @@ class GridGame:
 
         return '\n'.join(data)
 
+    rarity = property(lambda self: self.__rarity)
     n_rows = property(lambda self: self.__n_rows)
     n_cols = property(lambda self: self.__n_cols)
     grid = property(lambda self: self.__grid.copy())
