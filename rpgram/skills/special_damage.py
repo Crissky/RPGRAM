@@ -130,59 +130,59 @@ class SpecialDamage:
         '''Retorna os multiplicadores do dano mínimo e máximo.'''
 
         if self.damage_type == DamageEnum.HITTING:
-            min_multiplier = 0.15
-            max_multiplier = 0.35
+            min_multiplier = 0.35
+            max_multiplier = 0.55
         elif self.damage_type == DamageEnum.SLASHING:
-            min_multiplier = 0.30
-            max_multiplier = 0.60
-        elif self.damage_type == DamageEnum.PIERCING:
-            min_multiplier = 0.20
-            max_multiplier = 0.40
-        elif self.damage_type == DamageEnum.MAGIC:
-            min_multiplier = 0.10
-            max_multiplier = 0.22
-        elif self.damage_type == DamageEnum.BLESSING:
-            min_multiplier = -0.25
-            max_multiplier = -0.50
-        elif self.damage_type == DamageEnum.DIVINE:
-            min_multiplier = 0.77
-            max_multiplier = 1.54
-        elif self.damage_type == DamageEnum.LIGHT:
             min_multiplier = 0.50
-            max_multiplier = 0.99
+            max_multiplier = 0.80
+        elif self.damage_type == DamageEnum.PIERCING:
+            min_multiplier = 0.40
+            max_multiplier = 0.60
+        elif self.damage_type == DamageEnum.MAGIC:
+            min_multiplier = 0.30
+            max_multiplier = 0.42
+        elif self.damage_type == DamageEnum.BLESSING:
+            min_multiplier = -0.45
+            max_multiplier = -0.70
+        elif self.damage_type == DamageEnum.DIVINE:
+            min_multiplier = 0.97
+            max_multiplier = 1.74
+        elif self.damage_type == DamageEnum.LIGHT:
+            min_multiplier = 0.70
+            max_multiplier = 1.19
         elif self.damage_type == DamageEnum.DARK:
-            min_multiplier = 0.42
-            max_multiplier = 0.84
+            min_multiplier = 0.62
+            max_multiplier = 1.04
         elif self.damage_type == DamageEnum.FIRE:
             min_multiplier = 0.18
-            max_multiplier = 1.00
+            max_multiplier = 1.40
         elif self.damage_type == DamageEnum.WATER:
-            min_multiplier = 0.23
-            max_multiplier = 0.46
+            min_multiplier = 0.43
+            max_multiplier = 0.66
         elif self.damage_type == DamageEnum.COLD:
-            min_multiplier = 0.16
-            max_multiplier = 0.33
+            min_multiplier = 0.36
+            max_multiplier = 0.53
         elif self.damage_type == DamageEnum.LIGHTNING:
-            min_multiplier = 0.37
-            max_multiplier = 0.74
+            min_multiplier = 0.57
+            max_multiplier = 0.94
         elif self.damage_type == DamageEnum.WIND:
-            min_multiplier = 0.22
-            max_multiplier = 0.41
+            min_multiplier = 0.42
+            max_multiplier = 0.61
         elif self.damage_type == DamageEnum.ROCK:
-            min_multiplier = 0.25
-            max_multiplier = 0.50
+            min_multiplier = 0.45
+            max_multiplier = 0.70
         elif self.damage_type == DamageEnum.GROUND:
             min_multiplier = 0.09
-            max_multiplier = 0.65
+            max_multiplier = 1.05
         elif self.damage_type == DamageEnum.ACID:
-            min_multiplier = 0.32
-            max_multiplier = 0.64
+            min_multiplier = 0.52
+            max_multiplier = 0.84
         elif self.damage_type == DamageEnum.POISON:
-            min_multiplier = 0.36
-            max_multiplier = 0.71
+            min_multiplier = 0.56
+            max_multiplier = 0.91
         elif self.damage_type == DamageEnum.CHAOS:
             min_multiplier = 0.06
-            max_multiplier = 1.32
+            max_multiplier = 1.72
 
         return {'min': min_multiplier, 'max': max_multiplier}
 
