@@ -2,7 +2,7 @@ from datetime import timedelta
 from random import choice, randint
 from typing import List
 
-from telegram import InlineKeyboardButton
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
@@ -16,10 +16,14 @@ from bot.constants.puzzle import (
     SECTION_TEXT_PUZZLE
 )
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.chat import call_telegram_message_function
+from bot.functions.chat import (
+    call_telegram_message_function,
+    callback_data_to_string
+)
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 
+from bot.functions.keyboard import reshape_row_buttons
 from constant.text import SECTION_HEAD_PUZZLE_END, SECTION_HEAD_PUZZLE_START
 
 from function.date_time import get_brazil_time_now
@@ -71,6 +75,8 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
     start_text = choice(GOD_START_NARRATION_TEXTS)
     god_greetings = f'>{choice(GOD_GREETINGS_TEXTS)}'
     text = f'{start_text}\n\n{god_greetings}'
+    grid_buttons = get_grid_buttons(new_grid)
+    reply_markup = InlineKeyboardMarkup(grid_buttons)
 
     text = create_text_in_box(
         text=text,
@@ -84,7 +90,7 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
         text=text,
         parse_mode=ParseMode.MARKDOWN_V2,
         allow_sending_without_reply=True,
-        # reply_markup=get_close_keyboard(None),
+        reply_markup=reply_markup,
     )
     response = await call_telegram_message_function(
         function_caller='JOB_START_PUZZLE()',
@@ -94,4 +100,19 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
 
 
 def get_grid_buttons(grid: GridGame) -> List[InlineKeyboardButton]:
-    ...
+    n_rows = grid.n_rows
+    buttons = []
+    for coor in grid:
+        button = InlineKeyboardButton(
+            text=f'{coor.text}',
+            callback_data=callback_data_to_string({
+                'row': coor.row,
+                'col': coor.col,
+            }),
+        )
+        buttons.append(button)
+
+    return reshape_row_buttons(
+        buttons=buttons,
+        buttons_per_row=n_rows,
+    )

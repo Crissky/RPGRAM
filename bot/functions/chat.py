@@ -54,6 +54,8 @@ CALLBACK_KEY_LIST = [
     '_all',
     'classe_name',
     'race_name',
+    'row',
+    'col',
 ]
 
 
