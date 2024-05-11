@@ -3,7 +3,11 @@ from collections import defaultdict
 from random import choice, random, randint
 from typing import Dict, Iterable, List, Tuple, Union
 from repository.mongo import ItemModel
-from repository.mongo.populate.tools import random_group_level, weighted_choice
+from repository.mongo.populate.tools import (
+    choice_rarity,
+    random_group_level,
+    weighted_choice
+)
 from repository.mongo.populate.item_constants import (
     ALL_EQUIPMENTS_DEFINITIONS,
     ALL_NIPPON_EQUIPMENTS,
@@ -162,31 +166,6 @@ def choice_total_items(min_items: int = 1, max_items: int = 5) -> int:
     }
 
     return int(weighted_choice(**numbers_probs))
-
-
-def choice_rarity(group_level: int) -> str:
-    '''Retorna uma raridade de maneira aleatória.
-    A raridade é retornada com base em sua propabilidade e no nível do grupo.
-    Um nível de grupo maior libera mais tipos de raridades.
-    As raridades opcionais (que estão nos IFs) aumentam a sua probabilidade de 
-    acordo com o nível do grupo com um valor máximo de 50, recebendo um bônus 
-    entre 1/100 à 1/5 do nível de grupo.
-    '''
-    rare_probs = 25 + (group_level // randint(20, 100))
-    epic_probs = 12.5 + (group_level // randint(20, 100))
-    legendary_probs = 6.25 + (group_level // randint(20, 100))
-    mythic_probs = 3.125 + (group_level // randint(20, 100))
-    rarities = {RarityEnum.COMMON.name: 100, RarityEnum.UNCOMMON.name: 50}
-    if group_level >= 50:
-        rarities[RarityEnum.RARE.name] = min(rare_probs, 50)
-    if group_level >= 500:
-        rarities[RarityEnum.EPIC.name] = min(epic_probs, 50)
-    if group_level >= 1250:
-        rarities[RarityEnum.LEGENDARY.name] = min(legendary_probs, 50)
-    if group_level >= 2000:
-        rarities[RarityEnum.MYTHIC.name] = min(mythic_probs, 50)
-
-    return weighted_choice(**rarities)
 
 
 def choice_material(
@@ -693,9 +672,9 @@ def add_secret_stats(
 
     if 'secret_bonus_hit_points' in secret_stats:
         secret_stats['secret_bonus_hit_points'] *= randint(
-                int(Equipment.MIN_HP_MULTIPLIER * 1.5),
-                int(Equipment.MAX_HP_MULTIPLIER * 1.5)
-            )
+            int(Equipment.MIN_HP_MULTIPLIER * 1.5),
+            int(Equipment.MAX_HP_MULTIPLIER * 1.5)
+        )
 
     if len(secret_stats) > 0:
         secret_stats['identified'] = False
@@ -815,10 +794,10 @@ def create_random_equipment(
         equipment_dict[attribute] -= 1
 
     if equipment_dict.get('bonus_hit_points', 0) > 0:
-            equipment_dict['bonus_hit_points'] *= randint(
-                Equipment.MIN_HP_MULTIPLIER,
-                Equipment.MAX_HP_MULTIPLIER
-            )
+        equipment_dict['bonus_hit_points'] *= randint(
+            Equipment.MIN_HP_MULTIPLIER,
+            Equipment.MAX_HP_MULTIPLIER
+        )
 
     weight = get_equipment_weight(equip_type, rarity, material, equip_class)
     material_name = translate_material_name(equip_type, equip_class, material)

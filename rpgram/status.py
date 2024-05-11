@@ -79,7 +79,7 @@ class Status:
         else:
             self.__conditions.append(new_condition)
             report['text'] = (
-                f'"{name}" aumentou para NV: {new_condition.level}.'
+                f'"{name}" NV: {new_condition.level} foi adicionado.'
             )
         self.__update_stats()
 

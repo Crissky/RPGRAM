@@ -6,3 +6,4 @@ from rpgram.battle import Battle
 from rpgram.item import Item
 from rpgram.bag import Bag
 from rpgram.status import Status
+from rpgram.grid_game import GridGame

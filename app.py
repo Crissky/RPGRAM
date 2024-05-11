@@ -37,6 +37,7 @@ from bot.conversations import (
 from bot.conversations.enemy import job_create_ambush
 from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.item import job_create_find_treasure
+from bot.conversations.puzzle import job_create_puzzle
 from bot.conversations.quest_item import job_create_item_quest
 from bot.conversations.rest import autorest_midnight
 from bot.conversations.seller import job_create_new_items
@@ -130,6 +131,12 @@ def main() -> None:
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_QUEST_ITEM',
     )
+    # application.job_queue.run_once(
+    #     callback=job_create_puzzle,
+    #     when=timedelta(minutes=1),
+    #     chat_id=MY_GROUP_ID,
+    #     name='JOB_CREATE_PUZZLE',
+    # )
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
