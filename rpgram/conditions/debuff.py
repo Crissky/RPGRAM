@@ -90,7 +90,7 @@ class BleedingCondition(DebuffCondition):
             turn=-1,
             level=level,
         )
-        self.__power_constant = 0.02
+        self.__power_constant = 0.01
 
     @property
     def power(self):
