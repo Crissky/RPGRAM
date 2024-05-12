@@ -58,11 +58,13 @@ class GridGame:
         self.__grid = [self.__bad_target] * (n_cols * n_rows)
         self.shuffle()
 
-    def switch(self, row: int, col: int):
+    def switch(self, row: int, col: int) -> bool:
         if row < 0 or row >= self.n_rows:
             raise IndexError(f'row index out of range [0:{self.n_rows-1}]')
         if col < 0 or col >= self.n_cols:
             raise IndexError(f'col index out of range [0:{self.n_cols-1}]')
+
+        before_total_good = self.total_good
 
         index = (row * self.n_rows) + col
         self.__grid[index] = self.get_next_color(self.__grid[index])
@@ -86,6 +88,9 @@ class GridGame:
         if row < self.n_rows - 1:
             index = ((row + 1) * self.n_rows) + col
             self.__grid[index] = self.get_next_color(self.__grid[index])
+
+        is_good_move = before_total_good < self.total_good
+        return is_good_move
 
     def get_next_color(self, value) -> str:
         """Retorna o próximo valor na lista após o valor especificado. 
@@ -124,12 +129,12 @@ class GridGame:
     n_cols = property(lambda self: self.__n_cols)
     grid = property(lambda self: self.__grid.copy())
     size = property(lambda self: len(self.__grid))
-    is_solved = property(
-        lambda self: self.__grid.count(self.__good_target) == len(self.__grid)
-    )
-    is_failed = property(
-        lambda self: self.__grid.count(self.__bad_target) == len(self.__grid)
-    )
+    total_good = property(lambda self: self.__grid.count(self.__good_target))
+    total_bad = property(lambda self: self.__grid.count(self.__bad_target))
+    colors_text = property(lambda self: ', '.join(self.__colors))
+    full_colors_text = property(lambda self: f'Cores: {self.colors_text}')
+    is_solved = property(lambda self: self.total_good == self.size)
+    is_failed = property(lambda self: self.total_bad == self.size)
 
 
 class Coordinates(NamedTuple):
