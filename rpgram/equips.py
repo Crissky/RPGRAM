@@ -1,5 +1,6 @@
 from datetime import datetime
 from random import randint
+from statistics import mean
 from typing import Iterator, List, Union
 
 from bson import ObjectId
@@ -485,17 +486,21 @@ class Equips:
         for special_damage in special_damages_gen:
             damage_type = special_damage.damage_type
             base_damage = special_damage.base_damage
+            equip_level = special_damage.equipment_level
             damage_dict = special_damages_dict.setdefault(damage_type, {})
             damage_dict.setdefault('base_damage', []).append(base_damage)
+            damage_dict.setdefault('equipment_level', []).append(equip_level)
             damage_dict.setdefault('status_multiplier', []).append(1)
 
         for damage_type, damage_dict in special_damages_dict.items():
             base_damage = sum(damage_dict['base_damage'])
             status_multiplier = sum(damage_dict['status_multiplier'])
+            equipment_level = mean(damage_dict['equipment_level'])
             if base_damage > 0:
                 yield SpecialDamage(
                     base_damage=base_damage,
                     damage_type=damage_type,
+                    equipment_level=equipment_level,
                     status_multiplier=status_multiplier,
                 )
 

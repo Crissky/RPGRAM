@@ -29,6 +29,7 @@ def reshape_row_buttons(
         Por exemplo, se buttons_per_row for 2, então será gerada uma lista com 
         listas de botões, onde cada lista de botões terá no máximo 2 botões.
     '''
+
     final_buttons = []
     total_buttons = len(buttons)
     for i in range(0, total_buttons, buttons_per_row):

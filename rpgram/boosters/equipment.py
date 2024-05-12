@@ -649,6 +649,7 @@ class Equipment(StatsBooster):
                 yield SpecialDamage(
                     base_damage=base_damage,
                     damage_type=damage_type,
+                    equipment_level=self.level,
                 )
 
     name = property(lambda self: self.identifiable_tag + self.__name)

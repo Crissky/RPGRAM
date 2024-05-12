@@ -1,15 +1,15 @@
-from random import randint, sample
-from typing import Union
+from random import choice, randint, sample
+from typing import NamedTuple, Union
 
 from rpgram.enums.rarity import RarityEnum
 
 
 RARITY_RANGE_DICT = {
-    RarityEnum.COMMON: (3, 3),
-    RarityEnum.UNCOMMON: (3, 4),
-    RarityEnum.RARE: (4, 5),
-    RarityEnum.EPIC: (5, 6),
-    RarityEnum.LEGENDARY: (6, 7)
+    RarityEnum.COMMON: (3, 3, 2),
+    RarityEnum.UNCOMMON: (3, 4, 2),
+    RarityEnum.RARE: (4, 5, 3),
+    RarityEnum.EPIC: (5, 6, 4),
+    RarityEnum.LEGENDARY: (6, 7, 5)
 }
 
 
@@ -18,15 +18,19 @@ class GridGame:
         self,
         n_rows: int = None,
         n_cols: int = None,
+        n_options: int = None,
         rarity: Union[str, RarityEnum] = None
     ):
+        self.__all_colors = ['🔴', '🔵', '🟡', '🟢', '🟣']
+        self.__bad_target = self.__all_colors[0]
+        self.__good_target = self.__all_colors[1]
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
+
         if isinstance(rarity, RarityEnum):
-            n_min, n_max = RARITY_RANGE_DICT[rarity]
+            n_min, n_max, n_options = RARITY_RANGE_DICT[rarity]
             n_rows = randint(n_min, n_max)
             n_cols = randint(n_min, n_max)
-
         elif rarity is not None:
             raise TypeError(
                 f'Rarity deve ser uma RarityEnum. Tipo: {type(rarity)}.'
@@ -34,40 +38,68 @@ class GridGame:
 
         if n_rows < 3 or n_cols < 3:
             raise ValueError('O Gride deve ter ao menos 3 linhas e 3 colunas.')
+
+        if n_options is not None:
+            n_options = int(n_options)
+        else:
+            n_options = len(self.__all_colors)
+
+        if n_options > len(self.__all_colors):
+            raise ValueError(
+                f'O valor máximo de n_options é {len(self.__all_colors)}'
+            )
+        elif n_options < 2:
+            raise ValueError('O valor mínimo de n_options é 2.')
+
         self.__rarity = rarity
         self.__n_rows = int(n_rows)
         self.__n_cols = int(n_cols)
-        self.__grid = [False] * (n_cols * n_rows)
+        self.__colors = self.__all_colors[:n_options]
+        self.__grid = [self.__bad_target] * (n_cols * n_rows)
         self.shuffle()
 
-    def switch(self, row: int, col: int):
+    def switch(self, row: int, col: int) -> bool:
         if row < 0 or row >= self.n_rows:
             raise IndexError(f'row index out of range [0:{self.n_rows-1}]')
         if col < 0 or col >= self.n_cols:
             raise IndexError(f'col index out of range [0:{self.n_cols-1}]')
 
+        before_total_good = self.total_good
+
         index = (row * self.n_rows) + col
-        self.__grid[index] = not self.__grid[index]
+        self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch left neighbor (if exists)
         if col > 0:
             index = (row * self.n_rows) + col - 1
-            self.__grid[index] = not self.__grid[index]
+            self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch right neighbor (if exists)
         if col < self.n_cols - 1:
             index = (row * self.n_rows) + col + 1
-            self.__grid[index] = not self.__grid[index]
+            self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch upper neighbor (if exists)
         if row > 0:
             index = ((row - 1) * self.n_rows) + col
-            self.__grid[index] = not self.__grid[index]
+            self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch lower neighbor (if exists)
         if row < self.n_rows - 1:
             index = ((row + 1) * self.n_rows) + col
-            self.__grid[index] = not self.__grid[index]
+            self.__grid[index] = self.get_next_color(self.__grid[index])
+
+        is_good_move = before_total_good < self.total_good
+        return is_good_move
+
+    def get_next_color(self, value) -> str:
+        """Retorna o próximo valor na lista após o valor especificado. 
+        Se o valor for o último da lista, retorna o primeiro elemento.
+        """
+
+        index = self.__colors.index(value)
+        next_index = (index + 1) % len(self.__colors)
+        return self.__colors[next_index]
 
     def shuffle(self):
         grid_len = len(self.__grid)
@@ -75,7 +107,7 @@ class GridGame:
         total_shuffle = randint(1, max_targets)
         target_list = sample(range(grid_len), total_shuffle)
         for index in target_list:
-            self.__grid[index] = True
+            self.__grid[index] = choice(self.__colors)
 
     def __str__(self):
         data = []
@@ -85,15 +117,36 @@ class GridGame:
 
         return '\n'.join(data)
 
+    def __iter__(self):
+        for col in range(self.n_cols):
+            for row in range(self.n_rows):
+                index = (row * self.n_rows) + col
+                text = self.__grid[index]
+                yield Coordinates(row, col, text)
+
     rarity = property(lambda self: self.__rarity)
     n_rows = property(lambda self: self.__n_rows)
     n_cols = property(lambda self: self.__n_cols)
     grid = property(lambda self: self.__grid.copy())
     size = property(lambda self: len(self.__grid))
-    is_solved = property(lambda self: all(self.__grid))
-    is_failed = property(
-        lambda self: self.__grid.count(False) == len(self.__grid)
-    )
+    total_good = property(lambda self: self.__grid.count(self.__good_target))
+    total_bad = property(lambda self: self.__grid.count(self.__bad_target))
+    colors_text = property(lambda self: ', '.join(self.__colors))
+    full_colors_text = property(lambda self: f'Cores: {self.colors_text}')
+    is_solved = property(lambda self: self.total_good == self.size)
+    is_failed = property(lambda self: self.total_bad == self.size)
+
+
+class Coordinates(NamedTuple):
+    row: int
+    col: int
+    text: str
+
+    def __str__(self):
+        return f'{self.text}: {self.row}, {self.col}'
+
+    def __repr__(self):
+        return f'Coordinates<{self}>'
 
 
 if __name__ == '__main__':

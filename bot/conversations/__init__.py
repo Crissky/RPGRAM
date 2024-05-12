@@ -21,3 +21,4 @@ from bot.conversations.classe import CLASSES_HANDLERS
 from bot.conversations.seller import SELLER_HANDLER
 from bot.conversations.enemy import AMBUSH_HANDLERS
 from bot.conversations.quest_item import ITEM_QUEST_HANDLER
+from bot.conversations.puzzle import PUZZLE_HANDLERS

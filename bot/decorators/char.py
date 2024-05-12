@@ -377,12 +377,6 @@ def confusion(retry_state=ConversationHandler.END):
                     )
 
                     text += attack_report['text']
-                    if attack_report['dead']:
-                        text += (
-                            f'\n\n{target_player_name} morreu! '
-                            f'Use o comando /{REST_COMMANDS[0]} '
-                            f'para descansar.'
-                        )
                     save_char(target_char, status=True)
                 text = escape_basic_markdown_v2(text)
                 text = create_text_in_box(
