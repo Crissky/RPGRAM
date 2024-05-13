@@ -121,32 +121,92 @@ async def switch_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     is_good_move = grid.switch(row=row, col=col)
-    grid_buttons = get_grid_buttons(grid)
-    reply_markup = InlineKeyboardMarkup(grid_buttons)
 
     if grid.is_solved:
-        text = choice(GOD_WINS_FEEDBACK_TEXTS)
+        await solved(grid=grid, query=query, context=context)
     elif grid.is_failed:
-        text = choice(GODS_LOSES_FEEDBACK_TEXTS)
+        await failed(grid=grid, query=query, context=context)
     elif is_good_move is True:
-        text = choice(GOD_GOOD_MOVE_FEEDBACK_TEXTS)
+        await good_move(grid=grid, query=query)
     else:
-        text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)
+        await bad_move(grid=grid, query=query)
 
-    text = create_text_in_box(
+
+async def solved(
+    grid: GridGame,
+    query: CallbackQueryHandler,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    text = choice(GOD_WINS_FEEDBACK_TEXTS)
+    reply_text_kwargs = dict(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=None,
+    )
+    await edit_message_text(grid, query, reply_text_kwargs)
+    message_id = query.message.message_id
+    remove_grid_from_dict(message_id, context)
+
+    # TODO Adicionar XP nos jogadores e dropar equipamentos
+
+
+async def failed(
+    grid: GridGame,
+    query: CallbackQueryHandler,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    text = choice(GODS_LOSES_FEEDBACK_TEXTS)
+    reply_text_kwargs = dict(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=None,
+    )
+    await edit_message_text(grid, query, reply_text_kwargs)
+    message_id = query.message.message_id
+    remove_grid_from_dict(message_id, context)
+
+    # TODO Causar dano e status aos jogadores
+
+
+async def good_move(grid: GridGame, query: CallbackQueryHandler):
+    text = choice(GOD_GOOD_MOVE_FEEDBACK_TEXTS)
+    grid_buttons = get_grid_buttons(grid)
+    reply_markup = InlineKeyboardMarkup(grid_buttons)
+    reply_text_kwargs = dict(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=reply_markup,
+    )
+    await edit_message_text(grid, query, reply_text_kwargs)
+
+
+async def bad_move(grid: GridGame, query: CallbackQueryHandler):
+    text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)
+    grid_buttons = get_grid_buttons(grid)
+    reply_markup = InlineKeyboardMarkup(grid_buttons)
+    reply_text_kwargs = dict(
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_markup=reply_markup,
+    )
+    await edit_message_text(grid, query, reply_text_kwargs)
+
+
+async def edit_message_text(
+    grid: GridGame,
+    query: CallbackQueryHandler,
+    reply_text_kwargs: dict
+):
+    text = reply_text_kwargs['text']
+    reply_text_kwargs['text'] = create_text_in_box(
         text=f'>{text}\n\n{grid.full_colors_text}',
         section_name=SECTION_TEXT_PUZZLE,
         section_start=SECTION_HEAD_PUZZLE_START,
         section_end=SECTION_HEAD_PUZZLE_END,
         clean_func=escape_for_citation_markdown_v2,
     )
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_markup=reply_markup,
-    )
-    response = await call_telegram_message_function(
-        function_caller='SWITCH_PUZZLE()',
+    await call_telegram_message_function(
+        function_caller='SWITCH_PUZZLE_EDIT_MESSAGE_TEXT()',
         function=query.edit_message_text,
         **reply_text_kwargs
     )
