@@ -130,14 +130,14 @@ class BaseCharacter:
         reports = self.__status.activate(self)
         return reports
 
-    def break_condition(self) -> List[dict]:
-        reports = self.__status.break_condition()
+    def break_conditions(self) -> List[dict]:
+        reports = self.__status.break_conditions()
         return reports
 
     def activate_status_to_attack(self, defender_char: TBaseCharacter) -> str:
         text = ''
         defender_player_name = defender_char.player_name
-        break_status_report_list = defender_char.break_condition()
+        break_status_report_list = defender_char.break_conditions()
         activate_status_report_list = defender_char.activate_status()
         if break_status_report_list or activate_status_report_list:
             text += '\n\n'
