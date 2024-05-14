@@ -21,6 +21,11 @@ class EquipmentEnumOrder(Enum):
     AMULET = 7
 
 
+ACCESSORIES_ENUM_LIST = [
+    EquipmentEnum.RING, EquipmentEnum.RING.name,
+    EquipmentEnum.AMULET, EquipmentEnum.AMULET.name,
+]
+
 if __name__ == '__main__':
     for equipment in EquipmentEnum:
         print(EquipmentEnumOrder[equipment.name])
