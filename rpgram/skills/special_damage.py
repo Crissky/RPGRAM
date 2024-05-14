@@ -144,6 +144,15 @@ class SpecialDamage:
         return f'{self.damage_name}: {self.min_damage}-{self.max_damage}'
 
     @property
+    def damage_help_emoji_text(self) -> str:
+        '''Retorna texto com o emoji, o nome do dano e o range do dano.'''
+
+        return (
+            f'{self.damage_emoji}{self.damage_name}: '
+            f'{self.min_damage}-{self.max_damage}'
+        )
+
+    @property
     def __damage_multipliers(self) -> Dict[str, float]:
         '''Retorna os multiplicadores do dano mínimo e máximo.'''
 
@@ -323,6 +332,8 @@ class SpecialDamage:
     status = status_list = condition_list = condition_ratio_list
     text = damage_help_text
     full_text = damage_full_text
+    help_text = damage_help_text
+    help_emoji_text = damage_help_emoji_text
 
     def __str__(self):
         return self.damage_help_text

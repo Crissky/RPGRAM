@@ -234,8 +234,8 @@ class Equipment(StatsBooster):
                 other_rarity_level,
                 other_equipment.rarity_level
             )
-            other_rarity_level = max(
-                other_rarity_level,
+            other_material_level = max(
+                other_material_level,
                 other_equipment.material_level
             )
             other_strength += other_equipment.strength
@@ -422,7 +422,7 @@ class Equipment(StatsBooster):
 
     def sheet_special_damages(self):
         special_damage_text = '\n'.join((
-            f'  {special_damage.full_text}'
+            f'  {special_damage.help_emoji_text}'
             for special_damage in self.special_damage_iter
         ))
         if special_damage_text:
@@ -718,6 +718,7 @@ if __name__ == '__main__':
         weight=15,
         requirements={'Nível': 10, 'FOR': 13},
         rarity='RARE',
+        material_level=3,
         _id='ffffffffffffffffffffffff',
         bonus_strength=1,
         bonus_dexterity=2,
@@ -742,6 +743,7 @@ if __name__ == '__main__':
         weight=15,
         requirements={'Nível': 10, 'FOR': 13},
         rarity='RARE',
+        material_level=1,
         _id='ffffffffffffffffffffffff',
         bonus_strength=11,
         bonus_dexterity=12,

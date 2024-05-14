@@ -188,7 +188,7 @@ class Status:
 
         return reports
 
-    def break_condition(self) -> List[dict]:
+    def break_conditions(self) -> List[dict]:
         reports = []
         for condition in self.__conditions:
             if condition in BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES:
