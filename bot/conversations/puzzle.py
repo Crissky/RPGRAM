@@ -124,7 +124,7 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
     rarity = choice_rarity(group_level)
     grid = GridGame(rarity=rarity)
     start_text = choice(GOD_START_NARRATION_TEXTS)
-    god_greetings = f'>{choice(GOD_GREETINGS_TEXTS)}'
+    god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
     text = f'{start_text}\n\n{god_greetings}\n\n{grid.full_colors_text}'
     grid_buttons = get_grid_buttons(grid)
     reply_markup = InlineKeyboardMarkup(grid_buttons)
@@ -271,7 +271,7 @@ async def edit_message_text(
     text = reply_text_kwargs['text']
     section_name = f'{SECTION_TEXT_PUZZLE} {grid.rarity.value.upper()}'
     reply_text_kwargs['text'] = create_text_in_box(
-        text=f'>{text}\n\n{grid.full_colors_text}',
+        text=f'>{GODS_NAME}: {text}\n\n{grid.full_colors_text}',
         section_name=section_name,
         section_start=SECTION_HEAD_PUZZLE_START,
         section_end=SECTION_HEAD_PUZZLE_END,
