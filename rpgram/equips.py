@@ -348,7 +348,7 @@ class Equips:
 
     def sheet_special_damages(self) -> str:
         special_damage_text = '\n'.join((
-            f'  {special_damage.full_text}'
+            f'  {special_damage.help_emoji_text}'
             for special_damage in self.special_damage_iter
         ))
         if special_damage_text:
