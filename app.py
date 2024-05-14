@@ -133,12 +133,13 @@ def main() -> None:
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_QUEST_ITEM',
     )
-    # application.job_queue.run_once(
-    #     callback=job_create_puzzle,
-    #     when=timedelta(minutes=1),
-    #     chat_id=MY_GROUP_ID,
-    #     name='JOB_CREATE_PUZZLE',
-    # )
+    application.job_queue.run_repeating(
+        callback=job_create_puzzle,
+        interval=timedelta(hours=7),
+        first=get_midnight_hour(get_yesterday=True),
+        chat_id=MY_GROUP_ID,
+        name='JOB_CREATE_PUZZLE',
+    )
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
