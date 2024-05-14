@@ -234,8 +234,8 @@ class Equipment(StatsBooster):
                 other_rarity_level,
                 other_equipment.rarity_level
             )
-            other_rarity_level = max(
-                other_rarity_level,
+            other_material_level = max(
+                other_material_level,
                 other_equipment.material_level
             )
             other_strength += other_equipment.strength
@@ -718,6 +718,7 @@ if __name__ == '__main__':
         weight=15,
         requirements={'Nível': 10, 'FOR': 13},
         rarity='RARE',
+        material_level=3,
         _id='ffffffffffffffffffffffff',
         bonus_strength=1,
         bonus_dexterity=2,
@@ -742,6 +743,7 @@ if __name__ == '__main__':
         weight=15,
         requirements={'Nível': 10, 'FOR': 13},
         rarity='RARE',
+        material_level=1,
         _id='ffffffffffffffffffffffff',
         bonus_strength=11,
         bonus_dexterity=12,
