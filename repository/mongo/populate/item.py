@@ -70,6 +70,7 @@ from rpgram.enums import (
     SeishinWearbleMaterialEnum,
     TacticalAccessoryMaterialEnum,
 )
+from rpgram.enums.equipment import ACCESSORIES_ENUM_LIST
 
 
 # CONSTANTS
@@ -263,7 +264,8 @@ def choice_accessory_material(group_level: int) -> str:
 
 def get_equip_class_and_material(
     equip_type: str,
-    group_level: int
+    group_level: int,
+    material_rank: int,
 ) -> Tuple[str, str]:
     '''Retorna uma tupla com a classe do equipamento na primeira posição e o 
     material do equipamento na segunda posição.
@@ -272,13 +274,19 @@ def get_equip_class_and_material(
     equip_class = None
 
     if equip_type in WEAPON_EQUIPMENTS_ENUM:
-        material = choice_weapon_material(group_level)
+        if isinstance(material_rank, int):
+            material = list(WeaponMaterialEnum)[material_rank-1].name
+        else:
+            material = choice_weapon_material(group_level)
         if equip_type == EquipmentEnum.ONE_HAND.name:
             equip_class = choice(list(ONE_HAND_EQUIPMENTS))
         elif equip_type == EquipmentEnum.TWO_HANDS.name:
             equip_class = choice(list(TWO_HANDS_EQUIPMENTS))
     elif equip_type in WEARABLE_EQUIPMENTS_ENUM:
-        material = choice_armor_material(group_level)
+        if isinstance(material_rank, int):
+            material = list(WearableMaterialEnum)[material_rank-1].name
+        else:
+            material = choice_armor_material(group_level)
         if equip_type == EquipmentEnum.HELMET.name:
             equip_class = choice(list(HELMET_EQUIPMENTS))
         elif equip_type == EquipmentEnum.ARMOR.name:
@@ -286,7 +294,10 @@ def get_equip_class_and_material(
         elif equip_type == EquipmentEnum.BOOTS.name:
             equip_class = choice(list(BOOTS_EQUIPMENTS))
     elif equip_type in ACCESSORY_EQUIPMENTS_ENUM:
-        material = choice_accessory_material(group_level)
+        if isinstance(material_rank, int):
+            material = list(AccessoryMaterialsEnum)[material_rank-1].name
+        else:
+            material = choice_accessory_material(group_level)
         if equip_type == EquipmentEnum.RING.name:
             equip_class = choice(list(RING_EQUIPMENTS))
         elif equip_type == EquipmentEnum.AMULET.name:
@@ -734,18 +745,20 @@ def translate_material_name(
 
 
 def create_random_equipment(
-    equip_type: str,
+    equip_type: Union[EquipmentEnum, str],
     group_level: int,
     rarity: Union[RarityEnum, str] = None,
     equip_class: str = None,
-    material: str = None,
+    material_rank: int = None,
     random_level: bool = False,
     save_in_database: bool = False,
 ) -> Item:
     '''Retorna um equipamento aleatório.
     '''
 
-    if equip_type is None:
+    if isinstance(equip_type, EquipmentEnum):
+        equip_type = equip_type.name
+    elif equip_type is None or equip_type not in EquipmentEnum.__members__:
         equip_type = choice_equip_type()
 
     if isinstance(rarity, RarityEnum):
@@ -755,13 +768,21 @@ def create_random_equipment(
 
     if random_level:
         group_level = random_group_level(group_level)
+    
+    if isinstance(material_rank, int):
+        if material_rank < 1:
+            material_rank = 1
+        elif material_rank > 9 and equip_type not in ACCESSORIES_ENUM_LIST:
+            material_rank = 9
+        elif material_rank > 6 and equip_type in ACCESSORIES_ENUM_LIST:
+            material_rank = 6
 
-    _equip_class, _material = get_equip_class_and_material(
-        equip_type,
-        group_level
+    _equip_class, material = get_equip_class_and_material(
+        equip_type=equip_type,
+        group_level=group_level,
+        material_rank=material_rank,
     )
     equip_class = equip_class if equip_class else _equip_class
-    material = material if material else _material
     material_level = get_material_level(
         equip_type=equip_type,
         material=material
@@ -928,8 +949,8 @@ def create_random_item(
             item = create_random_consumable(group_level, random_level=True)
         elif choiced_item in equipment_types:
             item = create_random_equipment(
-                choiced_item,
-                group_level,
+                equip_type=choiced_item,
+                group_level=group_level,
                 random_level=True,
                 save_in_database=save_in_database,
             )
@@ -949,50 +970,27 @@ def create_random_item(
 
 
 if __name__ == '__main__':
-    from collections import Counter
-
-    def test_count(func):
-        print(func.__name__)
-        items = []
-        for i in range(1000):
-            items.append(func())
-        result = Counter(items)
-        for item in result.most_common():
-            print(f'{item[0]}: {item[1]},', end=' ')
-        print()
-    # test_count(choice_type_item)
-    # test_count(choice_rarity)
-    # test_count(choice_weapon_material)
-    # test_count(choice_armor_material)
-    # test_count(choice_accessory_material)
-
-    # print(create_random_item(100))
-
-    random_items = create_random_item(
-        group_level=1001,
-        min_items=1000,
-        max_items=1000,
-        no_trap=True,
-        save_in_database=False,
-    )
-    print(f'random_items type(): {type(random_items)}')
-    print(isinstance(random_items, Iterable))
-    for item in random_items:
-        pass
-
-    # print(
-    #     create_random_equipment(
-    #         EquipmentEnum.ONE_HAND.name,
-    #         100,
-    #         # RarityEnum.RARE,
-    #         weapon='SWORD',
-    #         material=WeaponMaterialEnum.STEEL.name
-    #     ).get_all_sheets(verbose=True)
-    # )
-
-    # for _ in range(1000):
-    #     items = create_random_item(1001)
-    #     if isinstance(items, list):
-    #         for item in items:
-    #             if isinstance(item.item, Equipment):
-    #                 print(f'\t{item.item.name}')
+    option = 0
+    
+    if option == 0:
+        random_items = create_random_item(
+            group_level=1001,
+            min_items=1000,
+            max_items=1000,
+            no_trap=True,
+            save_in_database=False,
+        )
+        print(f'random_items type(): {type(random_items)}')
+        print(isinstance(random_items, Iterable))
+        for item in random_items:
+            pass
+    elif option == 1:
+        equipment = create_random_equipment(
+            equip_type=EquipmentEnum.TWO_HANDS,
+            group_level=100,
+            rarity='RARE',
+            material_rank=5,
+            random_level=True,
+            save_in_database=False,
+        )
+        print(equipment)

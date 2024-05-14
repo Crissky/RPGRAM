@@ -10,6 +10,7 @@ from repository.mongo import (
 )
 from rpgram import Group
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
+from rpgram.conditions.condition import Condition
 from rpgram.conditions.factory import factory_condition
 from rpgram.enums.damage import (
     DamageEnum,
@@ -182,10 +183,10 @@ def add_trap_damage(
 
 
 def add_conditions(
-    *conditions: List[dict],
+    *conditions: List[Condition],
     user_id: int = None,
     char: BaseCharacter = None,
-):
+) -> dict:
     '''Função que adiciona condições ao personagem
     '''
 

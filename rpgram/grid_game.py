@@ -102,12 +102,14 @@ class GridGame:
         return self.__colors[next_index]
 
     def shuffle(self):
-        grid_len = len(self.__grid)
-        max_targets = (grid_len // 2)
+        grid_size = self.size
+        max_targets = grid_size // 2
         total_shuffle = randint(1, max_targets)
-        target_list = sample(range(grid_len), total_shuffle)
+        target_list = sample(range(grid_size), total_shuffle)
+        colors = self.__colors.copy()
+        colors.remove(self.__bad_target)
         for index in target_list:
-            self.__grid[index] = choice(self.__colors)
+            self.__grid[index] = choice(colors)
 
     def __str__(self):
         data = []
