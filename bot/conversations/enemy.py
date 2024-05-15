@@ -70,7 +70,7 @@ from bot.functions.chat import (
     call_telegram_message_function,
     get_close_keyboard
 )
-from bot.functions.config import get_attribute_group
+from bot.functions.config import get_attribute_group, is_group_spawn_time
 from constant.text import (
     SECTION_HEAD,
     SECTION_HEAD_ATTACK_END,
@@ -319,14 +319,9 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
     print('JOB_ENEMY_ATTACK()')
     char_model = CharacterModel()
-    group_model = GroupModel()
     job = context.job
     chat_id = job.chat_id
-    group = group_model.get(chat_id)
-    spawn_start_time = group.spawn_start_time
-    spawn_end_time = group.spawn_end_time
-    now = get_brazil_time_now()
-    is_spawn_time = now.hour >= spawn_start_time and now.hour < spawn_end_time
+    is_spawn_time = is_group_spawn_time(chat_id)
     user_id = job.user_id
     job_data = job.data
     enemy_id = job_data['enemy_id']
