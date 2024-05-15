@@ -120,9 +120,9 @@ class GridGame:
         return '\n'.join(data)
 
     def __iter__(self):
-        for col in range(self.n_cols):
-            for row in range(self.n_rows):
-                index = (row * self.n_rows) + col
+        for row in range(self.n_rows):
+            for col in range(self.n_cols):
+                index = (row * self.n_cols) + col
                 text = self.__grid[index]
                 yield Coordinates(row, col, text)
 
@@ -160,3 +160,11 @@ if __name__ == '__main__':
     print(g.is_solved, g.is_failed)
     g.switch(1, 1)
     print(g)
+
+    # Teste Iteration
+    # for n_options in range(2, 6):
+    #     for col in range(3, 8):
+    #         for row in range(3, 8):
+    #             g = GridGame(row, col, n_options)
+    #             print([coor for coor in g])
+    #             print('-'*50)

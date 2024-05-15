@@ -6,9 +6,11 @@ SECTION_TEXT_PUZZLE = 'DESAFIO'
 SECTION_TEXT_PUZZLE_XP = 'XP DESAFIO'
 SECTION_TEXT_PUZZLE_PUNISHMENT = 'PUNIÇÃO'
 
+
 PATTERN_PUZZLE = (
     f'{{{CALLBACK_KEY_LIST.index("row")}:\d'
 )
+
 
 GOD_START_NARRATION_TEXTS = [
     'Do véu da aurora, surgem duas figuras radiantes, Thoth e Seshat, deuses ancestrais.',
@@ -73,6 +75,7 @@ GOD_START_NARRATION_TEXTS = [
     'Que a memória de Thoth e Seshat seja para sempre uma bênção para a humanidade.',
 ]
 
+
 GOD_GREETINGS_TEXTS = [
     'Aventureiros, desvendem os segredos da tumba antiga e libertem os tesouros ancestrais! A recompensa em ouro e sabedoria será grandiosa, mas a maldição dos faraós recairá sobre vocês se falharem.',
     'O enigma da esfinge guarda a entrada para o labirinto encantado. Desvendem seus mistérios e encontrem a glória eterna, ou a fúria da fera os consumirá.',
@@ -120,6 +123,7 @@ GOD_GREETINGS_TEXTS = [
     'Na floresta sussurrante, os segredos da paz eterna se escondem entre as árvores e o vento. Somente aqueles com corações puros, almas pacíficas e uma profunda conexão com a natureza conseguirão decifrar a melodia da floresta e encontrar o caminho para a paz. A recompensa? Paz eterna, felicidade inabalável e a chance de viver em harmonia com o universo. Mas cuidado, aventureiros: a discórdia os entregará ao caos eterno. A punição? Uma vida atormentada por conflitos internos e externos, sem nunca encontrar a paz que tanto desejam.',
     'Sob o sol abrasador e a areia escaldante, o Deserto das Areias Escaldantes esconde um oásis de riquezas inimagináveis. Somente aqueles com força física, resistência inabalável e um profundo respeito pela natureza conseguirão atravessar o deserto e encontrar o oásis. A recompensa? Fortuna além dos sonhos mais loucos, poder inigualável e a chance de se tornarem lendas. Mas cuidado, aventureiros: a morte os consumirá na areia se não forem fortes. A punição? Uma morte terrível pela sede, pelo calor e pelas tempestades de areia, condenando seus corpos à desidratação e seus espíritos ao esquecimento eterno.',
 ]
+
 
 GOD_GOOD_MOVE_FEEDBACK_TEXTS = [
     'Parabéns pela sua fluidez e precisão!',
@@ -308,6 +312,7 @@ GOD_BAD_MOVE_FEEDBACK_TEXTS = [
     'Superem a falta de ética, ajam com honestidade, integridade e transparência em todas as situações.',
 ]
 
+
 GOD_WINS_FEEDBACK_TEXTS = [
     'Parabéns, aventureiros! Sua inteligência e trabalho em equipe foram cruciais para resolver este enigma desafiador.',
     'Admiro a persistência e criatividade que vocês demonstraram ao superar este puzzle.',
@@ -401,6 +406,7 @@ GOD_WINS_FEEDBACK_TEXTS = [
     'Vocês são a prova de que com determinação e perseverança, podemos alcançar qualquer coisa.',
 ]
 
+
 GODS_LOSES_FEEDBACK_TEXTS = [
     'Que seus mapas sempre levem vocês a becos sem saída e que seus compassos sempre apontem para o norte!',
     'Que a escuridão da caverna se torne sua companheira constante e que o eco dos seus passos seja o único som que vocês ouçam!',
@@ -492,4 +498,38 @@ GODS_LOSES_FEEDBACK_TEXTS = [
     'Que seus corações sejam amaldiçoados, incapazes de sentir amor, alegria ou compaixão.',
     'Que seus espíritos sejam amaldiçoados, corrompidos pela escuridão e pelo mal.',
     'Que a maldição dos aventureiros falhos recaia sobre todos que os conhecerem, espalhando desespero e desgraça por onde passarem.',
+]
+
+
+GODS_TIMEOUT_FEEDBACK_TEXTS = [
+    'O tempo se esgotou! A maldição ancestral se aproxima, aventureiros!',
+    'A ampulheta se esvaziou. Preparem-se para enfrentar a maldição que assola este lugar!',
+    'A sombra da maldição se aproxima! Apressem-se, bravos aventureiros, o tempo se esvai!',
+    'O portal se fechará em instantes! A maldição será libertada se não alcançarmos nosso objetivo!',
+    'Cuidado, aventureiros! Os sinos da maldição soam! Corram contra o tempo!',
+    'O labirinto se fecha! A névoa da maldição os consumirá se não encontrarem a saída!',
+    'A lua de sangue surge no céu! A maldição se intensifica! Aventureiros, o tempo é agora!',
+    'O rugido do monstro ecoa! A maldição toma forma! Aventureiros, lutem com bravura!',
+    'As runas se apagam! A maldição está prestes a ser libertada! Aventureiros, decifrem o enigma!',
+    'O elixir se esgota! A maldição se espalhará! Aventureiros, bebam antes que seja tarde!',
+    'O portal se abre! A maldição os espera do outro lado! Aventureiros, entrem com coragem!',
+    'O sacrifício deve ser feito! A maldição exige um preço! Aventureiros, escolham com sabedoria!',
+    'A profecia se cumpre! A maldição se manifesta! Aventureiros, enfrentem seu destino!',
+    'O enigma final se revela! A maldição tem uma chave! Aventureiros, desvendem o segredo!',
+    'O tempo se distorce! A maldição distorce a realidade! Aventureiros, confiem em seus instintos!',
+    'A escuridão toma conta! A maldição cega seus olhos! Aventureiros, usem a luz da esperança!',
+    'O silêncio reina! A maldição silencia seus gritos! Aventureiros, usem a força da união!',
+    'O chão treme! A maldição sacode o mundo! Aventureiros, permaneçam firmes!',
+    'O ar se torna tóxico! A maldição envenena seus pulmões! Aventureiros, encontrem refúgio!',
+    'A morte se aproxima! A maldição os consome! Aventureiros, lutem pela vida!',
+    'A esperança se esvai! A maldição os desanima! Aventureiros, acreditem em si mesmos!',
+    'O amor se transforma em ódio! A maldição corrompe seus corações! Aventureiros, mantenham a compaixão!',
+    'A fé se torna dúvida! A maldição questiona suas crenças! Aventureiros, encontrem a verdade!',
+    'A sanidade se esvai! A maldição distorce suas mentes! Aventureiros, mantenham o foco!',
+    'O tempo se repete! A maldição os prende em um ciclo! Aventureiros, quebrem a corrente!',
+    'O passado retorna! A maldição os confronta com seus erros! Aventureiros, aprendam com o passado!',
+    'O futuro se desfaz! A maldição rouba seus sonhos! Aventureiros, reescrevam o futuro!',
+    'A maldição é poderosa! Aventureiros, unam suas forças!',
+    'A maldição é traiçoeira! Aventureiros, estejam vigilantes!',
+    'A maldição é implacável! Aventureiros, sejam implacáveis em sua luta!',
 ]
