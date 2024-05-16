@@ -56,9 +56,21 @@ from bot.functions.keyboard import reshape_row_buttons
 
 from constant.text import (
     SECTION_HEAD_PUNISHMENT_END,
+    SECTION_HEAD_PUNISHMENT_PUZZLE_END,
+    SECTION_HEAD_PUNISHMENT_PUZZLE_START,
     SECTION_HEAD_PUNISHMENT_START,
+    SECTION_HEAD_PUZZLE_BADMOVE_END,
+    SECTION_HEAD_PUZZLE_BADMOVE_START,
+    SECTION_HEAD_PUZZLE_COMPLETE_END,
+    SECTION_HEAD_PUZZLE_COMPLETE_START,
     SECTION_HEAD_PUZZLE_END,
+    SECTION_HEAD_PUZZLE_FAIL_END,
+    SECTION_HEAD_PUZZLE_FAIL_START,
+    SECTION_HEAD_PUZZLE_GOODMOVE_END,
+    SECTION_HEAD_PUZZLE_GOODMOVE_START,
     SECTION_HEAD_PUZZLE_START,
+    SECTION_HEAD_TIMEOUT_PUZZLE_END,
+    SECTION_HEAD_TIMEOUT_PUZZLE_START,
     SECTION_HEAD_XP_END,
     SECTION_HEAD_XP_START,
     TEXT_SEPARATOR_2
@@ -119,6 +131,7 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
     '''Envia a mensagem com o Puzzle de Thoth & Seshat.
     '''
 
+    print('JOB_START_PUZZLE()')
     job = context.job
     chat_id = job.chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
@@ -164,6 +177,12 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
+    ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
+    puzzle encerre. Mas se já estiver forma do horário de spawn, os 
+    deuses irão embora.
+    '''
+
+    print('JOB_TIMEOUT_PUZZLE()')
     job = context.job
     chat_id = job.chat_id
     data = job.data
@@ -179,10 +198,14 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
             'magnanimidade, concedemos-lhes o perdão. Assim, '
             'não lhes lançaremos nossa maldição.'
         )
+        section_start = SECTION_HEAD_TIMEOUT_PUZZLE_START
+        section_end = SECTION_HEAD_TIMEOUT_PUZZLE_END
     else:
         text = choice(GODS_TIMEOUT_FEEDBACK_TEXTS)
-        text += ''
+        text += ' '
         text += choice(GODS_LOSES_FEEDBACK_TEXTS)
+        section_start = SECTION_HEAD_PUNISHMENT_PUZZLE_START
+        section_end = SECTION_HEAD_PUNISHMENT_PUZZLE_END
         silent = get_attribute_group(chat_id, 'silent')
         await punishment(
             chat_id=chat_id,
@@ -194,8 +217,8 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
     text = create_text_in_box(
         text=f'>{GODS_NAME}: {text}\n\n{grid.full_colors_text}',
         section_name=section_name,
-        section_start=SECTION_HEAD_PUZZLE_START,
-        section_end=SECTION_HEAD_PUZZLE_END,
+        section_start=section_start,
+        section_end=section_end,
         clean_func=escape_for_citation_markdown_v2,
     )
     await edit_message_text(
@@ -256,7 +279,13 @@ async def solved(
         reply_markup=get_close_keyboard(None),
     )
     remove_grid_from_dict(message_id, context)
-    await puzzle_edit_message_text(grid, query, reply_text_kwargs)
+    await puzzle_edit_message_text(
+        grid=grid,
+        query=query,
+        reply_text_kwargs=reply_text_kwargs,
+        section_start=SECTION_HEAD_PUZZLE_COMPLETE_START,
+        section_end=SECTION_HEAD_PUZZLE_COMPLETE_END,
+    )
     await add_xp_group(
         chat_id=chat_id,
         context=context,
@@ -285,7 +314,13 @@ async def failed(
         parse_mode=ParseMode.MARKDOWN_V2,
         reply_markup=get_close_keyboard(None),
     )
-    await puzzle_edit_message_text(grid, query, reply_text_kwargs)
+    await puzzle_edit_message_text(
+        grid=grid,
+        query=query,
+        reply_text_kwargs=reply_text_kwargs,
+        section_start=SECTION_HEAD_PUZZLE_FAIL_START,
+        section_end=SECTION_HEAD_PUZZLE_FAIL_END,
+    )
     remove_grid_from_dict(message_id, context)
     await punishment(
         chat_id=chat_id,
@@ -304,7 +339,13 @@ async def good_move(grid: GridGame, query: CallbackQueryHandler):
         parse_mode=ParseMode.MARKDOWN_V2,
         reply_markup=reply_markup,
     )
-    await puzzle_edit_message_text(grid, query, reply_text_kwargs)
+    await puzzle_edit_message_text(
+        grid=grid,
+        query=query,
+        reply_text_kwargs=reply_text_kwargs,
+        section_start=SECTION_HEAD_PUZZLE_GOODMOVE_START,
+        section_end=SECTION_HEAD_PUZZLE_GOODMOVE_END,
+    )
 
 
 async def bad_move(grid: GridGame, query: CallbackQueryHandler):
@@ -316,21 +357,36 @@ async def bad_move(grid: GridGame, query: CallbackQueryHandler):
         parse_mode=ParseMode.MARKDOWN_V2,
         reply_markup=reply_markup,
     )
-    await puzzle_edit_message_text(grid, query, reply_text_kwargs)
+    await puzzle_edit_message_text(
+        grid=grid,
+        query=query,
+        reply_text_kwargs=reply_text_kwargs,
+        section_start=SECTION_HEAD_PUZZLE_BADMOVE_START,
+        section_end=SECTION_HEAD_PUZZLE_BADMOVE_END,
+    )
 
 
 async def puzzle_edit_message_text(
     grid: GridGame,
     query: CallbackQueryHandler,
-    reply_text_kwargs: dict
+    reply_text_kwargs: dict,
+    section_name: str = None,
+    section_start: str = None,
+    section_end: str = None,
 ):
+    if not isinstance(section_name, str):
+        section_name = f'{SECTION_TEXT_PUZZLE} {grid.rarity.value.upper()}'
+    if not isinstance(section_start, str):
+        section_start = SECTION_HEAD_PUZZLE_START
+    if not isinstance(section_end, str):
+        section_end = SECTION_HEAD_PUZZLE_END
+
     text = reply_text_kwargs['text']
-    section_name = f'{SECTION_TEXT_PUZZLE} {grid.rarity.value.upper()}'
     reply_text_kwargs['text'] = create_text_in_box(
         text=f'>{GODS_NAME}: {text}\n\n{grid.full_colors_text}',
         section_name=section_name,
-        section_start=SECTION_HEAD_PUZZLE_START,
-        section_end=SECTION_HEAD_PUZZLE_END,
+        section_start=section_start,
+        section_end=section_end,
         clean_func=escape_for_citation_markdown_v2,
     )
     await call_telegram_message_function(
