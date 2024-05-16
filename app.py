@@ -135,7 +135,7 @@ def main() -> None:
     )
     application.job_queue.run_repeating(
         callback=job_create_puzzle,
-        interval=timedelta(hours=7),
+        interval=timedelta(hours=6),
         first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_PUZZLE',
