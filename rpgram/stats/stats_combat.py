@@ -61,7 +61,7 @@ class CombatStats:
         self.__death_counter = int(death_counter)
 
         self.__stats_boosters = set(base_stats.stats_boosters)
-        self.update()
+        self.__boost_stats(is_init=True)
 
     def set_damage(self, value: int) -> None:
         is_dead_start = self.dead
@@ -294,8 +294,12 @@ class CombatStats:
     def update(self) -> None:
         self.__boost_stats()
 
-    def __boost_stats(self) -> None:
-        is_dead_start = self.dead
+    def __boost_stats(self, is_init: bool = False) -> None:
+        is_dead_start = False
+        if is_init is False:
+            # Evita erro quando o self.__bonus_hit_points não existe no init
+            is_dead_start = self.dead
+
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
