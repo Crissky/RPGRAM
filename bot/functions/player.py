@@ -59,3 +59,11 @@ def get_players_name_by_chat_id(chat_id: int, sort: bool = True) -> List[str]:
         player_names.sort()
 
     return player_names
+
+
+def player_is_in_chat(chat_id: int, player_id: int) -> bool:
+    player_model = PlayerModel()
+    query = {'chat_ids': chat_id, 'player_id': player_id}
+    player = player_model.get(query=query, fields=['_id'])
+
+    return bool(player)
