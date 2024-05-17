@@ -122,6 +122,15 @@ class BaseStats:
             self.__multiplier_wisdom += sb.multiplier_wisdom - 1.0
             self.__multiplier_charisma += sb.multiplier_charisma - 1.0
 
+    def get_stats_boosters(self, stats_booster_name: str) -> StatsBooster:
+        for sb in self.__stats_boosters:
+            if sb.__class__.__name__ == stats_booster_name:
+                return sb
+
+        raise ValueError(
+            f'Não foi encontrado o StatsBooster "{stats_booster_name}".'
+        )
+
     def reset_stats(self) -> None:
         self.__base_strength = 0
         self.__base_dexterity = 0

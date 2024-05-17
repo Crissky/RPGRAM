@@ -7,7 +7,7 @@ from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
-from rpgram.stats.stats_combat import FULL_HEAL_VALUE
+from rpgram.constants.stats.stats_combat import FULL_HEAL_VALUE
 
 
 MINOR_HEALING_POTION_POWER = 100
