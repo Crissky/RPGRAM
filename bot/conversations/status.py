@@ -3,6 +3,7 @@ from bot.decorators.job import skip_if_spawn_timeout
 
 from bot.functions.char import activate_conditions
 from bot.functions.chat import send_private_message
+from bot.functions.player import get_players_id_by_chat_id
 from constant.text import (
     SECTION_HEAD_STATUS_END,
     SECTION_HEAD_STATUS_START,
@@ -22,11 +23,13 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
     now = get_brazil_time_now()
 
     print(f'JOB_ACTIVATE_CONDITIONS() - {now}')
+    player_id_list = get_players_id_by_chat_id(chat_id=chat_id)
     player_id_list = status_model.get_all(
         query={
             'condition_args': {
                 '$exists': True, '$not': {'$size': 0}
-            }
+            },
+            'player_id': {'$in': player_id_list}
         },
         fields=['player_id']
     )
@@ -40,10 +43,8 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
             continue
 
         report = activate_conditions(char=player_char)
-        # print('report:', report)
         text = report['text']
         if text:
-            # text = f'{EmojiEnum.STATUS.value}STATUS REPORT:\n\n' + text
             text += f'{TEXT_SEPARATOR}\n\n'
             text += report['all_status_verbose']
             text = create_text_in_box(
