@@ -295,6 +295,7 @@ class CombatStats:
         self.__boost_stats()
 
     def __boost_stats(self) -> None:
+        is_dead_start = self.dead
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
@@ -315,6 +316,9 @@ class CombatStats:
             self.__bonus_magical_defense += int(sb.bonus_magical_defense)
             self.__bonus_hit += int(sb.bonus_hit)
             self.__bonus_evasion += int(sb.bonus_evasion)
+
+        if is_dead_start is True:
+            self.__death()
 
     def __add_death_counter(self):
         self.__death_counter += 1
