@@ -2,6 +2,7 @@ from typing import List
 
 from constant.text import ALERT_SECTION_HEAD, SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
+from rpgram.constants.stats.stats_combat import FULL_HEAL_VALUE
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     EVASION_EMOJI_TEXT_ABB,
@@ -26,9 +27,7 @@ from rpgram.constants.text import (
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
-
-
-FULL_HEAL_VALUE = 'FULL_HEAL'
+from rpgram.status import Status
 
 
 class CombatStats:
@@ -84,6 +83,7 @@ class CombatStats:
         if not is_dead_start and is_dead_end:
             print(f'Morreu!!!')
             self.__add_death_counter()
+            self.clean_status_by_death()
 
     def damage_hit_points(
         self,
@@ -178,6 +178,19 @@ class CombatStats:
         report['guard_text'] = guard_text
 
         return report
+
+    def clean_status_by_death(self):
+        status_class_name = Status.__name__
+        status = self.__base_stats.get_stats_boosters(status_class_name)
+
+        if isinstance(status, Status):
+            status_report = status.clean_status()
+            self.__death()
+            return status_report
+        else:
+            raise AttributeError(
+                f'Status "{status_class_name}" não encontrado.'
+            )
 
     def cure_hit_points(
         self,
@@ -282,6 +295,7 @@ class CombatStats:
         self.__boost_stats()
 
     def __boost_stats(self) -> None:
+        is_dead_start = self.dead
         self.__bonus_hit_points = 0
         self.__bonus_initiative = 0
         self.__bonus_physical_attack = 0
@@ -303,8 +317,14 @@ class CombatStats:
             self.__bonus_hit += int(sb.bonus_hit)
             self.__bonus_evasion += int(sb.bonus_evasion)
 
+        if is_dead_start is True:
+            self.__death()
+
     def __add_death_counter(self):
         self.__death_counter += 1
+
+    def __death(self):
+        self.__damage = self.hit_points
 
     # Getters
     # Combat Attributes

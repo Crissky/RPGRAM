@@ -166,6 +166,22 @@ class Status:
 
         return report_list
 
+    def clean_status(self) -> dict:
+        condition_names = ', '.join(
+            [condition.name for condition in self.__conditions]
+        )
+        self.__conditions = []
+        self.__update_stats()
+
+        return {
+            'text': (
+                f'Todas as condições foram removidas.\n'
+                f'Condições: {condition_names}'
+            )
+        }
+
+    clean = clean_status
+
     def activate(self, char) -> List[dict]:
         reports = []
         for condition in self.__conditions:
