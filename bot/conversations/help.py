@@ -55,6 +55,7 @@ from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
 from bot.constants.seller import COMMANDS as seller_commands, SELLER_NAME
+from bot.constants.reset_char import COMMANDS as reset_char_commands
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -161,6 +162,7 @@ def get_details_text(option: str) -> str:
         view_group_cmd = command_to_string(view_group_commands)
         view_player_cmd = command_to_string(view_player_commands)
         seller_cmd = command_to_string(seller_commands)
+        reset_char_cmd = command_to_string(reset_char_commands)
         text = (
             f'{SECTION_HEAD.format("COMANDOS")}\n\n'
 
@@ -242,8 +244,9 @@ def get_details_text(option: str) -> str:
         )
     elif option == CALLBACK_STATS:
         add_stats_cmd = command_to_string(add_stats_commands)
+        reset_char_cmd = command_to_string(reset_char_commands)
         text = (
-            f'*ADICIONAR/EXIBIR ESTATISTICAS*: /{add_stats_commands[0]}\n'
+            f'*ADICIONAR/EXIBIR ESTATÍSTICAS*: /{add_stats_commands[0]}\n'
             f'Argumentos: [<ATRIBUTO> <VALOR>]\n\n'
 
             f'Exemplo: "/{add_stats_commands[0]} FOR 10" '
@@ -254,7 +257,14 @@ def get_details_text(option: str) -> str:
             f'Use o argumento "verbose" ou "v" para exibir as estatísticas '
             f'com mais detalhes.\n\n'
 
-            f'Atalhos: {add_stats_cmd}'
+            f'Atalhos: {add_stats_cmd}\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'*RESETAR ATRIBUTOS BASE*: /{reset_char_commands[0]}\n'
+            f'INFO: Restitui todos os pontos usados nas estatísticas dos '
+            f'*Atributos Base*.\n\n'
+            f'Atalhos: {reset_char_cmd}\n\n'
         )
     elif option == CALLBACK_GROUP:
         config_group_cmd = command_to_string(config_group_commands)

@@ -335,6 +335,14 @@ async def reply_text(
             'Quando usar context, message_id deve ser um inteiro.'
         )
 
+    if update and user_id is None:
+        user_id = update.effective_user.id
+
+    if isinstance(chat_id, int):
+        silent = get_attribute_group_or_player(chat_id, 'silent')
+    elif isinstance(user_id, int):
+        silent = get_player_attribute_by_id(user_id, 'silent')
+
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
     reply_markup = (
         reply_markup
@@ -344,6 +352,7 @@ async def reply_text(
     reply_text_kwargs = dict(
         text=text,
         parse_mode=markdown,
+        disable_notification=silent,
         reply_markup=reply_markup,
         allow_sending_without_reply=allow_sending_without_reply,
     )
