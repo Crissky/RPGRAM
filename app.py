@@ -34,6 +34,7 @@ from bot.conversations import (
     CLASSES_HANDLERS,
     AMBUSH_HANDLERS,
     PUZZLE_HANDLERS,
+    RESET_CHAR_HANDLERS,
 )
 from bot.conversations.enemy import job_create_ambush
 from bot.conversations.help import job_info_deploy_bot
@@ -83,6 +84,7 @@ def main() -> None:
     application.add_handlers(CLASSES_HANDLERS)
     application.add_handlers(AMBUSH_HANDLERS)
     application.add_handlers(PUZZLE_HANDLERS)
+    application.add_handlers(RESET_CHAR_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(
