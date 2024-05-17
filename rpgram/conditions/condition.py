@@ -134,7 +134,8 @@ class Condition(StatsBooster):
 
     # Getters
     name = property(lambda self: self.__name)
-    full_name = property(lambda self: f'{self.emoji}{self.name}{self.level}')
+    emoji_name = property(lambda self: f'{self.emoji}{self.name}')
+    full_name = property(lambda self: f'{self.emoji_name}{self.level}')
     frequency = property(lambda self: self.__frequency)
     turn = property(lambda self: self.__turn)
     level = property(lambda self: self.__level)

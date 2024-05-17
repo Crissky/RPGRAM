@@ -62,7 +62,7 @@ class Status:
                 f'Tipo: {type(new_condition)}.'
             )
 
-        name = new_condition.name
+        emoji_name = new_condition.emoji_name
         report = {'condition_name': new_condition.name}
         if new_condition in self.__conditions:
             new_condition_turn = new_condition.turn
@@ -73,13 +73,13 @@ class Status:
             current_condition.add_level(new_condition_level)
             current_condition_level = current_condition.level
             report['text'] = (
-                f'O nível de "{name}" foi aumentado '
+                f'O nível de "{emoji_name}" foi aumentado '
                 f'para {current_condition_level}.'
             )
         else:
             self.__conditions.append(new_condition)
             report['text'] = (
-                f'"{name}" NV: {new_condition.level} foi adicionado.'
+                f'"{emoji_name}" NV: {new_condition.level} foi adicionado.'
             )
         self.__update_stats()
 
@@ -120,7 +120,7 @@ class Status:
             )
 
         if isinstance(condition, Condition):
-            condition_name = condition.name
+            condition_name = condition.emoji_name
             condition_level = condition.level
         elif isinstance(condition, str):
             condition_name = condition
@@ -130,14 +130,15 @@ class Status:
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
+            condition_emoji_name = new_condition.emoji_name
             new_condition = new_condition.remove_level(condition_level)
             if not new_condition:
-                report['text'] = f'"{condition_name}" foi removido.'
+                report['text'] = f'"{condition_emoji_name}" foi removido.'
                 self.__conditions.pop(index)
             else:
                 new_condition_level = new_condition.level
                 report['text'] = (
-                    f'"{condition_name}" reduziu para NV: '
+                    f'"{condition_emoji_name}" reduziu para NV: '
                     f'{new_condition_level}.'
                 )
         else:
@@ -168,7 +169,7 @@ class Status:
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
-            [condition.name for condition in self.__conditions]
+            [condition.emoji_name for condition in self.__conditions]
         )
         self.__conditions = []
         self.__update_stats()
@@ -191,7 +192,7 @@ class Status:
                     if report['text']:
                         report['text'] += '\n'
                     report['text'] += (
-                        f'Condição "{condition.name}" foi removida do Status.'
+                        f'Condição "{condition.emoji_name}" foi removida do Status.'
                     )
                 reports.append(report)
 
@@ -244,7 +245,8 @@ class Status:
                 if condition.turn == 0:
                     report['text'] += (
                         f'\n'
-                        f'Condição "{condition.name}" foi removida do Status.'
+                        f'Condição "{condition.emoji_name}" '
+                        f'foi removida do Status.'
                     )
                 reports.append(report)
 
@@ -325,7 +327,7 @@ class Status:
             text = 'Normal'
         elif verbose:
             text += f'{TEXT_SEPARATOR_2}\n'.join(
-                f'*Nome*: {condition.name} (Nv: {condition.level})\n'
+                f'*Nome*: {condition.emoji_name} (Nv: {condition.level})\n'
                 f'*Descrição*: {condition.description}\n'
                 f'*Turno*: '
                 f'{condition.turn if condition.turn > -1 else "Eterno"}\n'
