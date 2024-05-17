@@ -309,7 +309,7 @@ async def edit_message_text_and_forward(
 
 async def reply_text(
     function_caller: str,
-    new_text: str,
+    text: str,
     user_id: int = None,
     update: Update = None,
     context: ContextTypes.DEFAULT_TYPE = None,
@@ -342,7 +342,7 @@ async def reply_text(
         else get_close_keyboard(user_id=user_id)
     )
     reply_text_kwargs = dict(
-        text=new_text,
+        text=text,
         parse_mode=markdown,
         reply_markup=reply_markup,
         allow_sending_without_reply=allow_sending_without_reply,
@@ -366,7 +366,7 @@ async def reply_text(
 
 async def reply_text_and_forward(
     function_caller: str,
-    new_text: str,
+    text: str,
     user_ids: Union[int, List[int]],
     update: Update = None,
     context: ContextTypes.DEFAULT_TYPE = None,
@@ -388,7 +388,7 @@ async def reply_text_and_forward(
 
     response = await reply_text(
         function_caller=both_function_caller,
-        new_text=new_text,
+        text=text,
         user_id=owner_id,
         update=update,
         context=context,

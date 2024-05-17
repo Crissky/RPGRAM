@@ -48,7 +48,8 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
     edit_message_text,
-    get_close_keyboard
+    get_close_keyboard,
+    reply_text_and_forward
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
@@ -567,6 +568,7 @@ async def punishment(
         debuff_name.title()
         for debuff_name in DEBUFF_FULL_NAMES.keys()
     ]
+    user_id_list = [char.player_id for char in sorted_char_list]
     min_debuff_quantity = 0
     max_debuff_quantity = len(debuff_list)
     min_condition_level = int(group_level // 10) + 1
@@ -601,20 +603,15 @@ async def punishment(
         section_start=SECTION_HEAD_PUNISHMENT_START,
         section_end=SECTION_HEAD_PUNISHMENT_END
     )
-    send_message_kwargs = dict(
-        chat_id=chat_id,
-        text=full_text,
-        disable_notification=silent,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_to_message_id=message_id,
-        allow_sending_without_reply=True,
-        reply_markup=get_close_keyboard(None),
-    )
 
-    await call_telegram_message_function(
+    await reply_text_and_forward(
         function_caller='PUNISHMENT()',
-        function=context.bot.send_message,
-        **send_message_kwargs
+        text=text,
+        user_ids=user_id_list,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        markdown=True,
     )
 
 

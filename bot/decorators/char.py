@@ -388,7 +388,7 @@ def confusion(retry_state=ConversationHandler.END):
 
                 await reply_text_and_forward(
                     function_caller='CONFUSION()',
-                    new_text=text,
+                    text=text,
                     user_ids=[confuse_player_id, target_player_id],
                     update=update,
                     allow_sending_without_reply=True,
