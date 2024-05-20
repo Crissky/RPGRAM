@@ -604,10 +604,9 @@ async def punishment(
         section_end=SECTION_HEAD_PUNISHMENT_END
     )
 
-    print(text)
     await reply_text_and_forward(
         function_caller='PUNISHMENT()',
-        text=text,
+        text=full_text,
         user_ids=user_id_list,
         context=context,
         chat_id=chat_id,
