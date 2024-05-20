@@ -73,13 +73,13 @@ class Status:
             current_condition.add_level(new_condition_level)
             current_condition_level = current_condition.level
             report['text'] = (
-                f'O nível de "{emoji_name}" foi aumentado '
+                f'O nível de {emoji_name} foi aumentado '
                 f'para {current_condition_level}.'
             )
         else:
             self.__conditions.append(new_condition)
             report['text'] = (
-                f'"{emoji_name}" NV: {new_condition.level} foi adicionado.'
+                f'{emoji_name} NV: {new_condition.level} foi adicionado.'
             )
         self.__update_stats()
 
@@ -133,12 +133,12 @@ class Status:
             condition_emoji_name = new_condition.emoji_name
             new_condition = new_condition.remove_level(condition_level)
             if not new_condition:
-                report['text'] = f'"{condition_emoji_name}" foi removido.'
+                report['text'] = f'{condition_emoji_name} foi removido.'
                 self.__conditions.pop(index)
             else:
                 new_condition_level = new_condition.level
                 report['text'] = (
-                    f'"{condition_emoji_name}" reduziu para NV: '
+                    f'{condition_emoji_name} reduziu para NV: '
                     f'{new_condition_level}.'
                 )
         else:
