@@ -132,6 +132,15 @@ class Condition(StatsBooster):
             return self.name.upper() == other.upper()
         return False
 
+    def __lt__(self, other):
+        if isinstance(other, Condition):
+            return self.name < other.name
+        else:
+            return self.name < other
+
+    def __hash__(self) -> int:
+        return hash(self.name)
+
     # Getters
     name = property(lambda self: self.__name)
     emoji_name = property(lambda self: f'{self.emoji}{self.name}')

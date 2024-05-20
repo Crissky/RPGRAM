@@ -398,7 +398,7 @@ async def puzzle_edit_message_text(
 
 
 def get_grid_buttons(grid: GridGame) -> List[InlineKeyboardButton]:
-    n_rows = grid.n_rows
+    n_cols = grid.n_cols
     buttons = []
     for coor in grid:
         button = InlineKeyboardButton(
@@ -412,7 +412,7 @@ def get_grid_buttons(grid: GridGame) -> List[InlineKeyboardButton]:
 
     return reshape_row_buttons(
         buttons=buttons,
-        buttons_per_row=n_rows,
+        buttons_per_row=n_cols,
     )
 
 
@@ -606,7 +606,7 @@ async def punishment(
 
     await reply_text_and_forward(
         function_caller='PUNISHMENT()',
-        text=text,
+        text=full_text,
         user_ids=user_id_list,
         context=context,
         chat_id=chat_id,

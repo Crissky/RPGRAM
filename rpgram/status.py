@@ -3,7 +3,7 @@ Este módulo gerencia as Condições do Personagem.
 '''
 
 from datetime import datetime
-from random import random
+from random import choice, random
 from typing import List, Tuple, Union
 
 from bson import ObjectId
@@ -11,6 +11,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
+from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
 from rpgram.conditions.factory import factory_condition
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
@@ -73,13 +74,13 @@ class Status:
             current_condition.add_level(new_condition_level)
             current_condition_level = current_condition.level
             report['text'] = (
-                f'O nível de "{emoji_name}" foi aumentado '
+                f'O nível de {emoji_name} foi aumentado '
                 f'para {current_condition_level}.'
             )
         else:
             self.__conditions.append(new_condition)
             report['text'] = (
-                f'"{emoji_name}" NV: {new_condition.level} foi adicionado.'
+                f'{emoji_name} NV: {new_condition.level} foi adicionado.'
             )
         self.__update_stats()
 
@@ -133,12 +134,12 @@ class Status:
             condition_emoji_name = new_condition.emoji_name
             new_condition = new_condition.remove_level(condition_level)
             if not new_condition:
-                report['text'] = f'"{condition_emoji_name}" foi removido.'
+                report['text'] = f'{condition_emoji_name} foi removido.'
                 self.__conditions.pop(index)
             else:
                 new_condition_level = new_condition.level
                 report['text'] = (
-                    f'"{condition_emoji_name}" reduziu para NV: '
+                    f'{condition_emoji_name} reduziu para NV: '
                     f'{new_condition_level}.'
                 )
         else:
@@ -152,7 +153,8 @@ class Status:
     remove = remove_condition
 
     def remove_conditions(
-        self, *conditions: Union[Condition, str]
+        self,
+        *conditions: Union[Condition, str]
     ) -> List[dict]:
         report_list = []
         unique_conditions = sorted(set(conditions))
@@ -166,6 +168,21 @@ class Status:
             report_list.append(report)
 
         return report_list
+
+    def remove_random_debuff_conditions(self, quantity: int) -> dict:
+        status_debuff_condition_list = [
+            condition
+            for condition in self.__conditions
+            if isinstance(condition, DebuffCondition)
+        ]
+        debuff_condition_list = [
+            choice(status_debuff_condition_list) for _ in range(quantity)
+        ]
+        report_list = self.remove_conditions(*debuff_condition_list)
+        report_text = '\n'.join([report['text'] for report in report_list])
+        report = {'text': report_text}
+
+        return report
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
@@ -321,6 +338,9 @@ class Status:
 
         self.notify_observers()
 
+    def to_list(self) -> List[str]:
+        return [condition.name for condition in self.__conditions]
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
         if not self.__conditions:
@@ -387,6 +407,14 @@ class Status:
         )
 
     # Getters
+    @property
+    def debuffed(self) -> bool:
+        for condition in self.__conditions:
+            if isinstance(condition, DebuffCondition):
+                return True
+
+        return False
+
     conditions = property(lambda self: self.__conditions)
     _id = property(lambda self: self.__id)
     bonus_strength = property(lambda self: self.__bonus_strength)
