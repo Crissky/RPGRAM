@@ -66,27 +66,27 @@ class GridGame:
 
         before_total_good = self.total_good
 
-        index = (row * self.n_rows) + col
+        index = (row * self.n_cols) + col
         self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch left neighbor (if exists)
         if col > 0:
-            index = (row * self.n_rows) + col - 1
+            index = (row * self.n_cols) + col - 1
             self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch right neighbor (if exists)
         if col < self.n_cols - 1:
-            index = (row * self.n_rows) + col + 1
+            index = (row * self.n_cols) + col + 1
             self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch upper neighbor (if exists)
         if row > 0:
-            index = ((row - 1) * self.n_rows) + col
+            index = ((row - 1) * self.n_cols) + col
             self.__grid[index] = self.get_next_color(self.__grid[index])
 
         # Switch lower neighbor (if exists)
         if row < self.n_rows - 1:
-            index = ((row + 1) * self.n_rows) + col
+            index = ((row + 1) * self.n_cols) + col
             self.__grid[index] = self.get_next_color(self.__grid[index])
 
         is_good_move = before_total_good < self.total_good
@@ -148,7 +148,7 @@ class Coordinates(NamedTuple):
         return f'{self.text}: {self.row}, {self.col}'
 
     def __repr__(self):
-        return f'Coordinates<{self}>'
+        return f'Coor<{self}>'
 
 
 if __name__ == '__main__':
@@ -161,10 +161,18 @@ if __name__ == '__main__':
     g.switch(1, 1)
     print(g)
 
+    def switch_all(grid: GridGame):
+        n_rows = grid.n_rows
+        n_cols = grid.n_cols
+        for row in range(n_rows):
+            for col in range(n_cols):
+                grid.switch(row=row, col=col)
+
     # Teste Iteration
-    # for n_options in range(2, 6):
-    #     for col in range(3, 8):
-    #         for row in range(3, 8):
-    #             g = GridGame(row, col, n_options)
-    #             print([coor for coor in g])
-    #             print('-'*50)
+    for n_options in range(2, 6):
+        for col in range(3, 8):
+            for row in range(3, 8):
+                g = GridGame(row, col, n_options)
+                print([coor for coor in g])
+                switch_all(g)
+                print('-'*50)
