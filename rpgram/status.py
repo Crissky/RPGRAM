@@ -3,7 +3,7 @@ Este módulo gerencia as Condições do Personagem.
 '''
 
 from datetime import datetime
-from random import random
+from random import choice, random
 from typing import List, Tuple, Union
 
 from bson import ObjectId
@@ -11,6 +11,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.condition import Condition
+from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
 from rpgram.conditions.factory import factory_condition
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
@@ -152,7 +153,8 @@ class Status:
     remove = remove_condition
 
     def remove_conditions(
-        self, *conditions: Union[Condition, str]
+        self,
+        *conditions: Union[Condition, str]
     ) -> List[dict]:
         report_list = []
         unique_conditions = sorted(set(conditions))
@@ -166,6 +168,21 @@ class Status:
             report_list.append(report)
 
         return report_list
+
+    def remove_random_debuff_conditions(self, quantity: int) -> dict:
+        status_debuff_condition_list = [
+            condition
+            for condition in self.__conditions
+            if isinstance(condition, DebuffCondition)
+        ]
+        debuff_condition_list = [
+            choice(status_debuff_condition_list) for _ in range(quantity)
+        ]
+        report_list = self.remove_conditions(*debuff_condition_list)
+        report_text = '\n'.join([report['text'] for report in report_list])
+        report = {'text': report_text}
+
+        return report
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
@@ -321,6 +338,9 @@ class Status:
 
         self.notify_observers()
 
+    def to_list(self) -> List[str]:
+        return [condition.name for condition in self.__conditions]
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
         if not self.__conditions:
@@ -387,6 +407,14 @@ class Status:
         )
 
     # Getters
+    @property
+    def debuffed(self) -> bool:
+        for condition in self.__conditions:
+            if isinstance(condition, DebuffCondition):
+                return True
+
+        return False
+
     conditions = property(lambda self: self.__conditions)
     _id = property(lambda self: self.__id)
     bonus_strength = property(lambda self: self.__bonus_strength)

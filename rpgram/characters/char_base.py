@@ -438,6 +438,10 @@ class BaseCharacter:
     def is_immobilized(self) -> bool:
         return self.status.immobilized
 
+    @property
+    def is_debuffed(self) -> bool:
+        return self.status.debuffed
+
     name: str = property(lambda self: self.__name)
     player_name: str = property(lambda self: self.__name)
     level: int = property(lambda self: self.__base_stats.level)

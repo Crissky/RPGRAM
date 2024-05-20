@@ -1,5 +1,5 @@
 from datetime import timedelta
-from random import choice
+from random import choice, randint
 
 from telegram import Update
 from telegram.ext import (
@@ -19,7 +19,8 @@ from bot.constants.rest import (
     REPLY_TEXTS_STARTING_REST,
     SECTION_TEXT_ACTION_PONTOS,
     SECTION_TEXT_REST,
-    SECTION_TEXT_REST_MIDNIGHT
+    SECTION_TEXT_REST_MIDNIGHT,
+    SECTION_TEXT_WAKEUP
 )
 from bot.decorators import (
     need_not_in_battle,
@@ -27,6 +28,7 @@ from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
 )
+from bot.functions.char import save_char
 from bot.functions.chat import send_private_message
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_players_id_by_chat_id
@@ -38,7 +40,9 @@ from constant.text import (
     SECTION_HEAD_REST_MIDDAY_START,
     SECTION_HEAD_REST_MIDNIGHT_END,
     SECTION_HEAD_REST_MIDNIGHT_START,
-    SECTION_HEAD_REST_START
+    SECTION_HEAD_REST_START,
+    SECTION_HEAD_WAKEUP_END,
+    SECTION_HEAD_WAKEUP_START
 )
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
@@ -78,7 +82,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{reply_text_already_resting}\n\n'
             f'HP: {current_hp}'
         )
-    elif player_character.is_healed:
+    elif player_character.is_healed and not player_character.is_debuffed:
         reply_text_no_need_rest = choice(REPLY_TEXTS_NO_NEED_REST)
         text = (
             f'{reply_text_no_need_rest}\n\n'
@@ -162,6 +166,10 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     player_character = char_model.get(user_id)
     player = player_model.get(user_id)
     revive_reporting = ''
+    level = player_character.level
+    min_level = max(1, int(level / 10 * 0.90))
+    max_level = max(2, int(level / 10 * 1.10))
+    condition_quantity = randint(min_level, max_level)
     if player_character.is_dead:
         report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
@@ -169,7 +177,10 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         max_hp = player_character.cs.hp
         heal = int(max_hp * 0.18)
         report = player_character.cs.cure_hit_points(heal)
-    char_model.save(player_character)
+    status_report = player_character.status.remove_random_debuff_conditions(
+        condition_quantity
+    )
+    save_char(player_character, status=True)
     report_text = report['text']
     hp_reporting = (
         f'{revive_reporting}'
@@ -177,22 +188,33 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         f'{report_text}\n\n'
     )
 
-    if player_character.is_healed:
+    if status_report['text']:
+        hp_reporting += (
+            f'*STATUS*({condition_quantity}):\n'
+            f'{status_report["text"]}\n\n'
+        )
+
+    if player_character.is_healed and not player_character.is_debuffed:
         job.schedule_removal()
         text = (
             f'{hp_reporting}'
             f'O HP do seu personagem está completamente recuperado. '
             f'O descanso foi finalizado.'
         )
-
+        section_name = SECTION_TEXT_WAKEUP
+        section_start = SECTION_HEAD_WAKEUP_START
+        section_end = SECTION_HEAD_WAKEUP_END
     else:
         text = f'{hp_reporting} Seu personagem continua descansando…'
+        section_name = SECTION_TEXT_REST
+        section_start = SECTION_HEAD_REST_START
+        section_end = SECTION_HEAD_REST_END
 
     text = create_text_in_box(
         text=text,
-        section_name=SECTION_TEXT_REST,
-        section_start=SECTION_HEAD_REST_START,
-        section_end=SECTION_HEAD_REST_END,
+        section_name=section_name,
+        section_start=section_start,
+        section_end=section_end,
     )
 
     if player.verbose:
