@@ -170,17 +170,24 @@ class Status:
         return report_list
 
     def remove_random_debuff_conditions(self, quantity: int) -> dict:
+        if quantity < 1:
+            raise ValueError(
+                f'quaintity deve ser igual ou maior que 1. ({quantity})'
+            )
+
+        report = {'text': ''}
         status_debuff_condition_list = [
             condition
             for condition in self.__conditions
             if isinstance(condition, DebuffCondition)
         ]
-        debuff_condition_list = [
-            choice(status_debuff_condition_list) for _ in range(quantity)
-        ]
-        report_list = self.remove_conditions(*debuff_condition_list)
-        report_text = '\n'.join([report['text'] for report in report_list])
-        report = {'text': report_text}
+        if status_debuff_condition_list:
+            debuff_condition_list = [
+                choice(status_debuff_condition_list) for _ in range(quantity)
+            ]
+            report_list = self.remove_conditions(*debuff_condition_list)
+            report_text = '\n'.join([report['text'] for report in report_list])
+            report['text'] = report_text
 
         return report
 
