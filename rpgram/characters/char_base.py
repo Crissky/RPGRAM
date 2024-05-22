@@ -285,7 +285,10 @@ class BaseCharacter:
         else:
             # Get Damage
             damage = attack_value_boosted
-            if to_defend and not defender_char.is_immobilized:
+            is_immobilized = defender_char.is_immobilized
+            if is_immobilized:
+                immobilized_names = defender_char.status.immobilized_names()
+            if to_defend and not is_immobilized:
                 damage = self.calculate_damage(
                     defense_value=defense_value,
                     defender_dice=defender_dice,
@@ -336,10 +339,10 @@ class BaseCharacter:
                     f'{attack_value_boosted}({attack_value}), '
                     f'{attacker_dice.text}\n'
                 )
-                if defender_char.is_immobilized:
+                if is_immobilized:
                     report['text'] += (
                         f'*Vulnerável*: Personagem não pôde se defender pois '
-                        f'está com {defender_char.status.immobilized_names()}.'
+                        f'está com {immobilized_names}.'
                         f'\n'
                     )
                 else:
