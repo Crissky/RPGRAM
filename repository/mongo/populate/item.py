@@ -922,7 +922,7 @@ def choice_consumable(
     item = choice(item_list)
 
     if isinstance(item, TrocadoPouchConsumable):
-        quantity = int(quantity * group_level / 10)
+        quantity = int(quantity + group_level / 10)
         quantity = max(1, quantity)
 
     item = Item(item, quantity)
