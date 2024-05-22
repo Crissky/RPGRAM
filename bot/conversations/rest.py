@@ -56,9 +56,9 @@ from repository.mongo import BattleModel, CharacterModel, PlayerModel
 @print_basic_infos
 async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso do personagem.
-    O descanso faz com que o personagem recupere HP a cada hora.
+    O descanso faz com que o personagem recupere HP a cada meia hora.
     Se o personagem estiver morto, ele reviverá e recuperará 1 de HP 
-    em uma hora.'''
+    em meia hora.'''
 
     char_model = CharacterModel()
     battle_model = BattleModel()
@@ -98,7 +98,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'{reply_text_starting_rest}\n\n'
             f'HP: {current_hp}\n\n'
-            f'Seu personagem irá recuperar HP a cada hora.'
+            f'Seu personagem irá recuperar HP a cada meia hora.'
         )
 
     text = create_text_in_box(
@@ -124,7 +124,7 @@ def create_job_rest_cure(
     job_name = get_rest_jobname(user_id)
     context.job_queue.run_repeating(
         callback=job_rest_cure,
-        interval=timedelta(hours=1),
+        interval=timedelta(minutes=30),
         chat_id=chat_id,
         user_id=user_id,
         name=job_name,
@@ -167,15 +167,15 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     player = player_model.get(user_id)
     revive_reporting = ''
     level = player_character.level
-    min_level = max(1, int(level / 10 * 0.90))
-    max_level = max(2, int(level / 10 * 1.10))
+    min_level = max(1, int(level / 20 * 0.90))
+    max_level = max(2, int(level / 20 * 1.10))
     condition_quantity = randint(min_level, max_level)
     if player_character.is_dead:
         report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
     else:
         max_hp = player_character.cs.hp
-        heal = int(max_hp * 0.18)
+        heal = int(max_hp * 0.10)
         report = player_character.cs.cure_hit_points(heal)
     status_report = player_character.status.remove_random_debuff_conditions(
         condition_quantity
@@ -262,9 +262,9 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
 async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso de todos os personagens do grupo que 
     não estão com o HP cheio.
-    O descanso faz com que o personagem recupere HP a cada hora.
+    O descanso faz com que o personagem recupere HP a cada meia hora.
     Se o personagem estiver morto, ele reviverá, recuperando 1 de HP 
-    em uma hora.'''
+    em meia hora.'''
 
     print('JOB_AUTOREST_MIDNIGHT()')
     char_model = CharacterModel()
@@ -309,7 +309,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'{reply_text_rest}\n\n'
             f'{players_hp}\n\n'
-            f'Os personagens irão recuperar HP a cada hora.'
+            f'Os personagens irão recuperar HP a cada meia hora.'
         )
 
         text = create_text_in_box(
