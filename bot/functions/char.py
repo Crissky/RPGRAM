@@ -171,7 +171,7 @@ def add_trap_damage(
         damage = base_damage
         damage_report = char.combat_stats.damage_hit_points(damage)
 
-    save_char(char)
+    save_char(char, status=True)
 
     return dict(
         char=char,

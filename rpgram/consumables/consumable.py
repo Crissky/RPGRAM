@@ -130,7 +130,7 @@ class Consumable:
 
     @property
     def sell_price(self) -> int:
-        return max(int(self.price / 20), 1)
+        return max(int(self.price / 10), 1)
 
     @property
     def price_text(self) -> str:

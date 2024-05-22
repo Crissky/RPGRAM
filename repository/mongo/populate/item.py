@@ -49,7 +49,7 @@ from repository.mongo.populate.item_constants import (
 )
 
 from rpgram.boosters import Equipment
-from rpgram.consumables import Consumable
+from rpgram.consumables import Consumable, TrocadoPouchConsumable
 from rpgram import Item
 from rpgram.enums import (
     AccessoryMaterialsEnum,
@@ -768,7 +768,7 @@ def create_random_equipment(
 
     if random_level:
         group_level = random_group_level(group_level)
-    
+
     if isinstance(material_rank, int):
         if material_rank < 1:
             material_rank = 1
@@ -920,6 +920,11 @@ def choice_consumable(
     item_list = items_dict[rarity]
     quantity = randint(min_consumable_quantity, max_consumable_quantity)
     item = choice(item_list)
+
+    if isinstance(item, TrocadoPouchConsumable):
+        quantity = int(quantity * group_level / 10)
+        quantity = max(1, quantity)
+
     item = Item(item, quantity)
 
     return item
@@ -971,7 +976,7 @@ def create_random_item(
 
 if __name__ == '__main__':
     option = 0
-    
+
     if option == 0:
         random_items = create_random_item(
             group_level=1001,

@@ -612,7 +612,7 @@ class Equipment(StatsBooster):
 
     @property
     def sell_price(self) -> int:
-        return int(self.price / 20)
+        return int(self.price / 10)
 
     @property
     def price_text(self) -> str:

@@ -264,15 +264,15 @@ async def activated_trap(
     type_damage_name = trap_type_damage_enum.name
     type_damage_ratio = TRAP_DAMAGE_TYPE_RATIO[type_damage_name]
 
-    damage_report = add_trap_damage(
-        min_ratio=type_damage_ratio,
-        user_id=user_id,
-        type_damage=trap_type_damage_enum
-    )
     condition_report = add_conditions_from_trap(
         condition_list=trap_condition_list,
         group_level=group_level,
-        char=damage_report['char']
+        user_id=user_id
+    )
+    damage_report = add_trap_damage(
+        min_ratio=type_damage_ratio,
+        char=condition_report['char'],
+        type_damage=trap_type_damage_enum
     )
 
     damage = (
