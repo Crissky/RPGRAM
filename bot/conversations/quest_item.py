@@ -94,7 +94,7 @@ async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
     now = get_brazil_time_now()
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1, 60)
+        minutes = randint(1, 120)
         print(
             f'JOB_CREATE_ITEM_QUEST() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
@@ -156,7 +156,7 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     job_data['response'] = response
     context.job_queue.run_once(
         callback=job_fail_item_quest,
-        when=timedelta(minutes=randint(60, 120)),
+        when=timedelta(minutes=randint(120, 180)),
         data=job_data,
         name=job_name,
         chat_id=chat_id,
