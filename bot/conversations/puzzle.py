@@ -114,7 +114,7 @@ async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
     now = get_brazil_time_now()
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1, 59)
+        minutes = randint(60, 120)
         print(
             f'JOB_CREATE_PUZZLE() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'

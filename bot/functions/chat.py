@@ -99,12 +99,17 @@ async def send_private_message(
             )
             user_name = member.user.name
             text = f'{user_name}\n{text}'
-            await context.bot.send_message(
+            send_text_kwargs = dict(
                 chat_id=chat_id,
                 text=text,
                 parse_mode=markdown,
                 disable_notification=silent,
                 reply_markup=reply_markup,
+            )
+            await call_telegram_message_function(
+                function_caller='SEND_PRIVATE_MESSAGE()',
+                function=context.bot.send_message,
+                **send_text_kwargs
             )
         else:
             print(
@@ -209,55 +214,40 @@ async def edit_message_text(
     if not query and not context:
         raise ValueError('query ou context deve ser passado.')
 
-    markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    markdown = ParseMode.MARKDOWN_V2 if markdown is True else None
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
         else get_close_keyboard(user_id=user_id)
     )
+    edit_text_kwargs = None
+    if query:
+        edit_text_kwargs = dict(
+            function=query.edit_message_text,
+            text=new_text,
+            parse_mode=markdown,
+            reply_markup=reply_markup,
+        )
+    elif context:
+        edit_text_kwargs = dict(
+            function=context.bot.edit_message_text,
+            text=new_text,
+            chat_id=chat_id,
+            message_id=message_id,
+            parse_mode=markdown,
+            reply_markup=reply_markup,
+        )
+    else:
+        raise ValueError(
+            'Mensagem não foi editada. '
+            'query ou context deve ser passado.'
+        )
 
-    for _ in range(3):
-        try:
-            if query:
-                response = await query.edit_message_text(
-                    text=new_text,
-                    parse_mode=markdown,
-                    reply_markup=reply_markup,
-                )
-            elif context:
-                response = await context.bot.edit_message_text(
-                    text=new_text,
-                    chat_id=chat_id,
-                    message_id=message_id,
-                    parse_mode=markdown,
-                    reply_markup=reply_markup,
-                )
-            else:
-                raise ValueError(
-                    'Mensagem não foi editada. '
-                    'query ou context deve ser passado.'
-                )
-            break
-        except RetryAfter as error:
-            sleep_time = error.retry_after + randint(1, 3)
-            print(
-                f'RetryAfter: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
-                f'{function_caller} in {sleep_time} seconds.'
-            )
-            await context.bot.send_chat_action(
-                chat_id=chat_id,
-                action=ChatAction.TYPING
-            )
-            sleep(sleep_time)
-            continue
-        except TimedOut as error:
-            sleep_time = 3
-            print(
-                f'TimedOut: retrying EDIT_MESSAGE_TEXT_AND_FORWARD from '
-                f'{function_caller} in {sleep_time} seconds.'
-            )
-            sleep(sleep_time)
-            continue
+    if edit_text_kwargs:
+        response = await call_telegram_message_function(
+            function_caller=f'{function_caller} -> EDIT_MESSAGE_EDIT()',
+            **edit_text_kwargs
+        )
 
     return response
 
@@ -358,15 +348,14 @@ async def reply_text(
     )
 
     if update:
-        function = update.effective_message.reply_text
+        reply_text_kwargs['function'] = update.effective_message.reply_text
     elif context:
-        function = context.bot.send_message
+        reply_text_kwargs['function'] = context.bot.send_message
         reply_text_kwargs['chat_id'] = chat_id
         reply_text_kwargs['reply_to_message_id'] = message_id
 
     response = await call_telegram_message_function(
         function_caller=function_caller,
-        function=function,
         **reply_text_kwargs
     )
 
