@@ -6,6 +6,7 @@ from datetime import timedelta
 from decouple import config
 
 from telegram.ext import Application
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.conversations import (
     CREATE_CHAR_HANDLER,
     SIGNUP_GROUP_HANDLER,
@@ -93,6 +94,7 @@ def main() -> None:
         first=get_last_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_EVENT_TREASURE',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
         callback=job_activate_conditions,
@@ -100,6 +102,7 @@ def main() -> None:
         first=get_last_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_ACTIVATE_CONDITIONS',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
         callback=job_create_ambush,
@@ -107,6 +110,7 @@ def main() -> None:
         first=get_midnight_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_AMBUSH',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
         callback=autorest_midnight,
@@ -114,12 +118,14 @@ def main() -> None:
         first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_AUTOREST_MIDNIGHT',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_once(
         callback=job_info_deploy_bot,
         when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
         name='JOB_INFO_DEPLOY_BOT',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
         callback=job_create_new_items,
@@ -127,6 +133,7 @@ def main() -> None:
         first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_NEW_ITEMS',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
         callback=job_create_item_quest,
@@ -134,6 +141,7 @@ def main() -> None:
         first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_QUEST_ITEM',
+        job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
         callback=job_create_puzzle,
@@ -141,6 +149,7 @@ def main() -> None:
         first=get_midnight_hour(get_yesterday=True),
         chat_id=MY_GROUP_ID,
         name='JOB_CREATE_PUZZLE',
+        job_kwargs=BASE_JOB_KWARGS,
     )
 
     # Run the bot until the user presses Ctrl-C

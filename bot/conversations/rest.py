@@ -9,6 +9,7 @@ from telegram.ext import (
 )
 
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import (
     COMMANDS,
     MINUTES_TO_RECOVERY_ACTION_POINTS,
@@ -127,8 +128,9 @@ def create_job_rest_cure(
         interval=timedelta(minutes=30),
         chat_id=chat_id,
         user_id=user_id,
+        data=user_id,
         name=job_name,
-        data=user_id
+        job_kwargs=BASE_JOB_KWARGS,
     )
 
     create_job_rest_action_point(
@@ -151,9 +153,10 @@ def create_job_rest_action_point(
         context.job_queue.run_repeating(
             callback=job_rest_action_point,
             interval=timedelta(minutes=MINUTES_TO_RECOVERY_ACTION_POINTS),
-            name=job_name,
             user_id=user_id,
-            chat_id=chat_id
+            chat_id=chat_id,
+            name=job_name,
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 

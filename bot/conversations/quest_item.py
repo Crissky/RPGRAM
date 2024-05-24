@@ -9,6 +9,7 @@ from telegram.ext import (
     ConversationHandler,
 )
 
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.quest_item import (
     ARRIVAL_NARRATION,
     CALLBACK_QUEST_PREFIX,
@@ -102,8 +103,9 @@ async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_once(
             callback=job_start_item_quest,
             when=timedelta(minutes=minutes),
-            name=f'JOB_CREATE_ITEM_QUEST_{i}',
             chat_id=chat_id,
+            name=f'JOB_CREATE_ITEM_QUEST_{i}',
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 
@@ -158,8 +160,9 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
         callback=job_fail_item_quest,
         when=timedelta(minutes=randint(60, 120)),
         data=job_data,
-        name=job_name,
         chat_id=chat_id,
+        name=job_name,
+        job_kwargs=BASE_JOB_KWARGS,
     )
 
 

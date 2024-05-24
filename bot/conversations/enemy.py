@@ -48,6 +48,7 @@ from bot.constants.enemy import (
     SECTION_TEXT_FAIL_AMBUSH_DEFENSE,
     SECTION_TEXT_FLEE
 )
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
 from bot.conversations.rest import create_job_rest_action_point
@@ -133,8 +134,9 @@ async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_once(
             callback=job_start_ambush,
             when=timedelta(minutes=minutes),
-            name=f'JOB_CREATE_AMBUSH_{i}',
             chat_id=chat_id,
+            name=f'JOB_CREATE_AMBUSH_{i}',
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 
@@ -301,9 +303,10 @@ async def create_job_enemy_attack(
         callback=job_enemy_attack,
         when=timedelta(minutes=minutes_to_attack),
         data=job_data,
-        name=job_name,
         chat_id=chat_id,
         user_id=user_id,
+        name=job_name,
+        job_kwargs=BASE_JOB_KWARGS,
     )
     put_ambush_dict(context=context, enemy=enemy_char)
 

@@ -11,6 +11,7 @@ from telegram.ext import (
     ConversationHandler,
 )
 
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.puzzle import (
     GOD_BAD_MOVE_FEEDBACK_TEXTS,
     GOD_GOOD_MOVE_FEEDBACK_TEXTS,
@@ -122,8 +123,9 @@ async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_once(
             callback=job_start_puzzle,
             when=timedelta(minutes=minutes),
-            name=f'JOB_CREATE_PUZZLE_{i}',
             chat_id=chat_id,
+            name=f'JOB_CREATE_PUZZLE_{i}',
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 
@@ -172,8 +174,9 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
         callback=job_timeout_puzzle,
         when=timedelta(minutes=minutes),
         data=dict(message_id=message_id),
-        name=f'JOB_TIMEOUT_PUZZLE_{message_id}',
         chat_id=chat_id,
+        name=f'JOB_TIMEOUT_PUZZLE_{message_id}',
+        job_kwargs=BASE_JOB_KWARGS,
     )
 
 
