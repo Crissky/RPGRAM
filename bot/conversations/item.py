@@ -31,6 +31,7 @@ from bot.constants.item import (
     SECTION_TEXT_OPEN_TREASURE,
     TRAP_DAMAGE_TYPE_RATIO,
 )
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import COMMANDS as rest_commands
 from bot.conversations.bag import send_drop_message
 from bot.decorators import (
@@ -89,8 +90,9 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_once(
             callback=job_find_treasure,
             when=timedelta(minutes=minutes),
-            name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
             chat_id=chat_id,
+            name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 

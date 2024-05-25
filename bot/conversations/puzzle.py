@@ -11,6 +11,7 @@ from telegram.ext import (
     ConversationHandler,
 )
 
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.puzzle import (
     GOD_BAD_MOVE_FEEDBACK_TEXTS,
     GOD_GOOD_MOVE_FEEDBACK_TEXTS,
@@ -122,8 +123,9 @@ async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_once(
             callback=job_start_puzzle,
             when=timedelta(minutes=minutes),
-            name=f'JOB_CREATE_PUZZLE_{i}',
             chat_id=chat_id,
+            name=f'JOB_CREATE_PUZZLE_{i}',
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 
@@ -172,8 +174,9 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
         callback=job_timeout_puzzle,
         when=timedelta(minutes=minutes),
         data=dict(message_id=message_id),
-        name=f'JOB_TIMEOUT_PUZZLE_{message_id}',
         chat_id=chat_id,
+        name=f'JOB_TIMEOUT_PUZZLE_{message_id}',
+        job_kwargs=BASE_JOB_KWARGS,
     )
 
 
@@ -568,7 +571,6 @@ async def punishment(
         debuff_name.title()
         for debuff_name in DEBUFF_FULL_NAMES.keys()
     ]
-    user_id_list = [char.player_id for char in sorted_char_list]
     min_debuff_quantity = 0
     max_debuff_quantity = len(debuff_list)
     min_condition_level = int(group_level // 10) + 1
@@ -594,25 +596,22 @@ async def punishment(
             char=char,
         )
         text += f'{report_condition["text"]}\n'
-        text_list.append(text)
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+            section_start=SECTION_HEAD_PUNISHMENT_START,
+            section_end=SECTION_HEAD_PUNISHMENT_END
+        )
 
-    full_text = f'{TEXT_SEPARATOR_2}\n'.join(text_list)
-    full_text = create_text_in_box(
-        text=full_text,
-        section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
-        section_start=SECTION_HEAD_PUNISHMENT_START,
-        section_end=SECTION_HEAD_PUNISHMENT_END
-    )
-
-    await reply_text_and_forward(
-        function_caller='PUNISHMENT()',
-        text=full_text,
-        user_ids=user_id_list,
-        context=context,
-        chat_id=chat_id,
-        message_id=message_id,
-        markdown=True,
-    )
+        await reply_text_and_forward(
+            function_caller='PUNISHMENT()',
+            text=text,
+            user_ids=char.player_id,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            markdown=True,
+        )
 
 
 PUZZLE_HANDLERS = [

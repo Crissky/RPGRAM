@@ -48,6 +48,7 @@ from bot.constants.enemy import (
     SECTION_TEXT_FAIL_AMBUSH_DEFENSE,
     SECTION_TEXT_FLEE
 )
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
 from bot.conversations.rest import create_job_rest_action_point
@@ -72,6 +73,7 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from constant.text import (
+    ALERT_SECTION_HEAD,
     SECTION_HEAD,
     SECTION_HEAD_ATTACK_END,
     SECTION_HEAD_ATTACK_START,
@@ -133,8 +135,9 @@ async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_once(
             callback=job_start_ambush,
             when=timedelta(minutes=minutes),
-            name=f'JOB_CREATE_AMBUSH_{i}',
             chat_id=chat_id,
+            name=f'JOB_CREATE_AMBUSH_{i}',
+            job_kwargs=BASE_JOB_KWARGS,
         )
 
 
@@ -301,9 +304,10 @@ async def create_job_enemy_attack(
         callback=job_enemy_attack,
         when=timedelta(minutes=minutes_to_attack),
         data=job_data,
-        name=job_name,
         chat_id=chat_id,
         user_id=user_id,
+        name=job_name,
+        job_kwargs=BASE_JOB_KWARGS,
     )
     put_ambush_dict(context=context, enemy=enemy_char)
 
@@ -777,6 +781,7 @@ async def enemy_attack(
             base_xp=base_xp,
             save_status=True,
         )
+        report_text += ALERT_SECTION_HEAD.format('XP') + '\n'
         if target_char and target_char.is_alive:
             base_xp = get_base_xp_from_enemy_attack(enemy_char, target_char)
             target_report_xp = add_xp(
@@ -865,6 +870,7 @@ async def player_attack(
         char=attacker_char,
         base_xp=base_xp,
     )
+    report_text += ALERT_SECTION_HEAD.format('XP') + '\n'
     report_text += f'{report_xp["text"]}\n'
 
     if attack_report['dead']:
