@@ -11,7 +11,7 @@ from telegram import (
 )
 
 from telegram.constants import ChatAction, ParseMode
-from telegram.error import Forbidden, RetryAfter, TimedOut
+from telegram.error import BadRequest, Forbidden, RetryAfter, TimedOut
 from telegram.ext import ContextTypes
 
 from bot.constants.close import CALLBACK_CLOSE
@@ -439,6 +439,33 @@ async def call_telegram_message_function(
             continue
 
     return response
+
+
+async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
+    job = context.job
+    call_telegram_kwargs = job.data
+    call_telegram_kwargs['function_caller'] += 'JOB_CALL_TELEGRAM()'
+
+    await call_telegram_message_function(**call_telegram_kwargs)
+
+
+async def delete_message(
+    function_caller: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    query: CallbackQuery,
+):
+    try:
+        await query.delete_message()
+    except (BadRequest, RetryAfter, TimedOut) as e:
+        delete_message_kwargs = dict(
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id
+        )
+        await call_telegram_message_function(
+            function_caller=function_caller,
+            function=context.bot.delete_message,
+            **delete_message_kwargs
+        )
 
 
 # CALLBACK FUNCTIONS
