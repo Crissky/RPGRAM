@@ -17,7 +17,7 @@ MAGICIAN_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE', 'AMULET', 'CHARM', 'COIN'],
 }
 DUELIST_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD'],
+    EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD', 'COMBAT_GLASSES'],
     EquipmentEnum.ONE_HAND.name: [
         'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN',
         'RAPIER', 'ESTOQUE', 'SAI', 'KODACHI'
