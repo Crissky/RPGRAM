@@ -59,7 +59,8 @@ VERY_HEAVY_EQUIPMENTS = [
 MAGICAL_QUILL_EQUIPMENTS = ['QUILL']
 MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE', 'SHOES']
 MAGICAL_STONES_EQUIPMENTS = [
-    'ORB', 'CRYSTAL', 'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD'
+    'ORB', 'CRYSTAL', 'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD',
+    'COMBAT_GLASSES'
 ]
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
@@ -88,7 +89,7 @@ DEX_REQUIREMENTS = [
     'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
     'ARTEMIS\'S_RING', 'SCARF', 'KODACHI', 'KIMONO', 'Ō-YOROI', 'DŌ-MARU',
     'YUMI', 'NAGINATA', 'KUSARIGAMA', 'TABI', 'JIKA-TABI', 'ZORI',
-    'KABUTO-MENPO', 'SUGEGASA', 'OMAMORI'
+    'KABUTO-MENPO', 'SUGEGASA', 'OMAMORI', 'COMBAT_GLASSES'
 ]
 CON_REQUIREMENTS = [
     'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'SCUTUM', 'GREATSHIELD',
@@ -1138,6 +1139,22 @@ HELMET_EQUIPMENTS = {
             'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 1,
             'bonus_magical_defense': 0, 'bonus_hit': 1,
+            'bonus_evasion': 0,
+        }
+    ),
+    'COMBAT_GLASSES': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 1, 'bonus_hit': 10,
+            'bonus_evasion': 3,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
             'bonus_evasion': 0,
         }
     ),

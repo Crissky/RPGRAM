@@ -322,7 +322,6 @@ def confusion(retry_state=ConversationHandler.END):
             char_model = CharacterModel()
             chat_id = update.effective_chat.id
             user_id = update.effective_user.id
-            query = update.callback_query
             status = confusion_status(user_id)
             activated_confusion = activated_condition()
             if not status or not activated_confusion:
@@ -389,9 +388,11 @@ def confusion(retry_state=ConversationHandler.END):
                 await reply_text_and_forward(
                     function_caller='CONFUSION()',
                     text=text,
+                    context=context,
                     user_ids=[confuse_player_id, target_player_id],
                     update=update,
                     allow_sending_without_reply=True,
+                    need_response=False,
                     markdown=True,
                 )
                 return retry_state

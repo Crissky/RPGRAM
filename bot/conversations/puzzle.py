@@ -3,7 +3,12 @@ from operator import attrgetter
 from random import choice, randint, shuffle
 from typing import List
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Update
+)
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
@@ -45,6 +50,7 @@ from bot.functions.char import (
     get_player_chars_from_group
 )
 from bot.functions.chat import (
+    REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
@@ -166,6 +172,7 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
     response = await call_telegram_message_function(
         function_caller='JOB_START_PUZZLE()',
         function=context.bot.send_message,
+        context=context,
         **reply_text_kwargs
     )
     message_id = response.message_id
@@ -231,6 +238,7 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
         context=context,
         chat_id=chat_id,
         message_id=message_id,
+        need_response=False,
         markdown=True
     )
     remove_grid_from_dict(message_id, context)
@@ -263,32 +271,31 @@ async def switch_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif grid.is_failed:
         await failed(grid=grid, query=query, context=context)
     elif is_good_move is True:
-        await good_move(grid=grid, query=query)
+        await good_move(grid=grid, query=query, context=context)
     else:
-        await bad_move(grid=grid, query=query)
+        await bad_move(grid=grid, query=query, context=context)
 
 
 async def solved(
     grid: GridGame,
-    query: CallbackQueryHandler,
+    query: CallbackQuery,
     context: ContextTypes.DEFAULT_TYPE
 ):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GOD_WINS_FEEDBACK_TEXTS)
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_markup=get_close_keyboard(None),
-    )
     remove_grid_from_dict(message_id, context)
+    reply_markup = get_close_keyboard(None)
     await puzzle_edit_message_text(
         grid=grid,
-        query=query,
-        reply_text_kwargs=reply_text_kwargs,
+        text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_COMPLETE_START,
         section_end=SECTION_HEAD_PUZZLE_COMPLETE_END,
+        reply_markup=reply_markup,
     )
     await add_xp_group(
         chat_id=chat_id,
@@ -306,24 +313,23 @@ async def solved(
 
 async def failed(
     grid: GridGame,
-    query: CallbackQueryHandler,
+    query: CallbackQuery,
     context: ContextTypes.DEFAULT_TYPE
 ):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GODS_LOSES_FEEDBACK_TEXTS)
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_markup=get_close_keyboard(None),
-    )
+    reply_markup = get_close_keyboard(None)
     await puzzle_edit_message_text(
         grid=grid,
-        query=query,
-        reply_text_kwargs=reply_text_kwargs,
+        text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_FAIL_START,
         section_end=SECTION_HEAD_PUZZLE_FAIL_END,
+        reply_markup=reply_markup,
     )
     remove_grid_from_dict(message_id, context)
     await punishment(
@@ -334,49 +340,60 @@ async def failed(
     )
 
 
-async def good_move(grid: GridGame, query: CallbackQueryHandler):
+async def good_move(
+    grid: GridGame,
+    query: CallbackQuery,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     text = choice(GOD_GOOD_MOVE_FEEDBACK_TEXTS)
     grid_buttons = get_grid_buttons(grid)
     reply_markup = InlineKeyboardMarkup(grid_buttons)
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_markup=reply_markup,
-    )
     await puzzle_edit_message_text(
         grid=grid,
-        query=query,
-        reply_text_kwargs=reply_text_kwargs,
+        text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_GOODMOVE_START,
         section_end=SECTION_HEAD_PUZZLE_GOODMOVE_END,
+        reply_markup=reply_markup,
     )
 
 
-async def bad_move(grid: GridGame, query: CallbackQueryHandler):
+async def bad_move(
+    grid: GridGame,
+    query: CallbackQuery,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)
     grid_buttons = get_grid_buttons(grid)
     reply_markup = InlineKeyboardMarkup(grid_buttons)
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_markup=reply_markup,
-    )
     await puzzle_edit_message_text(
         grid=grid,
-        query=query,
-        reply_text_kwargs=reply_text_kwargs,
+        text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_BADMOVE_START,
         section_end=SECTION_HEAD_PUZZLE_BADMOVE_END,
+        reply_markup=reply_markup,
     )
 
 
 async def puzzle_edit_message_text(
     grid: GridGame,
-    query: CallbackQueryHandler,
-    reply_text_kwargs: dict,
+    text: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    message_id: int,
     section_name: str = None,
     section_start: str = None,
     section_end: str = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
 ):
     if not isinstance(section_name, str):
         section_name = f'{SECTION_TEXT_PUZZLE} {grid.rarity.value.upper()}'
@@ -385,18 +402,22 @@ async def puzzle_edit_message_text(
     if not isinstance(section_end, str):
         section_end = SECTION_HEAD_PUZZLE_END
 
-    text = reply_text_kwargs['text']
-    reply_text_kwargs['text'] = create_text_in_box(
+    text = create_text_in_box(
         text=f'>{GODS_NAME}: {text}\n\n{grid.full_colors_text}',
         section_name=section_name,
         section_start=section_start,
         section_end=section_end,
         clean_func=escape_for_citation_markdown_v2,
     )
-    await call_telegram_message_function(
+    await edit_message_text(
         function_caller='SWITCH_PUZZLE_EDIT_MESSAGE_TEXT()',
-        function=query.edit_message_text,
-        **reply_text_kwargs
+        new_text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup
     )
 
 
@@ -499,6 +520,8 @@ async def add_xp_group(
     await call_telegram_message_function(
         function_caller='ADD_XP_GROUP()',
         function=context.bot.send_message,
+        context=context,
+        need_response=False,
         **send_message_kwargs
     )
 
@@ -606,10 +629,11 @@ async def punishment(
         await reply_text_and_forward(
             function_caller='PUNISHMENT()',
             text=text,
-            user_ids=char.player_id,
             context=context,
+            user_ids=char.player_id,
             chat_id=chat_id,
             message_id=message_id,
+            need_response=False,
             markdown=True,
         )
 
