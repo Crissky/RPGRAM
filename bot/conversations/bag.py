@@ -109,6 +109,7 @@ from bot.functions.bag import (
 )
 from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
+    call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
@@ -1438,48 +1439,29 @@ async def send_drop_message(
                 section_end=SECTION_HEAD_EQUIPMENT_END,
             )
 
-        for _ in range(3):
-            try:
-                if isinstance(update, Update):
-                    response = await update.effective_message.reply_text(
-                        text=markdown_item_sheet,
-                        disable_notification=silent,
-                        reply_markup=reply_markup_drop,
-                        parse_mode=ParseMode.MARKDOWN_V2,
-                        allow_sending_without_reply=True
-                    )
-                    break
-                else:
-                    response = await context.bot.send_message(
-                        chat_id=chat_id,
-                        text=markdown_item_sheet,
-                        disable_notification=silent,
-                        reply_to_message_id=message_id,
-                        reply_markup=reply_markup_drop,
-                        parse_mode=ParseMode.MARKDOWN_V2,
-                    )
-                    break
-            except RetryAfter as error:
-                sleep_time = error.retry_after + randint(1, 3)
-                remaining = len(items) - i
-                print(
-                    f'RetryAfter: retrying SEND_DROP_MESSAGE() '
-                    f'in {sleep_time} seconds. remaining {remaining} items.'
-                )
-                await update.effective_message.reply_chat_action(
-                    ChatAction.TYPING
-                )
-                sleep(sleep_time)
-                continue
-            except TimedOut as error:
-                remaining = len(items) - i
-                print(
-                    f'TimedOut: retrying SEND_DROP_MESSAGE() '
-                    f'in {SEND_DROP_MESSAGE_SLEEP_TIME} seconds. '
-                    f'remaining {remaining} items.'
-                )
-                sleep(SEND_DROP_MESSAGE_SLEEP_TIME)
-                continue
+        remaining = len(items) - i
+        if isinstance(update, Update):
+            call_telegram_kwargs = dict(
+                function=update.effective_message.reply_text,
+            )
+        else:
+            call_telegram_kwargs = dict(
+                function=context.bot.send_message,
+                chat_id=chat_id,
+                reply_to_message_id=message_id,
+            )
+
+        call_telegram_kwargs['text'] = markdown_item_sheet
+        call_telegram_kwargs['parse_mode'] = ParseMode.MARKDOWN_V2
+        call_telegram_kwargs['disable_notification'] = silent
+        call_telegram_kwargs['allow_sending_without_reply'] = True
+        call_telegram_kwargs['reply_markup'] = reply_markup_drop
+
+        response = await call_telegram_message_function(
+            function_caller=f'SEND_DROP_MESSAGE(remaining={remaining})',
+            context=context,
+            **call_telegram_kwargs
+        )
 
         drops_message_id = response.message_id
         drops = context.chat_data.get('drops', None)

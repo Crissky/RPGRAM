@@ -154,12 +154,18 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
     quest_button = get_quest_button(job_name)
     reply_markup = InlineKeyboardMarkup([quest_button])
 
-    response = await context.bot.send_message(
+    call_telegram_kwargs = dict(
         chat_id=chat_id,
         text=text,
         disable_notification=silent,
         parse_mode=ParseMode.MARKDOWN_V2,
         reply_markup=reply_markup,
+    )
+    response = await call_telegram_message_function(
+        function_caller='JOB_START_ITEM_QUEST()',
+        function=context.bot.send_message,
+        context=context,
+        **call_telegram_kwargs
     )
     job_data['response'] = response
     context.job_queue.run_once(

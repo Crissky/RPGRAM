@@ -85,12 +85,20 @@ async def send_private_message(
 
     try:
         silent = get_player_attribute_by_id(user_id, 'silent')
-        await context.bot.send_message(
+        call_telegram_kwargs = dict(
             chat_id=user_id,
             text=text,
             parse_mode=markdown,
             disable_notification=silent,
             reply_markup=reply_markup,
+        )
+
+        await call_telegram_message_function(
+            function_caller='SEND_PRIVATE_MESSAGE()',
+            function=context.bot.send_message,
+            context=context,
+            need_response=False,
+            **call_telegram_kwargs
         )
     except Forbidden as error:
         if isinstance(chat_id, int):
@@ -182,16 +190,32 @@ async def forward_message(
             continue  # Evita encaminhamento para o próprio chat privado
         try:
             if message:
-                await message.forward(
+                call_telegram_kwargs = dict(
                     chat_id=user_id,
                     disable_notification=user_silent
                 )
+
+                await call_telegram_message_function(
+                    function_caller='FORWARD_MESSAGE()',
+                    function=message.forward,
+                    context=context,
+                    need_response=False,
+                    **call_telegram_kwargs
+                )
             elif context:
-                await context.bot.forward_message(
+                call_telegram_kwargs = dict(
                     chat_id=user_id,
                     from_chat_id=chat_id,
                     message_id=message_id,
                     disable_notification=user_silent
+                )
+
+                await call_telegram_message_function(
+                    function_caller='FORWARD_MESSAGE()',
+                    function=context.bot.forward_message,
+                    context=context,
+                    need_response=False,
+                    **call_telegram_kwargs
                 )
         except Exception as error:
             print(f'{function_caller}: {error}')

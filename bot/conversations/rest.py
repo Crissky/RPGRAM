@@ -30,7 +30,10 @@ from bot.decorators import (
     skip_if_no_singup_player,
 )
 from bot.functions.char import save_char
-from bot.functions.chat import send_private_message
+from bot.functions.chat import (
+    call_telegram_message_function,
+    send_private_message
+)
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_players_id_by_chat_id
@@ -324,10 +327,18 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
             clean_func=None,
         )
 
-        await context.bot.send_message(
+        call_telegram_kwargs = dict(
             chat_id=chat_id,
             text=text,
             disable_notification=silent
+        )
+
+        await call_telegram_message_function(
+            function_caller='JOB_AUTOREST_MIDNIGHT()',
+            function=context.bot.send_message,
+            context=context,
+            need_response=False,
+            **call_telegram_kwargs
         )
 
 

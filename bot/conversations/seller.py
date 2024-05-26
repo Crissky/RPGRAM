@@ -59,6 +59,7 @@ from bot.decorators import (
 from bot.functions.bag import get_item_from_bag_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
+    call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     delete_message
@@ -533,11 +534,19 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
         f'>{SELLER_NAME}: {choice(REPLY_TEXT_NEW_ITEMS_ARRIVED)}\n\n'
         f'Use o comando /{COMMANDS[0]} para acessar a *LOJA*.'
     )
-    await context.bot.send_message(
+    call_telegram_kwargs = dict(
         chat_id=chat_id,
         text=text,
         disable_notification=silent,
         parse_mode=ParseMode.MARKDOWN_V2,
+    )
+
+    await call_telegram_message_function(
+        function_caller='JOB_CREATE_NEW_ITEMS()',
+        function=context.bot.send_message,
+        context=context,
+        need_response=False,
+        **call_telegram_kwargs
     )
 
 
