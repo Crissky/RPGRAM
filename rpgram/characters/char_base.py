@@ -380,9 +380,9 @@ class BaseCharacter:
                     report['text'] += (
                         f' Use o comando /{rest_command} para descansar.'
                     )
-            report['text'] += '\n\n'
         # End Else
 
+        report['text'] += '\n\n'
         if not markdown:
             report['text'] = remove_bold(report['text'])
             report['text'] = remove_code(report['text'])
