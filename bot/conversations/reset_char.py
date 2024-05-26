@@ -58,9 +58,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await reply_text(
             function_caller='REST_STATS()',
             text=markdown_player_sheet,
+            context=context,
             user_id=user_id,
             update=update,
             chat_id=chat_id,
+            need_response=False,
             markdown=True,
         )
 

@@ -13,6 +13,7 @@ from bot.decorators import (
     alert_if_not_chat_owner,
     print_basic_infos
 )
+from bot.functions.chat import delete_message
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
@@ -27,7 +28,11 @@ async def close(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if query:
         await query.answer('Fechando conversa...')
-        await query.delete_message()
+        await delete_message(
+            function_caller='CLOSE()',
+            context=context,
+            query=query,
+        )
 
 
 CLOSE_MSG_HANDLER = CallbackQueryHandler(

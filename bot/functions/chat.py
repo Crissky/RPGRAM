@@ -1,3 +1,4 @@
+from datetime import timedelta
 from random import choice, randint
 from time import sleep
 from typing import Any, Callable, List, Union
@@ -12,9 +13,10 @@ from telegram import (
 
 from telegram.constants import ChatAction, ParseMode
 from telegram.error import BadRequest, Forbidden, RetryAfter, TimedOut
-from telegram.ext import ContextTypes
+from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.close import CALLBACK_CLOSE
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_attribute_by_id
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
@@ -109,6 +111,8 @@ async def send_private_message(
             await call_telegram_message_function(
                 function_caller='SEND_PRIVATE_MESSAGE()',
                 function=context.bot.send_message,
+                context=context,
+                need_response=False,
                 **send_text_kwargs
             )
         else:
@@ -196,23 +200,16 @@ async def forward_message(
 async def edit_message_text(
     function_caller: str,
     new_text: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    message_id: int,
     user_id: int = None,
-    context: ContextTypes.DEFAULT_TYPE = None,
-    chat_id: int = None,
-    message_id: int = None,
-    query: CallbackQuery = None,
+    need_response: bool = True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
 ) -> Union[Message, bool]:
     '''Edita uma mensagem usando um Message ou um ContextTypes.
     '''
-
-    if context and not chat_id:
-        raise ValueError('chat_id é necessário quando passado um context.')
-    if context and not message_id:
-        raise ValueError('message_id é necessário quando passado um context.')
-    if not query and not context:
-        raise ValueError('query ou context deve ser passado.')
 
     markdown = ParseMode.MARKDOWN_V2 if markdown is True else None
     reply_markup = (
@@ -220,34 +217,20 @@ async def edit_message_text(
         if reply_markup != REPLY_MARKUP_DEFAULT
         else get_close_keyboard(user_id=user_id)
     )
-    edit_text_kwargs = None
-    if query:
-        edit_text_kwargs = dict(
-            function=query.edit_message_text,
-            text=new_text,
-            parse_mode=markdown,
-            reply_markup=reply_markup,
-        )
-    elif context:
-        edit_text_kwargs = dict(
-            function=context.bot.edit_message_text,
-            text=new_text,
-            chat_id=chat_id,
-            message_id=message_id,
-            parse_mode=markdown,
-            reply_markup=reply_markup,
-        )
-    else:
-        raise ValueError(
-            'Mensagem não foi editada. '
-            'query ou context deve ser passado.'
-        )
-
-    if edit_text_kwargs:
-        response = await call_telegram_message_function(
-            function_caller=f'{function_caller} -> EDIT_MESSAGE_EDIT()',
-            **edit_text_kwargs
-        )
+    edit_text_kwargs = dict(
+        text=new_text,
+        chat_id=chat_id,
+        message_id=message_id,
+        parse_mode=markdown,
+        reply_markup=reply_markup,
+    )
+    response = await call_telegram_message_function(
+        function_caller=f'{function_caller} -> EDIT_MESSAGE_EDIT()',
+        function=context.bot.edit_message_text,
+        context=context,
+        need_response=need_response,
+        **edit_text_kwargs
+    )
 
     return response
 
@@ -256,10 +239,10 @@ async def edit_message_text_and_forward(
     function_caller: str,
     new_text: str,
     user_ids: Union[int, List[int]],
-    context: ContextTypes.DEFAULT_TYPE = None,
-    chat_id: int = None,
-    message_id: int = None,
-    query: CallbackQuery = None,
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    message_id: int,
+    need_response: bool = True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = False,
@@ -279,11 +262,11 @@ async def edit_message_text_and_forward(
     response = await edit_message_text(
         function_caller=both_function_caller,
         new_text=new_text,
-        user_id=owner_id,
         context=context,
         chat_id=chat_id,
         message_id=message_id,
-        query=query,
+        user_id=owner_id,
+        need_response=need_response,
         markdown=markdown,
         reply_markup=reply_markup
     )
@@ -300,11 +283,12 @@ async def edit_message_text_and_forward(
 async def reply_text(
     function_caller: str,
     text: str,
+    context: ContextTypes.DEFAULT_TYPE,
     user_id: int = None,
     update: Update = None,
-    context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
     message_id: int = None,
+    need_response: bool = True,
     allow_sending_without_reply=True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
@@ -356,6 +340,8 @@ async def reply_text(
 
     response = await call_telegram_message_function(
         function_caller=function_caller,
+        context=context,
+        need_response=need_response,
         **reply_text_kwargs
     )
 
@@ -365,11 +351,12 @@ async def reply_text(
 async def reply_text_and_forward(
     function_caller: str,
     text: str,
+    context: ContextTypes.DEFAULT_TYPE,
     user_ids: Union[int, List[int]],
     update: Update = None,
-    context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
     message_id: int = None,
+    need_response: bool = True,
     allow_sending_without_reply=True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
@@ -392,6 +379,7 @@ async def reply_text_and_forward(
         context=context,
         chat_id=chat_id,
         message_id=message_id,
+        need_response=need_response,
         allow_sending_without_reply=allow_sending_without_reply,
         markdown=markdown,
         reply_markup=reply_markup,
@@ -409,7 +397,8 @@ async def reply_text_and_forward(
 async def call_telegram_message_function(
     function_caller: str,
     function: Callable,
-    *args,
+    context: ContextTypes.DEFAULT_TYPE,
+    need_response: bool = True,
     **kwargs
 ) -> Union[Any, Message]:
     '''Função que chama qualquer função de mensagem do telegram. 
@@ -417,22 +406,38 @@ async def call_telegram_message_function(
     alguns segundos tentará novamente com um número máximo de 3 tentativas.
     '''
 
+    job_call_telegram_kwargs = dict(
+        function_caller=function_caller,
+        function=function,
+        context=context,
+        **kwargs
+    )
     for i in range(3):
         try:
-            response = await function(*args, **kwargs)
+            response = await function(**kwargs)
             break
-        except RetryAfter as error:
-            sleep_time = error.retry_after + randint(1, 3)
+        except (RetryAfter, TimedOut) as error:
+            if isinstance(error, RetryAfter):
+                sleep_time = error.retry_after + randint(1, 3)
+            elif isinstance(error, TimedOut):
+                sleep_time = 3
+
+            error_name = error.__class__.__name__
+            if need_response is False:
+                print(
+                    f'{error_name}({i}): creating JOB "{function.__name__}" '
+                )
+                context.job_queue.run_once(
+                    callback=job_call_telegram,
+                    when=timedelta(minutes=sleep_time),
+                    data=job_call_telegram_kwargs,
+                    name=f'CALL_TELEGRAM_MESSAGE_FUNCTION->JOB_CALL_TELEGRAM',
+                    job_kwargs=BASE_JOB_KWARGS,
+                )
+                return ConversationHandler.END
+
             print(
-                f'RetryAfter({i}): retrying activate "{function.__name__}" '
-                f'from {function_caller} in {sleep_time} seconds.'
-            )
-            sleep(sleep_time)
-            continue
-        except TimedOut as error:
-            sleep_time = 3
-            print(
-                f'TimedOut({i}): retrying activate "{function.__name__}" '
+                f'{error_name}({i}): RETRYING activate "{function.__name__}" '
                 f'from {function_caller} in {sleep_time} seconds.'
             )
             sleep(sleep_time)
@@ -444,7 +449,8 @@ async def call_telegram_message_function(
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     call_telegram_kwargs = job.data
-    call_telegram_kwargs['function_caller'] += 'JOB_CALL_TELEGRAM()'
+    call_telegram_kwargs['function_caller'] += ' and JOB_CALL_TELEGRAM()'
+    print(call_telegram_kwargs['function_caller'])
 
     await call_telegram_message_function(**call_telegram_kwargs)
 
@@ -455,17 +461,26 @@ async def delete_message(
     query: CallbackQuery,
 ):
     try:
-        await query.delete_message()
-    except (BadRequest, RetryAfter, TimedOut) as e:
-        delete_message_kwargs = dict(
-            chat_id=query.message.chat_id,
-            message_id=query.message.message_id
-        )
         await call_telegram_message_function(
-            function_caller=function_caller,
-            function=context.bot.delete_message,
-            **delete_message_kwargs
+            function_caller=function_caller + ' and DELETE_MESSAGE()',
+            function=query.delete_message,
+            context=context,
+            need_response=False,
         )
+    except BadRequest as e:
+        print('DELETE_MESSAGE BADREQUEST EXCEPT')
+        if 'Query is too old' in e.message:
+            delete_message_kwargs = dict(
+                chat_id=query.message.chat_id,
+                message_id=query.message.message_id
+            )
+            await call_telegram_message_function(
+                function_caller=function_caller,
+                function=context.bot.delete_message,
+                context=context,
+                need_response=False,
+                **delete_message_kwargs
+            )
 
 
 # CALLBACK FUNCTIONS

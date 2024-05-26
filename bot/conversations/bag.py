@@ -111,6 +111,7 @@ from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
+    delete_message,
     send_alert_or_message,
     send_private_message
 )
@@ -501,7 +502,11 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
         )
-        await query.delete_message()
+        await delete_message(
+            function_caller='CHECK_ITEM()',
+            context=context,
+            query=query
+        )
     return USE_ROUTES
 
 
@@ -1109,13 +1114,21 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if drops.get(message_id, None) is not True:
             drops.pop(message_id, None)
             await query.answer(f'Este item não existe mais.', show_alert=True)
-            await query.delete_message()
+            await delete_message(
+                function_caller='GET_DROP()',
+                context=context,
+                query=query
+            )
 
             return ConversationHandler.END
     else:
         create_and_put_drop_dict(context=context)
         await query.answer(f'Este item não existe mais.', show_alert=True)
-        await query.delete_message()
+        await delete_message(
+            function_caller='GET_DROP()',
+            context=context,
+            query=query
+        )
 
         return ConversationHandler.END
 
@@ -1161,7 +1174,11 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             show_alert=True
         )
 
-    await query.delete_message()
+    await delete_message(
+        function_caller='GET_DROP()',
+        context=context,
+        query=query
+    )
 
     return ConversationHandler.END
 
@@ -1226,7 +1243,11 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         drops.pop(message_id, None)
         await query.answer(answer_text)
-        await query.delete_message()
+        await delete_message(
+            function_caller='DESTROY_DROP()',
+            context=context,
+            query=query
+        )
     except Exception as e:
         print('destroy_drop():', type(e), e)
 
@@ -1356,7 +1377,11 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             return CHECK_ROUTES
 
         await query.answer('Fechando Bolsa...')
-        await query.delete_message()
+        await delete_message(
+            function_caller='CANCEL_BAG()',
+            context=context,
+            query=query
+        )
 
         return ConversationHandler.END
 

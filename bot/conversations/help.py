@@ -60,7 +60,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
-from bot.functions.chat import get_close_button
+from bot.functions.chat import call_telegram_message_function, get_close_button
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
@@ -129,18 +129,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_HELP_END
     )
 
+    call_telegram_kwsargs = dict(
+        text=text,
+        reply_markup=get_help_reply_markup(update)
+    )
     if query:
-        await query.edit_message_text(
-            text=text,
-            reply_markup=get_help_reply_markup(update),
-            parse_mode=ParseMode.MARKDOWN_V2,
-        )
+        call_telegram_kwsargs['function'] = query.edit_message_text
+        call_telegram_kwsargs['parse_mode'] = ParseMode.MARKDOWN_V2
     else:
-        await update.effective_message.reply_markdown_v2(
-            text=text,
-            disable_notification=silent,
-            reply_markup=get_help_reply_markup(update),
+        call_telegram_kwsargs['function'] = (
+            update.effective_message.reply_markdown_v2
         )
+        call_telegram_kwsargs['disable_notification'] = silent
+
+    await call_telegram_message_function(
+        function_caller='HELP_START()',
+        context=context,
+        need_response=False,
+        **call_telegram_kwsargs
+    )
 
 
 def get_details_text(option: str) -> str:
@@ -1153,7 +1160,12 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     chat_id = job.chat_id
     player_name = get_players_name_by_chat_id(chat_id=chat_id)
-    await context.bot.send_message(
+
+    await call_telegram_message_function(
+        function_caller='JOB_INFO_DEPLOY_BOT()',
+        function=context.bot.send_message,
+        context=context,
+        need_response=False,
         chat_id=chat_id,
         text=(
             f'{SECTION_HEAD.format("DEPLOYANDO")}\n'

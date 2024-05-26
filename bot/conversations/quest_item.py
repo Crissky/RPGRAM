@@ -1,7 +1,12 @@
 from datetime import timedelta
 from random import choice, randint
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Update
+)
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
@@ -44,6 +49,7 @@ from bot.functions.chat import (
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
+    delete_message,
     edit_message_text_and_forward,
     get_close_keyboard
 )
@@ -194,6 +200,8 @@ async def job_fail_item_quest(context: ContextTypes.DEFAULT_TYPE):
     await call_telegram_message_function(
         function_caller='JOB_FAIL_ITEM_QUEST()',
         function=response.edit_text,
+        context=context,
+        need_response=False,
         **send_message_kwargs
     )
 
@@ -220,7 +228,12 @@ async def complete_item_quest(
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     if not current_jobs:
         await query.answer('Essa quest não existe mais.', show_alert=True)
-        await query.delete_message()
+        await delete_message(
+            function_caller='COMPLETE_ITEM_QUEST()',
+            context=context,
+            query=query,
+        )
+
         return ConversationHandler.END
 
     job = current_jobs[0]
@@ -269,7 +282,7 @@ async def complete_item_quest(
 async def complete_trocado_pouch_quest(
     trocado_pouch_item: Item,
     user_id: int,
-    query: CallbackQueryHandler
+    query: CallbackQuery
 ):
     '''Verifica se o Jogador possui o dinheiro suficiente para completar a 
     quest. Se sim, subtrai o dinheiro do Jogador e retorna True. Se não,
@@ -308,7 +321,7 @@ async def send_item_quest_reward(
 
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
-    query = update.callback_query
+    message_id = update.effective_message.message_id
     group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     base_xp = int(quest_item.full_price // 10)
@@ -337,7 +350,10 @@ async def send_item_quest_reward(
         function_caller='SEND_ITEM_QUEST_REWARD()',
         new_text=text,
         user_ids=user_id,
-        query=query,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
         markdown=True,
     )
     job_item_rarity = quest_item.rarity.name

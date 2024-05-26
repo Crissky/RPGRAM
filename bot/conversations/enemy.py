@@ -65,6 +65,7 @@ from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     callback_data_to_dict,
     callback_data_to_string,
+    delete_message,
     edit_message_text,
     edit_message_text_and_forward,
     forward_message,
@@ -230,9 +231,11 @@ async def create_job_enemy_attack(
             allow_sending_without_reply=True,
             reply_markup=get_close_keyboard(None),
         )
-        response = await call_telegram_message_function(
+        await call_telegram_message_function(
             function_caller='CREATE_JOB_ENEMY_ATTACK()',
             function=context.bot.send_message,
+            context=context,
+            need_response=False,
             **reply_text_kwargs
         )
 
@@ -279,6 +282,7 @@ async def create_job_enemy_attack(
     response = await call_telegram_message_function(
         function_caller='JOB_START_AMBUSH()',
         function=context.bot.send_message,
+        context=context,
         **send_message_kwargs
     )
     sleep(2)
@@ -358,6 +362,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             chat_id=chat_id,
             message_id=message_id,
+            need_response=False,
             markdown=True
         )
 
@@ -391,6 +396,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             chat_id=chat_id,
             message_id=message_id,
+            need_response=False,
             markdown=True
         )
     elif not enemy_char:
@@ -409,6 +415,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             chat_id=chat_id,
             message_id=message_id,
+            need_response=False,
             markdown=True
         )
     elif enemy_char.is_immobilized:
@@ -432,6 +439,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             chat_id=chat_id,
             message_id=message_id,
+            need_response=False,
             markdown=True
         )
 
@@ -493,7 +501,11 @@ async def defend_enemy_attack(
 
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
-        await query.delete_message()
+        await delete_message(
+            function_caller='DEFEND_ENEMY_ATTACK()',
+            context=context,
+            query=query,
+        )
 
         return ConversationHandler.END
 
@@ -542,7 +554,10 @@ async def defend_enemy_attack(
             function_caller='DEFEND_ENEMY_ATTACK()',
             new_text=text,
             user_ids=[defender_user_id, target_user_id],
-            query=query,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
             markdown=True,
         )
 
@@ -619,7 +634,11 @@ async def player_attack_enemy(
 
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
-        await query.delete_message()
+        await delete_message(
+            function_caller='PLAYER_ATTACK_ENEMY()',
+            context=context,
+            query=query,
+        )
 
         return ConversationHandler.END
 
@@ -679,7 +698,10 @@ async def player_attack_enemy(
             function_caller='PLAYER_ATTACK_ENEMY()',
             new_text=text,
             user_ids=[attacker_user_id, target_user_id],
-            query=query,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
             markdown=True,
         )
 
@@ -723,7 +745,11 @@ async def check_enemy_attributes(
 
     if not enemy_char:
         await query.answer('Essa emboscada já terminou', show_alert=True)
-        await query.delete_message()
+        await delete_message(
+            function_caller='CHECK_ENEMY_ATTRIBUTES()',
+            context=context,
+            query=query,
+        )
 
         return ConversationHandler.END
 
@@ -917,6 +943,7 @@ async def player_attack(
         context=context,
         chat_id=chat_id,
         message_id=message_id,
+        need_response=False,
         markdown=True,
         reply_markup=reply_markup
     )
@@ -1145,6 +1172,7 @@ async def send_ambush_message(
     response = await call_telegram_message_function(
         function_caller='SEND_AMBUSH_MESSAGE()',
         function=context.bot.send_message,
+        context=context,
         **send_message_kwargs
     )
     message_id = response.message_id
@@ -1208,6 +1236,8 @@ async def add_xp_group(
     await call_telegram_message_function(
         function_caller='ADD_XP_GROUP()',
         function=context.bot.send_message,
+        context=context,
+        need_response=False,
         **send_message_kwargs
     )
 

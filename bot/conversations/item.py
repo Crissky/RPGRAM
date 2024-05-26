@@ -48,7 +48,7 @@ from bot.functions.char import (
     add_trap_damage,
     add_xp
 )
-from bot.functions.chat import edit_message_text_and_forward
+from bot.functions.chat import delete_message, edit_message_text_and_forward
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
 from bot.functions.general import get_attribute_group_or_player
@@ -163,7 +163,11 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer(
             f'Este tesouro já foi descoberto.', show_alert=True
         )
-        await query.delete_message()
+        await delete_message(
+            function_caller='INSPECT_TREASURE()',
+            context=context,
+            query=query,
+        )
 
         return ConversationHandler.END
 
@@ -214,7 +218,10 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         function_caller='INSPECT_TREASURE()',
         new_text=text,
         user_ids=user_id,
-        query=query,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
         markdown=True,
     )
 
@@ -254,7 +261,8 @@ async def activated_trap(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
 ):
-    query = update.callback_query
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     (
         text_open_trap,
         trap_type_damage_enum,
@@ -318,7 +326,10 @@ async def activated_trap(
         function_caller='ACTIVATED_TRAP()',
         new_text=text,
         user_ids=user_id,
-        query=query,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
         markdown=False,
     )
 
