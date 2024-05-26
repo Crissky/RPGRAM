@@ -781,7 +781,7 @@ async def enemy_attack(
             base_xp=base_xp,
             save_status=True,
         )
-        report_text += ALERT_SECTION_HEAD.format('XP') + '\n'
+        report_text += ALERT_SECTION_HEAD.format('*XP*') + '\n'
         if target_char and target_char.is_alive:
             base_xp = get_base_xp_from_enemy_attack(enemy_char, target_char)
             target_report_xp = add_xp(
@@ -870,7 +870,7 @@ async def player_attack(
         char=attacker_char,
         base_xp=base_xp,
     )
-    report_text += ALERT_SECTION_HEAD.format('XP') + '\n'
+    report_text += ALERT_SECTION_HEAD.format('*XP*') + '\n'
     report_text += f'{report_xp["text"]}\n'
 
     if attack_report['dead']:
