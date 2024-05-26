@@ -31,6 +31,7 @@ from bot.decorators import (
 )
 from bot.functions.char import save_char
 from bot.functions.chat import send_private_message
+from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_players_id_by_chat_id
 from constant.text import (
@@ -169,9 +170,9 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     player_character = char_model.get(user_id)
     player = player_model.get(user_id)
     revive_reporting = ''
-    level = player_character.level
-    min_level = max(1, int(level / 20 * 0.90))
-    max_level = max(2, int(level / 20 * 1.10))
+    group_level = get_attribute_group(chat_id, 'group_level')
+    min_level = max(1, int(group_level / 20 * 0.90))
+    max_level = max(2, int(group_level / 20 * 1.10))
     condition_quantity = randint(min_level, max_level)
     if player_character.is_dead:
         report = player_character.cs.revive()
