@@ -425,6 +425,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'*{enemy_name}* não pôde atacar, pois está {immobilized_names}.'
         )
+        text += enemy_char.activate_status_string()
         print(user_id, text)
         text = create_text_in_box(
             text=text,

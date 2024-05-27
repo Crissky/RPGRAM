@@ -134,6 +134,19 @@ class BaseCharacter:
         reports = self.__status.break_conditions()
         return reports
 
+    def activate_status_string(self) -> str:
+        activate_status_report_list = self.activate_status()
+        text = ''
+        if activate_status_report_list:
+            text += '\n\n'
+            text += ALERT_SECTION_HEAD.format('*STATUS REPORT*')
+            text += '\n'
+            for status_report in activate_status_report_list:
+                text += status_report['text'] + '\n'
+            text = text.rstrip()
+
+        return text
+
     def activate_status_to_attack(self, defender_char: TBaseCharacter) -> str:
         text = ''
         defender_player_name = defender_char.player_name
