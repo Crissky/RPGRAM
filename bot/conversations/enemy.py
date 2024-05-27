@@ -63,6 +63,7 @@ from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
+    answer,
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
@@ -425,6 +426,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'*{enemy_name}* não pôde atacar, pois está {immobilized_names}.'
         )
+        text += enemy_char.activate_status_string()
         print(user_id, text)
         text = create_text_in_box(
             text=text,
@@ -1105,7 +1107,7 @@ async def sub_action_point(user_id: int, query: CallbackQuery):
     player.sub_action_points(1)
     player_model.save(player)
 
-    await query.answer(player.current_action_points_text)
+    await answer(query=query, text=player.current_action_points_text)
 
 
 async def add_enemy_counter(
@@ -1119,7 +1121,7 @@ async def add_enemy_counter(
         report = player.add_enemy_counter(enemy=enemy)
         player_model.save(player)
 
-        await query.answer(report['text'])
+        await answer(query=query, text=report['text'])
 
 
 def get_enemy_from_ambush_dict(

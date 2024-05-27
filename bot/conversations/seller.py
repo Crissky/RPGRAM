@@ -59,6 +59,7 @@ from bot.decorators import (
 from bot.functions.bag import get_item_from_bag_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
+    answer,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
@@ -360,7 +361,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     item = get_item_from_bag_by_position(chat_id, page, item_pos)
 
     if item_id != str(item._id):
-        query.answer('O item não está mais disponível')
+        query.answer(text='O item não está mais disponível', show_alert=True)
         back_button = get_sell_back_button(
             page=page,
             user_id=user_id,
@@ -476,7 +477,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return CHECK_ROUTES
 
-        await query.answer('Deixando Loja...')
+        await answer(query=query, text='Deixando Loja...')
         await delete_message(
             function_caller='CANCEL_SELLER()',
             context=context,

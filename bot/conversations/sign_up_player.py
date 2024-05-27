@@ -22,6 +22,7 @@ from bot.constants.sign_up_player import CALLBACK_TEXT_NO
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
+from bot.functions.chat import answer
 from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import PlayerModel
@@ -81,7 +82,7 @@ async def create_account(
     player = player_model.get(player_id)
     query = update.callback_query
 
-    await query.answer('Cadastrado com sucesso!')
+    await answer(query=query, text='Cadastrado com sucesso!')
     await query.edit_message_text(
         "Conta criada com sucesso!\n\n"
         f'{player}',
@@ -110,8 +111,8 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         )
         del context.user_data['response']
     elif update.callback_query:
-        # await update.callback_query.answer()
-        await update.callback_query.edit_message_text(new_text)
+        query = update.callback_query
+        await query.edit_message_text(new_text)
 
     return ConversationHandler.END
 

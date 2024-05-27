@@ -26,6 +26,7 @@ from bot.constants.sign_up_group import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
+from bot.functions.chat import answer
 from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import GroupModel
@@ -94,7 +95,7 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
 
-    await query.answer('Cadastrado com sucesso!')
+    await answer(query=query, text='Cadastrado com sucesso!')
     await query.edit_message_text(
         'Grupo cadastrado com sucesso!\n\n'
         f'{group_config}',
@@ -123,8 +124,8 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         del context.user_data['response']
     elif update.callback_query:
-        # await update.callback_query.answer()
-        await update.callback_query.edit_message_text(new_text)
+        query = update.callback_query
+        await query.edit_message_text(new_text)
 
     return ConversationHandler.END
 
