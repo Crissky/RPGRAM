@@ -35,6 +35,7 @@ from bot.constants.battle import (
     REACTIONS_LABELS,
     TEAMS,
 )
+from bot.functions.chat import answer
 from rpgram.enums import EmojiEnum
 from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
@@ -146,7 +147,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             battle.start_battle()
             battle_model.save(battle)
-            await query.answer('A BATALHA COMEÇOU!!!')
+            await answer(query=query, text='A BATALHA COMEÇOU!!!')
             await query.edit_message_text(
                 f'A batalha começou!\n'
                 f'{user_name}, escolha sua ação.\n\n'
@@ -163,16 +164,16 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         time = TEAMS[team]
         resting_status = ''
         if check_if_change_for_same_team(team, character, battle):
-            await query.answer(f'Seu personagem já está no Time {time}!')
+            query_text = f'Seu personagem já está no Time {time}!'
+            await answer(query=query, text=query_text)
             return ENTER_BATTLE_ROUTES
         battle.enter_battle(character, team)
         battle_model.save(battle)
         if stop_resting(user_id, context):
             resting_status = '\nVocê parou de descansar!'
         reply_markup = get_enter_battle_inline_keyboard()
-        await query.answer(
-            f'Seu personagem entrou no Time {time}! {resting_status}'
-        )
+        query_text = f'Seu personagem entrou no Time {time}! {resting_status}'
+        await answer(query=query, text=query_text)
         await query.edit_message_text(
             battle.get_teams_sheet(),
             reply_markup=reply_markup,
@@ -216,7 +217,8 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )]
             )
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        await query.answer(f'Você selecionou: "{ACTIONS[action]}"')
+        query_text = f'Você selecionou: "{ACTIONS[action]}"'
+        await answer(query=query, text=query_text)
         await query.edit_message_text(
             f'{user_name}, selecione o alvo para "{ACTIONS[action]}".\n\n'
             f'{battle.get_sheet()}\n',
@@ -247,7 +249,8 @@ async def select_defender(update: Update, context: ContextTypes.DEFAULT_TYPE):
         action = context.chat_data['action']
 
         reply_markup = get_reaction_inline_keyboard()
-        await query.answer(f'Você selecionou: "{defender.name}"')
+        query_text = f'Você selecionou: "{defender.name}"'
+        await answer(query=query, text=query_text)
         await query.edit_message_text(
             f'{defender.name} ({defender_user_name}), '
             f'seu personagem foi alvo de "{ACTIONS[action]}".\n'

@@ -22,6 +22,7 @@ from bot.constants.equips import (
 )
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
+    answer,
     get_random_refresh_text,
     get_refresh_close_button
 )
@@ -86,7 +87,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             bag_model.add(old_equipment_item, user_id)
             equips_model.save(equips)
             text = f'Você desequipou "{old_equipment.name}".'
-            await query.answer(text)
+            await answer(query=query, text=text)
         except ValueError as error:
             await query.answer(text=str(error), show_alert=True)
 
@@ -121,7 +122,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                     reply_markup=reply_markup,
                 )
             except BadRequest as error:
-                await query.answer(text=str(error))
+                await answer(query=query, text=str(error))
         else:
             markdown_equips_sheet = create_text_in_box(
                 text=markdown_equips_sheet,

@@ -220,10 +220,7 @@ def skip_if_dead_char(callback):
             )
 
             if query:
-                await query.answer(
-                    text,
-                    show_alert=True
-                )
+                await query.answer(text=text, show_alert=True)
             else:
                 silent = get_attribute_group(chat_id, 'silent')
                 await update.effective_message.reply_text(
@@ -263,10 +260,7 @@ def skip_if_dead_char_silent(callback):
             )
 
             if query:
-                await query.answer(
-                    text,
-                    show_alert=True
-                )
+                await query.answer(text=text, show_alert=True)
 
             return ConversationHandler.END
     return wrapper
@@ -302,7 +296,7 @@ def skip_if_immobilized(callback):
             ]
             text += ', '.join(conditions_names)
             if query:
-                await query.answer(text, show_alert=True)
+                await query.answer(text=text, show_alert=True)
             else:
                 await update.effective_message.reply_text(
                     text,

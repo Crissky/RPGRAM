@@ -485,6 +485,7 @@ async def delete_message(
     query: CallbackQuery,
 ):
     try:
+        print('DELETE_MESSAGE() TRYING QUERY.DELETE_MESSAGE')
         await call_telegram_message_function(
             function_caller=function_caller + ' and DELETE_MESSAGE()',
             function=query.delete_message,
@@ -492,7 +493,7 @@ async def delete_message(
             need_response=False,
         )
     except BadRequest as e:
-        print('DELETE_MESSAGE BADREQUEST EXCEPT')
+        print('DELETE_MESSAGE() BADREQUEST EXCEPT')
         if 'Query is too old' in e.message:
             delete_message_kwargs = dict(
                 chat_id=query.message.chat_id,
@@ -505,6 +506,14 @@ async def delete_message(
                 need_response=False,
                 **delete_message_kwargs
             )
+
+
+async def answer(query: CallbackQuery, text: str, **kwargs):
+    try:
+        await query.answer(text=text, **kwargs)
+    except BadRequest as e:
+        print('ANSWER() BADREQUEST EXCEPT.')
+        print(f'  text: {text}')
 
 
 # CALLBACK FUNCTIONS

@@ -109,6 +109,7 @@ from bot.functions.bag import (
 )
 from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
+    answer,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
@@ -601,13 +602,10 @@ async def use_item_equipment(
     old_equipments = None
     try:
         old_equipments = character.equips.equip(equipment, hand)
-        await query.answer(text=f'Você equipou "{equipment.name}".')
+        await answer(query=query, text=f'Você equipou "{equipment.name}".')
     except Exception as error:
         print(error)
-        await query.answer(
-            text=f'{error}',
-            show_alert=True
-        )
+        await query.answer(text=f'{error}', show_alert=True)
         await query.edit_message_reply_markup(
             reply_markup=old_reply_markup
         )
@@ -681,7 +679,7 @@ async def use_item_consumable(
         text = f'Você usou {use_quantity} "{name}".\n'
         save_char(character, status=True)
 
-        await query.answer(text=text)
+        await answer(query=query, text=text)
     except Exception as error:
         print(error)
         await query.answer(
@@ -1243,7 +1241,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         drops.pop(message_id, None)
-        await query.answer(answer_text)
+        await answer(query=query, text=answer_text)
         await delete_message(
             function_caller='DESTROY_DROP()',
             context=context,
@@ -1377,7 +1375,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             await query.answer(text=ACCESS_DENIED, show_alert=True)
             return CHECK_ROUTES
 
-        await query.answer('Fechando Bolsa...')
+        await answer(query=query, text='Fechando Bolsa...')
         await delete_message(
             function_caller='CANCEL_BAG()',
             context=context,
