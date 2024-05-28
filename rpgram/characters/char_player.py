@@ -67,8 +67,9 @@ class PlayerCharacter(BaseCharacter):
         self.__player_name = new_name
 
     # Getters
-    player_id = property(lambda self: self.__player_id)
-    player_name = property(lambda self: self.__player_name)
+    player_id: int = property(lambda self: self.__player_id)
+    player_name: str = property(lambda self: self.__player_name)
+    is_enemy: bool = property(lambda self: False)
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*{PLAYER_EMOJI_TEXT}*: {self.player_name}\n'

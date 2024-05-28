@@ -72,13 +72,26 @@ ACCESS_DENIED = (
 # ACTION BUTTON TEXTS
 CLOSE_BAG_BUTTON_TEXT = f'Fechar Bolsa{EmojiEnum.CLOSE_BAG.value}'
 DESTROY_ITEM_BUTTON_TEXT = f'Quebrar{EmojiEnum.DESTROY_ITEM.value}'
+USE_MANY_BUTTON_TEXT = f'{EmojiEnum.USE_POTION.value}x{{quantity_option}}'
 DISCARD_MANY_BUTTON_TEXT = (
-    f'{EmojiEnum.DISCARD.value}Descartar x{{quantity_option}}'
+    f'{EmojiEnum.DISCARD.value}x{{quantity_option}}'
 )
 SELL_MANY_BUTTON_TEXT = (
-    f'{EmojiEnum.SELL.value}Vender x{{quantity_option}}'
+    f'{EmojiEnum.SELL.value}x{{quantity_option}}'
 )
 COLLECT_MANY_BUTTON_TEXT = (
+    f'{EmojiEnum.TROCADO_POUCH.value}x{{quantity_option}}'
+)
+USE_MANY_BUTTON_VERBOSE_TEXT = (
+    f'{EmojiEnum.USE_POTION.value}Usar x{{quantity_option}}'
+)
+DISCARD_MANY_BUTTON_VERBOSE_TEXT = (
+    f'{EmojiEnum.DISCARD.value}Descartar x{{quantity_option}}'
+)
+SELL_MANY_BUTTON_VERBOSE_TEXT = (
+    f'{EmojiEnum.SELL.value}Vender x{{quantity_option}}'
+)
+COLLECT_MANY_BUTTON_VERBOSE_TEXT = (
     f'{EmojiEnum.TROCADO_POUCH.value}Coletar x{{quantity_option}}'
 )
 EQUIP_BUTTON_TEXT = f'{EmojiEnum.TO_EQUIP.value}Equipar'
@@ -88,7 +101,6 @@ IDENTIFY_BUTTON_TEXT = f'Identificar{EmojiEnum.IDENTIFY.value}'
 EQUIP_INFO_BUTTON_TEXT = f'{EmojiEnum.EQUIP_INFO.value}Infomação'
 COMPARE_INFO_BUTTON_TEXT = f'{EmojiEnum.EQUIP_COMPARE.value}Compare'
 TAKE_BUTTON_TEXT = f'{EmojiEnum.TAKE.value}Coletar'
-USE_MANY_BUTTON_TEXT = f'{EmojiEnum.USE_POTION.value}Usar x{{quantity_option}}'
 
 # NAVIGATION BUTTON TEXTS
 NAV_BACK_BUTTON_TEXT = f'Voltar{EmojiEnum.BACK.value}'

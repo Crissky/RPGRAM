@@ -578,7 +578,7 @@ def get_seller_item_buttons(
     # Criando texto e botões dos itens
     for index, _ in enumerate(items):
         items_buttons.append(InlineKeyboardButton(
-            text=f'Item {index + 1}',
+            text=f'I{index + 1:02}',
             callback_data=callback_data_to_string({
                 'sell_item': index,
                 'sell_page': page,
@@ -586,13 +586,10 @@ def get_seller_item_buttons(
             })
         ))
 
-    reshaped_items_buttons = []
-    # Colocando dois botões de itens por linha
-    for item1, item2 in zip_longest(items_buttons[0::2], items_buttons[1::2]):
-        new_line = [item1, item2]
-        if None in new_line:
-            new_line.remove(None)
-        reshaped_items_buttons.append(new_line)
+    reshaped_items_buttons = reshape_row_buttons(
+        buttons=items_buttons,
+        buttons_per_row=5
+    )
 
     return reshaped_items_buttons
 

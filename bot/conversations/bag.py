@@ -33,12 +33,14 @@ from bot.constants.bag import (
     CHRYSUS_POTION_SELL,
     CLOSE_BAG_BUTTON_TEXT,
     COLLECT_MANY_BUTTON_TEXT,
+    COLLECT_MANY_BUTTON_VERBOSE_TEXT,
     COMMANDS,
     COMPARE_INFO_BUTTON_TEXT,
     CONSUMABLE_SORT_DOWN_BUTTON_TEXT,
     CONSUMABLE_SORT_UP_BUTTON_TEXT,
     DESTROY_ITEM_BUTTON_TEXT,
     DISCARD_MANY_BUTTON_TEXT,
+    DISCARD_MANY_BUTTON_VERBOSE_TEXT,
     EQUIP_BUTTON_TEXT,
     EQUIP_INFO_BUTTON_TEXT,
     EQUIPMENT_POWER_SORT_DOWN_BUTTON_TEXT,
@@ -72,12 +74,14 @@ from bot.constants.bag import (
     SECTION_TEXT_GEMSTONE,
     SECTION_TEXT_TROCADO_POUCH,
     SELL_MANY_BUTTON_TEXT,
+    SELL_MANY_BUTTON_VERBOSE_TEXT,
     SEND_DROP_MESSAGE_SLEEP_TIME,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
     USE_MANY_BUTTON_TEXT,
+    USE_MANY_BUTTON_VERBOSE_TEXT,
 )
 
 from bot.constants.filters import (
@@ -1537,7 +1541,7 @@ def get_item_buttons(
     # Criando texto e botões dos itens
     for index, _ in enumerate(items):
         items_buttons.append(InlineKeyboardButton(
-            text=f'Item {index + 1}',
+            text=f'I{index + 1:02}',
             callback_data=callback_data_to_string({
                 'item': index,
                 'page': page,
@@ -1546,13 +1550,10 @@ def get_item_buttons(
             })
         ))
 
-    reshaped_items_buttons = []
-    # Colocando dois botões de itens por linha
-    for item1, item2 in zip_longest(items_buttons[0::2], items_buttons[1::2]):
-        new_line = [item1, item2]
-        if None in new_line:
-            new_line.remove(None)
-        reshaped_items_buttons.append(new_line)
+    reshaped_items_buttons = reshape_row_buttons(
+        buttons=items_buttons,
+        buttons_per_row=5
+    )
 
     return reshaped_items_buttons
 
@@ -1690,12 +1691,18 @@ def get_use_consumable_buttons(
 ) -> List[InlineKeyboardButton]:
     use_buttons = []
     quantity = item.quantity
+    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     if item.item.usable is True:
         for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
             if quantity_option <= quantity:
-                text = USE_MANY_BUTTON_TEXT.format(
-                    quantity_option=quantity_option
-                )
+                if quantity < verbose_threshold:
+                    text = USE_MANY_BUTTON_VERBOSE_TEXT.format(
+                        quantity_option=f'{quantity_option:02}'
+                    )
+                else:
+                    text = USE_MANY_BUTTON_TEXT.format(
+                        quantity_option=f'{quantity_option:02}'
+                    )
                 use_buttons.append(
                     InlineKeyboardButton(
                         text=text,
@@ -1709,7 +1716,11 @@ def get_use_consumable_buttons(
                     )
                 )
 
-    return reshape_row_buttons(use_buttons, buttons_per_row=2)
+    buttons_per_row = 4 if len(use_buttons) <= 4 else 3
+    return reshape_row_buttons(
+        buttons=use_buttons,
+        buttons_per_row=buttons_per_row
+    )
 
 
 def get_discard_buttons(
@@ -1721,11 +1732,17 @@ def get_discard_buttons(
 ) -> List[InlineKeyboardButton]:
     drop_buttons = []
     quantity = item.quantity
+    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
-            text = DISCARD_MANY_BUTTON_TEXT.format(
-                quantity_option=quantity_option
-            )
+            if quantity < verbose_threshold:
+                text = DISCARD_MANY_BUTTON_VERBOSE_TEXT.format(
+                    quantity_option=f'{quantity_option:02}'
+                )
+            else:
+                text = DISCARD_MANY_BUTTON_TEXT.format(
+                    quantity_option=f'{quantity_option:02}'
+                )
             drop_buttons.append(
                 InlineKeyboardButton(
                     text=text,
@@ -1739,7 +1756,11 @@ def get_discard_buttons(
                 )
             )
 
-    return reshape_row_buttons(drop_buttons, buttons_per_row=2)
+    buttons_per_row = 4 if len(drop_buttons) <= 4 else 3
+    return reshape_row_buttons(
+        buttons=drop_buttons,
+        buttons_per_row=buttons_per_row
+    )
 
 
 def get_sell_buttons(
@@ -1751,16 +1772,27 @@ def get_sell_buttons(
 ) -> List[InlineKeyboardButton]:
     sell_buttons = []
     quantity = item.quantity
+    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
             if isinstance(item.item, TrocadoPouchConsumable):
-                text = COLLECT_MANY_BUTTON_TEXT.format(
-                    quantity_option=quantity_option
-                )
+                if quantity < verbose_threshold:
+                    text = COLLECT_MANY_BUTTON_VERBOSE_TEXT.format(
+                        quantity_option=f'{quantity_option:02}'
+                    )
+                else:
+                    text = COLLECT_MANY_BUTTON_TEXT.format(
+                        quantity_option=f'{quantity_option:02}'
+                    )
             else:
-                text = SELL_MANY_BUTTON_TEXT.format(
-                    quantity_option=quantity_option
-                )
+                if quantity < verbose_threshold:
+                    text = SELL_MANY_BUTTON_VERBOSE_TEXT.format(
+                        quantity_option=f'{quantity_option:02}'
+                    )
+                else:
+                    text = SELL_MANY_BUTTON_TEXT.format(
+                        quantity_option=f'{quantity_option:02}'
+                    )
             sell_buttons.append(
                 InlineKeyboardButton(
                     text=text,
@@ -1774,7 +1806,11 @@ def get_sell_buttons(
                 )
             )
 
-    return reshape_row_buttons(sell_buttons, buttons_per_row=2)
+    buttons_per_row = 4 if len(sell_buttons) <= 4 else 3
+    return reshape_row_buttons(
+        buttons=sell_buttons,
+        buttons_per_row=buttons_per_row
+    )
 
 
 def get_close_bag_button(

@@ -7,9 +7,9 @@ from rpgram.enums.rarity import RarityEnum
 RARITY_RANGE_DICT = {
     RarityEnum.COMMON: (3, 3, 2),
     RarityEnum.UNCOMMON: (3, 4, 2),
-    RarityEnum.RARE: (4, 5, 3),
-    RarityEnum.EPIC: (5, 6, 4),
-    RarityEnum.LEGENDARY: (6, 7, 5)
+    RarityEnum.RARE: (3, 3, 3),
+    RarityEnum.EPIC: (3, 4, 4),
+    RarityEnum.LEGENDARY: (3, 5, 5)
 }
 
 
@@ -126,17 +126,34 @@ class GridGame:
                 text = self.__grid[index]
                 yield Coordinates(row, col, text)
 
-    rarity = property(lambda self: self.__rarity)
-    n_rows = property(lambda self: self.__n_rows)
-    n_cols = property(lambda self: self.__n_cols)
-    grid = property(lambda self: self.__grid.copy())
-    size = property(lambda self: len(self.__grid))
-    total_good = property(lambda self: self.__grid.count(self.__good_target))
-    total_bad = property(lambda self: self.__grid.count(self.__bad_target))
-    colors_text = property(lambda self: ', '.join(self.__colors))
-    full_colors_text = property(lambda self: f'Cores: {self.colors_text}')
-    is_solved = property(lambda self: self.total_good == self.size)
-    is_failed = property(lambda self: self.total_bad == self.size)
+    @property
+    def is_solved(self) -> bool:
+        grid = self.grid
+        colors = self.colors
+        colors.remove(self.__bad_target)
+        result = False
+        for color in colors:
+            if grid.count(color) == self.size:
+                result = True
+                break
+
+        return result
+
+    rarity: RarityEnum = property(lambda self: self.__rarity)
+    n_rows: int = property(lambda self: self.__n_rows)
+    n_cols: int = property(lambda self: self.__n_cols)
+    grid: list = property(lambda self: self.__grid.copy())
+    size: int = property(lambda self: len(self.__grid))
+    total_good: int = property(
+        lambda self: self.__grid.count(self.__good_target)
+    )
+    total_bad: int = property(
+        lambda self: self.__grid.count(self.__bad_target)
+    )
+    colors: list = property(lambda self: self.__colors.copy())
+    colors_text: str = property(lambda self: ', '.join(self.colors))
+    full_colors_text: str = property(lambda self: f'Cores: {self.colors_text}')
+    is_failed: bool = property(lambda self: self.total_bad == self.size)
 
 
 class Coordinates(NamedTuple):
@@ -176,3 +193,7 @@ if __name__ == '__main__':
                 print([coor for coor in g])
                 switch_all(g)
                 print('-'*50)
+
+    print(g.colors)
+    print(g.is_solved)
+    print(g.colors)

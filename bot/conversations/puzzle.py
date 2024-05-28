@@ -245,10 +245,10 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
 
 
 @skip_if_no_singup_player
-@skip_if_dead_char
-@need_not_in_battle
-@skip_if_immobilized
-@confusion(START_ROUTES)
+# @skip_if_dead_char
+# @need_not_in_battle
+# @skip_if_immobilized
+# @confusion(START_ROUTES)
 @print_basic_infos
 @retry_after
 async def switch_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -283,6 +283,7 @@ async def solved(
 ):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
+    player_name = query.from_user.name
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GOD_WINS_FEEDBACK_TEXTS)
     remove_grid_from_dict(message_id, context)
@@ -290,6 +291,7 @@ async def solved(
     await puzzle_edit_message_text(
         grid=grid,
         text=text,
+        player_name=player_name,
         context=context,
         chat_id=chat_id,
         message_id=message_id,
@@ -318,12 +320,14 @@ async def failed(
 ):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
+    player_name = query.from_user.name
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GODS_LOSES_FEEDBACK_TEXTS)
     reply_markup = get_close_keyboard(None)
     await puzzle_edit_message_text(
         grid=grid,
         text=text,
+        player_name=player_name,
         context=context,
         chat_id=chat_id,
         message_id=message_id,
@@ -347,12 +351,14 @@ async def good_move(
 ):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
+    player_name = query.from_user.name
     text = choice(GOD_GOOD_MOVE_FEEDBACK_TEXTS)
     grid_buttons = get_grid_buttons(grid)
     reply_markup = InlineKeyboardMarkup(grid_buttons)
     await puzzle_edit_message_text(
         grid=grid,
         text=text,
+        player_name=player_name,
         context=context,
         chat_id=chat_id,
         message_id=message_id,
@@ -369,12 +375,14 @@ async def bad_move(
 ):
     chat_id = query.message.chat_id
     message_id = query.message.message_id
+    player_name = query.from_user.name
     text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)
     grid_buttons = get_grid_buttons(grid)
     reply_markup = InlineKeyboardMarkup(grid_buttons)
     await puzzle_edit_message_text(
         grid=grid,
         text=text,
+        player_name=player_name,
         context=context,
         chat_id=chat_id,
         message_id=message_id,
@@ -387,6 +395,7 @@ async def bad_move(
 async def puzzle_edit_message_text(
     grid: GridGame,
     text: str,
+    player_name: str,
     context: ContextTypes.DEFAULT_TYPE,
     chat_id: int,
     message_id: int,
@@ -402,8 +411,13 @@ async def puzzle_edit_message_text(
     if not isinstance(section_end, str):
         section_end = SECTION_HEAD_PUZZLE_END
 
+    text = (
+        f'>{GODS_NAME}: {text}\n\n'
+        f'Jogada: {player_name}\n'
+        f'{grid.full_colors_text}\n'
+    )
     text = create_text_in_box(
-        text=f'>{GODS_NAME}: {text}\n\n{grid.full_colors_text}',
+        text=text,
         section_name=section_name,
         section_start=section_start,
         section_end=section_end,

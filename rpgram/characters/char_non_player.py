@@ -130,6 +130,10 @@ class NPCharacter(BaseCharacter):
     def enemy_id(self) -> ObjectId:
         return super().player_id
 
+    @property
+    def is_enemy(self) -> bool:
+        return True
+
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = f'*{ALIGNMENT_EMOJI_TEXT}*: {self.alignment_name}\n'
 
