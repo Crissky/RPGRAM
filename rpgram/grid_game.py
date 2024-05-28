@@ -7,9 +7,9 @@ from rpgram.enums.rarity import RarityEnum
 RARITY_RANGE_DICT = {
     RarityEnum.COMMON: (3, 3, 2),
     RarityEnum.UNCOMMON: (3, 4, 2),
-    RarityEnum.RARE: (4, 5, 3),
-    RarityEnum.EPIC: (5, 6, 4),
-    RarityEnum.LEGENDARY: (6, 7, 5)
+    RarityEnum.RARE: (3, 3, 3),
+    RarityEnum.EPIC: (3, 4, 4),
+    RarityEnum.LEGENDARY: (3, 5, 5)
 }
 
 
