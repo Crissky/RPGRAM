@@ -479,6 +479,7 @@ async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
     await call_telegram_message_function(**call_telegram_kwargs)
 
 
+# QUERY FUNCTIONS
 async def delete_message(
     function_caller: str,
     context: ContextTypes.DEFAULT_TYPE,
