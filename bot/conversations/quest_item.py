@@ -46,6 +46,7 @@ from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.bag import get_item_from_bag_by_id
 from bot.functions.char import add_xp
 from bot.functions.chat import (
+    answer,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
@@ -233,7 +234,8 @@ async def complete_item_quest(
     job_name = data['item_quest_job_name']
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     if not current_jobs:
-        await query.answer('Essa quest não existe mais.', show_alert=True)
+        query_text = 'Essa quest não existe mais.'
+        await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='COMPLETE_ITEM_QUEST()',
             context=context,
@@ -281,7 +283,7 @@ async def complete_item_quest(
         )
     else:
         text = f'Você não tem "{quest_item.quantity}x {quest_item.name}".'
-        await query.answer(text, show_alert=True)
+        await answer(query=query, text=text, show_alert=True)
         return ConversationHandler.END
 
 
@@ -309,7 +311,7 @@ async def complete_trocado_pouch_quest(
             f'Possui apenas {player.trocado}{EmojiEnum.TROCADO.value}.\n'
             f'Precisa de {quest_trocado}{EmojiEnum.TROCADO.value}.'
         )
-        await query.answer(text, show_alert=True)
+        await answer(query=query, text=text, show_alert=True)
 
     return is_complete
 

@@ -136,11 +136,11 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == CALLBACK_START_BATTLE:
         if not battle.in_battle(character):
-            await query.answer(
+            query_text = (
                 'Você não pode iniciar a batalha, '
-                'pois seu personagem não está participando dela.',
-                show_alert=True
+                'pois seu personagem não está participando dela.'
             )
+            await answer(query=query, text=query_text, show_alert=True)
             return ENTER_BATTLE_ROUTES
         user_name = battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
@@ -156,7 +156,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             return SELECT_ACTION_ROUTES
         except EmptyTeamError as error:
-            await query.answer(f'{error}', show_alert=True)
+            await answer(query=query, text=f'{error}', show_alert=True)
             return ENTER_BATTLE_ROUTES
 
     if not other_battle and character.is_alive:
@@ -179,18 +179,16 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     elif character.is_dead:
-        await query.answer(
-            'Seu personagem não pode entrar em batalha com 0 de HP.',
-            show_alert=True
-        )
+        query_text = 'Seu personagem não pode entrar em batalha com 0 de HP.'
+        await answer(query=query, text=query_text, show_alert=True)
     elif other_battle:
         group_model = GroupModel()
         chat_id = other_battle.chat_id
         group = group_model.get(chat_id)
-        await query.answer(
-            f'Seu personagem já em uma batalha no grupo "{group.name}"!',
-            show_alert=True
+        query_text = (
+            f'Seu personagem já em uma batalha no grupo "{group.name}"!'
         )
+        await answer(query=query, text=query_text, show_alert=True)
 
 
 # SELECT_ACTION_ROUTES
@@ -226,7 +224,8 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return SELECT_TARGET_ROUTES
     else:
-        await query.answer('Ainda não é o seu turno!!', show_alert=True)
+        query_text = 'Ainda não é o seu turno!!'
+        await answer(query=query, text=query_text, show_alert=True)
         return SELECT_ACTION_ROUTES
 
 
@@ -260,7 +259,8 @@ async def select_defender(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return SELECT_REACTION_ROUTES
     else:
-        await query.answer('Ainda não é o seu turno!!', show_alert=True)
+        query_text = 'Ainda não é o seu turno!!'
+        await answer(query=query, text=query_text, show_alert=True)
         return SELECT_TARGET_ROUTES
 
 
@@ -406,9 +406,8 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return callback
     else:
-        await query.answer(
-            'Seu personagem não é alvo do ataque!', show_alert=True
-        )
+        query_text = 'Seu personagem não é alvo do ataque!'
+        await answer(query=query, text=query_text, show_alert=True)
         return SELECT_REACTION_ROUTES
 
 

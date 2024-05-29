@@ -26,6 +26,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS,
 )
 from bot.functions.chat import (
+    answer,
     get_random_refresh_text,
     get_refresh_close_button
 )
@@ -92,7 +93,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except (KeyError, ValueError) as error:
             text = str(error)
             if query:
-                await query.answer(text=text, show_alert=True)
+                await answer(query=query, text=text, show_alert=True)
             else:
                 await update.effective_message.reply_text(
                     text,

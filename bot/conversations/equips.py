@@ -89,7 +89,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             text = f'Você desequipou "{old_equipment.name}".'
             await answer(query=query, text=text)
         except ValueError as error:
-            await query.answer(text=str(error), show_alert=True)
+            await answer(query=query, text=str(error), show_alert=True)
 
     if equips:
         reply_markup = get_equips_keyboard(equips, user_id)

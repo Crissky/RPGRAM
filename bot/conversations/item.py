@@ -49,6 +49,7 @@ from bot.functions.char import (
     add_xp
 )
 from bot.functions.chat import (
+    answer,
     call_telegram_message_function,
     delete_message,
     edit_message_text_and_forward
@@ -170,9 +171,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         treasures = context.chat_data['treasures']
     if treasures.get(message_id, None) is not True:
         treasures.pop(message_id, None)
-        await query.answer(
-            f'Este tesouro já foi descoberto.', show_alert=True
-        )
+        query_text = f'Este tesouro já foi descoberto.'
+        await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='INSPECT_TREASURE()',
             context=context,

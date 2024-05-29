@@ -149,7 +149,7 @@ async def send_alert_or_message(
     '''
 
     if query:
-        return await query.answer(text=text, show_alert=show_alert)
+        return await answer(query=query, text=text, show_alert=show_alert)
     else:
         return await send_private_message(
             function_caller=function_caller,
