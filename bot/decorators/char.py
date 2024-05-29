@@ -335,11 +335,11 @@ def confusion(retry_state=ConversationHandler.END):
                 target_player_id = target_char.player_id
                 if confuse_char.player_id == target_char.player_id:
                     target_player_name = 'a si mesmo'
-                    target_char_dice = Dice(1)
+                    target_char_dice = 1
                 else:
-                    target_char_dice = Dice(20)
+                    target_char_dice = None
 
-                confuse_char_dice = Dice(20)
+                confuse_char_dice = None
                 confuse_action = confuse_char.weighted_choice_action_attack()
 
                 attack_report = confuse_char.to_attack(

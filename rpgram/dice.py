@@ -24,30 +24,36 @@ Dice multiplier percent base (0.025)
 
 from random import randint
 
+from rpgram.stats.stats_base import BaseStats
+from rpgram.stats.stats_combat import CombatStats
+
 
 class Dice:
-    def __init__(self, faces: int = 20, base_multiplier: float = 0.025):
+    def __init__(
+        self,
+        character,
+        faces: int = 20,
+        base_multiplier: float = 0.025,
+    ):
         self.__faces = faces
         self.__base_multiplier = base_multiplier
         self.__value = None
         self.__boosted_base_value = None
-        self.__boosted_value = None
+        self.__character = character
+        self.__base_stats = character.base_stats
+        self.__combat_stats = character.combat_stats
 
     def throw(self, rethrow=False) -> int:
         if self.is_throwed and not rethrow:
             return self.__value
         self.__value = randint(1, self.__faces)
+
         return self.__value
 
-    def check_throw(self):
-        if not self.__value:
-            raise ValueError('O dado não foi lançado. Use o método throw.')
-
-    def boost_value(self, base_value: int) -> int:
+    def __boost_value(self, base_value: int) -> int:
         '''Retorna o valor boostado conforme o resultado do dado.
         '''
 
-        self.__boosted_base_value = base_value
         self.throw(rethrow=False)
         multiplier = (1 + (self.value * self.base_multiplier))
         boosted_value = base_value * multiplier
@@ -59,51 +65,35 @@ class Dice:
         elif self.is_critical_fail:
             result = result / self.critical_multiplier
 
-        self.__boosted_value = int(result)
+        return int(result)
 
-        return self.__boosted_value
+    def get_base_stats(self, attribute_name: str) -> int:
+        return self.combat_stats[attribute_name]
+
+    def get_boosted_stats(self, attribute_name: str) -> int:
+        combat_stats = self.get_base_stats(attribute_name)
+
+        return self.__boost_value(combat_stats)
 
     @property
     def value(self) -> int:
-        self.check_throw()
+        self.throw(rethrow=False)
         return self.__value
+
+    dice_value = value
 
     @property
     def base_multiplier(self) -> float:
         return self.__base_multiplier
 
     @property
-    def boosted_value(self) -> int:
-        '''Retorna o valor boostado.
-        '''
-
-        if self.__boosted_value is None:
-            raise ValueError(
-                'Valor não foi boostado, use o método boost_value.'
-            )
-
-        return self.__boosted_value
-
-    @property
-    def boosted_base_value(self) -> int:
-        '''Retorna o valor base boostado (Antes de ser boostado).
-        '''
-
-        if self.__boosted_base_value is None:
-            raise ValueError(
-                'Não há boosted_base_value, use o método boost_value.'
-            )
-
-        return self.__boosted_base_value
-
-    @property
     def is_critical(self) -> int:
-        self.check_throw()
+        self.throw(rethrow=False)
         return self.__value == self.__faces and self.__faces > 1
 
     @property
     def is_critical_fail(self) -> int:
-        self.check_throw()
+        self.throw(rethrow=False)
         return self.__value == 1 and self.__faces > 1
 
     @property
@@ -122,7 +112,7 @@ class Dice:
 
     @property
     def text(self) -> str:
-        self.check_throw()
+        self.throw(rethrow=False)
         text = f'🎲: {self.__value}'
         if self.is_critical:
             text += '(Crítico!)'
@@ -134,13 +124,76 @@ class Dice:
     def is_throwed(self) -> bool:
         return bool(self.__value)
 
+    @property
+    def base_stats(self) -> BaseStats:
+        return self.__base_stats
 
-if __name__ == '__main__':
-    dice = Dice()
-    dice.throw()
-    print(dice.value)
-    print(dice.text)
-    print(dice.throw())
-    print(dice.throw())
-    print(dice.throw(rethrow=True))
-    print(dice.boost_value(100))
+    @property
+    def combat_stats(self) -> CombatStats:
+        return self.__combat_stats
+
+    # BASE STATS
+    @property
+    def base_initiative(self) -> int:
+        return self.combat_stats.initiative
+
+    @property
+    def base_physical_attack(self) -> int:
+        return self.combat_stats.physical_attack
+
+    @property
+    def base_precision_attack(self) -> int:
+        return self.combat_stats.precision_attack
+
+    @property
+    def base_magical_attack(self) -> int:
+        return self.combat_stats.magical_attack
+
+    @property
+    def base_physical_defense(self) -> int:
+        return self.combat_stats.physical_defense
+
+    @property
+    def base_magical_defense(self) -> int:
+        return self.combat_stats.magical_defense
+
+    @property
+    def base_hit(self) -> int:
+        return self.combat_stats.hit
+
+    @property
+    def base_evasion(self) -> int:
+        return self.combat_stats.evasion
+
+    # BOOSTED STATS
+    @property
+    def boosted_initiative(self) -> int:
+        return self.__boost_value(self.base_initiative)
+
+    @property
+    def boosted_physical_attack(self) -> int:
+        return self.__boost_value(self.base_physical_attack)
+
+    @property
+    def boosted_precision_attack(self) -> int:
+        return self.__boost_value(self.base_precision_attack)
+
+    @property
+    def boosted_magical_attack(self) -> int:
+        return self.__boost_value(self.base_magical_attack)
+
+    @property
+    def boosted_physical_defense(self) -> int:
+        return self.__boost_value(self.base_physical_defense)
+
+    @property
+    def boosted_magical_defense(self) -> int:
+        return self.__boost_value(self.base_magical_defense)
+
+    @property
+    def boosted_hit(self) -> int:
+        return self.__boost_value(self.base_hit)
+
+    @property
+    def boosted_evasion(self) -> int:
+        return self.__boost_value(self.base_evasion)

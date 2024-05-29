@@ -283,8 +283,8 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
         action = context.chat_data['action']
         acao = ACTIONS[action]
         reaction = query.data
-        attacker_dice = Dice(20)
-        defender_dice = Dice(20)
+        attacker_dice = Dice(character=attacker_char, faces=20)
+        defender_dice = Dice(character=defender_char, faces=20)
         report = battle.action(
             attacker_char=attacker_char,
             defender=defender_char,

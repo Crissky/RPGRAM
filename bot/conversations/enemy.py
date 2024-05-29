@@ -790,8 +790,8 @@ async def enemy_attack(
 
     attack_report = enemy_char.to_attack(
         defender_char=defender_char,
-        attacker_dice=Dice(20),
-        defender_dice=Dice(20),
+        attacker_dice=None,
+        defender_dice=None,
         to_dodge=to_dodge,
         to_defend=True,
         rest_command=REST_COMMANDS[0],
@@ -877,8 +877,8 @@ async def player_attack(
 
     attack_report = attacker_char.to_attack(
         defender_char=enemy_char,
-        attacker_dice=Dice(20),
-        defender_dice=Dice(20),
+        attacker_dice=None,
+        defender_dice=None,
         to_dodge=to_dodge,
         to_defend=True,
         verbose=True,
@@ -921,8 +921,8 @@ async def player_attack(
         report_text += f'\n{section_head}\n>{enemy_speech}\n\n'
         counter_report = enemy_char.to_attack(
             defender_char=attacker_char,
-            attacker_dice=Dice(20),
-            defender_dice=Dice(10),
+            attacker_dice=None,
+            defender_dice=10,
             to_dodge=True,
             to_defend=True,
             verbose=True,

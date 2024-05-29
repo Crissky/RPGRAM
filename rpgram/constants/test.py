@@ -4,6 +4,7 @@ from rpgram.boosters.race import Race
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.conditions.heal import HealingCondition
 from rpgram.consumables.heal import HealingConsumable
+from rpgram.dice import Dice
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.enums.turn import TurnEnum
@@ -122,7 +123,6 @@ POTION = HealingConsumable(
     weight=0.1,
     condition=HealingCondition(
         name='Potion',
-        description='Cura 100 de HP em 5 turnos.',
         power=20,
         frequency=TurnEnum.START,
         turn=5,
@@ -137,3 +137,11 @@ if __name__ == '__main__':
     POTION(BASE_CHARACTER)
     BASE_CHARACTER.cs.hp = -600
     POTION(BASE_CHARACTER)
+
+    dice = Dice(character=BASE_CHARACTER, faces=20)
+    dice.throw()
+    print(dice.value)
+    print(dice.text)
+    print(dice.throw())
+    print(dice.throw())
+    print(dice.throw(rethrow=True))

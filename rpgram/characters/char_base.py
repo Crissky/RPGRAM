@@ -1,7 +1,7 @@
 from bson import ObjectId
 from datetime import datetime
 from random import choices, random, uniform
-from typing import List, Tuple, TypeVar
+from typing import List, Tuple, TypeVar, Union
 
 from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
@@ -90,26 +90,32 @@ class BaseCharacter:
         self.__updated_at = updated_at
 
     # BATTLE FUNCTIONS
-    def get_action_attack_value(self, action_name) -> int:
-        if action_name == 'physical_attack':
+    def get_attack_value(self, attack_name) -> int:
+        if attack_name == 'physical_attack':
             return self.cs.physical_attack
-        elif action_name == 'precision_attack':
+        elif attack_name == 'precision_attack':
             return self.cs.precision_attack
-        elif action_name == 'magical_attack':
+        elif attack_name == 'magical_attack':
             return self.cs.magical_attack
 
-    def get_action_defense(self, action_name) -> Tuple[int, str]:
-        if action_name == 'magical_attack':
-            defense_value = self.cs.magical_defense
-            defense_action = 'magical_defense'
-        else:
-            defense_value = self.cs.physical_defense
-            defense_action = 'physical_defense'
-        return defense_value, defense_action
+    def get_defense_value(self, defense_name) -> int:
+        if defense_name == 'physical_defense':
+            return self.cs.physical_defense
+        elif defense_name == 'magical_defense':
+            return self.cs.magical_defense
 
-    def weighted_choice_action_attack(self) -> str:
+    def get_defense_name(self, attack_name) -> str:
+        if attack_name == 'magical_attack':
+            defense_name = 'magical_defense'
+        elif attack_name in ['physical_attack', 'precision_attack']:
+            defense_name = 'physical_defense'
+        else:
+            raise KeyError(f'"{attack_name}" não é uma ação válida.')
+        return defense_name
+
+    def weighted_choice_attack_name(self) -> str:
         actions = {
-            action: self.get_action_attack_value(action)
+            action: self.get_attack_value(action)
             for action in self.actions
         }
         population = list(actions.keys())
@@ -117,9 +123,9 @@ class BaseCharacter:
 
         return choices(population, weights=weights)[0]
 
-    def get_best_action_attack(self):
+    def get_best_attack_name(self):
         actions = {
-            action: self.get_action_attack_value(action)
+            action: self.get_attack_value(action)
             for action in self.actions
         }
         action = max(actions, key=actions.get)
@@ -173,14 +179,11 @@ class BaseCharacter:
 
     def get_accuracy(
         self,
-        defender_char: TBaseCharacter,
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> float:
-        hit = self.cs.hit
-        evasion = defender_char.cs.evasion
-        attacker_dice.throw(rethrow=False)
-        defender_dice.throw(rethrow=False)
+        hit = attacker_dice.base_hit
+        evasion = defender_dice.base_evasion
 
         accuracy = hit / evasion
         accuracy = min(accuracy, 1.0)
@@ -200,7 +203,6 @@ class BaseCharacter:
         '''Testa se o inimigo esquivou do ataque, retornando True 
         caso tenha esquivado e False, caso contrário. '''
         accuracy = self.get_accuracy(
-            defender_char=defender_char,
             attacker_dice=attacker_dice,
             defender_dice=defender_dice,
         )
@@ -218,22 +220,24 @@ class BaseCharacter:
 
     def calculate_damage(
         self,
-        defense_value: int,
-        defender_dice: Dice,
+        attack_name: str,
+        defense_name: str,
         attacker_dice: Dice,
+        defender_dice: Dice,
     ) -> int:
         BLOCK_MULTIPLIER = 0.50
         MIN_DAMAGE_MULTIPLIER = 0.25
 
-        defense_value_boosted = defender_dice.boosted_value
-        attack_value_boosted = attacker_dice.boosted_value
+        base_defense_value = defender_dice.get_base_stats(defense_name)
+        boosted_defense_value = defender_dice.get_boosted_stats(defense_name)
+        boosted_attack_value = attacker_dice.get_boosted_stats(attack_name)
 
-        damage = attack_value_boosted - defense_value_boosted
-        min_damage = attack_value_boosted * MIN_DAMAGE_MULTIPLIER
+        damage = boosted_attack_value - boosted_defense_value
+        min_damage = boosted_attack_value * MIN_DAMAGE_MULTIPLIER
         min_damage = int(min_damage * uniform(0.90, 1.10))
-        block_value = int(defense_value * BLOCK_MULTIPLIER)
+        block_value = int(base_defense_value * BLOCK_MULTIPLIER)
         if all((
-            attack_value_boosted > block_value,
+            boosted_attack_value > block_value,
             not defender_dice.is_critical,
             not attacker_dice.is_critical_fail,
         )):
@@ -244,9 +248,9 @@ class BaseCharacter:
     def to_attack(
         self,
         defender_char: TBaseCharacter,
-        attacker_dice: Dice = Dice(20),
-        defender_dice: Dice = Dice(20),
-        attacker_action_name: str = None,
+        attacker_dice: Union[Dice, int] = None,
+        defender_dice: Union[Dice, int] = None,
+        attack_name: str = None,
         to_dodge: bool = False,
         to_defend: bool = True,
         rest_command: str = None,
@@ -257,11 +261,16 @@ class BaseCharacter:
         seja passado um attacker_action_name, será escolhido o atributo de 
         ataque mais poderoso.'''
 
+        if not isinstance(attacker_dice, Dice):
+            atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20
+            attacker_dice = Dice(character=self, faces=atk_faces)
+        if not isinstance(defender_dice, Dice):
+            def_faces = defender_dice if isinstance(defender_dice, int) else 20
+            defender_dice = Dice(character=defender_char, faces=def_faces)
+
         report = {'text': ''}
         damage = 0
         defender_player_name = defender_char.player_name
-        attacker_dice.throw(rethrow=False)
-        defender_dice.throw(rethrow=False)
 
         dodge_report = self.test_dodge(
             defender_char=defender_char,
@@ -269,22 +278,20 @@ class BaseCharacter:
             defender_dice=defender_dice,
         )
 
-        if not isinstance(attacker_action_name, str):
-            attacker_action_name = self.get_best_action_attack()
-        attack_value = self.get_action_attack_value(attacker_action_name)
-        attack_value_boosted = attacker_dice.boost_value(attack_value)
+        if not isinstance(attack_name, str):
+            attack_name = self.get_best_attack_name()
+        base_attack_value = attacker_dice.get_base_stats(attack_name)
+        boosted_attack_value = attacker_dice.get_boosted_stats(attack_name)
 
-        (
-            defense_value,
-            defense_action_name
-        ) = defender_char.get_action_defense(attacker_action_name)
-        defense_value_boosted = defender_dice.boost_value(defense_value)
+        defense_name = self.get_defense_name(attack_name)
+        base_defense_value = defender_dice.get_base_stats(defense_name)
+        boosted_defense_value = defender_dice.get_boosted_stats(defense_name)
 
         # Formating
-        attacker_action_name = attacker_action_name.replace('_', ' ')
-        attacker_action_name = attacker_action_name.title()
-        defense_action_name = defense_action_name.replace('_', ' ')
-        defense_action_name = defense_action_name.title()
+        attack_name = attack_name.replace('_', ' ')
+        attack_name = attack_name.title()
+        defense_name = defense_name.replace('_', ' ')
+        defense_name = defense_name.title()
 
         # ---------- DODGE ---------- #
         if (is_miss := to_dodge and dodge_report['is_dodged']):
@@ -297,19 +304,20 @@ class BaseCharacter:
         # ----------- HIT ----------- #
         else:
             # Get Damage
-            damage = attack_value_boosted
+            damage = boosted_attack_value
             is_immobilized = defender_char.is_immobilized
             if is_immobilized:
                 immobilized_names = defender_char.status.immobilized_names()
             if to_defend and not is_immobilized:
                 damage = self.calculate_damage(
-                    defense_value=defense_value,
-                    defender_dice=defender_dice,
+                    attack_name=attack_name,
+                    defense_name=defense_name,
                     attacker_dice=attacker_dice,
+                    defender_dice=defender_dice,
                 )
             damage = max(damage, 0)
             total_damage = damage
-            damage_text_list = [f'*{attacker_action_name}*({damage})']
+            damage_text_list = [f'*{attack_name}*({damage})']
             condition_ratio_list = []
 
             # Get Special Damages
@@ -348,8 +356,8 @@ class BaseCharacter:
             # Put the Dice Paragraph of the report['text']
             if verbose:
                 report['text'] += (
-                    f'*{attacker_action_name}*: '
-                    f'{attack_value_boosted}({attack_value}), '
+                    f'*{attack_name}*: '
+                    f'{boosted_attack_value}({base_attack_value}), '
                     f'{attacker_dice.text}\n'
                 )
                 if is_immobilized:
@@ -360,8 +368,8 @@ class BaseCharacter:
                     )
                 else:
                     report['text'] += (
-                        f'*{defense_action_name}*: '
-                        f'{defense_value_boosted}({defense_value}), '
+                        f'*{defense_name}*: '
+                        f'{boosted_defense_value}({base_defense_value}), '
                         f'{defender_dice.text}\n'
                     )
 
@@ -408,24 +416,24 @@ class BaseCharacter:
             'attacker': self,
             'attacker_char': self,
             'attack': {
-                'action': attacker_action_name,
+                'action': attack_name,
                 'accuracy': (dodge_report['attacker_accuracy'] * 100),
                 'dice_value': attacker_dice.value,
                 'dice_text': attacker_dice.text,
                 'is_critical': attacker_dice.is_critical,
-                'atk': attack_value,
-                'boosted_atk': attack_value_boosted,
+                'atk': base_attack_value,
+                'boosted_atk': boosted_attack_value,
             },
             'defender': defender_char,
             'defender_char': defender_char,
             'defense': {
-                'action': defense_action_name,
+                'action': defense_name,
                 'dodge_score': (dodge_report['defender_dodge_score'] * 100),
                 'dice_value': defender_dice.value,
                 'dice_text': defender_dice.text,
                 'is_critical': defender_dice.is_critical,
-                'def': defense_value,
-                'boosted_def': defense_value_boosted,
+                'def': base_defense_value,
+                'boosted_def': boosted_defense_value,
                 'damage': (damage * -1),
                 'is_miss': is_miss
             },
@@ -708,4 +716,4 @@ if __name__ == '__main__':
     base_character.combat_stats.hit_points = 50
     print(base_character)
     print(base_character.to_dict())
-    print(base_character.weighted_choice_action_attack())
+    print(base_character.weighted_choice_attack_name())

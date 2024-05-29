@@ -649,6 +649,32 @@ class CombatStats:
             f'{TEXT_DELIMITER}\n'
         )
 
+    def __getitem__(self, item: str) -> int:
+        item = item.lower()
+        if item in ['initiative']:
+            return self.initiative
+        elif item in ['physical_attack', 'physical attack']:
+            return self.physical_attack
+        elif item in ['precision_attack', 'precision attack']:
+            return self.precision_attack
+        elif item in ['magical_attack', 'magical attack']:
+            return self.magical_attack
+        elif item in ['physical_defense', 'physical defense']:
+            return self.physical_defense
+        elif item in ['magical_defense', 'magical defense']:
+            return self.magical_defense
+        elif item in ['hit']:
+            return self.hit
+        elif item in ['evasion']:
+            return self.evasion
+        else:
+            raise KeyError(
+                f'Atributo "{item}" não encontrado.\n'
+                f'Atributos disponíveis: initiative, physical_attack, '
+                f'precision_attack, magical_attack, physical_defense, '
+                f'magical_defense, hit, evasion.'
+            )
+
 
 if __name__ == '__main__':
     base_stats = BaseStats(10)
