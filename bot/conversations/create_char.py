@@ -33,6 +33,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos
+from bot.functions.chat import edit_message_text
 from bot.functions.general import get_attribute_group_or_player
 
 from constant.time import TEN_MINUTES_IN_SECONDS
@@ -126,13 +127,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     race_model = RaceModel()
     query = update.callback_query
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     inline_keyboard = [
         [InlineKeyboardButton(race, callback_data=race)]
         for race in race_model.get_all(query={'enemy': False}, fields=['name'])
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    await query.edit_message_text(
-        'Escolha uma das raças abaixo:',
+    new_text = 'Escolha uma das raças abaixo:'
+    await edit_message_text(
+        function_caller='CREATE_CHAR.START()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
         reply_markup=reply_markup,
     )
 
@@ -147,6 +157,8 @@ async def confirm_race(
 ) -> int:
     race_model = RaceModel()
     query = update.callback_query
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     race_name = query.data
     context.user_data['race'] = race_name
     description = ''
@@ -161,11 +173,20 @@ async def confirm_race(
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    await query.edit_message_text(
+    new_text = (
         f'Gostaria de criar um personagem com a raça "{race_name}"?\n\n'
         f'Descrição da Raça:\n'
         f'{description}\n'
-        f'{race}',
+        f'{race}'
+    )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.CONFIRM_RACE()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
         reply_markup=reply_markup,
     )
 
@@ -180,6 +201,8 @@ async def select_classe(
 ) -> int:
     classe_model = ClasseModel()
     query = update.callback_query
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     race_name = context.user_data['race']
 
     inline_keyboard = [
@@ -187,9 +210,18 @@ async def select_classe(
         for classe in classe_model.get_all(fields=['name'])
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    await query.edit_message_text(
+    new_text = (
         f'Ótimo!!! O seu personagem será um "{race_name}".\n\n'
-        f'Agora escolha uma das classes abaixo:',
+        f'Agora escolha uma das classes abaixo:'
+    )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.SELECT_CLASSE()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
         reply_markup=reply_markup,
     )
 
@@ -204,6 +236,8 @@ async def confirm_classe(
 ) -> int:
     classe_model = ClasseModel()
     query = update.callback_query
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     classe_name = query.data
     context.user_data['classe'] = classe_name
     description = ''
@@ -218,11 +252,20 @@ async def confirm_classe(
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    await query.edit_message_text(
+    new_text = (
         f'Gostaria de criar um personagem da classe "{classe_name}"?\n\n'
         f'Descrição da Raça:\n'
         f'{description}\n'
-        f'{classe}',
+        f'{classe}'
+    )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.CONFIRM_CLASSE()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
         reply_markup=reply_markup,
     )
 
@@ -236,13 +279,24 @@ async def select_name(
     context: ContextTypes.DEFAULT_TYPE
 ) -> int:
     query = update.callback_query
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     classe_name = context.user_data['classe']
 
-    await query.edit_message_text(
+    new_text = (
         f'Ótimo!!! O seu personagem será um "{classe_name}".\n\n'
         f'Agora escreva o nome do seu personagem.\n'
         f'O nome de personagem deve conter entre 3 e 50 caracteres, '
         f'apenas letras, números, espaços, e traço "-".'
+    )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.SELECT_NAME()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
     )
 
     return CREATE_CHAR_ROUTES
@@ -334,17 +388,28 @@ async def create_char(
 @print_basic_infos
 async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     char_model = CharacterModel()
+    chat_id = update.effective_chat.id
     player_id = update.effective_user.id
+    message_id = update.effective_message.id
     query = update.callback_query
 
     if (char_model.delete(player_id)):
-        await query.edit_message_text('Personagem deletado com sucesso!')
+        new_text = ('Personagem deletado com sucesso!')
     else:
-        await query.edit_message_text(
+        new_text = (
             'Algo deu errado ao deletar o personagem. '
             'Tente novamente mais tarde.\n\n'
             'Se o problema persistir, contacte o meu desenvolvedor.'
         )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.DELETE()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
+    )
 
     clean_user_data(context)
 

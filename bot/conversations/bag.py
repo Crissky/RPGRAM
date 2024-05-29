@@ -118,6 +118,7 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
+    edit_message_text,
     send_alert_or_message,
     send_private_message
 )
@@ -187,6 +188,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.id
     user_name = update.effective_user.name
     query = update.callback_query
     args = context.args
@@ -314,10 +316,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             allow_sending_without_reply=True
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='BAG.START()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
 
     return CHECK_ROUTES
@@ -327,6 +334,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Edita a mensagem com as informações do item escolhido.
     '''
+    message_id = update.effective_message.id
     query = update.callback_query
 
     try:
@@ -496,10 +504,15 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Edita mensagem com as informações do item escolhido
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if user_id == chat_id:
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='CHECK_ITEM()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.effective_chat.send_message(
@@ -579,6 +592,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             page=page,
             item_pos=item_pos,
             query=query,
+            context=context,
             old_reply_markup=old_reply_markup,
         )
         if not isinstance(old_equipments, list):
@@ -596,6 +610,7 @@ async def use_item_equipment(
     page: int,
     item_pos: int,
     query: CallbackQuery,
+    context: ContextTypes.DEFAULT_TYPE,
     old_reply_markup: InlineKeyboardMarkup
 ) -> List[Equipment]:
     '''Tenta equipar o item.
@@ -603,6 +618,8 @@ async def use_item_equipment(
 
     bag_model = BagModel()
     equipment = item.item
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     old_equipments = None
     try:
         old_equipments = character.equips.equip(equipment, hand)
@@ -646,10 +663,15 @@ async def use_item_equipment(
         navigation_item_buttons,
         back_button
     ])
-    await query.edit_message_text(
-        text=markdown_player_sheet,
+    await edit_message_text(
+        function_caller='USE_ITEM_EQUIPMENT()',
+        new_text=markdown_player_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     return old_equipments
@@ -670,6 +692,8 @@ async def use_item_consumable(
     '''
 
     bag_model = BagModel()
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     name = item.name
     use_quantity = min(item.quantity, use_quantity)
     all_report_text = [f'Reporting({use_quantity:02}):']
@@ -765,10 +789,15 @@ async def use_item_consumable(
                 back_button
             ])
         markdown_text = escape_basic_markdown_v2(markdown_text)
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='USE_ITEM_CONSUMABLE()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
 
         if user_id != target_id:
@@ -796,6 +825,8 @@ async def identify_item(
     '''identifica um equipamento.
     '''
 
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -848,10 +879,15 @@ async def identify_item(
         IDENTIFY_BUTTON_TEXT
     )
     markdown_text = escape_basic_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
+    await edit_message_text(
+        function_caller='IDENTIFY_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     return USE_ROUTES
@@ -869,6 +905,8 @@ async def sell_item(
     '''Vende o item do jogador.
     '''
 
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -1002,10 +1040,15 @@ async def sell_item(
         show_quantity=True
     )
     markdown_text = escape_for_citation_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
+    await edit_message_text(
+        function_caller='SELL_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2,
     )
 
     if item.quantity <= 0:
@@ -1024,6 +1067,7 @@ async def drop_item(
 ) -> None:
     '''drop o item do jogador.
     '''
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -1074,10 +1118,15 @@ async def drop_item(
     ])
     markdown_text = f'Você dropou o item "{drop}x {item.name}".'
     markdown_text = escape_basic_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
+    await edit_message_text(
+        function_caller='DROP_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     # Envia mensagem de drop do item, se ele foi dropado no grupo
@@ -1304,6 +1353,8 @@ async def sort_items(
 ) -> None:
     '''Ordena os itens da bolsa
     '''
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -1352,10 +1403,17 @@ async def sort_items(
         retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
-    await query.edit_message_text(
-        text='Itens ordenados com sucesso!',
-        reply_markup=reply_markup,
-    )
+    new_text = 'Itens ordenados com sucesso!'
+    await edit_message_text(
+            function_caller='SORT_ITEMS()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+            reply_markup=reply_markup,
+        )
 
     return START_ROUTES
 

@@ -52,6 +52,7 @@ from bot.functions.chat import (
     answer,
     call_telegram_message_function,
     delete_message,
+    edit_message_text,
     edit_message_text_and_forward
 )
 from bot.functions.config import get_attribute_group
@@ -357,13 +358,23 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''
 
     query = update.callback_query
+    chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
     treasures = context.chat_data.get('treasures', {})
     treasures.pop(message_id, None)
 
     if query:
         text = choice(REPLY_TEXTS_IGNORE_TREASURE)
-        await query.edit_message_text(text=text)
+        await edit_message_text(
+            function_caller='ITEM.IGNORE_TREASURE()',
+            new_text=text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+        )
+
     return ConversationHandler.END
 
 

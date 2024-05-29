@@ -7,7 +7,7 @@ from telegram.ext import (
     ContextTypes,
     PrefixHandler,
 )
-from bot.functions.chat import get_close_button
+from bot.functions.chat import edit_message_text, get_close_button
 from bot.decorators.player import (
     alert_if_not_chat_owner_to_callback_data_to_dict
 )
@@ -27,6 +27,7 @@ from repository.mongo import ClasseModel
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     args = context.args
     query = update.callback_query
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -53,8 +54,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         classe_buttons + [[close_button]]
     )
     if query:
-        await query.edit_message_text(
-            text=text,
+        await edit_message_text(
+            function_caller='CLASSE.START()',
+            new_text=text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
             reply_markup=reply_markup,
         )
     else:

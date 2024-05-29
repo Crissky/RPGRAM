@@ -27,6 +27,7 @@ from bot.constants.filters import (
 )
 from bot.functions.chat import (
     answer,
+    edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button
 )
@@ -62,6 +63,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     args = context.args
     query = update.callback_query
     verbose = False
@@ -154,10 +156,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_STATS_END
         )
 
-        await query.edit_message_text(
-            text,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            reply_markup=reply_markup,
+        await edit_message_text(
+            function_caller='ADD_STATS.START()',
+            new_text=text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
+            reply_markup=reply_markup
         )
     else:
         text = create_text_in_box(

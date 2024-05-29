@@ -23,6 +23,7 @@ from bot.constants.equips import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
     answer,
+    edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button
 )
@@ -57,6 +58,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     item_model = ItemModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     query = update.callback_query
     args = context.args
     verbose = False
@@ -116,9 +118,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
 
             try:
-                await query.edit_message_text(
-                    markdown_equips_sheet,
-                    parse_mode=ParseMode.MARKDOWN_V2,
+                await edit_message_text(
+                    function_caller='EQUIPS.START()',
+                    new_text=markdown_equips_sheet,
+                    context=context,
+                    chat_id=chat_id,
+                    message_id=message_id,
+                    need_response=False,
+                    markdown=True,
                     reply_markup=reply_markup,
                 )
             except BadRequest as error:

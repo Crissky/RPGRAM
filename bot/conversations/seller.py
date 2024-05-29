@@ -63,7 +63,8 @@ from bot.functions.chat import (
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
-    delete_message
+    delete_message,
+    edit_message_text
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
@@ -128,6 +129,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.id
     user_name = update.effective_user.name
     query = update.callback_query
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -217,10 +219,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             allow_sending_without_reply=True
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='SELLER.START()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
 
     return CHECK_ROUTES
@@ -231,6 +238,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Edita a mensagem com as informações do item escolhido.
     '''
 
+    message_id = update.effective_message.id
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
@@ -298,10 +306,15 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_SHOP_END,
     )
     if user_id == chat_id:
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='SELLER.CHECK_SELL_ITEM()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.effective_chat.send_message(
@@ -328,6 +341,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Compra item da loja.
     '''
 
+    message_id = update.effective_message.id
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
@@ -439,10 +453,15 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         section_end=SECTION_HEAD_SHOP_END,
     )
     if user_id == chat_id:
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='SELLER.BUY_ITEM()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.effective_chat.send_message(

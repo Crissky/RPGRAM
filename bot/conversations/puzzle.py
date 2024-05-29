@@ -254,6 +254,7 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
 async def switch_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('SWITCH_PUZZLE()')
     query = update.callback_query
+    chat_id = query.message.chat_id
     message_id = query.message.message_id
     grid = get_grid_from_dict(message_id, context)
     data = callback_data_to_dict(query.data)
@@ -261,7 +262,17 @@ async def switch_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     col = data['col']
 
     if grid is None:
-        await query.edit_message_text('Esse desafio não existe mais.')
+        new_text = 'Esse desafio não existe mais.'
+        await edit_message_text(
+            function_caller='PUZZLE.SWITCH_PUZZLE()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+        )
+
         return ConversationHandler.END
 
     is_good_move = grid.switch(row=row, col=col)

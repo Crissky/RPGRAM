@@ -484,6 +484,8 @@ async def delete_message(
     context: ContextTypes.DEFAULT_TYPE,
     query: CallbackQuery,
 ):
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     try:
         print('DELETE_MESSAGE() TRYING QUERY.DELETE_MESSAGE')
         await call_telegram_message_function(
@@ -496,8 +498,8 @@ async def delete_message(
         print('DELETE_MESSAGE() BADREQUEST EXCEPT')
         if 'Query is too old' in e.message:
             delete_message_kwargs = dict(
-                chat_id=query.message.chat_id,
-                message_id=query.message.message_id
+                chat_id=chat_id,
+                message_id=message_id
             )
             await call_telegram_message_function(
                 function_caller=function_caller,
