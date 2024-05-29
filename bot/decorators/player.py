@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.sign_up_player import COMMANDS
-from bot.functions.chat import callback_data_to_dict
+from bot.functions.chat import answer, callback_data_to_dict
 from repository.mongo import PlayerModel
 
 
@@ -59,7 +59,11 @@ def alert_if_not_chat_owner(
                 data_user_id = data['user_id']
                 if data_user_id != user_id and data_user_id is not None:
                     if isinstance(alert_text, str):
-                        await query.answer(text=alert_text, show_alert=True)
+                        await answer(
+                            query=query,
+                            text=alert_text,
+                            show_alert=True
+                        )
                     return retry_state
 
             return await callback(update, context)
@@ -87,7 +91,11 @@ def alert_if_not_chat_owner_to_callback_data_to_dict(
                 data_user_id = data['user_id']
                 if data_user_id != user_id and data_user_id is not None:
                     if isinstance(alert_text, str):
-                        await query.answer(text=alert_text, show_alert=True)
+                        await answer(
+                            query=query,
+                            text=alert_text,
+                            show_alert=True
+                        )
                     return retry_state
 
             return await callback(update, context)

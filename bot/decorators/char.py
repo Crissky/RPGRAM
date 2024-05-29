@@ -5,11 +5,13 @@ from bot.functions.char import (
     get_player_ids_from_group,
     save_char
 )
-from bot.functions.chat import get_close_keyboard, reply_text_and_forward
+from bot.functions.chat import (
+    answer,
+    reply_text_and_forward
+)
 from bot.functions.config import get_attribute_group
 from bot.functions.status import activated_condition
 from telegram import Update
-from telegram.constants import ParseMode
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.create_char import COMMANDS
@@ -22,7 +24,6 @@ from constant.text import (
 from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import CharacterModel
 from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
-from rpgram import Dice
 from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 
 CONFUSION_TEXT = [
@@ -220,7 +221,7 @@ def skip_if_dead_char(callback):
             )
 
             if query:
-                await query.answer(text=text, show_alert=True)
+                await answer(query=query, text=text, show_alert=True)
             else:
                 silent = get_attribute_group(chat_id, 'silent')
                 await update.effective_message.reply_text(
@@ -260,7 +261,7 @@ def skip_if_dead_char_silent(callback):
             )
 
             if query:
-                await query.answer(text=text, show_alert=True)
+                await answer(query=query, text=text, show_alert=True)
 
             return ConversationHandler.END
     return wrapper
@@ -296,7 +297,7 @@ def skip_if_immobilized(callback):
             ]
             text += ', '.join(conditions_names)
             if query:
-                await query.answer(text=text, show_alert=True)
+                await answer(query=query, text=text, show_alert=True)
             else:
                 await update.effective_message.reply_text(
                     text,

@@ -22,6 +22,7 @@ from bot.constants.view_char import (
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
+    edit_message_text,
     get_close_keyboard,
     get_random_refresh_text,
     get_refresh_close_keyboard
@@ -40,8 +41,9 @@ from repository.mongo import CharacterModel
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_chat_action(ChatAction.TYPING)
     char_model = CharacterModel()
-    user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     args = context.args
@@ -107,10 +109,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_end=SECTION_HEAD_CHAR_END
             )
 
-            await query.edit_message_text(
-                markdown_player_sheet,
-                parse_mode=ParseMode.MARKDOWN_V2,
-                reply_markup=reply_markup
+            await edit_message_text(
+                function_caller='VIEW_CHAR.START()',
+                new_text=markdown_player_sheet,
+                context=context,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=True,
+                reply_markup=reply_markup,
             )
         else:
             markdown_player_sheet = create_text_in_box(

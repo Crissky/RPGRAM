@@ -63,7 +63,8 @@ from bot.functions.chat import (
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
-    delete_message
+    delete_message,
+    edit_message_text
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
@@ -128,6 +129,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.id
     user_name = update.effective_user.name
     query = update.callback_query
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -142,7 +144,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
+            await answer(query=query, text=ACCESS_DENIED, show_alert=True)
             return retry_state
 
     skip_slice = ITEMS_PER_PAGE * page
@@ -217,10 +219,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             allow_sending_without_reply=True
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='SELLER.START()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
 
     return CHECK_ROUTES
@@ -231,6 +238,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Edita a mensagem com as informações do item escolhido.
     '''
 
+    message_id = update.effective_message.id
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
@@ -250,7 +258,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data_user_id = data['user_id']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
@@ -298,10 +306,15 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_SHOP_END,
     )
     if user_id == chat_id:
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='SELLER.CHECK_SELL_ITEM()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.effective_chat.send_message(
@@ -328,6 +341,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Compra item da loja.
     '''
 
+    message_id = update.effective_message.id
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
@@ -351,7 +365,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     buy_quantity = data['buy']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return BUY_ROUTES
 
@@ -361,7 +375,8 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     item = get_item_from_bag_by_position(chat_id, page, item_pos)
 
     if item_id != str(item._id):
-        query.answer(text='O item não está mais disponível', show_alert=True)
+        query_text = 'O item não está mais disponível'
+        answer(query=query, text=query_text, show_alert=True)
         back_button = get_sell_back_button(
             page=page,
             user_id=user_id,
@@ -380,7 +395,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     markdown_text = ''
 
     if total_price > trocado:
-        query.answer(text=NOT_ENOUGH_MONEY, show_alert=True)
+        answer(query=query, text=NOT_ENOUGH_MONEY, show_alert=True)
     elif trocado >= total_price:
         bag_model.sub(item, chat_id, buy_quantity)
         bag_model.add(item, user_id, buy_quantity)
@@ -438,10 +453,15 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         section_end=SECTION_HEAD_SHOP_END,
     )
     if user_id == chat_id:
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='SELLER.BUY_ITEM()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.effective_chat.send_message(
@@ -474,7 +494,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
+            await answer(query=query, text=ACCESS_DENIED, show_alert=True)
             return CHECK_ROUTES
 
         await answer(query=query, text='Deixando Loja...')

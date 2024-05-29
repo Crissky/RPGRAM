@@ -20,6 +20,7 @@ from bot.constants.view_player import (
 )
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
+    edit_message_text,
     get_random_refresh_text,
     get_refresh_close_keyboard
 )
@@ -37,6 +38,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player_model = PlayerModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
 
@@ -69,8 +71,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_end=SECTION_HEAD_PLAYER_END,
                 clean_func=None
             )
-            await query.edit_message_text(
-                text,
+            await edit_message_text(
+                function_caller='VIEW_PLAYER.START()',
+                new_text=text,
+                context=context,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=False,
                 reply_markup=reply_markup,
             )
         else:

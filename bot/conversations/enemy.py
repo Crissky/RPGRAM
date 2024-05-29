@@ -493,16 +493,17 @@ async def defend_enemy_attack(
             chat_id=chat_id,
             user_id=defender_user_id,
         )
-        await query.answer(
+        query_text = (
             'Você não possui PONTO(S) DE AÇÃO suficiente(s) '
-            'para realizar essa AÇÃO!',
-            show_alert=True
+            'para realizar essa AÇÃO!'
         )
+        await answer(query=query, text=query_text, show_alert=True)
 
         return ConversationHandler.END
 
     if not enemy_char:
-        await query.answer('Essa emboscada já terminou', show_alert=True)
+        query_text = 'Essa emboscada já terminou'
+        await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='DEFEND_ENEMY_ATTACK()',
             context=context,
@@ -512,19 +513,17 @@ async def defend_enemy_attack(
         return ConversationHandler.END
 
     if defender_user_id == target_user_id:
-        await query.answer(
-            'Você não pode defender a si mesmo.',
-            show_alert=True
-        )
+        query_text = 'Você não pode defender a si mesmo.'
+        await answer(query=query, text=query_text, show_alert=True)
 
         return ConversationHandler.END
 
     if already_attacked:
-        await query.answer(
+        query_text = (
             'Você não pode defender este ataque, '
-            'pois já atacou este INIMIGO!!!',
-            show_alert=True
+            'pois já atacou este INIMIGO!!!'
         )
+        await answer(query=query, text=query_text, show_alert=True)
 
         return ConversationHandler.END
 
@@ -626,16 +625,17 @@ async def player_attack_enemy(
             chat_id=chat_id,
             user_id=attacker_user_id,
         )
-        await query.answer(
+        query_text = (
             'Você não possui PONTO(S) DE AÇÃO suficiente(s) '
-            'para realizar essa AÇÃO!',
-            show_alert=True
+            'para realizar essa AÇÃO!'
         )
+        await answer(query=query, text=query_text, show_alert=True)
 
         return ConversationHandler.END
 
     if not enemy_char:
-        await query.answer('Essa emboscada já terminou', show_alert=True)
+        query_text = 'Essa emboscada já terminou'
+        await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='PLAYER_ATTACK_ENEMY()',
             context=context,
@@ -645,10 +645,8 @@ async def player_attack_enemy(
         return ConversationHandler.END
 
     if attacker_user_id == target_user_id and not enemy_char.is_any_boss:
-        await query.answer(
-            'Você não tem a habilidade de contra atacar.',
-            show_alert=True
-        )
+        query_text = 'Você não tem a habilidade de contra atacar.'
+        await answer(query=query, text=query_text, show_alert=True)
 
         return ConversationHandler.END
 
@@ -746,7 +744,8 @@ async def check_enemy_attributes(
     text = f'enemy_char: {enemy_char}'
 
     if not enemy_char:
-        await query.answer('Essa emboscada já terminou', show_alert=True)
+        query_text = 'Essa emboscada já terminou'
+        await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='CHECK_ENEMY_ATTRIBUTES()',
             context=context,
@@ -760,7 +759,7 @@ async def check_enemy_attributes(
     elif attr_name == CALLBACK_TEXT_COMBAT_ATTRIBUTES:
         text = enemy_char.combat_stats.alert_sheet()
 
-    await query.answer(text, show_alert=True)
+    await answer(query=query, text=text, show_alert=True)
 
 
 async def enemy_attack(

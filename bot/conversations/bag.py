@@ -118,6 +118,7 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
+    edit_message_text,
     send_alert_or_message,
     send_private_message
 )
@@ -187,6 +188,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.id
     user_name = update.effective_user.name
     query = update.callback_query
     args = context.args
@@ -222,7 +224,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
+            await answer(query=query, text=ACCESS_DENIED, show_alert=True)
             return retry_state
 
     target_name = get_player_name(target_id)
@@ -314,10 +316,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             allow_sending_without_reply=True
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='BAG.START()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
 
     return CHECK_ROUTES
@@ -327,6 +334,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Edita a mensagem com as informações do item escolhido.
     '''
+    message_id = update.effective_message.id
     query = update.callback_query
 
     try:
@@ -347,7 +355,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     equip_info = data.get('equip_info')
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
@@ -496,10 +504,15 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Edita mensagem com as informações do item escolhido
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if user_id == chat_id:
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='CHECK_ITEM()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.effective_chat.send_message(
@@ -544,7 +557,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     hand = data.get('hand')
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
@@ -579,6 +592,7 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             page=page,
             item_pos=item_pos,
             query=query,
+            context=context,
             old_reply_markup=old_reply_markup,
         )
         if not isinstance(old_equipments, list):
@@ -596,6 +610,7 @@ async def use_item_equipment(
     page: int,
     item_pos: int,
     query: CallbackQuery,
+    context: ContextTypes.DEFAULT_TYPE,
     old_reply_markup: InlineKeyboardMarkup
 ) -> List[Equipment]:
     '''Tenta equipar o item.
@@ -603,13 +618,15 @@ async def use_item_equipment(
 
     bag_model = BagModel()
     equipment = item.item
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     old_equipments = None
     try:
         old_equipments = character.equips.equip(equipment, hand)
         await answer(query=query, text=f'Você equipou "{equipment.name}".')
     except Exception as error:
         print(error)
-        await query.answer(text=f'{error}', show_alert=True)
+        await answer(query=query, text=f'{error}', show_alert=True)
         await query.edit_message_reply_markup(
             reply_markup=old_reply_markup
         )
@@ -646,10 +663,15 @@ async def use_item_equipment(
         navigation_item_buttons,
         back_button
     ])
-    await query.edit_message_text(
-        text=markdown_player_sheet,
+    await edit_message_text(
+        function_caller='USE_ITEM_EQUIPMENT()',
+        new_text=markdown_player_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     return old_equipments
@@ -670,6 +692,8 @@ async def use_item_consumable(
     '''
 
     bag_model = BagModel()
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
     name = item.name
     use_quantity = min(item.quantity, use_quantity)
     all_report_text = [f'Reporting({use_quantity:02}):']
@@ -686,10 +710,8 @@ async def use_item_consumable(
         await answer(query=query, text=text)
     except Exception as error:
         print(error)
-        await query.answer(
-            text=f'Item "{name}" não pode ser usado.\n\n{error}',
-            show_alert=True
-        )
+        query_text = f'Item "{name}" não pode ser usado.\n\n{error}'
+        await answer(query=query, text=query_text, show_alert=True)
     finally:
         all_report_text = '\n'.join(all_report_text)
         markdown_text = get_trocado_and_target_text(
@@ -767,10 +789,15 @@ async def use_item_consumable(
                 back_button
             ])
         markdown_text = escape_basic_markdown_v2(markdown_text)
-        await query.edit_message_text(
-            text=markdown_text,
+        await edit_message_text(
+            function_caller='USE_ITEM_CONSUMABLE()',
+            new_text=markdown_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
             reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2
         )
 
         if user_id != target_id:
@@ -798,6 +825,8 @@ async def identify_item(
     '''identifica um equipamento.
     '''
 
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -818,7 +847,7 @@ async def identify_item(
     use_quantity = data['identify']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
@@ -826,7 +855,7 @@ async def identify_item(
     equipment = item_equipment.item
     if not equipment.identifiable:
         text = '⛔ESSE EQUIPAMENTO NÃO PODE SER IDENTIFICADO⛔'
-        await query.answer(text=text, show_alert=True)
+        await answer(query=query, text=text, show_alert=True)
     elif have_identifying_lens(user_id):
         consumable_identifier = get_identifying_lens()
         report = consumable_identifier.use(equipment)
@@ -838,10 +867,10 @@ async def identify_item(
             f'{report_text}\n\n'
             f'Você usou {use_quantity} "{name}".\n'
         )
-        await query.answer(text=text, show_alert=True)
+        await answer(query=query, text=text, show_alert=True)
     else:
         text = '⛔VOCÊ NÃO TEM UM ITEM DE IDENTIFICAÇÃO⛔'
-        await query.answer(text=text, show_alert=True)
+        await answer(query=query, text=text, show_alert=True)
 
     equips = equips_model.get(user_id)
     markdown_text = equips.compare(equipment)
@@ -850,10 +879,15 @@ async def identify_item(
         IDENTIFY_BUTTON_TEXT
     )
     markdown_text = escape_basic_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
+    await edit_message_text(
+        function_caller='IDENTIFY_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     return USE_ROUTES
@@ -871,6 +905,8 @@ async def sell_item(
     '''Vende o item do jogador.
     '''
 
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -891,7 +927,7 @@ async def sell_item(
     sell_quantity = data['sell']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
@@ -1004,10 +1040,15 @@ async def sell_item(
         show_quantity=True
     )
     markdown_text = escape_for_citation_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
+    await edit_message_text(
+        function_caller='SELL_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2,
     )
 
     if item.quantity <= 0:
@@ -1026,6 +1067,7 @@ async def drop_item(
 ) -> None:
     '''drop o item do jogador.
     '''
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -1048,7 +1090,7 @@ async def drop_item(
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return USE_ROUTES
 
@@ -1076,10 +1118,15 @@ async def drop_item(
     ])
     markdown_text = f'Você dropou o item "{drop}x {item.name}".'
     markdown_text = escape_basic_markdown_v2(markdown_text)
-    await query.edit_message_text(
-        text=markdown_text,
+    await edit_message_text(
+        function_caller='DROP_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
         reply_markup=reply_markup,
-        parse_mode=ParseMode.MARKDOWN_V2
     )
 
     # Envia mensagem de drop do item, se ele foi dropado no grupo
@@ -1116,7 +1163,8 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         drops = context.chat_data['drops']
         if drops.get(message_id, None) is not True:
             drops.pop(message_id, None)
-            await query.answer(f'Este item não existe mais.', show_alert=True)
+            query_text = f'Este item não existe mais.'
+            await answer(query=query, text=query_text, show_alert=True)
             await delete_message(
                 function_caller='GET_DROP()',
                 context=context,
@@ -1126,7 +1174,8 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             return ConversationHandler.END
     else:
         create_and_put_drop_dict(context=context)
-        await query.answer(f'Este item não existe mais.', show_alert=True)
+        query_text = f'Este item não existe mais.'
+        await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='GET_DROP()',
             context=context,
@@ -1149,12 +1198,13 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     drop = data['drop']
 
     if is_full_bag(user_id) and not exists_in_bag(user_id, item_id=item_id):
-        await query.answer(
+        query_text = (
             f'Você não pode pegar mais itens, pois sua bolsa está cheia. '
             f'A bolsa não pode ter mais de {LIMIT_ITEM_IN_BAG} '
-            f'tipos de itens diferentes.',
-            show_alert=True
+            f'tipos de itens diferentes.'
         )
+        await answer(query=query, text=query_text, show_alert=True)
+
         return ConversationHandler.END
 
     item = item_model.get(item_id)
@@ -1163,19 +1213,15 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         bag_model.add(item, user_id)
         drops.pop(message_id, None)
 
-        await query.answer(
-            f'Você pegou "{drop}x {item.name}".',
-            show_alert=True
-        )
+        query_text = f'Você pegou "{drop}x {item.name}".'
+        await answer(query=query, text=query_text, show_alert=True)
     else:
         drops.pop(message_id, None)
         print(
             f'get_drop() - Item não existe mais: _id: {item_id} item: {item}.'
         )
-        await query.answer(
-            f'Este item não existe mais.',
-            show_alert=True
-        )
+        query_text = f'Este item não existe mais.'
+        await answer(query=query, text=query_text, show_alert=True)
 
     await delete_message(
         function_caller='GET_DROP()',
@@ -1279,7 +1325,7 @@ async def choice_sort_items(
     target_id = data['target_id']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
@@ -1307,6 +1353,8 @@ async def sort_items(
 ) -> None:
     '''Ordena os itens da bolsa
     '''
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     query = update.callback_query
 
     try:
@@ -1325,11 +1373,11 @@ async def sort_items(
     sort = data['sort']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
-        await query.answer(text=ACCESS_DENIED, show_alert=True)
+        await answer(query=query, text=ACCESS_DENIED, show_alert=True)
         await query.edit_message_reply_markup(reply_markup=old_reply_markup)
         return CHECK_ROUTES
 
-    await query.answer(text='Ordenando itens...')
+    await answer(query=query, text='Ordenando itens...')
 
     player_bag = bag_model.get(query={'player_id': user_id})
 
@@ -1355,10 +1403,17 @@ async def sort_items(
         retry_state=START_ROUTES
     )
     reply_markup = InlineKeyboardMarkup([back_button])
-    await query.edit_message_text(
-        text='Itens ordenados com sucesso!',
-        reply_markup=reply_markup,
-    )
+    new_text = 'Itens ordenados com sucesso!'
+    await edit_message_text(
+            function_caller='SORT_ITEMS()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+            reply_markup=reply_markup,
+        )
 
     return START_ROUTES
 
@@ -1376,7 +1431,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:
-            await query.answer(text=ACCESS_DENIED, show_alert=True)
+            await answer(query=query, text=ACCESS_DENIED, show_alert=True)
             return CHECK_ROUTES
 
         await answer(query=query, text='Fechando Bolsa...')

@@ -35,7 +35,7 @@ from bot.constants.battle import (
     REACTIONS_LABELS,
     TEAMS,
 )
-from bot.functions.chat import answer
+from bot.functions.chat import answer, edit_message_text
 from rpgram.enums import EmojiEnum
 from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
@@ -123,6 +123,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
     character = character_model.get(user_id)
     character_id = character._id
@@ -136,11 +137,11 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == CALLBACK_START_BATTLE:
         if not battle.in_battle(character):
-            await query.answer(
+            query_text = (
                 'Você não pode iniciar a batalha, '
-                'pois seu personagem não está participando dela.',
-                show_alert=True
+                'pois seu personagem não está participando dela.'
             )
+            await answer(query=query, text=query_text, show_alert=True)
             return ENTER_BATTLE_ROUTES
         user_name = battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
@@ -148,15 +149,25 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             battle.start_battle()
             battle_model.save(battle)
             await answer(query=query, text='A BATALHA COMEÇOU!!!')
-            await query.edit_message_text(
+            new_text = (
                 f'A batalha começou!\n'
                 f'{user_name}, escolha sua ação.\n\n'
-                f'{battle.get_sheet()}\n',
-                reply_markup=reply_markup
+                f'{battle.get_sheet()}\n'
             )
+            await edit_message_text(
+                function_caller='BATTLE.ENTER_BATTLE()',
+                new_text=new_text,
+                context=context,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=False,
+                reply_markup=reply_markup,
+            )
+
             return SELECT_ACTION_ROUTES
         except EmptyTeamError as error:
-            await query.answer(f'{error}', show_alert=True)
+            await answer(query=query, text=f'{error}', show_alert=True)
             return ENTER_BATTLE_ROUTES
 
     if not other_battle and character.is_alive:
@@ -174,23 +185,27 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup = get_enter_battle_inline_keyboard()
         query_text = f'Seu personagem entrou no Time {time}! {resting_status}'
         await answer(query=query, text=query_text)
-        await query.edit_message_text(
-            battle.get_teams_sheet(),
+        await edit_message_text(
+            function_caller='BATTLE.ENTER_BATTLE()',
+            new_text=battle.get_teams_sheet(),
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
             reply_markup=reply_markup,
         )
     elif character.is_dead:
-        await query.answer(
-            'Seu personagem não pode entrar em batalha com 0 de HP.',
-            show_alert=True
-        )
+        query_text = 'Seu personagem não pode entrar em batalha com 0 de HP.'
+        await answer(query=query, text=query_text, show_alert=True)
     elif other_battle:
         group_model = GroupModel()
         chat_id = other_battle.chat_id
         group = group_model.get(chat_id)
-        await query.answer(
-            f'Seu personagem já em uma batalha no grupo "{group.name}"!',
-            show_alert=True
+        query_text = (
+            f'Seu personagem já em uma batalha no grupo "{group.name}"!'
         )
+        await answer(query=query, text=query_text, show_alert=True)
 
 
 # SELECT_ACTION_ROUTES
@@ -199,7 +214,9 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
+    chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
     battle = battle_model.get(battle_id)
     character = character_model.get(user_id)
@@ -219,14 +236,25 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         query_text = f'Você selecionou: "{ACTIONS[action]}"'
         await answer(query=query, text=query_text)
-        await query.edit_message_text(
+        new_text = (
             f'{user_name}, selecione o alvo para "{ACTIONS[action]}".\n\n'
-            f'{battle.get_sheet()}\n',
-            reply_markup=reply_markup
+            f'{battle.get_sheet()}\n'
         )
+        await edit_message_text(
+            function_caller='BATTLE.SELECT_ACTION()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+            reply_markup=reply_markup,
+        )
+
         return SELECT_TARGET_ROUTES
     else:
-        await query.answer('Ainda não é o seu turno!!', show_alert=True)
+        query_text = 'Ainda não é o seu turno!!'
+        await answer(query=query, text=query_text, show_alert=True)
         return SELECT_ACTION_ROUTES
 
 
@@ -236,7 +264,9 @@ async def select_defender(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     character_model = CharacterModel()
     query = update.callback_query
+    chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
     battle = battle_model.get(battle_id)
     character = character_model.get(user_id)
@@ -251,16 +281,27 @@ async def select_defender(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup = get_reaction_inline_keyboard()
         query_text = f'Você selecionou: "{defender.name}"'
         await answer(query=query, text=query_text)
-        await query.edit_message_text(
+        new_text = (
             f'{defender.name} ({defender_user_name}), '
             f'seu personagem foi alvo de "{ACTIONS[action]}".\n'
             f'Selecione sua reação.\n\n'
-            f'{battle.get_sheet()}\n',
+            f'{battle.get_sheet()}\n'
+        )
+        await edit_message_text(
+            function_caller='BATTLE.SELECT_DEFENDER()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
             reply_markup=reply_markup,
         )
+
         return SELECT_REACTION_ROUTES
     else:
-        await query.answer('Ainda não é o seu turno!!', show_alert=True)
+        query_text = 'Ainda não é o seu turno!!'
+        await answer(query=query, text=query_text, show_alert=True)
         return SELECT_TARGET_ROUTES
 
 
@@ -271,6 +312,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
     character_model = CharacterModel()
     query = update.callback_query
     user_id = update.effective_user.id
+    message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
     battle = battle_model.get(battle_id)
     character = character_model.get(user_id)
@@ -398,17 +440,25 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 if isinstance(char, PlayerCharacter):
                     character_model.save(char)
 
-        await query.edit_message_text(
+        new_text = (
             f'{text}\n'
-            f'{battle.get_sheet()}\n',
+            f'{battle.get_sheet()}\n'
+        )
+        await edit_message_text(
+            function_caller='BATTLE.SELECT_REACTION()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
             reply_markup=reply_markup,
         )
 
         return callback
     else:
-        await query.answer(
-            'Seu personagem não é alvo do ataque!', show_alert=True
-        )
+        query_text = 'Seu personagem não é alvo do ataque!'
+        await answer(query=query, text=query_text, show_alert=True)
         return SELECT_REACTION_ROUTES
 
 

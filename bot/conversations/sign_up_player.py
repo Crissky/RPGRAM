@@ -22,7 +22,7 @@ from bot.constants.sign_up_player import CALLBACK_TEXT_NO
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
-from bot.functions.chat import answer
+from bot.functions.chat import answer, edit_message_text
 from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import PlayerModel
@@ -75,6 +75,7 @@ async def create_account(
     user_name = update.effective_user.name
     player_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
     player_model = PlayerModel()
     player = Player(user_name, player_id)
     player.add_chat_id(chat_id)
@@ -83,9 +84,18 @@ async def create_account(
     query = update.callback_query
 
     await answer(query=query, text='Cadastrado com sucesso!')
-    await query.edit_message_text(
-        "Conta criada com sucesso!\n\n"
-        f'{player}',
+    new_text = (
+        f'Conta criada com sucesso!\n\n'
+        f'{player}'
+    )
+    await edit_message_text(
+        function_caller='SIGN_UP_PLAYER.CREATE_ACCOUNT()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
     )
 
     return ConversationHandler.END
@@ -95,6 +105,7 @@ async def create_account(
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar uma conta mais tarde."
+    message_id = update.effective_message.id
 
     if 'response' in context.user_data:
         response = context.user_data['response']
@@ -112,7 +123,15 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         del context.user_data['response']
     elif update.callback_query:
         query = update.callback_query
-        await query.edit_message_text(new_text)
+        await edit_message_text(
+            function_caller='SIGN_UP_PLAYER.CANCEL()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+        )
 
     return ConversationHandler.END
 
