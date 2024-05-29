@@ -180,9 +180,9 @@ class Battle:
             )
 
         if attacker_dice is None:
-            attacker_dice = Dice(1)
+            attacker_dice = Dice(character=attacker_char, faces=1)
         if defender_dice is None:
-            defender_dice = Dice(1)
+            defender_dice = Dice(character=defender_char, faces=1)
 
         # Executando Ação
         if action in ACTION_LIST:
