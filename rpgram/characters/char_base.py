@@ -208,6 +208,9 @@ class BaseCharacter:
         )
         dodge_score = random()
         is_dodged = False
+        if defender_char.is_player is True:
+            dodge_low_hp_bonus = defender_char.cs.rate_hp / 2.5
+            dodge_score += dodge_low_hp_bonus
         if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)
 
@@ -469,7 +472,7 @@ class BaseCharacter:
     @property
     def max_accuracy(self) -> float:
         accuracy = 0.95
-        if self.is_enemy:
+        if self.is_enemy is True:
             accuracy = 0.80
 
         return accuracy
@@ -477,7 +480,7 @@ class BaseCharacter:
     @property
     def min_accuracy(self) -> float:
         accuracy = 0.30
-        if self.is_enemy:
+        if self.is_enemy is True:
             accuracy = 0.10
 
         return accuracy

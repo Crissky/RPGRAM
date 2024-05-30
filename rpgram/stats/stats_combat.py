@@ -339,7 +339,7 @@ class CombatStats:
             (self.constitution * 23) +
             (self.strength * 12) +
             self.bonus_hit_points +
-            (self.level * 50)
+            (self.level * 100)
         )
 
     @property
@@ -347,6 +347,12 @@ class CombatStats:
         return int(
             self.hit_points - self.__damage
         )
+
+    @property
+    def percent_hit_points(self) -> float:
+        return round(self.current_hit_points / self.hit_points, 2)
+
+    rate_hp = rate_hit_points = percent_hit_points
 
     @property
     def show_hit_points(self) -> str:
