@@ -471,6 +471,10 @@ async def call_telegram_message_function(
 
 
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
+    '''Agenda uma função call_telegram_message_function caso ocorra um erro 
+    do tipo RetryAfter, TimedOut e o need_response seja False
+    '''
+
     job = context.job
     call_telegram_kwargs = job.data
     call_telegram_kwargs['function_caller'] += ' and JOB_CALL_TELEGRAM()'
@@ -485,6 +489,11 @@ async def delete_message(
     context: ContextTypes.DEFAULT_TYPE,
     query: CallbackQuery,
 ):
+    '''Deleta a mensagem usando query, 
+    caso ocorra um erro RetryAfter, TimedOut e BadRequest 
+    tenta deletar a mensagem usando o context
+    '''
+
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     try:
@@ -509,14 +518,47 @@ async def delete_message(
                 need_response=False,
                 **delete_message_kwargs
             )
+        else:
+            raise e
 
 
 async def answer(query: CallbackQuery, text: str, **kwargs):
+    '''Tenta enviar um answer, caso ocorra um erro, print o erro e o text
+    '''
+
     try:
         await query.answer(text=text, **kwargs)
     except BadRequest as e:
         print('ANSWER() BADREQUEST EXCEPT.')
         print(f'  text: {text}')
+
+
+# MESSAGE FUNCTIONS
+async def message_edit_reply_markup(
+    function_caller: str,
+    message: Message,
+    context: ContextTypes.DEFAULT_TYPE,
+    need_response: bool = True,
+    reply_markup: InlineKeyboardMarkup = None,
+    **kwargs
+) -> Message:
+    '''Edita a reply_markup de uma mensagem usando a função de edição na 
+    Mensagem.
+    '''
+
+    edit_reply_markup_kwargs = dict(
+        reply_markup=reply_markup,
+        **kwargs
+    )
+    response = await call_telegram_message_function(
+        function_caller=f'{function_caller} and MESSAGE_EDIT_REPLY_MARKUP()',
+        function=message.edit_reply_markup,
+        context=context,
+        need_response=need_response,
+        **edit_reply_markup_kwargs
+    )
+
+    return response
 
 
 # CALLBACK FUNCTIONS
