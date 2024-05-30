@@ -132,6 +132,10 @@ class Dice:
     def combat_stats(self) -> CombatStats:
         return self.__combat_stats
 
+    @property
+    def is_enemy(self) -> bool:
+        return self.__character.is_enemy
+
     # BASE STATS
     @property
     def base_initiative(self) -> int:
