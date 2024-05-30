@@ -189,8 +189,8 @@ class BaseCharacter:
         accuracy = min(accuracy, 1.0)
         dice_bonus = (attacker_dice.value - defender_dice.value) / 100
         accuracy = accuracy + dice_bonus
-        accuracy = min(accuracy, 0.95)
-        accuracy = max(accuracy, 0.10)
+        accuracy = min(accuracy, self.max_accuracy)
+        accuracy = max(accuracy, self.min_accuracy)
 
         return accuracy
 
@@ -208,6 +208,9 @@ class BaseCharacter:
         )
         dodge_score = random()
         is_dodged = False
+        if defender_char.is_player is True:
+            dodge_low_hp_bonus = defender_char.cs.rate_hp / 2.5
+            dodge_score += dodge_low_hp_bonus
         if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)
 
@@ -465,6 +468,22 @@ class BaseCharacter:
     @property
     def is_debuffed(self) -> bool:
         return self.status.debuffed
+
+    @property
+    def max_accuracy(self) -> float:
+        accuracy = 0.95
+        if self.is_enemy is True:
+            accuracy = 0.80
+
+        return accuracy
+
+    @property
+    def min_accuracy(self) -> float:
+        accuracy = 0.30
+        if self.is_enemy is True:
+            accuracy = 0.10
+
+        return accuracy
 
     name: str = property(lambda self: self.__name)
     player_name: str = property(lambda self: self.__name)

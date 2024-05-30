@@ -45,7 +45,7 @@ from repository.mongo.populate.item_constants import (
     WIS_REQUIREMENTS,
     CHA_REQUIREMENTS,
     ALL_MAGICAL_EQUIPMENTS,
-    ALL_TATICAL_EQUIPMENTS,
+    ALL_TACTICAL_EQUIPMENTS,
 )
 
 from rpgram.boosters import Equipment
@@ -577,7 +577,7 @@ def get_requirements(
 
         requirements['FOR'] -= random_group_level(equip_group_lvl)
         requirements['CON'] -= random_group_level(equip_group_lvl)
-    if equip_class in ALL_TATICAL_EQUIPMENTS:
+    if equip_class in ALL_TACTICAL_EQUIPMENTS:
         requirements['DES'] += random_group_level(equip_group_lvl)
 
         requirements['FOR'] -= random_group_level(equip_group_lvl) / 2

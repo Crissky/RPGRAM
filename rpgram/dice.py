@@ -1,25 +1,25 @@
 '''
-Dice multiplier percent base (0.025)
-01: 1.025
-02: 1.05
-03: 1.075
-04: 1.10
-05: 1.125
-06: 1.15
-07: 1.175
-08: 1.20
-09: 1.225
-10: 1.25
-11: 1.275
-12: 1.30
-13: 1.325
-14: 1.35
-15: 1.375
-16: 1.40
-17: 1.425
-18: 1.45
-19: 1.475
-20: 1.50
+Dice multiplier percent base (0.025, 0.035)
+01: 1.025, 1.035
+02: 1.050, 1.070
+03: 1.075, 1.105
+04: 1.100, 1.140
+05: 1.125, 1.175
+06: 1.150, 1.210
+07: 1.175, 1.245
+08: 1.200, 1.280
+09: 1.225, 1.315
+10: 1.250, 1.350
+11: 1.275, 1.385
+12: 1.300, 1.420
+13: 1.325, 1.455
+14: 1.350, 1.490
+15: 1.375, 1.525
+16: 1.400, 1.560
+17: 1.425, 1.595
+18: 1.450, 1.630
+19: 1.475, 1.665
+20: 1.500, 1.700
 '''
 
 from random import randint
@@ -33,15 +33,20 @@ class Dice:
         self,
         character,
         faces: int = 20,
-        base_multiplier: float = 0.025,
+        base_multiplier: float = None,
     ):
-        self.__faces = faces
-        self.__base_multiplier = base_multiplier
         self.__value = None
-        self.__boosted_base_value = None
         self.__character = character
         self.__base_stats = character.base_stats
         self.__combat_stats = character.combat_stats
+        self.__faces = faces
+
+        if not isinstance(base_multiplier, float):
+            base_multiplier = 0.025
+        if self.is_player:
+            base_multiplier = 0.035
+
+        self.__base_multiplier = base_multiplier
 
     def throw(self, rethrow=False) -> int:
         if self.is_throwed and not rethrow:
@@ -131,6 +136,14 @@ class Dice:
     @property
     def combat_stats(self) -> CombatStats:
         return self.__combat_stats
+
+    @property
+    def is_enemy(self) -> bool:
+        return self.__character.is_enemy
+
+    @property
+    def is_player(self) -> bool:
+        return self.__character.is_player
 
     # BASE STATS
     @property

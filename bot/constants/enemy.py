@@ -11,8 +11,6 @@ from rpgram.enums import AlignmentEnum, EmojiEnum, EnemyStarsEnum
 
 
 # TIME FOR ATTACK ALLY
-MIN_MINUTES_TO_ATTACK = 60
-MAX_MINUTES_TO_ATTACK = 90
 MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT = {
     EnemyStarsEnum.ONE.name: 30,
     EnemyStarsEnum.TWO.name: 40,
@@ -33,11 +31,11 @@ MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT = {
 }
 
 ENEMY_CHANCE_TO_ATTACK_AGAIN_DICT = {
-    EnemyStarsEnum.ONE.name: 0.40,
-    EnemyStarsEnum.TWO.name: 0.50,
-    EnemyStarsEnum.THREE.name: 0.60,
-    EnemyStarsEnum.FOUR.name: 0.70,
-    EnemyStarsEnum.FIVE.name: 0.80,
+    EnemyStarsEnum.ONE.name: 0.65,
+    EnemyStarsEnum.TWO.name: 0.70,
+    EnemyStarsEnum.THREE.name: 0.75,
+    EnemyStarsEnum.FOUR.name: 0.80,
+    EnemyStarsEnum.FIVE.name: 0.85,
     EnemyStarsEnum.SUB_BOSS.name: 0.90,
     EnemyStarsEnum.BOSS.name: 0.95,
 }
