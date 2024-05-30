@@ -64,7 +64,8 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
-    edit_message_text
+    edit_message_text,
+    message_edit_reply_markup
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
@@ -239,10 +240,17 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''
 
     message_id = update.effective_message.id
+    message = update.effective_message
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='SELLER.CHECK_SELL_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -259,7 +267,14 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='SELLER.CHECK_SELL_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
+
         return CHECK_ROUTES
 
     item = get_item_from_bag_by_position(chat_id, page, item_pos)
@@ -341,11 +356,18 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Compra item da loja.
     '''
 
+    message = update.effective_message
     message_id = update.effective_message.id
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='SELLER.BUY_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -366,7 +388,13 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='SELLER.BUY_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
         return BUY_ROUTES
 
     player = player_model.get(user_id)
