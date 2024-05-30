@@ -119,6 +119,7 @@ from bot.functions.chat import (
     callback_data_to_string,
     delete_message,
     edit_message_text,
+    message_edit_reply_markup,
     send_alert_or_message,
     send_private_message
 )
@@ -334,12 +335,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Edita a mensagem com as informações do item escolhido.
     '''
+    message = update.effective_message
     message_id = update.effective_message.id
     query = update.callback_query
 
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.CHECK_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -356,7 +364,14 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.CHECK_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
+
         return CHECK_ROUTES
 
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -537,11 +552,17 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Usa ou equipa o item do jogador.
     '''
-
+    message = update.effective_message
     query = update.callback_query
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.USE_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -558,7 +579,14 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.USE_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
+
         return USE_ROUTES
 
     item = get_item_from_bag_by_position(user_id, page, item_pos)
@@ -620,6 +648,7 @@ async def use_item_equipment(
     equipment = item.item
     chat_id = query.message.chat_id
     message_id = query.message.message_id
+    message = query.message
     old_equipments = None
     try:
         old_equipments = character.equips.equip(equipment, hand)
@@ -627,9 +656,14 @@ async def use_item_equipment(
     except Exception as error:
         print(error)
         await answer(query=query, text=f'{error}', show_alert=True)
-        await query.edit_message_reply_markup(
-            reply_markup=old_reply_markup
+        await message_edit_reply_markup(
+            function_caller='BAG.USE_ITEM_EQUIPMENT()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
         )
+
         return USE_ROUTES
 
     bag_model.sub(item, user_id)
@@ -827,11 +861,18 @@ async def identify_item(
 
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
+    message = update.effective_message
     query = update.callback_query
 
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.IDENTIFY_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -848,7 +889,13 @@ async def identify_item(
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.IDENTIFY_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
         return USE_ROUTES
 
     item_equipment = get_item_from_bag_by_position(user_id, page, item_pos)
@@ -907,11 +954,18 @@ async def sell_item(
 
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
+    message = update.effective_message
     query = update.callback_query
 
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.SELL_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -928,7 +982,13 @@ async def sell_item(
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.SELL_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
         return USE_ROUTES
 
     player = player_model.get(user_id)
@@ -1068,11 +1128,18 @@ async def drop_item(
     '''drop o item do jogador.
     '''
     message_id = update.effective_message.message_id
+    message = update.effective_message
     query = update.callback_query
 
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.DROP_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -1091,7 +1158,13 @@ async def drop_item(
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.DROP_ITEM()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
         return USE_ROUTES
 
     item = get_item_from_bag_by_position(user_id, page, item_pos)
@@ -1183,12 +1256,6 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
 
         return ConversationHandler.END
-
-    # try:
-    #     await query.edit_message_reply_markup()
-    # except Exception as e:
-    #     print(type(e), e)
-    #     return ConversationHandler.END
 
     bag_model = BagModel()
     item_model = ItemModel()
@@ -1309,11 +1376,18 @@ async def choice_sort_items(
 ) -> None:
     '''Selecionar como será ordenado os itens
     '''
+    message = update.effective_message
     query = update.callback_query
 
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.CHOICE_SORT_ITEMS()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -1326,7 +1400,14 @@ async def choice_sort_items(
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.CHOICE_SORT_ITEMS()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
+
         return CHECK_ROUTES
 
     sort_buttons = get_sort_buttons(
@@ -1343,7 +1424,14 @@ async def choice_sort_items(
     reply_markup = InlineKeyboardMarkup(
         sort_buttons + [back_button]
     )
-    await query.edit_message_reply_markup(reply_markup)
+    await message_edit_reply_markup(
+        function_caller='BAG.CHOICE_SORT_ITEMS()',
+        message=message,
+        context=context,
+        need_response=True,
+        reply_markup=reply_markup,
+    )
+
     return SORT_ROUTES
 
 
@@ -1355,11 +1443,18 @@ async def sort_items(
     '''
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
+    message = update.effective_message
     query = update.callback_query
 
     try:
         old_reply_markup = query.message.reply_markup
-        await query.edit_message_reply_markup()
+        await message_edit_reply_markup(
+            function_caller='BAG.SORT_ITEMS()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=None,
+        )
     except Exception as e:
         print(type(e), e)
         return ConversationHandler.END
@@ -1374,7 +1469,14 @@ async def sort_items(
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
         await answer(query=query, text=ACCESS_DENIED, show_alert=True)
-        await query.edit_message_reply_markup(reply_markup=old_reply_markup)
+        await message_edit_reply_markup(
+            function_caller='BAG.SORT_ITEMS()',
+            message=message,
+            context=context,
+            need_response=True,
+            reply_markup=old_reply_markup,
+        )
+
         return CHECK_ROUTES
 
     await answer(query=query, text='Ordenando itens...')
@@ -1405,15 +1507,15 @@ async def sort_items(
     reply_markup = InlineKeyboardMarkup([back_button])
     new_text = 'Itens ordenados com sucesso!'
     await edit_message_text(
-            function_caller='SORT_ITEMS()',
-            new_text=new_text,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=False,
-            reply_markup=reply_markup,
-        )
+        function_caller='SORT_ITEMS()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
+        reply_markup=reply_markup,
+    )
 
     return START_ROUTES
 

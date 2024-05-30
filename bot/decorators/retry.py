@@ -4,11 +4,14 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import RetryAfter
 
+from bot.functions.chat import message_edit_reply_markup
+
 
 def retry_after(callback):
     '''Aguarda o tempo necessário quando ocorre um erro RetryAfter.
     '''
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        message = update.effective_message
         query = update.callback_query
         if query:
             old_reply_markup = query.message.reply_markup
@@ -24,8 +27,12 @@ def retry_after(callback):
             if query:
                 new_reply_markup = query.message.reply_markup
                 if old_reply_markup and old_reply_markup != new_reply_markup:
-                    await query.edit_message_reply_markup(
-                        reply_markup=old_reply_markup
+                    await message_edit_reply_markup(
+                        function_caller='RETRY.RETRY_AFTER()',
+                        message=message,
+                        context=context,
+                        need_response=True,
+                        reply_markup=old_reply_markup,
                     )
 
             return await callback(update, context)
