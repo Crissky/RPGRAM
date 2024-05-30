@@ -60,7 +60,7 @@ MAGICAL_QUILL_EQUIPMENTS = ['QUILL']
 MAGICAL_GRIMOIRE_EQUIPMENTS = ['GRIMOIRE', 'SHOES']
 MAGICAL_STONES_EQUIPMENTS = [
     'ORB', 'CRYSTAL', 'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD',
-    'COMBAT_GLASSES'
+    'COMBAT_GLASSES', 'SMART_GLASSES', 'TACTICAL_GLASSES'
 ]
 MAGICAL_WEARABLE_EQUIPMENTS = ['ROBE', 'POINTED_HAT']
 MAGICAL_MASK_EQUIPMENTS = ['MASK']
@@ -81,7 +81,7 @@ STR_REQUIREMENTS = [
     'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT', 'GREAT_SWORD',
     'DOUBLE_AXE', 'HALBERD', 'WARHAMMER', 'FLAIL', 'PIKE', 'LANCE', 'SHARUR',
     'SPIKED_GREATSHIELD', 'KRÁNOS', 'SPIKED_ARMOR', 'SPIKED_SPAULDER',
-    'SPIKED_GREAVES', 'KRATOS\'S_RING',
+    'SPIKED_GREAVES', 'KRATOS\'S_RING', 'COMBAT_GLASSES',
 ]
 DEX_REQUIREMENTS = [
     'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN', 'RAPIER',
@@ -89,7 +89,7 @@ DEX_REQUIREMENTS = [
     'GUGEL', 'HOOD', 'CLOAK', 'BOOTS', 'SANDALS', 'HERMES\'S_RING',
     'ARTEMIS\'S_RING', 'SCARF', 'KODACHI', 'KIMONO', 'Ō-YOROI', 'DŌ-MARU',
     'YUMI', 'NAGINATA', 'KUSARIGAMA', 'TABI', 'JIKA-TABI', 'ZORI',
-    'KABUTO-MENPO', 'SUGEGASA', 'OMAMORI', 'COMBAT_GLASSES'
+    'KABUTO-MENPO', 'SUGEGASA', 'OMAMORI', 'TACTICAL_GLASSES',
 ]
 CON_REQUIREMENTS = [
     'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'SCUTUM', 'GREATSHIELD',
@@ -98,18 +98,18 @@ CON_REQUIREMENTS = [
     'BRIGANDINE', 'ROBE', 'CLOAK', 'SPAULDER', 'SPIKED_SPAULDER', 'BOOTS',
     'SANDALS', 'GREAVES', 'SPIKED_GREAVES', 'SHOES', 'RING', 'KRATOS\'S_RING',
     'GAIA\'S_RING', 'NECKLACE', 'CHARM', 'COIN', 'KIMONO', 'Ō-YOROI',
-    'DŌ-MARU', 'TABI', 'JIKA-TABI', 'ZORI', 'KABUTO-MENPO'
+    'DŌ-MARU', 'TABI', 'JIKA-TABI', 'ZORI', 'KABUTO-MENPO',
 ]
 INT_REQUIREMENTS = [
     'WAND', 'ORB', 'QUILL', 'CHALICE', 'ROD', 'VAJRA', 'STAFF', 'GRIMOIRE',
     'SCEPTER', 'HARP', 'CRYSTAL', 'RIKUDŌKON', 'MASK', 'HECATE\'S_RING',
-    'AMULET'
+    'AMULET', 'SMART_GLASSES',
 ]
 WIS_REQUIREMENTS = [
     'PRISMATIC_SHIELD', 'PRISMATIC_GREATSHIELD', 'POINTED_HAT', 'MASK', 'ROBE',
-    'SHOES', 'HECATE\'S_RING', 'GAIA\'S_RING', 'AMULET', 'CHARM', 'COIN'
+    'SHOES', 'HECATE\'S_RING', 'GAIA\'S_RING', 'AMULET', 'CHARM', 'COIN',
 ]
-CHA_REQUIREMENTS = ['Ō-YOROI']
+CHA_REQUIREMENTS = ['Ō-YOROI',]
 
 
 # EQUIPMENTS DEFINITIONS
@@ -1144,14 +1144,46 @@ HELMET_EQUIPMENTS = {
     ),
     'COMBAT_GLASSES': dict(
         attr_bonus_prob={
-            'bonus_hit_points': 1, 'bonus_initiative': 1,
+            'bonus_hit_points': 3, 'bonus_initiative': 0,
+            'bonus_physical_attack': 3, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
+            'bonus_magical_defense': 1, 'bonus_hit': 10,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 1,
             'bonus_physical_attack': 0, 'bonus_precision_attack': 1,
-            'bonus_magical_attack': 0, 'bonus_physical_defense': 1,
+            'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 1,
+        }
+    ),
+    'SMART_GLASSES': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 3,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 0,
+            'bonus_magical_attack': 3, 'bonus_physical_defense': 1,
+            'bonus_magical_defense': 3, 'bonus_hit': 10,
+            'bonus_evasion': 0,
+        },
+        attr_penality_prob={
+            'bonus_hit_points': 1, 'bonus_initiative': 0,
+            'bonus_physical_attack': 1, 'bonus_precision_attack': 1,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 0,
+            'bonus_magical_defense': 0, 'bonus_hit': 0,
+            'bonus_evasion': 1,
+        }
+    ),
+    'TACTICAL_GLASSES': dict(
+        attr_bonus_prob={
+            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_physical_attack': 0, 'bonus_precision_attack': 3,
+            'bonus_magical_attack': 0, 'bonus_physical_defense': 3,
             'bonus_magical_defense': 1, 'bonus_hit': 10,
             'bonus_evasion': 3,
         },
         attr_penality_prob={
-            'bonus_hit_points': 0, 'bonus_initiative': 0,
+            'bonus_hit_points': 1, 'bonus_initiative': 1,
             'bonus_physical_attack': 1, 'bonus_precision_attack': 0,
             'bonus_magical_attack': 1, 'bonus_physical_defense': 0,
             'bonus_magical_defense': 0, 'bonus_hit': 0,
@@ -1677,7 +1709,7 @@ ALL_MAGICAL_EQUIPMENTS = (
     MAGICAL_WEARABLE_EQUIPMENTS +
     MAGICAL_MASK_EQUIPMENTS
 )
-ALL_TATICAL_EQUIPMENTS = (
+ALL_TACTICAL_EQUIPMENTS = (
     TACTICAL_WEARABLE_EQUIPMENTS + TACTICAL_ACCESSORY_EQUIPMENTS
 )
 ALL_NIPPON_EQUIPMENTS = (

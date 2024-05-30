@@ -4,7 +4,7 @@ from rpgram.enums import AlignmentEnum, EquipmentEnum
 
 # Archetype Equipment
 MAGICIAN_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['POINTED_HAT', 'MASK'],
+    EquipmentEnum.HELMET.name: ['POINTED_HAT', 'MASK', 'SMART_GLASSES'],
     EquipmentEnum.ONE_HAND.name: [
         'WAND', 'ORB', 'QUILL', 'CHALICE', 'ROD', 'VAJRA'
     ],
@@ -17,7 +17,7 @@ MAGICIAN_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE', 'AMULET', 'CHARM', 'COIN'],
 }
 DUELIST_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD', 'COMBAT_GLASSES'],
+    EquipmentEnum.HELMET.name: ['GUGEL', 'HOOD', 'TACTICAL_GLASSES'],
     EquipmentEnum.ONE_HAND.name: [
         'DAGGER', 'CUTLASS', 'WHIP', 'BLACKJACK', 'CROSSBOW', 'JAVELIN',
         'RAPIER', 'ESTOQUE', 'SAI', 'KODACHI'
@@ -42,7 +42,7 @@ SAMURAI_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE', 'SCARF', 'OMAMORI'],
 }
 FIGHTER_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['HELMET', 'KRÁNOS'],
+    EquipmentEnum.HELMET.name: ['HELMET', 'KRÁNOS', 'COMBAT_GLASSES'],
     EquipmentEnum.ONE_HAND.name: [
         'SWORD', 'SHIELD', 'AXE', 'SCIMITAR', 'MACHETE', 'FALCHION', 'MACE',
         'CLUB', 'MORNING_STAR', 'SLEDGEHAMMER', 'TRIDENT', 'SCUTUM'
@@ -72,7 +72,7 @@ BARBARIAN_EQUIPMENTS = {
     EquipmentEnum.AMULET.name: ['NECKLACE', 'COIN'],
 }
 PROTECTOR_EQUIPMENTS = {
-    EquipmentEnum.HELMET.name: ['HELMET'],
+    EquipmentEnum.HELMET.name: ['HELMET',],
     EquipmentEnum.ONE_HAND.name: [
         'SHIELD', 'SPIKED_SHIELD', 'PRISMATIC_SHIELD', 'MACE', 'CLUB',
         'SLEDGEHAMMER', 'TRIDENT'
