@@ -646,13 +646,15 @@ class Equipment(StatsBooster):
 
     @ property
     def max_attack_value(self) -> int:
-        return max(
-            self.physical_attack,
-            self.precision_attack,
-            self.magical_attack,
-            self.level,
+        special_damage_base_value = sum([
+            max(self.physical_attack, 0),
+            max(self.precision_attack, 0),
+            max(self.magical_attack, 0),
+            max(self.level, 0),
             1,
-        )
+        ])
+
+        return int(special_damage_base_value)
 
     @ property
     def special_damage_iter(self) -> Iterator[SpecialDamage]:
