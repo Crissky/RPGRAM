@@ -182,6 +182,10 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> float:
+        '''Retorna a acurácia do ataque, baseada no ACERTO do do ATACANTE 
+        e na EVASÃO do DEFENSOR
+        '''
+
         hit = attacker_dice.boosted_hit
         evasion = defender_dice.boosted_evasion
 
@@ -207,7 +211,9 @@ class BaseCharacter:
         defender_dice: Dice,
     ) -> dict:
         '''Testa se o inimigo esquivou do ataque, retornando True 
-        caso tenha esquivado e False, caso contrário. '''
+        caso tenha esquivado e False, caso contrário.
+        '''
+
         accuracy = self.get_accuracy(
             attacker_dice=attacker_dice,
             defender_dice=defender_dice,
@@ -236,6 +242,9 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> int:
+        '''Calcula o dano causado pelo ataque.
+        '''
+
         BLOCK_MULTIPLIER = 0.50
         MIN_DAMAGE_MULTIPLIER = 0.25
 
@@ -306,9 +315,12 @@ class BaseCharacter:
 
         # ---------- DODGE ---------- #
         if (is_miss := to_dodge and dodge_report['is_dodged']):
+            attacker_dice_text = attacker_dice.text
+            defender_dice_text = defender_dice.text
             report['text'] = (
-                f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
-                f'*{self.full_name_with_level}*.'
+                f'{defender_player_name}[{defender_dice_text}] '
+                f'*ESQUIVOU DO ATAQUE* de '
+                f'*{self.full_name_with_level}*[{attacker_dice_text}].'
             )
             report['text'] += self.activate_status_to_attack(defender_char)
 
