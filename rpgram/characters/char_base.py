@@ -182,8 +182,18 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> float:
-        hit = attacker_dice.base_hit
-        evasion = defender_dice.base_evasion
+        '''Retorna a acurácia do ataque, baseada no ACERTO do do ATACANTE 
+        e na EVASÃO do DEFENSOR
+        '''
+
+        hit = attacker_dice.boosted_hit
+        evasion = defender_dice.boosted_evasion
+
+        # Adiciona bônus de HIT com base no HP perdido
+        if attacker_dice.is_player is True:
+            rate_low_hp_bonus = (1 - attacker_dice.rate_hp) / 2
+            hit_low_hp_bonus = int(hit * rate_low_hp_bonus)
+            hit += hit_low_hp_bonus
 
         accuracy = hit / evasion
         accuracy = min(accuracy, 1.0)
@@ -201,15 +211,19 @@ class BaseCharacter:
         defender_dice: Dice,
     ) -> dict:
         '''Testa se o inimigo esquivou do ataque, retornando True 
-        caso tenha esquivado e False, caso contrário. '''
+        caso tenha esquivado e False, caso contrário.
+        '''
+
         accuracy = self.get_accuracy(
             attacker_dice=attacker_dice,
             defender_dice=defender_dice,
         )
         dodge_score = random()
         is_dodged = False
-        if defender_char.is_player is True:
-            dodge_low_hp_bonus = defender_char.cs.rate_hp / 2.5
+
+        # Adiciona bônus de DODGE_SCORE com base no HP perdido
+        if defender_dice.is_player is True:
+            dodge_low_hp_bonus = (1 - defender_dice.rate_hp) / 2.5
             dodge_score += dodge_low_hp_bonus
         if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)
@@ -228,6 +242,9 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> int:
+        '''Calcula o dano causado pelo ataque.
+        '''
+
         BLOCK_MULTIPLIER = 0.50
         MIN_DAMAGE_MULTIPLIER = 0.25
 
@@ -298,9 +315,12 @@ class BaseCharacter:
 
         # ---------- DODGE ---------- #
         if (is_miss := to_dodge and dodge_report['is_dodged']):
+            attacker_dice_text = attacker_dice.text
+            defender_dice_text = defender_dice.text
             report['text'] = (
-                f'{defender_player_name} *ESQUIVOU DO ATAQUE* de '
-                f'*{self.full_name_with_level}*.'
+                f'{defender_player_name}[{defender_dice_text}] '
+                f'*ESQUIVOU DO ATAQUE* de '
+                f'*{self.full_name_with_level}*[{attacker_dice_text}].'
             )
             report['text'] += self.activate_status_to_attack(defender_char)
 
