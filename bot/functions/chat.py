@@ -59,6 +59,7 @@ CALLBACK_KEY_LIST = [
     'row',
     'col',
 ]
+REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)
 
 
 async def send_private_message(
@@ -423,11 +424,19 @@ async def call_telegram_message_function(
     function: Callable,
     context: ContextTypes.DEFAULT_TYPE,
     need_response: bool = True,
+    skip_retry: bool = False,
     **kwargs
 ) -> Union[Any, Message]:
     '''Função que chama qualquer função de mensagem do telegram. 
     Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
     alguns segundos tentará novamente com um número máximo de 3 tentativas.
+
+    Se need_response for True, função aguardará para realizar uma nova 
+    tentativa, caso contrário, a função será agendada em um job para ser 
+    executada posteriormente.
+
+    Se skip_retry for True, a função não tentará novamente e nem agendará uma 
+    nova tentativa.
     '''
 
     job_call_telegram_kwargs = dict(
@@ -436,11 +445,19 @@ async def call_telegram_message_function(
         context=context,
         **kwargs
     )
+    response = None
+    is_error = True
+    catched_error = None
     for i in range(3):
         try:
             response = await function(**kwargs)
+            is_error = False
             break
         except (RetryAfter, TimedOut) as error:
+            catched_error = error
+            if skip_retry is True:
+                break
+
             if isinstance(error, RetryAfter):
                 sleep_time = error.retry_after + randint(1, 3)
             elif isinstance(error, TimedOut):
@@ -466,6 +483,12 @@ async def call_telegram_message_function(
             )
             sleep(sleep_time)
             continue
+
+    if is_error is True:
+        print(f'ERROR: {function_caller}')
+        if catched_error:
+            raise catched_error
+        raise Exception(f'Error in {function_caller}')
 
     return response
 

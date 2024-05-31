@@ -26,7 +26,9 @@ from bot.constants.filters import (
     PREFIX_COMMANDS,
 )
 from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
     answer,
+    call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button
@@ -59,7 +61,14 @@ from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
 @need_have_char
 @need_not_in_battle
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='ADD_STATS.START()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     char_model = CharacterModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id

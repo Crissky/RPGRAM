@@ -22,6 +22,8 @@ from bot.constants.view_char import (
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
+    call_telegram_message_function,
     edit_message_text,
     get_close_keyboard,
     get_random_refresh_text,
@@ -39,7 +41,14 @@ from repository.mongo import CharacterModel
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='VIEW_CHAR.START()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
