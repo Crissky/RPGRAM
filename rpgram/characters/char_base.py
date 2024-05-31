@@ -182,8 +182,14 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> float:
-        hit = attacker_dice.base_hit
-        evasion = defender_dice.base_evasion
+        hit = attacker_dice.boosted_hit
+        evasion = defender_dice.boosted_evasion
+
+        # Adiciona bônus de HIT com base no HP perdido
+        if attacker_dice.is_player is True:
+            rate_low_hp_bonus = (1 - attacker_dice.rate_hp) / 2
+            hit_low_hp_bonus = int(hit * rate_low_hp_bonus)
+            hit += hit_low_hp_bonus
 
         accuracy = hit / evasion
         accuracy = min(accuracy, 1.0)
@@ -208,8 +214,10 @@ class BaseCharacter:
         )
         dodge_score = random()
         is_dodged = False
-        if defender_char.is_player is True:
-            dodge_low_hp_bonus = defender_char.cs.rate_hp / 2.5
+
+        # Adiciona bônus de DODGE_SCORE com base no HP perdido
+        if defender_dice.is_player is True:
+            dodge_low_hp_bonus = (1 - defender_dice.rate_hp) / 2.5
             dodge_score += dodge_low_hp_bonus
         if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)

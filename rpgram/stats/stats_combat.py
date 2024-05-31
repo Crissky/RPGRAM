@@ -349,10 +349,10 @@ class CombatStats:
         )
 
     @property
-    def percent_hit_points(self) -> float:
+    def rate_hit_points(self) -> float:
         return round(self.current_hit_points / self.hit_points, 2)
 
-    rate_hp = rate_hit_points = percent_hit_points
+    rate_hp = rate_hit_points
 
     @property
     def show_hit_points(self) -> str:
