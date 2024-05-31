@@ -113,6 +113,7 @@ from bot.functions.bag import (
 )
 from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
     answer,
     call_telegram_message_function,
     callback_data_to_dict,
@@ -185,7 +186,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     '''Envia ou edita mensagem contendo uma página dos itens do jogador
     '''
 
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='BAG.START()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id

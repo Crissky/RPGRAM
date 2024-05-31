@@ -22,7 +22,9 @@ from bot.constants.equips import (
 )
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
     answer,
+    call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button
@@ -51,7 +53,14 @@ from rpgram.boosters import Equipment
 @confusion()
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='EQUIPS.START()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     bag_model = BagModel()
     char_model = CharacterModel()
     equips_model = EquipsModel()

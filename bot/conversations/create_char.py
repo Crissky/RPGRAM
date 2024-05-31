@@ -33,7 +33,11 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.decorators import print_basic_infos
-from bot.functions.chat import edit_message_text
+from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
+    call_telegram_message_function,
+    edit_message_text
+)
 from bot.functions.general import get_attribute_group_or_player
 
 from constant.time import TEN_MINUTES_IN_SECONDS
@@ -63,7 +67,14 @@ from rpgram.characters import PlayerCharacter
 
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='CREATE_CHAR.START()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     player_model = PlayerModel()
     char_model = CharacterModel()
     race_model = RaceModel()

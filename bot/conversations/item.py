@@ -49,6 +49,7 @@ from bot.functions.char import (
     add_xp
 )
 from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
     answer,
     call_telegram_message_function,
     delete_message,
@@ -182,7 +183,14 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return ConversationHandler.END
 
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='ITEM.INSPECT_TREASURE()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     bag_model = BagModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id

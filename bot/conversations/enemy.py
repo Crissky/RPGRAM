@@ -62,6 +62,7 @@ from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.chat import (
+    REPLY_CHAT_ACTION_KWARGS,
     REPLY_MARKUP_DEFAULT,
     answer,
     callback_data_to_dict,
@@ -471,7 +472,14 @@ async def defend_enemy_attack(
     '''
 
     print('DEFEND_ENEMY_ATTACK()')
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='ENEMY.DEFEND_ENEMY_ATTACK()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
     defender_user_id = update.effective_user.id
@@ -607,7 +615,14 @@ async def player_attack_enemy(
     '''
 
     print('PLAYER_ATTACK_ENEMY()')
-    await update.effective_message.reply_chat_action(ChatAction.TYPING)
+    await call_telegram_message_function(
+        function_caller='ENEMY.PLAYER_ATTACK_ENEMY()',
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
     attacker_user_id = update.effective_user.id
