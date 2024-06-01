@@ -23,6 +23,7 @@ from constant.text import (
 )
 from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import CharacterModel
+from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 
@@ -325,7 +326,7 @@ def confusion(retry_state=ConversationHandler.END):
                 player_ids = get_player_ids_from_group(chat_id)
                 player_ids.append(user_id)
 
-                confuse_char = char_model.get(user_id)
+                confuse_char: BaseCharacter = char_model.get(user_id)
                 target_char = choice_char(
                     player_id_list=player_ids,
                     is_alive=True
@@ -341,13 +342,13 @@ def confusion(retry_state=ConversationHandler.END):
                     target_char_dice = None
 
                 confuse_char_dice = None
-                confuse_action = confuse_char.weighted_choice_action_attack()
+                confuse_action = confuse_char.weighted_choice_attack_name()
 
                 attack_report = confuse_char.to_attack(
                     defender_char=target_char,
                     attacker_dice=confuse_char_dice,
                     defender_dice=target_char_dice,
-                    attacker_action_name=confuse_action,
+                    attack_name=confuse_action,
                     to_dodge=True,
                     to_defend=True,
                     rest_command=REST_COMMANDS[0],
