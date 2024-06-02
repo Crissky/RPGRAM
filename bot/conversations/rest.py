@@ -108,6 +108,11 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'HP: {current_hp}\n\n'
             f'Seu personagem irá recuperar HP a cada meia hora.'
         )
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=user_id,
+    )
 
     text = create_text_in_box(
         text=text,
@@ -147,12 +152,6 @@ def create_job_rest_cure(
         data=user_id,
         name=job_name,
         job_kwargs=BASE_JOB_KWARGS,
-    )
-
-    create_job_rest_action_point(
-        context=context,
-        chat_id=chat_id,
-        user_id=user_id,
     )
 
 
@@ -316,6 +315,11 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
                 user_id=user_id,
             )
             texts.append(f'{player_name} - HP: {current_hp}')
+        create_job_rest_action_point(
+            context=context,
+            chat_id=chat_id,
+            user_id=user_id,
+        )
 
     if texts:
         players_hp = '\n'.join(texts)
