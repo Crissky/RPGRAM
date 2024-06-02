@@ -356,11 +356,19 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     else:
-        await update.effective_chat.send_message(
+        send_message_kwargs = dict(
             text=markdown_text,
             reply_markup=reply_markup,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2
+        )
+        await call_telegram_message_function(
+            function_caller='SELLER.CHECK_SELL_ITEM()',
+            function=update.effective_chat.send_message,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **send_message_kwargs,
         )
         await delete_message(
             function_caller='CHECK_SELL_ITEM()',
@@ -516,11 +524,19 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             reply_markup=reply_markup,
         )
     else:
-        await update.effective_chat.send_message(
+        send_message_kwargs = dict(
             text=markdown_text,
             reply_markup=reply_markup,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2
+        )
+        await call_telegram_message_function(
+            function_caller='SELLER.BUY_ITEM()',
+            function=update.effective_chat.send_message,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **send_message_kwargs,
         )
         await delete_message(
             function_caller='BUY_ITEM()',

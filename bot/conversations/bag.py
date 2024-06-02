@@ -555,11 +555,19 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     else:
-        await update.effective_chat.send_message(
+        send_message_kwargs = dict(
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
+        )
+        await call_telegram_message_function(
+            function_caller='BAG.CHECK_ITEM()',
+            function=update.effective_chat.send_message,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **send_message_kwargs,
         )
         await delete_message(
             function_caller='CHECK_ITEM()',
