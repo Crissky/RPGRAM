@@ -440,7 +440,7 @@ async def puzzle_edit_message_text(
         context=context,
         chat_id=chat_id,
         message_id=message_id,
-        need_response=False,
+        need_response=True,
         markdown=True,
         reply_markup=reply_markup
     )
