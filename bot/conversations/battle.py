@@ -35,7 +35,11 @@ from bot.constants.battle import (
     REACTIONS_LABELS,
     TEAMS,
 )
-from bot.functions.chat import answer, edit_message_text
+from bot.functions.chat import (
+    answer,
+    call_telegram_message_function,
+    edit_message_text
+)
 from rpgram.enums import EmojiEnum
 from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
@@ -76,7 +80,7 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     battle_model = BattleModel()
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
-    chat_battle = battle_model.get(query={'chat_id': chat_id})
+    chat_battle: Battle = battle_model.get(query={'chat_id': chat_id})
 
     if not chat_battle:
         battle = Battle(blue_team=[], red_team=[], chat_id=chat_id)
@@ -86,13 +90,23 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         battle_id = chat_battle._id
         user_name = chat_battle.current_player.player_name
         reply_markup = get_action_inline_keyboard()
-        response = await update.effective_message.reply_text(
-            f'A batalha retomada!\n'
-            f'{user_name}, escolha sua ação.\n\n'
-            f'{chat_battle.get_sheet()}\n',
+        reply_text_kwargs = dict(
+            text=(
+                f'A batalha retomada!\n'
+                f'{user_name}, escolha sua ação.\n\n'
+                f'{chat_battle.get_sheet()}\n'
+            ),
             reply_markup=reply_markup,
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        response = await call_telegram_message_function(
+            function_caller='BATTLE.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=True,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         context.chat_data['battle_response'] = response
         context.chat_data['battle_id'] = battle_id
@@ -102,11 +116,19 @@ async def battle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         battle_id = chat_battle._id
 
     reply_markup = get_enter_battle_inline_keyboard()
-    response = await update.effective_message.reply_text(
-        battle.get_teams_sheet(),
+    reply_text_kwargs = dict(
+        text=battle.get_teams_sheet(),
         reply_markup=reply_markup,
         disable_notification=silent,
         allow_sending_without_reply=True
+    )
+    response = await call_telegram_message_function(
+        function_caller='BATTLE.START()',
+        function=update.effective_message.reply_text,
+        context=context,
+        need_response=True,
+        skip_retry=False,
+        **reply_text_kwargs,
     )
     context.chat_data['battle_response'] = response
     context.chat_data['battle_id'] = battle_id

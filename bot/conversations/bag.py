@@ -264,10 +264,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         items = player_bag[:-1]
         have_next_page = True
     elif all((len(items) == 0, not query)):
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text='Você não tem itens na sua bolsa.',
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='BAG.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         return ConversationHandler.END
 
@@ -318,12 +326,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     markdown_text = TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='BAG.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
         await edit_message_text(
@@ -1349,10 +1365,18 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
             player = player_model.get(user_id)
             if report_xp['level_up']:
                 silent = get_attribute_group_or_player(chat_id, 'silent')
-                await update.effective_message.reply_text(
+                reply_text_kwargs = dict(
                     text=text,
                     disable_notification=silent,
                     allow_sending_without_reply=True
+                )
+                await call_telegram_message_function(
+                    function_caller='BAG.START()',
+                    function=update.effective_message.reply_text,
+                    context=context,
+                    need_response=False,
+                    skip_retry=False,
+                    **reply_text_kwargs,
                 )
             elif player.verbose:
                 await send_private_message(

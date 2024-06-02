@@ -7,7 +7,11 @@ from telegram.ext import (
     ContextTypes,
     PrefixHandler,
 )
-from bot.functions.chat import edit_message_text, get_close_button
+from bot.functions.chat import (
+    call_telegram_message_function,
+    edit_message_text,
+    get_close_button
+)
 from bot.decorators.player import (
     alert_if_not_chat_owner_to_callback_data_to_dict
 )
@@ -62,11 +66,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     else:
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text=text,
             reply_markup=reply_markup,
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='RACE.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 

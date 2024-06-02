@@ -3,6 +3,7 @@ from telegram.constants import ChatType
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.sign_up_group import COMMANDS
+from bot.functions.chat import call_telegram_message_function
 from repository.mongo import GroupModel
 
 
@@ -16,10 +17,21 @@ def need_singup_group(callback):
             print('\tAUTORIZADO - GRUPO POSSUI CADASTRO.')
             return await callback(update, context)
         else:
-            await update.effective_message.reply_text(
-                f'É necessário cadastrar o grupo para utilizar esse comando.\n'
-                f'Cadastre o grupo com o comando /{COMMANDS[0]}.',
+            reply_text_kwargs = dict(
+                text=(
+                    f'É necessário cadastrar o grupo '
+                    f'para utilizar esse comando.\n'
+                    f'Cadastre o grupo com o comando /{COMMANDS[0]}.'
+                ),
                 allow_sending_without_reply=True
+            )
+            await call_telegram_message_function(
+                function_caller='GROUP.NEED_SIGNUP_GROUP()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
             )
             return ConversationHandler.END
     return wrapper
@@ -29,9 +41,17 @@ def allow_only_in_group(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@NEED_USE_IN_GROUP')
         if update.effective_chat.type == ChatType.PRIVATE:
-            await update.effective_message.reply_text(
-                f'Esse comando só pode ser usado em um grupo.',
+            reply_text_kwargs = dict(
+                text=f'Esse comando só pode ser usado em um grupo.',
                 allow_sending_without_reply=True
+            )
+            await call_telegram_message_function(
+                function_caller='GROUP.ALLOW_ONLY_IN_GROUP()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
             )
             return ConversationHandler.END
         else:

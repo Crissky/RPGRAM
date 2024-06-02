@@ -20,6 +20,7 @@ from bot.constants.view_player import (
 )
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
+    call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_keyboard
@@ -89,18 +90,36 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_end=SECTION_HEAD_PLAYER_END,
                 clean_func=None
             )
-            await update.effective_message.reply_text(
-                text,
+            reply_text_kwargs = dict(
+                text=text,
                 disable_notification=silent,
                 reply_markup=reply_markup,
                 allow_sending_without_reply=True
             )
+            await call_telegram_message_function(
+                function_caller='VIEW_PLAYER.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
     else:
-        await update.effective_message.reply_text(
-            f'Você ainda não está cadastrado!\n'
-            f'Cadastre-se com o comando /{sign_up_player_commands[0]}.',
+        reply_text_kwargs = dict(
+            text=(
+                f'Você ainda não está cadastrado!\n'
+                f'Cadastre-se com o comando /{sign_up_player_commands[0]}.'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='VIEW_PLAYER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 VIEW_PLAYER_HANDLERS = [

@@ -176,11 +176,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif all((len(items) == 0, not query)):
         text = f'>{SELLER_NAME}: ' + choice(REPLY_TEXT_NO_HAVE_ITEMS)
         text = escape_for_citation_markdown_v2(text)
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text=text,
             parse_mode=ParseMode.MARKDOWN_V2,
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='SELLER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         return ConversationHandler.END
 
@@ -220,12 +228,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     markdown_text = SHOP_TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='SELLER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
         await edit_message_text(

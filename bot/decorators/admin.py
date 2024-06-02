@@ -2,6 +2,8 @@ from telegram import Update
 from telegram.constants import ChatMemberStatus
 from telegram.ext import ContextTypes, ConversationHandler
 
+from bot.functions.chat import call_telegram_message_function
+
 
 def need_are_admin(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -16,9 +18,17 @@ def need_are_admin(callback):
             print('\tAUTORIZADO')
             return await callback(update, context)
         else:
-            await update.effective_message.reply_text(
-                f'Esse comando só pode ser usado por administradores.',
+            reply_text_kwargs = dict(
+                text=f'Esse comando só pode ser usado por administradores.',
                 allow_sending_without_reply=True
+            )
+            await call_telegram_message_function(
+                function_caller='ADMIN.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
             )
             return ConversationHandler.END
     return wrapper

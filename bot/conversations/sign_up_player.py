@@ -22,7 +22,7 @@ from bot.constants.sign_up_player import CALLBACK_TEXT_NO
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
-from bot.functions.chat import answer, edit_message_text
+from bot.functions.chat import answer, call_telegram_message_function, edit_message_text
 from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import PlayerModel
@@ -41,11 +41,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     player_id = update.effective_user.id
 
     if (player := player_model.get(player_id)):
-        await update.effective_message.reply_text(
-            f'Olá {user_name}, Bem-vindo(a) de volta!\n'
-            f'Vocé já possui uma conta.\n\n'
-            f'{player}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Olá {user_name}, Bem-vindo(a) de volta!\n'
+                f'Vocé já possui uma conta.\n\n'
+                f'{player}'
+            ),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='SIGN_UP_PLAYER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         return ConversationHandler.END
 
@@ -56,11 +66,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         ]
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    response = await update.effective_message.reply_text(
-        'Seja Bem-vindo, Aventureiro(a).\n'
-        'Gostaria de Criar uma Conta?',
+    reply_text_kwargs = dict(
+        text=(
+            'Seja Bem-vindo, Aventureiro(a).\n'
+            'Gostaria de Criar uma Conta?'
+        ),
         reply_markup=reply_markup,
         allow_sending_without_reply=True
+    )
+    response = await call_telegram_message_function(
+        function_caller='SIGN_UP_PLAYER.START()',
+        function=update.effective_message.reply_text,
+        context=context,
+        need_response=True,
+        skip_retry=False,
+        **reply_text_kwargs,
     )
     context.user_data['response'] = response
 

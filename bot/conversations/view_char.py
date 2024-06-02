@@ -73,10 +73,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             mongo_query = {'player_name': player_name}
             new_player_character = char_model.get(query=mongo_query)
             if not new_player_character:
-                await update.effective_message.reply_text(
-                    f'{player_name} não possui um personamgem.',
+                reply_text_kwargs = dict(
+                    text=f'{player_name} não possui um personamgem.',
                     disable_notification=silent,
                     allow_sending_without_reply=True
+                )
+                await call_telegram_message_function(
+                    function_caller='VIEW_CHAR.START()',
+                    function=update.effective_message.reply_text,
+                    context=context,
+                    need_response=False,
+                    skip_retry=False,
+                    **reply_text_kwargs,
                 )
                 return None
             player_character = new_player_character
@@ -136,19 +144,38 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_end=SECTION_HEAD_CHAR_END
             )
 
-            await update.effective_message.reply_text(
-                markdown_player_sheet,
+            reply_text_kwargs = dict(
+                text=markdown_player_sheet,
                 parse_mode=ParseMode.MARKDOWN_V2,
                 disable_notification=silent,
                 reply_markup=reply_markup,
                 allow_sending_without_reply=True
             )
+            await call_telegram_message_function(
+                function_caller='VIEW_CHAR.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
     else:
-        await update.effective_message.reply_text(
-            f'Você ainda não criou um personagem!\n'
-            f'Crie o seu personagem com o comando /{create_char_commands[0]}.',
+        reply_text_kwargs = dict(
+            text=(
+                f'Você ainda não criou um personagem!\n'
+                f'Crie o seu personagem com o comando '
+                f'/{create_char_commands[0]}.'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='VIEW_CHAR.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 VIEW_CHAR_HANDLERS = [

@@ -48,19 +48,37 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         try:
             group[attribute] = value
             group_model.save(group)
-            await update.effective_message.reply_text(
-                f'Configurado "{attribute}" para "{value}".\n\n'
-                f'{group}',
+            reply_text_kwargs = dict(
+                text=(
+                    f'Configurado "{attribute}" para "{value}".\n\n'
+                    f'{group}'
+                ),
                 disable_notification=silent,
                 reply_markup=get_close_keyboard(None),
                 allow_sending_without_reply=True
             )
+            await call_telegram_message_function(
+                function_caller='CONFIG_GROUP.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
         except (KeyError, ValueError) as error:
-            await update.effective_message.reply_text(
-                str(error),
+            reply_text_kwargs = dict(
+                text=str(error),
                 disable_notification=silent,
                 reply_markup=get_close_keyboard(None),
                 allow_sending_without_reply=True
+            )
+            await call_telegram_message_function(
+                function_caller='CONFIG_GROUP.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         group['VERBOSE'] = 'false'
@@ -70,23 +88,43 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         group['MULTIPLIER_XP'] = '1'
         group['CHAR_MULTIPLIER_XP'] = '1'
         group_model.save(group)
-        await update.effective_message.reply_text(
-            f'Configurado para os valores padrões.\n\n'
-            f'{group}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Configurado para os valores padrões.\n\n'
+                f'{group}'
+            ),
             disable_notification=silent,
             reply_markup=get_close_keyboard(None),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CONFIG_GROUP.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         chat_name = update.effective_chat.effective_name
         group.name = chat_name
         group_model.save(group)
-        await update.effective_message.reply_text(
-            f'Informações do grupo "{chat_name}" foram atualizadas.\n\n'
-            f'{group}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Informações do grupo "{chat_name}" foram atualizadas.\n\n'
+                f'{group}'
+            ),
             disable_notification=silent,
             reply_markup=get_close_keyboard(None),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CONFIG_GROUP.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     elif len(args) != 2:
         text = escape_basic_markdown_v2(
@@ -95,12 +133,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             '`MULTIPLIER_XP`\n`CHAR_MULTIPLIER_XP`'
         )
 
-        await update.effective_message.reply_text(
-            text,
+        reply_text_kwargs = dict(
+            text=text,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_markup=get_close_keyboard(None),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CONFIG_GROUP.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 

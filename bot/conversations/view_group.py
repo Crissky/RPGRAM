@@ -16,7 +16,10 @@ from bot.constants.filters import (
     BASIC_COMMAND_IN_GROUP_FILTER,
     PREFIX_COMMANDS
 )
-from bot.functions.chat import get_close_keyboard
+from bot.functions.chat import (
+    call_telegram_message_function,
+    get_close_keyboard
+)
 from bot.decorators import print_basic_infos, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_GROUP_END, SECTION_HEAD_GROUP_START
@@ -40,11 +43,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             section_end=SECTION_HEAD_GROUP_END,
             clean_func=None
         )
-        await update.effective_message.reply_text(
-            text,
+        reply_text_kwargs = dict(
+            text=text,
             disable_notification=silent,
             reply_markup=get_close_keyboard(None),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='VIEW_GROUP.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 
