@@ -2,6 +2,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from function.date_time import get_brazil_time_now
 
 from repository.mongo import GroupModel
+from rpgram import Group
 
 
 def skip_if_spawn_timeout(callback):
@@ -10,7 +11,7 @@ def skip_if_spawn_timeout(callback):
         group_model = GroupModel()
         job = context.job
         chat_id = job.chat_id
-        group = group_model.get(chat_id)
+        group: Group = group_model.get(chat_id)
         spawn_start_time = group.spawn_start_time
         spawn_end_time = group.spawn_end_time
         now = get_brazil_time_now()

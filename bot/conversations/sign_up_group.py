@@ -124,7 +124,7 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=chat_id,
         )
         group_model.save(group_config)
-        group_config = group_model.get(chat_id)
+        group_config: Group = group_model.get(chat_id)
 
     query = update.callback_query
 

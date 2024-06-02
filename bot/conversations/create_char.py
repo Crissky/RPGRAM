@@ -19,7 +19,6 @@ from telegram.ext import (
     PrefixHandler,
     filters,
 )
-from telegram.constants import ChatAction
 
 from bot.constants.create_char import (
     COMMANDS,
@@ -51,7 +50,8 @@ from repository.mongo import (
     EquipsModel
 )
 
-from rpgram.characters import PlayerCharacter
+from rpgram.boosters import Classe, Race
+from rpgram.characters import BaseCharacter, PlayerCharacter
 
 
 # ROUTES
@@ -104,7 +104,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
         return ConversationHandler.END
 
-    if (player_character := char_model.get(player_id)):
+    player_character: BaseCharacter = char_model.get(player_id)
+    if player_character:
         inline_keyboard = [
             [
                 InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
@@ -205,7 +206,8 @@ async def confirm_race(
     context.user_data['race'] = race_name
     description = ''
 
-    if (race := race_model.get(race_name)):
+    race: Race = race_model.get(race_name)
+    if race:
         description = race.description
 
     inline_keyboard = [
@@ -284,7 +286,8 @@ async def confirm_classe(
     context.user_data['classe'] = classe_name
     description = ''
 
-    if (classe := classe_model.get(classe_name)):
+    classe: Classe = classe_model.get(classe_name)
+    if classe:
         description = classe.description
 
     inline_keyboard = [
@@ -382,8 +385,8 @@ async def create_char(
     player_id = update.effective_user.id
     race_name = context.user_data['race']
     classe_name = context.user_data['classe']
-    race = race_model.get(race_name)
-    classe = classe_model.get(classe_name)
+    race: Race = race_model.get(race_name)
+    classe: Classe = classe_model.get(classe_name)
     player_character = PlayerCharacter(
         player_id=player_id,
         player_name=user_name,
@@ -393,7 +396,7 @@ async def create_char(
     )
     char_model.save(player_character)
     equips_model.save(player_character.equips)
-    player_character = char_model.get(player_id)
+    player_character: BaseCharacter = char_model.get(player_id)
 
     if player_character:
         reply_text_kwargs = dict(

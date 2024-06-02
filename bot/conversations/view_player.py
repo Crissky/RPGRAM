@@ -31,6 +31,7 @@ from constant.text import SECTION_HEAD_PLAYER_END, SECTION_HEAD_PLAYER_START
 from function.text import create_text_in_box
 
 from repository.mongo import PlayerModel
+from rpgram import Player
 
 
 @print_basic_infos
@@ -47,7 +48,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         data = eval(query.data)
         refresh = data.get(REFRESH_VIEW_PLAYER_PATTERN, False)
 
-    if (player := player_model.get(user_id)):
+    player: Player = player_model.get(user_id)
+    if player:
         text = f'{player}'
         reply_markup = get_refresh_close_keyboard(
             user_id=user_id,

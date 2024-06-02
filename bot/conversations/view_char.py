@@ -36,6 +36,7 @@ from constant.text import SECTION_HEAD_CHAR_END, SECTION_HEAD_CHAR_START
 from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel
+from rpgram.characters import BaseCharacter
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
@@ -56,7 +57,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     args = context.args
-    player_character = char_model.get(user_id)
+    player_character: BaseCharacter = char_model.get(user_id)
     verbose = False
     self_char = True
 
@@ -70,8 +71,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if args[0].startswith('@'):
             self_char = False
             player_name = args[0]
-            mongo_query = {'player_name': player_name}
-            new_player_character = char_model.get(query=mongo_query)
+            m_query = {'player_name': player_name}
+            new_player_character: BaseCharacter = char_model.get(query=m_query)
             if not new_player_character:
                 reply_text_kwargs = dict(
                     text=f'{player_name} não possui um personamgem.',

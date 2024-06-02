@@ -90,7 +90,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 args.append(data['value'])
 
     text = ''
-    player_char = char_model.get(user_id)
+    player_char: BaseCharacter = char_model.get(user_id)
     silent = get_attribute_group_or_player(chat_id, 'silent')
     if len(args) == 2:
         attribute = args[0].upper()

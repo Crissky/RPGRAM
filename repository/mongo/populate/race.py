@@ -861,7 +861,7 @@ if __name__ == '__main__':
     fields = ['_id', 'name', 'created_at']
     for race_dict in RACES:
         race_name = race_dict['name']
-        mongo_dict = race_model.get(
+        mongo_dict: dict = race_model.get(
             query={'name': race_name},
             fields=fields,
         )

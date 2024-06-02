@@ -927,7 +927,7 @@ if __name__ == "__main__":
     for consumable_dict in CONSUMABLES:
         consumable_name = consumable_dict['name']
         consumable_class = consumable_dict.pop('class')
-        mongo_dict = items_model.get(
+        mongo_dict: dict = items_model.get(
             query={'name': consumable_name},
             fields=fields,
         )

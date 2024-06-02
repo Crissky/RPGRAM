@@ -1,8 +1,7 @@
-from itertools import zip_longest
 from random import choice
 from typing import List
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ParseMode, ChatAction
+from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -45,8 +44,7 @@ from bot.decorators.battle import need_not_in_battle
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
-    skip_if_immobilized,
-    skip_if_no_have_char
+    skip_if_immobilized
 )
 from bot.decorators import (
     allow_only_in_group,
@@ -90,7 +88,6 @@ from repository.mongo import (
     BagModel,
     CharacterModel,
     EquipsModel,
-    ItemModel,
     PlayerModel
 )
 from repository.mongo.populate.item import (
@@ -98,11 +95,14 @@ from repository.mongo.populate.item import (
     create_random_equipment
 )
 
-from rpgram import Bag, Item
+from rpgram import Bag, Equips, Item, Player
 from rpgram.boosters import Equipment
-from rpgram.characters.char_base import BaseCharacter
-from rpgram.consumables import GemstoneConsumable, TrocadoPouchConsumable
-from rpgram.consumables.consumable import Consumable
+from rpgram.characters import BaseCharacter
+from rpgram.consumables import (
+    Consumable,
+    GemstoneConsumable,
+    TrocadoPouchConsumable
+)
 from rpgram.enums import EmojiEnum
 
 
@@ -159,7 +159,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     skip_slice = ITEMS_PER_PAGE * page
     size_slice = ITEMS_PER_PAGE + 1
 
-    seller_bag = bag_model.get(
+    seller_bag: Bag = bag_model.get(
         query={'player_id': chat_id},
         fields={'items_ids': {'$slice': [skip_slice, size_slice]}},
         partial=False
@@ -309,7 +309,7 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     if isinstance(item.item, Equipment):
         equips_model = EquipsModel()
-        equips = equips_model.get(user_id)
+        equips: Equips = equips_model.get(user_id)
         markdown_text += equips.compare(item.item, is_sell=True)
     elif isinstance(item.item, Consumable):
         markdown_text += item.get_all_sheets(
@@ -429,8 +429,8 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         return BUY_ROUTES
 
-    player = player_model.get(user_id)
-    player_character = char_model.get(user_id)
+    player: Player = player_model.get(user_id)
+    player_character: BaseCharacter = char_model.get(user_id)
     trocado = player.trocado
     item = get_item_from_bag_by_position(chat_id, page, item_pos)
 
@@ -486,7 +486,7 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
         if isinstance(item.item, Equipment):
             equips_model = EquipsModel()
-            equips = equips_model.get(user_id)
+            equips: Equips = equips_model.get(user_id)
             markdown_text += equips.compare(item.item, is_sell=True)
         elif isinstance(item.item, Consumable):
             markdown_text += item.get_all_sheets(
@@ -819,7 +819,7 @@ def get_discount_price(
         raise ValueError('user_id or player_character precisa ser definido.')
     if player_character is None:
         char_model = CharacterModel()
-        player_character = char_model.get(user_id)
+        player_character: BaseCharacter = char_model.get(user_id)
 
     charisma = player_character.bs.charisma
     mod_charisma = player_character.bs.mod_charisma

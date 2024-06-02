@@ -44,6 +44,7 @@ from function.text import create_text_in_box
 from repository.mongo import BagModel, CharacterModel, EquipsModel, ItemModel
 from rpgram import Equips, Item
 from rpgram.boosters import Equipment
+from rpgram.characters import BaseCharacter
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
@@ -79,9 +80,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             verbose = True
 
     silent = get_attribute_group_or_player(chat_id, 'silent')
-    equips = equips_model.get(user_id)
+    equips: Equips = equips_model.get(user_id)
     if not equips:
-        player_character = char_model.get(user_id)
+        player_character: BaseCharacter = char_model.get(user_id)
         equips = player_character.equips
         equips_model.save(player_character.equips)
 
@@ -92,7 +93,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         data = eval(query.data)
         equip_id = data['equip_id']
         try:
-            equipment = item_model.get(equip_id)
+            equipment: Equipment = item_model.get(equip_id)
             old_equipment = equips.unequip(equipment)
             old_equipment_item = Item(old_equipment)
             bag_model.add(old_equipment_item, user_id)

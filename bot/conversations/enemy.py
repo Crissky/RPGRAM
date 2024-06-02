@@ -107,14 +107,14 @@ from bot.functions.general import get_attribute_group_or_player, luck_test
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 
-from repository.mongo import CharacterModel, GroupModel, ItemModel, PlayerModel
+from repository.mongo import CharacterModel, ItemModel, PlayerModel
 from repository.mongo.populate.enemy import create_random_enemies
 from repository.mongo.populate.item import (
     create_random_consumable,
     create_random_equipment
 )
 
-from rpgram import Dice, Item
+from rpgram import Item, Player
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
 
@@ -257,7 +257,7 @@ async def create_job_enemy_attack(
             defender_char = choice_char(chat_id=chat_id, is_alive=True)
         else:
             char_model = CharacterModel()
-            defender_char = char_model.get(user_id)
+            defender_char: BaseCharacter = char_model.get(user_id)
 
         user_id = defender_char.player_id
         player_name = defender_char.player_name
@@ -345,7 +345,7 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     enemy_id = job_data['enemy_id']
     message_id = job_data['message_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
-    defender_char = char_model.get(user_id)
+    defender_char: BaseCharacter = char_model.get(user_id)
     is_first_attack = False
 
     send_chat_action_kwargs = dict(
@@ -551,8 +551,8 @@ async def defend_enemy_attack(
 
         return ConversationHandler.END
 
-    defender_char = char_model.get(defender_user_id)
-    target_char = char_model.get(target_user_id)
+    defender_char: BaseCharacter = char_model.get(defender_user_id)
+    target_char: BaseCharacter = char_model.get(target_user_id)
     if target_char.is_alive:
         await enemy_attack(
             context=context,
@@ -681,8 +681,8 @@ async def player_attack_enemy(
 
         return ConversationHandler.END
 
-    attacker_char = char_model.get(attacker_user_id)
-    target_char = char_model.get(target_user_id)
+    attacker_char: BaseCharacter = char_model.get(attacker_user_id)
+    target_char: BaseCharacter = char_model.get(target_user_id)
 
     if target_char.is_alive and enemy_char.is_alive:
         await player_attack(
@@ -1126,14 +1126,14 @@ def check_attacker_id_in_ambush_dict(
 
 def can_player_act(user_id: int):
     player_model = PlayerModel()
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
 
     return player.have_action_points
 
 
 async def sub_action_point(user_id: int, query: CallbackQuery):
     player_model = PlayerModel()
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
     player.sub_action_points(1)
     player_model.save(player)
 
@@ -1147,7 +1147,7 @@ async def add_enemy_counter(
 ):
     if enemy.is_dead:
         player_model = PlayerModel()
-        player = player_model.get(user_id)
+        player: Player = player_model.get(user_id)
         report = player.add_enemy_counter(enemy=enemy)
         player_model.save(player)
 

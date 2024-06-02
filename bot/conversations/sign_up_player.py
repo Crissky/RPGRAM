@@ -22,7 +22,11 @@ from bot.constants.sign_up_player import CALLBACK_TEXT_NO
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
-from bot.functions.chat import answer, call_telegram_message_function, edit_message_text
+from bot.functions.chat import (
+    answer,
+    call_telegram_message_function,
+    edit_message_text
+)
 from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import PlayerModel
@@ -40,7 +44,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user_name = update.effective_user.name
     player_id = update.effective_user.id
 
-    if (player := player_model.get(player_id)):
+    player: Player = player_model.get(player_id)
+    if player:
         reply_text_kwargs = dict(
             text=(
                 f'Olá {user_name}, Bem-vindo(a) de volta!\n'
@@ -100,7 +105,7 @@ async def create_account(
     player = Player(user_name, player_id)
     player.add_chat_id(chat_id)
     player_model.save(player)
-    player = player_model.get(player_id)
+    player: Player = player_model.get(player_id)
     query = update.callback_query
 
     await answer(query=query, text='Cadastrado com sucesso!')

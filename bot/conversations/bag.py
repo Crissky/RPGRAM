@@ -1,8 +1,7 @@
-from itertools import zip_longest
 from math import sqrt
-from random import choice, randint
+from random import choice
 from time import sleep
-from typing import List
+from typing import List, Union
 
 from telegram import (
     CallbackQuery,
@@ -10,8 +9,7 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
-from telegram.constants import ChatAction, ParseMode
-from telegram.error import RetryAfter, TimedOut
+from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -75,7 +73,6 @@ from bot.constants.bag import (
     SECTION_TEXT_TROCADO_POUCH,
     SELL_MANY_BUTTON_TEXT,
     SELL_MANY_BUTTON_VERBOSE_TEXT,
-    SEND_DROP_MESSAGE_SLEEP_TIME,
     SORT_ITEMS_BUTTON_TEXT,
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
@@ -96,7 +93,6 @@ from bot.decorators import (
     print_basic_infos,
     retry_after,
     skip_if_dead_char,
-    skip_if_no_have_char,
     skip_if_no_singup_player,
     skip_if_immobilized,
     confusion,
@@ -159,11 +155,14 @@ from repository.mongo import (
     ItemModel,
     PlayerModel
 )
-from rpgram import Bag, Item
+from rpgram import Bag, Equips, Item, Player
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter
-from rpgram.consumables import Consumable, TrocadoPouchConsumable
-from rpgram.consumables.other import GemstoneConsumable
+from rpgram.consumables import (
+    Consumable,
+    GemstoneConsumable,
+    TrocadoPouchConsumable
+)
 from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 
@@ -242,7 +241,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     skip_slice = ITEMS_PER_PAGE * page
     size_slice = ITEMS_PER_PAGE + 1
 
-    player_bag = bag_model.get(
+    player_bag: Bag = bag_model.get(
         query={'player_id': user_id},
         fields={'items_ids': {'$slice': [skip_slice, size_slice]}},
         partial=False
@@ -415,7 +414,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     use_buttons = [[]]
     equip_info_identify_button = []
     if isinstance(item.item, Equipment):
-        equips = equips_model.get(user_id)
+        equips: Equips = equips_model.get(user_id)
         if not equip_info:
             markdown_text = equips.compare(item.item)
             equip_info_identify_button.append(
@@ -624,9 +623,9 @@ async def use_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     item = get_item_from_bag_by_position(user_id, page, item_pos)
     if isinstance(item.item, Equipment):
-        player_character = char_model.get(user_id)
+        player_character: BaseCharacter = char_model.get(user_id)
     elif isinstance(item.item, Consumable):
-        player_character = char_model.get(target_id)
+        player_character: BaseCharacter = char_model.get(target_id)
 
     if isinstance(item.item, Consumable):  # Tenta usar o item
         await use_item_consumable(
@@ -952,7 +951,7 @@ async def identify_item(
         text = '⛔VOCÊ NÃO TEM UM ITEM DE IDENTIFICAÇÃO⛔'
         await answer(query=query, text=text, show_alert=True)
 
-    equips = equips_model.get(user_id)
+    equips: Equips = equips_model.get(user_id)
     markdown_text = equips.compare(equipment)
     reply_markup = remove_buttons_by_text(
         old_reply_markup,
@@ -1024,7 +1023,7 @@ async def sell_item(
         )
         return USE_ROUTES
 
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
     item = get_item_from_bag_by_position(user_id, page, item_pos)
     sell_quantity = min(sell_quantity, item.quantity)
     item_sell_price = get_bonus_price(price=item.sell_price, user_id=user_id)
@@ -1307,7 +1306,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         return ConversationHandler.END
 
-    item = item_model.get(item_id)
+    item: Union[Consumable, Equipment] = item_model.get(item_id)
     if item:
         item = Item(item, quantity=drop)
         bag_model.add(item, user_id)
@@ -1351,7 +1350,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if drops.get(message_id, None) is True:
         data = callback_data_to_dict(query.data)
         item_id = data['_id']
-        item = item_model.get(item_id)
+        item: Union[Consumable, Equipment] = item_model.get(item_id)
         if isinstance(item, Equipment):
             power = item.power
             base_xp = power // 5
@@ -1370,7 +1369,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 section_end=SECTION_HEAD_XP_END,
                 clean_func=None,
             )
-            player = player_model.get(user_id)
+            player: Player = player_model.get(user_id)
             if report_xp['level_up']:
                 silent = get_attribute_group_or_player(chat_id, 'silent')
                 reply_text_kwargs = dict(
@@ -1522,7 +1521,7 @@ async def sort_items(
 
     await answer(query=query, text='Ordenando itens...')
 
-    player_bag = bag_model.get(query={'player_id': user_id})
+    player_bag: Bag = bag_model.get(query={'player_id': user_id})
 
     if sort == 'consumable_up':
         player_bag.sort_by_equip_type()
@@ -1703,7 +1702,7 @@ def get_bonus_price(
         raise ValueError('user_id or player_character precisa ser definido.')
     if player_character is None:
         char_model = CharacterModel()
-        player_character = char_model.get(user_id)
+        player_character: BaseCharacter = char_model.get(user_id)
 
     charisma = player_character.bs.charisma
     charisma_price_bonus = (sqrt(charisma) / 100) + 1

@@ -5,7 +5,6 @@ informações dos jogadores.
 
 
 from telegram import Update
-from telegram.constants import ChatAction
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
@@ -32,6 +31,7 @@ from constant.text import SECTION_HEAD_CHAR_END, SECTION_HEAD_CHAR_START
 from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel
+from rpgram.characters import BaseCharacter
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
@@ -48,7 +48,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     char_model = CharacterModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
-    player_character = char_model.get(user_id)
+    player_character: BaseCharacter = char_model.get(user_id)
 
     if player_character:
         player_character.bs.reset_stats()

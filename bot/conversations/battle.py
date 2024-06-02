@@ -57,7 +57,7 @@ from repository.mongo import (
     GroupModel
 )
 
-from rpgram import Battle, Dice
+from rpgram import Battle, Dice, Group
 from rpgram.characters import BaseCharacter, PlayerCharacter
 from rpgram.errors import EmptyTeamError
 
@@ -147,10 +147,10 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
-    character = character_model.get(user_id)
+    character: BaseCharacter = character_model.get(user_id)
     character_id = character._id
-    battle = battle_model.get(battle_id)
-    other_battle = battle_model.get(
+    battle: Battle = battle_model.get(battle_id)
+    other_battle: Battle = battle_model.get(
         query={'$and': [
             {'$or': [{'blue_team': character_id}, {'red_team': character_id}]},
             {'chat_id': {'$ne': chat_id}}
@@ -223,7 +223,7 @@ async def enter_battle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif other_battle:
         group_model = GroupModel()
         chat_id = other_battle.chat_id
-        group = group_model.get(chat_id)
+        group: Group = group_model.get(chat_id)
         query_text = (
             f'Seu personagem já em uma batalha no grupo "{group.name}"!'
         )
@@ -240,8 +240,8 @@ async def select_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
-    battle = battle_model.get(battle_id)
-    character = character_model.get(user_id)
+    battle: Battle = battle_model.get(battle_id)
+    character: BaseCharacter = character_model.get(user_id)
 
     if character == battle.current_player:
         action = query.data
@@ -290,8 +290,8 @@ async def select_defender(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
-    battle = battle_model.get(battle_id)
-    character = character_model.get(user_id)
+    battle: Battle = battle_model.get(battle_id)
+    character: BaseCharacter = character_model.get(user_id)
 
     if character == battle.current_player:
         defender_index = int(query.data)
@@ -336,8 +336,8 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     message_id = update.effective_message.message_id
     battle_id = context.chat_data['battle_id']
-    battle = battle_model.get(battle_id)
-    character = character_model.get(user_id)
+    battle: Battle = battle_model.get(battle_id)
+    character: BaseCharacter = character_model.get(user_id)
     defender_index = context.chat_data['defender_index']
 
     if character == battle.turn_order[defender_index]:
@@ -446,7 +446,7 @@ async def select_reaction(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 text += '\nA BATALHA TERMINOU EMPATADA!\n\n'
             group_model = GroupModel()
             chat_id = update.effective_chat.id
-            group = group_model.get(chat_id)
+            group: Group = group_model.get(chat_id)
             multiplier_xp = group.multiplier_xp
             report_xp = battle.share_xp(multiplier_xp)
             reply_markup = None
