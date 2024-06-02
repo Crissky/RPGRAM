@@ -217,11 +217,9 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
         text += choice(GODS_LOSES_FEEDBACK_TEXTS)
         section_start = SECTION_HEAD_PUNISHMENT_PUZZLE_START
         section_end = SECTION_HEAD_PUNISHMENT_PUZZLE_END
-        silent = get_attribute_group(chat_id, 'silent')
         await punishment(
             chat_id=chat_id,
             context=context,
-            silent=silent,
             message_id=message_id,
         )
 
@@ -332,7 +330,6 @@ async def failed(
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
-    silent = get_attribute_group(chat_id, 'silent')
     text = choice(GODS_LOSES_FEEDBACK_TEXTS)
     reply_markup = get_close_keyboard(None)
     await puzzle_edit_message_text(
@@ -350,7 +347,6 @@ async def failed(
     await punishment(
         chat_id=chat_id,
         context=context,
-        silent=silent,
         message_id=message_id,
     )
 
@@ -603,7 +599,6 @@ async def puzzle_drop_random_prize(
 async def punishment(
     chat_id: int,
     context: ContextTypes.DEFAULT_TYPE,
-    silent: bool,
     message_id: int,
 ):
     '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
