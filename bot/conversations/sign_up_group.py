@@ -150,33 +150,24 @@ async def create_account(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     new_text = 'Tchau! Você pode criar uma conta para o grupo mais tarde.'
+    chat_id = update.effective_chat.id
     message_id = update.effective_message.id
 
+    print(
+        f'{__name__}.cancel()',
+        f'chat_id: {chat_id}, message_id: {message_id}'
+    )
+    await edit_message_text(
+        function_caller='SIGN_UP_GROUP.CANCEL()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
+    )
     if 'response' in context.user_data:
-        response = context.user_data['response']
-        chat_id = response.chat_id
-        message_id = response.id
-        print(
-            f'{__name__}.cancel()',
-            f'chat_id: {chat_id}, message_id: {message_id}'
-        )
-        await update.get_bot().edit_message_text(
-            chat_id=chat_id,
-            message_id=message_id,
-            text=new_text,
-        )
         del context.user_data['response']
-    elif update.callback_query:
-        query = update.callback_query
-        await edit_message_text(
-            function_caller='SIGN_UP_GROUP.CANCEL()',
-            new_text=new_text,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=False,
-        )
 
     return ConversationHandler.END
 

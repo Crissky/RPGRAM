@@ -10,7 +10,15 @@ def need_are_admin(callback):
         print('@NEED_ARE_ADMIN')
         status = None
         user_id = update.effective_user.id
-        chat_member = await update.effective_chat.get_member(user_id)
+        get_member_kwags = dict(user_id=user_id)
+        chat_member = await call_telegram_message_function(
+            function_caller='ADMIN.NEED_ARE_ADMIN()',
+            function=update.effective_chat.get_member,
+            context=context,
+            need_response=True,
+            skip_retry=False,
+            **get_member_kwags
+        )
         if chat_member:
             status = chat_member.status
 

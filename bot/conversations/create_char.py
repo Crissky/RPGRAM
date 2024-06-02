@@ -446,9 +446,17 @@ async def create_char(
             f'{__name__}.create_char(): '
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
-        await update.get_bot().delete_message(
+        delete_message_kwargs = dict(
             chat_id=chat_id,
             message_id=message_id,
+        )
+        await call_telegram_message_function(
+            function_caller='CREATE_CHAR.CREATE_CHAR()',
+            function=context.bot.delete_message,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **delete_message_kwargs,
         )
 
     clean_user_data(context)
@@ -492,22 +500,24 @@ async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar um personagem mais tarde."
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
 
+    print(
+        f'{__name__}.cancel():',
+        f'chat_id: {chat_id}, message_id: {message_id}'
+    )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.CANCEL()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
+    )
     if 'response' in context.user_data:
-        response = context.user_data['response']
-        chat_id = response.chat_id
-        message_id = response.id
-        print(
-            f'{__name__}.cancel():',
-            f'chat_id: {chat_id}, message_id: {message_id}'
-        )
-        await update.get_bot().edit_message_text(
-            chat_id=chat_id,
-            message_id=message_id,
-            text=new_text,
-        )
-    elif update.callback_query:
-        await update.callback_query.edit_message_text(new_text)
+        del context.user_data['response']
 
     clean_user_data(context)
 

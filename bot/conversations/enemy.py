@@ -161,9 +161,17 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     )
     message_id = None
 
-    await context.bot.send_chat_action(
+    send_chat_action_kwargs = dict(
         chat_id=chat_id,
         action=ChatAction.TYPING
+    )
+    await call_telegram_message_function(
+        function_caller='EMENY.JOB_START_AMBUSH()',
+        function=context.bot.send_chat_action,
+        context=context,
+        need_response = False,
+        skip_retry= True,
+        **send_chat_action_kwargs
     )
 
     for enemy_char in enemy_list:
@@ -340,9 +348,17 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     defender_char = char_model.get(user_id)
     is_first_attack = False
 
-    await context.bot.send_chat_action(
+    send_chat_action_kwargs = dict(
         chat_id=chat_id,
         action=ChatAction.TYPING
+    )
+    await call_telegram_message_function(
+        function_caller='EMENY.JOB_ENEMY_ATTACK()',
+        function=context.bot.send_chat_action,
+        context=context,
+        need_response = False,
+        skip_retry= True,
+        **send_chat_action_kwargs
     )
 
     if not is_spawn_time:
