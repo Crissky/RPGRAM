@@ -115,21 +115,41 @@ class Model:
         query: dict = None,
         fields: Union[dict, list, str] = None,
         partial: bool = True
-    ) -> Any:
+    ) -> Union[Any, dict]:
+        '''Retorna um objeto instanciado com os dados oriundos do
+        Banco de Dados.
+
+        Se fields for passado e partial for True,
+        retorna apenas os campos desejados em formato dict.
+
+        Se fields for passado e partial não for True,
+        retorna o objeto instanciado com os campos desejados passados como
+        argumentos e os demais usaram o default da classe.
+        '''
+
         if _id:
             query = self.get_query_by_id(_id)
         self.check_query(query)
         if isinstance(fields, str):
             fields = [fields]
         if (result := self.database.find(self.collection, query, fields)):
-            if fields and partial:
+            if fields and partial is True:
                 return result
             populate_result = self.__populate_load(result)
             return self.instanciate_class(populate_result)
 
     def get_all(
         self, query: dict = None, fields: Union[dict, list, str] = None
-    ) -> List[Union[dict, str]]:
+    ) -> List[Union[Any, dict]]:
+        '''Retorna uma lista de objetos instanciados com os dados
+        oriundos do Banco de Dados.
+
+        Se fields for passado com um único campo, retorna uma lista com os
+        valores do campo passado
+
+        Se fields for passado com vários campos, retorna uma lista de dict com
+        os campos em fields.
+        '''
 
         if isinstance(fields, str):
             fields = [fields]
