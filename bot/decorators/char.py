@@ -16,7 +16,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.create_char import COMMANDS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
-from bot.functions.status import confusion_status, immobilized_status
+from bot.functions.status import get_confusion_status, immobilized_status
 from constant.text import (
     SECTION_HEAD_CONFUSION_END,
     SECTION_HEAD_CONFUSION_START
@@ -318,7 +318,7 @@ def confusion(retry_state=ConversationHandler.END):
             char_model = CharacterModel()
             chat_id = update.effective_chat.id
             user_id = update.effective_user.id
-            status = confusion_status(user_id)
+            status = get_confusion_status(user_id)
             activated_confusion = activated_condition()
             if not status or not activated_confusion:
                 return await callback(update, context)
