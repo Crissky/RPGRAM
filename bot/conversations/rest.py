@@ -32,6 +32,7 @@ from bot.decorators import (
 from bot.functions.char import save_char
 from bot.functions.chat import (
     call_telegram_message_function,
+    get_close_keyboard,
     send_private_message
 )
 from bot.functions.config import get_attribute_group
@@ -119,7 +120,8 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_text_kwargs = dict(
         text=text,
         disable_notification=silent,
-        allow_sending_without_reply=True
+        allow_sending_without_reply=True,
+        reply_markup=get_close_keyboard(user_id=user_id)
     )
     await call_telegram_message_function(
         function_caller='REST.REST()',
