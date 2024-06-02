@@ -8,8 +8,9 @@ RARITY_RANGE_DICT = {
     RarityEnum.COMMON: (3, 3, 2),
     RarityEnum.UNCOMMON: (3, 4, 2),
     RarityEnum.RARE: (3, 3, 3),
-    RarityEnum.EPIC: (3, 4, 4),
-    RarityEnum.LEGENDARY: (3, 5, 5)
+    RarityEnum.EPIC: (3, 4, 3),
+    RarityEnum.LEGENDARY: (3, 5, 4),
+    RarityEnum.MYTHIC: (3, 7, 5),
 }
 
 
@@ -29,11 +30,15 @@ class GridGame:
 
         if isinstance(rarity, RarityEnum):
             n_min, n_max, n_options = RARITY_RANGE_DICT[rarity]
-            n_rows = randint(n_min, n_max)
-            n_cols = randint(n_min, n_max)
+            n_range = range(n_min, n_max + 1)
+            n_rows = choice(n_range)
+            if (n_rows % 2) == 0:
+                n_range = range(n_min, n_max + 1, 2)
+            n_cols = choice(n_range)
         elif rarity is not None:
             raise TypeError(
-                f'Rarity deve ser uma RarityEnum. Tipo: {type(rarity)}.'
+                f'Rarity deve ser do tipo RarityEnum ou None. '
+                f'Tipo: {type(rarity)}.'
             )
 
         if n_rows < 3 or n_cols < 3:
@@ -185,7 +190,7 @@ if __name__ == '__main__':
             for col in range(n_cols):
                 grid.switch(row=row, col=col)
 
-    # Teste Iteration
+    # Test Iteration
     for n_options in range(2, 6):
         for col in range(3, 8):
             for row in range(3, 8):
@@ -193,6 +198,13 @@ if __name__ == '__main__':
                 print([coor for coor in g])
                 switch_all(g)
                 print('-'*50)
+    
+    # Test Rarity
+    for rarity in RarityEnum:
+        g = GridGame(rarity=rarity)
+        print(f'rarity: {g.rarity}, n_rows: {g.n_rows}, n_cols: {g.n_cols}')
+        print(g.n_rows)
+
 
     print(g.colors)
     print(g.is_solved)
