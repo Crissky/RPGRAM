@@ -82,6 +82,7 @@ from bot.constants.bag import (
     DROPUSE_QUANTITY_OPTION_LIST,
     USE_MANY_BUTTON_TEXT,
     USE_MANY_BUTTON_VERBOSE_TEXT,
+    VERBOSE_BUTTONS_THRESHOLD,
 )
 
 from bot.constants.filters import (
@@ -263,10 +264,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         items = player_bag[:-1]
         have_next_page = True
     elif all((len(items) == 0, not query)):
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text='Você não tem itens na sua bolsa.',
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='BAG.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         return ConversationHandler.END
 
@@ -317,12 +326,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     markdown_text = TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='BAG.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
         await edit_message_text(
@@ -538,11 +555,19 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     else:
-        await update.effective_chat.send_message(
+        send_message_kwargs = dict(
             text=markdown_text,
             disable_notification=silent,
             reply_markup=reply_markup,
             parse_mode=ParseMode.MARKDOWN_V2
+        )
+        await call_telegram_message_function(
+            function_caller='BAG.CHECK_ITEM()',
+            function=update.effective_chat.send_message,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **send_message_kwargs,
         )
         await delete_message(
             function_caller='CHECK_ITEM()',
@@ -1348,10 +1373,18 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
             player = player_model.get(user_id)
             if report_xp['level_up']:
                 silent = get_attribute_group_or_player(chat_id, 'silent')
-                await update.effective_message.reply_text(
+                reply_text_kwargs = dict(
                     text=text,
                     disable_notification=silent,
                     allow_sending_without_reply=True
+                )
+                await call_telegram_message_function(
+                    function_caller='BAG.START()',
+                    function=update.effective_message.reply_text,
+                    context=context,
+                    need_response=False,
+                    skip_retry=False,
+                    **reply_text_kwargs,
                 )
             elif player.verbose:
                 await send_private_message(
@@ -1856,11 +1889,10 @@ def get_use_consumable_buttons(
 ) -> List[InlineKeyboardButton]:
     use_buttons = []
     quantity = item.quantity
-    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     if item.item.usable is True:
         for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
             if quantity_option <= quantity:
-                if quantity < verbose_threshold:
+                if quantity < VERBOSE_BUTTONS_THRESHOLD:
                     text = USE_MANY_BUTTON_VERBOSE_TEXT.format(
                         quantity_option=f'{quantity_option:02}'
                     )
@@ -1897,10 +1929,9 @@ def get_discard_buttons(
 ) -> List[InlineKeyboardButton]:
     drop_buttons = []
     quantity = item.quantity
-    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
-            if quantity < verbose_threshold:
+            if quantity < VERBOSE_BUTTONS_THRESHOLD:
                 text = DISCARD_MANY_BUTTON_VERBOSE_TEXT.format(
                     quantity_option=f'{quantity_option:02}'
                 )
@@ -1937,11 +1968,10 @@ def get_sell_buttons(
 ) -> List[InlineKeyboardButton]:
     sell_buttons = []
     quantity = item.quantity
-    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
             if isinstance(item.item, TrocadoPouchConsumable):
-                if quantity < verbose_threshold:
+                if quantity < VERBOSE_BUTTONS_THRESHOLD:
                     text = COLLECT_MANY_BUTTON_VERBOSE_TEXT.format(
                         quantity_option=f'{quantity_option:02}'
                     )
@@ -1950,7 +1980,7 @@ def get_sell_buttons(
                         quantity_option=f'{quantity_option:02}'
                     )
             else:
-                if quantity < verbose_threshold:
+                if quantity < VERBOSE_BUTTONS_THRESHOLD:
                     text = SELL_MANY_BUTTON_VERBOSE_TEXT.format(
                         quantity_option=f'{quantity_option:02}'
                     )
@@ -1970,6 +2000,32 @@ def get_sell_buttons(
                     })
                 )
             )
+
+    if all((
+        quantity > 0,
+        quantity not in DROPUSE_QUANTITY_OPTION_LIST,
+        isinstance(item.item, TrocadoPouchConsumable)
+    )):
+        if quantity < VERBOSE_BUTTONS_THRESHOLD:
+            text = COLLECT_MANY_BUTTON_VERBOSE_TEXT.format(
+                quantity_option=f'{quantity:02}'
+            )
+        else:
+            text = COLLECT_MANY_BUTTON_TEXT.format(
+                quantity_option=f'{quantity:02}'
+            )
+        sell_buttons.append(
+            InlineKeyboardButton(
+                text=text,
+                callback_data=callback_data_to_string({
+                    'sell': quantity,
+                    'item': item_pos,
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
+            )
+        )
 
     buttons_per_row = 4 if len(sell_buttons) <= 4 else 3
     return reshape_row_buttons(

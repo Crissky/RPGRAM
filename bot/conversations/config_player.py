@@ -46,30 +46,58 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         try:
             player[attribute] = value
             player_model.save(player)
-            await update.effective_message.reply_text(
-                f'Configurado "{attribute}" para "{value}".\n\n'
-                f'{player}',
+            reply_text_kwargs = dict(
+                text=(
+                    f'Configurado "{attribute}" para "{value}".\n\n'
+                    f'{player}'
+                ),
                 disable_notification=silent,
                 reply_markup=get_close_keyboard(user_id=user_id),
                 allow_sending_without_reply=True
             )
+            await call_telegram_message_function(
+                function_caller='CONFIG_PLAYER.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
         except (KeyError, ValueError) as error:
-            await update.effective_message.reply_text(
-                str(error),
+            reply_text_kwargs = dict(
+                text=str(error),
                 disable_notification=silent,
                 reply_markup=get_close_keyboard(user_id=user_id),
                 allow_sending_without_reply=True
+            )
+            await call_telegram_message_function(
+                function_caller='CONFIG_PLAYER.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         player['VERBOSE'] = 'false'
         player['SILENT'] = 'false'
         player_model.save(player)
-        await update.effective_message.reply_text(
-            f'Configurado para os valores padrões.\n\n'
-            f'{player}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Configurado para os valores padrões.\n\n'
+                f'{player}'
+            ),
             disable_notification=silent,
             reply_markup=get_close_keyboard(user_id=user_id),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CONFIG_PLAYER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         user_name = update.effective_user.name
@@ -81,12 +109,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             player_char.update_player_name(new_name=user_name)
             char_model.save(player_char)
 
-        await update.effective_message.reply_text(
-            f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
-            f'{player}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
+                f'{player}'
+            ),
             disable_notification=silent,
             reply_markup=get_close_keyboard(user_id=user_id),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CONFIG_PLAYER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     elif len(args) != 2:
         text = escape_basic_markdown_v2(
@@ -94,12 +132,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             'Atributos:\n`VERBOSE`\n`SILENT`'
         )
 
-        await update.effective_message.reply_text(
-            text,
+        reply_text_kwargs = dict(
+            text=text,
             disable_notification=silent,
             parse_mode=ParseMode.MARKDOWN_V2,
             reply_markup=get_close_keyboard(user_id=user_id),
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CONFIG_PLAYER.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 

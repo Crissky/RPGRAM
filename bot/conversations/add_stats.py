@@ -106,17 +106,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if query:
                 await answer(query=query, text=text, show_alert=True)
             else:
-                await update.effective_message.reply_text(
-                    text,
+                reply_text_kwargs = dict(
+                    text=text,
                     disable_notification=silent,
                     allow_sending_without_reply=True
                 )
+                await call_telegram_message_function(
+                    function_caller='ADD_STATS.START()',
+                    function=update.effective_message.reply_text,
+                    context=context,
+                    need_response=False,
+                    skip_retry=False,
+                    **reply_text_kwargs,
+                )
             return None
     elif len(args) > 2:
-        await update.effective_message.reply_text(
-            'Envie somente o ATRIBUTO e o VALOR que deseja adicionar.',
+        reply_text_kwargs = dict(
+            text='Envie somente o ATRIBUTO e o VALOR que deseja adicionar.',
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='ADD_STATS.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         return None
     elif len(args) == 1:
@@ -183,12 +199,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_STATS_END
         )
 
-        await update.effective_message.reply_text(
-            text,
+        reply_text_kwargs = dict(
+            text=text,
             parse_mode=ParseMode.MARKDOWN_V2,
             disable_notification=silent,
             reply_markup=reply_markup,
             allow_sending_without_reply=True,
+        )
+        await call_telegram_message_function(
+            function_caller='ADD_STATS.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 

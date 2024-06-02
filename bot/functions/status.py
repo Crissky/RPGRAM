@@ -21,10 +21,11 @@ def immobilized_status(user_id: int) -> dict:
     return status
 
 
-def confusion_status(user_id: int) -> dict:
+def get_confusion_status(user_id: int) -> dict:
     '''Retorna um dicionário caso o status do personagem exista 
     a condição CONFUSION.
     '''
+
     status_model = StatusModel()
     query = {
         'player_id': user_id,

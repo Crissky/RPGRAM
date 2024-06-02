@@ -147,18 +147,36 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_end=SECTION_HEAD_EQUIPS_END
             )
 
-            await update.effective_message.reply_text(
-                markdown_equips_sheet,
+            reply_text_kwargs = dict(
+                text=markdown_equips_sheet,
                 parse_mode=ParseMode.MARKDOWN_V2,
                 reply_markup=reply_markup,
                 disable_notification=silent
             )
+            await call_telegram_message_function(
+                function_caller='EQUIPS.START()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
     else:
-        await update.effective_message.reply_text(
-            f'Seu personagem ainda não possui equipamentos.\n'
-            f'Equips: {equips}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Seu personagem ainda não possui equipamentos.\n'
+                f'Equips: {equips}'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True,
+        )
+        await call_telegram_message_function(
+            function_caller='EQUIPS.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
 

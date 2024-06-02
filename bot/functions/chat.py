@@ -319,14 +319,13 @@ async def reply_text(
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
 ) -> Message:
     '''Responde uma mensagem.
+
+    Se update e context forem passados simultaneamente, a mensagem será 
+    respondida usando update.effective_message.reply_text
     '''
 
     if update is None and context is None:
         raise ValueError('update ou context deve ser passado.')
-    if update and context:
-        raise ValueError(
-            'update ou context não podem ser passados ao mesmo tempo.'
-        )
     if context and not isinstance(chat_id, int):
         raise ValueError('Quando usar context, chat_id deve ser um inteiro.')
     if context and not isinstance(message_id, int):

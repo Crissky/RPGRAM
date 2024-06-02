@@ -18,7 +18,10 @@ from bot.decorators import (
 )
 from bot.decorators.char import skip_if_dead_char_silent
 from bot.functions.char import add_xp
-from bot.functions.chat import send_private_message
+from bot.functions.chat import (
+    call_telegram_message_function,
+    send_private_message
+)
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_XP_END, SECTION_HEAD_XP_START
 
@@ -72,10 +75,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if report_xp['level_up']:
-        await update.effective_message.reply_text(
+        reply_text_kwargs = dict(
             text=text,
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CHAT_XP.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
     elif player.verbose:
         await send_private_message(

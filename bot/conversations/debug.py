@@ -16,7 +16,10 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
 )
-from bot.functions.chat import get_close_keyboard
+from bot.functions.chat import (
+    call_telegram_message_function,
+    get_close_keyboard
+)
 from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
@@ -56,12 +59,20 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = f'"{args}" não é um argumento válido.'
 
     text = escape_basic_markdown_v2(text)
-    await update.effective_message.reply_text(
-        text,
+    reply_text_kwargs = dict(
+        text=text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
         reply_markup=get_close_keyboard(None),
         allow_sending_without_reply=True
+    )
+    await call_telegram_message_function(
+        function_caller='DEBUG.START_DEBUG()',
+        function=update.effective_message.reply_text,
+        context=context,
+        need_response=False,
+        skip_retry=False,
+        **reply_text_kwargs,
     )
 
 
@@ -99,12 +110,20 @@ async def get_random_debuff(
     text = report['text']
     text += char.get_all_sheets(verbose=False, markdown=True)
     text = escape_basic_markdown_v2(text)
-    await update.effective_message.reply_text(
-        text,
+    reply_text_kwargs = dict(
+        text=text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
         reply_markup=get_close_keyboard(user_id=user_id),
         allow_sending_without_reply=True
+    )
+    await call_telegram_message_function(
+        function_caller='DEBUG.GET_RANDOM_DEBUFF()',
+        function=update.effective_message.reply_text,
+        context=context,
+        need_response=False,
+        skip_retry=False,
+        **reply_text_kwargs,
     )
 
 

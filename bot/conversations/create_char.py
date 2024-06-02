@@ -32,6 +32,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.constants.sign_up_player import COMMANDS as COMMANDS_SIGN_UP_PLAYER
 from bot.decorators import print_basic_infos
 from bot.functions.chat import (
     REPLY_CHAT_ACTION_KWARGS,
@@ -84,11 +85,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if not player_model.get(player_id):
-        response = await update.effective_message.reply_text(
-            f'Você precisa criar um perfil para criar um personagem.\n'
-            f'Para isso, utilize o comando /criarconta.',
+        reply_text_kwargs = dict(
+            text=(
+                f'Você precisa criar um perfil para criar um personagem.\n'
+                f'Para isso, utilize o comando /{COMMANDS_SIGN_UP_PLAYER[0]}.'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        response = await call_telegram_message_function(
+            function_caller='CREATE_CHAR.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=True,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
         return ConversationHandler.END
@@ -101,15 +112,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             ]
         ]
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        response = await update.effective_message.reply_text(
-            f'Olá {user_name}, vocé já possui uma personagem criado.\n'
-            f'Gostaria de apagá-lo?\n'
-            f'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
-            f'Personagem:\n'
-            f'{player_character}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Olá {user_name}, vocé já possui uma personagem criado.\n'
+                f'Gostaria de apagá-lo?\n'
+                f'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
+                f'Personagem:\n'
+                f'{player_character}'
+            ),
             reply_markup=reply_markup,
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        response = await call_telegram_message_function(
+            function_caller='CREATE_CHAR.START()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=True,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
         context.user_data['response'] = response
         return DELETE_ROUTES
@@ -119,14 +140,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         for race in race_model.get_all(query={'enemy': False}, fields=['name'])
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    response = await update.effective_message.reply_text(
-        'Vamos começar a criar o seu personagem.\n'
-        'Você pode cancelar a criação a qualquer momento '
-        'usando o comando /cancel.\n\n'
-        'Escolha uma das raças abaixo:',
+    reply_text_kwargs = dict(
+        text=(
+            'Vamos começar a criar o seu personagem.\n'
+            'Você pode cancelar a criação a qualquer momento '
+            'usando o comando /cancel.\n\n'
+            'Escolha uma das raças abaixo:'
+        ),
         reply_markup=reply_markup,
         disable_notification=silent,
         allow_sending_without_reply=True
+    )
+    response = await call_telegram_message_function(
+        function_caller='CREATE_CHAR.START()',
+        function=update.effective_message.reply_text,
+        context=context,
+        need_response=True,
+        skip_retry=False,
+        **reply_text_kwargs,
     )
     context.user_data['response'] = response
 
@@ -323,12 +354,22 @@ async def create_char(
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     if not is_valid_char_name(character_name):
-        await update.effective_message.reply_text(
-            f'"{character_name}" não é um nome de personagem válido.\n\n'
-            f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-            f'apenas letras, números, espaços, e traço "-".',
+        reply_text_kwargs = dict(
+            text=(
+                f'"{character_name}" não é um nome de personagem válido.\n\n'
+                f'O nome de personagem deve conter entre 3 e 50 caracteres, '
+                f'apenas letras, números, espaços, e traço "-".'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CREATE_CHAR.CREATE_CHAR()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
         return CREATE_CHAR_ROUTES
@@ -355,26 +396,46 @@ async def create_char(
     player_character = char_model.get(player_id)
 
     if player_character:
-        await update.effective_message.reply_text(
-            f'Personagem Criado com sucesso!!!\n\n'
-            f'{player_character}',
+        reply_text_kwargs = dict(
+            text=(
+                f'Personagem Criado com sucesso!!!\n\n'
+                f'{player_character}'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True
         )
+        await call_telegram_message_function(
+            function_caller='CREATE_CHAR.CREATE_CHAR()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
+        )
     else:
-        await update.effective_message.reply_text(
-            'Algo deu errado ao criar o personagem. '
-            'Tente novamente mais tarde.\n\n'
-            'Se o problema persistir, contacte o meu desenvolvedor.\n\n'
-            f'user_name: {user_name}\n'
-            f'player_id: {player_id}\n'
-            f'race_name: {race_name}\n'
-            f'classe_name: {classe_name}\n'
-            f'character_name: {character_name}\n'
-            f'race:\n{race}\n'
-            f'classe:\n{classe}\n',
+        reply_text_kwargs = dict(
+            text=(
+                'Algo deu errado ao criar o personagem. '
+                'Tente novamente mais tarde.\n\n'
+                'Se o problema persistir, contacte o meu desenvolvedor.\n\n'
+                f'user_name: {user_name}\n'
+                f'player_id: {player_id}\n'
+                f'race_name: {race_name}\n'
+                f'classe_name: {classe_name}\n'
+                f'character_name: {character_name}\n'
+                f'race:\n{race}\n'
+                f'classe:\n{classe}\n'
+            ),
             disable_notification=silent,
             allow_sending_without_reply=True
+        )
+        await call_telegram_message_function(
+            function_caller='CREATE_CHAR.CREATE_CHAR()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
         )
 
     if 'response' in context.user_data:
@@ -385,9 +446,17 @@ async def create_char(
             f'{__name__}.create_char(): '
             f'chat_id: {chat_id}, message_id: {message_id}'
         )
-        await update.get_bot().delete_message(
+        delete_message_kwargs = dict(
             chat_id=chat_id,
             message_id=message_id,
+        )
+        await call_telegram_message_function(
+            function_caller='CREATE_CHAR.CREATE_CHAR()',
+            function=context.bot.delete_message,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **delete_message_kwargs,
         )
 
     clean_user_data(context)
@@ -431,22 +500,24 @@ async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 @print_basic_infos
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     new_text = "Tchau! Você pode criar um personagem mais tarde."
+    chat_id = update.effective_chat.id
+    message_id = update.effective_message.id
 
+    print(
+        f'{__name__}.cancel():',
+        f'chat_id: {chat_id}, message_id: {message_id}'
+    )
+    await edit_message_text(
+        function_caller='CREATE_CHAR.CANCEL()',
+        new_text=new_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=False,
+    )
     if 'response' in context.user_data:
-        response = context.user_data['response']
-        chat_id = response.chat_id
-        message_id = response.id
-        print(
-            f'{__name__}.cancel():',
-            f'chat_id: {chat_id}, message_id: {message_id}'
-        )
-        await update.get_bot().edit_message_text(
-            chat_id=chat_id,
-            message_id=message_id,
-            text=new_text,
-        )
-    elif update.callback_query:
-        await update.callback_query.edit_message_text(new_text)
+        del context.user_data['response']
 
     clean_user_data(context)
 
