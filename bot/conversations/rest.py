@@ -114,10 +114,18 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         clean_func=None,
     )
 
-    await update.message.reply_text(
+    reply_text_kwargs = dict(
         text=text,
         disable_notification=silent,
         allow_sending_without_reply=True
+    )
+    await call_telegram_message_function(
+        function_caller='REST.REST()',
+        function=update.effective_message.reply_text,
+        context=context,
+        need_response=False,
+        skip_retry=False,
+        **reply_text_kwargs,
     )
 
 
