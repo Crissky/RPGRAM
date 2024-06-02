@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
@@ -8,6 +8,9 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.constants.stats.stats_combat import FULL_HEAL_VALUE
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 MINOR_HEALING_POTION_POWER = 100
@@ -50,12 +53,12 @@ class HealingConsumable(Consumable):
         self.power = power
         self.condition = condition
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = target.combat_stats.cure_hit_points(self.power)
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         report = target.status.add_condition(self.condition)
 
         return report

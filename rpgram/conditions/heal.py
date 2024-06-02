@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
@@ -17,6 +17,9 @@ from rpgram.enums.consumable import (
     HealingConsumableEnum
 )
 from rpgram.enums.turn import TurnEnum
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 MINOR_HEALING_POTION_TURNPOWER = MINOR_HEALING_POTION_POWER // 5
 LIGHT_HEALING_POTION_TURNPOWER = LIGHT_HEALING_POTION_POWER // 5
@@ -58,14 +61,14 @@ class HealingCondition(Condition):
     def description(self) -> str:
         return f'Cura {self.power * self.turn} de HP em 5 Turnos.'
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         remaining_heal = abs(self.power * self.turn)
         report = target.combat_stats.cure_hit_points(remaining_heal)
         self.last_turn()
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         report = target.combat_stats.cure_hit_points(self.power)
 
         return report

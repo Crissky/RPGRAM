@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from datetime import datetime
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
 from constant.text import TEXT_DELIMITER
@@ -11,6 +11,8 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 class Consumable:
     def __init__(
@@ -41,19 +43,19 @@ class Consumable:
         self.__updated_at = updated_at
 
     @abstractmethod
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         ...
 
     @abstractmethod
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         ...
 
-    def use(self, target):
+    def use(self, target: 'BaseCharacter') -> dict:
         report = self.function(target)
 
         return report
 
-    def battle_use(self, target):
+    def battle_use(self, target: 'BaseCharacter') -> dict:
         report = self.battle_function(target)
 
         return report
@@ -70,7 +72,7 @@ class Consumable:
             updated_at=self.__updated_at,
         )
 
-    def __call__(self, target):
+    def __call__(self, target: 'BaseCharacter'):
         return self.use(target)
 
     def get_sheet(
