@@ -82,6 +82,7 @@ from bot.constants.bag import (
     DROPUSE_QUANTITY_OPTION_LIST,
     USE_MANY_BUTTON_TEXT,
     USE_MANY_BUTTON_VERBOSE_TEXT,
+    VERBOSE_BUTTONS_THRESHOLD,
 )
 
 from bot.constants.filters import (
@@ -1856,11 +1857,10 @@ def get_use_consumable_buttons(
 ) -> List[InlineKeyboardButton]:
     use_buttons = []
     quantity = item.quantity
-    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     if item.item.usable is True:
         for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
             if quantity_option <= quantity:
-                if quantity < verbose_threshold:
+                if quantity < VERBOSE_BUTTONS_THRESHOLD:
                     text = USE_MANY_BUTTON_VERBOSE_TEXT.format(
                         quantity_option=f'{quantity_option:02}'
                     )
@@ -1897,10 +1897,9 @@ def get_discard_buttons(
 ) -> List[InlineKeyboardButton]:
     drop_buttons = []
     quantity = item.quantity
-    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
-            if quantity < verbose_threshold:
+            if quantity < VERBOSE_BUTTONS_THRESHOLD:
                 text = DISCARD_MANY_BUTTON_VERBOSE_TEXT.format(
                     quantity_option=f'{quantity_option:02}'
                 )
@@ -1937,11 +1936,10 @@ def get_sell_buttons(
 ) -> List[InlineKeyboardButton]:
     sell_buttons = []
     quantity = item.quantity
-    verbose_threshold = DROPUSE_QUANTITY_OPTION_LIST[2]
     for quantity_option in DROPUSE_QUANTITY_OPTION_LIST:
         if quantity_option <= quantity:
             if isinstance(item.item, TrocadoPouchConsumable):
-                if quantity < verbose_threshold:
+                if quantity < VERBOSE_BUTTONS_THRESHOLD:
                     text = COLLECT_MANY_BUTTON_VERBOSE_TEXT.format(
                         quantity_option=f'{quantity_option:02}'
                     )
@@ -1950,7 +1948,7 @@ def get_sell_buttons(
                         quantity_option=f'{quantity_option:02}'
                     )
             else:
-                if quantity < verbose_threshold:
+                if quantity < VERBOSE_BUTTONS_THRESHOLD:
                     text = SELL_MANY_BUTTON_VERBOSE_TEXT.format(
                         quantity_option=f'{quantity_option:02}'
                     )
@@ -1970,6 +1968,32 @@ def get_sell_buttons(
                     })
                 )
             )
+
+    if all((
+        quantity > 0,
+        quantity not in DROPUSE_QUANTITY_OPTION_LIST,
+        isinstance(item.item, TrocadoPouchConsumable)
+    )):
+        if quantity < VERBOSE_BUTTONS_THRESHOLD:
+            text = COLLECT_MANY_BUTTON_VERBOSE_TEXT.format(
+                quantity_option=f'{quantity:02}'
+            )
+        else:
+            text = COLLECT_MANY_BUTTON_TEXT.format(
+                quantity_option=f'{quantity:02}'
+            )
+        sell_buttons.append(
+            InlineKeyboardButton(
+                text=text,
+                callback_data=callback_data_to_string({
+                    'sell': quantity,
+                    'item': item_pos,
+                    'page': page,
+                    'user_id': user_id,
+                    'target_id': target_id
+                })
+            )
+        )
 
     buttons_per_row = 4 if len(sell_buttons) <= 4 else 3
     return reshape_row_buttons(

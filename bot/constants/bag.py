@@ -26,6 +26,7 @@ SEND_DROP_MESSAGE_SLEEP_TIME = 3
 ITEMS_PER_PAGE = 10
 DROPUSE_MANY_MAX = 10
 DROPUSE_QUANTITY_OPTION_LIST = [1, 3, 5, 10, 30, 50]
+VERBOSE_BUTTONS_THRESHOLD = 5
 
 
 # SECTIONS TEXTs
@@ -47,7 +48,7 @@ PATTERN_PAGE = fr'^{{{CALLBACK_KEY_LIST.index("page")}:'
 PATTERN_ITEM = fr'^{{{CALLBACK_KEY_LIST.index("item")}:'
 PATTERN_USE = fr'^{{{CALLBACK_KEY_LIST.index("use")}:'
 PATTERN_DROP = fr'^{{{CALLBACK_KEY_LIST.index("drop")}:(1|3|5)'
-PATTERN_SELL = fr'^{{{CALLBACK_KEY_LIST.index("sell")}:(1|3|5)'
+PATTERN_SELL = fr'^{{{CALLBACK_KEY_LIST.index("sell")}:\d'
 PATTERN_IDENTIFY = fr'^{{{CALLBACK_KEY_LIST.index("identify")}:1'
 PATTERN_EQUIP_INFO = fr'^{{{CALLBACK_KEY_LIST.index("equip_info")}:[01]'
 PATTERN_SORT = fr'^{{{CALLBACK_KEY_LIST.index("sort")}:'
