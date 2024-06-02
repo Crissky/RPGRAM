@@ -606,10 +606,12 @@ async def punishment(
     silent: bool,
     message_id: int,
 ):
-    text_list = []
+    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
+    desafio.
+    '''
+
     group_level = get_attribute_group(chat_id, 'group_level')
     char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
-    min_ratio_damage = 0.50
     sorted_char_list = sorted(
         char_list,
         key=attrgetter('level', 'xp'),
@@ -624,12 +626,6 @@ async def punishment(
     min_condition_level = int(group_level // 10) + 1
     max_condition_level = min_condition_level * 2
     for char in sorted_char_list:
-        report_damage = add_trap_damage(
-            min_ratio=min_ratio_damage,
-            char=char,
-        )
-        text = f'{char.player_name} - {report_damage["text"]}\n'
-
         quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
         debuff_sample = sample(debuff_list, quantity_sample)
         debuff_sample = [
@@ -643,7 +639,15 @@ async def punishment(
             *debuff_sample,
             char=char,
         )
-        text += f'{report_condition["text"]}\n'
+        report_damage = add_trap_damage(
+            min_ratio_damage=0.50,
+            char=char,
+        )
+        text = (
+            f'{report_condition["text"]}\n'
+            f'{char.player_name} - {report_damage["text"]}\n'
+        )
+
         text = create_text_in_box(
             text=text,
             section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,

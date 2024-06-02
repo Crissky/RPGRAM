@@ -136,7 +136,7 @@ def add_damage(
 
 
 def add_trap_damage(
-    min_ratio: float,
+    min_ratio_damage: float,
     user_id: int = None,
     char: BaseCharacter = None,
     type_damage: DamageEnum = None,
@@ -154,7 +154,7 @@ def add_trap_damage(
         char_model = CharacterModel()
         char = char_model.get(user_id)
 
-    boosted_ratio = triangular(min_ratio, min_ratio*1.5)
+    boosted_ratio = triangular(min_ratio_damage, min_ratio_damage * 1.5)
     boosted_ratio = round(boosted_ratio, 2)
     boosted_ratio = min(0.99, boosted_ratio)
     base_damage = int(char.combat_stats.hit_points * boosted_ratio)
@@ -176,7 +176,7 @@ def add_trap_damage(
     return dict(
         char=char,
         type_damage=type_damage,
-        min_ratio=min_ratio,
+        min_ratio_damage=min_ratio_damage,
         boosted_ratio=boosted_ratio,
         **damage_report,
     )
