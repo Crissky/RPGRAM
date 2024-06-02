@@ -1,7 +1,7 @@
 from datetime import datetime
+from bson import ObjectId
 from typing import Union
 
-from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.enums.debuff import (
     BERSERKER,
@@ -90,11 +90,14 @@ class BleedingCondition(DebuffCondition):
             turn=-1,
             level=level,
         )
-        self.__power_constant = 0.01
+        self.__power_constant = 0.0020
 
     @property
     def power(self):
-        return self.level * self.__power_constant
+        power = self.level * self.__power_constant
+        power = min(power, 0.50)
+
+        return power
 
     @property
     def description(self) -> str:
