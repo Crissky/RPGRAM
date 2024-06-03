@@ -11,7 +11,7 @@ from telegram.ext import (
     PrefixHandler
 )
 
-from bot.constants.debug import COMMANDS, DEBUFF_COMMANDS
+from bot.constants.debug import COMMANDS, DEBUFF_COMMANDS, SECTION_TEXT_DEBUG
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
@@ -28,8 +28,12 @@ from bot.decorators import (
 from bot.functions.char import add_conditions
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
-from constant.text import TEXT_SEPARATOR
-from function.text import escape_basic_markdown_v2
+from constant.text import (
+    SECTION_HEAD_DEBUG_END,
+    SECTION_HEAD_DEBUG_START,
+    TEXT_SEPARATOR
+)
+from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo.populate.enemy import create_random_enemies
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.factory import factory_condition
@@ -55,10 +59,24 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
             enemy.get_all_sheets()
             for enemy in enemy_list
         )
+    elif len(args) > 0 and args[0] in ['jobs', 'job']:
+        current_jobs = context.job_queue.jobs()
+        text = '*Jobs Atuais*:\n\n'
+
+        if current_jobs:
+            for index, job in enumerate(current_jobs):
+                text += f'{index+1:02}: {job.name}\n'
+        else:
+            text += 'Nenhum job ativo.'
     else:
         text = f'"{args}" não é um argumento válido.'
 
-    text = escape_basic_markdown_v2(text)
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_DEBUG,
+        section_start=SECTION_HEAD_DEBUG_START,
+        section_end=SECTION_HEAD_DEBUG_END,
+    )
     reply_text_kwargs = dict(
         text=text,
         parse_mode=ParseMode.MARKDOWN_V2,
