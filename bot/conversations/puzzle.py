@@ -63,10 +63,10 @@ from bot.functions.date_time import is_boosted_day
 from bot.functions.keyboard import reshape_row_buttons
 
 from constant.text import (
-    SECTION_HEAD_PUNISHMENT_END,
-    SECTION_HEAD_PUNISHMENT_PUZZLE_END,
-    SECTION_HEAD_PUNISHMENT_PUZZLE_START,
-    SECTION_HEAD_PUNISHMENT_START,
+    SECTION_HEAD_FAIL_PUNISHMENT_END,
+    SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END,
+    SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START,
+    SECTION_HEAD_FAIL_PUNISHMENT_START,
     SECTION_HEAD_PUZZLE_BADMOVE_END,
     SECTION_HEAD_PUZZLE_BADMOVE_START,
     SECTION_HEAD_PUZZLE_COMPLETE_END,
@@ -215,8 +215,8 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
         text = choice(GODS_TIMEOUT_FEEDBACK_TEXTS)
         text += ' '
         text += choice(GODS_LOSES_FEEDBACK_TEXTS)
-        section_start = SECTION_HEAD_PUNISHMENT_PUZZLE_START
-        section_end = SECTION_HEAD_PUNISHMENT_PUZZLE_END
+        section_start = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START
+        section_end = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END
         await punishment(
             chat_id=chat_id,
             context=context,
@@ -646,8 +646,8 @@ async def punishment(
         text = create_text_in_box(
             text=text,
             section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
-            section_start=SECTION_HEAD_PUNISHMENT_START,
-            section_end=SECTION_HEAD_PUNISHMENT_END
+            section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+            section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
         )
 
         await reply_text_and_forward(
