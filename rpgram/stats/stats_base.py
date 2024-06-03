@@ -16,6 +16,7 @@ from rpgram.constants.text import (
     XP_EMOJI_TEXT
 )
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.stats_base import BaseStatsEnum
 
 
 class BaseStats:
@@ -456,23 +457,34 @@ class BaseStats:
 
     def __getitem__(self, key: str) -> int:
         key = key.upper()
-        if key in ['STR', 'FOR', 'STRENGTH', 'FORCA', 'FORÇA']:
+
+        for_enum = BaseStatsEnum.FOR.value
+        des_enum = BaseStatsEnum.DES.value
+        con_enum = BaseStatsEnum.CON.value
+        int_enum = BaseStatsEnum.INT.value
+        sab_enum = BaseStatsEnum.SAB.value
+        car_enum = BaseStatsEnum.CAR.value
+        xp_enum = BaseStatsEnum.XP.value
+        level_enum = BaseStatsEnum.LEVEL.value
+        classe_level_enum = BaseStatsEnum.CLASSE_LEVEL.value
+
+        if key in [for_enum, 'STR', 'FOR', 'FORCA', 'FORÇA']:
             return self.strength
-        elif key in ['DEX', 'DES', 'DEXTERITY', 'DESTREZA']:
+        elif key in [des_enum, 'DEX', 'DES', 'DESTREZA']:
             return self.dexterity
-        elif key in ['CON', 'CONSTITUTION', 'CONSTITUICAO', 'CONSTITUIÇÃO']:
+        elif key in [con_enum, 'CON', 'CONSTITUICAO', 'CONSTITUIÇÃO']:
             return self.constitution
-        elif key in ['INT', 'INTELLIGENCE', 'INTELIGENCIA', 'INTELIGÊNCIA']:
+        elif key in [int_enum, 'INT', 'INTELIGENCIA', 'INTELIGÊNCIA']:
             return self.intelligence
-        elif key in ['WIS', 'SAB', 'WISDOM', 'SABEDORIA']:
+        elif key in [sab_enum, 'WIS', 'SAB', 'SABEDORIA']:
             return self.wisdom
-        elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
+        elif key in [car_enum, 'CHA', 'CAR', 'CARISMA']:
             return self.charisma
-        elif key in ['XP', 'EXPERIENCE', 'EXPERIENCIA', 'EXPERIÊNCIA']:
+        elif key in [xp_enum, 'EXPERIENCE', 'EXPERIENCIA', 'EXPERIÊNCIA']:
             return self.xp
-        elif key in ['LEVEL', 'NÍVEL', 'NIVEL']:
+        elif key in [level_enum, 'NÍVEL', 'NIVEL']:
             return self.level
-        elif key in ['CLASSE_LEVEL', 'NIVEL_DA_CLASSE', 'NIVEL_DA_CLASSE']:
+        elif key in [classe_level_enum, 'NIVEL_DA_CLASSE', 'NIVEL_DA_CLASSE']:
             return self.classe_level
         else:
             raise KeyError(
@@ -482,17 +494,25 @@ class BaseStats:
 
     def __setitem__(self, key: str, value: int) -> None:
         key = key.upper()
-        if key in ['STR', 'FOR', 'STRENGTH', 'FORCA', 'FORÇA']:
+
+        for_enum = BaseStatsEnum.FOR.value
+        des_enum = BaseStatsEnum.DES.value
+        con_enum = BaseStatsEnum.CON.value
+        int_enum = BaseStatsEnum.INT.value
+        sab_enum = BaseStatsEnum.SAB.value
+        car_enum = BaseStatsEnum.CAR.value
+
+        if key in [for_enum, 'STR', 'FOR', 'FORCA', 'FORÇA']:
             self.strength = value
-        elif key in ['DEX', 'DES', 'DEXTERITY', 'DESTREZA']:
+        elif key in [des_enum, 'DEX', 'DES', 'DESTREZA']:
             self.dexterity = value
-        elif key in ['CON', 'CONSTITUTION', 'CONSTITUICAO', 'CONSTITUIÇÃO']:
+        elif key in [con_enum, 'CON', 'CONSTITUICAO', 'CONSTITUIÇÃO']:
             self.constitution = value
-        elif key in ['INT', 'INTELLIGENCE', 'INTELIGENCIA', 'INTELIGÊNCIA']:
+        elif key in [int_enum, 'INT', 'INTELIGENCIA', 'INTELIGÊNCIA']:
             self.intelligence = value
-        elif key in ['WIS', 'SAB', 'WISDOM', 'SABEDORIA']:
+        elif key in [sab_enum, 'WIS', 'SAB', 'SABEDORIA']:
             self.wisdom = value
-        elif key in ['CHA', 'CAR', 'CHARISMA', 'CARISMA']:
+        elif key in [car_enum, 'CHA', 'CAR', 'CARISMA']:
             self.charisma = value
         else:
             raise KeyError(

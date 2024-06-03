@@ -1,0 +1,13 @@
+from enum import Enum
+
+
+class BaseStatsEnum(Enum):
+    FOR = STRENGTH = 'STRENGTH'
+    DES = DEXTERITY = 'DEXTERITY'
+    CON = CONSTITUTION = 'CONSTITUTION'
+    INT = INTELLIGENCE = 'INTELLIGENCE'
+    SAB = WISDOM = 'WISDOM'
+    CAR = CHARISMA = 'CHARISMA'
+    XP = 'XP'
+    LEVEL = 'LEVEL'
+    CLASSE_LEVEL = 'CLASSE_LEVEL'

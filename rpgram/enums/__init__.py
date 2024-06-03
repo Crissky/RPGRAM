@@ -29,3 +29,5 @@ from rpgram.enums.skill import SkillTypeEnum
 from rpgram.enums.skill import TargetEnum
 from rpgram.enums.trocado import TrocadoEnum
 from rpgram.enums.turn import TurnEnum
+from rpgram.enums.stats_base import BaseStatsEnum
+from rpgram.enums.stats_combat import CombatStatsEnum
