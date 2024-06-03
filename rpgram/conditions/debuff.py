@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Union
-
 from bson import ObjectId
+from typing import TYPE_CHECKING, Union
+
 from rpgram.conditions.condition import Condition
 from rpgram.enums.debuff import (
     BERSERKER,
@@ -21,6 +21,9 @@ from rpgram.enums.debuff import (
 from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.enums.turn import TurnEnum
 
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 class DebuffCondition(Condition):
 
@@ -69,7 +72,7 @@ class BerserkerCondition(DebuffCondition):
         power = self.level / 10
         return (1 + power)
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
         if self.turn != 1:
             report['text'] = f'Personagem está enlouquecido ({BERSERKER}).'
@@ -77,7 +80,7 @@ class BerserkerCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -90,11 +93,14 @@ class BleedingCondition(DebuffCondition):
             turn=-1,
             level=level,
         )
-        self.__power_constant = 0.01
+        self.__power_constant = 0.0020
 
     @property
     def power(self):
-        return self.level * self.__power_constant
+        power = self.level * self.__power_constant
+        power = min(power, 0.50)
+
+        return power
 
     @property
     def description(self) -> str:
@@ -104,7 +110,7 @@ class BleedingCondition(DebuffCondition):
             f'como dano a cada turno.'
         )
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         power = self.power
         damage = target.combat_stats.hp * power
         report = target.combat_stats.damage_hit_points(damage)
@@ -113,7 +119,7 @@ class BleedingCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -139,14 +145,14 @@ class BlindnessCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está cego.'
         report['action'] = f'{BLINDNESS}'
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -172,14 +178,14 @@ class BurnCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está com queimaduras.'
         report['action'] = f'{BURN}'
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -200,7 +206,7 @@ class ConfusionCondition(DebuffCondition):
             f'podendo atacar aliados ou a si.'
         )
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
         if self.turn != 1:
             report['text'] = 'Personagem está confuso.'
@@ -208,7 +214,7 @@ class ConfusionCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -240,14 +246,14 @@ class CurseCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está amaldiçoado.'
         report['action'] = f'{CURSE}'
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -280,14 +286,14 @@ class ExhaustionCondition(DebuffCondition):
         power = self.level / 10
         return (1 - power)
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está exausto.'
         report['action'] = f'{EXHAUSTION}'
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -305,7 +311,7 @@ class FrozenCondition(DebuffCondition):
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
         if self.turn != 1:
             report['text'] = 'Personagem está congelado.'
@@ -313,7 +319,7 @@ class FrozenCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -331,7 +337,7 @@ class ParalysisCondition(DebuffCondition):
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
         if self.turn != 1:
             report['text'] = 'Personagem está paralisado.'
@@ -339,7 +345,7 @@ class ParalysisCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -357,7 +363,7 @@ class PetrifiedCondition(DebuffCondition):
     def description(self) -> str:
         return 'O personagem não pode realizar ações.'
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
         if self.turn != 1:
             report['text'] = 'Personagem está petrificado.'
@@ -365,7 +371,7 @@ class PetrifiedCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -389,14 +395,14 @@ class PoisoningCondition(DebuffCondition):
         damage = sum([10 + i + i*10//2 for i in range(0, power)])
         return damage
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = target.combat_stats.damage_hit_points(self.damage)
         report['text'] = f'{self.full_name} -> ' + report['text']
         report['action'] = f'{self.name}'
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -414,14 +420,14 @@ class SilenceCondition(DebuffCondition):
     def description(self) -> str:
         return 'O personagem não pode usar feitiços, magias ou encantamentos.'
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está silenciado.'
         report['action'] = f'{SILENCE}'
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 
@@ -439,7 +445,7 @@ class StunnedCondition(DebuffCondition):
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turno.'
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
         if self.turn != 1:
             report['text'] = 'Personagem está atordoado.'
@@ -447,7 +453,7 @@ class StunnedCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
 

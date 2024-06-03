@@ -4,7 +4,7 @@ Este módulo representa as condições positivas e negativas dos personagens.
 
 from abc import abstractmethod
 from datetime import datetime
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
 
@@ -15,6 +15,9 @@ from rpgram.boosters.stats_booster import StatsBooster
 from rpgram.enums.consumable import HealingConsumableEmojiEnum
 from rpgram.enums.debuff import DebuffEmojiEnum
 from rpgram.enums.turn import TurnEnum
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 class Condition(StatsBooster):
@@ -47,14 +50,14 @@ class Condition(StatsBooster):
         self.__level = level
 
     @abstractmethod
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         ...
 
     @abstractmethod
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         ...
 
-    def activate(self, target) -> dict:
+    def activate(self, target: 'BaseCharacter') -> dict:
         report = self.function(target)
         report['condition_name'] = self.name
         if self.__turn not in [-1, 0]:
@@ -62,14 +65,14 @@ class Condition(StatsBooster):
 
         return report
 
-    def battle_activate(self, target) -> dict:
+    def battle_activate(self, target: 'BaseCharacter') -> dict:
         report = self.battle_function(target)
         if self.__turn not in [-1, 0]:
             self.__turn -= 1
 
         return report
 
-    def __call__(self, target) -> dict:
+    def __call__(self, target: 'BaseCharacter') -> dict:
         return self.activate(target)
 
     def add_level(self, value: int = 1):

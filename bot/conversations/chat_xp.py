@@ -35,6 +35,7 @@ from function.text import create_text_in_box
 from repository.mongo import (
     PlayerModel
 )
+from rpgram.player import Player
 
 
 SECTION_TEXT_XP = 'EXPERIÊNCIA'
@@ -53,7 +54,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_date = utc_to_brazil_datetime(message_date)
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
 
     if (xp_cooldown := player.xp_cooldown):
         xp_cooldown = replace_tzinfo(xp_cooldown)

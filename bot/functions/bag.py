@@ -5,6 +5,7 @@ from typing import List, Union
 from bot.constants.bag import ITEMS_PER_PAGE
 from repository.mongo import BagModel, ItemModel
 from rpgram import Item
+from rpgram.bag import Bag
 from rpgram.consumables import Consumable, IdentifyingConsumable
 from rpgram.boosters import Equipment
 
@@ -38,7 +39,7 @@ def get_item_from_bag_by_position(
 
     bag_model = BagModel()
     item_index = (ITEMS_PER_PAGE * page) + item_pos
-    player_bag = bag_model.get(
+    player_bag: Bag = bag_model.get(
         query={'player_id': user_id},
         fields={'items_ids': {'$slice': [item_index, 1]}},
         partial=False
@@ -58,7 +59,7 @@ def exist_item_in_bag_by_position(
 
     bag_model = BagModel()
     item_index = (ITEMS_PER_PAGE * page) + item_pos
-    player_bag = bag_model.get(
+    player_bag: Bag = bag_model.get(
         query={'player_id': user_id},
         fields={'items_ids': {'$slice': [item_index, 1]}},
         partial=False
@@ -87,12 +88,12 @@ def get_item_from_bag_by_id(
             }
         }
     }
-    bag_dict = bag_model.get(query=query, fields=fields)
+    bag_dict: dict = bag_model.get(query=query, fields=fields)
     if bag_dict:
         items_ids = bag_dict['items_ids']
         item_dict = items_ids[0]
         quantity = item_dict['quantity']
-        item = item_model.get(item_id)
+        item: Union[Consumable, Equipment] = item_model.get(item_id)
         item = Item(item, quantity=quantity)
 
         return item
@@ -103,7 +104,9 @@ def get_item_by_name(item_name: str) -> Union[Consumable, Equipment]:
     '''
 
     item_model = ItemModel()
-    item = item_model.get(query={'name': item_name})
+    item: Union[Consumable, Equipment] = item_model.get(
+        query={'name': item_name}
+    )
 
     return item
 
@@ -120,7 +123,7 @@ def get_id_item_by_name(item_name: str) -> dict:
     '''
 
     item_model = ItemModel()
-    item_dict = item_model.get(
+    item_dict: dict = item_model.get(
         query={'name': item_name},
         fields=['_id', 'name'],
     )
@@ -160,7 +163,7 @@ def exists_in_bag(
             '$elemMatch': {'_id': item_id}
         }
     }
-    item_in_bag = bag_model.get(query=query, fields=['_id'])
+    item_in_bag: dict = bag_model.get(query=query, fields=['_id'])
 
     return bool(item_in_bag)
 
@@ -185,7 +188,7 @@ def sub_item_from_bag_by_name(item_name: str, user_id: int):
     item_id = item._id
     query = {'player_id': user_id, 'items_ids._id': item_id}
     fields = {'items_ids.$': 1}
-    bag_dict = bag_model.get(query=query, fields=fields)
+    bag_dict: dict = bag_model.get(query=query, fields=fields)
     item_quantity = bag_dict['items_ids'][0]['quantity']
     item.quantity = item_quantity
     bag_model.sub(item, user_id)
@@ -206,7 +209,7 @@ def drop_random_items_from_bag(user_id: int) -> List[Item]:
     item_model = ItemModel()
     drop_items = []
     query = {'player_id': user_id}
-    items_ids = bag_model.get(query=query, fields=['items_ids'])
+    items_ids: dict = bag_model.get(query=query, fields=['items_ids'])
     if items_ids:
         items_ids = items_ids['items_ids']
     else:
@@ -220,7 +223,9 @@ def drop_random_items_from_bag(user_id: int) -> List[Item]:
         item_id = item_dict['_id']
         item_quantity = item_dict['quantity']
         drop_quantity = randint(1, item_quantity)
-        drop_item = item_model.get(query={'_id': item_id})
+        drop_item: Union[Consumable, Equipment] = item_model.get(
+            query={'_id': item_id}
+        )
         drop_item = Item(drop_item, quantity=drop_quantity)
         drop_items.append(drop_item)
 
@@ -241,7 +246,7 @@ def is_full_bag(user_id: int) -> bool:
         'player_id': user_id,
         f'items_ids.{LIMIT_ITEM_IN_BAG}': {'$exists': True}
     }
-    bag_dict = bag_model.get(query=query, fields=['player_id'])
+    bag_dict: dict = bag_model.get(query=query, fields=['player_id'])
 
     return bool(bag_dict)
 

@@ -24,6 +24,7 @@ from bot.functions.keyboard import reshape_row_buttons
 
 from bot.constants.classe import ACCESS_DENIED, COMMANDS
 from repository.mongo import ClasseModel
+from rpgram.boosters import Classe
 
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
@@ -42,7 +43,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         classe_name = data['classe_name']
         _all = bool(data['_all'])
         classe_model = ClasseModel()
-        classe = classe_model.get(classe_name)
+        classe: Classe = classe_model.get(classe_name)
         text = classe.get_sheet(verbose=True)
         text += f'\nDESCRIÇÃO: {classe.description}'
 

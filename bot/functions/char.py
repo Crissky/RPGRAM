@@ -60,11 +60,11 @@ def add_xp(
 
     if chat_id and group is None:
         group_model = GroupModel()
-        group = group_model.get(chat_id)
+        group: Group = group_model.get(chat_id)
 
     if user_id and char is None:
         char_model = CharacterModel()
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
     user_name = char.player_name
     level = char.base_stats.level
@@ -117,7 +117,7 @@ def add_damage(
 
     if user_id and char is None:
         char_model = CharacterModel()
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
     if type_damage in PHYSICAL_DAMAGE_TYPES:
         damage_report = char.combat_stats.physical_damage_hit_points(damage)
@@ -152,7 +152,7 @@ def add_trap_damage(
 
     if user_id and char is None:
         char_model = CharacterModel()
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
     boosted_ratio = triangular(min_ratio_damage, min_ratio_damage * 1.5)
     boosted_ratio = round(boosted_ratio, 2)
@@ -198,7 +198,7 @@ def add_conditions(
 
     if user_id and char is None:
         char_model = CharacterModel()
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
     condition_report = {'text': '', 'char': char}
     for condition in conditions:
@@ -229,7 +229,7 @@ def add_conditions_from_trap(
 
     if user_id and char is None:
         char_model = CharacterModel()
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
     condition_level_base = (group_level // 10) + 1
     condition_trap_report = {'text': '', 'char': char}
@@ -307,7 +307,7 @@ def activate_conditions(
 
     if user_id and char is None:
         char_model = CharacterModel()
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
     activate_report = {'text': '', 'char': char}
     reports = char.activate_status()
@@ -396,7 +396,7 @@ def choice_char(
     char_model = CharacterModel()
     while char is None and player_id_list:
         player_id = choice(player_id_list)
-        char = char_model.get(player_id)
+        char: BaseCharacter = char_model.get(player_id)
         if is_alive:
             if char and char.is_alive:
                 break

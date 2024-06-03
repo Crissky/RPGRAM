@@ -1089,7 +1089,7 @@ if __name__ == '__main__':
     fields = ['_id', 'name', 'created_at']
     for classe_dict in CLASSES:
         classe_name = classe_dict['name']
-        mongo_dict = classe_model.get(
+        mongo_dict: dict = classe_model.get(
             query={'name': classe_name},
             fields=fields,
         )

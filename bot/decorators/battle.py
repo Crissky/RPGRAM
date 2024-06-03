@@ -4,6 +4,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from bot.functions.chat import call_telegram_message_function
 from repository.mongo import BattleModel, CharacterModel
 from rpgram import Battle
+from rpgram.characters.char_base import BaseCharacter
 
 
 def need_not_in_battle(callback):
@@ -12,7 +13,7 @@ def need_not_in_battle(callback):
         battle_model = BattleModel()
         character_model = CharacterModel()
         user_id = update.effective_user.id
-        character = character_model.get(user_id)
+        character: BaseCharacter = character_model.get(user_id)
         character_id = character._id
         battle: Battle = battle_model.get(
             query={'$or': [

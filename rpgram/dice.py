@@ -23,15 +23,19 @@ Dice multiplier percent base (0.025, 0.035)
 '''
 
 from random import randint
+from typing import TYPE_CHECKING
 
 from rpgram.stats.stats_base import BaseStats
 from rpgram.stats.stats_combat import CombatStats
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 class Dice:
     def __init__(
         self,
-        character,
+        character: 'BaseCharacter',
         faces: int = 20,
         base_multiplier: float = None,
     ):

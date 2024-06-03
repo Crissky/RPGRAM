@@ -26,6 +26,7 @@ from constant.text import SECTION_HEAD_GROUP_END, SECTION_HEAD_GROUP_START
 from function.text import create_text_in_box
 
 from repository.mongo import GroupModel
+from rpgram import Group
 
 
 @print_basic_infos
@@ -35,7 +36,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
-    if (group := group_model.get(chat_id)):
+    group: Group = group_model.get(chat_id)
+    if group:
         text = create_text_in_box(
             text=f'{group}',
             section_name=SECTION_TEXT_GROUP,

@@ -21,6 +21,7 @@ from bot.functions.keyboard import reshape_row_buttons
 
 from bot.constants.race import ACCESS_DENIED, COMMANDS
 from repository.mongo import RaceModel
+from rpgram.boosters import Race
 
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
@@ -40,7 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _all = data['_all']
 
         race_model = RaceModel()
-        race = race_model.get(race_name)
+        race: Race = race_model.get(race_name)
         text = race.get_sheet(verbose=True)
         text += f'\nDESCRIÇÃO: {race.description}'
 

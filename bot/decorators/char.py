@@ -215,7 +215,7 @@ def skip_if_dead_char(callback):
         char_model = CharacterModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
         if char and char.is_alive:
             return await callback(update, context)
@@ -263,7 +263,7 @@ def skip_if_dead_char_silent(callback):
         char_model = CharacterModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
-        char = char_model.get(user_id)
+        char: BaseCharacter = char_model.get(user_id)
 
         if char and char.is_alive:
             return await callback(update, context)

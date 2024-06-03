@@ -1,11 +1,14 @@
 from datetime import datetime
-from typing import List, Union
+from typing import TYPE_CHECKING, List, Union
 
 from bson import ObjectId
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 class CureConsumable(Consumable):
@@ -36,7 +39,7 @@ class CureConsumable(Consumable):
 
         self.condition_target = condition_target
 
-    def function(self, target) -> dict:
+    def function(self, target: 'BaseCharacter') -> dict:
         report_list = target.status.remove_conditions(*self.condition_target)
         report_list = [report['text'] for report in report_list]
         report_list = list(dict.fromkeys(report_list))
@@ -44,7 +47,7 @@ class CureConsumable(Consumable):
 
         return report
 
-    def battle_function(self, target) -> dict:
+    def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
     def to_dict(self):

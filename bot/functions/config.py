@@ -2,6 +2,7 @@ from typing import Any
 
 from function.date_time import get_brazil_time_now
 from repository.mongo import GroupModel
+from rpgram.group import Group
 
 
 def get_attribute_group(_id: Any, attribute: str):
@@ -12,7 +13,7 @@ def get_attribute_group(_id: Any, attribute: str):
 
 def is_group_spawn_time(chat_id: int) -> bool:
     group_model = GroupModel()
-    group = group_model.get(chat_id)
+    group: Group = group_model.get(chat_id)
     spawn_start_time = group.spawn_start_time
     spawn_end_time = group.spawn_end_time
     now = get_brazil_time_now()

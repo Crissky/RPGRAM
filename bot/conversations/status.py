@@ -13,6 +13,7 @@ from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel, StatusModel
+from rpgram.characters import BaseCharacter
 
 
 @skip_if_spawn_timeout
@@ -37,7 +38,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
     for player_id in player_id_list:
         print('player_id:', player_id)
         char_model = CharacterModel()
-        player_char = char_model.get(player_id)
+        player_char: BaseCharacter = char_model.get(player_id)
 
         if not player_char or player_char.is_dead:
             continue

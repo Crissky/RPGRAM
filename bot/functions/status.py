@@ -17,7 +17,7 @@ def immobilized_status(user_id: int) -> dict:
             '$in': IMMOBILIZED_DEBUFFS_NAMES
         }
     }
-    status = status_model.get(query=query, fields=['condition_args'])
+    status: dict = status_model.get(query=query, fields=['condition_args'])
     return status
 
 
@@ -31,7 +31,7 @@ def get_confusion_status(user_id: int) -> dict:
         'player_id': user_id,
         'condition_args.name': {'$in': CONFUSION_DEBUFFS_NAMES}
     }
-    status = status_model.get(query=query, fields=['condition_args'])
+    status: dict = status_model.get(query=query, fields=['condition_args'])
     return status
 
 

@@ -19,6 +19,8 @@ from bot.functions.general import get_attribute_group_or_player
 from function.text import escape_basic_markdown_v2
 
 from repository.mongo import CharacterModel, PlayerModel
+from rpgram import Player
+from rpgram.characters import BaseCharacter
 
 
 @print_basic_infos
@@ -38,7 +40,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
 
     if len(args) == 2:
         attribute = args[0]
@@ -104,7 +106,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         player.name = user_name
         player_model.save(player)
 
-        player_char = char_model.get(user_id)
+        player_char: BaseCharacter = char_model.get(user_id)
         if player_char:
             player_char.update_player_name(new_name=user_name)
             char_model.save(player_char)

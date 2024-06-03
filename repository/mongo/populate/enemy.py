@@ -13,7 +13,7 @@ from repository.mongo.populate.enemy_constants import (
 from repository.mongo.populate.item import create_random_equipment
 from repository.mongo.populate.tools import random_group_level, weighted_choice
 from rpgram import Equips
-from rpgram.boosters import race
+from rpgram.boosters import Classe, Race
 from rpgram.characters import NPCharacter
 from rpgram.enums import AlignmentEnum, EnemyStarsEnum, EquipmentEnum
 
@@ -91,7 +91,7 @@ def choice_enemy_race_name() -> str:
     return choice(race_list)
 
 
-def get_enemy_alignment(enemy_race: race) -> AlignmentEnum:
+def get_enemy_alignment(enemy_race: Race) -> AlignmentEnum:
     return choice(RACES_ALIGNMENT[enemy_race.name])
 
 
@@ -168,8 +168,8 @@ def create_enemy(
 ) -> NPCharacter:
     classe_model = ClasseModel()
     race_model = RaceModel()
-    enemy_class = classe_model.get(enemy_class_name)
-    enemy_race = race_model.get(enemy_race_name)
+    enemy_class: Classe = classe_model.get(enemy_class_name)
+    enemy_race: Race = race_model.get(enemy_race_name)
     enemy_alignment = get_enemy_alignment(enemy_race)
     enemy_id = ObjectId()
     equips = get_enemy_equips(enemy_id, enemy_level, enemy_class_name)

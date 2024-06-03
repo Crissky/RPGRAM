@@ -89,7 +89,7 @@ from rpgram.consumables import (
     TrocadoPouchConsumable,
     XPConsumable
 )
-from rpgram import Item
+from rpgram import Item, Player
 from rpgram.enums import EmojiEnum, TrocadoEnum
 
 
@@ -298,7 +298,7 @@ async def complete_trocado_pouch_quest(
     '''
 
     player_model = PlayerModel()
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
     quest_trocado = trocado_pouch_item.full_price
     is_complete = False
     if player.trocado >= quest_trocado:

@@ -32,6 +32,7 @@ from bot.decorators import (
 from bot.functions.char import save_char
 from bot.functions.chat import (
     call_telegram_message_function,
+    get_close_keyboard,
     send_private_message
 )
 from bot.functions.config import get_attribute_group
@@ -53,6 +54,8 @@ from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
 from repository.mongo import BattleModel, CharacterModel, PlayerModel
+from rpgram import Battle, Player
+from rpgram.characters import BaseCharacter
 
 
 @skip_if_no_singup_player
@@ -72,10 +75,10 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     job_name = get_rest_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     silent = get_attribute_group_or_player(chat_id, 'silent')
-    player_character = char_model.get(user_id)
+    player_character: BaseCharacter = char_model.get(user_id)
     character_id = player_character._id
     current_hp = player_character.cs.show_hit_points
-    battle = battle_model.get(query={
+    battle: Battle = battle_model.get(query={
         '$or': [{'blue_team': character_id}, {'red_team': character_id}]
     })
 
@@ -105,6 +108,11 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'HP: {current_hp}\n\n'
             f'Seu personagem irá recuperar HP a cada meia hora.'
         )
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=user_id,
+    )
 
     text = create_text_in_box(
         text=text,
@@ -117,7 +125,8 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_text_kwargs = dict(
         text=text,
         disable_notification=silent,
-        allow_sending_without_reply=True
+        allow_sending_without_reply=True,
+        reply_markup=get_close_keyboard(user_id=user_id)
     )
     await call_telegram_message_function(
         function_caller='REST.REST()',
@@ -145,12 +154,6 @@ def create_job_rest_cure(
         job_kwargs=BASE_JOB_KWARGS,
     )
 
-    create_job_rest_action_point(
-        context=context,
-        chat_id=chat_id,
-        user_id=user_id,
-    )
-
 
 def create_job_rest_action_point(
     context: ContextTypes.DEFAULT_TYPE,
@@ -158,7 +161,7 @@ def create_job_rest_action_point(
     user_id: int,
 ):
     player_model = PlayerModel()
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
     job_name = get_rest_action_points_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     if not current_jobs and not player.is_full_action_points:
@@ -178,8 +181,8 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     chat_id = job.chat_id
     user_id = job.user_id
-    player_character = char_model.get(user_id)
-    player = player_model.get(user_id)
+    player_character: BaseCharacter = char_model.get(user_id)
+    player: Player = player_model.get(user_id)
     revive_reporting = ''
     level = (
         get_attribute_group(chat_id, 'group_level') or
@@ -251,7 +254,7 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     user_id = job.user_id
     chat_id = job.chat_id
-    player = player_model.get(user_id)
+    player: Player = player_model.get(user_id)
     report = player.add_action_points(1)
     player_model.save(player)
 
@@ -295,11 +298,11 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     for user_id in user_ids:
         job_name = get_rest_jobname(user_id)
         current_jobs = context.job_queue.get_jobs_by_name(job_name)
-        player_character = char_model.get(user_id)
+        player_character: BaseCharacter = char_model.get(user_id)
         player_name = player_character.player_name
         character_id = player_character._id
         current_hp = player_character.cs.show_hit_points
-        battle = battle_model.get(query={
+        battle: Battle = battle_model.get(query={
             '$or': [{'blue_team': character_id}, {'red_team': character_id}]
         })
 
@@ -312,6 +315,11 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
                 user_id=user_id,
             )
             texts.append(f'{player_name} - HP: {current_hp}')
+        create_job_rest_action_point(
+            context=context,
+            chat_id=chat_id,
+            user_id=user_id,
+        )
 
     if texts:
         players_hp = '\n'.join(texts)
