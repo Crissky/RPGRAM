@@ -220,3 +220,14 @@ class Dice:
     @property
     def boosted_evasion(self) -> int:
         return self.__boost_value(self.base_evasion)
+
+if __name__ == '__main__':
+    from rpgram.constants.test import BASE_CHARACTER
+
+    dice = Dice(character=BASE_CHARACTER, faces=20)
+    dice.throw()
+    print(dice.value)
+    print(dice.text)
+    print(dice.throw())
+    print(dice.throw())
+    print(dice.throw(rethrow=True))

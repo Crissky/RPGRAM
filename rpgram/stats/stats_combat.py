@@ -25,6 +25,7 @@ from rpgram.constants.text import (
     PRECISION_ATTACK_EMOJI_TEXT_ABB
 )
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.stats import BaseStats
 from rpgram.boosters import StatsBooster
 from rpgram.status import Status
@@ -657,21 +658,37 @@ class CombatStats:
 
     def __getitem__(self, item: str) -> int:
         item = item.lower()
-        if item in ['initiative']:
+
+        hp_enum = CombatStatsEnum.HP.value
+        current_hp_enum = CombatStatsEnum.CURRENT_HP.value
+        iniative_enum = CombatStatsEnum.INITIATIVE.value
+        physical_attack_enum = CombatStatsEnum.PHYSICAL_ATTACK.value
+        precision_attack_enum = CombatStatsEnum.PRECISION_ATTACK.value
+        magical_attack_enum = CombatStatsEnum.MAGICAL_ATTACK.value
+        physical_defense_enum = CombatStatsEnum.PHYSICAL_DEFENSE.value
+        magical_defense_enum = CombatStatsEnum.MAGICAL_DEFENSE.value
+        hit_enum = CombatStatsEnum.HIT.value
+        evasion_enum = CombatStatsEnum.EVASION.value
+
+        if item in [hp_enum, 'hit_points', 'hit_point']:
+            return self.hit_points
+        elif item in [current_hp_enum, 'current_hp']:
+            return self.current_hit_points
+        elif item in [iniative_enum]:
             return self.initiative
-        elif item in ['physical_attack', 'physical attack']:
+        elif item in [physical_attack_enum, 'physical attack']:
             return self.physical_attack
-        elif item in ['precision_attack', 'precision attack']:
+        elif item in [precision_attack_enum, 'precision attack']:
             return self.precision_attack
-        elif item in ['magical_attack', 'magical attack']:
+        elif item in [magical_attack_enum, 'magical attack']:
             return self.magical_attack
-        elif item in ['physical_defense', 'physical defense']:
+        elif item in [physical_defense_enum, 'physical defense']:
             return self.physical_defense
-        elif item in ['magical_defense', 'magical defense']:
+        elif item in [magical_defense_enum, 'magical defense']:
             return self.magical_defense
-        elif item in ['hit']:
+        elif item in [hit_enum]:
             return self.hit
-        elif item in ['evasion']:
+        elif item in [evasion_enum]:
             return self.evasion
         else:
             raise KeyError(

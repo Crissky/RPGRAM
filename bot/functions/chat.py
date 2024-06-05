@@ -324,14 +324,17 @@ async def reply_text(
     respondida usando update.effective_message.reply_text
     '''
 
-    if update is None and context is None:
-        raise ValueError('update ou context deve ser passado.')
-    if context and not isinstance(chat_id, int):
-        raise ValueError('Quando usar context, chat_id deve ser um inteiro.')
-    if context and not isinstance(message_id, int):
-        raise ValueError(
-            'Quando usar context, message_id deve ser um inteiro.'
-        )
+    if update is None:
+        if context is None:
+            raise ValueError('update ou context deve ser passado.')
+        if not isinstance(chat_id, int):
+            raise ValueError(
+                'Quando usar context, chat_id deve ser um inteiro.'
+            )
+        if not isinstance(message_id, int):
+            raise ValueError(
+                'Quando usar context, message_id deve ser um inteiro.'
+            )
 
     if update and user_id is None:
         user_id = update.effective_user.id

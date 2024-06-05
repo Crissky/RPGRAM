@@ -344,37 +344,16 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_start=SECTION_HEAD_SHOP_START,
         section_end=SECTION_HEAD_SHOP_END,
     )
-    if user_id == chat_id:
-        await edit_message_text(
-            function_caller='SELLER.CHECK_SELL_ITEM()',
-            new_text=markdown_text,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=True,
-            reply_markup=reply_markup,
-        )
-    else:
-        send_message_kwargs = dict(
-            text=markdown_text,
-            reply_markup=reply_markup,
-            disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2
-        )
-        await call_telegram_message_function(
-            function_caller='SELLER.CHECK_SELL_ITEM()',
-            function=update.effective_chat.send_message,
-            context=context,
-            need_response=False,
-            skip_retry=False,
-            **send_message_kwargs,
-        )
-        await delete_message(
-            function_caller='CHECK_SELL_ITEM()',
-            context=context,
-            query=query
-        )
+    await edit_message_text(
+        function_caller='SELLER.CHECK_SELL_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
 
     return BUY_ROUTES
 
@@ -512,37 +491,17 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         section_start=SECTION_HEAD_SHOP_START,
         section_end=SECTION_HEAD_SHOP_END,
     )
-    if user_id == chat_id:
-        await edit_message_text(
-            function_caller='SELLER.BUY_ITEM()',
-            new_text=markdown_text,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=True,
-            reply_markup=reply_markup,
-        )
-    else:
-        send_message_kwargs = dict(
-            text=markdown_text,
-            reply_markup=reply_markup,
-            disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2
-        )
-        await call_telegram_message_function(
-            function_caller='SELLER.BUY_ITEM()',
-            function=update.effective_chat.send_message,
-            context=context,
-            need_response=False,
-            skip_retry=False,
-            **send_message_kwargs,
-        )
-        await delete_message(
-            function_caller='BUY_ITEM()',
-            context=context,
-            query=query
-        )
+    await edit_message_text(
+        function_caller='SELLER.BUY_ITEM()',
+        new_text=markdown_text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
     if item.quantity > 0:
         return BUY_ROUTES
     else:

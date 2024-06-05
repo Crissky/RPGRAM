@@ -414,8 +414,8 @@ def confusion(retry_state=ConversationHandler.END):
                     context=context,
                     user_ids=[confuse_player_id, target_player_id],
                     update=update,
-                    allow_sending_without_reply=True,
                     need_response=False,
+                    allow_sending_without_reply=True,
                     markdown=True,
                 )
                 return retry_state
