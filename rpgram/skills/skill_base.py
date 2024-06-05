@@ -1,12 +1,26 @@
 from itertools import chain
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, Iterable, List, Tuple, Union
 
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.damage import DamageEnum
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.errors import SkillRequirementError
+
+
+STATS_ENUM_TYPES = (BaseStatsEnum, CombatStatsEnum)
+STATS_MULTIPLIER_TYPES = Union[BaseStatsEnum, CombatStatsEnum, str]
+ITER_MULTIPLIERS_TYPE = Iterable[
+    Tuple[
+        Union[
+            BaseStatsEnum,
+            CombatStatsEnum
+        ],
+        float
+    ]
+]
 
 
 class BaseSkill:
@@ -40,7 +54,7 @@ class BaseSkill:
                     f'precisam ser um float.'
                     f'"{type(value)}" não é válido.'
                 )
-            self.base_stats_multiplier[attribute] = value
+            self.base_stats_multiplier[attribute] = round(value, 2)
 
         self.combat_stats_multiplier = {}
         for attribute, value in combat_stats_multiplier.items():
@@ -130,17 +144,14 @@ class BaseSkill:
                 f'{errors}'
             )
 
-    def iter_multipliers(self):
+    def iter_multipliers(self) -> ITER_MULTIPLIERS_TYPE:
         return chain(
             self.base_stats_multiplier.items(),
             self.combat_stats_multiplier.items()
         )
 
-    def format_attribute_name(
-        self,
-        attribute: Union[BaseStatsEnum, CombatStatsEnum, str]
-    ) -> str:
-        if isinstance(attribute, (BaseStatsEnum, CombatStatsEnum)):
+    def format_attribute_name(self, attribute: STATS_MULTIPLIER_TYPES) -> str:
+        if isinstance(attribute, STATS_ENUM_TYPES):
             attribute = attribute.name
 
         return attribute.replace('_', ' ').title()
@@ -154,26 +165,22 @@ class BaseSkill:
         return int(power_point)
 
     @property
-    def multipliers_text(self) -> str:
+    def powers_text(self) -> str:
         text_list = []
 
         for attribute, multiplier in self.iter_multipliers():
-            attribute_name = self.format_attribute_name(attribute)
             attribute_value = self[attribute]
-            attribute_percent = multiplier*100
+            attribute_percent = int(multiplier*100)
+            attribute_emoji = EmojiEnum[attribute.name].value
             text_list.append(
-                f'{attribute_name}: '
-                f'{attribute_value} '
-                f'({attribute_percent:.2f}%)'
+                f'{attribute_value}'
+                f'({attribute_percent}%{attribute_emoji})'
             )
 
         return ', '.join(text_list)
 
-    def __getitem__(
-        self,
-        item: Union[BaseStatsEnum, CombatStatsEnum, str]
-    ) -> int:
-        if isinstance(item, (BaseStatsEnum, CombatStatsEnum)):
+    def __getitem__(self, item: STATS_MULTIPLIER_TYPES) -> int:
+        if isinstance(item, STATS_ENUM_TYPES):
             item = item.name
 
         item = item.upper()
