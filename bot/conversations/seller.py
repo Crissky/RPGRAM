@@ -75,7 +75,7 @@ from constant.text import (
     SECTION_HEAD_SHOP_START,
     SHOP_TITLE_HEAD
 )
-from constant.time import TEN_MINUTES_IN_SECONDS
+from constant.time import TWENTY_MINUTES_IN_SECONDS
 from function.lista import mean_level
 
 from function.text import (
@@ -831,5 +831,5 @@ SELLER_HANDLER = ConversationHandler(
         CommandHandler(CANCEL_COMMANDS, cancel)
     ],
     allow_reentry=True,
-    conversation_timeout=TEN_MINUTES_IN_SECONDS,
+    conversation_timeout=TWENTY_MINUTES_IN_SECONDS,
 )
