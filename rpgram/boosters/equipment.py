@@ -671,6 +671,8 @@ class Equipment(StatsBooster):
                     damage_type=damage_type,
                     equipment_level=self.level,
                 )
+            else:
+                break
 
     name: str = property(lambda self: self.identifiable_tag + self.__name)
     equip_type: EquipmentEnum = property(lambda self: self.__equip_type)
