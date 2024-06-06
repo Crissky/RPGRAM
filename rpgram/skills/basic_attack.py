@@ -22,6 +22,7 @@ class PhysicalAttack(BaseSkill):
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
             char=char,
+            use_equips_damage_types=True,
             requirements={},
             damage_types=None
         )
@@ -44,6 +45,7 @@ class PrecisionAttack(BaseSkill):
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
             char=char,
+            use_equips_damage_types=True,
             requirements={},
             damage_types=None
         )
@@ -66,8 +68,9 @@ class MagicalAttack(BaseSkill):
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
             char=char,
+            use_equips_damage_types=True,
             requirements={},
-            damage_types=None
+            damage_types='MAGIC'
         )
 
 
@@ -76,9 +79,12 @@ if __name__ == '__main__':
     pha = PhysicalAttack(BASE_CHARACTER)
     pra = PrecisionAttack(BASE_CHARACTER)
     maa = MagicalAttack(BASE_CHARACTER)
-    print(f'Multipliers Text: "{pha.powers_text}", Power: {pha.power}')
+    print(f'Multipliers Text:\n{pha.powers_text}\nPower: {pha.power}')
     print(f'CHARACTER.Physical Attack: {BASE_CHARACTER.cs.physical_attack}')
-    print(f'Multipliers Text: "{pra.powers_text}", Power: {pra.power}')
+    print('#'*79)
+    print(f'Multipliers Text:\n{pra.powers_text}\nPower: {pra.power}')
     print(f'CHARACTER.Precision Attack: {BASE_CHARACTER.cs.precision_attack}')
-    print(f'Multipliers Text: "{maa.powers_text}", Power: {maa.power}')
+    print('#'*79)
+    print(f'Multipliers Text:\n{maa.powers_text}\nPower: {maa.power}')
     print(f'CHARACTER.Magical Attack: {BASE_CHARACTER.cs.magical_attack}')
+    print('#'*79)

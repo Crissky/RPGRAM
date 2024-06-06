@@ -1,5 +1,5 @@
 from itertools import chain
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from typing import Any, Dict, Iterable, Iterator, List, Tuple, Union
 
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.damage import DamageEnum
@@ -8,6 +8,7 @@ from rpgram.enums.skill import SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.errors import SkillRequirementError
+from rpgram.skills.special_damage import SpecialDamage
 
 
 STATS_ENUM_TYPES = (BaseStatsEnum, CombatStatsEnum)
@@ -35,6 +36,7 @@ class BaseSkill:
         target_type: TargetEnum,
         skill_type: SkillTypeEnum,
         char: BaseCharacter,
+        use_equips_damage_types: bool = False,
         requirements: Dict[str, Any] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
     ):
@@ -121,6 +123,7 @@ class BaseSkill:
         self.base_stats = char.base_stats
         self.combat_stats = char.combat_stats
         self.equips = char.equips
+        self.use_equips_damage_types = use_equips_damage_types
         self.requirements = requirements
         self.damage_types = damage_types
 
@@ -156,6 +159,39 @@ class BaseSkill:
 
         return attribute.replace('_', ' ').title()
 
+    def __special_damage_iter(self) -> Iterator[SpecialDamage]:
+        damage_types = (
+            self.damage_types
+            if self.damage_types is not None
+            else []
+        )
+        base_damage = self.power
+        for damage_type in damage_types:
+            if base_damage > 0:
+                yield SpecialDamage(
+                    base_damage=base_damage,
+                    damage_type=damage_type,
+                    equipment_level=self.level,
+                )
+            else:
+                break
+
+    def attributes_power_texts(self) -> Iterable[str]:
+        for attribute, multiplier in self.iter_multipliers():
+            attribute_value = self[attribute]
+            attribute_percent = int(multiplier*100)
+            attribute_emoji = EmojiEnum[attribute.name].value
+
+            yield (
+                f'{attribute_value}'
+                f'({attribute_percent}%{attribute_emoji})'
+            )
+
+    def special_damage_texts(self) -> Iterable[str]:
+        for special_damage in self.special_damage_iter:
+            yield special_damage.help_emoji_text
+
+    # GETTERS
     @property
     def power(self) -> int:
         power_point = 0
@@ -166,18 +202,36 @@ class BaseSkill:
 
     @property
     def powers_text(self) -> str:
-        text_list = []
+        attributes_power_texts = (
+            f'Dano dos Atributos: {self.attributes_power_text}\n'
+        )
 
-        for attribute, multiplier in self.iter_multipliers():
-            attribute_value = self[attribute]
-            attribute_percent = int(multiplier*100)
-            attribute_emoji = EmojiEnum[attribute.name].value
-            text_list.append(
-                f'{attribute_value}'
-                f'({attribute_percent}%{attribute_emoji})'
+        if (special_damage_texts := self.special_damage_text):
+            special_damage_texts = f'Danos Especiais: {special_damage_texts}\n'
+
+        return (
+            f'{attributes_power_texts}'
+            f'{special_damage_texts}'
+        )
+
+    @property
+    def special_damage_text(self):
+        return ', '.join(self.special_damage_texts())
+
+    @property
+    def attributes_power_text(self):
+        return ', '.join(self.attributes_power_texts())
+
+    @property
+    def special_damage_iter(self) -> Iterable[SpecialDamage]:
+        special_damage_iter = self.__special_damage_iter()
+        if self.use_equips_damage_types:
+            special_damage_iter = chain(
+                special_damage_iter,
+                self.equips.special_damage_iter
             )
 
-        return ', '.join(text_list)
+        return special_damage_iter
 
     def __getitem__(self, item: STATS_MULTIPLIER_TYPES) -> int:
         if isinstance(item, STATS_ENUM_TYPES):
