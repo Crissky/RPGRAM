@@ -9,7 +9,7 @@ class PhysicalAttack(BaseSkill):
     def __init__(self, char: BaseCharacter):
         name = 'Physical Attack'
         description = 'Ataque Físico baseado em "FOR" e "DES".'
-        level = 1
+        level = 0
         cost = 1
 
         super().__init__(
@@ -33,7 +33,7 @@ class PrecisionAttack(BaseSkill):
     def __init__(self, char: BaseCharacter):
         name = 'Precision Attack'
         description = 'Ataque rápido baseado em "DES".'
-        level = 1
+        level = 0
         cost = 1
 
         super().__init__(
@@ -57,7 +57,7 @@ class MagicalAttack(BaseSkill):
     def __init__(self, char: BaseCharacter):
         name = 'Magical Attack'
         description = 'Ataque Mágico baseado em "INT" e "WIS".'
-        level = 1
+        level = 0
         cost = 1
 
         super().__init__(

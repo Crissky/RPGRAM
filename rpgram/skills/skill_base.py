@@ -215,6 +215,24 @@ class BaseSkill:
 
     # GETTERS
     @property
+    def level_multiplier_dict(self) -> dict:
+        return None
+
+    @property
+    def level_multiplier_default(self) -> float:
+        return 1.0
+
+    @property
+    def level_multiplier(self) -> float:
+        if (level_multiplier_dict := self.level_multiplier_dict) is not None:
+            return level_multiplier_dict.get(
+                self.level,
+                self.level_multiplier_default
+            )
+        else:
+            return 1 + (self.level / 20)
+
+    @property
     def power(self) -> int:
         power_point = 0
         for attribute, multiplier in self.iter_multipliers():
@@ -265,13 +283,15 @@ class BaseSkill:
             bs_enum = BaseStatsEnum[item]
             return int(
                 self.base_stats[item] *
-                self.base_stats_multiplier[bs_enum]
+                self.base_stats_multiplier[bs_enum] *
+                self.level_multiplier
             )
         elif item in CombatStatsEnum.__members__:
             cs_enum = CombatStatsEnum[item]
             return int(
                 self.combat_stats[item] *
-                self.combat_stats_multiplier[cs_enum]
+                self.combat_stats_multiplier[cs_enum] *
+                self.level_multiplier
             )
         else:
             raise KeyError(f'"{item}" não é um atributo válido.')
