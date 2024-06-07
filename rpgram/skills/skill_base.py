@@ -1,7 +1,6 @@
 from itertools import chain
-from typing import Any, Dict, Iterable, Iterator, List, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Tuple, Union
 
-from rpgram.characters.char_base import BaseCharacter
 from rpgram.dice import Dice
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.emojis import EmojiEnum
@@ -10,6 +9,9 @@ from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.errors import SkillRequirementError
 from rpgram.skills.special_damage import SpecialDamage
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 STATS_ENUM_TYPES = (BaseStatsEnum, CombatStatsEnum)
@@ -37,7 +39,7 @@ class BaseSkill:
         target_type: Union[TargetEnum, str],
         skill_type: Union[SkillTypeEnum, str],
         skill_defense: Union[SkillDefenseEnum, str],
-        char: BaseCharacter,
+        char: 'BaseCharacter',
         dice: Union[int, Tuple[int, float]] = 20,
         use_equips_damage_types: bool = False,
         requirements: Dict[str, Any] = {},
@@ -295,3 +297,12 @@ class BaseSkill:
             )
         else:
             raise KeyError(f'"{item}" não é um atributo válido.')
+
+    def __repr__(self) -> str:
+        special_damage_text = self.special_damage_text
+        if special_damage_text:
+            special_damage_text = f' + ({special_damage_text})'
+        return (
+            f'<{self.__class__.__name__}-Power: '
+            f'{self.power}{special_damage_text}>'
+        )

@@ -1,12 +1,15 @@
 
-from rpgram.characters.char_base import BaseCharacter
+from typing import TYPE_CHECKING
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.skills.skill_base import BaseSkill
 
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
+
 
 class PhysicalAttack(BaseSkill):
-    def __init__(self, char: BaseCharacter):
+    def __init__(self, char: 'BaseCharacter'):
         name = 'Physical Attack'
         description = 'Ataque Físico baseado em "FOR" e "DES".'
         level = 0
@@ -30,7 +33,7 @@ class PhysicalAttack(BaseSkill):
 
 
 class PrecisionAttack(BaseSkill):
-    def __init__(self, char: BaseCharacter):
+    def __init__(self, char: 'BaseCharacter'):
         name = 'Precision Attack'
         description = 'Ataque rápido baseado em "DES".'
         level = 0
@@ -54,7 +57,7 @@ class PrecisionAttack(BaseSkill):
 
 
 class MagicalAttack(BaseSkill):
-    def __init__(self, char: BaseCharacter):
+    def __init__(self, char: 'BaseCharacter'):
         name = 'Magical Attack'
         description = 'Ataque Mágico baseado em "INT" e "WIS".'
         level = 0

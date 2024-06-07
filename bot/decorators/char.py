@@ -369,7 +369,7 @@ def confusion(retry_state=ConversationHandler.END):
                     target_char_dice = None
 
                 confuse_char_dice = None
-                confuse_action = confuse_char.weighted_choice_attack_name()
+                confuse_action = confuse_char.weighted_choice_basic_attack()
 
                 attack_report = confuse_char.to_attack(
                     defender_char=target_char,

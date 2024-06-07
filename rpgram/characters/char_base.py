@@ -8,6 +8,8 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.dice import Dice
 from rpgram.equips import Equips
+from rpgram.skills.basic_attack import MagicalAttack, PhysicalAttack, PrecisionAttack
+from rpgram.skills.skill_base import BaseSkill
 from rpgram.status import Status
 from rpgram.boosters.classe import Classe
 from rpgram.boosters.race import Race
@@ -113,24 +115,24 @@ class BaseCharacter:
             raise KeyError(f'"{attack_name}" não é uma ação válida.')
         return defense_name
 
-    def weighted_choice_attack_name(self) -> str:
-        actions = {
-            action: self.get_attack_value(action)
-            for action in self.actions
+    def weighted_choice_basic_attack(self) -> BaseSkill:
+        basic_attack_dict = {
+            basic_attack: basic_attack.power
+            for basic_attack in self.basic_attacks
         }
-        population = list(actions.keys())
-        weights = actions.values()
+        population = list(basic_attack_dict.keys())
+        weights = basic_attack_dict.values()
 
         return choices(population, weights=weights)[0]
 
-    def get_best_attack_name(self):
-        actions = {
-            action: self.get_attack_value(action)
-            for action in self.actions
+    def get_best_basic_attack(self) -> BaseSkill:
+        basic_attack_dict = {
+            basic_attack: basic_attack.power
+            for basic_attack in self.basic_attacks
         }
-        action = max(actions, key=actions.get)
+        basic_attack = max(basic_attack_dict, key=basic_attack_dict.get)
 
-        return action
+        return basic_attack
 
     def activate_status(self) -> List[dict]:
         reports = self.__status.activate(self)
@@ -270,7 +272,7 @@ class BaseCharacter:
         defender_char: TBaseCharacter,
         attacker_dice: Union[Dice, int] = None,
         defender_dice: Union[Dice, int] = None,
-        attack_name: str = None,
+        attack_name: Union[str, BaseSkill] = None,
         to_dodge: bool = False,
         to_defend: bool = True,
         rest_command: str = None,
@@ -279,7 +281,13 @@ class BaseCharacter:
     ) -> dict:
         '''Personagem ataca um alvo usando um dos ataques básicos. Caso não 
         seja passado um attacker_action_name, será escolhido o atributo de 
-        ataque mais poderoso.'''
+        ataque mais poderoso.
+        '''
+
+        if not isinstance(attack_name, str):
+            attack_name = self.get_best_basic_attack()
+        elif isinstance(attack_name, str):
+            attack_name = self.get_basic_attack_by_name(attack_name)
 
         if not isinstance(attacker_dice, Dice):
             atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20
@@ -298,8 +306,6 @@ class BaseCharacter:
             defender_dice=defender_dice,
         )
 
-        if not isinstance(attack_name, str):
-            attack_name = self.get_best_attack_name()
         base_attack_value = attacker_dice.get_base_stats(attack_name)
         boosted_attack_value = attacker_dice.get_boosted_stats(attack_name)
 
@@ -505,6 +511,14 @@ class BaseCharacter:
 
         return accuracy
 
+    @property
+    def basic_attacks(self) -> List[BaseSkill]:
+        return [
+            PhysicalAttack(self),
+            PrecisionAttack(self),
+            MagicalAttack(self),
+        ]
+
     name: str = property(lambda self: self.__name)
     player_name: str = property(lambda self: self.__name)
     level: int = property(lambda self: self.__base_stats.level)
@@ -530,7 +544,7 @@ class BaseCharacter:
             f'{self.player_name}, O {self.race_name} {self.classe_name}'
         )
     )
-    full_name_with_level = property(
+    full_name_with_level: str = property(
         lambda self: f'{self.full_name} (LV: {self.bs.level})'
     )
     points_multiplier: int = property(
@@ -755,4 +769,4 @@ if __name__ == '__main__':
     base_character.combat_stats.hit_points = 50
     print(base_character)
     print(base_character.to_dict())
-    print(base_character.weighted_choice_attack_name())
+    print(base_character.weighted_choice_basic_attack())
