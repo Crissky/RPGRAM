@@ -30,17 +30,20 @@ from rpgram.stats.stats_combat import CombatStats
 
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
+    from rpgram.skills.skill_base import BaseSkill
 
 
 class Dice:
     def __init__(
         self,
         character: 'BaseCharacter',
+        skill: 'BaseSkill' = None,
         faces: int = 20,
         base_multiplier: float = None,
     ):
         self.__value = None
         self.__character = character
+        self.__skill = skill
         self.__base_stats = character.base_stats
         self.__combat_stats = character.combat_stats
         self.__faces = faces
@@ -142,6 +145,10 @@ class Dice:
         return self.__combat_stats
 
     @property
+    def skill(self) -> 'BaseSkill':
+        return self.__skill
+
+    @property
     def rate_hit_points(self) -> float:
         return self.combat_stats.rate_hit_points
 
@@ -188,6 +195,12 @@ class Dice:
     def base_evasion(self) -> int:
         return self.combat_stats.evasion
 
+    @property
+    def base_power(self) -> int:
+        return self.skill.power
+
+    base_skill_power = base_power
+
     # BOOSTED STATS
     @property
     def boosted_initiative(self) -> int:
@@ -221,13 +234,26 @@ class Dice:
     def boosted_evasion(self) -> int:
         return self.__boost_value(self.base_evasion)
 
+    @property
+    def boosted_power(self) -> int:
+        return self.__boost_value(self.base_power)
+
+    boosted_skill_power = boosted_power
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
+    from rpgram.skills.basic_attack import PhysicalAttack
+    phy_atk = PhysicalAttack(char=BASE_CHARACTER)
 
-    dice = Dice(character=BASE_CHARACTER, faces=20)
+    dice = Dice(character=BASE_CHARACTER, skill=phy_atk, faces=20)
     dice.throw()
     print(dice.value)
     print(dice.text)
     print(dice.throw())
     print(dice.throw())
     print(dice.throw(rethrow=True))
+    print('BASE PHYSICAL ATTACK:', dice.base_physical_attack)
+    print('BOOSTED PHYSICAL ATTACK:', dice.boosted_physical_attack)
+    print('BASE SKILL POWER:', dice.base_power)
+    print('BOOSTED SKILL POWER:', dice.boosted_power)

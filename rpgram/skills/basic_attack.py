@@ -1,6 +1,6 @@
 
 from rpgram.characters.char_base import BaseCharacter
-from rpgram.enums.skill import SkillTypeEnum, TargetEnum
+from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.skills.skill_base import BaseSkill
 
@@ -10,7 +10,7 @@ class PhysicalAttack(BaseSkill):
         name = 'Physical Attack'
         description = 'Ataque Físico baseado em "FOR" e "DES".'
         level = 1
-        cost = 0
+        cost = 1
 
         super().__init__(
             name=name,
@@ -21,6 +21,7 @@ class PhysicalAttack(BaseSkill):
             combat_stats_multiplier={CombatStatsEnum.PHYSICAL_ATTACK: 1.0},
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
             requirements={},
@@ -33,7 +34,7 @@ class PrecisionAttack(BaseSkill):
         name = 'Precision Attack'
         description = 'Ataque rápido baseado em "DES".'
         level = 1
-        cost = 0
+        cost = 1
 
         super().__init__(
             name=name,
@@ -44,6 +45,7 @@ class PrecisionAttack(BaseSkill):
             combat_stats_multiplier={CombatStatsEnum.PRECISION_ATTACK: 1.0},
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
             requirements={},
@@ -56,7 +58,7 @@ class MagicalAttack(BaseSkill):
         name = 'Magical Attack'
         description = 'Ataque Mágico baseado em "INT" e "WIS".'
         level = 1
-        cost = 0
+        cost = 1
 
         super().__init__(
             name=name,
@@ -67,6 +69,7 @@ class MagicalAttack(BaseSkill):
             combat_stats_multiplier={CombatStatsEnum.MAGICAL_ATTACK: 1.0},
             target_type=TargetEnum.SINGLE,
             skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
             char=char,
             use_equips_damage_types=True,
             requirements={},

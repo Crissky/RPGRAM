@@ -2,9 +2,10 @@ from itertools import chain
 from typing import Any, Dict, Iterable, Iterator, List, Tuple, Union
 
 from rpgram.characters.char_base import BaseCharacter
+from rpgram.dice import Dice
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.enums.skill import SkillTypeEnum, TargetEnum
+from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.errors import SkillRequirementError
@@ -33,9 +34,11 @@ class BaseSkill:
         cost: int,
         base_stats_multiplier: Dict[Union[str, BaseStatsEnum], float],
         combat_stats_multiplier: Dict[Union[str, CombatStatsEnum], float],
-        target_type: TargetEnum,
-        skill_type: SkillTypeEnum,
+        target_type: Union[TargetEnum, str],
+        skill_type: Union[SkillTypeEnum, str],
+        skill_defense: Union[SkillDefenseEnum, str],
         char: BaseCharacter,
+        dice: Union[int, Tuple[int, float]] = 20,
         use_equips_damage_types: bool = False,
         requirements: Dict[str, Any] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
@@ -92,6 +95,23 @@ class BaseSkill:
                 f'"{type(skill_type)}" não é válido.'
             )
 
+        if isinstance(skill_defense, str):
+            skill_defense = SkillDefenseEnum[skill_defense]
+        if not isinstance(skill_defense, SkillDefenseEnum):
+            raise TypeError(
+                f'skill_defense precisa ser uma string ou SkillDefenseEnum.'
+                f'"{type(skill_defense)}" não é válido.'
+            )
+
+        if isinstance(dice, int):
+            dice = (dice, None)
+        dice = Dice(
+            character=char,
+            skill=self,
+            faces=dice[0],
+            base_multiplier=dice[1]
+        )
+
         if not isinstance(requirements, dict):
             raise TypeError(
                 f'requirements precisa ser um dicionário.'
@@ -119,10 +139,12 @@ class BaseSkill:
         self.cost = int(cost)
         self.target_type = target_type
         self.skill_type = skill_type
+        self.skill_defense = skill_defense
         self.char = char
         self.base_stats = char.base_stats
         self.combat_stats = char.combat_stats
         self.equips = char.equips
+        self.dice = dice
         self.use_equips_damage_types = use_equips_damage_types
         self.requirements = requirements
         self.damage_types = damage_types
