@@ -589,53 +589,53 @@ class Equipment(StatsBooster):
         material_emoji = EmojiEnum.EQUIPMENT_MATERIAL.value
         return f'{self.material_level}{material_emoji}'
 
-    @ property
+    @property
     def power_and_level(self) -> str:
         return f'({self.power_text}|{self.level_text})'
 
-    @ property
+    @property
     def power_and_level_and_material(self) -> str:
         return f'({self.power_text}|{self.level_text}|{self.material_text})'
 
-    @ property
+    @property
     def name_and_power(self) -> str:
         return f'{self.name} ({self.power_text})'
 
-    @ property
+    @property
     def name_power_type(self) -> str:
         return f'{self.name} ({self.power_and_type})'
 
-    @ property
+    @property
     def name_power_level(self) -> str:
         return f'{self.name} {self.power_and_level}'
 
-    @ property
+    @property
     def identifiable_tag(self) -> str:
         text = ''
         if self.identifiable:
             text = EmojiEnum.IDENTIFY.value
         return text
 
-    @ property
+    @property
     def price(self) -> int:
         rarity_multiplier = get_enum_index(self.rarity) + 1
         price = self.power * rarity_multiplier * 5
 
         return int(price)
 
-    @ property
+    @property
     def sell_price(self) -> int:
         return int(self.price / 10)
 
-    @ property
+    @property
     def price_text(self) -> str:
         return f'{self.price}{EmojiEnum.TROCADO.value}'
 
-    @ property
+    @property
     def sell_price_text(self) -> str:
         return f'{self.sell_price}{EmojiEnum.TROCADO.value}'
 
-    @ property
+    @property
     def rarity_level(self) -> int:
         return get_enum_index(self.rarity) + 1
 
@@ -644,7 +644,7 @@ class Equipment(StatsBooster):
         rarity_emoji = EmojiEnum.EQUIPMENT_RARITY.value
         return f'{self.rarity_level}{rarity_emoji}'
 
-    @ property
+    @property
     def max_attack_value(self) -> int:
         special_damage_base_value = sum([
             max(self.physical_attack, 0),
@@ -656,21 +656,23 @@ class Equipment(StatsBooster):
 
         return int(special_damage_base_value)
 
-    @ property
+    @property
     def special_damage_iter(self) -> Iterator[SpecialDamage]:
         damage_types = (
             self.damage_types
             if self.damage_types is not None
             else []
         )
+        base_damage = self.max_attack_value
         for damage_type in damage_types:
-            base_damage = self.max_attack_value
             if base_damage > 0:
                 yield SpecialDamage(
                     base_damage=base_damage,
                     damage_type=damage_type,
                     equipment_level=self.level,
                 )
+            else:
+                break
 
     name: str = property(lambda self: self.identifiable_tag + self.__name)
     equip_type: EquipmentEnum = property(lambda self: self.__equip_type)

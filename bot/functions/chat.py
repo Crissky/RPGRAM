@@ -463,24 +463,30 @@ async def call_telegram_message_function(
             if isinstance(error, RetryAfter):
                 sleep_time = error.retry_after + randint(1, 3)
             elif isinstance(error, TimedOut):
-                sleep_time = 3
+                sleep_time = 5
 
             error_name = error.__class__.__name__
             if need_response is False:
                 print(
-                    f'{error_name}({i}): creating JOB "{function.__name__}" '
+                    f'{error_name}{i}({sleep_time}): '
+                    f'creating JOB "{function.__name__}" '
+                )
+                job_name = (
+                    f'{function_caller}->'
+                    f'CALL_TELEGRAM_MESSAGE_FUNCTION->'
+                    f'JOB_CALL_TELEGRAM-{ObjectId()}'
                 )
                 context.job_queue.run_once(
                     callback=job_call_telegram,
-                    when=timedelta(minutes=sleep_time),
+                    when=timedelta(seconds=sleep_time),
                     data=job_call_telegram_kwargs,
-                    name=f'CALL_TELEGRAM_MESSAGE_FUNCTION->JOB_CALL_TELEGRAM',
+                    name=job_name,
                     job_kwargs=BASE_JOB_KWARGS,
                 )
                 return ConversationHandler.END
 
             print(
-                f'{error_name}({i}): RETRYING activate "{function.__name__}" '
+                f'{error_name}{i}: RETRYING activate "{function.__name__}" '
                 f'from {function_caller} in {sleep_time} seconds.'
             )
             sleep(sleep_time)
@@ -500,6 +506,7 @@ async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
     do tipo RetryAfter, TimedOut e o need_response seja False
     '''
 
+    print('JOB_CALL_TELEGRAM()')
     job = context.job
     call_telegram_kwargs = job.data
     call_telegram_kwargs['function_caller'] += ' and JOB_CALL_TELEGRAM()'

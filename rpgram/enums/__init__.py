@@ -25,8 +25,9 @@ from rpgram.enums.material import SeishinWearbleMaterialEnum
 from rpgram.enums.material import TacticalAccessoryMaterialEnum
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.rarity import RarityEnumOrder
-from rpgram.enums.skill import SkillTypeEnum
 from rpgram.enums.skill import TargetEnum
+from rpgram.enums.skill import SkillTypeEnum
+from rpgram.enums.skill import SkillDefenseEnum
 from rpgram.enums.trocado import TrocadoEnum
 from rpgram.enums.turn import TurnEnum
 from rpgram.enums.stats_base import BaseStatsEnum
