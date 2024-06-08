@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-class PhysicalAttack(BaseSkill):
+class PhysicalAttackSkill(BaseSkill):
     def __init__(self, char: 'BaseCharacter'):
         name = 'Physical Attack'
         description = 'Ataque Físico baseado em "FOR" e "DES".'
@@ -32,7 +32,7 @@ class PhysicalAttack(BaseSkill):
         )
 
 
-class PrecisionAttack(BaseSkill):
+class PrecisionAttackSkill(BaseSkill):
     def __init__(self, char: 'BaseCharacter'):
         name = 'Precision Attack'
         description = 'Ataque rápido baseado em "DES".'
@@ -56,7 +56,7 @@ class PrecisionAttack(BaseSkill):
         )
 
 
-class MagicalAttack(BaseSkill):
+class MagicalAttackSkill(BaseSkill):
     def __init__(self, char: 'BaseCharacter'):
         name = 'Magical Attack'
         description = 'Ataque Mágico baseado em "INT" e "WIS".'
@@ -76,15 +76,15 @@ class MagicalAttack(BaseSkill):
             char=char,
             use_equips_damage_types=True,
             requirements={},
-            damage_types='MAGIC'
+            damage_types=None
         )
 
 
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
-    pha = PhysicalAttack(BASE_CHARACTER)
-    pra = PrecisionAttack(BASE_CHARACTER)
-    maa = MagicalAttack(BASE_CHARACTER)
+    pha = PhysicalAttackSkill(BASE_CHARACTER)
+    pra = PrecisionAttackSkill(BASE_CHARACTER)
+    maa = MagicalAttackSkill(BASE_CHARACTER)
     print(f'\n{pha.description_text}\nPower: {pha.power}')
     print(f'CHARACTER.Physical Attack: {BASE_CHARACTER.cs.physical_attack}')
     print('#'*79)

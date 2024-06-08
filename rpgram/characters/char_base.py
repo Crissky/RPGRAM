@@ -1,18 +1,23 @@
 from bson import ObjectId
 from datetime import datetime
 from random import choices, random, uniform
-from typing import List, Tuple, TypeVar, Union
+from typing import List, TypeVar, Union
 
 from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.dice import Dice
+from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.skill import (
+    MAGICAL_DEFENSE_ENUM_LIST,
+    PHYSICAL_DEFENSE_ENUM_LIST
+)
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.equips import Equips
 from rpgram.skills.basic_attack import (
-    MagicalAttack,
-    PhysicalAttack,
-    PrecisionAttack
+    MagicalAttackSkill,
+    PhysicalAttackSkill,
+    PrecisionAttackSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 from rpgram.status import Status
@@ -111,13 +116,17 @@ class BaseCharacter:
         elif defense_name == 'magical_defense':
             return self.cs.magical_defense
 
-    def get_defense_name(self, attack_name) -> str:
-        if attack_name == 'magical_attack':
+    def get_defense_name(self, attacker_skill: BaseSkill) -> str:
+        skill_defense = attacker_skill.skill_defense
+        if skill_defense in MAGICAL_DEFENSE_ENUM_LIST:
             defense_name = 'magical_defense'
-        elif attack_name in ['physical_attack', 'precision_attack']:
+        elif skill_defense in PHYSICAL_DEFENSE_ENUM_LIST:
             defense_name = 'physical_defense'
         else:
-            raise KeyError(f'"{attack_name}" não é uma ação válida.')
+            raise KeyError(
+                f'Não existe uma defesa válida para "{skill_defense}".'
+            )
+
         return defense_name
 
     def get_basic_attack_by_name(
@@ -128,11 +137,11 @@ class BaseCharacter:
             attack_name = attack_name.value
 
         if attack_name == CombatStatsEnum.PHYSICAL_ATTACK.value:
-            return PhysicalAttack(self)
+            return PhysicalAttackSkill(self)
         elif attack_name == CombatStatsEnum.PRECISION_ATTACK.value:
-            return PrecisionAttack(self)
+            return PrecisionAttackSkill(self)
         elif attack_name == CombatStatsEnum.MAGICAL_ATTACK.value:
-            return MagicalAttack(self)
+            return MagicalAttackSkill(self)
         else:
             raise KeyError(f'"{attack_name}" não é um ataque básico válido.')
 
@@ -202,21 +211,15 @@ class BaseCharacter:
 
     def get_accuracy(
         self,
-        attacker_dice: Dice,
+        attacker_skill: BaseSkill,
         defender_dice: Dice,
     ) -> float:
         '''Retorna a acurácia do ataque, baseada no ACERTO do do ATACANTE
         e na EVASÃO do DEFENSOR
         '''
-
+        attacker_dice = attacker_skill.dice
         hit = attacker_dice.boosted_hit
         evasion = defender_dice.boosted_evasion
-
-        # Adiciona bônus de HIT com base no HP perdido
-        if attacker_dice.is_player is True:
-            rate_low_hp_bonus = (1 - attacker_dice.rate_hp) / 2
-            hit_low_hp_bonus = int(hit * rate_low_hp_bonus)
-            hit += hit_low_hp_bonus
 
         accuracy = hit / evasion
         accuracy = min(accuracy, 1.0)
@@ -229,21 +232,26 @@ class BaseCharacter:
 
     def test_dodge(
         self,
-        defender_char: TBaseCharacter,
-        attacker_dice: Dice,
+        attacker_skill: BaseSkill,
         defender_dice: Dice,
     ) -> dict:
         '''Testa se o inimigo esquivou do ataque, retornando True
         caso tenha esquivado e False, caso contrário.
         '''
 
+        attacker_dice = attacker_skill.dice
+        defender_char = defender_dice.char
         accuracy = self.get_accuracy(
-            attacker_dice=attacker_dice,
+            attacker_skill=attacker_skill,
             defender_dice=defender_dice,
         )
         dodge_score = random()
         is_dodged = False
 
+        # Adiciona bônus de ACCURACY com base no HP perdido
+        if attacker_dice.is_player is True:
+            accuracy_low_hp_bonus = (1 - attacker_dice.rate_hp) / 2.5
+            accuracy += accuracy_low_hp_bonus
         # Adiciona bônus de DODGE_SCORE com base no HP perdido
         if defender_dice.is_player is True:
             dodge_low_hp_bonus = (1 - defender_dice.rate_hp) / 2.5
@@ -260,7 +268,6 @@ class BaseCharacter:
 
     def calculate_damage(
         self,
-        attack_name: str,
         defense_name: str,
         attacker_dice: Dice,
         defender_dice: Dice,
@@ -271,29 +278,30 @@ class BaseCharacter:
         BLOCK_MULTIPLIER = 0.50
         MIN_DAMAGE_MULTIPLIER = 0.25
 
+        boosted_power_value = attacker_dice.boosted_power
         base_defense_value = defender_dice.get_base_stats(defense_name)
         boosted_defense_value = defender_dice.get_boosted_stats(defense_name)
-        boosted_attack_value = attacker_dice.get_boosted_stats(attack_name)
 
-        damage = boosted_attack_value - boosted_defense_value
-        min_damage = boosted_attack_value * MIN_DAMAGE_MULTIPLIER
+        damage = boosted_power_value - boosted_defense_value
+        min_damage = boosted_power_value * MIN_DAMAGE_MULTIPLIER
         min_damage = int(min_damage * uniform(0.90, 1.10))
         block_value = int(base_defense_value * BLOCK_MULTIPLIER)
-        if all((
-            boosted_attack_value > block_value,
+        if attacker_dice.skill.is_true_damage:
+            damage = max(damage, boosted_power_value)
+        elif all((
+            boosted_power_value > block_value,
             not defender_dice.is_critical,
             not attacker_dice.is_critical_fail,
         )):
             damage = max(damage, min_damage)
 
-        return max(damage, 0)
+        return damage
 
     def to_attack(
         self,
         defender_char: TBaseCharacter,
-        attacker_dice: Union[Dice, int] = None,
         defender_dice: Union[Dice, int] = None,
-        attack_name: Union[str, CombatStatsEnum, BaseSkill] = None,
+        attacker_skill: Union[str, CombatStatsEnum, BaseSkill] = None,
         to_dodge: bool = False,
         to_defend: bool = True,
         rest_command: str = None,
@@ -305,38 +313,37 @@ class BaseCharacter:
         ataque mais poderoso.
         '''
 
-        if isinstance(attack_name, (str, CombatStatsEnum)):
-            attack_name = self.get_basic_attack_by_name(attack_name)
-        elif not isinstance(attack_name, BaseSkill):
-            attack_name = self.get_best_basic_attack()
-
-        if not isinstance(attacker_dice, Dice):
-            atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20
-            attacker_dice = Dice(character=self, faces=atk_faces)
-        if not isinstance(defender_dice, Dice):
-            def_faces = defender_dice if isinstance(defender_dice, int) else 20
-            defender_dice = Dice(character=defender_char, faces=def_faces)
-
         report = {'text': ''}
         damage = 0
         defender_player_name = defender_char.player_name
 
+        if isinstance(attacker_skill, (str, CombatStatsEnum)):
+            attacker_skill = self.get_basic_attack_by_name(attacker_skill)
+        elif not isinstance(attacker_skill, BaseSkill):
+            attacker_skill = self.get_best_basic_attack()
+
+        # if not isinstance(attacker_dice, Dice):
+        #     atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20
+        #     attacker_dice = Dice(character=self, faces=atk_faces)
+        attacker_dice = attacker_skill.dice
+        if not isinstance(defender_dice, Dice):
+            def_faces = defender_dice if isinstance(defender_dice, int) else 20
+            defender_dice = Dice(character=defender_char, faces=def_faces)
+
         dodge_report = self.test_dodge(
-            defender_char=defender_char,
-            attacker_dice=attacker_dice,
+            attacker_skill=attacker_skill,
             defender_dice=defender_dice,
         )
 
-        base_attack_value = attacker_dice.get_base_stats(attack_name)
-        boosted_attack_value = attacker_dice.get_boosted_stats(attack_name)
+        base_power_value = attacker_dice.base_power
+        boosted_power_value = attacker_dice.boosted_power
 
-        defense_name = self.get_defense_name(attack_name)
+        defense_name = self.get_defense_name(attacker_skill)
         base_defense_value = defender_dice.get_base_stats(defense_name)
         boosted_defense_value = defender_dice.get_boosted_stats(defense_name)
 
         # Formating
-        attack_name = attack_name.replace('_', ' ')
-        attack_name = attack_name.title()
+        attack_name = attacker_skill.name
         defense_name = defense_name.replace('_', ' ')
         defense_name = defense_name.title()
 
@@ -345,22 +352,21 @@ class BaseCharacter:
             attacker_dice_text = attacker_dice.text
             defender_dice_text = defender_dice.text
             report['text'] = (
-                f'{defender_player_name}[{defender_dice_text}] '
-                f'*ESQUIVOU DO ATAQUE* de '
-                f'*{self.full_name_with_level}*[{attacker_dice_text}].'
+                f'{defender_player_name} *ESQUIVOU DO ATAQUE*\n'
+                f'{EmojiEnum.DEFEND.value}:{defender_dice_text}𝗫'
+                f'{EmojiEnum.ATTACK.value}:{attacker_dice_text}.'
             )
             report['text'] += self.activate_status_to_attack(defender_char)
 
         # ----------- HIT ----------- #
         else:
             # Get Damage
-            damage = boosted_attack_value
+            damage = boosted_power_value
             is_immobilized = defender_char.is_immobilized
             if is_immobilized:
                 immobilized_names = defender_char.status.immobilized_names()
             if to_defend and not is_immobilized:
                 damage = self.calculate_damage(
-                    attack_name=attack_name,
                     defense_name=defense_name,
                     attacker_dice=attacker_dice,
                     defender_dice=defender_dice,
@@ -372,7 +378,7 @@ class BaseCharacter:
 
             # Get Special Damages
             if total_damage > 0:
-                for special_damage in self.equips.special_damage_iter:
+                for special_damage in attacker_skill.special_damage_iter:
                     total_damage += special_damage.damage
                     damage_text = special_damage.damage_emoji_text
                     damage_text_list.append(damage_text)
@@ -407,13 +413,19 @@ class BaseCharacter:
             if verbose:
                 report['text'] += (
                     f'*{attack_name}*: '
-                    f'{boosted_attack_value}({base_attack_value}), '
+                    f'{boosted_power_value}({base_power_value}), '
                     f'{attacker_dice.text}\n'
                 )
                 if is_immobilized:
                     report['text'] += (
-                        f'*Vulnerável*: Personagem não pôde se defender pois '
+                        f'*Vulnerável*: Personagem não pôde se defender, pois '
                         f'está com {immobilized_names}.'
+                        f'\n'
+                    )
+                elif attacker_skill.is_true_damage:
+                    report['text'] += (
+                        f'*Subjugado*: Personagem não pôde se defender, pois '
+                        f'o ataque é indefensável.'
                         f'\n'
                     )
                 else:
@@ -471,8 +483,8 @@ class BaseCharacter:
                 'dice_value': attacker_dice.value,
                 'dice_text': attacker_dice.text,
                 'is_critical': attacker_dice.is_critical,
-                'atk': base_attack_value,
-                'boosted_atk': boosted_attack_value,
+                'atk': base_power_value,
+                'boosted_atk': boosted_power_value,
             },
             'defender': defender_char,
             'defender_char': defender_char,
@@ -535,9 +547,9 @@ class BaseCharacter:
     @property
     def basic_attacks(self) -> List[BaseSkill]:
         return [
-            PhysicalAttack(self),
-            PrecisionAttack(self),
-            MagicalAttack(self),
+            PhysicalAttackSkill(self),
+            PrecisionAttackSkill(self),
+            MagicalAttackSkill(self),
         ]
 
     name: str = property(lambda self: self.__name)

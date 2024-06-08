@@ -137,6 +137,11 @@ class Dice:
         return bool(self.__value)
 
     @property
+    def character(self) -> 'BaseCharacter':
+        return self.__character
+    char = character
+
+    @property
     def base_stats(self) -> BaseStats:
         return self.__base_stats
 
@@ -156,11 +161,11 @@ class Dice:
 
     @property
     def is_enemy(self) -> bool:
-        return self.__character.is_enemy
+        return self.character.is_enemy
 
     @property
     def is_player(self) -> bool:
-        return self.__character.is_player
+        return self.character.is_player
 
     # BASE STATS
     @property
@@ -245,8 +250,8 @@ class Dice:
 
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
-    from rpgram.skills.basic_attack import PhysicalAttack
-    phy_atk = PhysicalAttack(char=BASE_CHARACTER)
+    from rpgram.skills.basic_attack import PhysicalAttackSkill
+    phy_atk = PhysicalAttackSkill(char=BASE_CHARACTER)
 
     dice = Dice(character=BASE_CHARACTER, skill=phy_atk, faces=20)
     dice.throw()

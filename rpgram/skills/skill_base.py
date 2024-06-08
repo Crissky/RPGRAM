@@ -146,7 +146,7 @@ class BaseSkill:
         self.base_stats = char.base_stats
         self.combat_stats = char.combat_stats
         self.equips = char.equips
-        self.dice = dice
+        self.dice: Dice = dice
         self.use_equips_damage_types = use_equips_damage_types
         self.requirements = requirements
         self.damage_types = damage_types
@@ -268,6 +268,10 @@ class BaseSkill:
             f'{attributes_power_texts}'
             f'{special_damage_texts}'
         )
+
+    @property
+    def is_true_damage(self) -> bool:
+        return self.skill_defense == SkillDefenseEnum.TRUE
 
     @property
     def special_damage_text(self):
