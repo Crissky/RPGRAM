@@ -7,8 +7,13 @@ from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.dice import Dice
+from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.equips import Equips
-from rpgram.skills.basic_attack import MagicalAttack, PhysicalAttack, PrecisionAttack
+from rpgram.skills.basic_attack import (
+    MagicalAttack,
+    PhysicalAttack,
+    PrecisionAttack
+)
 from rpgram.skills.skill_base import BaseSkill
 from rpgram.status import Status
 from rpgram.boosters.classe import Classe
@@ -115,6 +120,22 @@ class BaseCharacter:
             raise KeyError(f'"{attack_name}" não é uma ação válida.')
         return defense_name
 
+    def get_basic_attack_by_name(
+        self,
+        attack_name: Union[str, CombatStatsEnum]
+    ) -> BaseSkill:
+        if isinstance(attack_name, CombatStatsEnum):
+            attack_name = attack_name.value
+
+        if attack_name == CombatStatsEnum.PHYSICAL_ATTACK.value:
+            return PhysicalAttack(self)
+        elif attack_name == CombatStatsEnum.PRECISION_ATTACK.value:
+            return PrecisionAttack(self)
+        elif attack_name == CombatStatsEnum.MAGICAL_ATTACK.value:
+            return MagicalAttack(self)
+        else:
+            raise KeyError(f'"{attack_name}" não é um ataque básico válido.')
+
     def weighted_choice_basic_attack(self) -> BaseSkill:
         basic_attack_dict = {
             basic_attack: basic_attack.power
@@ -184,7 +205,7 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> float:
-        '''Retorna a acurácia do ataque, baseada no ACERTO do do ATACANTE 
+        '''Retorna a acurácia do ataque, baseada no ACERTO do do ATACANTE
         e na EVASÃO do DEFENSOR
         '''
 
@@ -212,7 +233,7 @@ class BaseCharacter:
         attacker_dice: Dice,
         defender_dice: Dice,
     ) -> dict:
-        '''Testa se o inimigo esquivou do ataque, retornando True 
+        '''Testa se o inimigo esquivou do ataque, retornando True
         caso tenha esquivado e False, caso contrário.
         '''
 
@@ -272,22 +293,22 @@ class BaseCharacter:
         defender_char: TBaseCharacter,
         attacker_dice: Union[Dice, int] = None,
         defender_dice: Union[Dice, int] = None,
-        attack_name: Union[str, BaseSkill] = None,
+        attack_name: Union[str, CombatStatsEnum, BaseSkill] = None,
         to_dodge: bool = False,
         to_defend: bool = True,
         rest_command: str = None,
         verbose: bool = False,
         markdown: bool = False,
     ) -> dict:
-        '''Personagem ataca um alvo usando um dos ataques básicos. Caso não 
-        seja passado um attacker_action_name, será escolhido o atributo de 
+        '''Personagem ataca um alvo usando um dos ataques básicos. Caso não
+        seja passado um attacker_action_name, será escolhido o atributo de
         ataque mais poderoso.
         '''
 
-        if not isinstance(attack_name, str):
-            attack_name = self.get_best_basic_attack()
-        elif isinstance(attack_name, str):
+        if isinstance(attack_name, (str, CombatStatsEnum)):
             attack_name = self.get_basic_attack_by_name(attack_name)
+        elif not isinstance(attack_name, BaseSkill):
+            attack_name = self.get_best_basic_attack()
 
         if not isinstance(attacker_dice, Dice):
             atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20
