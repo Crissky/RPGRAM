@@ -189,6 +189,8 @@ class Dice:
 
     @property
     def base_hit(self) -> int:
+        if self.skill is not None:
+            return self.skill.hit
         return self.combat_stats.hit
 
     @property
