@@ -235,6 +235,19 @@ class BaseSkill:
             return 1 + (self.level / 20)
 
     @property
+    def hit_multiplier(self) -> float:
+        return 1.0
+
+    @property
+    def hit(self) -> int:
+        return int(self.combat_stats.hit * self.hit_multiplier)
+
+    @property
+    def hit_text(self) -> str:
+        hit_percent = self.hit_multiplier*100
+        return f'Acerto: {self.hit}({hit_percent}%{EmojiEnum.HIT.value})'
+
+    @property
     def power(self) -> int:
         power_point = 0
         for attribute, multiplier in self.iter_multipliers():
@@ -245,11 +258,11 @@ class BaseSkill:
     @property
     def powers_text(self) -> str:
         attributes_power_texts = (
-            f'Dano dos Atributos: {self.attributes_power_text}\n'
+            f'Dano dos Atributos: {self.attributes_power_text}'
         )
 
         if (special_damage_texts := self.special_damage_text):
-            special_damage_texts = f'Danos Especiais: {special_damage_texts}\n'
+            special_damage_texts = f'\nDanos Especiais: {special_damage_texts}'
 
         return (
             f'{attributes_power_texts}'
@@ -274,6 +287,14 @@ class BaseSkill:
             )
 
         return special_damage_iter
+
+    @property
+    def description_text(self) -> str:
+        return (
+            f'{self.name}: {self.description}\n'
+            f'{self.hit_text}\n'
+            f'{self.powers_text}'
+        )
 
     def __getitem__(self, item: STATS_MULTIPLIER_TYPES) -> int:
         if isinstance(item, STATS_ENUM_TYPES):
