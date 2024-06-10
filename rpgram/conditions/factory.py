@@ -106,6 +106,8 @@ def factory_condition(
         condition_class = Heal7Condition
     elif name == HealingConsumableEnum.HEAL8.value:
         condition_class = Heal8Condition
+    else:
+        raise ValueError(f'Condição {name} não encontrada!')
 
     return condition_class(**kwargs)
 

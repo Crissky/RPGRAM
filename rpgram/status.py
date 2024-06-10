@@ -10,6 +10,7 @@ from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
+from rpgram.conditions.barrier import BarrierCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
 from rpgram.conditions.factory import factory_condition
@@ -206,6 +207,17 @@ class Status:
         }
 
     clean = clean_status
+
+    def add_barrier_damage(self, damage: int) -> List[dict]:
+        damage = int(abs(damage))
+        report = {'text': '', 'remaining_damage': damage, 'damage': damage}
+        for condition in self.__conditions:
+            if isinstance(condition, BarrierCondition) and damage > 0:
+                damage_report = condition.damage_barrier_points(damage)
+                damage = damage_report['remaining_damage']
+                report['text'] += damage_report['text'] + '\n'
+
+        return report
 
     def activate(self, char) -> List[dict]:
         reports = []

@@ -352,8 +352,14 @@ class CombatStats:
     @property
     def rate_hit_points(self) -> float:
         return round(self.current_hit_points / self.hit_points, 2)
-
     rate_hp = rate_hit_points
+
+    @property
+    def irate_hit_points(self) -> float:
+        '''Inverse rate_hit_points'''
+
+        return (1 - self.rate_hit_points)
+    irate_hp = irate_hit_points
 
     @property
     def show_hit_points(self) -> str:

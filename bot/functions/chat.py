@@ -170,6 +170,7 @@ async def forward_message(
     context: ContextTypes.DEFAULT_TYPE = None,
     chat_id: int = None,
     message_id: int = None,
+    silent: bool = None,
 ):
     '''Encaminha uma mensagem usando um Message ou um ContextTypes
     '''
@@ -186,7 +187,10 @@ async def forward_message(
     user_ids = list(set(user_ids))
 
     for user_id in user_ids:
-        user_silent = get_player_attribute_by_id(user_id, 'silent')
+        if silent is None:
+            user_silent = get_player_attribute_by_id(user_id, 'silent')
+        else:
+            user_silent = silent
         if message_chat_id == user_id:
             continue  # Evita encaminhamento para o próprio chat privado
         try:
@@ -317,6 +321,7 @@ async def reply_text(
     allow_sending_without_reply=True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    silent: bool = None,
 ) -> Message:
     '''Responde uma mensagem.
 
@@ -339,10 +344,11 @@ async def reply_text(
     if update and user_id is None:
         user_id = update.effective_user.id
 
-    if isinstance(chat_id, int):
-        silent = get_attribute_group_or_player(chat_id, 'silent')
-    elif isinstance(user_id, int):
-        silent = get_player_attribute_by_id(user_id, 'silent')
+    if silent is None:
+        if isinstance(chat_id, int):
+            silent = get_attribute_group_or_player(chat_id, 'silent')
+        elif isinstance(user_id, int):
+            silent = get_player_attribute_by_id(user_id, 'silent')
 
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
     reply_markup = (
@@ -388,6 +394,8 @@ async def reply_text_and_forward(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = False,
+    silent_reply: bool = None,
+    silent_forward: bool = None,
 ) -> Message:
     '''Responde uma mensagem e a encaminha para o usuário.
     '''
@@ -410,12 +418,14 @@ async def reply_text_and_forward(
         allow_sending_without_reply=allow_sending_without_reply,
         markdown=markdown,
         reply_markup=reply_markup,
+        silent=silent_reply,
     )
 
     await forward_message(
         function_caller=both_function_caller,
         user_ids=user_ids,
-        message=response
+        message=response,
+        silent=silent_forward,
     )
 
     return response

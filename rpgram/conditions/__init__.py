@@ -22,3 +22,4 @@ from rpgram.conditions.debuff import PetrifiedCondition
 from rpgram.conditions.debuff import PoisoningCondition
 from rpgram.conditions.debuff import SilenceCondition
 from rpgram.conditions.debuff import StunnedCondition
+from rpgram.conditions.barrier import BarrierCondition

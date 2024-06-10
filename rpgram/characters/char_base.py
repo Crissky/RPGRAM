@@ -250,11 +250,11 @@ class BaseCharacter:
 
         # Adiciona bônus de ACCURACY com base no HP perdido
         if attacker_dice.is_player is True:
-            accuracy_low_hp_bonus = (1 - attacker_dice.rate_hp) / 2.5
+            accuracy_low_hp_bonus = attacker_dice.irate_hp / 2.5
             accuracy += accuracy_low_hp_bonus
         # Adiciona bônus de DODGE_SCORE com base no HP perdido
         if defender_dice.is_player is True:
-            dodge_low_hp_bonus = (1 - defender_dice.rate_hp) / 2.5
+            dodge_low_hp_bonus = defender_dice.irate_hp / 2.5
             dodge_score += dodge_low_hp_bonus
         if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)

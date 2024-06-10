@@ -156,8 +156,12 @@ class Dice:
     @property
     def rate_hit_points(self) -> float:
         return self.combat_stats.rate_hit_points
-
     rate_hp = rate_hit_points
+
+    @property
+    def irate_hit_points(self) -> float:
+        return self.combat_stats.irate_hit_points
+    irate_hp = irate_hit_points
 
     @property
     def is_enemy(self) -> bool:

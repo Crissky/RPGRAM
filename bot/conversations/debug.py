@@ -8,10 +8,16 @@ from telegram.constants import ParseMode
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
+    ConversationHandler,
     PrefixHandler
 )
 
-from bot.constants.debug import COMMANDS, DEBUFF_COMMANDS, SECTION_TEXT_DEBUG
+from bot.constants.debug import (
+    COMMANDS,
+    DEBUFF_COMMANDS,
+    SECTION_TEXT_DEBUFF,
+    SECTION_TEXT_DEBUG
+)
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS,
@@ -29,6 +35,8 @@ from bot.functions.char import add_conditions
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import (
+    SECTION_HEAD_DEBUFF_END,
+    SECTION_HEAD_DEBUFF_START,
     SECTION_HEAD_DEBUG_END,
     SECTION_HEAD_DEBUG_START,
     TEXT_SEPARATOR
@@ -117,10 +125,35 @@ async def get_random_debuff(
         condition_name = args.pop(0).title()
         condition_level = args.pop(0) if args else 1
         condition_level = abs(int(condition_level))
-        condition = factory_condition(
-            condition_name=condition_name,
-            level=condition_level
-        )
+        try:
+            condition = factory_condition(
+                condition_name=condition_name,
+                level=condition_level
+            )
+        except ValueError as error:
+            text = f'Erro: {error}'
+            text = create_text_in_box(
+                text=text,
+                section_name=SECTION_TEXT_DEBUFF,
+                section_start=SECTION_HEAD_DEBUFF_START,
+                section_end=SECTION_HEAD_DEBUFF_END,
+            )
+            reply_text_kwargs = dict(
+                text=text,
+                parse_mode=ParseMode.MARKDOWN_V2,
+                disable_notification=silent,
+                reply_markup=get_close_keyboard(user_id=user_id),
+                allow_sending_without_reply=True
+            )
+            await call_telegram_message_function(
+                function_caller='DEBUG.GET_RANDOM_DEBUFF()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
+            return ConversationHandler.END
         report = add_conditions(condition, user_id=user_id)
     else:
         report = add_conditions(*DEBUFFS, user_id=user_id)

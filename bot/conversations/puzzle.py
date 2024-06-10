@@ -659,6 +659,7 @@ async def punishment(
             message_id=message_id,
             need_response=False,
             markdown=True,
+            silent_forward=False,
         )
 
 
