@@ -190,13 +190,15 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     )
     min_level = max(1, int(level / 20 * 0.90))
     max_level = max(2, int(level / 20 * 1.10))
+    heal_low_hp_bonus = 1 + player_character.cs.irate_hp
     condition_quantity = randint(min_level, max_level)
+    condition_quantity = int(condition_quantity * heal_low_hp_bonus)
     if player_character.is_dead:
         report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
     else:
         max_hp = player_character.cs.hp
-        heal = int(max_hp * 0.10)
+        heal = int(max_hp * 0.10) * heal_low_hp_bonus
         report = player_character.cs.cure_hit_points(heal)
     status_report = player_character.status.remove_random_debuff_conditions(
         condition_quantity
