@@ -1,7 +1,6 @@
-
-
 from itertools import chain
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterator
+
 from rpgram.enums.stats_base import BASE_STATS_ATTRIBUTE_LIST, BaseStatsEnum
 from rpgram.enums.stats_combat import COMBAT_STATS_ATTRIBUTE_LIST
 from rpgram.errors import RequirementError
@@ -57,10 +56,13 @@ class Requirement:
         return self.base_stats.get(BaseStatsEnum.LEVEL.value.lower(), 1)
 
     @property
+    def iter(self) -> Iterator:
+        return chain(self.base_stats.items(), self.combat_stats.items())
+
+    @property
     def text(self) -> str:
         text = ''
-        _iter = chain(self.base_stats.items(), self.combat_stats.items())
-        for attribute, value in _iter:
+        for attribute, value in self.iter:
             attribute = attribute.replace('_', ' ').upper()
             text += f'  {attribute}: {value}\n'
 
@@ -69,10 +71,7 @@ class Requirement:
     def to_dict(self) -> dict:
         return {
             key: value
-            for key, value in chain(
-                self.base_stats.items(),
-                self.combat_stats.items(),
-            )
+            for key, value in self.iter
         }
 
 
