@@ -1,5 +1,5 @@
 from itertools import chain
-from typing import TYPE_CHECKING, Iterator
+from typing import TYPE_CHECKING, Iterator, Tuple
 
 from rpgram.enums.stats_base import BASE_STATS_ATTRIBUTE_LIST, BaseStatsEnum
 from rpgram.enums.stats_combat import COMBAT_STATS_ATTRIBUTE_LIST
@@ -56,7 +56,7 @@ class Requirement:
         return self.base_stats.get(BaseStatsEnum.LEVEL.value.lower(), 1)
 
     @property
-    def iter(self) -> Iterator:
+    def iter(self) -> Iterator[Tuple[str, int]]:
         return chain(self.base_stats.items(), self.combat_stats.items())
 
     @property
