@@ -434,6 +434,14 @@ class Status:
 
         return False
 
+    @property
+    def debuffs_text(self) -> str:
+        return ', '.join([
+            condition.full_name
+            for condition in self.__conditions
+            if isinstance(condition, DebuffCondition)
+        ]) or 'Normal'
+
     conditions = property(lambda self: self.__conditions)
     _id = property(lambda self: self.__id)
     bonus_strength = property(lambda self: self.__bonus_strength)
