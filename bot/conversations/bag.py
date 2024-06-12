@@ -405,11 +405,12 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_id=user_id,
         target_id=target_id
     )
-    markdown_text += item.get_all_sheets(
-        verbose=True,
-        markdown=True,
-        show_quantity=True
-    )
+    if item:
+        markdown_text += item.get_all_sheets(
+            verbose=True,
+            markdown=True,
+            show_quantity=True
+        )
     equip_buttons = []
     use_buttons = [[]]
     equip_info_identify_button = []
@@ -504,27 +505,31 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
             item=item
         )
 
-    discard_buttons = get_discard_buttons(
-        page=page,
-        user_id=user_id,
-        target_id=target_id,
-        item_pos=item_pos,
-        item=item
-    )
-    sell_buttons = get_sell_buttons(
-        page=page,
-        user_id=user_id,
-        target_id=target_id,
-        item_pos=item_pos,
-        item=item
-    )
-    navigation_item_buttons = get_navigation_item_buttons(
-        page=page,
-        user_id=user_id,
-        target_id=target_id,
-        item_pos=item_pos,
-        quantity=item.quantity
-    )
+    discard_buttons = []
+    sell_buttons = []
+    navigation_item_buttons = []
+    if item:
+        discard_buttons = get_discard_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            item=item
+        )
+        sell_buttons = get_sell_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            item=item
+        )
+        navigation_item_buttons = get_navigation_item_buttons(
+            page=page,
+            user_id=user_id,
+            target_id=target_id,
+            item_pos=item_pos,
+            quantity=item.quantity
+        )
     back_button = get_back_button(
         page=page,
         user_id=user_id,

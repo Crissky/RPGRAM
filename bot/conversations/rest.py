@@ -78,6 +78,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_character: BaseCharacter = char_model.get(user_id)
     character_id = player_character._id
     current_hp = player_character.cs.show_hit_points
+    debuffs_text = player_character.status.debuffs_text
     battle: Battle = battle_model.get(query={
         '$or': [{'blue_team': character_id}, {'red_team': character_id}]
     })
@@ -88,13 +89,15 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_text_already_resting = choice(REPLY_TEXTS_ALREADY_RESTING)
         text = (
             f'{reply_text_already_resting}\n\n'
-            f'HP: {current_hp}'
+            f'HP: {current_hp}\n'
+            f'Status: {debuffs_text}.'
         )
     elif player_character.is_healed and not player_character.is_debuffed:
         reply_text_no_need_rest = choice(REPLY_TEXTS_NO_NEED_REST)
         text = (
             f'{reply_text_no_need_rest}\n\n'
-            f'HP: {current_hp}'
+            f'HP: {current_hp}\n'
+            f'Status: {debuffs_text}.'
         )
     else:
         create_job_rest_cure(
@@ -105,8 +108,9 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_text_starting_rest = choice(REPLY_TEXTS_STARTING_REST)
         text = (
             f'{reply_text_starting_rest}\n\n'
-            f'HP: {current_hp}\n\n'
-            f'Seu personagem irá recuperar HP a cada meia hora.'
+            f'HP: {current_hp}\n'
+            f'Status: {debuffs_text}\n\n'
+            f'Seu personagem irá recuperar HP e Status a cada meia hora.'
         )
     create_job_rest_action_point(
         context=context,
@@ -285,7 +289,7 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
 async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso de todos os personagens do grupo que 
     não estão com o HP cheio.
-    O descanso faz com que o personagem recupere HP a cada meia hora.
+    O descanso faz com que o personagem recupere HP e Stauts a cada meia hora.
     Se o personagem estiver morto, ele reviverá, recuperando 1 de HP 
     em meia hora.'''
 
@@ -337,7 +341,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'{reply_text_rest}\n\n'
             f'{players_hp}\n\n'
-            f'Os personagens irão recuperar HP a cada meia hora.'
+            f'Os personagens irão recuperar HP e Status a cada meia hora.'
         )
 
         text = create_text_in_box(

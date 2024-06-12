@@ -8,6 +8,7 @@ from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.errors import SkillRequirementError
+from rpgram.requirement import Requirement
 from rpgram.skills.special_damage import SpecialDamage
 
 if TYPE_CHECKING:
@@ -42,7 +43,7 @@ class BaseSkill:
         char: 'BaseCharacter',
         dice: Union[int, Tuple[int, float]] = 20,
         use_equips_damage_types: bool = False,
-        requirements: Dict[str, Any] = {},
+        requirements: Union[Requirement, Dict[str, Any]] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
     ):
         self.base_stats_multiplier = {}
@@ -114,11 +115,13 @@ class BaseSkill:
             base_multiplier=dice[1]
         )
 
-        if not isinstance(requirements, dict):
+        if not isinstance(requirements, (dict, Requirement)):
             raise TypeError(
                 f'requirements precisa ser um dicionário.'
                 f'"{type(requirements)}" não é válido.'
             )
+        elif isinstance(requirements, dict):
+            requirements = Requirement(**requirements)
 
         if isinstance(damage_types, (DamageEnum, str)):
             damage_types = [damage_types]
@@ -151,25 +154,7 @@ class BaseSkill:
         self.requirements = requirements
         self.damage_types = damage_types
 
-        self.check_requirements()
-
-    def check_requirements(self):
-        errors = []
-        for attribute, value in self.requirements.items():
-            if value > self.base_stats[attribute]:
-                errors.append(
-                    f'    {attribute}: '
-                    f'"{value}" ({self.base_stats[attribute]}).'
-                )
-
-        if errors:
-            errors = "\n".join(errors)
-            raise SkillRequirementError(
-                f'Não foi possível aprender/usar a habilidade '
-                f'"{self.name}".\n'
-                f'O personagem não possui os requisitos:\n'
-                f'{errors}'
-            )
+        self.requirements.check_requirements(self.char)
 
     def iter_multipliers(self) -> ITER_MULTIPLIERS_TYPE:
         return chain(

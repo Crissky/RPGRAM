@@ -12,3 +12,17 @@ class CombatStatsEnum(Enum):
     MAGICAL_DEFENSE = 'magical_defense'
     HIT = 'hit'
     EVASION = 'evasion'
+
+
+COMBAT_STATS_ATTRIBUTE_LIST = [
+    CombatStatsEnum.HP.value,
+    CombatStatsEnum.CURRENT_HP.value,
+    CombatStatsEnum.INITIATIVE.value,
+    CombatStatsEnum.PHYSICAL_ATTACK.value,
+    CombatStatsEnum.PRECISION_ATTACK.value,
+    CombatStatsEnum.MAGICAL_ATTACK.value,
+    CombatStatsEnum.PHYSICAL_DEFENSE.value,
+    CombatStatsEnum.MAGICAL_DEFENSE.value,
+    CombatStatsEnum.HIT.value,
+    CombatStatsEnum.EVASION.value,
+]

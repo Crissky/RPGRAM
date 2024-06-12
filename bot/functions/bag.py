@@ -38,13 +38,16 @@ def get_item_from_bag_by_position(
     '''
 
     bag_model = BagModel()
+    item = None
     item_index = (ITEMS_PER_PAGE * page) + item_pos
     player_bag: Bag = bag_model.get(
         query={'player_id': user_id},
         fields={'items_ids': {'$slice': [item_index, 1]}},
         partial=False
     )
-    item = player_bag[0]
+    if player_bag:
+        item = player_bag[0]
+
     return item
 
 

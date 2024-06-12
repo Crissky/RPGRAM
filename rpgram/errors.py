@@ -10,6 +10,10 @@ class EmptyTeamError(Exception):
     ''' Erro quando o time está vazio.'''
 
 
+class RequirementError(Exception):
+    ''' Erro quando o personagem não tem os requisitos necessários.'''
+
+
 class EquipmentRequirementError(Exception):
     ''' Erro quando o personagem não tem os requisitos necessários para 
     equipar o item.'''
