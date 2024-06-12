@@ -196,8 +196,8 @@ class Status:
         self.__conditions = [
             condition
             for condition in self.__conditions
-            if not isinstance(condition, BarrierCondition)
-            and not condition.is_broken
+            if not isinstance(condition, BarrierCondition) or
+            not condition.is_broken
         ]
 
     def clean_status(self) -> dict:
