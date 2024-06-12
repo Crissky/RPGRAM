@@ -353,8 +353,8 @@ class BaseCharacter:
             defender_dice_text = defender_dice.text
             report['text'] = (
                 f'{defender_player_name} *ESQUIVOU DO ATAQUE*\n'
-                f'{EmojiEnum.DEFEND.value}:{defender_dice_text}𝗫'
-                f'{EmojiEnum.ATTACK.value}:{attacker_dice_text}.'
+                f'{EmojiEnum.DEFEND.value}{defender_dice_text} 𝗫 '
+                f'{EmojiEnum.ATTACK.value}{attacker_dice_text}.'
             )
             report['text'] += self.activate_status_to_attack(defender_char)
 
