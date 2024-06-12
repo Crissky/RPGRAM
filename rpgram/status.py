@@ -192,6 +192,14 @@ class Status:
 
         return report
 
+    def remove_broken_barrier(self):
+        self.__conditions = [
+            condition
+            for condition in self.__conditions
+            if not isinstance(condition, BarrierCondition)
+            and not condition.is_broken
+        ]
+
     def clean_status(self) -> dict:
         condition_names = ', '.join(
             [condition.emoji_name for condition in self.__conditions]
@@ -216,6 +224,8 @@ class Status:
                 damage_report = condition.damage_barrier_points(damage)
                 damage = damage_report['remaining_damage']
                 report['text'] += damage_report['text'] + '\n'
+
+        self.remove_broken_barrier()
 
         return report
 
@@ -441,6 +451,17 @@ class Status:
             for condition in self.__conditions
             if isinstance(condition, DebuffCondition)
         ]) or 'Normal'
+
+    @property
+    def show_barrier_points(self) -> str:
+        current_bp = 0
+        max_bp = 0
+        for condition in self.__conditions:
+            if isinstance(condition, BarrierCondition):
+                current_bp += max(0, condition.current_barrier_points)
+                max_bp += condition.barrier_points
+
+        return f'{current_bp}/{max_bp}'
 
     conditions = property(lambda self: self.__conditions)
     _id = property(lambda self: self.__id)

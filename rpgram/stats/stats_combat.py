@@ -4,6 +4,7 @@ from constant.text import ALERT_SECTION_HEAD, SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.constants.stats.stats_combat import FULL_HEAL_VALUE
 from rpgram.constants.text import (
+    BARRIER_POINT_FULL_EMOJI_TEXT,
     EVASION_EMOJI_TEXT,
     EVASION_EMOJI_TEXT_ABB,
     HIT_EMOJI_TEXT,
@@ -102,11 +103,18 @@ class CombatStats:
         value = -int(abs(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
-        self.set_damage(value)
+        status = self.get_status()
+        barrier_damage_report = status.add_barrier_damage(value)
+        remaining_damage = -barrier_damage_report['remaining_damage']
+        barrier_damage_text = barrier_damage_report['text']
+        self.set_damage(remaining_damage)
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         absolute_damage = (old_hp - new_hp)
-        text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{value}*).'
+        text = (
+            f'{barrier_damage_text}'
+            f'*HP*: {old_show_hp} ››› {new_show_hp} (*{value}*).'
+        )
 
         if not markdown:
             text = remove_bold(text)
@@ -180,18 +188,24 @@ class CombatStats:
 
         return report
 
-    def clean_status_by_death(self):
+    def clean_status_by_death(self) -> dict:
         status_class_name = Status.__name__
-        status = self.__base_stats.get_stats_boosters(status_class_name)
+        status = self.get_status()
 
         if isinstance(status, Status):
             status_report = status.clean_status()
             self.__death()
             return status_report
         else:
-            raise AttributeError(
-                f'Status "{status_class_name}" não encontrado.'
-            )
+            raise AttributeError(f'"{status_class_name}" não encontrado.')
+
+    def get_status(self) -> Status:
+        status_class_name = Status.__name__
+        status = self.__base_stats.get_stats_boosters(status_class_name)
+        if not isinstance(status, Status):
+            raise AttributeError(f'"{status_class_name}" não encontrado.')
+
+        return status
 
     def cure_hit_points(
         self,
@@ -368,8 +382,13 @@ class CombatStats:
         if self.current_hit_points < 0:
             alert_text = EmojiEnum.UNDER_ZERO.value
         return f'{current_hit_points}/{self.hit_points}{alert_text}'
-
     show_hp = show_hit_points
+
+    @property
+    def show_barrier_points(self) -> str:
+        status = self.get_status()
+
+        return status.show_barrier_points
 
     @property
     def damaged(self) -> bool:
@@ -573,6 +592,9 @@ class CombatStats:
 
         if verbose:
             text += f'[{base_hp}{self.bonus_hit_points:+}]'
+        text += f'`\n'
+
+        text += f'`{BARRIER_POINT_FULL_EMOJI_TEXT}: {self.show_barrier_points}'
         text += f'`\n'
 
         text += f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:02} '
