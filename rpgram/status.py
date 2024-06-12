@@ -452,6 +452,17 @@ class Status:
             if isinstance(condition, DebuffCondition)
         ]) or 'Normal'
 
+    @property
+    def show_barrier_points(self) -> str:
+        current_bp = 0
+        max_bp = 0
+        for condition in self.__conditions:
+            if isinstance(condition, BarrierCondition):
+                current_bp += max(0, condition.current_barrier_points)
+                max_bp += condition.barrier_points
+
+        return f'{current_bp}/{max_bp}'
+
     conditions = property(lambda self: self.__conditions)
     _id = property(lambda self: self.__id)
     bonus_strength = property(lambda self: self.__bonus_strength)

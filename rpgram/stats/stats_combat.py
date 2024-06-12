@@ -4,6 +4,7 @@ from constant.text import ALERT_SECTION_HEAD, SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.constants.stats.stats_combat import FULL_HEAL_VALUE
 from rpgram.constants.text import (
+    BARRIER_POINT_FULL_EMOJI_TEXT,
     EVASION_EMOJI_TEXT,
     EVASION_EMOJI_TEXT_ABB,
     HIT_EMOJI_TEXT,
@@ -381,8 +382,13 @@ class CombatStats:
         if self.current_hit_points < 0:
             alert_text = EmojiEnum.UNDER_ZERO.value
         return f'{current_hit_points}/{self.hit_points}{alert_text}'
-
     show_hp = show_hit_points
+
+    @property
+    def show_barrier_points(self) -> str:
+        status = self.get_status()
+
+        return status.show_barrier_points
 
     @property
     def damaged(self) -> bool:
@@ -586,6 +592,9 @@ class CombatStats:
 
         if verbose:
             text += f'[{base_hp}{self.bonus_hit_points:+}]'
+        text += f'`\n'
+
+        text += f'`{BARRIER_POINT_FULL_EMOJI_TEXT}: {self.show_barrier_points}'
         text += f'`\n'
 
         text += f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:02} '

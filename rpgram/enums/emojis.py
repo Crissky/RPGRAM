@@ -30,6 +30,7 @@ class EmojiEnum(Enum):
     HIT_POINT_FULL = '❤️'
     HIT_POINT_INJURED = '❤️‍🩹'
     HIT_POINT_DEAD = '🖤'
+    BARRIER_POINT = '🪩'
     INITIATIVE = '🏃‍♂️'
     PHYSICAL_ATTACK = '💥'
     PRECISION_ATTACK = '💫'
