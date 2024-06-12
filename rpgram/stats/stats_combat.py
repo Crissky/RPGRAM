@@ -102,11 +102,18 @@ class CombatStats:
         value = -int(abs(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
-        self.set_damage(value)
+        status = self.get_status()
+        barrier_damage_report = status.add_barrier_damage(value)
+        remaining_damage = barrier_damage_report['remaining_damage']
+        barrier_damage_text = barrier_damage_report['text']
+        self.set_damage(remaining_damage)
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         absolute_damage = (old_hp - new_hp)
-        text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{value}*).'
+        text = (
+            f'{barrier_damage_text}'
+            f'*HP*: {old_show_hp} ››› {new_show_hp} (*{value}*).'
+        )
 
         if not markdown:
             text = remove_bold(text)
@@ -180,18 +187,24 @@ class CombatStats:
 
         return report
 
-    def clean_status_by_death(self):
+    def clean_status_by_death(self) -> dict:
         status_class_name = Status.__name__
-        status = self.__base_stats.get_stats_boosters(status_class_name)
+        status = self.get_status()
 
         if isinstance(status, Status):
             status_report = status.clean_status()
             self.__death()
             return status_report
         else:
-            raise AttributeError(
-                f'Status "{status_class_name}" não encontrado.'
-            )
+            raise AttributeError(f'"{status_class_name}" não encontrado.')
+
+    def get_status(self) -> Status:
+        status_class_name = Status.__name__
+        status = self.__base_stats.get_stats_boosters(status_class_name)
+        if not isinstance(status, Status):
+            raise AttributeError(f'"{status_class_name}" não encontrado.')
+
+        return status
 
     def cure_hit_points(
         self,

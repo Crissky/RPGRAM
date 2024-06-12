@@ -35,24 +35,26 @@ class BarrierCondition(Condition):
         self.__damage = int(damage)
 
     def add_damage(self, value: int) -> int:
+        '''Adiciona dano a barreira e retorna o dano excedente.
+        '''
+
         value = int(abs(value))
-        remaining_damage = 0
         if value > 0:
             print(f'Barreira recebeu {value} de Dano!!!', end=' ')
-        if value > self.current_barrier_points:
-            remaining_damage = value - self.current_barrier_points
+        remaining_damage = value - self.current_barrier_points
         self.__damage += value
-        if self.__damage > self.barrier_points:
-            self.__damage = self.barrier_points
+        self.__damage = min(self.__damage, self.barrier_points)
         print(f'BP: {self.show_bp}')
 
-        return remaining_damage
+        return max(0, remaining_damage)
 
     def damage_barrier_points(
         self,
         value: int,
         markdown: bool = False,
     ) -> dict:
+        '''Adiciona dano a barreira e retorna o dano excedente.
+        '''
 
         value = int(abs(value))
         old_bp = self.current_barrier_points
@@ -61,7 +63,10 @@ class BarrierCondition(Condition):
         new_bp = self.current_barrier_points
         new_show_bp = self.show_barrier_points
         absolute_damage = (old_bp - new_bp)
-        text = f'*BP*: {old_show_bp} ››› {new_show_bp} (*{value}*).'
+        broke_text = 'QUEBROU!' if self.it_broken else ''
+        text = (
+            f'*BP*: {old_show_bp} ››› {new_show_bp} (*{value}*){broke_text}.'
+        )
 
         if not markdown:
             text = remove_bold(text)
@@ -99,3 +104,7 @@ class BarrierCondition(Condition):
             alert_text = EmojiEnum.UNDER_ZERO.value
         return f'{current_barrier_points}/{self.barrier_points}{alert_text}'
     show_bp = show_barrier_points
+
+    @property
+    def it_broken(self) -> bool:
+        return self.current_barrier_points <= 0
