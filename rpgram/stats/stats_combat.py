@@ -105,7 +105,7 @@ class CombatStats:
         old_show_hp = self.show_hit_points
         status = self.get_status()
         barrier_damage_report = status.add_barrier_damage(value)
-        remaining_damage = barrier_damage_report['remaining_damage']
+        remaining_damage = -barrier_damage_report['remaining_damage']
         barrier_damage_text = barrier_damage_report['text']
         self.set_damage(remaining_damage)
         new_hp = self.current_hit_points
