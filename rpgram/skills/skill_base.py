@@ -308,6 +308,16 @@ class BaseSkill:
         else:
             raise KeyError(f'"{item}" não é um atributo válido.')
 
+    def __eq__(self, other):
+        if isinstance(other, BaseSkill):
+            return all((
+                self.__class__ == other.__class__,
+                self.name == other.name
+            ))
+        elif isinstance(other, str):
+            return self.name.upper() == other.upper()
+        return False
+
     def __repr__(self) -> str:
         special_damage_text = self.special_damage_text
         if special_damage_text:
