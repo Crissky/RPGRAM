@@ -13,7 +13,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.barrier import BarrierCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
-from rpgram.conditions.factory import factory_condition
+from rpgram.conditions.factory import condition_factory
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
     IMMOBILIZED_DEBUFFS_NAMES
@@ -161,7 +161,7 @@ class Status:
         unique_conditions = sorted(set(conditions))
         for condition_name in unique_conditions:
             condition_level = conditions.count(condition_name)
-            condition = factory_condition(
+            condition = condition_factory(
                 name=condition_name,
                 level=condition_level
             )

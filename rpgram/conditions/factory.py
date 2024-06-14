@@ -42,7 +42,7 @@ from rpgram.enums.debuff import (
 from rpgram.enums.consumable import HealingConsumableEnum
 
 
-def factory_condition(
+def condition_factory(
     name: str = None,
     condition_name: str = None,
     turn: int = None,
@@ -113,7 +113,7 @@ def factory_condition(
 
 
 if __name__ == '__main__':
-    print(factory_condition(name=CONFUSION))
-    print(factory_condition(name=CONFUSION, turn=10))
-    print(factory_condition(name=CONFUSION, level=10))
-    print(factory_condition(name=CONFUSION, turn=10, level=10))
+    print(condition_factory(name=CONFUSION))
+    print(condition_factory(name=CONFUSION, turn=10))
+    print(condition_factory(name=CONFUSION, level=10))
+    print(condition_factory(name=CONFUSION, turn=10, level=10))

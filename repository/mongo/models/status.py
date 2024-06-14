@@ -2,7 +2,7 @@ from repository.mongo import CollectionEnum, Model
 
 from rpgram import Status
 from rpgram.conditions.debuff import BleedingCondition
-from rpgram.conditions.factory import factory_condition
+from rpgram.conditions.factory import condition_factory
 
 
 class StatusModel(Model):
@@ -12,7 +12,7 @@ class StatusModel(Model):
         lambda self: {
             'conditions': {
                 'id_key': 'condition_args',
-                'factory': factory_condition,
+                'factory': condition_factory,
             }
         }
     )
