@@ -18,6 +18,7 @@ class SkillDefenseEnum(Enum):
     PHYSICAL = 'physical'
     MAGICAL = 'magical'
     TRUE = 'true'
+    NA = 'n/a'
 
 
 MAGICAL_DEFENSE_ENUM_LIST = [SkillDefenseEnum.MAGICAL]

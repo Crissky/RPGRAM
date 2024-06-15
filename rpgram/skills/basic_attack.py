@@ -94,3 +94,4 @@ if __name__ == '__main__':
     print(f'\n{maa.description_text}\nPower: {maa.power}')
     print(f'CHARACTER.Magical Attack: {BASE_CHARACTER.cs.magical_attack}')
     print('#'*79)
+    print(pha)
