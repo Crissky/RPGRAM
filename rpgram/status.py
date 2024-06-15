@@ -95,6 +95,11 @@ class Status:
     ) -> dict:
         '''Testa se o personagem irá receber a condição vinda de 
         SpecialDamage.condition_list
+        Tupla de dicionários de condições e respectivos ratios de acerto.
+        condition = {
+            'condition': functools.partial(Condition, level),
+            'ratio': float
+        }
         '''
 
         report = {'text': '', 'effective': False}
@@ -199,6 +204,16 @@ class Status:
             if not isinstance(condition, BarrierCondition) or
             not condition.is_broken
         ]
+
+    def set_conditions(self, *conditions: Union[Condition, str]) -> List[dict]:
+        report_list = []
+        for condition in conditions:
+            if condition in self.__conditions:
+                self.__conditions.remove(condition)
+            report = self.add_condition(condition)
+            report_list.append(report)
+
+        return report_list
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
