@@ -1,6 +1,7 @@
 from typing import Union
 
 from rpgram.enums.classe import ClasseEnum
+from rpgram.skills.classes.guardian.factory import guardian_skill_factory
 
 
 def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
@@ -27,7 +28,7 @@ def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
     elif ClasseEnum.PALADIN.value == classe_name:
         ...
     elif ClasseEnum.GUARDIAN.value == classe_name:
-        ...
+        return guardian_skill_factory
     elif ClasseEnum.DUELIST.value == classe_name:
         ...
     elif ClasseEnum.HERALD.value == classe_name:
