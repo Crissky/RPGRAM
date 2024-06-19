@@ -44,6 +44,7 @@ from bot.conversations.puzzle import job_create_puzzle
 from bot.conversations.quest_item import job_create_item_quest
 from bot.conversations.rest import autorest_midnight
 from bot.conversations.seller import job_create_new_items
+from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
 from bot.conversations.status import job_activate_conditions
 from function.date_time import get_last_hour, get_midnight_hour
 
@@ -86,6 +87,7 @@ def main() -> None:
     application.add_handlers(AMBUSH_HANDLERS)
     application.add_handlers(PUZZLE_HANDLERS)
     application.add_handlers(RESET_CHAR_HANDLERS)
+    application.add_handlers(SKILL_TREE_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(
