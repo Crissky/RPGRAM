@@ -59,6 +59,7 @@ CALLBACK_KEY_LIST = [
     'row',
     'col',
 ]
+VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)
 
 
@@ -708,6 +709,18 @@ def get_refresh_close_keyboard(
             to_detail=to_detail
         )
     ])
+
+
+def is_verbose(args: list) -> bool:
+    if args is None:
+        return False
+
+    result = False
+    for verbose in VERBOSE_ARGS:
+        if verbose in args:
+            result = True
+
+    return result
 
 
 if __name__ == '__main__':

@@ -27,7 +27,8 @@ from bot.functions.chat import (
     edit_message_text,
     get_close_keyboard,
     get_random_refresh_text,
-    get_refresh_close_keyboard
+    get_refresh_close_keyboard,
+    is_verbose
 )
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
@@ -58,7 +59,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     args = context.args
     player_character: BaseCharacter = char_model.get(user_id)
-    verbose = False
+    verbose = is_verbose(args)
     self_char = True
 
     if query:
@@ -89,9 +90,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 )
                 return None
             player_character = new_player_character
-            verbose = 'verbose' in args[1:2] or 'v' in args[1:2]
-        else:
-            verbose = 'verbose' in args[0] or 'v' in args[0]
 
     if player_character:
         markdown_player_sheet = player_character.get_all_sheets(
