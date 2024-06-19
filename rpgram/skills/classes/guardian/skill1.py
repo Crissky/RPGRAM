@@ -9,8 +9,8 @@ if TYPE_CHECKING:
 
 
 class RobustBlockSkill(BaseSkill):
+    NAME = 'Bloqueio Robusto'
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        name = 'Bloqueio Robusto'
         description = (
             f'Assume uma postura defensiva aumentando a '
             f'{PHYSICAL_DEFENSE_FULL} com base na {CONSTITUTION_ABB}.'
@@ -18,7 +18,7 @@ class RobustBlockSkill(BaseSkill):
         cost = 2
 
         super().__init__(
-            name=name,
+            name=RobustBlockSkill.NAME,
             description=description,
             level=level,
             cost=cost,

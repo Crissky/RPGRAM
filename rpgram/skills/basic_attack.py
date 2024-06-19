@@ -9,14 +9,14 @@ if TYPE_CHECKING:
 
 
 class PhysicalAttackSkill(BaseSkill):
+    NAME = 'Physical Attack'
     def __init__(self, char: 'BaseCharacter'):
-        name = 'Physical Attack'
         description = 'Ataque Físico baseado em "FOR" e "DES".'
         level = 0
         cost = 1
 
         super().__init__(
-            name=name,
+            name=PhysicalAttackSkill.NAME,
             description=description,
             level=level,
             cost=cost,
@@ -33,14 +33,14 @@ class PhysicalAttackSkill(BaseSkill):
 
 
 class PrecisionAttackSkill(BaseSkill):
+    NAME = 'Precision Attack'
     def __init__(self, char: 'BaseCharacter'):
-        name = 'Precision Attack'
         description = 'Ataque rápido baseado em "DES".'
         level = 0
         cost = 1
 
         super().__init__(
-            name=name,
+            name=PrecisionAttackSkill.NAME,
             description=description,
             level=level,
             cost=cost,
@@ -57,14 +57,14 @@ class PrecisionAttackSkill(BaseSkill):
 
 
 class MagicalAttackSkill(BaseSkill):
+    NAME = 'Magical Attack'
     def __init__(self, char: 'BaseCharacter'):
-        name = 'Magical Attack'
         description = 'Ataque Mágico baseado em "INT" e "WIS".'
         level = 0
         cost = 1
 
         super().__init__(
-            name=name,
+            name=MagicalAttackSkill.NAME,
             description=description,
             level=level,
             cost=cost,
