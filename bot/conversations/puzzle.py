@@ -94,7 +94,7 @@ from repository.mongo.populate.item import (
 from repository.mongo.populate.tools import choice_rarity
 
 from rpgram import GridGame
-from rpgram.conditions.factory import factory_condition
+from rpgram.conditions.factory import condition_factory
 from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 from rpgram.enums.rarity import RarityEnum
 from random import sample
@@ -624,7 +624,7 @@ async def punishment(
         quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
         debuff_sample = sample(debuff_list, quantity_sample)
         debuff_sample = [
-            factory_condition(
+            condition_factory(
                 name=debuff_name,
                 level=randint(min_condition_level, max_condition_level)
             )

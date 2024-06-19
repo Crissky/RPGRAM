@@ -11,7 +11,7 @@ from repository.mongo import (
 from rpgram import Group
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
 from rpgram.conditions.condition import Condition
-from rpgram.conditions.factory import factory_condition
+from rpgram.conditions.factory import condition_factory
 from rpgram.enums.damage import (
     DamageEnum,
     MAGICAL_DAMAGE_TYPES,
@@ -242,7 +242,7 @@ def add_conditions_from_trap(
         effectiveness = condition_trap['effectiveness']
         condition_name = condition_trap['condition']
         if debuff_resistance <= effectiveness:
-            condition = factory_condition(
+            condition = condition_factory(
                 condition_name,
                 level=condition_level
             )

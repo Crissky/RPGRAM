@@ -6,11 +6,12 @@
 
 from repository.mongo import ClasseModel
 from rpgram.boosters import Classe
+from rpgram.enums.classe import ClasseEnum
 
 CLASSES = [
     # Player 6.5 Points
     {
-        'name': 'Bárbaro',
+        'name': ClasseEnum.BARBARIAN.value,
         'description': (
             'Bárbaros são definidos por sua fúria: '
             'desenfreada, inextinguível e irracional fúria. '
@@ -62,7 +63,7 @@ CLASSES = [
         'multiplier_charisma': 0.5,
     },
     {
-        'name': 'Clérigo',
+        'name': ClasseEnum.CLERIC.value,
         'description': (
             'Clérigos são intermediadores entre o mundo mortal e o '
             'distante plano dos deuses. Tão variados quanto os deuses '
@@ -107,7 +108,7 @@ CLASSES = [
         'multiplier_charisma': 1.4,
     },
     {
-        'name': 'Druida',
+        'name': ClasseEnum.DRUID.value,
         'description': (
             'Quer seja convocando as forças elementais da '
             'natureza, ou emulando as criaturas do mundo animal, os '
@@ -150,7 +151,7 @@ CLASSES = [
         'multiplier_charisma': 0.5,
     },
     {
-        'name': 'Feiticeiro',
+        'name': ClasseEnum.SORCERER.value,
         'description': (
             'Os feiticeiros carregam um patrimônio mágico '
             'conferido a eles por uma linhagem exótica, alguma '
@@ -206,7 +207,7 @@ CLASSES = [
         'multiplier_charisma': 0.9,
     },
     {
-        'name': 'Guerreiro',
+        'name': ClasseEnum.WARRIOR.value,
         'description': (
             'Cavaleiros em missões, lordes '
             'conquistadores, campeões reais, infantaria de elite, '
@@ -247,7 +248,7 @@ CLASSES = [
         'multiplier_charisma': 0.5,
     },
     {
-        'name': 'Ladino',
+        'name': ClasseEnum.ROGUE.value,
         'description': (
             'Ladinos contam com sua perícia, furtividade e as '
             'vulnerabilidades de seus inimigos para obter vantagem '
@@ -289,7 +290,7 @@ CLASSES = [
         'multiplier_charisma': 0.1,
     },
     {
-        'name': 'Mago',
+        'name': ClasseEnum.MAGE.value,
         'description': (
             'Os magos são usuários de magia soberanos, unidos e '
             'definidos como uma classe pelas magias que conjuram. '
@@ -335,7 +336,7 @@ CLASSES = [
         'multiplier_charisma': 1,
     },
     {
-        'name': 'Paladino',
+        'name': ClasseEnum.PALADIN.value,
         'description': (
             'Os paladinos treinam por anos para aprender as perícias de '
             'combate, dominando uma variedade de armas e armaduras. '
@@ -371,7 +372,7 @@ CLASSES = [
         'multiplier_charisma': 1,
     },
     {
-        'name': 'Guardião',
+        'name': ClasseEnum.GUARDIAN.value,
         'description': (
             'Os Guardiões são mestres na arte da proteção, '
             'dedicando suas habilidades e vida à defesa de seus aliados. '
@@ -409,7 +410,7 @@ CLASSES = [
         'multiplier_charisma': 0.5,
     },
     {
-        'name': 'Duelista',
+        'name': ClasseEnum.DUELIST.value,
         'description': (
             'Os Duelistas são mestres da agilidade e da destreza, '
             'especialistas em combate corpo a corpo com armas '
@@ -446,7 +447,7 @@ CLASSES = [
     },
     # Enemies 8 Points
     {
-        'name': 'Arauto',
+        'name': ClasseEnum.HERALD.value,
         'description': (
             'O Arauto é um mestre na arte da defesa, '
             'dedicando-se a proteger seus aliados e garantir a segurança do '
@@ -479,7 +480,7 @@ CLASSES = [
         'multiplier_charisma': 1,
     },
     {
-        'name': 'Arcanista',
+        'name': ClasseEnum.ARCANIST.value,
         'description': (
             'Os Arcanistas são estudiosos dedicados à arte da magia arcana, '
             'uma forma poderosa de magia que manipula os elementos '
@@ -517,7 +518,7 @@ CLASSES = [
         'multiplier_charisma': 0.5,
     },
     {
-        'name': 'Bardo',
+        'name': ClasseEnum.BARD.value,
         'description': (
             'Os bardos são artistas itinerantes e contadores de histórias, '
             'cuja magia se manifesta através da música, '
@@ -556,7 +557,7 @@ CLASSES = [
         'multiplier_charisma': 3.5,
     },
     {
-        'name': 'Caçador de Recompensas',
+        'name': ClasseEnum.BOUNTY_HUNTER.value,
         'description': (
             'Os Caçadores de Recompensas são mestres na arte da captura '
             'de fugitivos e criminosos procurados. '
@@ -593,7 +594,7 @@ CLASSES = [
         'multiplier_charisma': 1.5,
     },
     {
-        'name': 'Cavaleiro',
+        'name': ClasseEnum.KNIGHT.value,
         'description': (
             'Os Cavaleiros são guerreiros treinados na arte da equitação '
             'e da guerra montada, '
@@ -629,7 +630,7 @@ CLASSES = [
         'multiplier_charisma': 1.5,
     },
     {
-        'name': 'Curandeiro',
+        'name': ClasseEnum.HEALER.value,
         'description': (
             'O Curandeiro é um especialista em cura e restauração, '
             'dedicado a manter seus aliados saudáveis e '
@@ -665,7 +666,7 @@ CLASSES = [
         'multiplier_charisma': 1.5,
     },
     {
-        'name': 'Gladiador',
+        'name': ClasseEnum.GLADIATOR.value,
         'description': (
             'Os gladiadores são mestres na arte do combate, '
             'treinados desde jovens para enfrentar adversários em '
@@ -701,7 +702,7 @@ CLASSES = [
         'multiplier_charisma': 1.5,
     },
     {
-        'name': 'Invocador',
+        'name': ClasseEnum.SUMMONER.value,
         'description': (
             'Os Invocadores são mestres das artes arcanas que se '
             'especializam em convocar e controlar criaturas de outras '
@@ -736,7 +737,7 @@ CLASSES = [
         'multiplier_charisma': 0.1,
     },
     {
-        'name': 'Mercenário',
+        'name': ClasseEnum.MERCENARY.value,
         'description': (
             'Os Mercenários são guerreiros contratados para realizar '
             'tarefas que vão desde proteção pessoal até missões '
@@ -771,7 +772,7 @@ CLASSES = [
         'multiplier_charisma': 0.1,
     },
     {
-        'name': 'Necromante',
+        'name': ClasseEnum.NECROMANCER.value,
         'description': (
             'O Necromante é um praticante das artes obscuras da necromancia, '
             'um ramo da magia que lida com a manipulação da '
@@ -810,7 +811,7 @@ CLASSES = [
         'multiplier_charisma': 0.1,
     },
     {
-        'name': 'Patrulheiro',
+        'name': ClasseEnum.RANGER.value,
         'description': (
             'Os Patrulheiros são mestres dos ermos, '
             'hábeis caçadores e rastreadores que guardam as fronteiras '
@@ -849,7 +850,7 @@ CLASSES = [
         'multiplier_charisma': 0.5,
     },
     {
-        'name': 'Xamã',
+        'name': ClasseEnum.SHAMAN.value,
         'description': (
             'O Xamã é um mestre das artes espirituais, '
             'um mediador entre o mundo físico e o espiritual. '
@@ -882,7 +883,7 @@ CLASSES = [
         'multiplier_charisma': 1.4,
     },
     {
-        'name': 'Samurai',
+        'name': ClasseEnum.SAMURAI.value,
         'description': (
             'Os samurais são guerreiros honrados e disciplinados, '
             'cujas habilidades em combate são lendárias. '
@@ -927,7 +928,7 @@ CLASSES = [
     },
     # Enemies 13 Points
     {
-        'name': 'Berserkir',
+        'name': ClasseEnum.BERSERKIR.value,
         'description': (
             'O Berserkir é um guerreiro feroz e destemido que entra '
             'em um estado de fúria incontrolável durante o combate. '
@@ -964,7 +965,7 @@ CLASSES = [
         'multiplier_charisma': 0.1,
     },
     {
-        'name': 'Mestre das Armas',
+        'name': ClasseEnum.WEAPON_MASTER.value,
         'description': (
             'O Mestre das Armas é um especialista na arte do combate '
             'corpo a corpo, dominando uma variedade de '
@@ -1002,7 +1003,7 @@ CLASSES = [
         'multiplier_charisma': 1,
     },
     {
-        'name': 'Feiticeiro Supremo',
+        'name': ClasseEnum.SORCERER_SUPREME.value,
         'description': (
             'O Feiticeiro Supremo é o ápice do poder arcano, '
             'um mestre absoluto das artes mágicas. '
@@ -1042,7 +1043,7 @@ CLASSES = [
         'multiplier_charisma': 1.8,
     },
     {
-        'name': 'Senhor dos Ladinos',
+        'name': ClasseEnum.LORD_OF_THE_ROGUES.value,
         'description': (
             'O Senhor dos Ladinos é um mestre na arte da astúcia e da '
             'furtividade, combinando habilidades de luta com técnicas de '

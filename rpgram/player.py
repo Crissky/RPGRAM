@@ -67,11 +67,7 @@ class Player:
             raise ValueError(f'O chat ID {chat_id} já está na lista.')
 
     def add_trocado(self, value: int) -> dict:
-        value = int(value)
-        if value <= 0:
-            raise ValueError(
-                f'O valor "{value}" não pode ser menor ou igual a zero.'
-            )
+        value = int(abs(value))
 
         self.__trocado += value
         report = {
@@ -86,14 +82,10 @@ class Player:
         return report
 
     def sub_trocado(self, value: int) -> dict:
-        value = int(value)
-        if value <= 0:
-            raise ValueError(
-                f'O valor "{value}" não pode ser menor ou igual a zero.'
-            )
+        value = int(abs(value))
         if value > self.__trocado:
             raise ValueError(
-                f'O valor "{value}" para subtrair é maior que o valor total '
+                f'O valor para subtrair "{value}" é maior que o valor total '
                 f'({self.__trocado}) de trocados que o jogador {self.name} '
                 f'possui.'
             )
@@ -112,11 +104,7 @@ class Player:
         return report
 
     def add_action_points(self, value: int = 1) -> dict:
-        value = abs(value)
-        if value <= 0:
-            raise ValueError(
-                f'O valor "{value}" não pode ser menor ou igual a zero.'
-            )
+        value = int(abs(value))
 
         current_value = self.__max_action_points - self.__current_action_points
         current_value = min(current_value, value)
@@ -136,10 +124,12 @@ class Player:
         return report
 
     def sub_action_points(self, value: int = 1) -> dict:
-        value = abs(value)
-        if value <= 0:
+        value = int(abs(value))
+        if value > self.__current_action_points:
             raise ValueError(
-                f'O valor "{value}" não pode ser menor ou igual a zero.'
+                f'O valor para subtrair "{value}" é maior que o valor total '
+                f'({self.__current_action_points}) de pontos de ação que o '
+                f'jogador {self.name} possui.'
             )
 
         current_value = self.__current_action_points - value

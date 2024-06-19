@@ -1,6 +1,6 @@
 from functools import partial
 from random import randint
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Union
 
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (

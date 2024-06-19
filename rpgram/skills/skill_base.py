@@ -1,6 +1,8 @@
 from itertools import chain
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Tuple, Union
 
+from constant.text import TEXT_DELIMITER
+from rpgram.conditions.condition import Condition
 from rpgram.dice import Dice
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.emojis import EmojiEnum
@@ -45,6 +47,7 @@ class BaseSkill:
         use_equips_damage_types: bool = False,
         requirements: Union[Requirement, Dict[str, Any]] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
+        condition_list: List[Condition] = [],
     ):
         self.base_stats_multiplier = {}
         for attribute, value in base_stats_multiplier.items():
@@ -137,6 +140,13 @@ class BaseSkill:
                         f'uma lista de strings ou DamageEnums. '
                         f'"{type(damage_type)}" não é válido.'
                     )
+
+        for condition in condition_list:
+            if not isinstance(condition, Condition):
+                raise TypeError(
+                    f'condition_list precisa ser uma lista de Condition.'
+                    f'"{type(condition)}" não é válido.'
+                )
 
         self.name = name
         self.description = description
@@ -242,12 +252,15 @@ class BaseSkill:
 
     @property
     def powers_text(self) -> str:
-        attributes_power_texts = (
-            f'Dano dos Atributos: {self.attributes_power_text}'
-        )
+        if attributes_power_texts := self.attributes_power_text:
+            attributes_power_texts = (
+                f'Dano dos Atributos: {attributes_power_texts}'
+            )
 
         if (special_damage_texts := self.special_damage_text):
-            special_damage_texts = f'\nDanos Especiais: {special_damage_texts}'
+            special_damage_texts = (
+                f'\nDanos Especiais: {special_damage_texts}\n'
+            )
 
         return (
             f'{attributes_power_texts}'
@@ -308,6 +321,16 @@ class BaseSkill:
         else:
             raise KeyError(f'"{item}" não é um atributo válido.')
 
+    def __eq__(self, other):
+        if isinstance(other, BaseSkill):
+            return all((
+                self.__class__ == other.__class__,
+                self.name == other.name
+            ))
+        elif isinstance(other, str):
+            return self.name.upper() == other.upper()
+        return False
+
     def __repr__(self) -> str:
         special_damage_text = self.special_damage_text
         if special_damage_text:
@@ -315,4 +338,11 @@ class BaseSkill:
         return (
             f'<{self.__class__.__name__}-Power: '
             f'{self.power}{special_damage_text}>'
+        )
+
+    def __str__(self) -> str:
+        return (
+            f'{TEXT_DELIMITER}\n'
+            f'{self.description_text}'
+            f'{TEXT_DELIMITER}\n'
         )

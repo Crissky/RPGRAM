@@ -31,7 +31,8 @@ from bot.functions.chat import (
     call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
-    get_refresh_close_button
+    get_refresh_close_button,
+    is_verbose
 )
 from bot.decorators import (
     confusion,
@@ -136,7 +137,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return None
     elif len(args) == 1:
-        verbose = 'verbose' == args[0] or 'v' == args[0]
+        verbose = is_verbose(args)
 
     status_sheet = player_char.status.get_all_sheets(
         verbose=verbose,

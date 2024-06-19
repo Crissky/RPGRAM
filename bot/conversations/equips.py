@@ -27,7 +27,8 @@ from bot.functions.chat import (
     call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
-    get_refresh_close_button
+    get_refresh_close_button,
+    is_verbose
 )
 from bot.decorators import (
     alert_if_not_chat_owner,
@@ -71,7 +72,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message_id = update.effective_message.id
     query = update.callback_query
     args = context.args
-    verbose = False
+    verbose = is_verbose(args)
 
     if query:
         data = eval(query.data)
@@ -85,9 +86,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         player_character: BaseCharacter = char_model.get(user_id)
         equips = player_character.equips
         equips_model.save(player_character.equips)
-
-    if args:
-        verbose = 'verbose' in args[0] or 'v' in args[0]
 
     if equips and query and not refresh:  # Desequipa um equipamento
         data = eval(query.data)

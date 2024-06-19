@@ -44,7 +44,7 @@ from constant.text import (
 from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo.populate.enemy import create_random_enemies
 from rpgram.conditions.debuff import DEBUFFS
-from rpgram.conditions.factory import factory_condition
+from rpgram.conditions.factory import condition_factory
 
 
 @skip_if_no_singup_player
@@ -126,7 +126,7 @@ async def get_random_debuff(
         condition_level = args.pop(0) if args else 1
         condition_level = abs(int(condition_level))
         try:
-            condition = factory_condition(
+            condition = condition_factory(
                 condition_name=condition_name,
                 level=condition_level
             )

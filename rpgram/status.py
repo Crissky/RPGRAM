@@ -13,7 +13,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.barrier import BarrierCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
-from rpgram.conditions.factory import factory_condition
+from rpgram.conditions.factory import condition_factory
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
     IMMOBILIZED_DEBUFFS_NAMES
@@ -95,6 +95,11 @@ class Status:
     ) -> dict:
         '''Testa se o personagem irá receber a condição vinda de 
         SpecialDamage.condition_list
+        Tupla de dicionários de condições e respectivos ratios de acerto.
+        condition = {
+            'condition': functools.partial(Condition, level),
+            'ratio': float
+        }
         '''
 
         report = {'text': '', 'effective': False}
@@ -161,7 +166,7 @@ class Status:
         unique_conditions = sorted(set(conditions))
         for condition_name in unique_conditions:
             condition_level = conditions.count(condition_name)
-            condition = factory_condition(
+            condition = condition_factory(
                 name=condition_name,
                 level=condition_level
             )
@@ -199,6 +204,16 @@ class Status:
             if not isinstance(condition, BarrierCondition) or
             not condition.is_broken
         ]
+
+    def set_conditions(self, *conditions: Union[Condition, str]) -> List[dict]:
+        report_list = []
+        for condition in conditions:
+            if condition in self.__conditions:
+                self.__conditions.remove(condition)
+            report = self.add_condition(condition)
+            report_list.append(report)
+
+        return report_list
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
