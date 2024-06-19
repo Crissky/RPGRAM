@@ -5,7 +5,7 @@ informações dos jogadores.
 
 
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -25,7 +25,6 @@ from bot.functions.chat import (
     REPLY_CHAT_ACTION_KWARGS,
     call_telegram_message_function,
     edit_message_text,
-    get_close_keyboard,
     get_random_refresh_text,
     get_refresh_close_keyboard,
     is_verbose
@@ -33,12 +32,15 @@ from bot.functions.chat import (
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
-from constant.text import SECTION_HEAD_CHAR_END, SECTION_HEAD_CHAR_START, SECTION_HEAD_SKILL_TREE_END, SECTION_HEAD_SKILL_TREE_START
+from constant.text import (
+    SECTION_HEAD_SKILL_TREE_END,
+    SECTION_HEAD_SKILL_TREE_START
+)
 from function.text import create_text_in_box
 
 from repository.mongo import CharacterModel
 from rpgram.characters import BaseCharacter
-from rpgram.skills.factory import factory_skill_factory, skill_list_factory
+from rpgram.skills.factory import skill_list_factory
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
@@ -73,8 +75,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             classe_name = player_character.classe.name
             skill_list = skill_list_factory(classe_name)
             skill_name_list = [
-                f'{i+1:02}: {skill.__name__}'
-                for i, skill in enumerate(skill_list)
+                f'{i+1:02}: {skill_class.NAME}'
+                for i, skill_class in enumerate(skill_list)
             ]
             markdown_skill_tree_sheet = '\n'.join(skill_name_list)
         except ValueError as e:
