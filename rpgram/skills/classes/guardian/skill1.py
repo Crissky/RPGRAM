@@ -8,18 +8,36 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Fortaleza Inabalável',
+    'description': (
+        'O caminho da Fortaleza Inabalável transforma o Guardião '
+        'em um bastião inabalável, pronto para enfrentar qualquer desafio. '
+        'Através dessas habilidades, o Guardião se torna um escudo '
+        'impenetrável para seus aliados, capaz de suportar os golpes '
+        'mais devastadores e proteger seus companheiros de batalha. '
+        'Sua resistência inquebrantável inspira confiança e serve como um '
+        'farol de esperança em meio ao caos. '
+        'Cada investida inimiga é repelida com força redobrada, '
+        'demonstrando a força inabalável do Guardião e garantindo a '
+        'vitória final.'
+    )
+}
+
+
 class RobustBlockSkill(BaseSkill):
     NAME = 'Bloqueio Robusto'
+    DESCRIPTION = (
+        f'Assume uma postura defensiva aumentando a '
+        f'{PHYSICAL_DEFENSE_FULL} com base na {CONSTITUTION_ABB}.'
+    )
+
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        description = (
-            f'Assume uma postura defensiva aumentando a '
-            f'{PHYSICAL_DEFENSE_FULL} com base na {CONSTITUTION_ABB}.'
-        )
         cost = 2
 
         super().__init__(
             name=RobustBlockSkill.NAME,
-            description=description,
+            description=RobustBlockSkill.DESCRIPTION,
             level=level,
             cost=cost,
             base_stats_multiplier={},

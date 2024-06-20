@@ -1,10 +1,11 @@
-from typing import Union
+from typing import List, Union
 
 from rpgram.enums.classe import ClasseEnum
 from rpgram.skills.classes.guardian.factory import (
     guardian_skill_factory,
     GUARDIAN_SKILL_LIST
 )
+from rpgram.skills.skill_base import BaseSkill
 
 
 def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
@@ -72,7 +73,7 @@ def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
         raise ValueError(f'Classe {classe_name} não encontrada!')
 
 
-def skill_list_factory(classe_name: Union[ClasseEnum, str]):
+def skill_list_factory(classe_name: Union[ClasseEnum, str]) -> List[BaseSkill]:
     '''Retorna uma função factory relacionada ao classe_name
     '''
 
