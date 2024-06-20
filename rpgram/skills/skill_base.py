@@ -331,6 +331,9 @@ class BaseSkill:
             return self.name.upper() == other.upper()
         return False
 
+    def __hash__(self):
+        return hash(self.name)
+
     def __repr__(self) -> str:
         special_damage_text = self.special_damage_text
         if special_damage_text:
