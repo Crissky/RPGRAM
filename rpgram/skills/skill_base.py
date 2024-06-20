@@ -9,7 +9,6 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
-from rpgram.errors import SkillRequirementError
 from rpgram.requirement import Requirement
 from rpgram.skills.special_damage import SpecialDamage
 
@@ -31,6 +30,8 @@ ITER_MULTIPLIERS_TYPE = Iterable[
 
 
 class BaseSkill:
+    NAME = 'Base Skill'
+    DESCRIPTION = 'Base Skill Classe'
     def __init__(
         self,
         name: str,
@@ -212,20 +213,19 @@ class BaseSkill:
 
     # GETTERS
     @property
+    def level_text(self) -> str:
+        if self.level == 0:
+            return ''
+        return f'Nível: {self.level}\n'
+
+    @property
     def level_multiplier_dict(self) -> dict:
         return None
 
     @property
-    def level_multiplier_default(self) -> float:
-        return 1.0
-
-    @property
     def level_multiplier(self) -> float:
-        if (level_multiplier_dict := self.level_multiplier_dict) is not None:
-            return level_multiplier_dict.get(
-                self.level,
-                self.level_multiplier_default
-            )
+        if isinstance(self.level_multiplier_dict, dict):
+            return self.level_multiplier_dict[self.level]
         else:
             return 1 + (self.level / 20)
 
@@ -240,7 +240,7 @@ class BaseSkill:
     @property
     def hit_text(self) -> str:
         hit_percent = self.hit_multiplier*100
-        return f'Acerto: {self.hit}({hit_percent}%{EmojiEnum.HIT.value})'
+        return f'Acerto: {self.hit}({hit_percent}%{EmojiEnum.HIT.value})\n'
 
     @property
     def power(self) -> int:
@@ -251,15 +251,19 @@ class BaseSkill:
         return int(power_point)
 
     @property
-    def powers_text(self) -> str:
+    def power_text(self) -> str:
+        return f'Poder: {self.power}\n'
+
+    @property
+    def power_detail_text(self) -> str:
         if attributes_power_texts := self.attributes_power_text:
             attributes_power_texts = (
-                f'Dano dos Atributos: {attributes_power_texts}'
+                f'Dano dos Atributos: {attributes_power_texts}\n'
             )
 
         if (special_damage_texts := self.special_damage_text):
             special_damage_texts = (
-                f'\nDanos Especiais: {special_damage_texts}\n'
+                f'Danos Especiais: {special_damage_texts}\n'
             )
 
         return (
@@ -294,9 +298,14 @@ class BaseSkill:
     def description_text(self) -> str:
         return (
             f'{self.name}: {self.description}\n'
-            f'{self.hit_text}\n'
-            f'{self.powers_text}'
+            f'{self.level_text}'
+            f'{self.power_text}'
+            f'{self.hit_text}'
+            f'{self.power_detail_text}'
         )
+
+    def new_method(self):
+        return f'Nível: {self.level}\n'
 
     def __getitem__(self, item: STATS_MULTIPLIER_TYPES) -> int:
         if isinstance(item, STATS_ENUM_TYPES):
