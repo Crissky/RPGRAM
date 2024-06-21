@@ -75,7 +75,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             classe_name = player_character.classe.name
             skill_list = skill_list_factory(classe_name)
             skill_name_list = [
-                f'{i+1:02}: {skill_class.NAME}'
+                (
+                    f'*H{i+1:02}*: '
+                    f'*{skill_class.NAME.upper()}*\n'
+                    f'{skill_class.DESCRIPTION}\n'
+                )
                 for i, skill_class in enumerate(skill_list)
             ]
             markdown_skill_tree_sheet = '\n'.join(skill_name_list)
