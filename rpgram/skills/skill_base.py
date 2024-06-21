@@ -164,6 +164,7 @@ class BaseSkill:
         self.use_equips_damage_types = use_equips_damage_types
         self.requirements = requirements
         self.damage_types = damage_types
+        self.condition_list = condition_list
 
         self.requirements.check_requirements(self.char)
 
