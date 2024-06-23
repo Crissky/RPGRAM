@@ -308,6 +308,12 @@ class BaseSkill:
     def new_method(self):
         return f'Nível: {self.level}\n'
 
+    def to_dict(self) -> dict:
+        return {
+            'class_name': self.__class__.__name__,
+            'level': self.level,
+        }
+
     def __getitem__(self, item: STATS_MULTIPLIER_TYPES) -> int:
         if isinstance(item, STATS_ENUM_TYPES):
             item = item.name

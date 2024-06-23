@@ -20,6 +20,7 @@ from rpgram.skills.basic_attack import (
     PrecisionAttackSkill
 )
 from rpgram.skills.skill_base import BaseSkill
+from rpgram.skills.skill_tree import SkillTree
 from rpgram.status import Status
 from rpgram.boosters.classe import Classe
 from rpgram.boosters.race import Race
@@ -54,6 +55,7 @@ class BaseCharacter:
         points_multiplier: int = 3,
         combat_damage: int = 0,
         combat_death_counter: int = 0,
+        skill_tree: dict = {},
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None
@@ -98,6 +100,10 @@ class BaseCharacter:
         self.__equips.attach_observer(self.__combat_stats)
         self.__status.attach_observer(self.__base_stats)
         self.__status.attach_observer(self.__combat_stats)
+        self.__skill_tree = SkillTree(
+            character=self,
+            **skill_tree,
+        )
         self.__created_at = created_at
         self.__updated_at = updated_at
 
@@ -208,6 +214,12 @@ class BaseCharacter:
     def battle_activate_status(self) -> List[dict]:
         reports = self.__status.battle_activate(self)
         return reports
+
+    def add_action_points(self, value: int = 1) -> dict:
+        return self.skill_tree.add_action_points(value)
+
+    def sub_action_points(self, value: int = 1) -> dict:
+        return self.skill_tree.sub_action_points(value)
 
     def get_accuracy(
         self,
@@ -568,6 +580,10 @@ class BaseCharacter:
     race: Race = property(fget=lambda self: self.__race)
     equips: Equips = property(fget=lambda self: self.__equips)
     status: Status = property(fget=lambda self: self.__status)
+    skill_tree: SkillTree = property(fget=lambda self: self.__skill_tree)
+    current_action_points_text: str = property(
+        fget=lambda self: self.__skill_tree.current_action_points_text
+    )
     bs = base_stats
     cs = combat_stats
     race_name: str = property(lambda self: self.race.name)
@@ -673,6 +689,7 @@ class BaseCharacter:
             classe_name=self.classe.name,
             equips_id=self.equips._id,
             status_id=self.status._id,
+            skill_tree=self.skill_tree.to_dict(),
             created_at=self.created_at,
             updated_at=self.updated_at,
         )

@@ -1,5 +1,6 @@
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Callable, List
 
+from rpgram.skills.factory import skill_factory
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
@@ -10,16 +11,22 @@ class SkillTree:
     def __init__(
         self,
         character: 'BaseCharacter',
-        skills: List[BaseSkill],
+        skills: List[BaseSkill] = [],
         current_action_points: int = 0,
         max_action_points: int = 5,
     ):
+        classe_name = character.classe_name
         for index, skill in enumerate(skills):
-            if isinstance(skill, dict):
-                skills[index] = BaseSkill(**skill)
+            if isinstance(skill, Callable):
+                skills[index] = skill_factory(
+                    classe_name=classe_name,
+                    skill_class_name=skill['class_name'],
+                    char=character,
+                    level=skill['level'],
+                )
 
         self.character = character
-        self.skills = skills
+        self.skills: List[BaseSkill] = skills
         self.current_action_points = current_action_points
         self.max_action_points = max_action_points
 
@@ -80,3 +87,10 @@ class SkillTree:
             f'Pontos de Ação: '
             f'{self.current_action_points}/{self.max_action_points}'
         )
+
+    def to_dict(self) -> dict:
+        return {
+            'skills': [skill.to_dict() for skill in self.skills],
+            'current_action_points': self.current_action_points,
+            'max_action_points': self.max_action_points,
+        }
