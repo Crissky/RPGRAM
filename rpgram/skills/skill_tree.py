@@ -38,22 +38,16 @@ class SkillTree:
 
     def add_action_points(self, value: int = 1) -> dict:
         value = int(abs(value))
-        if value <= 0:
-            raise ValueError(
-                f'O valor "{value}" não pode ser menor ou igual a zero.'
-            )
 
-        current_value = self.max_action_points - self.current_action_points
-        current_value = min(current_value, value)
-        self.current_action_points += current_value
+        self.current_action_points += value
         self.current_action_points = min(
             self.current_action_points, self.max_action_points
         )
         report = {
             'value': value,
-            'current_value': current_value,
+            'current_value': self.current_action_points,
             'text': (
-                f'Adicionado(s) {current_value} ponto(s) de ação.\n'
+                f'Adicionado(s) {value} ponto(s) de ação.\n'
                 f'{self.current_action_points_text}'
             )
         }
@@ -69,12 +63,11 @@ class SkillTree:
                 f'jogador {self.name} possui.'
             )
 
-        current_value = self.current_action_points - value
-        current_value = max(current_value, 0)
-        self.current_action_points = current_value
+        self.current_action_points -= value
+        self.current_action_points = max(self.current_action_points, 0)
         report = {
             'value': value,
-            'current_value': current_value,
+            'current_value': self.current_action_points,
             'text': (
                 f'Removido(s) {value} ponto(s) de ação.\n'
                 f'{self.current_action_points_text}'
