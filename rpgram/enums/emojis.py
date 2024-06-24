@@ -107,6 +107,8 @@ class EmojiEnum(Enum):
     CHRYSUS_1 = '🉐'
     CHRYSUS_2 = '🈹'
     HELP_QUEST = '🆘'
+    ACTION_POINTS = '🏃🏻‍♀️'
+    SKILL_POINTS = '🤹'
 
 
 class FaceEmojiEnum(Enum):

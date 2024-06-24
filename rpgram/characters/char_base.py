@@ -541,6 +541,14 @@ class BaseCharacter:
         return self.status.debuffed
 
     @property
+    def is_full_action_points(self) -> bool:
+        return self.skill_tree.is_full_action_points
+
+    @property
+    def can_player_act(self) -> bool:
+        return self.skill_tree.have_action_points
+
+    @property
     def max_accuracy(self) -> float:
         accuracy = 0.95
         if self.is_enemy is True:
@@ -623,6 +631,7 @@ class BaseCharacter:
             text = (
                 f'{self.get_sheet(verbose, markdown)}'
                 f'{self.status.get_all_sheets(verbose, markdown)}\n'
+                f'{self.skill_tree.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.death_counter_text}\n'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'
@@ -647,6 +656,7 @@ class BaseCharacter:
                 f'{self.get_sheet(verbose, markdown)}'
                 f'{self.status.get_all_sheets(verbose, markdown)}\n'
                 f'{race_classe_text}'
+                f'{self.skill_tree.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.death_counter_text}\n'
                 f'{self.base_stats.get_sheet(verbose, markdown)}\n'
                 f'{self.combat_stats.get_sheet(verbose, markdown)}\n'

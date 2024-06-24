@@ -85,7 +85,7 @@ def add_xp(
         xp = int(xp * handicap)
 
     report_xp = char.base_stats.add_xp(xp, user_name)
-    save_char(char, equips=save_equips, status=save_status)
+    save_char(char=char, equips=save_equips, status=save_status)
     new_level = char.base_stats.level
 
     if report_xp['level_up']:
@@ -126,7 +126,7 @@ def add_damage(
     else:
         damage_report = char.combat_stats.damage_hit_points(damage)
 
-    save_char(char)
+    save_char(char=char)
 
     return dict(
         char=char,
@@ -171,7 +171,7 @@ def add_trap_damage(
         damage = base_damage
         damage_report = char.combat_stats.damage_hit_points(damage)
 
-    save_char(char, status=True)
+    save_char(char=char, status=True)
 
     return dict(
         char=char,
@@ -207,7 +207,7 @@ def add_conditions(
 
     if condition_report['text']:
         condition_report['text'] += '\n'
-    save_char(char, status=True)
+    save_char(char=char, status=True)
 
     return condition_report
 
@@ -251,7 +251,7 @@ def add_conditions_from_trap(
 
     if condition_trap_report['text']:
         condition_trap_report['text'] += '\n'
-    save_char(char, status=True)
+    save_char(char=char, status=True)
 
     return condition_trap_report
 
@@ -322,7 +322,7 @@ def activate_conditions(
     )
     if activate_report['text']:
         activate_report['text'] += '\n'
-    save_char(char, status=True)
+    save_char(char=char, status=True)
 
     return activate_report
 
