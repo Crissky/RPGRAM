@@ -344,7 +344,10 @@ class BaseSkill:
                 self.name == other.name
             ))
         elif isinstance(other, str):
-            return self.name.upper() == other.upper()
+            return (
+                self.name.upper() == other.upper()
+                or self.__class__.__name__.upper() == other.upper()
+            )
         return False
 
     def __hash__(self):
