@@ -1,15 +1,27 @@
-from typing import List, Union
+from typing import TYPE_CHECKING, List, Union
 
 from rpgram.enums.classe import ClasseEnum
 from rpgram.skills.classes.guardian.factory import (
     guardian_skill_factory,
     GUARDIAN_SKILL_LIST
 )
-from rpgram.skills.classes.warrior.factory import WARRIOR_SKILL_LIST, warrior_skill_factory
+from rpgram.skills.classes.warrior.factory import (
+    WARRIOR_SKILL_LIST,
+    warrior_skill_factory
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
-def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
+
+
+def skill_factory(
+    classe_name: Union[ClasseEnum, str],
+    skill_class_name: str,
+    char: 'BaseCharacter',
+    level: int = 1
+) -> BaseSkill:
     '''Retorna uma função factory relacionada ao classe_name
     '''
 
@@ -25,7 +37,7 @@ def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
     elif ClasseEnum.SORCERER.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.WARRIOR.value == classe_name:
-        return warrior_skill_factory
+        class_skill_factory = warrior_skill_factory
     elif ClasseEnum.ROGUE.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.MAGE.value == classe_name:
@@ -33,7 +45,7 @@ def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
     elif ClasseEnum.PALADIN.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.GUARDIAN.value == classe_name:
-        return guardian_skill_factory
+        class_skill_factory = guardian_skill_factory
     elif ClasseEnum.DUELIST.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.HERALD.value == classe_name:
@@ -72,6 +84,12 @@ def factory_skill_factory(classe_name: Union[ClasseEnum, str]):
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     else:
         raise ValueError(f'Classe {classe_name} não encontrada!')
+
+    return class_skill_factory(
+        skill_class_name=skill_class_name,
+        char=char,
+        level=level,
+    )
 
 
 def skill_list_factory(classe_name: Union[ClasseEnum, str]) -> List[BaseSkill]:

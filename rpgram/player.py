@@ -32,8 +32,6 @@ class Player:
         silent: bool = False,
         xp_cooldown: datetime = None,
         trocado: int = 0,
-        current_action_points: int = 0,
-        max_action_points: int = 3,
         enemy_counter: dict = DEFAULT_ENEMY_COUNTER.copy(),
         created_at: datetime = None,
         updated_at: datetime = None
@@ -54,8 +52,6 @@ class Player:
         self.silent = silent
         self.xp_cooldown = xp_cooldown
         self.__trocado = trocado
-        self.__current_action_points = current_action_points
-        self.__max_action_points = max_action_points
         self.__enemy_counter = enemy_counter
         self.created_at = created_at
         self.updated_at = updated_at
@@ -103,49 +99,6 @@ class Player:
 
         return report
 
-    def add_action_points(self, value: int = 1) -> dict:
-        value = int(abs(value))
-
-        current_value = self.__max_action_points - self.__current_action_points
-        current_value = min(current_value, value)
-        self.__current_action_points += current_value
-        self.__current_action_points = min(
-            self.__current_action_points, self.__max_action_points
-        )
-        report = {
-            'value': value,
-            'current_value': current_value,
-            'text': (
-                f'Adicionado(s) {current_value} ponto(s) de ação.\n'
-                f'{self.current_action_points_text}'
-            )
-        }
-
-        return report
-
-    def sub_action_points(self, value: int = 1) -> dict:
-        value = int(abs(value))
-        if value > self.__current_action_points:
-            raise ValueError(
-                f'O valor para subtrair "{value}" é maior que o valor total '
-                f'({self.__current_action_points}) de pontos de ação que o '
-                f'jogador {self.name} possui.'
-            )
-
-        current_value = self.__current_action_points - value
-        current_value = max(current_value, 0)
-        self.__current_action_points = current_value
-        report = {
-            'value': value,
-            'current_value': current_value,
-            'text': (
-                f'Removido(s) {value} ponto(s) de ação.\n'
-                f'{self.current_action_points_text}'
-            )
-        }
-
-        return report
-
     def add_enemy_counter(self, enemy: NPCharacter) -> dict:
         key = enemy.stars.name
         value = self.__enemy_counter.get(key, 0)
@@ -169,24 +122,9 @@ class Player:
         return f'{self.__trocado}{EmojiEnum.TROCADO.value}'
 
     @property
-    def current_action_points_text(self) -> str:
-        return (
-            f'Pontos de Ação: '
-            f'{self.__current_action_points}/{self.__max_action_points}'
-        )
-
-    @property
-    def is_full_action_points(self) -> bool:
-        return self.__current_action_points >= self.__max_action_points
-
-    @property
-    def have_action_points(self) -> bool:
-        return self.__current_action_points > 0
-    
-    @property
     def total_enemy_counter(self) -> int:
         return sum(self.__enemy_counter.values())
-    
+
     @property
     def total_enemy_counter_text(self) -> int:
         return f'Inimigos Derrotados: {self.total_enemy_counter}'
@@ -220,7 +158,6 @@ class Player:
             f'{SECTION_HEAD.format("Dados do Jogador")}\n\n'
             f'Jogador: {self.name}\n'
             f'{TrocadoEnum.TROCADO.value}: {self.trocado_text}\n'
-            f'{self.current_action_points_text}\n'
             f'{self.total_enemy_counter_text}\n'
             f'ID: {self.__id}\n'
             f'Player ID: {self.player_id}\n'
@@ -240,8 +177,6 @@ class Player:
             silent=self.silent,
             xp_cooldown=self.xp_cooldown,
             trocado=self.__trocado,
-            current_action_points=self.__current_action_points,
-            max_action_points=self.__max_action_points,
             enemy_counter=self.__enemy_counter,
             created_at=self.created_at,
             updated_at=self.updated_at

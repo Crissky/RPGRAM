@@ -691,7 +691,7 @@ async def use_item_equipment(
         old_equipment_item = Item(old_equipment)
         bag_model.add(old_equipment_item, user_id)
 
-    save_char(character, equips=True)
+    save_char(char=character, equips=True)
 
     markdown_player_sheet = character.get_all_sheets(
         verbose=False,
@@ -757,7 +757,7 @@ async def use_item_consumable(
             all_report_text.append(f'{i+1:02}: {report["text"]}')
             bag_model.sub(item, user_id)
         text = f'Você usou {use_quantity} "{name}".\n'
-        save_char(character, status=True)
+        save_char(char=character, status=True)
 
         await answer(query=query, text=text)
     except Exception as error:

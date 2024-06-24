@@ -164,11 +164,11 @@ def create_job_rest_action_point(
     chat_id: int,
     user_id: int,
 ):
-    player_model = PlayerModel()
-    player: Player = player_model.get(user_id)
+    char_model = CharacterModel()
+    char: BaseCharacter = char_model.get(user_id)
     job_name = get_rest_action_points_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
-    if not current_jobs and not player.is_full_action_points:
+    if not current_jobs and not char.is_full_action_points:
         context.job_queue.run_repeating(
             callback=job_rest_action_point,
             interval=timedelta(minutes=MINUTES_TO_RECOVERY_ACTION_POINTS),
@@ -207,7 +207,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     status_report = player_character.status.remove_random_debuff_conditions(
         condition_quantity
     )
-    save_char(player_character, status=True)
+    save_char(char=player_character, status=True)
     report_text = report['text']
     hp_reporting = (
         f'{revive_reporting}'
@@ -256,13 +256,15 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
 
 async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_REST_ACTION()')
+    char_model = CharacterModel()
     player_model = PlayerModel()
     job = context.job
     user_id = job.user_id
     chat_id = job.chat_id
+    char: BaseCharacter = char_model.get(user_id)
     player: Player = player_model.get(user_id)
-    report = player.add_action_points(1)
-    player_model.save(player)
+    report = char.add_action_points(1)
+    save_char(char=char)
 
     text = report['text']
     text = create_text_in_box(
@@ -272,10 +274,10 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_ACTION_POINTS_END,
     )
 
-    if player.is_full_action_points:
+    if char.is_full_action_points:
         job.schedule_removal()
 
-    if player.verbose or player.is_full_action_points:
+    if player.verbose or char.is_full_action_points:
         await send_private_message(
             function_caller='JOB_REST_ACTION_POINT()',
             context=context,

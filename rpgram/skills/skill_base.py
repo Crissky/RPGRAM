@@ -308,6 +308,12 @@ class BaseSkill:
     def new_method(self):
         return f'Nível: {self.level}\n'
 
+    def to_dict(self) -> dict:
+        return {
+            'class_name': self.__class__.__name__,
+            'level': self.level,
+        }
+
     def __getitem__(self, item: STATS_MULTIPLIER_TYPES) -> int:
         if isinstance(item, STATS_ENUM_TYPES):
             item = item.name
@@ -338,7 +344,10 @@ class BaseSkill:
                 self.name == other.name
             ))
         elif isinstance(other, str):
-            return self.name.upper() == other.upper()
+            return (
+                self.name.upper() == other.upper()
+                or self.__class__.__name__.upper() == other.upper()
+            )
         return False
 
     def __hash__(self):

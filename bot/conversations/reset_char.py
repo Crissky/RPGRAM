@@ -52,7 +52,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if player_character:
         player_character.bs.reset_stats()
-        save_char(player_character, status=True)
+        save_char(char=player_character, status=True)
         markdown_player_sheet = player_character.get_all_sheets(
             verbose=False,
             markdown=True

@@ -169,8 +169,8 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         function_caller='EMENY.JOB_START_AMBUSH()',
         function=context.bot.send_chat_action,
         context=context,
-        need_response = False,
-        skip_retry= True,
+        need_response=False,
+        skip_retry=True,
         **send_chat_action_kwargs
     )
 
@@ -356,8 +356,8 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         function_caller='EMENY.JOB_ENEMY_ATTACK()',
         function=context.bot.send_chat_action,
         context=context,
-        need_response = False,
-        skip_retry= True,
+        need_response=False,
+        skip_retry=True,
         **send_chat_action_kwargs
     )
 
@@ -511,7 +511,8 @@ async def defend_enemy_attack(
         attacker_id=defender_user_id
     )
 
-    if not can_player_act(defender_user_id):
+    defender_char: BaseCharacter = char_model.get(defender_user_id)
+    if not defender_char.can_player_act:
         create_job_rest_action_point(
             context=context,
             chat_id=chat_id,
@@ -551,7 +552,6 @@ async def defend_enemy_attack(
 
         return ConversationHandler.END
 
-    defender_char: BaseCharacter = char_model.get(defender_user_id)
     target_char: BaseCharacter = char_model.get(target_user_id)
     if target_char.is_alive:
         await enemy_attack(
@@ -600,7 +600,7 @@ async def defend_enemy_attack(
     #         from_attack=False,
     #     )
 
-    await sub_action_point(user_id=defender_user_id, query=query)
+    await sub_action_point(char=defender_char, query=query)
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
@@ -650,7 +650,8 @@ async def player_attack_enemy(
     enemy_id = data['enemy_id']
     enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
 
-    if not can_player_act(attacker_user_id):
+    attacker_char: BaseCharacter = char_model.get(attacker_user_id)
+    if not attacker_char.can_player_act:
         create_job_rest_action_point(
             context=context,
             chat_id=chat_id,
@@ -681,7 +682,6 @@ async def player_attack_enemy(
 
         return ConversationHandler.END
 
-    attacker_char: BaseCharacter = char_model.get(attacker_user_id)
     target_char: BaseCharacter = char_model.get(target_user_id)
 
     if target_char.is_alive and enemy_char.is_alive:
@@ -752,7 +752,7 @@ async def player_attack_enemy(
                 from_attack=True,
             )
 
-    await sub_action_point(user_id=attacker_user_id, query=query)
+    await sub_action_point(char=attacker_char, query=query)
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
@@ -849,7 +849,7 @@ async def enemy_attack(
             report_text += f'{target_report_xp["text"]}\n'
         report_text += f'{report_xp["text"]}\n\n'
     else:
-        save_char(defender_char, status=True)
+        save_char(char=defender_char, status=True)
 
     report_text = create_text_in_box(
         text=report_text,
@@ -956,7 +956,7 @@ async def player_attack(
             markdown=True
         )
         report_text += counter_report['text']
-        save_char(attacker_char, status=True)
+        save_char(char=attacker_char, status=True)
     report_text = resize_text(report_text)
     report_text = create_text_in_box(
         text=report_text,
@@ -1121,20 +1121,11 @@ def check_attacker_id_in_ambush_dict(
     return in_ambush
 
 
-def can_player_act(user_id: int):
-    player_model = PlayerModel()
-    player: Player = player_model.get(user_id)
+async def sub_action_point(char: BaseCharacter, query: CallbackQuery):
+    char.sub_action_points(1)
+    save_char(char=char)
 
-    return player.have_action_points
-
-
-async def sub_action_point(user_id: int, query: CallbackQuery):
-    player_model = PlayerModel()
-    player: Player = player_model.get(user_id)
-    player.sub_action_points(1)
-    player_model.save(player)
-
-    await answer(query=query, text=player.current_action_points_text)
+    await answer(query=query, text=char.current_action_points_text)
 
 
 async def add_enemy_counter(
