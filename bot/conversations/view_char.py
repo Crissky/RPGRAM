@@ -5,7 +5,7 @@ informações dos jogadores.
 
 
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -22,13 +22,13 @@ from bot.constants.view_char import (
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     call_telegram_message_function,
     edit_message_text,
     get_close_keyboard,
     get_random_refresh_text,
     get_refresh_close_keyboard,
-    is_verbose
+    is_verbose,
+    reply_typing
 )
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
@@ -43,13 +43,10 @@ from rpgram.characters import BaseCharacter
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='VIEW_CHAR.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     char_model = CharacterModel()
     chat_id = update.effective_chat.id

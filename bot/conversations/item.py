@@ -7,7 +7,6 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
-from telegram.constants import ChatAction
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
@@ -49,12 +48,12 @@ from bot.functions.char import (
     add_xp
 )
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     answer,
     call_telegram_message_function,
     delete_message,
     edit_message_text,
-    edit_message_text_and_forward
+    edit_message_text_and_forward,
+    reply_typing
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
@@ -70,7 +69,7 @@ from constant.text import (
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_markdown_v2
 
-from repository.mongo import BagModel, ItemModel
+from repository.mongo import BagModel
 from repository.mongo.populate.item import create_random_item
 from rpgram import Bag
 from rpgram.boosters import Equipment
@@ -183,13 +182,10 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return ConversationHandler.END
 
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='ITEM.INSPECT_TREASURE()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     bag_model = BagModel()
     chat_id = update.effective_chat.id

@@ -4,7 +4,7 @@ Módulo responsável por gerenciar o comando de configuração de grupo.
 
 
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_group import COMMANDS
@@ -13,9 +13,9 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     call_telegram_message_function,
-    get_close_keyboard
+    get_close_keyboard,
+    reply_typing
 )
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
 from bot.functions.general import get_attribute_group_or_player
@@ -29,13 +29,10 @@ from rpgram import Group
 @need_singup_group
 @need_are_admin
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='CONFIG_GROUP.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     group_model = GroupModel()
     chat_id = update.effective_chat.id

@@ -576,6 +576,21 @@ async def answer(query: CallbackQuery, text: str, **kwargs):
         print(f'  text: {text}')
 
 
+async def reply_typing(
+    function_caller: str,
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    await call_telegram_message_function(
+        function_caller=function_caller,
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
+
+
 # MESSAGE FUNCTIONS
 async def message_edit_reply_markup(
     function_caller: str,

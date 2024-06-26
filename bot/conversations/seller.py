@@ -57,14 +57,14 @@ from bot.decorators import (
 from bot.functions.bag import get_item_from_bag_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     answer,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
     edit_message_text,
-    message_edit_reply_markup
+    message_edit_reply_markup,
+    reply_typing
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
@@ -127,13 +127,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Inicia o bot do vendedor.
     '''
 
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='SELLER.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     bag_model = BagModel()
     chat_id = update.effective_chat.id

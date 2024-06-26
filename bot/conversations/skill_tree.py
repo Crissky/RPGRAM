@@ -24,12 +24,12 @@ from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.char import get_char_attribute
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_keyboard,
-    is_verbose
+    is_verbose,
+    reply_typing
 )
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
@@ -40,21 +40,16 @@ from constant.text import (
 )
 from function.text import create_text_in_box
 
-from repository.mongo import CharacterModel
-from rpgram.characters import BaseCharacter
 from rpgram.skills.factory import skill_list_factory
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='SKILL_TREE.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
