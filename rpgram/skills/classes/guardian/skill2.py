@@ -36,6 +36,7 @@ class HeavyChargeSkill(BaseSkill):
         f'usando seu corpo massivo como arma, causando dano com base em '
         f'{PHYSICAL_DEFENSE_EMOJI_TEXT} e {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
+    RANK = 1
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
@@ -50,6 +51,7 @@ class HeavyChargeSkill(BaseSkill):
         super().__init__(
             name=HeavyChargeSkill.NAME,
             description=HeavyChargeSkill.DESCRIPTION,
+            rank=HeavyChargeSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,

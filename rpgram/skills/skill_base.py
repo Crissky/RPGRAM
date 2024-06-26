@@ -32,10 +32,13 @@ ITER_MULTIPLIERS_TYPE = Iterable[
 class BaseSkill:
     NAME = 'Base Skill'
     DESCRIPTION = 'Base Skill Classe'
+    RANK = 'Base Rank'
+
     def __init__(
         self,
         name: str,
         description: str,
+        rank: int,
         level: int,
         cost: int,
         base_stats_multiplier: Dict[Union[str, BaseStatsEnum], float],
@@ -151,6 +154,7 @@ class BaseSkill:
 
         self.name = name
         self.description = description
+        self.rank = int(rank)
         self.level = int(level)
         self.cost = int(cost)
         self.target_type = target_type
@@ -213,6 +217,12 @@ class BaseSkill:
             yield special_damage.help_emoji_text
 
     # GETTERS
+    @property
+    def rank_text(self) -> str:
+        if self.rank == 0:
+            return ''
+        return f'Rank: {self.rank}\n'
+
     @property
     def level_text(self) -> str:
         if self.level == 0:
@@ -299,6 +309,7 @@ class BaseSkill:
     def description_text(self) -> str:
         return (
             f'{self.name}: {self.description}\n'
+            f'{self.rank_text}'
             f'{self.level_text}'
             f'{self.power_text}'
             f'{self.hit_text}'

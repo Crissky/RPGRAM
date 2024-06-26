@@ -12,12 +12,14 @@ class PhysicalAttackSkill(BaseSkill):
     NAME = 'Physical Attack'
     DESCRIPTION = 'Ataque Físico baseado em "FOR" e "DES".'
     def __init__(self, char: 'BaseCharacter'):
+        rank = 0
         level = 0
         cost = 1
 
         super().__init__(
             name=PhysicalAttackSkill.NAME,
             description=PhysicalAttackSkill.DESCRIPTION,
+            rank=rank,
             level=level,
             cost=cost,
             base_stats_multiplier={},
@@ -36,12 +38,14 @@ class PrecisionAttackSkill(BaseSkill):
     NAME = 'Precision Attack'
     DESCRIPTION = 'Ataque rápido baseado em "DES".'
     def __init__(self, char: 'BaseCharacter'):
+        rank = 0
         level = 0
         cost = 1
 
         super().__init__(
             name=PrecisionAttackSkill.NAME,
             description=PrecisionAttackSkill.DESCRIPTION,
+            rank=rank,
             level=level,
             cost=cost,
             base_stats_multiplier={},
@@ -60,12 +64,14 @@ class MagicalAttackSkill(BaseSkill):
     NAME = 'Magical Attack'
     DESCRIPTION = 'Ataque Mágico baseado em "INT" e "WIS".'
     def __init__(self, char: 'BaseCharacter'):
+        rank = 0
         level = 0
         cost = 1
 
         super().__init__(
             name=MagicalAttackSkill.NAME,
             description=MagicalAttackSkill.DESCRIPTION,
+            rank=rank,
             level=level,
             cost=cost,
             base_stats_multiplier={},

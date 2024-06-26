@@ -4,6 +4,7 @@ informações dos jogadores.
 '''
 
 
+from operator import attrgetter
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import (
@@ -21,6 +22,7 @@ from bot.constants.skill_tree import (
 )
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
+from bot.functions.char import get_char_attribute
 from bot.functions.chat import (
     REPLY_CHAT_ACTION_KWARGS,
     call_telegram_message_function,
@@ -54,14 +56,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         skip_retry=True,
         **REPLY_CHAT_ACTION_KWARGS
     )
-    char_model = CharacterModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     args = context.args
-    player_character: BaseCharacter = char_model.get(user_id)
+    classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
     verbose = is_verbose(args)
 
     if query:
@@ -70,15 +71,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if data.get('verbose') == 'v':
             verbose = True
 
-    if player_character:
+    if classe_name:
         try:
-            classe_name = player_character.classe.name
             skill_list = skill_list_factory(classe_name)
+            skill_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
             skill_name_list = [
                 (
                     f'*H{i+1:02}*: '
-                    f'*{skill_class.NAME.upper()}*\n'
-                    f'{skill_class.DESCRIPTION}\n'
+                    f'*{skill_class.NAME.upper()}* '
+                    f'(Rank: {skill_class.RANK})'
                 )
                 for i, skill_class in enumerate(skill_list)
             ]

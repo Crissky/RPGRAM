@@ -31,6 +31,7 @@ class QuickAttackSkill(BaseSkill):
         f'dificultando as chances de esquiva do oponente e '
         f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
+    RANK = 1
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
@@ -44,6 +45,7 @@ class QuickAttackSkill(BaseSkill):
         super().__init__(
             name=QuickAttackSkill.NAME,
             description=QuickAttackSkill.DESCRIPTION,
+            rank=QuickAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -68,6 +70,7 @@ class LethalAttackSkill(BaseSkill):
         f'Desfere um ataque preciso focando pontos vitais do inimigo, '
         f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
+    RANK = 2
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 3
@@ -81,6 +84,7 @@ class LethalAttackSkill(BaseSkill):
         super().__init__(
             name=LethalAttackSkill.NAME,
             description=LethalAttackSkill.DESCRIPTION,
+            rank=LethalAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,

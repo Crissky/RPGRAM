@@ -32,6 +32,7 @@ class PowerfulAttackSkill(BaseSkill):
         f'Tenciona os músculos ao máximo e desfere um golpe devastador, '
         f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
+    RANK = 1
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
@@ -45,6 +46,7 @@ class PowerfulAttackSkill(BaseSkill):
         super().__init__(
             name=PowerfulAttackSkill.NAME,
             description=PowerfulAttackSkill.DESCRIPTION,
+            rank=PowerfulAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,

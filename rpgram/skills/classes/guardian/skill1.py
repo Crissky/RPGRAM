@@ -34,6 +34,7 @@ class RobustBlockSkill(BaseSkill):
         f'Assume uma postura defensiva aumentando a '
         f'{PHYSICAL_DEFENSE_EMOJI_TEXT} com base na {CONSTITUTION_EMOJI_TEXT}.'
     )
+    RANK = 1
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
@@ -45,6 +46,7 @@ class RobustBlockSkill(BaseSkill):
         super().__init__(
             name=RobustBlockSkill.NAME,
             description=RobustBlockSkill.DESCRIPTION,
+            rank=RobustBlockSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
