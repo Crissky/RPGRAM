@@ -5,7 +5,8 @@ informações dos jogadores.
 
 
 from operator import attrgetter
-from telegram import Update
+from typing import List
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
@@ -25,22 +26,28 @@ from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.char import get_char_attribute
 from bot.functions.chat import (
     call_telegram_message_function,
+    callback_data_to_string,
     edit_message_text,
     get_random_refresh_text,
+    get_refresh_close_button,
     get_refresh_close_keyboard,
     is_verbose,
+    reply_text,
     reply_typing
 )
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
     SECTION_HEAD_SKILL_TREE_END,
     SECTION_HEAD_SKILL_TREE_START
 )
 from function.text import create_text_in_box
 
+from rpgram.item import Item
 from rpgram.skills.factory import skill_list_factory
+from rpgram.skills.skill_base import BaseSkill
 
 
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
@@ -59,6 +66,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     args = context.args
     classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
     verbose = is_verbose(args)
+    refresh = False
 
     if query:
         data = eval(query.data)
@@ -86,32 +94,38 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 f'classe {classe_name}.'
             )
 
-        # Cria os botões de refresh/fechar ou botão de fechar
-        reply_markup = get_refresh_close_keyboard(
+        skill_buttons = get_skill_buttons(
+            skill_list=skill_list,
+            user_id=user_id,
+        )
+        refresh_close_button = get_refresh_close_button(
             user_id=user_id,
             refresh_data=REFRESH_SKILL_TREE_PATTERN,
             to_detail=False
         )
+        reply_markup = InlineKeyboardMarkup(
+            skill_buttons + [refresh_close_button]
+        )
 
-        if query:
-            if refresh:
-                '''"refresh_text" é usado para modificar a mensagem de maneira
-                aleatória para tentar evitar um erro (BadRequest)
-                quando não há mudanças no "markdown_player_sheet" usado na
-                função "edit_message_text".'''
-                refresh_text = get_random_refresh_text()
-                markdown_skill_tree_sheet = (
-                    f'{refresh_text}\n'
-                    f'{markdown_skill_tree_sheet}'
-                )
-
-            markdown_skill_tree_sheet = create_text_in_box(
-                text=markdown_skill_tree_sheet,
-                section_name=SECTION_TEXT_SKILL_TREE,
-                section_start=SECTION_HEAD_SKILL_TREE_START,
-                section_end=SECTION_HEAD_SKILL_TREE_END
+        if refresh:
+            '''"refresh_text" é usado para modificar a mensagem de maneira
+            aleatória para tentar evitar um erro (BadRequest)
+            quando não há mudanças no "markdown_player_sheet" usado na
+            função "edit_message_text".'''
+            refresh_text = get_random_refresh_text()
+            markdown_skill_tree_sheet = (
+                f'{refresh_text}\n'
+                f'{markdown_skill_tree_sheet}'
             )
 
+        markdown_skill_tree_sheet = create_text_in_box(
+            text=markdown_skill_tree_sheet,
+            section_name=SECTION_TEXT_SKILL_TREE,
+            section_start=SECTION_HEAD_SKILL_TREE_START,
+            section_end=SECTION_HEAD_SKILL_TREE_END
+        )
+
+        if query:
             await edit_message_text(
                 function_caller='SKILL_TREE.START()',
                 new_text=markdown_skill_tree_sheet,
@@ -123,46 +137,56 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 reply_markup=reply_markup,
             )
         else:
-            markdown_skill_tree_sheet = create_text_in_box(
-                text=markdown_skill_tree_sheet,
-                section_name=SECTION_TEXT_SKILL_TREE,
-                section_start=SECTION_HEAD_SKILL_TREE_START,
-                section_end=SECTION_HEAD_SKILL_TREE_END
-            )
-
-            reply_text_kwargs = dict(
-                text=markdown_skill_tree_sheet,
-                parse_mode=ParseMode.MARKDOWN_V2,
-                disable_notification=silent,
-                reply_markup=reply_markup,
-                allow_sending_without_reply=True
-            )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='SKILL_TREE.START()',
-                function=update.effective_message.reply_text,
+                text=markdown_skill_tree_sheet,
                 context=context,
+                update=update,
                 need_response=False,
-                skip_retry=False,
-                **reply_text_kwargs,
+                markdown=True,
+                reply_markup=reply_markup,
+                silent=silent
             )
     else:
-        reply_text_kwargs = dict(
-            text=(
-                f'Você ainda não criou um personagem!\n'
-                f'Crie o seu personagem com o comando '
-                f'/{create_char_commands[0]}.'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            f'Você ainda não criou um personagem!\n'
+            f'Crie o seu personagem com o comando '
+            f'/{create_char_commands[0]}.'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='SKILL_TREE.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
             need_response=False,
-            skip_retry=False,
-            **reply_text_kwargs,
+            markdown=True,
+            silent=silent
         )
+
+
+def get_skill_buttons(
+    skill_list: List[BaseSkill],
+    user_id: int,
+) -> List[List[InlineKeyboardButton]]:
+
+    items_buttons = []
+    # Criando texto e botões dos itens
+    for index, _ in enumerate(skill_list):
+        items_buttons.append(InlineKeyboardButton(
+            text=f'H{index + 1:02}',
+            callback_data=callback_data_to_string({
+                'skill': index,
+                'user_id': user_id,
+            })
+        ))
+
+    reshaped_items_buttons = reshape_row_buttons(
+        buttons=items_buttons,
+        buttons_per_row=5
+    )
+
+    return reshaped_items_buttons
+
 
 SKILL_TREE_HANDLERS = [
     PrefixHandler(
