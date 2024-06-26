@@ -13,7 +13,10 @@ class Requirement:
     def __init__(self, **kwargs) -> None:
         self.base_stats = {BaseStatsEnum.LEVEL.value.lower(): 1}
         self.combat_stats = {}
+        self.classe_name: str = kwargs.pop('classe_name', None)
+        self.skill_list = kwargs.pop('skill_list', [])
         kwargs = {k.lower(): v for k, v in kwargs.items()}
+
         for attr in BASE_STATS_ATTRIBUTE_LIST:
             attr = attr.lower()
             if attr in kwargs:
@@ -44,6 +47,18 @@ class Requirement:
                     f'"{value}" ({character.combat_stats[attribute]}).'
                 )
 
+        if self.classe_name and self.classe_name != character.classe_name:
+            errors.append(
+                f'    classe: '
+                f'"{self.classe_name.title()}" ({character.classe_name.title()}).'
+            )
+
+        for skill in self.skill_list:
+            if skill not in character.skill_tree.skill_list:
+                errors.append(
+                    f'    skill: "{skill}".'
+                )
+
         if errors:
             errors = "\n".join(errors)
             raise RequirementError(
@@ -57,7 +72,12 @@ class Requirement:
 
     @property
     def iter(self) -> Iterator[Tuple[str, int]]:
-        return chain(self.base_stats.items(), self.combat_stats.items())
+        return chain(
+            self.base_stats.items(),
+            self.combat_stats.items(),
+            {'classe': self.classe_name}.items() if self.classe_name else [],
+            {'skills': self.skill_list}.items() if self.skill_list else [],
+        )
 
     @property
     def text(self) -> str:
@@ -83,6 +103,7 @@ if __name__ == '__main__':
         LEVEL=10,
         EVASION=300,
         HP=1000,
+        classe_name='Warrior',
     )
     print(req.to_dict())
     print(req.level)
