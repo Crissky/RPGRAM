@@ -15,9 +15,13 @@ from telegram.ext import (
     PrefixHandler,
 )
 
+from bot.constants.bag import NAV_BACK_BUTTON_TEXT
 from bot.constants.skill_tree import (
     ACCESS_DENIED,
     COMMANDS,
+    PATTERN_MAIN,
+    PATTERN_SKILL,
+    PATTERN_SKILL_BACK,
     REFRESH_SKILL_TREE_PATTERN,
     SECTION_TEXT_SKILL_TREE
 )
@@ -26,8 +30,10 @@ from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.char import get_char_attribute
 from bot.functions.chat import (
     call_telegram_message_function,
+    callback_data_to_dict,
     callback_data_to_string,
     edit_message_text,
+    get_close_button,
     get_random_refresh_text,
     get_refresh_close_button,
     get_refresh_close_keyboard,
@@ -36,7 +42,11 @@ from bot.functions.chat import (
     reply_typing
 )
 from bot.decorators import print_basic_infos
-from bot.decorators.player import alert_if_not_chat_owner
+from bot.decorators.player import (
+    alert_if_not_chat_owner,
+    alert_if_not_chat_owner_to_anyway,
+    alert_if_not_chat_owner_to_callback_data_to_dict
+)
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
@@ -50,7 +60,7 @@ from rpgram.skills.factory import skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
 
 
-@alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
+@alert_if_not_chat_owner_to_anyway(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await reply_typing(
@@ -63,16 +73,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
-    args = context.args
     classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
-    verbose = is_verbose(args)
     refresh = False
 
     if query:
         data = eval(query.data)
         refresh = data.get(REFRESH_SKILL_TREE_PATTERN, False)
-        if data.get('verbose') == 'v':
-            verbose = True
 
     if classe_name:
         try:
@@ -104,7 +110,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             to_detail=False
         )
         reply_markup = InlineKeyboardMarkup(
-            skill_buttons + [refresh_close_button]
+            skill_buttons +
+            [refresh_close_button]
         )
 
         if refresh:
@@ -164,6 +171,63 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
 
 
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def check_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await reply_typing(
+        function_caller='SKILL_TREE.CHECK_SKILL()',
+        update=update,
+        context=context,
+    )
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
+    data = callback_data_to_dict(query.data)
+    skill_index = data['skill']
+
+    try:
+        skill_list = skill_list_factory(classe_name)
+        skill_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
+        skill_class: BaseSkill = skill_list[skill_index]
+        markdown_skill_tree_sheet = (
+            f'*Habilidade*: *{skill_class.NAME.upper()}*\n'
+            f'Rank: {skill_class.RANK}\n\n'
+            f'*Descrição*: {skill_class.DESCRIPTION}\n'
+        )
+    except ValueError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível carregar a habilidades da '
+            f'classe {classe_name}.'
+        )
+
+    back_button = get_back_button(user_id=user_id)
+    reply_markup = InlineKeyboardMarkup([
+        back_button
+    ])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.CHECK_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
 def get_skill_buttons(
     skill_list: List[BaseSkill],
     user_id: int,
@@ -188,6 +252,18 @@ def get_skill_buttons(
     return reshaped_items_buttons
 
 
+def get_back_button(user_id: int) -> List[InlineKeyboardButton]:
+    return [
+        InlineKeyboardButton(
+            text=NAV_BACK_BUTTON_TEXT,
+            callback_data=callback_data_to_string({
+                'skill_back': 1,
+                'user_id': user_id,
+            })
+        )
+    ]
+
+
 SKILL_TREE_HANDLERS = [
     PrefixHandler(
         PREFIX_COMMANDS,
@@ -200,7 +276,7 @@ SKILL_TREE_HANDLERS = [
         start,
         BASIC_COMMAND_FILTER
     ),
-    CallbackQueryHandler(
-        start, pattern=fr'^{{"{REFRESH_SKILL_TREE_PATTERN}":1'
-    ),
+    CallbackQueryHandler(start, pattern=PATTERN_MAIN),
+    CallbackQueryHandler(start, pattern=PATTERN_SKILL_BACK),
+    CallbackQueryHandler(check_skill, pattern=PATTERN_SKILL),
 ]
