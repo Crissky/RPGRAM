@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from rpgram.constants.text import (
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.skills.skill_base import BaseSkill
@@ -40,7 +41,9 @@ class PowerfulAttackSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
         }
-        requirements = {}
+        requirements = {
+            'classe_name': ClasseEnum.WARRIOR.value,
+        }
         damage_types = None
 
         super().__init__(

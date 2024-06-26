@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from rpgram.constants.text import (
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.skills.skill_base import BaseSkill
@@ -39,7 +40,9 @@ class QuickAttackSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.15001
         }
-        requirements = {}
+        requirements = {
+            'classe_name': ClasseEnum.WARRIOR.value,
+        }
         damage_types = []
 
         super().__init__(
@@ -58,7 +61,7 @@ class QuickAttackSkill(BaseSkill):
             requirements=requirements,
             damage_types=damage_types
         )
-    
+
     @property
     def hit_multiplier(self) -> float:
         return 2.0
@@ -78,7 +81,10 @@ class LethalAttackSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 2.50
         }
-        requirements = {}
+        requirements = {
+            'classe_name': ClasseEnum.WARRIOR.value,
+            'skill_list': [QuickAttackSkill.__name__]
+        }
         damage_types = []
 
         super().__init__(

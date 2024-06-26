@@ -50,7 +50,8 @@ class Requirement:
         if self.classe_name and self.classe_name != character.classe_name:
             errors.append(
                 f'    classe: '
-                f'"{self.classe_name.title()}" ({character.classe_name.title()}).'
+                f'"{self.classe_name.title()}" '
+                f'({character.classe_name.title()}).'
             )
 
         for skill in self.skill_list:

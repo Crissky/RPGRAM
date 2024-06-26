@@ -3,6 +3,7 @@ from rpgram.constants.text import (
     PHYSICAL_ATTACK_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
@@ -45,7 +46,9 @@ class HeavyChargeSkill(BaseSkill):
             CombatStatsEnum.PHYSICAL_ATTACK: 0.45,
             CombatStatsEnum.PHYSICAL_DEFENSE: 0.90,
         }
-        requirements = {}
+        requirements = {
+            'classe_name': ClasseEnum.GUARDIAN.value,
+        }
         damage_types = [DamageEnum.BLUDGEONING]
 
         super().__init__(

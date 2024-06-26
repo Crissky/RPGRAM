@@ -4,6 +4,7 @@ from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.skills.skill_base import BaseSkill
 
@@ -40,7 +41,9 @@ class RobustBlockSkill(BaseSkill):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
-        requirements = {}
+        requirements = {
+            'classe_name': ClasseEnum.GUARDIAN.value,
+        }
         damage_types = None
 
         super().__init__(
