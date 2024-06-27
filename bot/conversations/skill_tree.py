@@ -20,14 +20,19 @@ from bot.constants.skill_tree import (
     ACCESS_DENIED,
     COMMANDS,
     LIST_LEARN_SKILL_BUTTON_TEXT,
+    LIST_UPGRADE_SKILL_BUTTON_TEXT,
     PATTERN_LIST_LEARN_SKILL,
+    PATTERN_LIST_UPGRADE_SKILL,
     PATTERN_LIST_USE_SKILL,
     PATTERN_MAIN,
     PATTERN_CHECK_LEARN_SKILL,
     PATTERN_SKILL_BACK,
     REFRESH_SKILL_TREE_PATTERN,
+    SECTION_TEXT_LEARN_SKILL_TREE,
     SECTION_TEXT_SKILL_TREE,
-    LIST_USE_SKILL_BUTTON_TEXT
+    LIST_USE_SKILL_BUTTON_TEXT,
+    SECTION_TEXT_UPGRADE_SKILL_TREE,
+    SECTION_TEXT_USE_SKILL_TREE
 )
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
@@ -200,7 +205,7 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
-        section_name=SECTION_TEXT_SKILL_TREE,
+        section_name=SECTION_TEXT_USE_SKILL_TREE,
         section_start=SECTION_HEAD_SKILL_TREE_START,
         section_end=SECTION_HEAD_SKILL_TREE_END
     )
@@ -217,7 +222,68 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-@alert_if_not_chat_owner_to_anyway(alert_text=ACCESS_DENIED)
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await reply_typing(
+        function_caller='SKILL_TREE.LIST_UPGRADE_SKILL()',
+        update=update,
+        context=context,
+    )
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    char: BaseCharacter = char_model.get(user_id)
+
+    skill_list = char.skill_tree.skill_list
+    skill_list = sorted(skill_list, key=attrgetter('rank', 'name'))
+    skill_name_list = [
+        (
+            f'*H{i+1:02}*: '
+            f'*{skill_class.name.upper()}* '
+            f'(Rank: {skill_class.rank})'
+        )
+        for i, skill_class in enumerate(skill_list)
+    ]
+    if skill_name_list:
+        markdown_skill_tree_sheet = '\n'.join(skill_name_list)
+    else:
+        markdown_skill_tree_sheet = 'Você ainda não aprendeu uma habilidade!!!'
+
+    skill_buttons = get_skill_buttons(
+        skill_list=skill_list,
+        user_id=user_id,
+        to_check_upgrade=True
+    )
+    back_button = get_back_button(user_id=user_id)
+    reply_markup = InlineKeyboardMarkup(
+        skill_buttons +
+        [back_button]
+    )
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_UPGRADE_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.LIST_UPGRADE_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_typing(
@@ -255,7 +321,7 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     skill_buttons = get_skill_buttons(
         skill_list=skill_list,
         user_id=user_id,
-        to_check_use=False
+        to_check_learn=True
     )
     back_button = get_back_button(user_id=user_id)
     reply_markup = InlineKeyboardMarkup(
@@ -265,7 +331,7 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
-        section_name=SECTION_TEXT_SKILL_TREE,
+        section_name=SECTION_TEXT_LEARN_SKILL_TREE,
         section_start=SECTION_HEAD_SKILL_TREE_START,
         section_end=SECTION_HEAD_SKILL_TREE_END
     )
@@ -286,7 +352,7 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @print_basic_infos
 async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_typing(
-        function_caller='SKILL_TREE.CHECK_SKILL()',
+        function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
         update=update,
         context=context,
     )
@@ -328,7 +394,7 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     await edit_message_text(
-        function_caller='SKILL_TREE.CHECK_SKILL()',
+        function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
         new_text=markdown_skill_tree_sheet,
         context=context,
         chat_id=chat_id,
@@ -354,6 +420,13 @@ def get_main_buttons(user_id: int) -> List[InlineKeyboardButton]:
                 'list_learn_skill': 1,
                 'user_id': user_id,
             })
+        ),
+        InlineKeyboardButton(
+            text=LIST_UPGRADE_SKILL_BUTTON_TEXT,
+            callback_data=callback_data_to_string({
+                'list_upgrade_skill': 1,
+                'user_id': user_id,
+            })
         )
     ]
 
@@ -361,18 +434,20 @@ def get_main_buttons(user_id: int) -> List[InlineKeyboardButton]:
 def get_skill_buttons(
     skill_list: List[BaseSkill],
     user_id: int,
-    to_check_use: bool,
+    to_check_use: bool = False,
+    to_check_learn: bool = False,
+    to_check_upgrade: bool = False,
 ) -> List[List[InlineKeyboardButton]]:
 
-    if to_check_use is True:
+    to_check_list = [to_check_use, to_check_learn, to_check_upgrade]
+    if to_check_list.count(True) != 1:
+        raise ValueError('Somente um dos "to_check" deve ser True.')
+    elif to_check_use is True:
         command = 'check_use_skill'
-    elif to_check_use is False:
+    elif to_check_learn is True:
         command = 'check_learn_skill'
-    else:
-        raise ValueError(
-            f'"to_check_use" precisa ser True ou False, recebido '
-            f'"{to_check_use}".'
-        )
+    elif to_check_upgrade is True:
+        command = 'check_upgrade_skill'
 
     items_buttons = []
     # Criando texto e botões das habilidades
@@ -421,5 +496,9 @@ SKILL_TREE_HANDLERS = [
     CallbackQueryHandler(start, pattern=PATTERN_SKILL_BACK),
     CallbackQueryHandler(list_use_skill, pattern=PATTERN_LIST_USE_SKILL),
     CallbackQueryHandler(list_learn_skill, pattern=PATTERN_LIST_LEARN_SKILL),
+    CallbackQueryHandler(
+        list_upgrade_skill,
+        pattern=PATTERN_LIST_UPGRADE_SKILL
+    ),
     CallbackQueryHandler(check_learn_skill, pattern=PATTERN_CHECK_LEARN_SKILL),
 ]

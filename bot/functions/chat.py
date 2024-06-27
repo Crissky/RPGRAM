@@ -62,8 +62,10 @@ CALLBACK_KEY_LIST = [
     'skill_back',
     'list_use_skill',
     'list_learn_skill',
+    'list_upgrade_skill',
     'check_use_skill',
     'check_learn_skill',
+    'check_upgrede_skill',
     'use_skill',
     'learn_skill',
 ]

@@ -111,6 +111,7 @@ class EmojiEnum(Enum):
     SKILL_POINTS = '🤹'
     USE_SKILL = '🤺'
     LEARN_SKILL = '👨‍🎓'
+    UPGRADE_SKILL = '⏫'
 
 
 class FaceEmojiEnum(Enum):
