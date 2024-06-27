@@ -109,6 +109,8 @@ class EmojiEnum(Enum):
     HELP_QUEST = '🆘'
     ACTION_POINTS = '🏃🏻‍♀️'
     SKILL_POINTS = '🤹'
+    USE_SKILL = '🤺'
+    LEARN_SKILL = '👨‍🎓'
 
 
 class FaceEmojiEnum(Enum):

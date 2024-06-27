@@ -59,7 +59,13 @@ CALLBACK_KEY_LIST = [
     'row',
     'col',
     'skill',
-    'skill_back'
+    'skill_back',
+    'list_use_skill',
+    'list_learn_skill',
+    'check_use_skill',
+    'check_learn_skill',
+    'use_skill',
+    'learn_skill',
 ]
 VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)
