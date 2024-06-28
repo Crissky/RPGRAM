@@ -30,9 +30,10 @@ ITER_MULTIPLIERS_TYPE = Iterable[
 
 
 class BaseSkill:
-    NAME = 'Base Skill'
-    DESCRIPTION = 'Base Skill Classe'
-    RANK = 'Base Rank'
+    NAME: str = 'Base Skill'
+    DESCRIPTION: str = 'Base Skill Classe'
+    RANK: str = 'Base Rank'
+    REQUIREMENT: Requirement = Requirement()
 
     def __init__(
         self,

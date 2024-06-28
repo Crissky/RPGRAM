@@ -5,6 +5,7 @@ from rpgram.constants.text import (
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
+from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
@@ -34,15 +35,15 @@ class PowerfulAttackSkill(BaseSkill):
         f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
     RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.WARRIOR.value,
+    })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
-        }
-        requirements = {
-            'classe_name': ClasseEnum.WARRIOR.value,
         }
         damage_types = None
 
@@ -59,7 +60,7 @@ class PowerfulAttackSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
-            requirements=requirements,
+            requirements=PowerfulAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 

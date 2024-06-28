@@ -7,6 +7,7 @@ from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
+from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
@@ -38,6 +39,9 @@ class HeavyChargeSkill(BaseSkill):
         f'{PHYSICAL_DEFENSE_EMOJI_TEXT} e {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
     RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.GUARDIAN.value,
+    })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
@@ -45,9 +49,6 @@ class HeavyChargeSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 0.45,
             CombatStatsEnum.PHYSICAL_DEFENSE: 0.90,
-        }
-        requirements = {
-            'classe_name': ClasseEnum.GUARDIAN.value,
         }
         damage_types = [DamageEnum.BLUDGEONING]
 
@@ -64,7 +65,7 @@ class HeavyChargeSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
-            requirements=requirements,
+            requirements=HeavyChargeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
