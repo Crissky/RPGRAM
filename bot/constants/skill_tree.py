@@ -34,7 +34,18 @@ PATTERN_CHECK_UPGREDE_SKILL = (
 )
 PATTERN_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("use_skill")}:'
 PATTERN_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("learn_skill")}:'
-PATTERN_SKILL_BACK = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:'
+PATTERN_SKILL_BACK_MAIN = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"main"'
+)
+PATTERN_SKILL_BACK_LIST_USE = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_use"'
+)
+PATTERN_SKILL_BACK_LIST_LEARN = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_learn"'
+)
+PATTERN_SKILL_BACK_LIST_UPGRADE = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_upgrade"'
+)
 
 # ALERT BUTTON TEXTS
 ACCESS_DENIED = (

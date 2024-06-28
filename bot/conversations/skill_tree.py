@@ -26,7 +26,10 @@ from bot.constants.skill_tree import (
     PATTERN_LIST_USE_SKILL,
     PATTERN_MAIN,
     PATTERN_CHECK_LEARN_SKILL,
-    PATTERN_SKILL_BACK,
+    PATTERN_SKILL_BACK_LIST_LEARN,
+    PATTERN_SKILL_BACK_LIST_UPGRADE,
+    PATTERN_SKILL_BACK_LIST_USE,
+    PATTERN_SKILL_BACK_MAIN,
     REFRESH_SKILL_TREE_PATTERN,
     SECTION_TEXT_LEARN_SKILL_TREE,
     SECTION_TEXT_SKILL_TREE,
@@ -178,7 +181,6 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     char: BaseCharacter = char_model.get(user_id)
 
     skill_list = char.skill_tree.skill_list
-    skill_list = sorted(skill_list, key=attrgetter('rank', 'name'))
     skill_name_list = [
         (
             f'*H{i+1:02}*: '
@@ -197,7 +199,7 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_id=user_id,
         to_check_use=True
     )
-    back_button = get_back_button(user_id=user_id)
+    back_button = get_back_button(user_id=user_id, to_main=True)
     reply_markup = InlineKeyboardMarkup(
         skill_buttons +
         [back_button]
@@ -239,7 +241,6 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     char: BaseCharacter = char_model.get(user_id)
 
     skill_list = char.skill_tree.skill_list
-    skill_list = sorted(skill_list, key=attrgetter('rank', 'name'))
     skill_name_list = [
         (
             f'*H{i+1:02}*: '
@@ -258,7 +259,7 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
         user_id=user_id,
         to_check_upgrade=True
     )
-    back_button = get_back_button(user_id=user_id)
+    back_button = get_back_button(user_id=user_id, to_main=True)
     reply_markup = InlineKeyboardMarkup(
         skill_buttons +
         [back_button]
@@ -291,17 +292,17 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         update=update,
         context=context,
     )
+    char_model = CharacterModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
-    classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
+    char: BaseCharacter = char_model.get(user_id)
     skill_list = []
 
     try:
-        skill_list = skill_list_factory(classe_name)
-        skill_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
+        skill_list = char.skill_tree.learnable_skill_list
         skill_name_list = [
             (
                 f'*H{i+1:02}*: '
@@ -315,7 +316,7 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a lista de habilidades da '
-            f'classe {classe_name}.'
+            f'classe {char.classe_name}.'
         )
 
     skill_buttons = get_skill_buttons(
@@ -323,7 +324,7 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_id=user_id,
         to_check_learn=True
     )
-    back_button = get_back_button(user_id=user_id)
+    back_button = get_back_button(user_id=user_id, to_main=True)
     reply_markup = InlineKeyboardMarkup(
         skill_buttons +
         [back_button]
@@ -356,32 +357,34 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         update=update,
         context=context,
     )
+    char_model = CharacterModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
-    classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
+    char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
     skill_index = data['check_learn_skill']
 
     try:
-        skill_list = skill_list_factory(classe_name)
+        skill_list = char.skill_tree.learnable_skill_list
         skill_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
         skill_class: BaseSkill = skill_list[skill_index]
         markdown_skill_tree_sheet = (
             f'*Habilidade*: *{skill_class.NAME.upper()}*\n'
             f'*Rank*: {skill_class.RANK}\n\n'
-            f'*Descrição*: {skill_class.DESCRIPTION}\n'
+            f'*Descrição*: {skill_class.DESCRIPTION}\n\n'
+            f'*Requerimentos*:\n{skill_class.REQUIREMENT}'
         )
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {classe_name}.'
+            f'classe {char.classe_name}.'
         )
 
-    back_button = get_back_button(user_id=user_id)
+    back_button = get_back_button(user_id=user_id, to_list_learn=True)
     reply_markup = InlineKeyboardMarkup([
         back_button
     ])
@@ -468,12 +471,30 @@ def get_skill_buttons(
     return reshaped_items_buttons
 
 
-def get_back_button(user_id: int) -> List[InlineKeyboardButton]:
+def get_back_button(
+    user_id: int,
+    to_main: bool = False,
+    to_list_use: bool = False,
+    to_list_learn: bool = False,
+    to_list_upgrade: bool = False,
+) -> List[InlineKeyboardButton]:
+    to_list_list = [to_main, to_list_use, to_list_learn, to_list_upgrade]
+    if to_list_list.count(True) != 1:
+        raise ValueError('Somente um dos "to_list" deve ser True.')
+    elif to_main is True:
+        command = 'main'
+    elif to_list_use is True:
+        command = 'list_use'
+    elif to_list_learn is True:
+        command = 'list_learn'
+    elif to_list_upgrade is True:
+        command = 'list_upgrade'
+
     return [
         InlineKeyboardButton(
             text=NAV_BACK_BUTTON_TEXT,
             callback_data=callback_data_to_string({
-                'skill_back': 1,
+                'skill_back': command,
                 'user_id': user_id,
             })
         )
@@ -493,12 +514,21 @@ SKILL_TREE_HANDLERS = [
         BASIC_COMMAND_FILTER
     ),
     CallbackQueryHandler(start, pattern=PATTERN_MAIN),
-    CallbackQueryHandler(start, pattern=PATTERN_SKILL_BACK),
+    CallbackQueryHandler(start, pattern=PATTERN_SKILL_BACK_MAIN),
     CallbackQueryHandler(list_use_skill, pattern=PATTERN_LIST_USE_SKILL),
+    CallbackQueryHandler(list_use_skill, pattern=PATTERN_SKILL_BACK_LIST_USE),
     CallbackQueryHandler(list_learn_skill, pattern=PATTERN_LIST_LEARN_SKILL),
+    CallbackQueryHandler(
+        list_learn_skill,
+        pattern=PATTERN_SKILL_BACK_LIST_LEARN
+    ),
     CallbackQueryHandler(
         list_upgrade_skill,
         pattern=PATTERN_LIST_UPGRADE_SKILL
+    ),
+    CallbackQueryHandler(
+        list_upgrade_skill,
+        pattern=PATTERN_SKILL_BACK_LIST_UPGRADE
     ),
     CallbackQueryHandler(check_learn_skill, pattern=PATTERN_CHECK_LEARN_SKILL),
 ]

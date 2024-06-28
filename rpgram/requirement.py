@@ -95,6 +95,9 @@ class Requirement:
             for key, value in self.iter
         }
 
+    def __str__(self) -> str:
+        return self.text
+
 
 if __name__ == '__main__':
     req = Requirement(
