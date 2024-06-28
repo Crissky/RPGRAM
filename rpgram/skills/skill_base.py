@@ -1,5 +1,14 @@
 from itertools import chain
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Tuple,
+    Union
+)
 
 from constant.text import TEXT_DELIMITER
 from rpgram.conditions.condition import Condition
@@ -217,18 +226,22 @@ class BaseSkill:
         for special_damage in self.special_damage_iter:
             yield special_damage.help_emoji_text
 
+    def add_level(self, value: int = 1) -> None:
+        value = int(abs(value))
+        self.level += value
+
     # GETTERS
     @property
     def rank_text(self) -> str:
         if self.rank == 0:
             return ''
-        return f'Rank: {self.rank}\n'
+        return f'*Rank*: {self.rank}\n'
 
     @property
     def level_text(self) -> str:
         if self.level == 0:
             return ''
-        return f'Nível: {self.level}\n'
+        return f'*Nível*: {self.level}\n'
 
     @property
     def level_multiplier_dict(self) -> dict:
@@ -251,8 +264,14 @@ class BaseSkill:
 
     @property
     def hit_text(self) -> str:
+        if any((
+            self.hit == 0,
+            self.target_type == TargetEnum.SELF,
+            self.skill_type != SkillTypeEnum.ATTACK
+        )):
+            return ''
         hit_percent = self.hit_multiplier*100
-        return f'Acerto: {self.hit}({hit_percent}%{EmojiEnum.HIT.value})\n'
+        return f'*Acerto*: {self.hit}({hit_percent}%{EmojiEnum.HIT.value})\n'
 
     @property
     def power(self) -> int:
@@ -264,18 +283,20 @@ class BaseSkill:
 
     @property
     def power_text(self) -> str:
-        return f'Poder: {self.power}\n'
+        if self.power == 0:
+            return ''
+        return f'*Poder*: {self.power}\n'
 
     @property
     def power_detail_text(self) -> str:
         if attributes_power_texts := self.attributes_power_text:
             attributes_power_texts = (
-                f'Dano dos Atributos: {attributes_power_texts}\n'
+                f'*Dano dos Atributos*: {attributes_power_texts}\n'
             )
 
         if (special_damage_texts := self.special_damage_text):
             special_damage_texts = (
-                f'Danos Especiais: {special_damage_texts}\n'
+                f'*Danos Especiais*: {special_damage_texts}\n'
             )
 
         return (
@@ -309,16 +330,13 @@ class BaseSkill:
     @property
     def description_text(self) -> str:
         return (
-            f'{self.name}: {self.description}\n'
+            f'*{self.name.upper()}*: {self.description}\n\n'
             f'{self.rank_text}'
             f'{self.level_text}'
             f'{self.power_text}'
             f'{self.hit_text}'
             f'{self.power_detail_text}'
         )
-
-    def new_method(self):
-        return f'Nível: {self.level}\n'
 
     def to_dict(self) -> dict:
         return {

@@ -45,7 +45,7 @@ class SkillTree:
         if skill_class_name in self.skill_list:
             skill = self.get_skill(skill_class_name)
             report['text'] = (
-                f'O personagem já sabe usar a skill "{skill.name}".'
+                f'O personagem já sabe usar a habilidade "{skill.name}".'
             )
         else:
             new_skill = skill_factory(
@@ -55,9 +55,45 @@ class SkillTree:
             )
             report['skill'] = new_skill
             report['text'] = (
-                f'O personagem aprendeu a skill "{new_skill.name}".'
+                f'O personagem aprendeu a habilidade "{new_skill.name}".'
             )
             self.__skill_list.append(new_skill)
+
+        return report
+
+    def upgrade_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
+        report = {'text': '', 'skill': None}
+        if skill_class_name not in self.skill_list:
+            report['text'] = (
+                f'O personagem não sabe usar a habilidade '
+                f'"{skill_class_name}".'
+            )
+        elif not self.have_skill_points:
+            report['text'] = (
+                f'O personagem não tem {self.skill_points_name} suficientes.'
+            )
+        else:
+            skill = self.get_skill(skill_class_name)
+            old_level = skill.level
+            requirements_report = skill.requirements.check_requirements(
+                self.character,
+                level_rank=old_level + 1,
+                to_raise_error=False
+            )
+            if requirements_report['pass']:
+                skill.add_level()
+                new_level = skill.level
+                report['skill'] = skill
+                report['text'] = (
+                    f'A habilidade "{skill.name}" foi aprimorada do '
+                    f'nível {old_level} para {new_level}.'
+                )
+            else:
+                report['text'] = (
+                    f'O personagem não atende aos requisitos para aprimorar a '
+                    f'habilidade "{skill.name}"\n\n'
+                    f'{requirements_report["text"]}'
+                )
 
         return report
 
@@ -132,9 +168,13 @@ class SkillTree:
         return self.current_skill_points > 0
 
     @property
+    def skill_points_name(self) -> str:
+        return f'{EmojiEnum.SKILL_POINTS.value}Pontos de Habilidade'
+
+    @property
     def skill_points_text(self) -> str:
         return (
-            f'{EmojiEnum.SKILL_POINTS.value}Pontos de Habilidade: '
+            f'{self.skill_points_name}: '
             f'{self.current_skill_points}/{self.max_skill_points}'
         )
 

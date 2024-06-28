@@ -28,7 +28,7 @@ PATTERN_LIST_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_upgrade_skill"
 
 PATTERN_CHECK_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_use_skill")}:'
 PATTERN_CHECK_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_learn_skill")}:'
-PATTERN_CHECK_UPGREDE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_upgrade_skill")}:'
+PATTERN_CHECK_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_upgrade_skill")}:'
 
 PATTERN_ACTION_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_use_skill")}:'
 PATTERN_ACTION_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_learn_skill")}:'

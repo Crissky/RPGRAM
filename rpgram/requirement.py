@@ -32,15 +32,31 @@ class Requirement:
                 f'Argumentos inválidos: {", ".join(kwargs.keys())}'
             )
 
-    def check_requirements(self, character: 'BaseCharacter'):
+    def check_requirements(
+        self,
+        character: 'BaseCharacter',
+        level_rank: int = 1,
+        to_raise_error: bool = True,
+    ) -> dict:
+        '''Analisa se o personagem possui os requisitos.
+        '''
+
+        if level_rank < 1:
+            raise ValueError(
+                'O level_rank deve ser um valor inteiro positivo.'
+            )
+
         errors = []
+        level_rank = int(level_rank - 1)
         for attribute, value in self.base_stats.items():
+            value += (level_rank * 10)
             if value > character.base_stats[attribute]:
                 errors.append(
                     f'    {attribute}: '
                     f'"{value}" ({character.base_stats[attribute]}).'
                 )
         for attribute, value in self.combat_stats.items():
+            value += (level_rank * 20)
             if value > character.combat_stats[attribute]:
                 errors.append(
                     f'    {attribute}: '
@@ -60,12 +76,18 @@ class Requirement:
                     f'    skill: "{skill}".'
                 )
 
-        if errors:
-            errors = "\n".join(errors)
+        if errors and to_raise_error is True:
+            errors = '\n'.join(errors)
             raise RequirementError(
                 f'O personagem não possui os requisitos:\n'
                 f'{errors}'
             )
+
+        return {
+            'text': '\n'.join(errors),
+            'errors': errors,
+            'pass': not bool(errors)
+        }
 
     @property
     def level(self) -> int:

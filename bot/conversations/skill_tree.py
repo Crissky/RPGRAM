@@ -25,6 +25,10 @@ from bot.constants.skill_tree import (
     LIST_LEARN_SKILL_BUTTON_TEXT,
     LIST_UPGRADE_SKILL_BUTTON_TEXT,
     PATTERN_ACTION_LEARN_SKILL,
+    PATTERN_ACTION_UPGRADE_SKILL,
+    PATTERN_ACTION_USE_SKILL,
+    PATTERN_CHECK_UPGRADE_SKILL,
+    PATTERN_CHECK_USE_SKILL,
     PATTERN_LIST_LEARN_SKILL,
     PATTERN_LIST_UPGRADE_SKILL,
     PATTERN_LIST_USE_SKILL,
@@ -189,7 +193,7 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         (
             f'*H{i+1:02}*: '
             f'*{skill_class.name.upper()}* '
-            f'(Rank: {skill_class.rank})'
+            f'(Nível: {skill_class.level})'
         )
         for i, skill_class in enumerate(skill_list)
     ]
@@ -249,7 +253,7 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
         (
             f'*H{i+1:02}*: '
             f'*{skill_class.name.upper()}* '
-            f'(Rank: {skill_class.rank})'
+            f'(Nível: {skill_class.level})'
         )
         for i, skill_class in enumerate(skill_list)
     ]
@@ -355,6 +359,127 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @print_basic_infos
+async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await reply_typing(
+        function_caller='SKILL_TREE.CHECK_USE_SKILL()',
+        update=update,
+        context=context,
+    )
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    char: BaseCharacter = char_model.get(user_id)
+    data = callback_data_to_dict(query.data)
+    skill_index = data['check_use_skill']
+
+    try:
+        skill_list = char.skill_tree.skill_list
+        skill_class: BaseSkill = skill_list[skill_index]
+        markdown_skill_tree_sheet = skill_class.description_text
+    except ValueError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível carregar a habilidades da '
+            f'classe {char.classe_name}.'
+        )
+
+    action_button = get_action_button(
+        user_id=user_id,
+        index=skill_index,
+        to_action_use=True,
+    )
+    back_button = get_back_button(user_id=user_id, to_list_use=True)
+    reply_markup = InlineKeyboardMarkup([
+        action_button,
+        back_button
+    ])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_USE_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.CHECK_USE_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def check_upgrade_skill(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    await reply_typing(
+        function_caller='SKILL_TREE.CHECK_UPGRADE_SKILL()',
+        update=update,
+        context=context,
+    )
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    char: BaseCharacter = char_model.get(user_id)
+    data = callback_data_to_dict(query.data)
+    skill_index = data['check_upgrade_skill']
+
+    try:
+        skill_list = char.skill_tree.skill_list
+        skill_class: BaseSkill = skill_list[skill_index]
+        markdown_skill_tree_sheet = skill_class.description_text
+    except ValueError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível carregar a habilidades da '
+            f'classe {char.classe_name}.'
+        )
+
+    action_button = get_action_button(
+        user_id=user_id,
+        index=skill_index,
+        to_action_upgrade=True,
+    )
+    back_button = get_back_button(user_id=user_id, to_list_upgrade=True)
+    reply_markup = InlineKeyboardMarkup([
+        action_button,
+        back_button
+    ])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_UPGRADE_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.CHECK_UPGRADE_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
 async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_typing(
         function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
@@ -400,7 +525,7 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
-        section_name=SECTION_TEXT_SKILL_TREE,
+        section_name=SECTION_TEXT_LEARN_SKILL_TREE,
         section_start=SECTION_HEAD_SKILL_TREE_START,
         section_end=SECTION_HEAD_SKILL_TREE_END
     )
@@ -419,12 +544,12 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @print_basic_infos
-async def action_learn_skill(
+async def action_use_skill(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
     await reply_typing(
-        function_caller='SKILL_TREE.ACTION_LEARN_SKILL()',
+        function_caller='SKILL_TREE.ACTION_USE_SKILL()',
         update=update,
         context=context,
     )
@@ -436,7 +561,124 @@ async def action_learn_skill(
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
-    skill_index = data['action_learn_skill']
+    skill_index = data['action_use_skill']
+
+    try:
+        skill_list = char.skill_tree.skill_list
+        skill_class: BaseSkill = skill_list[skill_index]
+        markdown_skill_tree_sheet = (
+            f'ESTA FUNÇÃO AINDA NÃO FOI IMPLEMENTADA!!!\n\n'
+            f'{skill_class}'
+        )
+    except ValueError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível carregar a habilidades da '
+            f'classe {char.classe_name}.'
+        )
+
+    back_button = get_back_button(user_id=user_id, to_list_use=True)
+    reply_markup = InlineKeyboardMarkup([
+        back_button
+    ])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_USE_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.ACTION_USE_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def action_upgrade_skill(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    await reply_typing(
+        function_caller='SKILL_TREE.ACTION_UPGRADE_SKILL()',
+        update=update,
+        context=context,
+    )
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    char: BaseCharacter = char_model.get(user_id)
+    data = callback_data_to_dict(query.data)
+    skill_index = data['action_upgrade_skill']
+
+    try:
+        skill_list = char.skill_tree.skill_list
+        skill_class: BaseSkill = skill_list[skill_index]
+        skill_report = char.skill_tree.upgrade_skill(skill_class)
+        save_char(char)
+        markdown_skill_tree_sheet = skill_report['text']
+    except ValueError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível carregar a habilidades da '
+            f'classe {char.classe_name}.'
+        )
+
+    back_button = get_back_button(user_id=user_id, to_list_upgrade=True)
+    reply_markup = InlineKeyboardMarkup([
+        back_button
+    ])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_UPGRADE_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.ACTION_UPGRADE_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def action_learn_skill(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    await reply_typing(
+        function_caller='SKILL_TREE.ACTION_UPGRADE_SKILL()',
+        update=update,
+        context=context,
+    )
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    char: BaseCharacter = char_model.get(user_id)
+    data = callback_data_to_dict(query.data)
+    skill_index = data['action_upgrade_skill']
 
     try:
         skill_list = char.skill_tree.learnable_skill_list
@@ -458,13 +700,13 @@ async def action_learn_skill(
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
-        section_name=SECTION_TEXT_SKILL_TREE,
+        section_name=SECTION_TEXT_LEARN_SKILL_TREE,
         section_start=SECTION_HEAD_SKILL_TREE_START,
         section_end=SECTION_HEAD_SKILL_TREE_END
     )
 
     await edit_message_text(
-        function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
+        function_caller='SKILL_TREE.ACTION_LEARN_SKILL()',
         new_text=markdown_skill_tree_sheet,
         context=context,
         chat_id=chat_id,
@@ -630,10 +872,24 @@ SKILL_TREE_HANDLERS = [
         list_upgrade_skill,
         pattern=PATTERN_SKILL_BACK_LIST_UPGRADE
     ),
+    # CHECK ROUTES
+    CallbackQueryHandler(check_use_skill, pattern=PATTERN_CHECK_USE_SKILL),
     CallbackQueryHandler(check_learn_skill, pattern=PATTERN_CHECK_LEARN_SKILL),
+    CallbackQueryHandler(
+        check_upgrade_skill,
+        pattern=PATTERN_CHECK_UPGRADE_SKILL
+    ),
     # ACTION ROUTES
+    CallbackQueryHandler(
+        action_use_skill,
+        pattern=PATTERN_ACTION_USE_SKILL
+    ),
     CallbackQueryHandler(
         action_learn_skill,
         pattern=PATTERN_ACTION_LEARN_SKILL
+    ),
+    CallbackQueryHandler(
+        action_upgrade_skill,
+        pattern=PATTERN_ACTION_UPGRADE_SKILL
     ),
 ]
