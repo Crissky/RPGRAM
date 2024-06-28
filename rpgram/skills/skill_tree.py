@@ -1,5 +1,5 @@
 from operator import attrgetter
-from typing import TYPE_CHECKING, Callable, List
+from typing import TYPE_CHECKING, Callable, List, Union
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.enums.emojis import EmojiEnum
@@ -20,7 +20,7 @@ class SkillTree:
     ):
         classe_name = character.classe_name
         for index, skill in enumerate(skill_list):
-            if isinstance(skill, Callable):
+            if isinstance(skill, dict):
                 skill_list[index] = skill_factory(
                     classe_name=classe_name,
                     skill_class_name=skill['class_name'],
@@ -37,7 +37,10 @@ class SkillTree:
         index = self.skill_list.index(skill_name)
         return self.skill_list[index]
 
-    def learn_skill(self, skill_class_name: str) -> dict:
+    def learn_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
+        if issubclass(skill_class_name, BaseSkill):
+            skill_class_name = skill_class_name.__name__
+
         report = {'text': '', 'skill': None}
         if skill_class_name in self.skill_list:
             skill = self.get_skill(skill_class_name)
@@ -54,7 +57,7 @@ class SkillTree:
             report['text'] = (
                 f'O personagem aprendeu a skill "{new_skill.name}".'
             )
-            self.skill_list.append(new_skill)
+            self.__skill_list.append(new_skill)
 
         return report
 
@@ -147,7 +150,7 @@ class SkillTree:
         return sorted(
             [
                 skill for skill in skill_list
-                if skill not in self.skill_list
+                if skill.NAME not in self.skill_list
             ],
             key=attrgetter('RANK', 'NAME')
         )

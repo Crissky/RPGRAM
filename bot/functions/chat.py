@@ -65,9 +65,12 @@ CALLBACK_KEY_LIST = [
     'list_upgrade_skill',
     'check_use_skill',
     'check_learn_skill',
-    'check_upgrede_skill',
+    'check_upgrade_skill',
     'use_skill',
     'learn_skill',
+    'action_use_skill',
+    'action_learn_skill',
+    'action_upgrade_skill',
 ]
 VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)

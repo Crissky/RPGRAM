@@ -1,5 +1,5 @@
 '''
-Módulo responsável por gerenciar as requisiçães de visualização das 
+Módulo responsável por gerenciar as requisiçães de visualização das
 informações dos jogadores.
 '''
 
@@ -18,9 +18,13 @@ from telegram.ext import (
 from bot.constants.bag import NAV_BACK_BUTTON_TEXT
 from bot.constants.skill_tree import (
     ACCESS_DENIED,
+    ACTION_LEARN_SKILL_BUTTON_TEXT,
+    ACTION_UPGRADE_SKILL_BUTTON_TEXT,
+    ACTION_USE_SKILL_BUTTON_TEXT,
     COMMANDS,
     LIST_LEARN_SKILL_BUTTON_TEXT,
     LIST_UPGRADE_SKILL_BUTTON_TEXT,
+    PATTERN_ACTION_LEARN_SKILL,
     PATTERN_LIST_LEARN_SKILL,
     PATTERN_LIST_UPGRADE_SKILL,
     PATTERN_LIST_USE_SKILL,
@@ -39,7 +43,7 @@ from bot.constants.skill_tree import (
 )
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
-from bot.functions.char import get_char_attribute
+from bot.functions.char import get_char_attribute, save_char
 from bot.functions.chat import (
     call_telegram_message_function,
     callback_data_to_dict,
@@ -369,7 +373,6 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         skill_list = char.skill_tree.learnable_skill_list
-        skill_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
         skill_class: BaseSkill = skill_list[skill_index]
         markdown_skill_tree_sheet = (
             f'*Habilidade*: *{skill_class.NAME.upper()}*\n'
@@ -377,6 +380,70 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'*Descrição*: {skill_class.DESCRIPTION}\n\n'
             f'*Requerimentos*:\n{skill_class.REQUIREMENT}'
         )
+    except ValueError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível carregar a habilidades da '
+            f'classe {char.classe_name}.'
+        )
+
+    action_button = get_action_button(
+        user_id=user_id,
+        index=skill_index,
+        to_action_learn=True,
+    )
+    back_button = get_back_button(user_id=user_id, to_list_learn=True)
+    reply_markup = InlineKeyboardMarkup([
+        action_button,
+        back_button
+    ])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def action_learn_skill(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    await reply_typing(
+        function_caller='SKILL_TREE.ACTION_LEARN_SKILL()',
+        update=update,
+        context=context,
+    )
+    char_model = CharacterModel()
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    query = update.callback_query
+    char: BaseCharacter = char_model.get(user_id)
+    data = callback_data_to_dict(query.data)
+    skill_index = data['action_learn_skill']
+
+    try:
+        skill_list = char.skill_tree.learnable_skill_list
+        skill_class: BaseSkill = skill_list[skill_index]
+        skill_report = char.skill_tree.learn_skill(skill_class)
+        save_char(char)
+        markdown_skill_tree_sheet = skill_report['text']
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
@@ -471,6 +538,37 @@ def get_skill_buttons(
     return reshaped_items_buttons
 
 
+def get_action_button(
+    user_id: int,
+    index: int,
+    to_action_use: bool = False,
+    to_action_learn: bool = False,
+    to_action_upgrade: bool = False,
+) -> List[InlineKeyboardButton]:
+    to_check_list = [to_action_use, to_action_learn, to_action_upgrade]
+    if to_check_list.count(True) != 1:
+        raise ValueError('Somente um dos "to_check" deve ser True.')
+    elif to_action_use is True:
+        text = ACTION_USE_SKILL_BUTTON_TEXT
+        command = 'action_use_skill'
+    elif to_action_learn is True:
+        text = ACTION_LEARN_SKILL_BUTTON_TEXT
+        command = 'action_learn_skill'
+    elif to_action_upgrade is True:
+        text = ACTION_UPGRADE_SKILL_BUTTON_TEXT
+        command = 'action_upgrade_skill'
+
+    return [
+        InlineKeyboardButton(
+            text=text,
+            callback_data=callback_data_to_string({
+                command: index,
+                'user_id': user_id,
+            })
+        )
+    ]
+
+
 def get_back_button(
     user_id: int,
     to_main: bool = False,
@@ -513,8 +611,10 @@ SKILL_TREE_HANDLERS = [
         start,
         BASIC_COMMAND_FILTER
     ),
+    # MAIN ROUTE
     CallbackQueryHandler(start, pattern=PATTERN_MAIN),
     CallbackQueryHandler(start, pattern=PATTERN_SKILL_BACK_MAIN),
+    # LIST ROUTES
     CallbackQueryHandler(list_use_skill, pattern=PATTERN_LIST_USE_SKILL),
     CallbackQueryHandler(list_use_skill, pattern=PATTERN_SKILL_BACK_LIST_USE),
     CallbackQueryHandler(list_learn_skill, pattern=PATTERN_LIST_LEARN_SKILL),
@@ -531,4 +631,9 @@ SKILL_TREE_HANDLERS = [
         pattern=PATTERN_SKILL_BACK_LIST_UPGRADE
     ),
     CallbackQueryHandler(check_learn_skill, pattern=PATTERN_CHECK_LEARN_SKILL),
+    # ACTION ROUTES
+    CallbackQueryHandler(
+        action_learn_skill,
+        pattern=PATTERN_ACTION_LEARN_SKILL
+    ),
 ]
