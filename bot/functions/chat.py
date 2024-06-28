@@ -58,6 +58,19 @@ CALLBACK_KEY_LIST = [
     'race_name',
     'row',
     'col',
+    'skill',
+    'skill_back',
+    'list_use_skill',
+    'list_learn_skill',
+    'list_upgrade_skill',
+    'check_use_skill',
+    'check_learn_skill',
+    'check_upgrade_skill',
+    'use_skill',
+    'learn_skill',
+    'action_use_skill',
+    'action_learn_skill',
+    'action_upgrade_skill',
 ]
 VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)
@@ -574,6 +587,21 @@ async def answer(query: CallbackQuery, text: str, **kwargs):
     except BadRequest as e:
         print('ANSWER() BADREQUEST EXCEPT.')
         print(f'  text: {text}')
+
+
+async def reply_typing(
+    function_caller: str,
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
+    await call_telegram_message_function(
+        function_caller=function_caller,
+        function=update.effective_message.reply_chat_action,
+        context=context,
+        need_response=False,
+        skip_retry=True,
+        **REPLY_CHAT_ACTION_KWARGS
+    )
 
 
 # MESSAGE FUNCTIONS

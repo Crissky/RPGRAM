@@ -1,5 +1,5 @@
 from random import choice, randint, random, triangular
-from typing import List
+from typing import Any, List
 
 from repository.mongo import (
     CharacterModel,
@@ -368,6 +368,18 @@ def get_chars_level_from_group(chat_id: int) -> List[int]:
     level_char_list = char_model.get_all(query=query, fields=fields)
 
     return level_char_list
+
+
+def get_char_attribute(user_id: int, attribute: str) -> Any:
+    '''Retorna o atributo de um personagem.
+    '''
+
+    char_model = CharacterModel()
+    query = {'player_id': user_id}
+    fields = [attribute]
+    attribute_dict = char_model.get(query=query, fields=fields)
+
+    return attribute_dict[attribute]
 
 
 def choice_char(

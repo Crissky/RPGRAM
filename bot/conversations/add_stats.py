@@ -5,7 +5,7 @@ Módulo responsável por exibir e adicionar pontos de stats dos personagens.
 
 from typing import List
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -26,13 +26,13 @@ from bot.constants.filters import (
     PREFIX_COMMANDS,
 )
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     answer,
     call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button,
-    is_verbose
+    is_verbose,
+    reply_typing
 )
 from bot.decorators import (
     confusion,
@@ -62,13 +62,10 @@ from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
 @need_have_char
 @need_not_in_battle
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='ADD_STATS.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     char_model = CharacterModel()
     user_id = update.effective_user.id

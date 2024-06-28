@@ -97,12 +97,48 @@ def alert_if_not_chat_owner_to_callback_data_to_dict(
 
     def decorator(callback):
         async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-            print('@SKIP_IF_NOT_CHAT_OWNER')
+            print('@ALERT_IF_NOT_CHAT_OWNER_TO_CALLBACK_DATA_TO_DICT')
             user_id = update.effective_user.id
             query = update.callback_query
 
             if query:
                 data = callback_data_to_dict(query.data)
+                data_user_id = data['user_id']
+                if data_user_id != user_id and data_user_id is not None:
+                    if isinstance(alert_text, str):
+                        await answer(
+                            query=query,
+                            text=alert_text,
+                            show_alert=True
+                        )
+                    return retry_state
+
+            return await callback(update, context)
+
+        return wrapper
+    return decorator
+
+
+def alert_if_not_chat_owner_to_anyway(
+    retry_state=ConversationHandler.END,
+    alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
+):
+    '''Não executa a ação quando o botão é clicado por um usuário que não 
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    botão.'''
+
+    def decorator(callback):
+        async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            print('@ALERT_IF_NOT_CHAT_OWNER_TO_ANYWAY')
+            user_id = update.effective_user.id
+            query = update.callback_query
+
+            if query:
+                try:
+                    data = callback_data_to_dict(query.data)
+                except TypeError as e:
+                    print('@ALERT_IF_NOT_CHAT_OWNER_TO_ANYWAY', e)
+                    data = eval(query.data)
                 data_user_id = data['user_id']
                 if data_user_id != user_id and data_user_id is not None:
                     if isinstance(alert_text, str):

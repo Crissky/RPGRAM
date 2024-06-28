@@ -5,7 +5,7 @@ informações dos jogadores.
 
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -22,13 +22,13 @@ from bot.constants.equips import (
 )
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     answer,
     call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button,
-    is_verbose
+    is_verbose,
+    reply_typing
 )
 from bot.decorators import (
     alert_if_not_chat_owner,
@@ -55,13 +55,10 @@ from rpgram.characters import BaseCharacter
 @confusion()
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='EQUIPS.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     bag_model = BagModel()
     char_model = CharacterModel()

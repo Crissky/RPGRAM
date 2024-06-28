@@ -1,8 +1,9 @@
-from typing import TYPE_CHECKING, Callable, List
+from operator import attrgetter
+from typing import TYPE_CHECKING, Callable, List, Union
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.skills.factory import skill_factory
+from rpgram.skills.factory import skill_factory, skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
@@ -19,7 +20,7 @@ class SkillTree:
     ):
         classe_name = character.classe_name
         for index, skill in enumerate(skill_list):
-            if isinstance(skill, Callable):
+            if isinstance(skill, dict):
                 skill_list[index] = skill_factory(
                     classe_name=classe_name,
                     skill_class_name=skill['class_name'],
@@ -28,13 +29,73 @@ class SkillTree:
                 )
 
         self.character = character
-        self.skill_list: List[BaseSkill] = skill_list
+        self.__skill_list: List[BaseSkill] = skill_list
         self.current_action_points = current_action_points
         self.max_action_points = max_action_points
 
     def get_skill(self, skill_name: str) -> BaseSkill:
         index = self.skill_list.index(skill_name)
         return self.skill_list[index]
+
+    def learn_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
+        if issubclass(skill_class_name, BaseSkill):
+            skill_class_name = skill_class_name.__name__
+
+        report = {'text': '', 'skill': None}
+        if skill_class_name in self.skill_list:
+            skill = self.get_skill(skill_class_name)
+            report['text'] = (
+                f'O personagem já sabe usar a habilidade "{skill.name}".'
+            )
+        else:
+            new_skill = skill_factory(
+                classe_name=self.character.classe_name,
+                skill_class_name=skill_class_name,
+                char=self.character,
+            )
+            report['skill'] = new_skill
+            report['text'] = (
+                f'O personagem aprendeu a habilidade "{new_skill.name}".'
+            )
+            self.__skill_list.append(new_skill)
+
+        return report
+
+    def upgrade_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
+        report = {'text': '', 'skill': None}
+        if skill_class_name not in self.skill_list:
+            report['text'] = (
+                f'O personagem não sabe usar a habilidade '
+                f'"{skill_class_name}".'
+            )
+        elif not self.have_skill_points:
+            report['text'] = (
+                f'O personagem não tem {self.skill_points_name} suficientes.'
+            )
+        else:
+            skill = self.get_skill(skill_class_name)
+            old_level = skill.level
+            requirements_report = skill.requirements.check_requirements(
+                self.character,
+                level_rank=old_level + 1,
+                to_raise_error=False
+            )
+            if requirements_report['pass']:
+                skill.add_level()
+                new_level = skill.level
+                report['skill'] = skill
+                report['text'] = (
+                    f'A habilidade "{skill.name}" foi aprimorada do '
+                    f'nível {old_level} para {new_level}.'
+                )
+            else:
+                report['text'] = (
+                    f'O personagem não atende aos requisitos para aprimorar a '
+                    f'habilidade "{skill.name}"\n\n'
+                    f'{requirements_report["text"]}'
+                )
+
+        return report
 
     def add_action_points(self, value: int = 1) -> dict:
         value = int(abs(value))
@@ -107,10 +168,31 @@ class SkillTree:
         return self.current_skill_points > 0
 
     @property
+    def skill_points_name(self) -> str:
+        return f'{EmojiEnum.SKILL_POINTS.value}Pontos de Habilidade'
+
+    @property
     def skill_points_text(self) -> str:
         return (
-            f'{EmojiEnum.SKILL_POINTS.value}Pontos de Habilidade: '
+            f'{self.skill_points_name}: '
             f'{self.current_skill_points}/{self.max_skill_points}'
+        )
+
+    @property
+    def skill_list(self) -> List[BaseSkill]:
+        return sorted(self.__skill_list, key=attrgetter('rank', 'name'))
+
+    @property
+    def learnable_skill_list(self) -> List[BaseSkill]:
+        classe_name = self.character.classe_name
+        skill_list = skill_list_factory(classe_name)
+
+        return sorted(
+            [
+                skill for skill in skill_list
+                if skill.NAME not in self.skill_list
+            ],
+            key=attrgetter('RANK', 'NAME')
         )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:

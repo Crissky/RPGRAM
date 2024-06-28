@@ -5,6 +5,7 @@ from rpgram.characters.char_base import BaseCharacter
 from rpgram.conditions.heal import HealingCondition
 from rpgram.consumables.heal import HealingConsumable
 from rpgram.dice import Dice
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
 from rpgram.enums.turn import TurnEnum
@@ -69,7 +70,7 @@ EQUIPS = Equips(
     amulet=BRIGHT_AMULET,
 )
 WARRIOR_CLASSE = Classe(
-    name='GUERREIRO',
+    name=ClasseEnum.WARRIOR.value,
     description='GUERREIRO TESTE',
     bonus_strength=15,
     bonus_dexterity=10,

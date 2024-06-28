@@ -13,7 +13,10 @@ class Requirement:
     def __init__(self, **kwargs) -> None:
         self.base_stats = {BaseStatsEnum.LEVEL.value.lower(): 1}
         self.combat_stats = {}
+        self.classe_name: str = kwargs.pop('classe_name', None)
+        self.skill_list = kwargs.pop('skill_list', [])
         kwargs = {k.lower(): v for k, v in kwargs.items()}
+
         for attr in BASE_STATS_ATTRIBUTE_LIST:
             attr = attr.lower()
             if attr in kwargs:
@@ -29,27 +32,62 @@ class Requirement:
                 f'Argumentos inválidos: {", ".join(kwargs.keys())}'
             )
 
-    def check_requirements(self, character: 'BaseCharacter'):
+    def check_requirements(
+        self,
+        character: 'BaseCharacter',
+        level_rank: int = 1,
+        to_raise_error: bool = True,
+    ) -> dict:
+        '''Analisa se o personagem possui os requisitos.
+        '''
+
+        if level_rank < 1:
+            raise ValueError(
+                'O level_rank deve ser um valor inteiro positivo.'
+            )
+
         errors = []
+        level_rank = int(level_rank - 1)
         for attribute, value in self.base_stats.items():
+            value += (level_rank * 10)
             if value > character.base_stats[attribute]:
                 errors.append(
                     f'    {attribute}: '
                     f'"{value}" ({character.base_stats[attribute]}).'
                 )
         for attribute, value in self.combat_stats.items():
+            value += (level_rank * 20)
             if value > character.combat_stats[attribute]:
                 errors.append(
                     f'    {attribute}: '
                     f'"{value}" ({character.combat_stats[attribute]}).'
                 )
 
-        if errors:
-            errors = "\n".join(errors)
+        if self.classe_name and self.classe_name != character.classe_name:
+            errors.append(
+                f'    classe: '
+                f'"{self.classe_name.title()}" '
+                f'({character.classe_name.title()}).'
+            )
+
+        for skill in self.skill_list:
+            if skill not in character.skill_tree.skill_list:
+                errors.append(
+                    f'    skill: "{skill}".'
+                )
+
+        if errors and to_raise_error is True:
+            errors = '\n'.join(errors)
             raise RequirementError(
                 f'O personagem não possui os requisitos:\n'
                 f'{errors}'
             )
+
+        return {
+            'text': '\n'.join(errors),
+            'errors': errors,
+            'pass': not bool(errors)
+        }
 
     @property
     def level(self) -> int:
@@ -57,7 +95,12 @@ class Requirement:
 
     @property
     def iter(self) -> Iterator[Tuple[str, int]]:
-        return chain(self.base_stats.items(), self.combat_stats.items())
+        return chain(
+            self.base_stats.items(),
+            self.combat_stats.items(),
+            {'classe': self.classe_name}.items() if self.classe_name else [],
+            {'skills': self.skill_list}.items() if self.skill_list else [],
+        )
 
     @property
     def text(self) -> str:
@@ -74,6 +117,9 @@ class Requirement:
             for key, value in self.iter
         }
 
+    def __str__(self) -> str:
+        return self.text
+
 
 if __name__ == '__main__':
     req = Requirement(
@@ -83,6 +129,7 @@ if __name__ == '__main__':
         LEVEL=10,
         EVASION=300,
         HP=1000,
+        classe_name='Warrior',
     )
     print(req.to_dict())
     print(req.level)

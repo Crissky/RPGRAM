@@ -21,9 +21,8 @@ from bot.constants.view_char import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.char import save_char
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
-    call_telegram_message_function,
-    reply_text
+    reply_text,
+    reply_typing
 )
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
@@ -37,13 +36,10 @@ from rpgram.characters import BaseCharacter
 @alert_if_not_chat_owner(alert_text=ACCESS_DENIED)
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='RESET_CHAR.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     char_model = CharacterModel()
     user_id = update.effective_user.id

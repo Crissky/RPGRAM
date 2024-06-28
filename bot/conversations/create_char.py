@@ -34,9 +34,9 @@ from bot.constants.filters import (
 from bot.constants.sign_up_player import COMMANDS as COMMANDS_SIGN_UP_PLAYER
 from bot.decorators import print_basic_infos
 from bot.functions.chat import (
-    REPLY_CHAT_ACTION_KWARGS,
     call_telegram_message_function,
-    edit_message_text
+    edit_message_text,
+    reply_typing
 )
 from bot.functions.general import get_attribute_group_or_player
 
@@ -68,13 +68,10 @@ from rpgram.characters import BaseCharacter, PlayerCharacter
 
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await call_telegram_message_function(
+    await reply_typing(
         function_caller='CREATE_CHAR.START()',
-        function=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
-        need_response=False,
-        skip_retry=True,
-        **REPLY_CHAT_ACTION_KWARGS
     )
     player_model = PlayerModel()
     char_model = CharacterModel()

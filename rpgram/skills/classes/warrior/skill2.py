@@ -2,8 +2,10 @@ from typing import TYPE_CHECKING
 from rpgram.constants.text import (
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
+from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
@@ -31,6 +33,10 @@ class QuickAttackSkill(BaseSkill):
         f'dificultando as chances de esquiva do oponente e '
         f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.WARRIOR.value,
+    })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
@@ -38,12 +44,12 @@ class QuickAttackSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.15001
         }
-        requirements = {}
         damage_types = []
 
         super().__init__(
             name=QuickAttackSkill.NAME,
             description=QuickAttackSkill.DESCRIPTION,
+            rank=QuickAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -53,10 +59,10 @@ class QuickAttackSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=True,
-            requirements=requirements,
+            requirements=QuickAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
-    
+
     @property
     def hit_multiplier(self) -> float:
         return 2.0
@@ -68,6 +74,11 @@ class LethalAttackSkill(BaseSkill):
         f'Desfere um ataque preciso focando pontos vitais do inimigo, '
         f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
     )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.WARRIOR.value,
+        'skill_list': [QuickAttackSkill.__name__]
+    })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 3
@@ -75,12 +86,12 @@ class LethalAttackSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 2.50
         }
-        requirements = {}
         damage_types = []
 
         super().__init__(
             name=LethalAttackSkill.NAME,
             description=LethalAttackSkill.DESCRIPTION,
+            rank=LethalAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -90,7 +101,7 @@ class LethalAttackSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=True,
-            requirements=requirements,
+            requirements=LethalAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
