@@ -54,9 +54,9 @@ class QuickAttackSkill(BaseSkill):
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
-            target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
-            skill_defense=SkillDefenseEnum.NA,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
             requirements=QuickAttackSkill.REQUIREMENTS,
@@ -77,7 +77,7 @@ class LethalAttackSkill(BaseSkill):
     RANK = 2
     REQUIREMENTS = Requirement(**{
         'classe_name': ClasseEnum.WARRIOR.value,
-        'skill_list': [QuickAttackSkill.__name__]
+        'skill_list': [QuickAttackSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -96,9 +96,9 @@ class LethalAttackSkill(BaseSkill):
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
-            target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
-            skill_defense=SkillDefenseEnum.NA,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
             requirements=LethalAttackSkill.REQUIREMENTS,

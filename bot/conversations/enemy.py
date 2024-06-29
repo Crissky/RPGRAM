@@ -1115,6 +1115,23 @@ def check_attacker_id_in_ambush_dict(
     return in_ambush
 
 
+def get_all_enemy_id_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE
+) -> List[str]:
+    ambushes = context.chat_data.get('ambushes', {})
+    return list(ambushes.keys())
+
+
+def get_all_enemy_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE
+) -> List[NPCharacter]:
+    ambushes = context.chat_data.get('ambushes', {})
+    return [
+        value['enemy']
+        for value in ambushes.values()
+    ]
+
+
 async def sub_action_point(char: BaseCharacter, query: CallbackQuery):
     char.sub_action_points(1)
     save_char(char=char)
