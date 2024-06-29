@@ -111,6 +111,7 @@ if __name__ == '__main__':
     skill = QuickAttackSkill(BASE_CHARACTER)
     print(skill)
     print(BASE_CHARACTER.cs.precision_attack)
+    BASE_CHARACTER.skill_tree.learn_skill(QuickAttackSkill)
     skill = LethalAttackSkill(BASE_CHARACTER)
     print(skill)
     print(BASE_CHARACTER.cs.precision_attack)
