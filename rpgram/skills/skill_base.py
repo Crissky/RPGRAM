@@ -343,7 +343,7 @@ class BaseSkill:
         if self.target_type == TargetEnum.SINGLE:
             target_type = 'Único'
         if self.target_type == TargetEnum.TEAM:
-            target_type = 'Time'
+            target_type = 'Equipe'
         if self.target_type == TargetEnum.ALL:
             target_type = 'Todes'
 
