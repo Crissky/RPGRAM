@@ -221,8 +221,8 @@ class BaseSkill:
             attribute_emoji = EmojiEnum[attribute.name].value
 
             yield (
-                f'    {attribute_value}'
-                f'({attribute_percent}%{attribute_emoji})'
+                f'    {attribute_emoji}{attribute_value}'
+                f'({attribute_percent}%)'
             )
 
     def special_damage_texts(self) -> Iterable[str]:
@@ -337,7 +337,7 @@ class BaseSkill:
         return special_damage_iter
 
     @property
-    def target_text(self) -> str:
+    def target_type_text(self) -> str:
         if self.target_type == TargetEnum.SELF:
             target_type = 'Si Mesmo'
         if self.target_type == TargetEnum.SINGLE:
@@ -350,11 +350,11 @@ class BaseSkill:
         return f'{EmojiEnum.TARGET_TYPE.value}*Tipo de Alvo*: {target_type}\n'
 
     @property
-    def skill_text(self) -> str:
+    def skill_type_text(self) -> str:
         if self.skill_type == SkillTypeEnum.ATTACK:
-            skill_type = 'Ataque'
+            skill_type = 'Ofensivo'
         if self.skill_type == SkillTypeEnum.DEFENSE:
-            skill_type = 'Defesa'
+            skill_type = 'Defensivo'
         if self.skill_type == SkillTypeEnum.HEALING:
             skill_type = 'Cura'
 
@@ -364,7 +364,7 @@ class BaseSkill:
         )
 
     @property
-    def defense_text(self) -> str:
+    def skill_defense_text(self) -> str:
         if self.skill_defense == SkillDefenseEnum.PHYSICAL:
             emoji_text = EmojiEnum.PHYSICAL_ATTACK.value
             skill_defense = 'Físico'
@@ -391,9 +391,9 @@ class BaseSkill:
             f'{self.level_text}'
             f'{self.power_text}'
             f'{self.hit_text}'
-            f'{self.target_text}'
-            f'{self.skill_text}'
-            f'{self.defense_text}'
+            f'{self.target_type_text}'
+            f'{self.skill_type_text}'
+            f'{self.skill_defense_text}'
             f'{self.power_detail_text}'
         )
 
