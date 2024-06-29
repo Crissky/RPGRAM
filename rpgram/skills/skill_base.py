@@ -255,7 +255,8 @@ class BaseSkill:
         if isinstance(self.level_multiplier_dict, dict):
             return self.level_multiplier_dict[self.level]
         else:
-            return 1 + (self.level / 20)
+            level = self.level if self.level == 0 else self.level - 1
+            return 1 + (level / 20)
 
     @property
     def hit_multiplier(self) -> float:
