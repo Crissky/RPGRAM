@@ -28,6 +28,7 @@ class SpecialDamage:
         damage_type: Union[str, DamageEnum],
         equipment_level: int,
         status_multiplier: int = 1,
+        is_skill: bool = False,
     ):
         if isinstance(damage_type, str):
             damage_type = DamageEnum[damage_type]
@@ -42,10 +43,15 @@ class SpecialDamage:
                 f'"{status_multiplier}".'
             )
 
-        self.__base_damage = int(base_damage)
+        self.__base_damage = (
+            int(base_damage//10)
+            if is_skill
+            else int(base_damage)
+        )
         self.__damage_type = damage_type
         self.__equipment_level = int(equipment_level)
         self.__status_multiplier = int(status_multiplier)
+        self.__is_skill = bool(is_skill)
         self.__damage = None
 
     def roll_damage(self, reroll: bool = False) -> int:
@@ -67,9 +73,15 @@ class SpecialDamage:
         return self.__equipment_level
 
     @property
+    def is_skill(self) -> bool:
+        return self.__is_skill
+
+    @property
     def condition_level(self) -> int:
+        # Mesmo valor de condition_multiplier em BaseSkill
+        condition_reducer = 20
         return max(
-            int(self.__equipment_level / 20),
+            int(self.__equipment_level / condition_reducer),
             1
         )
 
