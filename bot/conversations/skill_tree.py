@@ -319,7 +319,12 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             for i, skill_class in enumerate(skill_list)
         ]
-        markdown_skill_tree_sheet = '\n'.join(skill_name_list)
+        if skill_name_list:
+            markdown_skill_tree_sheet = '\n'.join(skill_name_list)
+        else:
+            markdown_skill_tree_sheet = (
+                'Você já sabe tudo o que tinha para ser aprendido!!!'
+            )
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
@@ -666,7 +671,7 @@ async def action_learn_skill(
     context: ContextTypes.DEFAULT_TYPE
 ):
     await reply_typing(
-        function_caller='SKILL_TREE.ACTION_UPGRADE_SKILL()',
+        function_caller='SKILL_TREE.ACTION_LEARN_SKILL()',
         update=update,
         context=context,
     )
@@ -678,7 +683,7 @@ async def action_learn_skill(
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
-    skill_index = data['action_upgrade_skill']
+    skill_index = data['action_learn_skill']
 
     try:
         skill_list = char.skill_tree.learnable_skill_list
