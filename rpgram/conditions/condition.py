@@ -143,6 +143,13 @@ class Condition(StatsBooster):
 
     def __hash__(self) -> int:
         return hash(self.name)
+    
+    def to_dict(self) -> dict:
+        return {
+            'name': self.name,
+            'turn': self.turn,
+            'level': self.level,
+        }
 
     # Getters
     name = property(lambda self: self.__name)

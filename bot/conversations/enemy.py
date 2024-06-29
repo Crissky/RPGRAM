@@ -843,7 +843,7 @@ async def enemy_attack(
             report_text += f'{target_report_xp["text"]}\n'
         report_text += f'{report_xp["text"]}\n\n'
     else:
-        save_char(char=defender_char, status=True)
+        save_char(char=defender_char)
 
     report_text = create_text_in_box(
         text=report_text,
@@ -950,7 +950,7 @@ async def player_attack(
             markdown=True
         )
         report_text += counter_report['text']
-        save_char(char=attacker_char, status=True)
+        save_char(char=attacker_char)
     report_text = resize_text(report_text)
     report_text = create_text_in_box(
         text=report_text,

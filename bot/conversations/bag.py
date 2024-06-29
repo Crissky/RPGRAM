@@ -754,7 +754,7 @@ async def use_item_consumable(
             all_report_text.append(f'{i+1:02}: {report["text"]}')
             bag_model.sub(item, user_id)
         text = f'Você usou {use_quantity} "{name}".\n'
-        save_char(char=character, status=True)
+        save_char(char=character)
 
         await answer(query=query, text=text)
     except Exception as error:

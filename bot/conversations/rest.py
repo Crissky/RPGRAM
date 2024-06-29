@@ -207,7 +207,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     status_report = player_character.status.remove_random_debuff_conditions(
         condition_quantity
     )
-    save_char(char=player_character, status=True)
+    save_char(char=player_character)
     report_text = report['text']
     hp_reporting = (
         f'{revive_reporting}'

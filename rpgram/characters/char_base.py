@@ -6,6 +6,7 @@ from typing import List, TypeVar, Union
 from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
+from rpgram.conditions.factory import condition_factory
 from rpgram.dice import Dice
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
@@ -64,8 +65,19 @@ class BaseCharacter:
             _id = ObjectId(_id)
         if equips is None:
             equips = Equips(player_id=player_id, _id=ObjectId())
+        
         if status is None:
-            status = Status(player_id=player_id, _id=ObjectId())
+            status = Status()
+        elif isinstance(status, dict):
+            condition_args = status.pop('condition_args', [])
+            condition_list = []
+            for condition_arg in condition_args:
+                if condition_arg.get('need_character'):
+                    condition_arg['character'] = self
+                condition = condition_factory(**condition_arg)
+                condition_list.append(condition)
+            status['conditions'] = condition_list
+            status = Status(**status)
 
         self.__name = char_name
         self.__id = _id
@@ -698,7 +710,7 @@ class BaseCharacter:
             race_name=self.race.name,
             classe_name=self.classe.name,
             equips_id=self.equips._id,
-            status_id=self.status._id,
+            status=self.status.to_dict(),
             skill_tree=self.skill_tree.to_dict(),
             created_at=self.created_at,
             updated_at=self.updated_at,

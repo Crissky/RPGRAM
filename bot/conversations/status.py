@@ -12,22 +12,22 @@ from constant.text import (
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
-from repository.mongo import CharacterModel, StatusModel
+from repository.mongo import CharacterModel
 from rpgram.characters import BaseCharacter
 
 
 @skip_if_spawn_timeout
 async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
-    status_model = StatusModel()
+    char_model = CharacterModel()
     job = context.job
     chat_id = job.chat_id
     now = get_brazil_time_now()
 
     print(f'JOB_ACTIVATE_CONDITIONS() - {now}')
     player_id_list = get_players_id_by_chat_id(chat_id=chat_id)
-    player_id_list = status_model.get_all(
+    player_id_list = char_model.get_all(
         query={
-            'condition_args': {
+            'status.condition_args': {
                 '$exists': True, '$not': {'$size': 0}
             },
             'player_id': {'$in': player_id_list}

@@ -26,14 +26,8 @@ class Status:
 
     def __init__(
         self,
-        player_id: int,
         conditions: List[Condition] = [],
-        _id: Union[str, ObjectId] = None,
-        created_at: datetime = None,
-        updated_at: datetime = None,
     ) -> None:
-        if isinstance(_id, str):
-            _id = ObjectId(_id)
         if isinstance(conditions, list):
             for index, condition in enumerate(conditions):
                 if not isinstance(condition, Condition):
@@ -49,11 +43,7 @@ class Status:
 
         self.__observers = []
 
-        self.__player_id = player_id
         self.__conditions = conditions
-        self.__id = _id
-        self.__created_at = created_at
-        self.__updated_at = updated_at
 
         self.__update_stats()
 
@@ -436,18 +426,10 @@ class Status:
 
     def to_dict(self):
         return dict(
-            player_id=self.__player_id,
             condition_args=[
-                dict(
-                    name=condition.name,
-                    turn=condition.turn,
-                    level=condition.level,
-                )
+                condition.to_dict()
                 for condition in self.__conditions
             ],
-            _id=self.__id,
-            created_at=self.__created_at,
-            updated_at=self.__updated_at,
         )
 
     # Getters
@@ -479,7 +461,6 @@ class Status:
         return f'{current_bp}/{max_bp}'
 
     conditions = property(lambda self: self.__conditions)
-    _id = property(lambda self: self.__id)
     bonus_strength = property(lambda self: self.__bonus_strength)
     bonus_dexterity = property(lambda self: self.__bonus_dexterity)
     bonus_constitution = property(lambda self: self.__bonus_constitution)
@@ -509,7 +490,6 @@ class Status:
 
 if __name__ == '__main__':
     status = Status(
-        player_id='1',
         conditions=[],
     )
     print(status.get_sheet())
@@ -521,7 +501,6 @@ if __name__ == '__main__':
     print(status.get_all_sheets(verbose=True))
     print('#'*30)
     status = Status(
-        player_id='1',
         conditions=[
             Condition(
                 name='Poison',
