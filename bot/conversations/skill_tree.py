@@ -846,7 +846,7 @@ def get_use_action_buttons(
     if target_type == TargetEnum.SELF:
         return [[
             InlineKeyboardButton(
-                text=ACTION_USE_SKILL_BUTTON_TEXT + f' {TargetEnum.SELF}',
+                text=ACTION_USE_SKILL_BUTTON_TEXT + f' em si',
                 callback_data=callback_data_to_string({
                     command: index,
                     'user_id': user_id,
@@ -900,7 +900,7 @@ def get_use_action_buttons(
         return [[
             InlineKeyboardButton(
                 text=(
-                    ACTION_USE_SKILL_BUTTON_TEXT + ' ' +
+                    ACTION_USE_SKILL_BUTTON_TEXT + ' no ' +
                     action_use_target.replace('_', ' ').title()
                 ),
                 callback_data=callback_data_to_string({
@@ -914,7 +914,7 @@ def get_use_action_buttons(
     if target_type == TargetEnum.ALL:
         return [[
             InlineKeyboardButton(
-                text=ACTION_USE_SKILL_BUTTON_TEXT + 'em Todes',
+                text=ACTION_USE_SKILL_BUTTON_TEXT + ' em TODES',
                 callback_data=callback_data_to_string({
                     command: index,
                     'user_id': user_id,
