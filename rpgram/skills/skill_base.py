@@ -218,13 +218,13 @@ class BaseSkill:
             attribute_emoji = EmojiEnum[attribute.name].value
 
             yield (
-                f'{attribute_value}'
+                f'  {attribute_value}'
                 f'({attribute_percent}%{attribute_emoji})'
             )
 
     def special_damage_texts(self) -> Iterable[str]:
         for special_damage in self.special_damage_iter:
-            yield special_damage.help_emoji_text
+            yield f'  {special_damage.help_emoji_text}'
 
     def add_level(self, value: int = 1) -> None:
         value = int(abs(value))
@@ -291,12 +291,12 @@ class BaseSkill:
     def power_detail_text(self) -> str:
         if attributes_power_texts := self.attributes_power_text:
             attributes_power_texts = (
-                f'*Dano dos Atributos*: {attributes_power_texts}\n'
+                f'*Dano dos Atributos*:\n{attributes_power_texts}\n'
             )
 
         if (special_damage_texts := self.special_damage_text):
             special_damage_texts = (
-                f'*Danos Especiais*: {special_damage_texts}\n'
+                f'*Danos Especiais*:\n{special_damage_texts}\n'
             )
 
         return (
@@ -310,11 +310,11 @@ class BaseSkill:
 
     @property
     def special_damage_text(self):
-        return ', '.join(self.special_damage_texts())
+        return '\n'.join(self.special_damage_texts())
 
     @property
     def attributes_power_text(self):
-        return ', '.join(self.attributes_power_texts())
+        return '\n'.join(self.attributes_power_texts())
 
     @property
     def special_damage_iter(self) -> Iterable[SpecialDamage]:
