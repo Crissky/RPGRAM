@@ -77,7 +77,7 @@ class LethalAttackSkill(BaseSkill):
     RANK = 2
     REQUIREMENTS = Requirement(**{
         'classe_name': ClasseEnum.WARRIOR.value,
-        'skill_list': [QuickAttackSkill.__name__]
+        'skill_list': [QuickAttackSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
