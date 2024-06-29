@@ -630,7 +630,7 @@ async def player_attack_enemy(
     print('PLAYER_ATTACK_ENEMY()')
     await reply_typing(
         function_caller='ENEMY.PLAYER_ATTACK_ENEMY()',
-        update=update.effective_message.reply_chat_action,
+        update=update,
         context=context,
     )
     char_model = CharacterModel()
