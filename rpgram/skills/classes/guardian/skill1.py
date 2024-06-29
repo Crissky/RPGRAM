@@ -34,7 +34,8 @@ class RobustBlockSkill(BaseSkill):
     NAME = 'Bloqueio Robusto'
     DESCRIPTION = (
         f'Assume uma postura defensiva aumentando a '
-        f'{PHYSICAL_DEFENSE_EMOJI_TEXT} com base na {CONSTITUTION_EMOJI_TEXT}.'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
+        f'*{CONSTITUTION_EMOJI_TEXT}*.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
