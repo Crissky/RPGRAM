@@ -32,7 +32,7 @@ class PowerfulAttackSkill(BaseSkill):
     NAME = 'Ataque Poderoso'
     DESCRIPTION = (
         f'Tenciona os músculos ao máximo e desfere um golpe devastador, '
-        f'causando dano com base em {PHYSICAL_ATTACK_EMOJI_TEXT}.'
+        f'causando dano com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{

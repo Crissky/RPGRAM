@@ -397,7 +397,7 @@ def confusion(retry_state=ConversationHandler.END):
                     )
 
                     text += attack_report['text']
-                    save_char(char=target_char, status=True)
+                    save_char(char=target_char)
                 text = escape_basic_markdown_v2(text)
                 text = create_text_in_box(
                     text=text,

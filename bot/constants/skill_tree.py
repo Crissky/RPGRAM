@@ -1,4 +1,5 @@
 from bot.functions.chat import CALLBACK_KEY_LIST
+from rpgram.constants.text import MAGICAL_DEFENSE_EMOJI_TEXT, PHYSICAL_DEFENSE_EMOJI_TEXT
 from rpgram.enums.emojis import EmojiEnum
 
 
@@ -17,6 +18,37 @@ SECTION_TEXT_USE_SKILL_TREE = 'USAR HABILIDADE'
 SECTION_TEXT_LEARN_SKILL_TREE = 'APRENDER HABILIDADE'
 SECTION_TEXT_UPGRADE_SKILL_TREE = 'APRIMORAR HABILIDADE'
 REFRESH_SKILL_TREE_PATTERN = 'refresh_view_skill_tree'
+INTRO_SKILL_TEXT = (
+    'Em sua jornada épica, você terá acesso a um arsenal de '
+    'habilidades poderosas que moldarão seu caminho para a vitória. '
+    'Cada habilidade possui características únicas que a tornam '
+    'ideal para diferentes situações e estratégias. '
+    'Explore as sinergias entre elas para criar combos devastadores que '
+    'surpreendam seus oponentes. '
+    'Utilize habilidades de ataque para dizimar seus inimigos, '
+    'defenda-se com maestria para minimizar o dano recebido e cure seus '
+    'aliados para manter a equipe em campo.\n\n'
+
+    'Lembre-se: cada classe possui um conjunto único de habilidades, '
+    'explore-as com sabedoria para descobrir o que melhor se encaixa em você. '
+    'Domine as habilidades e torne-se um mestre em seu campo de batalha!\n\n'
+
+    f'{EmojiEnum.TARGET_TYPE.value}*TIPO DE ALVO*:\n'
+    '*Si Mesmo*: Direciona o efeito da habilidade para o personagem '
+    'que a utiliza.\n'
+    '*Único*: Seleciona um único alvo para receber o efeito da habilidade.\n'
+    '*Equipe*: Aplica o efeito da habilidade a todos os '
+    'membros da uma equipe, aliada ou inimiga.\n'
+    '*Todes*: Alcança todos os personagens em campo, '
+    'tanto aliados quanto inimigos.\n\n'
+
+    f'{EmojiEnum.SKILL_DEFENSE.value}*TIPO DE DANO*:\n'
+    '*Físico*: Dano físico que é diminuido de acordo com a '
+    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n'
+    '*Mágico*: Dano Mágico que é diminuido de acordo com a '
+    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n'
+    '*Verdadeiro*: Dano que não é afetado por nenhuma das defesas.\n'
+)
 
 
 # PATTERNS

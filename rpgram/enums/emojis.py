@@ -112,6 +112,14 @@ class EmojiEnum(Enum):
     USE_SKILL = '🤺'
     LEARN_SKILL = '👨‍🎓'
     UPGRADE_SKILL = '⏫'
+    RANK = '👑'
+    HIT2 = '⭕'
+    TARGET_TYPE = '🗳️'
+    SKILL_TYPE = '📦'
+    SKILL_DEFENSE = '⃣'
+    SKILL_DEFENSE_TRUE = '💯'
+    SKILL_DEFENSE_NA = '⚫'
+    SPECIAL_DAMAGE = '🕋'
 
 
 class FaceEmojiEnum(Enum):

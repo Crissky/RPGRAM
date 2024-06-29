@@ -221,13 +221,13 @@ class BaseSkill:
             attribute_emoji = EmojiEnum[attribute.name].value
 
             yield (
-                f'  {attribute_value}'
-                f'({attribute_percent}%{attribute_emoji})'
+                f'    {attribute_emoji}{attribute_value}'
+                f'({attribute_percent}%)'
             )
 
     def special_damage_texts(self) -> Iterable[str]:
         for special_damage in self.special_damage_iter:
-            yield f'  {special_damage.help_emoji_text}'
+            yield f'    {special_damage.help_emoji_text}'
 
     def add_level(self, value: int = 1) -> None:
         value = int(abs(value))
@@ -238,13 +238,13 @@ class BaseSkill:
     def rank_text(self) -> str:
         if self.rank == 0:
             return ''
-        return f'*Rank*: {self.rank}\n'
+        return f'{EmojiEnum.RANK.value}*Rank*: {self.rank}\n'
 
     @property
     def level_text(self) -> str:
         if self.level == 0:
             return ''
-        return f'*Nível*: {self.level}\n'
+        return f'{EmojiEnum.LEVEL.value}*Nível*: {self.level}\n'
 
     @property
     def level_multiplier_dict(self) -> dict:
@@ -275,7 +275,10 @@ class BaseSkill:
         )):
             return ''
         hit_percent = self.hit_multiplier*100
-        return f'*Acerto*: {self.hit}({hit_percent}%{EmojiEnum.HIT.value})\n'
+        return (
+            f'{EmojiEnum.HIT2.value}*Acerto*: '
+            f'{self.hit}({hit_percent}%{EmojiEnum.HIT.value})\n'
+        )
 
     @property
     def power(self) -> int:
@@ -289,18 +292,20 @@ class BaseSkill:
     def power_text(self) -> str:
         if self.power == 0:
             return ''
-        return f'*Poder*: {self.power}\n'
+        return f'{EmojiEnum.EQUIPMENT_POWER.value}*Poder*: {self.power}\n'
 
     @property
     def power_detail_text(self) -> str:
         if attributes_power_texts := self.attributes_power_text:
             attributes_power_texts = (
-                f'*Dano dos Atributos*:\n{attributes_power_texts}\n'
+                f'{EmojiEnum.BASE_ATTRIBUTES.value}*Dano dos Atributos*:'
+                f'\n{attributes_power_texts}\n'
             )
 
         if (special_damage_texts := self.special_damage_text):
             special_damage_texts = (
-                f'*Danos Especiais*:\n{special_damage_texts}\n'
+                f'{EmojiEnum.SPECIAL_DAMAGE.value}*Danos Especiais*:'
+                f'\n{special_damage_texts}\n'
             )
 
         return (
@@ -332,41 +337,51 @@ class BaseSkill:
         return special_damage_iter
 
     @property
-    def target_text(self) -> str:
+    def target_type_text(self) -> str:
         if self.target_type == TargetEnum.SELF:
             target_type = 'Si Mesmo'
         if self.target_type == TargetEnum.SINGLE:
             target_type = 'Único'
         if self.target_type == TargetEnum.TEAM:
-            target_type = 'Time'
+            target_type = 'Equipe'
         if self.target_type == TargetEnum.ALL:
             target_type = 'Todes'
 
-        return f'*Tipo de Alvo*: {target_type}\n'
+        return f'{EmojiEnum.TARGET_TYPE.value}*Tipo de Alvo*: {target_type}\n'
 
     @property
-    def skill_text(self) -> str:
+    def skill_type_text(self) -> str:
         if self.skill_type == SkillTypeEnum.ATTACK:
-            skill_type = 'Ataque'
+            skill_type = 'Ofensivo'
         if self.skill_type == SkillTypeEnum.DEFENSE:
-            skill_type = 'Defesa'
+            skill_type = 'Defensivo'
         if self.skill_type == SkillTypeEnum.HEALING:
             skill_type = 'Cura'
 
-        return f'*Tipo de Habilidade*: {skill_type}\n'
+        return (
+            f'{EmojiEnum.SKILL_TYPE.value}*Tipo de Habilidade*: '
+            f'{skill_type}\n'
+        )
 
     @property
-    def defense_text(self) -> str:
+    def skill_defense_text(self) -> str:
         if self.skill_defense == SkillDefenseEnum.PHYSICAL:
+            emoji_text = EmojiEnum.PHYSICAL_ATTACK.value
             skill_defense = 'Físico'
         if self.skill_defense == SkillDefenseEnum.MAGICAL:
+            emoji_text = EmojiEnum.MAGICAL_ATTACK.value
             skill_defense = 'Mágico'
         if self.skill_defense == SkillDefenseEnum.TRUE:
+            emoji_text = EmojiEnum.SKILL_DEFENSE_TRUE.value
             skill_defense = 'Verdadeiro'
         if self.skill_defense == SkillDefenseEnum.NA:
+            emoji_text = EmojiEnum.SKILL_DEFENSE_NA.value
             skill_defense = 'Nenhum'
 
-        return f'*Tipo de Dano*: {skill_defense}\n'
+        return (
+            f'{EmojiEnum.SKILL_DEFENSE.value}*Tipo de Dano*: '
+            f'{emoji_text}{skill_defense}\n'
+        )
 
     @property
     def description_text(self) -> str:
@@ -376,9 +391,9 @@ class BaseSkill:
             f'{self.level_text}'
             f'{self.power_text}'
             f'{self.hit_text}'
-            f'{self.target_text}'
-            f'{self.skill_text}'
-            f'{self.defense_text}'
+            f'{self.target_type_text}'
+            f'{self.skill_type_text}'
+            f'{self.skill_defense_text}'
             f'{self.power_detail_text}'
         )
 

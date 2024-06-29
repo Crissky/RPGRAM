@@ -22,6 +22,7 @@ from bot.constants.skill_tree import (
     ACTION_UPGRADE_SKILL_BUTTON_TEXT,
     ACTION_USE_SKILL_BUTTON_TEXT,
     COMMANDS,
+    INTRO_SKILL_TEXT,
     LIST_LEARN_SKILL_BUTTON_TEXT,
     LIST_UPGRADE_SKILL_BUTTON_TEXT,
     PATTERN_ACTION_LEARN_SKILL,
@@ -109,7 +110,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         refresh = data.get(REFRESH_SKILL_TREE_PATTERN, False)
 
     if classe_name:
-        markdown_skill_tree_sheet = 'Escolha uma opção.'
+        markdown_skill_tree_sheet = INTRO_SKILL_TEXT
         main_buttons = get_main_buttons(user_id=user_id,)
         refresh_close_button = get_refresh_close_button(
             user_id=user_id,
