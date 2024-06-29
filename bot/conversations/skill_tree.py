@@ -47,7 +47,11 @@ from bot.constants.skill_tree import (
 )
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
-from bot.functions.char import get_char_attribute, save_char
+from bot.conversations.enemy import (
+    get_all_enemy_from_ambush_dict,
+    get_all_enemy_id_from_ambush_dict
+)
+from bot.functions.char import get_char_attribute, get_player_chars_from_group, save_char
 from bot.functions.chat import (
     call_telegram_message_function,
     callback_data_to_dict,
@@ -77,6 +81,7 @@ from function.text import create_text_in_box
 
 from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
+from rpgram.enums.skill import SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
 from rpgram.item import Item
 from rpgram.skills.factory import skill_list_factory
@@ -380,11 +385,12 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
     skill_index = data['check_use_skill']
+    skill = None
 
     try:
         skill_list = char.skill_tree.skill_list
-        skill_class: BaseSkill = skill_list[skill_index]
-        markdown_skill_tree_sheet = skill_class.description_text
+        skill: BaseSkill = skill_list[skill_index]
+        markdown_skill_tree_sheet = skill.description_text
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
@@ -392,16 +398,20 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'classe {char.classe_name}.'
         )
 
-    action_button = get_action_button(
-        user_id=user_id,
-        index=skill_index,
-        to_action_use=True,
-    )
+    action_buttons = []
+    if skill:
+        action_buttons = get_use_action_buttons(
+            context=context,
+            chat_id=chat_id,
+            user_id=user_id,
+            index=skill_index,
+            target_type=skill.target_type,
+            skill_type=skill.skill_type,
+        )
     back_button = get_back_button(user_id=user_id, to_list_use=True)
-    reply_markup = InlineKeyboardMarkup([
-        action_button,
-        back_button
-    ])
+    reply_markup = InlineKeyboardMarkup(
+        action_buttons + [back_button]
+    )
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
@@ -445,8 +455,8 @@ async def check_upgrade_skill(
 
     try:
         skill_list = char.skill_tree.skill_list
-        skill_class: BaseSkill = skill_list[skill_index]
-        markdown_skill_tree_sheet = skill_class.description_text
+        skill: BaseSkill = skill_list[skill_index]
+        markdown_skill_tree_sheet = skill.description_text
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
@@ -822,6 +832,96 @@ def get_action_button(
             })
         )
     ]
+
+
+def get_use_action_buttons(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    user_id: int,
+    index: int,
+    target_type: TargetEnum,
+    skill_type: SkillTypeEnum,
+) -> List[List[InlineKeyboardButton]]:
+    command = 'action_use_skill'
+    if target_type == TargetEnum.SELF:
+        return [[
+            InlineKeyboardButton(
+                text=ACTION_USE_SKILL_BUTTON_TEXT + f' {TargetEnum.SELF}',
+                callback_data=callback_data_to_string({
+                    command: index,
+                    'user_id': user_id,
+                    'action_use_target': user_id
+                })
+            )
+        ]]
+
+    if target_type == TargetEnum.SINGLE:
+        use_action_buttons_list = []
+        if skill_type == SkillTypeEnum.ATTACK:
+            enemy_list = get_all_enemy_from_ambush_dict(context)
+            for enemy in enemy_list[:10]:
+                enemy_id = str(enemy.player_id)
+                enemy_name = enemy.name
+                use_action_buttons_list.append([
+                    InlineKeyboardButton(
+                        text=enemy_name,
+                        callback_data=callback_data_to_string({
+                            command: index,
+                            'user_id': user_id,
+                            'action_use_target': enemy_id
+                        })
+                    )
+                ])
+        else:
+            player_char_list = get_player_chars_from_group(
+                chat_id=chat_id,
+                is_alive=True
+            )
+            for player_char in player_char_list[:10]:
+                player_id = player_char.player_id
+                player_name = player_char.player_name
+                use_action_buttons_list.append([
+                    InlineKeyboardButton(
+                        text=player_name,
+                        callback_data=callback_data_to_string({
+                            command: index,
+                            'user_id': user_id,
+                            'action_use_target': player_id
+                        })
+                    )
+                ])
+        return use_action_buttons_list
+
+    if target_type == TargetEnum.TEAM:
+        if skill_type == SkillTypeEnum.ATTACK:
+            action_use_target = 'enemy_team'
+        else:
+            action_use_target = 'player_team'
+        return [[
+            InlineKeyboardButton(
+                text=(
+                    ACTION_USE_SKILL_BUTTON_TEXT + ' ' +
+                    action_use_target.replace('_', ' ').title()
+                ),
+                callback_data=callback_data_to_string({
+                    command: index,
+                    'user_id': user_id,
+                    'action_use_target': action_use_target
+                })
+            )
+        ]]
+
+    if target_type == TargetEnum.ALL:
+        return [[
+            InlineKeyboardButton(
+                text=ACTION_USE_SKILL_BUTTON_TEXT + 'em Todes',
+                callback_data=callback_data_to_string({
+                    command: index,
+                    'user_id': user_id,
+                    'action_use_target': TargetEnum.ALL.name
+                })
+            )
+        ]]
 
 
 def get_back_button(
