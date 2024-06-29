@@ -65,7 +65,7 @@ class Requirement:
 
         if self.classe_name and self.classe_name != character.classe_name:
             errors.append(
-                f'    classe: '
+                f'    Classe: '
                 f'"{self.classe_name.title()}" '
                 f'({character.classe_name.title()}).'
             )
@@ -73,7 +73,7 @@ class Requirement:
         for skill in self.skill_list:
             if skill not in character.skill_tree.skill_list:
                 errors.append(
-                    f'    skill: "{skill}".'
+                    f'    Habilidade: "{skill}".'
                 )
 
         if errors and to_raise_error is True:

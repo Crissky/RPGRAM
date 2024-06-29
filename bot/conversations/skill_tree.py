@@ -77,6 +77,7 @@ from function.text import create_text_in_box
 
 from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
+from rpgram.errors import RequirementError
 from rpgram.item import Item
 from rpgram.skills.factory import skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
@@ -696,6 +697,13 @@ async def action_learn_skill(
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.'
+        )
+    except RequirementError as e:
+        print(e)
+        markdown_skill_tree_sheet = (
+            f'Não foi possível aprender a habilidade '
+            f'"{skill_class.NAME.upper()}".\n\n'
+            f'{e}'
         )
 
     back_button = get_back_button(user_id=user_id, to_list_learn=True)
