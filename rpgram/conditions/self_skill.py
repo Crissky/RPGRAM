@@ -37,6 +37,12 @@ class SelfSkillCondition(Condition):
         )
         self.character = character
 
+    def to_dict(self) -> dict:
+        _dict = {'need_character': True}
+        _dict.update(super().to_dict())
+
+        return _dict
+
 
 class RobustBlockCondition(SelfSkillCondition):
 
@@ -79,7 +85,9 @@ class RobustBlockCondition(SelfSkillCondition):
     def battle_function(self, target: 'BaseCharacter') -> dict:
         return self.function(target)
 
+
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
     rbc = RobustBlockCondition(BASE_CHARACTER)
     print(rbc)
+    print(rbc.to_dict())
