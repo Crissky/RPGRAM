@@ -195,6 +195,8 @@ class BaseSkill:
         return attribute.replace('_', ' ').title()
 
     def __special_damage_iter(self) -> Iterator[SpecialDamage]:
+        # Mesmo valor de condition_reducer em SpecialDamage
+        condition_multiplier = 20
         damage_types = (
             self.damage_types
             if self.damage_types is not None
@@ -206,7 +208,8 @@ class BaseSkill:
                 yield SpecialDamage(
                     base_damage=base_damage,
                     damage_type=damage_type,
-                    equipment_level=self.level,
+                    equipment_level=int(self.level * condition_multiplier),
+                    is_skill=True
                 )
             else:
                 break
@@ -214,7 +217,7 @@ class BaseSkill:
     def attributes_power_texts(self) -> Iterable[str]:
         for attribute, multiplier in self.iter_multipliers():
             attribute_value = self[attribute]
-            attribute_percent = int(multiplier*100)
+            attribute_percent = int(multiplier*100*self.level_multiplier)
             attribute_emoji = EmojiEnum[attribute.name].value
 
             yield (
