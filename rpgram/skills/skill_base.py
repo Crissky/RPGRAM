@@ -332,6 +332,43 @@ class BaseSkill:
         return special_damage_iter
 
     @property
+    def target_text(self) -> str:
+        if self.target_type == TargetEnum.SELF:
+            target_type = 'Si Mesmo'
+        if self.target_type == TargetEnum.SINGLE:
+            target_type = 'Único'
+        if self.target_type == TargetEnum.TEAM:
+            target_type = 'Time'
+        if self.target_type == TargetEnum.ALL:
+            target_type = 'Todes'
+
+        return f'*Tipo de Alvo*: {target_type}\n'
+
+    @property
+    def skill_text(self) -> str:
+        if self.skill_type == SkillTypeEnum.ATTACK:
+            skill_type = 'Ataque'
+        if self.skill_type == SkillTypeEnum.DEFENSE:
+            skill_type = 'Defesa'
+        if self.skill_type == SkillTypeEnum.HEALING:
+            skill_type = 'Cura'
+
+        return f'*Tipo de Habilidade*: {skill_type}\n'
+
+    @property
+    def defense_text(self) -> str:
+        if self.skill_defense == SkillDefenseEnum.PHYSICAL:
+            skill_defense = 'Físico'
+        if self.skill_defense == SkillDefenseEnum.MAGICAL:
+            skill_defense = 'Mágico'
+        if self.skill_defense == SkillDefenseEnum.TRUE:
+            skill_defense = 'Verdadeiro'
+        if self.skill_defense == SkillDefenseEnum.NA:
+            skill_defense = 'Nenhum'
+
+        return f'*Tipo de Dano*: {skill_defense}\n'
+
+    @property
     def description_text(self) -> str:
         return (
             f'*{self.name.upper()}*: {self.description}\n\n'
@@ -339,6 +376,9 @@ class BaseSkill:
             f'{self.level_text}'
             f'{self.power_text}'
             f'{self.hit_text}'
+            f'{self.target_text}'
+            f'{self.skill_text}'
+            f'{self.defense_text}'
             f'{self.power_detail_text}'
         )
 
