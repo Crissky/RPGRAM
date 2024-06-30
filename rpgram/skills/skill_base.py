@@ -377,6 +377,7 @@ class BaseSkill:
         if self.skill_defense == SkillDefenseEnum.NA:
             emoji_text = EmojiEnum.SKILL_DEFENSE_NA.value
             skill_defense = 'Nenhum'
+            return ''
 
         return (
             f'{EmojiEnum.SKILL_DEFENSE.value}*Tipo de Dano*: '
