@@ -20,6 +20,10 @@ class SkillDefenseEnum(Enum):
     TRUE = 'true'
     NA = 'n/a'
 
+class GuardianSkillEnum(Enum):
+    ROBUSTBLOCK = 'Bloqueio Robusto'
+    HEAVYCHARGE = 'Investida Pesada'
+
 
 MAGICAL_DEFENSE_ENUM_LIST = [SkillDefenseEnum.MAGICAL]
 PHYSICAL_DEFENSE_ENUM_LIST = [SkillDefenseEnum.PHYSICAL, SkillDefenseEnum.TRUE]

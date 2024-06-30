@@ -6,6 +6,7 @@ from bson import ObjectId
 from rpgram.conditions.condition import Condition
 from rpgram.constants.text import PHYSICAL_DEFENSE_FULL
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.skill import GuardianSkillEnum
 from rpgram.enums.turn import TurnEnum
 
 
@@ -53,9 +54,9 @@ class RobustBlockCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name='Bloqueio Robusto',
+            name=GuardianSkillEnum.ROBUSTBLOCK.value,
             character=character,
-            frequency=TurnEnum.START,
+            frequency=TurnEnum.CONTINUOUS,
             turn=turn,
             level=level,
         )
@@ -63,9 +64,9 @@ class RobustBlockCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Postura defensiva que aumenta a {PHYSICAL_DEFENSE_FULL} '
+            f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_FULL}* '
             f'em {self.bonus_physical_defense} pontos '
-            f'(5%{EmojiEnum.CONSTITUTION.value} x Nível) '
+            f'(100%{EmojiEnum.CONSTITUTION.value} + 5% x Nível) '
             f'por 5 turnos.'
         )
 
@@ -75,6 +76,10 @@ class RobustBlockCondition(SelfSkillCondition):
         bonus_physical_defense = self.character.bs.constitution * power
 
         return int(bonus_physical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🙅🏿'
 
     def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}

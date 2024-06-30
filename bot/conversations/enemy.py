@@ -597,11 +597,10 @@ async def defend_enemy_attack(
     #         from_attack=False,
     #     )
 
-    await sub_action_point(char=defender_char, query=query)
-    create_job_rest_action_point(
+    await sub_action_point(
         context=context,
-        chat_id=chat_id,
-        user_id=defender_user_id,
+        char=defender_char,
+        query=query
     )
 
     if enemy_char and enemy_char.is_alive and message_id:
@@ -746,11 +745,10 @@ async def player_attack_enemy(
                 from_attack=True,
             )
 
-    await sub_action_point(char=attacker_char, query=query)
-    create_job_rest_action_point(
+    await sub_action_point(
         context=context,
-        chat_id=chat_id,
-        user_id=attacker_user_id,
+        char=attacker_char,
+        query=query
     )
 
 
@@ -1132,9 +1130,27 @@ def get_all_enemy_from_ambush_dict(
     ]
 
 
-async def sub_action_point(char: BaseCharacter, query: CallbackQuery):
-    char.sub_action_points(1)
+async def sub_action_point(
+    context: ContextTypes.DEFAULT_TYPE,
+    char: BaseCharacter,
+    query: CallbackQuery,
+    value: int = 1,
+):
+    '''Subtrai Pontos de Ação do personagem, salva o personagem no banco, 
+    cria job de recuperação de Pontos de Ação e 
+    envia pop-up com os Pontos de Ação atualizados.
+    '''
+
+    chat_id = query.message.chat_id
+    user_id = char.player_id
+    char.sub_action_points(value)
     save_char(char=char)
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=user_id,
+        char=char,
+    )
 
     await answer(query=query, text=char.current_action_points_text)
 

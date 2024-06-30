@@ -5,7 +5,7 @@ informações dos jogadores.
 
 
 from operator import attrgetter
-from typing import List
+from typing import List, Type
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
@@ -50,7 +50,8 @@ from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.enemy import (
     get_all_enemy_from_ambush_dict,
-    get_all_enemy_id_from_ambush_dict
+    get_all_enemy_id_from_ambush_dict,
+    sub_action_point
 )
 from bot.functions.char import get_char_attribute, get_player_chars_from_group, save_char
 from bot.functions.chat import (
@@ -87,6 +88,7 @@ from rpgram.errors import RequirementError
 from rpgram.item import Item
 from rpgram.skills.factory import skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
+from rpgram.skills.skill_tree import ACTION_POINTS_EMOJI_TEXT
 
 
 @alert_if_not_chat_owner_to_anyway(alert_text=ACCESS_DENIED)
@@ -336,7 +338,8 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a lista de habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
 
     skill_buttons = get_skill_buttons(
@@ -396,7 +399,8 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
 
     action_buttons = []
@@ -462,7 +466,8 @@ async def check_upgrade_skill(
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
 
     action_button = get_action_button(
@@ -515,7 +520,7 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         skill_list = char.skill_tree.learnable_skill_list
-        skill_class: BaseSkill = skill_list[skill_index]
+        skill_class: Type[BaseSkill] = skill_list[skill_index]
         markdown_skill_tree_sheet = (
             f'*Habilidade*: *{skill_class.NAME.upper()}*\n'
             f'*Rank*: {skill_class.RANK}\n\n'
@@ -526,7 +531,8 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
 
     action_button = get_action_button(
@@ -579,25 +585,44 @@ async def action_use_skill(
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
     skill_index = data['action_use_skill']
+    action_use_target = data['action_use_target']
+    skill = None
 
     try:
         skill_list = char.skill_tree.skill_list
-        skill_class: BaseSkill = skill_list[skill_index]
+        skill: BaseSkill = skill_list[skill_index]
         markdown_skill_tree_sheet = (
             f'ESTA FUNÇÃO AINDA NÃO FOI IMPLEMENTADA!!!\n\n'
-            f'{skill_class}'
+            f'{skill}'
         )
+        target_type = skill.target_type
+
+        if skill.cost > char.current_action_points:
+            markdown_skill_tree_sheet = (
+                f'Você não tem *{skill.cost}* *{ACTION_POINTS_EMOJI_TEXT}* '
+                f'para usar esta habilidade.'
+            )
+        elif target_type == TargetEnum.SELF and action_use_target == user_id:
+            skill_report = skill.function()
+            await sub_action_point(
+                context=context,
+                char=char,
+                query=query,
+                value=skill.cost,
+            )
+            markdown_skill_tree_sheet = skill_report['text']
+
+        markdown_skill_tree_sheet += f'\n\n{char.current_action_points_text}'
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
 
     back_button = get_back_button(user_id=user_id, to_list_use=True)
-    reply_markup = InlineKeyboardMarkup([
-        back_button
-    ])
+    reply_markup = InlineKeyboardMarkup([back_button])
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
@@ -641,15 +666,16 @@ async def action_upgrade_skill(
 
     try:
         skill_list = char.skill_tree.skill_list
-        skill_class: BaseSkill = skill_list[skill_index]
-        skill_report = char.skill_tree.upgrade_skill(skill_class)
+        skill: BaseSkill = skill_list[skill_index]
+        skill_report = char.skill_tree.upgrade_skill(skill)
         save_char(char)
         markdown_skill_tree_sheet = skill_report['text']
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
 
     back_button = get_back_button(user_id=user_id, to_list_upgrade=True)
@@ -699,7 +725,7 @@ async def action_learn_skill(
 
     try:
         skill_list = char.skill_tree.learnable_skill_list
-        skill_class: BaseSkill = skill_list[skill_index]
+        skill_class: Type[BaseSkill] = skill_list[skill_index]
         skill_report = char.skill_tree.learn_skill(skill_class)
         save_char(char)
         markdown_skill_tree_sheet = skill_report['text']
@@ -707,7 +733,8 @@ async def action_learn_skill(
         print(e)
         markdown_skill_tree_sheet = (
             f'Não foi possível carregar a habilidades da '
-            f'classe {char.classe_name}.'
+            f'classe {char.classe_name}.\n\n'
+            f'Error: {e}'
         )
     except RequirementError as e:
         print(e)
@@ -919,7 +946,7 @@ def get_use_action_buttons(
                 callback_data=callback_data_to_string({
                     command: index,
                     'user_id': user_id,
-                    'action_use_target': TargetEnum.ALL.name
+                    'action_use_target': TargetEnum.ALL.value
                 })
             )
         ]]

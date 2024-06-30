@@ -1,11 +1,17 @@
 from typing import TYPE_CHECKING
+from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.self_skill import RobustBlockCondition
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
+from rpgram.enums.skill import (
+    GuardianSkillEnum,
+    SkillDefenseEnum,
+    SkillTypeEnum,
+    TargetEnum
+)
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -31,7 +37,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 class RobustBlockSkill(BaseSkill):
-    NAME = 'Bloqueio Robusto'
+    NAME = GuardianSkillEnum.ROBUSTBLOCK.value
     DESCRIPTION = (
         f'Assume uma postura defensiva aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -65,11 +71,20 @@ class RobustBlockSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self) -> dict:
+    def function(self, char: 'BaseCharacter' = None) -> dict:
         rbc = RobustBlockCondition(character=self.char, level=self.level)
         report_list = self.char.status.set_conditions(rbc)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
         report = {
-            'text': '\n'.join([report['text'] for report in report_list])
+            'text': (
+                f'Você se concentra em fortalecer a sua defesa assumindo uma '
+                f'postura defensiva aumentando a sua '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
         }
 
         return report

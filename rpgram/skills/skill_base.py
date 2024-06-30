@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from itertools import chain
 from typing import (
     TYPE_CHECKING,
@@ -181,6 +182,14 @@ class BaseSkill:
         self.condition_list = condition_list
 
         self.requirements.check_requirements(self.char)
+
+    @abstractmethod
+    def function(self, target: 'BaseCharacter') -> dict:
+        ...
+
+    @abstractmethod
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        ...
 
     def iter_multipliers(self) -> ITER_MULTIPLIERS_TYPE:
         return chain(

@@ -3,7 +3,7 @@ from datetime import datetime
 from random import choices, random, uniform
 from typing import List, TypeVar, Union
 
-from constant.text import ALERT_SECTION_HEAD, TEXT_DELIMITER
+from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS, TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.factory import condition_factory
@@ -65,19 +65,15 @@ class BaseCharacter:
             _id = ObjectId(_id)
         if equips is None:
             equips = Equips(player_id=player_id, _id=ObjectId())
-        
-        if status is None:
-            status = Status()
-        elif isinstance(status, dict):
+
+        condition_list = []
+        if isinstance(status, dict):
             condition_args = status.pop('condition_args', [])
-            condition_list = []
             for condition_arg in condition_args:
-                if condition_arg.get('need_character'):
+                if condition_arg.pop('need_character', False):
                     condition_arg['character'] = self
                 condition = condition_factory(**condition_arg)
                 condition_list.append(condition)
-            status['conditions'] = condition_list
-            status = Status(**status)
 
         self.__name = char_name
         self.__id = _id
@@ -85,7 +81,7 @@ class BaseCharacter:
         self.__race = race
         self.__player_id = player_id
         self.__equips = equips
-        self.__status = status
+        self.__status = Status()
         self.__base_stats = BaseStats(
             level=level,
             xp=xp,
@@ -112,6 +108,7 @@ class BaseCharacter:
         self.__equips.attach_observer(self.__combat_stats)
         self.__status.attach_observer(self.__base_stats)
         self.__status.attach_observer(self.__combat_stats)
+        self.__status.set_conditions(*condition_list)
         self.__skill_tree = SkillTree(
             character=self,
             **skill_tree,
@@ -473,10 +470,7 @@ class BaseCharacter:
                 )
                 if status_report['effective'] is True:
                     report['text'] += '\n\n'
-                    report['text'] += ALERT_SECTION_HEAD.format(
-                        '*STATUS ADICIONADOS*'
-                    )
-                    report['text'] += '\n'
+                    report['text'] += ALERT_SECTION_HEAD_ADD_STATUS
                     report['text'] += f'*{defender_player_name}*:\n'
                     report['text'] += status_report['text']
 
@@ -601,6 +595,9 @@ class BaseCharacter:
     equips: Equips = property(fget=lambda self: self.__equips)
     status: Status = property(fget=lambda self: self.__status)
     skill_tree: SkillTree = property(fget=lambda self: self.__skill_tree)
+    current_action_points: int = property(
+        fget=lambda self: self.__skill_tree.current_action_points
+    )
     current_action_points_text: str = property(
         fget=lambda self: self.__skill_tree.current_action_points_text
     )
