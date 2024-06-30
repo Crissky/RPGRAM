@@ -1,5 +1,5 @@
 from operator import attrgetter
-from typing import TYPE_CHECKING, Callable, List, Union
+from typing import TYPE_CHECKING, Callable, List, Type, Union
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.enums.emojis import EmojiEnum
@@ -183,7 +183,7 @@ class SkillTree:
         return sorted(self.__skill_list, key=attrgetter('rank', 'name'))
 
     @property
-    def learnable_skill_list(self) -> List[BaseSkill]:
+    def learnable_skill_list(self) -> List[Type[BaseSkill]]:
         classe_name = self.character.classe_name
         skill_list = skill_list_factory(classe_name)
 

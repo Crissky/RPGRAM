@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List, Type, Union
 
 from rpgram.enums.classe import ClasseEnum
 from rpgram.skills.classes.guardian.factory import (
@@ -92,7 +92,9 @@ def skill_factory(
     )
 
 
-def skill_list_factory(classe_name: Union[ClasseEnum, str]) -> List[BaseSkill]:
+def skill_list_factory(
+    classe_name: Union[ClasseEnum, str]
+) -> List[Type[BaseSkill]]:
     '''Retorna uma função factory relacionada ao classe_name
     '''
 

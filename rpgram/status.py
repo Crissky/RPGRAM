@@ -24,10 +24,7 @@ from rpgram.enums.turn import TurnEnum
 
 class Status:
 
-    def __init__(
-        self,
-        conditions: List[Condition] = [],
-    ) -> None:
+    def __init__(self, conditions: List[Condition] = []):
         if isinstance(conditions, list):
             for index, condition in enumerate(conditions):
                 if not isinstance(condition, Condition):
