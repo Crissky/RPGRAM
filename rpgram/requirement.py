@@ -35,19 +35,15 @@ class Requirement:
     def check_requirements(
         self,
         character: 'BaseCharacter',
-        level_rank: int = 1,
+        level: int = 1,
+        rank: int = 1,
         to_raise_error: bool = True,
     ) -> dict:
         '''Analisa se o personagem possui os requisitos.
         '''
-
-        if level_rank < 1:
-            raise ValueError(
-                'O level_rank deve ser um valor inteiro positivo.'
-            )
-
         errors = []
-        level_rank = int(level_rank - 1)
+        level_rank = int(level + rank)
+        level_rank = max(0, (level_rank - 2))
         for attribute, value in self.base_stats.items():
             value += (level_rank * 10)
             if value > character.base_stats[attribute]:

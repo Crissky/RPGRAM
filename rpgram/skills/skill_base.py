@@ -181,7 +181,11 @@ class BaseSkill:
         self.damage_types = damage_types
         self.condition_list = condition_list
 
-        self.requirements.check_requirements(self.char)
+        self.requirements.check_requirements(
+            character=self.char,
+            level=self.level,
+            rank=self.rank,
+        )
 
     @abstractmethod
     def function(self, target: 'BaseCharacter') -> dict:
@@ -264,7 +268,7 @@ class BaseSkill:
         if isinstance(self.level_multiplier_dict, dict):
             return self.level_multiplier_dict[self.level]
         else:
-            level = self.level if self.level == 0 else self.level - 1
+            level = max(0, (self.level - 1))
             return 1 + (level / 20)
 
     @property
