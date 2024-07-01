@@ -4,9 +4,15 @@ from typing import TYPE_CHECKING, Union
 from bson import ObjectId
 
 from rpgram.conditions.condition import Condition
-from rpgram.constants.text import PHYSICAL_DEFENSE_FULL
+from rpgram.constants.text import (
+    PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT
+)
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.enums.skill import GuardianSkillEnum
+from rpgram.enums.skill import (
+    BarbarianSkillEnum,
+    GuardianSkillEnum
+)
 from rpgram.enums.turn import TurnEnum
 
 
@@ -54,7 +60,7 @@ class RobustBlockCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=GuardianSkillEnum.ROBUSTBLOCK.value,
+            name=GuardianSkillEnum.ROBUST_BLOCK.value,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -64,7 +70,7 @@ class RobustBlockCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_FULL}* '
+            f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(100%{EmojiEnum.CONSTITUTION.value} + 5% x Nível) '
             f'por 5 turnos.'
@@ -82,7 +88,61 @@ class RobustBlockCondition(SelfSkillCondition):
         return '🙅🏿'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = f'*{self.character.name}* permanece na *Postura Defensiva*.'
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece na *Postura Defensiva*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        return self.function(target)
+
+
+class FuriousFuryCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 5,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.FURIOUS_FURY.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria* que aumenta a *{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(100%{EmojiEnum.STRENGTH.value} + 5% x Nível) '
+            f'por 5 turnos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 1 + (self.level / 20)
+        bonus_physical_attack = self.character.bs.strength * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '😤'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece em estado de '
+            f'*{self.name}*.'
+        )
         report = {'text': text}
         report['action'] = self.name
 

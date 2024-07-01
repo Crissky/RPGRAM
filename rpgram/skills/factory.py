@@ -1,6 +1,10 @@
 from typing import TYPE_CHECKING, List, Type, Union
 
 from rpgram.enums.classe import ClasseEnum
+from rpgram.skills.classes.barbarian.factory import (
+    BARBARIAN_SKILL_LIST,
+    barbarian_skill_factory
+)
 from rpgram.skills.classes.guardian.factory import (
     guardian_skill_factory,
     GUARDIAN_SKILL_LIST
@@ -29,7 +33,7 @@ def skill_factory(
         classe_name = classe_name.value
 
     if ClasseEnum.BARBARIAN.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = barbarian_skill_factory
     elif ClasseEnum.CLERIC.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.DRUID.value == classe_name:
@@ -102,7 +106,7 @@ def skill_list_factory(
         classe_name = classe_name.value
 
     if ClasseEnum.BARBARIAN.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return BARBARIAN_SKILL_LIST
     elif ClasseEnum.CLERIC.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.DRUID.value == classe_name:

@@ -283,7 +283,7 @@ class BaseSkill:
             self.skill_type != SkillTypeEnum.ATTACK
         )):
             return ''
-        hit_percent = self.hit_multiplier*100
+        hit_percent = int(self.hit_multiplier*100)
         return (
             f'{EmojiEnum.HIT2.value}*Acerto*: '
             f'{self.hit}({hit_percent}%{EmojiEnum.HIT.value})\n'

@@ -21,9 +21,22 @@ class SkillDefenseEnum(Enum):
     NA = 'n/a'
 
 
+class BarbarianSkillEnum(Enum):
+    FURIOUS_ATTACK = 'Ataque Furioso'
+    WILD_STRIKE = 'Golpe Selvagem'
+    FURIOUS_FURY = 'Fúria Furiosa'
+
+
 class GuardianSkillEnum(Enum):
-    ROBUSTBLOCK = 'Bloqueio Robusto'
-    HEAVYCHARGE = 'Investida Pesada'
+    ROBUST_BLOCK = 'Bloqueio Robusto'
+    HEAVY_CHARGE = 'Investida Pesada'
+
+
+class WarriorSkillEnum(Enum):
+    POWERFUL_ATTACK = 'Ataque Poderoso'
+    MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
+    QUICK_ATTACK = 'Ataque Rápido'
+    LETHAL_ATTACK = 'Ataque Letal'
 
 
 TARGET_ENUM_NOT_SELF = [TargetEnum.SINGLE, TargetEnum.TEAM, TargetEnum.ALL]

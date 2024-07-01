@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from rpgram.skills.classes.warrior.skill1 import (
+    MoreThanPowerfulAttackSkill,
     PowerfulAttackSkill
 )
 from rpgram.skills.classes.warrior.skill2 import (
@@ -21,6 +22,8 @@ def warrior_skill_factory(
     # SKILL1
     if skill_class_name == PowerfulAttackSkill.__name__:
         skill_class = PowerfulAttackSkill
+    elif skill_class_name == MoreThanPowerfulAttackSkill.__name__:
+        skill_class = MoreThanPowerfulAttackSkill
     # SKILL2
     elif skill_class_name == QuickAttackSkill.__name__:
         skill_class = QuickAttackSkill
@@ -35,6 +38,7 @@ def warrior_skill_factory(
 WARRIOR_SKILL_LIST = [
     # SKILL1
     PowerfulAttackSkill,
+    MoreThanPowerfulAttackSkill,
 
     # SKILL2
     QuickAttackSkill,
