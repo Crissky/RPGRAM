@@ -32,6 +32,13 @@ class GuardianSkillEnum(Enum):
     HEAVY_CHARGE = 'Investida Pesada'
 
 
+class SorcererSkillEnum(Enum):
+    MYSTICAL_PROTECTION = 'Proteção Mística'
+    MYSTICAL_CONFLUENCE = 'Confluência Mística'
+    MYSTICAL_VIGOR = 'Vigor Místico'
+    PRISMATIC_SHOT = 'Disparo Prismático'
+
+
 class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'

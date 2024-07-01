@@ -9,6 +9,10 @@ from rpgram.skills.classes.guardian.factory import (
     guardian_skill_factory,
     GUARDIAN_SKILL_LIST
 )
+from rpgram.skills.classes.sorcerer.factory import (
+    SORCERER_SKILL_LIST,
+    sorcerer_skill_factory
+)
 from rpgram.skills.classes.warrior.factory import (
     WARRIOR_SKILL_LIST,
     warrior_skill_factory
@@ -39,7 +43,7 @@ def skill_factory(
     elif ClasseEnum.DRUID.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.SORCERER.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = sorcerer_skill_factory
     elif ClasseEnum.WARRIOR.value == classe_name:
         class_skill_factory = warrior_skill_factory
     elif ClasseEnum.ROGUE.value == classe_name:
@@ -112,7 +116,7 @@ def skill_list_factory(
     elif ClasseEnum.DRUID.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.SORCERER.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return SORCERER_SKILL_LIST
     elif ClasseEnum.WARRIOR.value == classe_name:
         return WARRIOR_SKILL_LIST
     elif ClasseEnum.ROGUE.value == classe_name:

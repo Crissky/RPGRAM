@@ -79,6 +79,7 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
+        'level': 40,
         'classe_name': ClasseEnum.WARRIOR.value,
         'skill_list': [PowerfulAttackSkill.NAME]
     })

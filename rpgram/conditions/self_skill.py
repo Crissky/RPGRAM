@@ -5,13 +5,17 @@ from bson import ObjectId
 
 from rpgram.conditions.condition import Condition
 from rpgram.constants.text import (
+    HIT_POINT_FULL_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
-    GuardianSkillEnum
+    GuardianSkillEnum,
+    SorcererSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
 
@@ -152,8 +156,184 @@ class FuriousFuryCondition(SelfSkillCondition):
         return self.function(target)
 
 
+class MysticalProtectionCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 5,
+        level: int = 1
+    ):
+        super().__init__(
+            name=SorcererSkillEnum.MYSTICAL_PROTECTION.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Trama de energia *Mística* que aumenta a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos '
+            f'(100%{EmojiEnum.WISDOM.value} + 5% x Nível) '
+            f'por 5 turnos.'
+        )
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        power = 1 + (self.level / 20)
+        bonus_magical_defense = self.character.bs.wisdom * power
+
+        return int(bonus_magical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🧘🏾'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece coberto pela '
+            f'*{self.name}*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        return self.function(target)
+
+
+class MysticalConfluenceCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 5,
+        level: int = 1
+    ):
+        super().__init__(
+            name=SorcererSkillEnum.MYSTICAL_CONFLUENCE.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Conjunto de energias *Místicas* que aumentam o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_attack} pontos '
+            f'(100%{EmojiEnum.INTELLIGENCE.value} + 5% x Nível) '
+            f'por 5 turnos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        power = 1 + (self.level / 20)
+        bonus_magical_attack = self.character.bs.intelligence * power
+
+        return int(bonus_magical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '🧘🏾'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece imbuído pela '
+            f'*{self.name}*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        return self.function(target)
+
+
+class MysticalVigorCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=SorcererSkillEnum.MYSTICAL_VIGOR.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Conjunto de energias *Místicas* que aumentam o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos '
+            f'(200%{EmojiEnum.INTELLIGENCE.value} + 10% x Nível) e'
+            f'(200%{EmojiEnum.WISDOM.value} + 10% x Nível) '
+            f'por 10 turnos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        power = 2 + (self.level / 10)
+        bonus_magical_attack = sum([
+            self.character.bs.intelligence * power,
+            self.character.bs.wisdom * power
+        ])
+
+        return int(bonus_magical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '🧘🏾'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* está revigorado pelo '
+            f'*{self.name}*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        return self.function(target)
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
-    rbc = RobustBlockCondition(BASE_CHARACTER)
-    print(rbc)
-    print(rbc.to_dict())
+    condition = RobustBlockCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+
+    condition = FuriousFuryCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+
+    condition = MysticalProtectionCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+
+    condition = MysticalConfluenceCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+
+    condition = MysticalVigorCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
