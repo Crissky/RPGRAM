@@ -56,7 +56,7 @@ class RobustBlockCondition(SelfSkillCondition):
         super().__init__(
             name=GuardianSkillEnum.ROBUSTBLOCK.value,
             character=character,
-            frequency=TurnEnum.CONTINUOUS,
+            frequency=TurnEnum.START,
             turn=turn,
             level=level,
         )
@@ -82,7 +82,8 @@ class RobustBlockCondition(SelfSkillCondition):
         return '🙅🏿'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        text = f'*{self.character.name}* permanece na *Postura Defensiva*.'
+        report = {'text': text}
         report['action'] = self.name
 
         return report
