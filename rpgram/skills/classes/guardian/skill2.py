@@ -37,7 +37,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 class HeavyChargeSkill(BaseSkill):
-    NAME = GuardianSkillEnum.HEAVYCHARGE.value
+    NAME = GuardianSkillEnum.HEAVY_CHARGE.value
     DESCRIPTION = (
         f'Assume uma postura ofensiva, avançando contra o inimigo '
         f'usando seu corpo massivo como arma, causando dano com base em '
@@ -76,8 +76,9 @@ class HeavyChargeSkill(BaseSkill):
 
 
 if __name__ == '__main__':
-    from rpgram.constants.test import BASE_CHARACTER
-    skill = HeavyChargeSkill(BASE_CHARACTER)
+    from rpgram.constants.test import GUARDIAN_CHARACTER
+    skill = HeavyChargeSkill(GUARDIAN_CHARACTER)
     print(skill)
-    print(BASE_CHARACTER.cs.physical_attack)
-    print(BASE_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.cs.physical_attack)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(HeavyChargeSkill)

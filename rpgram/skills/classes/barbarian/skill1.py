@@ -1,13 +1,14 @@
 from typing import TYPE_CHECKING
 from rpgram.constants.text import (
+    HIT_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import (
+    BarbarianSkillEnum,
     SkillDefenseEnum,
     SkillTypeEnum,
-    TargetEnum,
-    WarriorSkillEnum
+    TargetEnum
 )
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
@@ -18,43 +19,40 @@ if TYPE_CHECKING:
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': 'Maestria em Combate',
+    'name': 'Combate Primal',
     'description': (
-        'O caminho da Maestria em Combate transforma o Guerreiro '
-        'em um virtuoso do combate, transcendendo a força bruta e '
-        'empunhando as armas com precisão mortal. '
-        'Através de um arsenal de técnicas elaboradas e movimentos precisos, '
-        'o Guerreiro se torna um arauto da morte no campo de batalha, '
-        'eliminando seus inimigos com golpes rápidos e letais.'
+        'A maestria do Bárbaro em combate corpo a corpo selvagem e brutal. '
+        'As habilidades desse grupo se concentram em conceder ao Bárbaro '
+        'ataques poderosos, manobras brutais e habilidades de '
+        'combate instintivas.'
     )
 }
 
 
-class QuickAttackSkill(BaseSkill):
-    NAME = WarriorSkillEnum.QUICK_ATTACK.value
+class FuriousAttackSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.FURIOUS_ATTACK.value
     DESCRIPTION = (
-        f'Executa uma sequência de golpes precisos '
-        f'como um vendaval contra seu inimigo, '
-        f'dificultando as chances de esquiva do oponente e '
-        f'causando dano com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
+        f'inimigo com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*, mas possui '
+        f' uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
-        'classe_name': ClasseEnum.WARRIOR.value,
+        'classe_name': ClasseEnum.BARBARIAN.value,
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PRECISION_ATTACK: 1.15001
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.90,
         }
         damage_types = None
 
         super().__init__(
-            name=QuickAttackSkill.NAME,
-            description=QuickAttackSkill.DESCRIPTION,
-            rank=QuickAttackSkill.RANK,
+            name=FuriousAttackSkill.NAME,
+            description=FuriousAttackSkill.DESCRIPTION,
+            rank=FuriousAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -64,39 +62,40 @@ class QuickAttackSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
-            requirements=QuickAttackSkill.REQUIREMENTS,
+            requirements=FuriousAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
     @property
     def hit_multiplier(self) -> float:
-        return 1.50
+        return 0.80
 
 
-class LethalAttackSkill(BaseSkill):
-    NAME = WarriorSkillEnum.LETHAL_ATTACK.value
+class WildStrikeSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.WILD_STRIKE.value
     DESCRIPTION = (
-        f'Desfere um ataque preciso focando pontos vitais do inimigo, '
-        f'causando dano com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'Desfere um ataque com força bruta, causando dano ao '
+        f'alvo com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*, mas possui '
+        f' uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
-        'classe_name': ClasseEnum.WARRIOR.value,
-        'skill_list': [QuickAttackSkill.NAME]
+        'classe_name': ClasseEnum.BARBARIAN.value,
+        'skill_list': [FuriousAttackSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PRECISION_ATTACK: 1.65
+            CombatStatsEnum.PHYSICAL_ATTACK: 2.40,
         }
         damage_types = None
 
         super().__init__(
-            name=LethalAttackSkill.NAME,
-            description=LethalAttackSkill.DESCRIPTION,
-            rank=LethalAttackSkill.RANK,
+            name=WildStrikeSkill.NAME,
+            description=WildStrikeSkill.DESCRIPTION,
+            rank=WildStrikeSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -106,23 +105,23 @@ class LethalAttackSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
-            requirements=LethalAttackSkill.REQUIREMENTS,
+            requirements=WildStrikeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
     @property
     def hit_multiplier(self) -> float:
-        return 2.00
+        return 0.70
 
 
 if __name__ == '__main__':
-    from rpgram.constants.test import WARRIOR_CHARACTER
-    skill = QuickAttackSkill(WARRIOR_CHARACTER)
+    from rpgram.constants.test import BARBARIAN_CHARACTER
+    skill = FuriousAttackSkill(BARBARIAN_CHARACTER)
     print(skill)
-    print(WARRIOR_CHARACTER.cs.precision_attack)
-    WARRIOR_CHARACTER.skill_tree.learn_skill(QuickAttackSkill)
+    print(BARBARIAN_CHARACTER.cs.physical_attack)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousAttackSkill)
 
-    skill = LethalAttackSkill(WARRIOR_CHARACTER)
+    skill = WildStrikeSkill(BARBARIAN_CHARACTER)
     print(skill)
-    print(WARRIOR_CHARACTER.cs.precision_attack)
-    WARRIOR_CHARACTER.skill_tree.learn_skill(LethalAttackSkill)
+    print(BARBARIAN_CHARACTER.cs.physical_attack)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(WildStrikeSkill)

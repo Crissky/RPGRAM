@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS
+from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.self_skill import RobustBlockCondition
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
@@ -37,7 +37,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 class RobustBlockSkill(BaseSkill):
-    NAME = GuardianSkillEnum.ROBUSTBLOCK.value
+    NAME = GuardianSkillEnum.ROBUST_BLOCK.value
     DESCRIPTION = (
         f'Assume uma postura defensiva aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -91,9 +91,11 @@ class RobustBlockSkill(BaseSkill):
 
 
 if __name__ == '__main__':
-    from rpgram.constants.test import BASE_CHARACTER
-    skill = RobustBlockSkill(BASE_CHARACTER)
+    from rpgram.constants.test import GUARDIAN_CHARACTER
+    skill = RobustBlockSkill(GUARDIAN_CHARACTER)
     print(skill)
-    print(BASE_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.bs.constitution)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
     print(skill.function())
-    print(BASE_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(RobustBlockSkill)

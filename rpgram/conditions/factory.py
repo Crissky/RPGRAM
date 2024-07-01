@@ -25,7 +25,10 @@ from rpgram.conditions.heal import (
     Heal7Condition,
     Heal8Condition,
 )
-from rpgram.conditions.self_skill import RobustBlockCondition
+from rpgram.conditions.self_skill import (
+    FuriousFuryCondition,
+    RobustBlockCondition
+)
 from rpgram.enums.debuff import (
     BERSERKER,
     BLEEDING,
@@ -42,7 +45,10 @@ from rpgram.enums.debuff import (
     STUNNED,
 )
 from rpgram.enums.consumable import HealingConsumableEnum
-from rpgram.enums.skill import GuardianSkillEnum
+from rpgram.enums.skill import (
+    BarbarianSkillEnum,
+    GuardianSkillEnum
+)
 
 
 if TYPE_CHECKING:
@@ -120,8 +126,11 @@ def condition_factory(
         condition_class = Heal7Condition
     elif name == HealingConsumableEnum.HEAL8.value:
         condition_class = Heal8Condition
+    # BARBARIAN BUFFS
+    elif name == BarbarianSkillEnum.FURIOUS_FURY.value:
+        condition_class = FuriousFuryCondition
     # GUARDIAN BUFFS
-    elif name == GuardianSkillEnum.ROBUSTBLOCK.value:
+    elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
