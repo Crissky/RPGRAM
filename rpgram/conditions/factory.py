@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
     BerserkerCondition,
@@ -24,6 +25,7 @@ from rpgram.conditions.heal import (
     Heal7Condition,
     Heal8Condition,
 )
+from rpgram.conditions.self_skill import RobustBlockCondition
 from rpgram.enums.debuff import (
     BERSERKER,
     BLEEDING,
@@ -40,6 +42,11 @@ from rpgram.enums.debuff import (
     STUNNED,
 )
 from rpgram.enums.consumable import HealingConsumableEnum
+from rpgram.enums.skill import GuardianSkillEnum
+
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 def condition_factory(
@@ -47,7 +54,9 @@ def condition_factory(
     condition_name: str = None,
     turn: int = None,
     level: int = None,
+    character: 'BaseCharacter' = None,
 ) -> Condition:
+    from rpgram.characters.char_base import BaseCharacter
     if isinstance(condition_name, str) and not isinstance(name, str):
         name = condition_name
 
@@ -61,6 +70,11 @@ def condition_factory(
         kwargs['level'] = level
     elif level is not None:
         raise TypeError(f'Level deve ser do tipo inteiro: {type(level)}')
+
+    if isinstance(character, BaseCharacter):
+        kwargs['character'] = character
+    elif character is not None:
+        raise TypeError(f'Personagem deve ser do tipo {BaseCharacter}')
 
     # DEBUFFS
     if name == BERSERKER:
@@ -106,6 +120,9 @@ def condition_factory(
         condition_class = Heal7Condition
     elif name == HealingConsumableEnum.HEAL8.value:
         condition_class = Heal8Condition
+    # GUARDIAN BUFFS
+    elif name == GuardianSkillEnum.ROBUSTBLOCK.value:
+        condition_class = RobustBlockCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
 

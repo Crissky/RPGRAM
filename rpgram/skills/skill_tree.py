@@ -1,5 +1,5 @@
 from operator import attrgetter
-from typing import TYPE_CHECKING, Callable, List, Union
+from typing import TYPE_CHECKING, Callable, List, Type, Union
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.enums.emojis import EmojiEnum
@@ -9,7 +9,7 @@ from rpgram.skills.skill_base import BaseSkill
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
-
+ACTION_POINTS_EMOJI_TEXT = f'{EmojiEnum.ACTION_POINTS.value}Pontos de Ação'
 class SkillTree:
     def __init__(
         self,
@@ -30,8 +30,8 @@ class SkillTree:
 
         self.character = character
         self.__skill_list: List[BaseSkill] = skill_list
-        self.current_action_points = current_action_points
-        self.max_action_points = max_action_points
+        self.current_action_points = int(current_action_points)
+        self.max_action_points = int(max_action_points)
 
     def get_skill(self, skill_name: str) -> BaseSkill:
         index = self.skill_list.index(skill_name)
@@ -140,7 +140,7 @@ class SkillTree:
     @property
     def current_action_points_text(self) -> str:
         return (
-            f'{EmojiEnum.ACTION_POINTS.value}Pontos de Ação: '
+            f'{ACTION_POINTS_EMOJI_TEXT}: '
             f'{self.current_action_points}/{self.max_action_points}'
         )
 
@@ -183,7 +183,7 @@ class SkillTree:
         return sorted(self.__skill_list, key=attrgetter('rank', 'name'))
 
     @property
-    def learnable_skill_list(self) -> List[BaseSkill]:
+    def learnable_skill_list(self) -> List[Type[BaseSkill]]:
         classe_name = self.character.classe_name
         skill_list = skill_list_factory(classe_name)
 

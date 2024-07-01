@@ -12,6 +12,7 @@ from telegram import (
     Message,
     Update
 )
+from telegram.error import BadRequest
 from telegram.ext import (
     CallbackQueryHandler,
     ContextTypes,
@@ -43,6 +44,7 @@ from bot.constants.enemy import (
     SECTION_TEXT_AMBUSH_COUNTER,
     SECTION_TEXT_AMBUSH_DEFENSE,
     SECTION_TEXT_AMBUSH_XP,
+    SECTION_TEXT_EXCOMMUNICATED,
     SECTION_TEXT_FAIL,
     SECTION_TEXT_FAIL_AMBUSH_COUNTER,
     SECTION_TEXT_FAIL_AMBUSH_DEFENSE,
@@ -72,6 +74,7 @@ from bot.functions.chat import (
     forward_message,
     call_telegram_message_function,
     get_close_keyboard,
+    reply_text,
     reply_typing
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
@@ -117,6 +120,7 @@ from repository.mongo.populate.item import (
 from rpgram import Item, Player
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
+from rpgram.skills.skill_base import BaseSkill
 
 
 async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
@@ -211,7 +215,7 @@ async def create_job_enemy_attack(
     is_first_attack: bool = True,
 ):
     '''Cria um job do ataque de um inimigo.
-    O inimigo irá atacar o jogador em um intervalo aleatório definido de 
+    O inimigo irá atacar o jogador em um intervalo aleatório definido de
     acordo com o seu rank.
     '''
 
@@ -323,7 +327,14 @@ async def create_job_enemy_attack(
         name=job_name,
         job_kwargs=BASE_JOB_KWARGS,
     )
-    put_ambush_dict(context=context, enemy=enemy_char)
+    put_ambush_dict(
+        context=context,
+        enemy=enemy_char,
+        message_id=response.message_id,
+        message_text=response.text_markdown_v2,
+        reply_markup=response.reply_markup,
+        target_id=user_id,
+    )
 
     print(
         f'{enemy_char.full_name_with_level} ira atacar '
@@ -344,7 +355,10 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
     job_data = job.data
     enemy_id = job_data['enemy_id']
     message_id = job_data['message_id']
-    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    enemy_char = get_enemy_char_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id
+    )
     defender_char: BaseCharacter = char_model.get(user_id)
     is_first_attack = False
 
@@ -501,7 +515,10 @@ async def defend_enemy_attack(
     data = callback_data_to_dict(query.data)
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
-    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    enemy_char = get_enemy_char_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id
+    )
     already_attacked = check_attacker_id_in_ambush_dict(
         context=context,
         enemy_id=enemy_id,
@@ -597,11 +614,10 @@ async def defend_enemy_attack(
     #         from_attack=False,
     #     )
 
-    await sub_action_point(char=defender_char, query=query)
-    create_job_rest_action_point(
+    await sub_action_point(
         context=context,
-        chat_id=chat_id,
-        user_id=defender_user_id,
+        char=defender_char,
+        query=query
     )
 
     if enemy_char and enemy_char.is_alive and message_id:
@@ -642,7 +658,10 @@ async def player_attack_enemy(
     data = callback_data_to_dict(query.data)
     target_user_id = data['user_id']
     enemy_id = data['enemy_id']
-    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    enemy_char = get_enemy_char_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id
+    )
 
     attacker_char: BaseCharacter = char_model.get(attacker_user_id)
     if not attacker_char.can_player_act:
@@ -678,79 +697,22 @@ async def player_attack_enemy(
 
     target_char: BaseCharacter = char_model.get(target_user_id)
 
-    if target_char.is_alive and enemy_char.is_alive:
-        await player_attack(
-            update=update,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            enemy_char=enemy_char,
-            attacker_char=attacker_char,
-            target_char=target_char,
-            to_dodge=True
-        )
-
-        add_attacker_id_to_ambush_dict(
-            context=context,
-            enemy_id=enemy_id,
-            attacker_id=attacker_user_id,
-        )
-        await add_enemy_counter(
-            user_id=attacker_user_id,
-            enemy=enemy_char,
-            query=query
-        )
-    else:
-        if target_char.is_dead:
-            text = (
-                f'O ataque falhou, pois '
-                f'*{enemy_char.full_name_with_level}* fugiu já que '
-                f'*{target_char.player_name}* está morto.'
-            )
-        elif enemy_char.is_dead:
-            text = (
-                f'O ataque falhou, pois '
-                f'*{enemy_char.full_name_with_level}* está morto.'
-            )
-        print(text)
-        text = create_text_in_box(
-            text=text,
-            section_name=SECTION_TEXT_FAIL_AMBUSH_COUNTER,
-            section_start=SECTION_HEAD_FAIL_START,
-            section_end=SECTION_HEAD_FAIL_END,
-        )
-        await edit_message_text_and_forward(
-            function_caller='PLAYER_ATTACK_ENEMY()',
-            new_text=text,
-            user_ids=[attacker_user_id, target_user_id],
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=True,
-        )
-
-    if enemy_char.is_dead or target_char.is_dead:
-        remove_enemy_attack_job(
-            context=context,
-            user_id=target_user_id,
-            enemy_char=enemy_char
-        )
-        remove_ambush_enemy(context=context, enemy_id=enemy_id)
-
-        if enemy_char.is_dead and attacker_char.is_alive:
-            await enemy_drop_random_loot(
-                context=context,
-                update=update,
-                enemy_char=enemy_char,
-                from_attack=True,
-            )
-
-    await sub_action_point(char=attacker_char, query=query)
-    create_job_rest_action_point(
+    await player_attack(
+        update=update,
         context=context,
         chat_id=chat_id,
-        user_id=attacker_user_id,
+        message_id=message_id,
+        enemy_char=enemy_char,
+        attacker_char=attacker_char,
+        target_char=target_char,
+        to_dodge=True,
+        query=query,
+    )
+
+    await sub_action_point(
+        context=context,
+        char=attacker_char,
+        query=query
     )
 
 
@@ -765,7 +727,10 @@ async def check_enemy_attributes(
     data = callback_data_to_dict(query.data)
     attr_name = data['command']
     enemy_id = data['enemy_id']
-    enemy_char = get_enemy_from_ambush_dict(context=context, enemy_id=enemy_id)
+    enemy_char = get_enemy_char_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id
+    )
     text = f'enemy_char: {enemy_char}'
 
     if not enemy_char:
@@ -887,90 +852,174 @@ async def player_attack(
     attacker_char: PlayerCharacter,
     target_char: PlayerCharacter,
     to_dodge: bool = False,
-):
+    attacker_skill: BaseSkill = None,
+    query: CallbackQuery = None
+) -> dict:
     attacker_id = attacker_char.player_id
     target_id = target_char.player_id
-    reply_markup = update.effective_message.reply_markup
-    report_text = update.effective_message.text_markdown_v2
+    enemy_id = str(enemy_char.player_id)
+    reply_markup = get_reply_markup_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    )
+    report_text = get_message_text_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    )
     report_text = report_text.split('\n')
     report_text = '\n'.join(report_text[1:-1])
     report_text = report_text.strip()
     report_text += f'\n\n{TEXT_SEPARATOR}\n\n'
     counter_report = None
 
-    attack_report = attacker_char.to_attack(
-        defender_char=enemy_char,
-        defender_dice=None,
-        to_dodge=to_dodge,
-        to_defend=True,
-        verbose=True,
-        markdown=True
-    )
-    report_text += attack_report['text']
-    attacker_action_name = attack_report['attack']['action']
-    is_miss = attack_report['defense']['is_miss']
-
-    base_xp = get_base_xp_from_player_attack(
-        enemy_char=enemy_char,
-        attacker_char=attacker_char,
-        is_miss=is_miss
-    )
-    report_xp = add_xp(
-        chat_id=chat_id,
-        char=attacker_char,
-        base_xp=base_xp,
-    )
-    report_text += ALERT_SECTION_HEAD.format('*XP*') + '\n'
-    report_text += f'{report_xp["text"]}\n'
-
-    if attack_report['dead']:
-        reply_markup = REPLY_MARKUP_DEFAULT
-        base_xp = get_base_xp_from_player_attack(
-            enemy_char=enemy_char,
-            attacker_char=target_char,
-            is_miss=is_miss
-        )
-        target_report_xp = add_xp(
-            chat_id=chat_id,
-            char=target_char,
-            base_xp=base_xp,
-        )
-        report_text += f'{target_report_xp["text"]}\n\n'
-        report_text += f'O inimigo foi derrotado!!!\n\n'
-    elif is_miss:
-        section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
-        enemy_speech = get_enemy_counter_speech(enemy_char)
-        report_text += f'\n{section_head}\n>{enemy_speech}\n\n'
-        counter_report = enemy_char.to_attack(
-            defender_char=attacker_char,
-            defender_dice=10,
-            to_dodge=True,
+    # ATACA se o ALVO DO INIMIGO e o INIMIGO estiverem vivos
+    if target_char.is_alive and enemy_char.is_alive:
+        attack_report = attacker_char.to_attack(
+            defender_char=enemy_char,
+            defender_dice=None,
+            attacker_skill=attacker_skill,
+            to_dodge=to_dodge,
             to_defend=True,
             verbose=True,
             markdown=True
         )
-        report_text += counter_report['text']
-        save_char(char=attacker_char)
-    report_text = resize_text(report_text)
-    report_text = create_text_in_box(
-        text=report_text,
-        section_name=SECTION_TEXT_AMBUSH_COUNTER,
-        section_start=SECTION_START_DICT[attacker_action_name],
-        section_end=SECTION_END_DICT[attacker_action_name],
-        clean_func=escape_for_citation_markdown_v2,
-    )
-    await edit_message_text_and_forward(
-        function_caller='PLAYER_ATTACK()',
-        new_text=report_text,
-        user_ids=[attacker_id, target_id],
+        new_report_text = attack_report['text']
+        attacker_action_name = attack_report['attack']['action']
+        attacker_skill = attack_report['attack']['skill']
+        is_miss = attack_report['defense']['is_miss']
+
+        base_xp = get_base_xp_from_player_attack(
+            enemy_char=enemy_char,
+            attacker_char=attacker_char,
+            is_miss=is_miss
+        )
+        report_xp = add_xp(
+            chat_id=chat_id,
+            char=attacker_char,
+            base_xp=base_xp,
+        )
+        new_report_text += ALERT_SECTION_HEAD.format('*XP*') + '\n'
+        new_report_text += f'{report_xp["text"]}\n'
+
+        if attack_report['dead']:
+            reply_markup = REPLY_MARKUP_DEFAULT
+            base_xp = get_base_xp_from_player_attack(
+                enemy_char=enemy_char,
+                attacker_char=target_char,
+                is_miss=is_miss
+            )
+            target_report_xp = add_xp(
+                chat_id=chat_id,
+                char=target_char,
+                base_xp=base_xp,
+            )
+            new_report_text += f'{target_report_xp["text"]}\n\n'
+            new_report_text += f'O inimigo foi derrotado!!!\n\n'
+        elif is_miss:
+            section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
+            enemy_speech = get_enemy_counter_speech(enemy_char)
+            new_report_text += f'\n{section_head}\n>{enemy_speech}\n\n'
+            counter_report = enemy_char.to_attack(
+                defender_char=attacker_char,
+                defender_dice=10,
+                to_dodge=True,
+                to_defend=True,
+                verbose=True,
+                markdown=True
+            )
+            new_report_text += counter_report['text']
+            save_char(char=attacker_char)
+
+        skill_defense_type = attacker_skill.skill_defense
+        report_text = resize_text(report_text + new_report_text)
+        report_text = create_text_in_box(
+            text=report_text,
+            section_name=SECTION_TEXT_AMBUSH_COUNTER,
+            section_start=SECTION_START_DICT[skill_defense_type],
+            section_end=SECTION_END_DICT[skill_defense_type],
+            clean_func=escape_for_citation_markdown_v2,
+        )
+        add_attacker_id_to_ambush_dict(
+            context=context,
+            enemy_id=enemy_id,
+            attacker_id=attacker_id,
+        )
+        await add_enemy_counter(
+            user_id=attacker_id,
+            enemy=enemy_char,
+            query=query
+        )
+    # NÃO ATACA se o ALVO DO INIMIGO ou o INIMIGO estiverem mortos
+    else:
+        if target_char.is_dead:
+            report_text = (
+                f'O ataque falhou, pois '
+                f'*{enemy_char.full_name_with_level}* fugiu já que '
+                f'*{target_char.player_name}* está morto.'
+            )
+        elif enemy_char.is_dead:
+            report_text = (
+                f'O ataque falhou, pois '
+                f'*{enemy_char.full_name_with_level}* está morto.'
+            )
+        print(report_text)
+        report_text = new_report_text = create_text_in_box(
+            text=report_text,
+            section_name=SECTION_TEXT_FAIL_AMBUSH_COUNTER,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+
+    try:
+        await edit_message_text_and_forward(
+            function_caller='PLAYER_ATTACK()',
+            new_text=report_text,
+            user_ids=[attacker_id, target_id],
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
+            reply_markup=reply_markup
+        )
+    except BadRequest as e:
+        if e.message == 'Message to edit not found':
+            remove_enemy_attack_job(
+                context=context,
+                user_id=target_id,
+                enemy_char=enemy_char
+            )
+            remove_ambush_enemy(context=context, enemy_id=enemy_id)
+            bad_request_text = (
+                f'A mensagem original da emboscada, de id *{message_id}*, '
+                f'não existe mais. Por isso, '
+                f'*{enemy_char.full_name_with_level}* foi retirado do '
+                f'dicionário de emboscada.'
+            )
+            bad_request_text = create_text_in_box(
+                text=bad_request_text,
+                section_name=SECTION_TEXT_EXCOMMUNICATED,
+                section_start=SECTION_HEAD_FAIL_START,
+                section_end=SECTION_HEAD_FAIL_END,
+            )
+            await reply_text(
+                function_caller='PLAYER_ATTACK()',
+                text=bad_request_text,
+                context=context,
+                user_id=target_id,
+                update=update,
+                need_response=False,
+                allow_sending_without_reply=True,
+                markdown=True,
+            )
+
+    set_message_text_from_ambush_dict(
         context=context,
-        chat_id=chat_id,
-        message_id=message_id,
-        need_response=False,
-        markdown=True,
-        reply_markup=reply_markup
+        enemy_id=enemy_id,
+        new_message_text=report_text,
     )
 
+    # Dropa itens do ATACANTE se ouve um contra-ataque e ele morreu
     if counter_report and counter_report['dead']:
         user_id = attacker_char.player_id
         player_name = attacker_char.player_name
@@ -984,12 +1033,31 @@ async def player_attack(
             silent=True,
         )
 
+    if enemy_char.is_dead or target_char.is_dead:
+        remove_enemy_attack_job(
+            context=context,
+            user_id=target_id,
+            enemy_char=enemy_char
+        )
+        remove_ambush_enemy(context=context, enemy_id=enemy_id)
+
+    if enemy_char.is_dead and attacker_char.is_alive:
+        await enemy_drop_random_loot(
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            enemy_char=enemy_char,
+            from_attack=True,
+        )
+
+    return {'text': new_report_text}
+
 
 def resize_text(
     text: str,
     spliter: str = TEXT_SEPARATOR,
 ) -> str:
-    '''Reduz o tamanho do texto para que a mensagem não ultrapasse 
+    '''Reduz o tamanho do texto para que a mensagem não ultrapasse
     o limite de caracteres.
     '''
 
@@ -1066,8 +1134,15 @@ def get_enemy_counter_speech(enemy: NPCharacter) -> str:
     return f'>{text}'
 
 
-def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
-    '''Adiciona o inimigo ao dicionário de ambushes, em que a chave é a 
+def put_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy: NPCharacter,
+    message_id: int,
+    message_text: str,
+    reply_markup: InlineKeyboardMarkup,
+    target_id: int,
+):
+    '''Adiciona o inimigo ao dicionário de ambushes, em que a chave é a
     enemy_id.
     '''
 
@@ -1076,6 +1151,10 @@ def put_ambush_dict(context: ContextTypes.DEFAULT_TYPE, enemy: NPCharacter):
     ambushes[enemy_id] = {
         'enemy': enemy,
         'attacker_id_list': [],
+        'message_id': message_id,
+        'message_text': message_text,
+        'reply_markup': reply_markup,
+        'target_id': target_id,
     }
     if not 'ambushes' in context.chat_data:
         context.chat_data['ambushes'] = ambushes
@@ -1089,8 +1168,10 @@ def add_attacker_id_to_ambush_dict(
     '''Adiciona o attacker_id ao dicionário ambushes.
     '''
 
-    ambushes = context.chat_data.get('ambushes', {})
-    enemy_ambush = ambushes.get(enemy_id, {})
+    enemy_ambush = get_enemy_dict_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    )
     if enemy_ambush:
         attacker_id_list = enemy_ambush['attacker_id_list']
         attacker_id_list.append(attacker_id)
@@ -1122,47 +1203,82 @@ def get_all_enemy_id_from_ambush_dict(
     return list(ambushes.keys())
 
 
-def get_all_enemy_from_ambush_dict(
-    context: ContextTypes.DEFAULT_TYPE
+def get_all_enemy_char_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    filter_target_id: int = None,
 ) -> List[NPCharacter]:
     ambushes = context.chat_data.get('ambushes', {})
     return [
         value['enemy']
         for value in ambushes.values()
+        if filter_target_id != value['target_id'] or value['enemy'].is_any_boss
     ]
 
 
-async def sub_action_point(char: BaseCharacter, query: CallbackQuery):
-    char.sub_action_points(1)
-    save_char(char=char)
-
-    await answer(query=query, text=char.current_action_points_text)
-
-
-async def add_enemy_counter(
-    user_id: int,
-    enemy: NPCharacter,
-    query: CallbackQuery
-):
-    if enemy.is_dead:
-        player_model = PlayerModel()
-        player: Player = player_model.get(user_id)
-        report = player.add_enemy_counter(enemy=enemy)
-        player_model.save(player)
-
-        await answer(query=query, text=report['text'])
-
-
-def get_enemy_from_ambush_dict(
+def get_enemy_dict_from_ambush_dict(
     context: ContextTypes.DEFAULT_TYPE,
-    enemy_id: str
-) -> NPCharacter:
-    '''Retorna um NPCharacter do dicionário ambushes a partir do enemy_id e o 
-    remove do dicionário.
+    enemy_id: str,
+) -> dict:
+    '''Retorna o dicionário do inimigo a partir do enemy_id.
     '''
 
     ambushes = context.chat_data.get('ambushes', {})
-    return ambushes.get(enemy_id, {}).get('enemy', None)
+    return ambushes.get(enemy_id, {})
+
+
+def get_enemy_char_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str,
+) -> NPCharacter:
+    '''Retorna um NPCharacter do dicionário ambushes a partir do enemy_id e o
+    remove do dicionário.
+    '''
+
+    return get_enemy_dict_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    ).get('enemy', None)
+
+
+def get_message_text_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str,
+) -> str:
+    '''Retorna a mensagem do inimigo a partir do enemy_id.
+    '''
+
+    return get_enemy_dict_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    ).get('message_text', '')
+
+
+def get_reply_markup_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str,
+) -> str:
+    '''Retorna a mensagem do inimigo a partir do enemy_id.
+    '''
+
+    return get_enemy_dict_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    ).get('reply_markup', '')
+
+
+def set_message_text_from_ambush_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    enemy_id: str,
+    new_message_text: str,
+):
+    '''Retorna a mensagem do inimigo a partir do enemy_id.
+    '''
+
+    enemy_dict = get_enemy_dict_from_ambush_dict(
+        context=context,
+        enemy_id=enemy_id,
+    )
+    enemy_dict['message_text'] = new_message_text
 
 
 def remove_ambush_enemy(
@@ -1175,6 +1291,46 @@ def remove_ambush_enemy(
     ambushes = context.chat_data.get('ambushes', {})
     ambushes.pop(enemy_id, None)
     context.chat_data['ambushes'] = ambushes
+
+
+async def sub_action_point(
+    context: ContextTypes.DEFAULT_TYPE,
+    char: BaseCharacter,
+    query: CallbackQuery,
+    value: int = 1,
+):
+    '''Subtrai Pontos de Ação do personagem, salva o personagem no banco,
+    cria job de recuperação de Pontos de Ação e
+    envia pop-up com os Pontos de Ação atualizados.
+    '''
+
+    chat_id = query.message.chat_id
+    user_id = char.player_id
+    char.sub_action_points(value)
+    save_char(char=char)
+    create_job_rest_action_point(
+        context=context,
+        chat_id=chat_id,
+        user_id=user_id,
+        char=char,
+    )
+
+    await answer(query=query, text=char.current_action_points_text)
+
+
+async def add_enemy_counter(
+    user_id: int,
+    enemy: NPCharacter,
+    query: CallbackQuery,
+):
+    if enemy.is_dead:
+        player_model = PlayerModel()
+        player: Player = player_model.get(user_id)
+        report = player.add_enemy_counter(enemy=enemy)
+        player_model.save(player)
+
+        if query:
+            await answer(query=query, text=report['text'])
 
 
 async def send_ambush_message(
@@ -1297,7 +1453,8 @@ def remove_enemy_attack_job(
 
 async def enemy_drop_random_loot(
     context: ContextTypes.DEFAULT_TYPE,
-    update: Update,
+    chat_id: int,
+    message_id: int,
     enemy_char: NPCharacter,
     from_attack: bool,
 ):
@@ -1305,7 +1462,6 @@ async def enemy_drop_random_loot(
     '''
 
     item_model = ItemModel()
-    chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     points_multiplier = enemy_char.bs.points_multiplier
 
@@ -1361,7 +1517,8 @@ async def enemy_drop_random_loot(
         context=context,
         items=drops,
         text=text,
-        update=update,
+        chat_id=chat_id,
+        message_id=message_id,
         silent=silent,
     )
 

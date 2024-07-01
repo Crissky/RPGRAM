@@ -163,9 +163,12 @@ def create_job_rest_action_point(
     context: ContextTypes.DEFAULT_TYPE,
     chat_id: int,
     user_id: int,
+    char: BaseCharacter = None,
 ):
-    char_model = CharacterModel()
-    char: BaseCharacter = char_model.get(user_id)
+    if not isinstance(char, BaseCharacter):
+        char_model = CharacterModel()
+        char: BaseCharacter = char_model.get(user_id)
+
     job_name = get_rest_action_points_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
     if not current_jobs and not char.is_full_action_points:

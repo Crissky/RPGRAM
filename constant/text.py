@@ -5,6 +5,11 @@ TITLE_HEAD = '┏─━─━─━─━∞◆∞━─━─━─━─┓\n{
 SHOP_TITLE_HEAD = '┏─━─━─━─━∞🉐∞━─━─━─━─┓\n{}\n┗─━─━─━─━∞🈹∞━─━─━─━─┛'
 SECTION_HEAD = '◇── {} ──◇'
 ALERT_SECTION_HEAD = '{} ──◇'
+ALERT_SECTION_HEAD_ADD_STATUS = (
+    f'{ALERT_SECTION_HEAD.format("*STATUS ADICIONADOS*")}\n'
+)
+
+# FUNCTION SECTIONs
 SECTION_HEAD_ENEMY_START = '╔══*👹👾 {} 👾👹*══╗'
 SECTION_HEAD_ENEMY_END = '╚══*👹👾 {} 👾👹*══╝'
 SECTION_HEAD_ATTACK_START = '╔══*🗡 {} 🔥*══╗'
@@ -15,6 +20,8 @@ SECTION_HEAD_PRECISION_ATTACK_START = '╔══*💫 {} 💫*══╗'
 SECTION_HEAD_PRECISION_ATTACK_END = '╚══*💫 {} 💫*══╝'
 SECTION_HEAD_MAGICAL_ATTACK_START = '╔══*✨ {} ✨*══╗'
 SECTION_HEAD_MAGICAL_ATTACK_END = '╚══*✨ {} ✨*══╝'
+SECTION_HEAD_TRUE_ATTACK_START = '╔══*☄ {} ☄*══╗'
+SECTION_HEAD_TRUE_ATTACK_END = '╚══*☄ {} ☄*══╝'
 SECTION_HEAD_TREASURE_START = '╔══.·:·.🎁❔ {} ❓🎁.·:·.══╗'
 SECTION_HEAD_TREASURE_END = '╚══.·:·.🎁❓ {} ❔🎁.·:·.══╝'
 SECTION_HEAD_OPEN_TREASURE_START = '╔══.·:·.🎁💎 {} 💎🎁.·:·.══╗'

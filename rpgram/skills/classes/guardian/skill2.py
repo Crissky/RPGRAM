@@ -5,7 +5,12 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum
-from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
+from rpgram.enums.skill import (
+    GuardianSkillEnum,
+    SkillDefenseEnum,
+    SkillTypeEnum,
+    TargetEnum
+)
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
@@ -32,7 +37,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 class HeavyChargeSkill(BaseSkill):
-    NAME = 'Investida Pesada'
+    NAME = GuardianSkillEnum.HEAVYCHARGE.value
     DESCRIPTION = (
         f'Assume uma postura ofensiva, avançando contra o inimigo '
         f'usando seu corpo massivo como arma, causando dano com base em '
