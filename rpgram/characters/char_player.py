@@ -19,7 +19,7 @@ class PlayerCharacter(BaseCharacter):
         classe: Classe,
         race: Race,
         equips: Equips = None,
-        status: Status = None,
+        status: Status = {},
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
