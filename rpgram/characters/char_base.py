@@ -44,7 +44,7 @@ class BaseCharacter:
         race: Race,
         player_id: int = None,
         equips: Equips = None,
-        status: Status = None,
+        status: Status = {},
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -81,7 +81,7 @@ class BaseCharacter:
         self.__race = race
         self.__player_id = player_id
         self.__equips = equips
-        self.__status = Status()
+        self.__status = Status(conditions=[])
         self.__base_stats = BaseStats(
             level=level,
             xp=xp,
