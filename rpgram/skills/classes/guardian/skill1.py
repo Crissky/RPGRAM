@@ -72,8 +72,8 @@ class RobustBlockSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        rbc = RobustBlockCondition(character=self.char, level=self.level)
-        report_list = self.char.status.set_conditions(rbc)
+        condition = RobustBlockCondition(character=self.char, level=self.level)
+        report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )

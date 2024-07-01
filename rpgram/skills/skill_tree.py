@@ -77,7 +77,8 @@ class SkillTree:
             old_level = skill.level
             requirements_report = skill.requirements.check_requirements(
                 self.character,
-                level_rank=old_level + 1,
+                level=old_level + 1,
+                rank=skill.rank,
                 to_raise_error=False
             )
             if requirements_report['pass']:

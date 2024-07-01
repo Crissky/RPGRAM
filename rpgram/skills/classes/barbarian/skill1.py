@@ -80,6 +80,7 @@ class WildStrikeSkill(BaseSkill):
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
+        'level': 40,
         'classe_name': ClasseEnum.BARBARIAN.value,
         'skill_list': [FuriousAttackSkill.NAME]
     })
