@@ -691,7 +691,8 @@ async def action_use_skill(
                 markdown_skill_tree_sheet = (
                     f'*{char.player_name}* não pôde usar a habilidade '
                     f'*{skill.name}*, pois o(s) alvo(s) não estão '
-                    f' mais disponíveis. Tente novamente mais tarde.'
+                    f' mais disponíveis.\n'
+                    f'Tente novamente mais tarde.'
                 )
 
         markdown_skill_tree_sheet += f'\n\n*{char.current_action_points_text}*'
