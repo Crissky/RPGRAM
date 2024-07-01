@@ -788,6 +788,7 @@ async def enemy_attack(
     )
     report_text += attack_report['text']
     attacker_action_name = attack_report['attack']['action']
+    attacker_skill: BaseSkill = attack_report['attack']['skill']
 
     if not attack_report['dead']:
         base_xp = get_base_xp_from_enemy_attack(enemy_char, defender_char)
@@ -810,11 +811,12 @@ async def enemy_attack(
     else:
         save_char(char=defender_char)
 
+    skill_defense_type = attacker_skill.skill_defense
     report_text = create_text_in_box(
         text=report_text,
         section_name=section_name,
-        section_start=SECTION_START_DICT[attacker_action_name],
-        section_end=SECTION_END_DICT[attacker_action_name]
+        section_start=SECTION_START_DICT[skill_defense_type],
+        section_end=SECTION_END_DICT[skill_defense_type]
     )
 
     response = await edit_message_text_and_forward(
@@ -885,7 +887,7 @@ async def player_attack(
         )
         new_report_text = attack_report['text']
         attacker_action_name = attack_report['attack']['action']
-        attacker_skill = attack_report['attack']['skill']
+        attacker_skill: BaseSkill = attack_report['attack']['skill']
         is_miss = attack_report['defense']['is_miss']
 
         base_xp = get_base_xp_from_player_attack(
