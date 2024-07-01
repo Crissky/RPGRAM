@@ -5,7 +5,9 @@ informações dos jogadores.
 
 
 from operator import attrgetter
+from time import sleep
 from typing import List, Type
+from bson import ObjectId
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
@@ -16,6 +18,7 @@ from telegram.ext import (
 )
 
 from bot.constants.bag import NAV_BACK_BUTTON_TEXT
+from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.constants.skill_tree import (
     ACCESS_DENIED,
     ACTION_LEARN_SKILL_BUTTON_TEXT,
@@ -49,11 +52,23 @@ from bot.constants.skill_tree import (
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.enemy import (
-    get_all_enemy_from_ambush_dict,
+    get_all_enemy_char_from_ambush_dict,
     get_all_enemy_id_from_ambush_dict,
+    get_enemy_char_from_ambush_dict,
+    get_enemy_dict_from_ambush_dict,
+    player_attack,
     sub_action_point
 )
-from bot.functions.char import get_char_attribute, get_player_chars_from_group, save_char
+from bot.decorators.char import (
+    confusion,
+    skip_if_dead_char,
+    skip_if_immobilized
+)
+from bot.functions.char import (
+    get_char_attribute,
+    get_player_chars_from_group,
+    save_char
+)
 from bot.functions.chat import (
     call_telegram_message_function,
     callback_data_to_dict,
@@ -83,12 +98,16 @@ from function.text import create_text_in_box
 
 from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
-from rpgram.enums.skill import SkillTypeEnum, TargetEnum
+from rpgram.enums.skill import TARGET_ENUM_NOT_SELF, SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
 from rpgram.item import Item
 from rpgram.skills.factory import skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
 from rpgram.skills.skill_tree import ACTION_POINTS_EMOJI_TEXT
+
+
+ENEMY_TEAM_TAG = 'enemy_team'
+PLAYER_TEAM_TAG = 'player_team'
 
 
 @alert_if_not_chat_owner_to_anyway(alert_text=ACCESS_DENIED)
@@ -566,6 +585,9 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@skip_if_dead_char
+@skip_if_immobilized
+@confusion()
 @print_basic_infos
 async def action_use_skill(
     update: Update,
@@ -587,20 +609,23 @@ async def action_use_skill(
     skill_index = data['action_use_skill']
     action_use_target = data['action_use_target']
     skill = None
+    markdown_skill_tree_list = []
 
     try:
         skill_list = char.skill_tree.skill_list
         skill: BaseSkill = skill_list[skill_index]
+        target_type = skill.target_type
+        skill_type = skill.skill_type
         markdown_skill_tree_sheet = (
             f'ESTA FUNÇÃO AINDA NÃO FOI IMPLEMENTADA!!!\n\n'
             f'{skill}'
         )
-        target_type = skill.target_type
 
         if skill.cost > char.current_action_points:
             markdown_skill_tree_sheet = (
-                f'Você não tem *{skill.cost}* *{ACTION_POINTS_EMOJI_TEXT}* '
-                f'para usar esta habilidade.'
+                f'*{char.player_name}* não tem '
+                f'*{skill.cost}* *{ACTION_POINTS_EMOJI_TEXT}* '
+                f'para usar *{skill.name}*.'
             )
         elif target_type == TargetEnum.SELF and action_use_target == user_id:
             skill_report = skill.function()
@@ -611,8 +636,65 @@ async def action_use_skill(
                 value=skill.cost,
             )
             markdown_skill_tree_sheet = skill_report['text']
+        elif target_type in TARGET_ENUM_NOT_SELF:
+            target_list = get_target_list(
+                context=context,
+                chat_id=chat_id,
+                action_use_target=action_use_target,
+            )
+            if skill_type == SkillTypeEnum.ATTACK:
+                char_model = CharacterModel()
+                markdown_skill_tree_sheet = (
+                    f'*{char.player_name}* iniciou um ataque com '
+                    f'*{skill.name}*.'
+                )
+                for enemy in target_list:
+                    enemy_id = str(enemy.player_id)
+                    enemy_dict = get_enemy_dict_from_ambush_dict(
+                        context=context,
+                        enemy_id=enemy_id,
+                    )
+                    enemy_message_id = enemy_dict['message_id']
+                    target_id = enemy_dict['target_id']
+                    target_char: BaseCharacter = char_model.get(target_id)
+                    attack_report = await player_attack(
+                        update=update,
+                        context=context,
+                        chat_id=chat_id,
+                        message_id=enemy_message_id,
+                        enemy_char=enemy,
+                        attacker_char=char,
+                        target_char=target_char,
+                        to_dodge=True,
+                        attacker_skill=skill,
+                        query=query,
+                    )
+                    markdown_skill_tree_list.append(attack_report['text'])
+            else:
+                markdown_skill_tree_sheet = (
+                    f'*{char.player_name}* usou a habilidade '
+                    f'*{skill.name}*.'
+                )
+                for char in target_list:
+                    skill_report = skill.function(char)
+                    save_char(char)
+                    markdown_skill_tree_list.append(skill_report['text'])
 
-        markdown_skill_tree_sheet += f'\n\n{char.current_action_points_text}'
+            if target_list:
+                await sub_action_point(
+                    context=context,
+                    char=char,
+                    query=query,
+                    value=skill.cost,
+                )
+            else:
+                markdown_skill_tree_sheet = (
+                    f'*{char.player_name}* não pôde usar a habilidade '
+                    f'*{skill.name}*, pois o(s) alvo(s) não estão '
+                    f' mais disponíveis. Tente novamente mais tarde.'
+                )
+
+        markdown_skill_tree_sheet += f'\n\n*{char.current_action_points_text}*'
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
@@ -641,6 +723,26 @@ async def action_use_skill(
         markdown=True,
         reply_markup=reply_markup,
     )
+
+    for markdown_text in markdown_skill_tree_list:
+        markdown_text = create_text_in_box(
+            text=markdown_text,
+            section_name=SECTION_TEXT_USE_SKILL_TREE,
+            section_start=SECTION_HEAD_SKILL_TREE_START,
+            section_end=SECTION_HEAD_SKILL_TREE_END
+        )
+        await reply_text(
+            function_caller='SKILL_TREE.ACTION_USE_SKILL()',
+            text=markdown_text,
+            context=context,
+            user_id=user_id,
+            update=update,
+            need_response=False,
+            allow_sending_without_reply=True,
+            markdown=True,
+            silent=silent,
+        )
+        sleep(1)
 
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
@@ -886,7 +988,10 @@ def get_use_action_buttons(
     if target_type == TargetEnum.SINGLE:
         use_action_buttons_list = []
         if skill_type == SkillTypeEnum.ATTACK:
-            enemy_list = get_all_enemy_from_ambush_dict(context)
+            enemy_list = get_all_enemy_char_from_ambush_dict(
+                context=context,
+                filter_target_id=user_id
+            )
             for enemy in enemy_list[:10]:
                 enemy_id = str(enemy.player_id)
                 enemy_name = enemy.name
@@ -922,9 +1027,9 @@ def get_use_action_buttons(
 
     if target_type == TargetEnum.TEAM:
         if skill_type == SkillTypeEnum.ATTACK:
-            action_use_target = 'enemy_team'
+            action_use_target = ENEMY_TEAM_TAG
         else:
-            action_use_target = 'player_team'
+            action_use_target = PLAYER_TEAM_TAG
         return [[
             InlineKeyboardButton(
                 text=(
@@ -980,6 +1085,40 @@ def get_back_button(
             })
         )
     ]
+
+
+def get_target_list(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    action_use_target: str,
+) -> List[BaseCharacter]:
+    target_list = []
+
+    # TODOS OS INIMIGOS
+    if action_use_target in [ENEMY_TEAM_TAG, TargetEnum.ALL.value]:
+        enemy_list = get_all_enemy_char_from_ambush_dict(context)
+        target_list.extend(enemy_list)
+
+    # TODOS OS JOGADORES
+    if action_use_target in [PLAYER_TEAM_TAG, TargetEnum.ALL.value]:
+        player_list = get_player_chars_from_group(chat_id=chat_id)
+        target_list.extend(player_list)
+
+    # UM INIMIGO
+    if ObjectId.is_valid(action_use_target):
+        enemy_char = get_enemy_char_from_ambush_dict(
+            context=context,
+            enemy_id=action_use_target
+        )
+        target_list.append(enemy_char)
+
+    # UM JOGADOR
+    if isinstance(action_use_target, int):
+        char_model = CharacterModel()
+        player_char = char_model.get(action_use_target)
+        target_list.append(player_char)
+
+    return [target for target in target_list if target is not None]
 
 
 SKILL_TREE_HANDLERS = [

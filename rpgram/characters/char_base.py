@@ -373,7 +373,7 @@ class BaseCharacter:
             attacker_dice_text = attacker_dice.text
             defender_dice_text = defender_dice.text
             report['text'] = (
-                f'{defender_player_name} *ESQUIVOU DO ATAQUE*\n'
+                f'*{defender_player_name}* *ESQUIVOU DO ATAQUE*\n'
                 f'{EmojiEnum.DEFEND.value}{defender_dice_text} 𝗫 '
                 f'{EmojiEnum.ATTACK.value}{attacker_dice_text}.'
             )
@@ -427,7 +427,7 @@ class BaseCharacter:
                     damage_or_defend_text += ', '.join(damage_text_list)
             report['text'] = (
                 f'*{self.full_name_with_level}* *ATACOU* '
-                f'{defender_player_name}{damage_or_defend_text}.\n\n'
+                f'*{defender_player_name}*{damage_or_defend_text}.\n\n'
             )
 
             # Put the Dice Paragraph of the report['text']
@@ -476,7 +476,7 @@ class BaseCharacter:
 
             # Put the Dead Paragraph of the report['text']
             if defender_char.is_dead:
-                report['text'] += f'\n\n{defender_player_name} morreu!'
+                report['text'] += f'\n\n*{defender_player_name}* morreu!'
                 if rest_command:
                     report['text'] += (
                         f' Use o comando /{rest_command} para descansar.'
@@ -503,6 +503,7 @@ class BaseCharacter:
                 'is_critical': attacker_dice.is_critical,
                 'atk': base_power_value,
                 'boosted_atk': boosted_power_value,
+                'skill': attacker_skill,
             },
             'defender': defender_char,
             'defender_char': defender_char,
