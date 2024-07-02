@@ -198,8 +198,12 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     min_level = max(1, int(level / 20 * 0.90))
     max_level = max(2, int(level / 20 * 1.10))
     heal_low_hp_bonus = 1 + player_character.cs.irate_hp
+    status_debuff_bonus = player_character.status.total_level_debuff // 10
     condition_quantity = randint(min_level, max_level)
-    condition_quantity = int(condition_quantity * heal_low_hp_bonus)
+    condition_quantity = int(
+        (condition_quantity + status_debuff_bonus) * heal_low_hp_bonus
+    )
+
     if player_character.is_dead:
         report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
@@ -316,8 +320,11 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         battle: Battle = battle_model.get(query={
             '$or': [{'blue_team': character_id}, {'red_team': character_id}]
         })
+        player_need_rest = (
+            player_character.is_damaged or player_character.is_debuffed
+        )
 
-        if battle or current_jobs or player_character.is_healed:
+        if battle or current_jobs or not player_need_rest:
             continue
         else:
             create_job_rest_cure(

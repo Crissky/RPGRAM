@@ -430,6 +430,18 @@ class Status:
             ],
         )
 
+    @property
+    def total_level(self) -> int:
+        return sum(condition.level for condition in self.__conditions)
+
+    @property
+    def total_level_debuff(self) -> int:
+        return sum(
+            condition.level
+            for condition in self.__conditions
+            if isinstance(condition, DebuffCondition)
+        )
+
     # Getters
     @property
     def debuffed(self) -> bool:

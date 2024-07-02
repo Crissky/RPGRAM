@@ -1170,9 +1170,11 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
         text=(
             f'{SECTION_HEAD.format("DEPLOYANDO")}\n'
             f'Viajantes destemidos, uma atualização mágica acaba de ser '
-            f'lançada em mim! Porém, como toda mudança encantada, aqueles que '
-            f'estavam desfrutando de um merecido descanso precisarão usar o '
-            f'/{rest_commands[0]} novamente para renovar suas energias.\n\n'
+            f'lançada em mim! '
+            f'Porém, como toda mudança encantada, aqueles que estavam '
+            f'desfrutando de um merecido descanso foram interrompidos, '
+            f'por isso todos que estiverem cansandos retomarão o descanso '
+            f'em breve para renovar suas energias.\n\n'
             f'{" ".join(player_name)}'
         ),
     )

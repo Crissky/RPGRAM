@@ -27,6 +27,9 @@ from rpgram.conditions.heal import (
 )
 from rpgram.conditions.self_skill import (
     FuriousFuryCondition,
+    MysticalConfluenceCondition,
+    MysticalProtectionCondition,
+    MysticalVigorCondition,
     RobustBlockCondition
 )
 from rpgram.enums.debuff import (
@@ -47,7 +50,8 @@ from rpgram.enums.debuff import (
 from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
-    GuardianSkillEnum
+    GuardianSkillEnum,
+    SorcererSkillEnum
 )
 
 
@@ -60,6 +64,8 @@ def condition_factory(
     condition_name: str = None,
     turn: int = None,
     level: int = None,
+    power: int = None,
+    damage: int = None,
     character: 'BaseCharacter' = None,
 ) -> Condition:
     from rpgram.characters.char_base import BaseCharacter
@@ -70,12 +76,22 @@ def condition_factory(
     if isinstance(turn, int):
         kwargs['turn'] = turn
     elif turn is not None:
-        raise TypeError(f'Turno deve ser do tipo inteiro: {type(turn)}')
+        raise TypeError(f'Turn deve ser do tipo inteiro: {type(turn)}')
 
     if isinstance(level, int):
         kwargs['level'] = level
     elif level is not None:
         raise TypeError(f'Level deve ser do tipo inteiro: {type(level)}')
+
+    if isinstance(power, int):
+        kwargs['power'] = power
+    elif power is not None:
+        raise TypeError(f'Power deve ser do tipo inteiro: {type(power)}')
+
+    if isinstance(damage, int):
+        kwargs['damage'] = damage
+    elif damage is not None:
+        raise TypeError(f'Damage deve ser do tipo inteiro: {type(damage)}')
 
     if isinstance(character, BaseCharacter):
         kwargs['character'] = character
@@ -132,6 +148,13 @@ def condition_factory(
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
+    # SORCERER BUFFS
+    elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
+        condition_class = MysticalProtectionCondition
+    elif name == SorcererSkillEnum.MYSTICAL_CONFLUENCE.value:
+        condition_class = MysticalConfluenceCondition
+    elif name == SorcererSkillEnum.MYSTICAL_VIGOR.value:
+        condition_class = MysticalVigorCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
 

@@ -1,3 +1,5 @@
+import re
+
 from abc import abstractmethod
 from itertools import chain
 from typing import (
@@ -459,9 +461,11 @@ class BaseSkill:
     def __repr__(self) -> str:
         special_damage_text = self.special_damage_text
         if special_damage_text:
+            special_damage_text = re.sub(r'\s+', ' ', special_damage_text)
+            special_damage_text = special_damage_text.strip()
             special_damage_text = f' + ({special_damage_text})'
         return (
-            f'<{self.__class__.__name__}-Power: '
+            f'<{self.__class__.__name__}{self.level}-Power: '
             f'{self.power}{special_damage_text}>'
         )
 
