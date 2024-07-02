@@ -37,6 +37,7 @@ class SorcererSkillEnum(Enum):
     MYSTICAL_CONFLUENCE = 'Confluência Mística'
     MYSTICAL_VIGOR = 'Vigor Místico'
     PRISMATIC_SHOT = 'Disparo Prismático'
+    PRISMATIC_SCINTILLATION = 'Cintilação Prismática'
 
 
 class WarriorSkillEnum(Enum):
