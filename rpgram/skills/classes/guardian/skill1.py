@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from rpgram.conditions.barrier import GuardianShieldCondition
 from rpgram.conditions.self_skill import RobustBlockCondition
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
@@ -72,16 +73,77 @@ class RobustBlockSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = RobustBlockCondition(character=self.char, level=self.level)
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level
+        condition = RobustBlockCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Você se concentra em fortalecer a sua defesa assumindo uma '
-                f'postura defensiva aumentando a sua '
+                f'*{player_name}* se concentra em fortalecer a sua defesa '
+                f'assumindo uma postura defensiva aumentando a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class GuardianShieldSkill(BaseSkill):
+    NAME = GuardianSkillEnum.GUARDIAN_SHIELD.value
+    DESCRIPTION = (
+        f'Erguendo o escudo com fé inabalável, evoca um *Escudo Familiar '
+        f'Protetivo* que resguarda um aliado com uma barreira baseada na '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* por 5 turnos.'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.GUARDIAN.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 2
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=GuardianShieldSkill.NAME,
+            description=GuardianShieldSkill.DESCRIPTION,
+            rank=GuardianShieldSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.DEFENSE,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=GuardianShieldSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        power = self.char.cs.physical_defense
+        level = self.level
+        condition = GuardianShieldCondition(power=power, level=level)
+        report_list = char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* se impõe contra o perigo, evocando um '
+                f'*Escudo Familiar Protetivo* para resguardar '
+                f'*{char.player_name}* com uma barreira de '
+                f'{condition.barrier_points_text}.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -99,3 +161,9 @@ if __name__ == '__main__':
     print(skill.function())
     print(GUARDIAN_CHARACTER.cs.physical_defense)
     GUARDIAN_CHARACTER.skill_tree.learn_skill(RobustBlockSkill)
+
+    skill = GuardianShieldSkill(GUARDIAN_CHARACTER)
+    print(skill)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    print(skill.function(GUARDIAN_CHARACTER))
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(GuardianShieldSkill)

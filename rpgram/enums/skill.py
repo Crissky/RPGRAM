@@ -30,6 +30,7 @@ class BarbarianSkillEnum(Enum):
 
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
+    GUARDIAN_SHIELD = 'Escudo Guardião'
     HEAVY_CHARGE = 'Investida Pesada'
 
 

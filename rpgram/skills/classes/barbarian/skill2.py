@@ -71,15 +71,18 @@ class FuriousFurySkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = FuriousFuryCondition(character=self.char, level=self.level)
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level
+        condition = FuriousFuryCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Você perde a concentração e entra em um estado de *Fúria*, '
-                f'aumentando o seu '
+                f'*{player_name}* perde a concentração e entra em um estado '
+                f'de *Fúria*, aumentando o seu '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -127,18 +130,19 @@ class FuriousInstinctSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = FuriousInstinctCondition(
-            character=self.char,
-            level=self.level
-        )
+        player_name = self.char.player_name
+        level = self.level
+        char = self.char
+        condition = FuriousInstinctCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Você desperta um instinto que amplifica seus sentidos e '
-                f'afia suas habilidades de combate aumentando a sua '
+                f'*{player_name}* desperta um instinto que amplifica seus '
+                f'sentidos e afia suas habilidades de combate '
+                f'aumentando a sua '
                 f'*{DEXTERITY_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -166,4 +170,3 @@ if __name__ == '__main__':
     print(BARBARIAN_CHARACTER.bs.dexterity)
     print(BARBARIAN_CHARACTER.bs.multiplier_dexterity)
     BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousInstinctSkill)
-

@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from rpgram.conditions.barrier import GuardianShieldCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
     BerserkerCondition,
@@ -151,6 +152,8 @@ def condition_factory(
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
+    elif name == GuardianSkillEnum.GUARDIAN_SHIELD.value:
+        condition_class = GuardianShieldCondition
     # SORCERER BUFFS
     elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
         condition_class = MysticalProtectionCondition
