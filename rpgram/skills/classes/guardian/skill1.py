@@ -131,7 +131,8 @@ class GuardianShieldSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
-        power = self.char.cs.physical_defense
+        dice = self.dice
+        power = dice.boosted_physical_defense
         level = self.level
         condition = GuardianShieldCondition(power=power, level=level)
         report_list = char.status.set_conditions(condition)
@@ -143,7 +144,8 @@ class GuardianShieldSkill(BaseSkill):
                 f'*{player_name}* se impõe contra o perigo, evocando um '
                 f'*Escudo Familiar Protetivo* para resguardar '
                 f'*{char.player_name}* com uma barreira de '
-                f'{condition.barrier_points_text}.\n\n'
+                f'{condition.barrier_points_text}.'
+                f'({dice.text})\n\n.'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )

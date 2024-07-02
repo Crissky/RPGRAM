@@ -277,7 +277,7 @@ class MysticalConfluenceCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Conjunto de energias *Místicas* que aumentam o '
+            f'Concetração de energias *Místicas* que aumenta o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_magical_attack} pontos '
             f'(100%{EmojiEnum.INTELLIGENCE.value} + 5% x Nível) '
@@ -329,7 +329,7 @@ class MysticalVigorCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Conjunto de energias *Místicas* que aumentam o '
+            f'Conjunto de energias *Místicas* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
             f'(200%{EmojiEnum.INTELLIGENCE.value} + 10% x Nível) e'

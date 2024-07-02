@@ -675,9 +675,9 @@ async def action_use_skill(
                     f'*{char.player_name}* usou a habilidade '
                     f'*{skill.name}*.'
                 )
-                for char in target_list:
-                    skill_report = skill.function(char)
-                    save_char(char)
+                for allie_char in target_list:
+                    skill_report = skill.function(allie_char)
+                    save_char(allie_char)
                     markdown_skill_tree_list.append(skill_report['text'])
 
             if target_list:
