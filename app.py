@@ -153,7 +153,14 @@ def main() -> None:
         name='JOB_CREATE_PUZZLE',
         job_kwargs=BASE_JOB_KWARGS,
     )
-
+    application.job_queue.run_once(
+        callback=autorest_midnight,
+        when=timedelta(minutes=2),
+        chat_id=MY_GROUP_ID,
+        name='JOB_AUTOREST_MIDNIGHT',
+        job_kwargs=BASE_JOB_KWARGS,
+    )
+    
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
