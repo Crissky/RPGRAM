@@ -917,7 +917,7 @@ async def player_attack(
             )
             new_report_text += f'{target_report_xp["text"]}\n\n'
             new_report_text += f'O inimigo foi derrotado!!!\n\n'
-        elif is_miss:
+        elif is_miss and attacker_char.is_alive:
             section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
             enemy_speech = get_enemy_counter_speech(enemy_char)
             new_report_text += f'\n{section_head}\n>{enemy_speech}\n\n'
