@@ -274,6 +274,12 @@ class BaseSkill:
             return 1 + (level / 20)
 
     @property
+    def cost_text(self) -> str:
+        if self.cost == 0:
+            return ''
+        return f'{EmojiEnum.ACTION_POINTS.value}*Custo*: {self.cost}\n'
+
+    @property
     def hit_multiplier(self) -> float:
         return 1.0
 
@@ -405,6 +411,7 @@ class BaseSkill:
             f'*{self.name.upper()}*: {self.description}\n\n'
             f'{self.rank_text}'
             f'{self.level_text}'
+            f'{self.cost_text}'
             f'{self.power_text}'
             f'{self.hit_text}'
             f'{self.target_type_text}'
