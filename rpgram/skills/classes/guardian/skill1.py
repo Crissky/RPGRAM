@@ -143,9 +143,8 @@ class GuardianShieldSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se impõe contra o perigo, evocando um '
                 f'*Escudo Familiar Protetivo* para resguardar '
-                f'*{char.player_name}* com uma barreira de '
-                f'{condition.barrier_points_text}.'
-                f'({dice.text})\n\n.'
+                f'*{char.player_name}* com uma barreira '
+                f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
