@@ -111,8 +111,10 @@ class BaseCharacter:
         self.__status.set_conditions(*condition_list)
         self.__skill_tree = SkillTree(
             character=self,
-            **skill_tree,
+            current_action_points=skill_tree['current_action_points'],
+            max_action_points=skill_tree['max_action_points'],
         )
+        self.__skill_tree.set_skill(*skill_tree['skill_list'])
         self.__created_at = created_at
         self.__updated_at = updated_at
 

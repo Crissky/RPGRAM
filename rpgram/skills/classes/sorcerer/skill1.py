@@ -1,6 +1,10 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.self_skill import MysticalConfluenceCondition, MysticalProtectionCondition, MysticalVigorCondition
+from rpgram.conditions.self_skill import (
+    MysticalConfluenceCondition,
+    MysticalProtectionCondition,
+    MysticalVigorCondition
+)
 from rpgram.constants.text import (
     HIT_POINT_FULL_EMOJI_TEXT,
     INTELLIGENCE_EMOJI_TEXT,
