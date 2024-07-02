@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from rpgram.conditions.barrier import GuardianShieldCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
     BerserkerCondition,
@@ -27,6 +28,7 @@ from rpgram.conditions.heal import (
 )
 from rpgram.conditions.self_skill import (
     FuriousFuryCondition,
+    FuriousInstinctCondition,
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
@@ -145,9 +147,13 @@ def condition_factory(
     # BARBARIAN BUFFS
     elif name == BarbarianSkillEnum.FURIOUS_FURY.value:
         condition_class = FuriousFuryCondition
+    elif name == BarbarianSkillEnum.FURIOUS_INSTINCT.value:
+        condition_class = FuriousInstinctCondition
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
+    elif name == GuardianSkillEnum.GUARDIAN_SHIELD.value:
+        condition_class = GuardianShieldCondition
     # SORCERER BUFFS
     elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
         condition_class = MysticalProtectionCondition

@@ -25,10 +25,12 @@ class BarbarianSkillEnum(Enum):
     FURIOUS_ATTACK = 'Ataque Furioso'
     WILD_STRIKE = 'Golpe Selvagem'
     FURIOUS_FURY = 'Fúria Furiosa'
+    FURIOUS_INSTINCT = 'Instinto Furioso'
 
 
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
+    GUARDIAN_SHIELD = 'Escudo Guardião'
     HEAVY_CHARGE = 'Investida Pesada'
 
 
@@ -37,6 +39,7 @@ class SorcererSkillEnum(Enum):
     MYSTICAL_CONFLUENCE = 'Confluência Mística'
     MYSTICAL_VIGOR = 'Vigor Místico'
     PRISMATIC_SHOT = 'Disparo Prismático'
+    PRISMATIC_SCINTILLATION = 'Cintilação Prismática'
 
 
 class WarriorSkillEnum(Enum):

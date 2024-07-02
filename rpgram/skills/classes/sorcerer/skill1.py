@@ -75,18 +75,18 @@ class MysticalProtectionSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = MysticalProtectionCondition(
-            character=self.char,
-            level=self.level
-        )
+        player_name = self.char.player_name
+        level = self.level
+        char = self.char
+        condition = MysticalProtectionCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Com movimentos simples, você tece uma trama de '
-                f'energia *Mística* aumentando a sua '
+                f'*{player_name}* com movimentos simples, você tece uma '
+                f'trama de energia *Mística* aumentando a sua '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -133,17 +133,17 @@ class MysticalConfluenceSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = MysticalConfluenceCondition(
-            character=self.char,
-            level=self.level
-        )
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level
+        condition = MysticalConfluenceCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Com movimentos precisos, você canaliza '
+                f'*{player_name}* com movimentos precisos canaliza '
                 f'energias *Místicas* aumentando o seu '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -192,18 +192,19 @@ class MysticalVigorSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = MysticalVigorCondition(
-            character=self.char,
-            level=self.level
-        )
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level
+        condition = MysticalVigorCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Controlando a respiração, evoca energias *Místicas* '
-                f'para fortalecer o seu espírito, aumentando os seus '
+                f'*{player_name}* controlando a respiração, evoca energias '
+                f'*Místicas* para fortalecer o seu espírito, '
+                f'aumentando os seus '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'

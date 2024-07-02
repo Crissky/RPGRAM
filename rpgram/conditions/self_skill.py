@@ -5,6 +5,7 @@ from bson import ObjectId
 
 from rpgram.conditions.condition import Condition
 from rpgram.constants.text import (
+    DEXTERITY_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
@@ -124,7 +125,7 @@ class FuriousFuryCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Estado de *Fúria* que aumenta a *{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'Estado de *Fúria* que aumenta o *{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
             f'(100%{EmojiEnum.STRENGTH.value} + 5% x Nível) '
             f'por 5 turnos.'
@@ -140,6 +141,55 @@ class FuriousFuryCondition(SelfSkillCondition):
     @property
     def emoji(self) -> str:
         return '😤'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece em estado de '
+            f'*{self.name}*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        return self.function(target)
+
+
+class FuriousInstinctCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 5,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.FURIOUS_INSTINCT.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Instinto de *Fúria* que aumenta a *{DEXTERITY_EMOJI_TEXT}* '
+            f'base em {int((self.multiplier_dexterity-1)*100)}% '
+            f' (20% + 5% x Nível por 5 turnos).'
+        )
+
+    @property
+    def multiplier_dexterity(self) -> int:
+        power = 1.20 + (self.level / 20)
+
+        return power
+
+    @property
+    def emoji(self) -> str:
+        return '‼️'
 
     def function(self, target: 'BaseCharacter') -> dict:
         text = (
@@ -323,6 +373,10 @@ if __name__ == '__main__':
     print(condition.to_dict())
 
     condition = FuriousFuryCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+    
+    condition = FuriousInstinctCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
 

@@ -1,6 +1,11 @@
 from typing import TYPE_CHECKING
-from rpgram.skills.classes.guardian.skill1 import RobustBlockSkill
-from rpgram.skills.classes.guardian.skill2 import HeavyChargeSkill
+from rpgram.skills.classes.guardian.skill1 import (
+    GuardianShieldSkill,
+    RobustBlockSkill
+)
+from rpgram.skills.classes.guardian.skill2 import (
+    HeavyChargeSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -16,6 +21,8 @@ def guardian_skill_factory(
     # SKILL1
     if skill_class_name == RobustBlockSkill.__name__:
         skill_class = RobustBlockSkill
+    elif skill_class_name == GuardianShieldSkill.__name__:
+        skill_class = GuardianShieldSkill
     # SKILL2
     elif skill_class_name == HeavyChargeSkill.__name__:
         skill_class = HeavyChargeSkill
@@ -28,6 +35,7 @@ def guardian_skill_factory(
 GUARDIAN_SKILL_LIST = [
     # SKILL1
     RobustBlockSkill,
+    GuardianShieldSkill,
 
     # SKILL2
     HeavyChargeSkill,

@@ -4,7 +4,8 @@ from rpgram.skills.classes.barbarian.skill1 import (
     WildStrikeSkill
 )
 from rpgram.skills.classes.barbarian.skill2 import (
-    FuriousFurySkill
+    FuriousFurySkill,
+    FuriousInstinctSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -26,6 +27,8 @@ def barbarian_skill_factory(
     # SKILL2
     elif skill_class_name == FuriousFurySkill.__name__:
         skill_class = FuriousFurySkill
+    elif skill_class_name == FuriousInstinctSkill.__name__:
+        skill_class = FuriousInstinctSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -39,4 +42,5 @@ BARBARIAN_SKILL_LIST = [
 
     # SKILL2
     FuriousFurySkill,
+    FuriousInstinctSkill,
 ]

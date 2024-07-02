@@ -42,7 +42,9 @@ class Requirement:
         '''Analisa se o personagem possui os requisitos.
         '''
         errors = []
-        level_rank = int(level + rank)
+        level = max(1, int(level))
+        rank = max(1, int(rank))
+        level_rank = int(level * rank)
         level_rank = max(0, (level_rank - 2))
         for attribute, value in self.base_stats.items():
             value += (level_rank * 10)

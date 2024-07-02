@@ -366,3 +366,17 @@ if __name__ == '__main__':
     print(spec_dmg.damage_text)
     print(spec_dmg.damage_emoji_text)
     print(spec_dmg.damage_full_text)
+
+    print('='*50)
+    for damage_type in DamageEnum:
+        print(damage_type)
+        spec_dmg = SpecialDamage(
+            base_damage=100,
+            damage_type=damage_type,
+            equipment_level=100
+        )
+        print(spec_dmg.damage_help_emoji_text)
+        print([
+            condition['condition']().name
+            for condition in spec_dmg.condition_ratio_list
+        ])

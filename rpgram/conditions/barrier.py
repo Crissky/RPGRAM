@@ -1,11 +1,17 @@
 from datetime import datetime
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.condition import Condition
+from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.skill import GuardianSkillEnum
 from rpgram.enums.turn import TurnEnum
+
+
+if TYPE_CHECKING:
+    from rpgram.characters.char_base import BaseCharacter
 
 
 class BarrierCondition(Condition):
@@ -16,7 +22,7 @@ class BarrierCondition(Condition):
         frequency: Union[str, TurnEnum],
         power: int,
         damage: int = 0,
-        turn: int = 1,
+        turn: int = 5,
         level: int = 1,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
@@ -31,7 +37,7 @@ class BarrierCondition(Condition):
             created_at=created_at,
             updated_at=updated_at,
         )
-        self.__power = power
+        self.power = int(power)
         self.__damage = int(damage)
 
     def add_damage(self, value: int) -> int:
@@ -88,12 +94,11 @@ class BarrierCondition(Condition):
 
     @property
     def barrier_points(self) -> int:
-        return self.__power
-    power = bp = barrier_points
+        return int(self.power * (1 + ((self.level - 1) / 20)))
 
     @property
     def current_barrier_points(self) -> int:
-        return int(self.__power - self.__damage)
+        return int(self.barrier_points - self.__damage)
     current_bp = current_barrier_points
 
     @property
@@ -106,5 +111,65 @@ class BarrierCondition(Condition):
     show_bp = show_barrier_points
 
     @property
+    def barrier_points_text(self) -> str:
+        return f'{self.full_name}: {self.show_barrier_points}'
+
+    @property
     def it_broken(self) -> bool:
         return self.current_barrier_points <= 0
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.BARRIER_POINT.value
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = f'*{self.full_name}*: {self.show_barrier_points}'
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+    def battle_function(self, target: 'BaseCharacter') -> dict:
+        return self.function(target)
+
+    def to_dict(self) -> dict:
+        _dict = {
+            'power': self.power,
+            'damage': self.__damage,
+        }
+        _dict.update(super().to_dict())
+
+        return _dict
+
+
+class GuardianShieldCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=GuardianSkillEnum.GUARDIAN_SHIELD.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Escudo Familiar Protetivo* que resguarda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+
+if __name__ == '__main__':
+    from rpgram.constants.test import BASE_CHARACTER
+    condition = GuardianShieldCondition(100)
+    print(condition)
+    print(condition.to_dict())

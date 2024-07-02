@@ -19,6 +19,17 @@ class SkillTree:
         current_action_points: int = 0,
         max_action_points: int = 5,
     ):
+        current_action_points = (
+            current_action_points
+            if isinstance(current_action_points, int)
+            else 0
+        )
+        max_action_points = (
+            max_action_points
+            if isinstance(max_action_points, int)
+            else 5
+        )
+
         self.character = character
         self.current_action_points = int(current_action_points)
         self.max_action_points = int(max_action_points)

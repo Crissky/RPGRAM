@@ -66,9 +66,58 @@ class PrismaticShotSkill(BaseSkill):
         )
 
 
+class PrismaticScintillationSkill(BaseSkill):
+    NAME = SorcererSkillEnum.PRISMATIC_SCINTILLATION.value
+    DESCRIPTION = (
+        f'Canalizando a energia mágica, criando e lançando um artefato '
+        f'prismático que causa dano a *TODES os inimigos* com base em '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.SORCERER.value,
+        'skill_list': [PrismaticShotSkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 0.50,
+        }
+        damage_types = [DamageEnum.LIGHT]
+
+        super().__init__(
+            name=PrismaticScintillationSkill.NAME,
+            description=PrismaticScintillationSkill.DESCRIPTION,
+            rank=PrismaticScintillationSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=PrismaticScintillationSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+    
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.50
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import SORCERER_CHARACTER
     skill = PrismaticShotSkill(SORCERER_CHARACTER)
     print(skill)
     print(SORCERER_CHARACTER.cs.magical_attack)
     SORCERER_CHARACTER.skill_tree.learn_skill(PrismaticShotSkill)
+
+    skill = PrismaticScintillationSkill(SORCERER_CHARACTER)
+    print(skill)
+    print(SORCERER_CHARACTER.cs.magical_attack)
+    SORCERER_CHARACTER.skill_tree.learn_skill(PrismaticScintillationSkill)

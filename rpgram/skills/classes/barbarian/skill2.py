@@ -1,9 +1,11 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.self_skill import (
-    FuriousFuryCondition
+    FuriousFuryCondition,
+    FuriousInstinctCondition
 )
 from rpgram.constants.text import (
+    DEXTERITY_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
     STRENGTH_EMOJI_TEXT
 )
@@ -36,7 +38,7 @@ SKILL_WAY_DESCRIPTION = {
 class FuriousFurySkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_FURY.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria* que o leva a agir Furiosamente, '
+        f'Entra em um estado de *Fúria* que o leva a agir *Furiosamente*, '
         f'aumentando o *{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}*.'
     )
@@ -69,16 +71,79 @@ class FuriousFurySkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
-        condition = FuriousFuryCondition(character=self.char, level=self.level)
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level
+        condition = FuriousFuryCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
         )
         report = {
             'text': (
-                f'Você perde a concentração e entra em um estado de *Fúria*, '
-                f'aumentando o seu '
+                f'*{player_name}* perde a concentração e entra em um estado '
+                f'de *Fúria*, aumentando o seu '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class FuriousInstinctSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.FURIOUS_INSTINCT.value
+    DESCRIPTION = (
+        f'Desperta *Furiosamente* um *Instinto* que amplifica seus sentidos e '
+        f'afia suas habilidades de combate, aumentando a '
+        f'*{DEXTERITY_EMOJI_TEXT}*.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BARBARIAN.value,
+        'skill_list': [FuriousFurySkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 2
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=FuriousFurySkill.NAME,
+            description=FuriousFurySkill.DESCRIPTION,
+            rank=FuriousFurySkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.DEFENSE,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FuriousFurySkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        player_name = self.char.player_name
+        level = self.level
+        char = self.char
+        condition = FuriousInstinctCondition(character=char, level=level)
+        report_list = self.char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* desperta um instinto que amplifica seus '
+                f'sentidos e afia suas habilidades de combate '
+                f'aumentando a sua '
+                f'*{DEXTERITY_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -96,3 +161,12 @@ if __name__ == '__main__':
     print(skill.function())
     print(BARBARIAN_CHARACTER.cs.physical_attack)
     BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousFurySkill)
+
+    skill = FuriousInstinctSkill(BARBARIAN_CHARACTER)
+    print(skill)
+    print(BARBARIAN_CHARACTER.bs.dexterity)
+    print(BARBARIAN_CHARACTER.bs.multiplier_dexterity)
+    print(skill.function())
+    print(BARBARIAN_CHARACTER.bs.dexterity)
+    print(BARBARIAN_CHARACTER.bs.multiplier_dexterity)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousInstinctSkill)
