@@ -20,6 +20,7 @@ class DamageEnum(Enum):
     ACID = 'Ácido'
     POISON = 'Veneno'
     CHAOS = 'Caos'
+    ROAR = 'Rugido'
 
 
 class DamageEmojiEnum(Enum):
@@ -41,6 +42,7 @@ class DamageEmojiEnum(Enum):
     ACID = '🍋'
     POISON = '🐍'
     CHAOS = '🦇'
+    ROAR = '🦁'
 
 
 MAGICAL_DAMAGE_TYPES = (
@@ -65,6 +67,7 @@ PHYSICAL_DAMAGE_TYPES = (
     DamageEnum.PIERCING,
     DamageEnum.ROCK,
     DamageEnum.GROUND,
+    DamageEnum.ROAR,
 )
 
 if __name__ == '__main__':

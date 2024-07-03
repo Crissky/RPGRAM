@@ -44,7 +44,7 @@ class MysticalProtectionSkill(BaseSkill):
     DESCRIPTION = (
         f'Tece uma trama de energia *Mística* que concede '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
-        f'*{WISDOM_EMOJI_TEXT}* (100% + 5% x Nível).'
+        f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -76,7 +76,7 @@ class MysticalProtectionSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
         player_name = self.char.player_name
-        level = self.level
+        level = self.level_rank
         char = self.char
         condition = MysticalProtectionCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
@@ -102,7 +102,7 @@ class MysticalConfluenceSkill(BaseSkill):
         f'Manipulando os fluxos da magia, entrelaça diferentes tipos de '
         f'energias *Místicas* para amplificar seu '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
-        f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 5% x Nível).'
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -135,7 +135,7 @@ class MysticalConfluenceSkill(BaseSkill):
     def function(self, char: 'BaseCharacter' = None) -> dict:
         player_name = self.char.player_name
         char = self.char
-        level = self.level
+        level = self.level_rank
         condition = MysticalConfluenceCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
@@ -159,8 +159,8 @@ class MysticalVigorSkill(BaseSkill):
     DESCRIPTION = (
         f'Evoca energias *Místicas* para fortalecer o seu espírito '
         f'aumentando os *{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
-        f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 10% x Nível)'
-        f'e na *{WISDOM_EMOJI_TEXT}* (200% + 10% x Nível).'
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 20% x Rank x Nível)'
+        f'e na *{WISDOM_EMOJI_TEXT}* (200% + 20% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -195,7 +195,7 @@ class MysticalVigorSkill(BaseSkill):
     def function(self, char: 'BaseCharacter' = None) -> dict:
         player_name = self.char.player_name
         char = self.char
-        level = self.level
+        level = self.level_rank
         condition = MysticalVigorCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(

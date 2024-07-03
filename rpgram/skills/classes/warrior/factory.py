@@ -7,6 +7,12 @@ from rpgram.skills.classes.warrior.skill2 import (
     LethalAttackSkill,
     QuickAttackSkill
 )
+from rpgram.skills.classes.warrior.skill3 import (
+    AegisShadowSkill,
+    HeroicInspirationSkill,
+    WarBannerSkill,
+    WarCrySkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -29,6 +35,15 @@ def warrior_skill_factory(
         skill_class = QuickAttackSkill
     elif skill_class_name == LethalAttackSkill.__name__:
         skill_class = LethalAttackSkill
+    # SKILL3
+    elif skill_class_name == AegisShadowSkill.__name__:
+        skill_class = AegisShadowSkill
+    elif skill_class_name == WarBannerSkill.__name__:
+        skill_class = WarBannerSkill
+    elif skill_class_name == HeroicInspirationSkill.__name__:
+        skill_class = HeroicInspirationSkill
+    elif skill_class_name == WarCrySkill.__name__:
+        skill_class = WarCrySkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -43,4 +58,10 @@ WARRIOR_SKILL_LIST = [
     # SKILL2
     QuickAttackSkill,
     LethalAttackSkill,
+
+    # SKILL3
+    AegisShadowSkill,
+    WarBannerSkill,
+    HeroicInspirationSkill,
+    WarCrySkill,
 ]

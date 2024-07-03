@@ -42,7 +42,7 @@ class RobustBlockSkill(BaseSkill):
     DESCRIPTION = (
         f'Assume uma postura defensiva aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
-        f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 5% x Nível).'
+        f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -75,7 +75,7 @@ class RobustBlockSkill(BaseSkill):
     def function(self, char: 'BaseCharacter' = None) -> dict:
         player_name = self.char.player_name
         char = self.char
-        level = self.level
+        level = self.level_rank
         condition = RobustBlockCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
@@ -99,7 +99,8 @@ class GuardianShieldSkill(BaseSkill):
     DESCRIPTION = (
         f'Erguendo o escudo com fé inabalável, evoca um *Escudo Familiar '
         f'Protetivo* que resguarda um aliado com uma barreira baseada na '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Nível) por 5 turnos.'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível) '
+        f'por 5 turnos.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -131,9 +132,10 @@ class GuardianShieldSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
+        target_name = char.player_name
         dice = self.dice
         power = dice.boosted_physical_defense
-        level = self.level
+        level = self.level_rank
         condition = GuardianShieldCondition(power=power, level=level)
         report_list = char.status.set_conditions(condition)
         status_report_text = "\n".join(
@@ -143,7 +145,7 @@ class GuardianShieldSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se impõe contra o perigo, evocando um '
                 f'*Escudo Familiar Protetivo* para resguardar '
-                f'*{char.player_name}* com uma barreira '
+                f'*{target_name}* com uma barreira '
                 f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'

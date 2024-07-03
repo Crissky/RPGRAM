@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
 
-from rpgram.conditions.condition import Condition
+from rpgram.conditions.buff import BuffCondition
 from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-class SelfSkillCondition(Condition):
+class SelfSkillCondition(BuffCondition):
 
     def __init__(
         self,
@@ -77,13 +77,13 @@ class RobustBlockCondition(SelfSkillCondition):
         return (
             f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
-            f'(100%{EmojiEnum.CONSTITUTION.value} + 5% x Nível) '
+            f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
             f'por 5 turnos.'
         )
 
     @property
     def bonus_physical_defense(self) -> int:
-        power = 1 + (self.level / 20)
+        power = 1 + (self.level / 10)
         power = round(power, 2)
         bonus_physical_defense = self.character.bs.constitution * power
 
@@ -128,13 +128,13 @@ class FuriousFuryCondition(SelfSkillCondition):
         return (
             f'Estado de *Fúria* que aumenta o *{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
-            f'(100%{EmojiEnum.STRENGTH.value} + 5% x Nível) '
+            f'(100%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
             f'por 5 turnos.'
         )
 
     @property
     def bonus_physical_attack(self) -> int:
-        power = 1 + (self.level / 20)
+        power = 1 + (self.level / 10)
         power = round(power, 2)
         bonus_physical_attack = self.character.bs.strength * power
 
@@ -231,13 +231,13 @@ class MysticalProtectionCondition(SelfSkillCondition):
             f'Trama de energia *Mística* que aumenta a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_magical_defense} pontos '
-            f'(100%{EmojiEnum.WISDOM.value} + 5% x Nível) '
+            f'(100%{EmojiEnum.WISDOM.value} + 10% x Nível) '
             f'por 5 turnos.'
         )
 
     @property
     def bonus_magical_defense(self) -> int:
-        power = 1 + (self.level / 20)
+        power = 1 + (self.level / 10)
         power = round(power, 2)
         bonus_magical_defense = self.character.bs.wisdom * power
 
@@ -284,13 +284,13 @@ class MysticalConfluenceCondition(SelfSkillCondition):
             f'Concetração de energias *Místicas* que aumenta o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_magical_attack} pontos '
-            f'(100%{EmojiEnum.INTELLIGENCE.value} + 5% x Nível) '
+            f'(100%{EmojiEnum.INTELLIGENCE.value} + 10% x Nível) '
             f'por 5 turnos.'
         )
 
     @property
     def bonus_magical_attack(self) -> int:
-        power = 1 + (self.level / 20)
+        power = 1 + (self.level / 10)
         power = round(power, 2)
         bonus_magical_attack = self.character.bs.intelligence * power
 
@@ -337,14 +337,14 @@ class MysticalVigorCondition(SelfSkillCondition):
             f'Conjunto de energias *Místicas* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
-            f'(200%{EmojiEnum.INTELLIGENCE.value} + 10% x Nível) e'
-            f'(200%{EmojiEnum.WISDOM.value} + 10% x Nível) '
+            f'(200%{EmojiEnum.INTELLIGENCE.value} + 20% x Nível) e'
+            f'(200%{EmojiEnum.WISDOM.value} + 20% x Nível) '
             f'por 10 turnos.'
         )
 
     @property
     def bonus_hit_points(self) -> int:
-        power = 2 + (self.level / 10)
+        power = 2 + (self.level / 5)
         power = round(power, 2)
         bonus_magical_attack = sum([
             self.character.bs.intelligence * power,
@@ -374,26 +374,46 @@ class MysticalVigorCondition(SelfSkillCondition):
 
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
+    from rpgram.conditions.factory import condition_factory
+
     condition = RobustBlockCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
 
     condition = FuriousFuryCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
-    
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
+
     condition = FuriousInstinctCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
 
     condition = MysticalProtectionCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
 
     condition = MysticalConfluenceCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
 
     condition = MysticalVigorCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition

@@ -45,7 +45,7 @@ class Requirement:
         level = max(1, int(level))
         rank = max(1, int(rank))
         level_rank = int(level * rank)
-        level_rank = max(0, (level_rank - 2))
+        level_rank = max(0, (level_rank - 1))
         for attribute, value in self.base_stats.items():
             value += (level_rank * 10)
             if value > character.base_stats[attribute]:

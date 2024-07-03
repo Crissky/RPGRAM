@@ -313,7 +313,15 @@ class BaseSkill:
         if isinstance(self.level_multiplier_dict, dict):
             return self.level_multiplier_dict[self.level]
         else:
-            return (self.level / 20)
+            return (self.level_rank / 20)
+
+    @property
+    def level_rank(self) -> int:
+        level = max(1, int(self.level))
+        rank = max(1, int(self.rank))
+        level_rank = int(level * rank)
+
+        return level_rank
 
     @property
     def cost_text(self) -> str:

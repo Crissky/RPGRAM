@@ -6,7 +6,11 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.condition import Condition
 from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.enums.skill import GuardianSkillEnum
+from rpgram.enums.skill import (
+    GuardianSkillEnum,
+    SorcererSkillEnum,
+    WarriorSkillEnum
+)
 from rpgram.enums.turn import TurnEnum
 
 
@@ -69,7 +73,7 @@ class BarrierCondition(Condition):
         new_bp = self.current_barrier_points
         new_show_bp = self.show_barrier_points
         absolute_damage = (old_bp - new_bp)
-        broke_text = 'QUEBROU!' if self.it_broken else ''
+        broke_text = 'QUEBROU!' if self.is_broken else ''
         text = (
             f'*BP*: {old_show_bp} ››› {new_show_bp} (*{value}*){broke_text}.'
         )
@@ -93,8 +97,12 @@ class BarrierCondition(Condition):
         }
 
     @property
+    def base_power_multiplier(self) -> float:
+        return 1.00
+
+    @property
     def barrier_points(self) -> int:
-        power_multiplier = (1 + (self.level / 10))
+        power_multiplier = self.base_power_multiplier + (self.level / 10)
         power_multiplier = round(power_multiplier, 2)
         return int(self.power * power_multiplier)
 
@@ -117,7 +125,7 @@ class BarrierCondition(Condition):
         return f'{self.full_name}: {self.show_barrier_points}'
 
     @property
-    def it_broken(self) -> bool:
+    def is_broken(self) -> bool:
         return self.current_barrier_points <= 0
 
     @property
@@ -170,8 +178,76 @@ class GuardianShieldCondition(BarrierCondition):
         )
 
 
+class AegisShadowCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=WarriorSkillEnum.AEGIS_SHADOW.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Sombra do Escudo Lendário* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+
+class PrismaticShieldCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=SorcererSkillEnum.PRISMATIC_SHIELD.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Círculo Cintilante* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 1.5
+
+
 if __name__ == '__main__':
-    from rpgram.constants.test import BASE_CHARACTER
+    from rpgram.conditions.factory import condition_factory
+
     condition = GuardianShieldCondition(100)
     print(condition)
     print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = AegisShadowCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = PrismaticShieldCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition

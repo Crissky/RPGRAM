@@ -4,7 +4,9 @@ from rpgram.skills.classes.guardian.skill1 import (
     RobustBlockSkill
 )
 from rpgram.skills.classes.guardian.skill2 import (
-    HeavyChargeSkill
+    HeavyChargeSkill,
+    IronChargeSkill,
+    SteelStormSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -26,6 +28,10 @@ def guardian_skill_factory(
     # SKILL2
     elif skill_class_name == HeavyChargeSkill.__name__:
         skill_class = HeavyChargeSkill
+    elif skill_class_name == IronChargeSkill.__name__:
+        skill_class = IronChargeSkill
+    elif skill_class_name == SteelStormSkill.__name__:
+        skill_class = SteelStormSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -39,4 +45,6 @@ GUARDIAN_SKILL_LIST = [
 
     # SKILL2
     HeavyChargeSkill,
+    IronChargeSkill,
+    SteelStormSkill,
 ]

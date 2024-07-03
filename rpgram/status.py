@@ -225,6 +225,7 @@ class Status:
             if isinstance(condition, BarrierCondition) and damage > 0:
                 damage_report = condition.damage_barrier_points(damage)
                 damage = damage_report['remaining_damage']
+                report['remaining_damage'] = damage_report['remaining_damage']
                 report['text'] += damage_report['text'] + '\n'
 
         self.remove_broken_barrier()

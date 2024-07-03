@@ -1,5 +1,9 @@
 from typing import TYPE_CHECKING
-from rpgram.conditions.barrier import GuardianShieldCondition
+from rpgram.conditions.barrier import (
+    AegisShadowCondition,
+    GuardianShieldCondition,
+    PrismaticShieldCondition
+)
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
     BerserkerCondition,
@@ -34,6 +38,9 @@ from rpgram.conditions.self_skill import (
     MysticalVigorCondition,
     RobustBlockCondition
 )
+from rpgram.conditions.target_skill import (
+    WarBannerCondition
+)
 from rpgram.enums.debuff import (
     BERSERKER,
     BLEEDING,
@@ -53,7 +60,8 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     GuardianSkillEnum,
-    SorcererSkillEnum
+    SorcererSkillEnum,
+    WarriorSkillEnum
 )
 
 
@@ -161,6 +169,13 @@ def condition_factory(
         condition_class = MysticalConfluenceCondition
     elif name == SorcererSkillEnum.MYSTICAL_VIGOR.value:
         condition_class = MysticalVigorCondition
+    elif name == SorcererSkillEnum.PRISMATIC_SHIELD.value:
+        condition_class = PrismaticShieldCondition
+    # WARRIOR BUFFS
+    elif name == WarriorSkillEnum.AEGIS_SHADOW.value:
+        condition_class = AegisShadowCondition
+    elif name == WarriorSkillEnum.WAR_BANNER.value:
+        condition_class = WarBannerCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
 

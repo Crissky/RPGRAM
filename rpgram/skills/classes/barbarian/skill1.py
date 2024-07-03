@@ -34,7 +34,7 @@ class FuriousAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
         f'inimigo com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (190% + 5% x Nível), '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (190% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 1
@@ -77,7 +77,7 @@ class WildStrikeSkill(BaseSkill):
     DESCRIPTION = (
         f'Desfere um ataque com força bruta, causando dano ao '
         f'alvo com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (240% + 5% x Nível), '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (240% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 2

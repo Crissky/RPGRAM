@@ -38,7 +38,7 @@ class PowerfulAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Tenciona os músculos ao máximo e desfere um golpe devastador, '
         f'causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -76,7 +76,7 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Tenciona os músculos além do máximo e desfere um '
         f'golpe devastador, causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

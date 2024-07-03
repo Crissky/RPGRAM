@@ -222,6 +222,9 @@ class SpecialDamage:
         elif self.damage_type == DamageEnum.CHAOS:
             min_multiplier = 0.06
             max_multiplier = 1.72
+        elif self.damage_type == DamageEnum.ROAR:
+            min_multiplier = 0.07
+            max_multiplier = 0.77
 
         return {'min': min_multiplier, 'max': max_multiplier}
 
@@ -337,6 +340,11 @@ class SpecialDamage:
                 dict(condition=self.partial(CurseCondition), ratio=0.10),
                 dict(condition=self.partial(CurseCondition), ratio=0.10),
                 dict(condition=self.partial(CurseCondition), ratio=0.10),
+            ])
+        elif self.damage_type == DamageEnum.ROAR:
+            condition_list.extend([
+                dict(condition=self.partial(StunnedCondition), ratio=0.10),
+                dict(condition=self.partial(ConfusionCondition), ratio=0.10),
             ])
 
         return condition_list * self.__status_multiplier

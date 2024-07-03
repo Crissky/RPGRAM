@@ -1,4 +1,6 @@
 from typing import TYPE_CHECKING
+from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from rpgram.conditions.barrier import PrismaticShieldCondition
 from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT
 )
@@ -32,9 +34,9 @@ SKILL_WAY_DESCRIPTION = {
 class PrismaticShotSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SHOT.value
     DESCRIPTION = (
-        f'Canalizando a energia mágica, dispara um feixe prismático '
+        f'Canaliza a energia mágica, dispara um feixe prismático '
         f'causando dano com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Nível).'
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -70,9 +72,9 @@ class PrismaticShotSkill(BaseSkill):
 class PrismaticScintillationSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SCINTILLATION.value
     DESCRIPTION = (
-        f'Canalizando a energia mágica, cria e lança um artefato '
+        f'Canaliza a energia mágica, cria e lança um artefato '
         f'prismático que causa dano a *TODES os inimigos* com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Nível).'
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -105,10 +107,70 @@ class PrismaticScintillationSkill(BaseSkill):
             requirements=PrismaticScintillationSkill.REQUIREMENTS,
             damage_types=damage_types
         )
-    
+
     @property
     def hit_multiplier(self) -> float:
         return 0.50
+
+
+class PrismaticShieldSkill(BaseSkill):
+    NAME = SorcererSkillEnum.PRISMATIC_SHIELD.value
+    DESCRIPTION = (
+        f'Canaliza a energia mágica para envolver um aliado em um círculo '
+        f'prismático que o salvaguardar com uma barreira baseada no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.SORCERER.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=PrismaticShieldSkill.NAME,
+            description=PrismaticShieldSkill.DESCRIPTION,
+            rank=PrismaticShieldSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BARRIER,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=PrismaticShieldSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        dice = self.dice
+        power = dice.boosted_magical_attack
+        level = self.level_rank
+        condition = PrismaticShieldCondition(power=power, level=level)
+        report_list = char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* canaliza um *Círculo Cintilante* '
+                f'para salvaguardar '
+                f'*{target_name}* com uma barreira '
+                f'*{condition.barrier_points_text}*({dice.text}).\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
 
 
 if __name__ == '__main__':
@@ -122,3 +184,9 @@ if __name__ == '__main__':
     print(skill)
     print(SORCERER_CHARACTER.cs.magical_attack)
     SORCERER_CHARACTER.skill_tree.learn_skill(PrismaticScintillationSkill)
+
+    skill = PrismaticShieldSkill(SORCERER_CHARACTER)
+    print(skill)
+    print(SORCERER_CHARACTER.cs.magical_attack)
+    print(skill.function(SORCERER_CHARACTER))
+    SORCERER_CHARACTER.skill_tree.learn_skill(PrismaticShieldSkill)

@@ -37,7 +37,7 @@ class QuickAttackSkill(BaseSkill):
         f'como um vendaval contra seu inimigo, '
         f'dificultando as chances de esquiva do oponente e '
         f'causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (115% + 5% x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (115% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -79,7 +79,7 @@ class LethalAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Desfere um ataque preciso focando pontos vitais do inimigo, '
         f'causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (165% + 5% x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (165% + 5% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

@@ -6,16 +6,19 @@ from rpgram.conditions.self_skill import (
 )
 from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
     STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
+from rpgram.enums.damage import DamageEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     SkillDefenseEnum,
     SkillTypeEnum,
     TargetEnum
 )
+from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -40,7 +43,7 @@ class FuriousFurySkill(BaseSkill):
     DESCRIPTION = (
         f'Entra em um estado de *Fúria* que o leva a agir *Furiosamente*, '
         f'aumentando o *{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
-        f'*{STRENGTH_EMOJI_TEXT}* (100% + 5% x Nível).'
+        f'*{STRENGTH_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -73,7 +76,7 @@ class FuriousFurySkill(BaseSkill):
     def function(self, char: 'BaseCharacter' = None) -> dict:
         player_name = self.char.player_name
         char = self.char
-        level = self.level
+        level = self.level_rank
         condition = FuriousFuryCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = "\n".join(
@@ -97,7 +100,7 @@ class FuriousInstinctSkill(BaseSkill):
     DESCRIPTION = (
         f'Desperta *Furiosamente* um *Instinto* que amplifica seus sentidos e '
         f'afia suas habilidades de combate, aumentando a '
-        f'*{DEXTERITY_EMOJI_TEXT}* (20% + 5% x Nível).'
+        f'*{DEXTERITY_EMOJI_TEXT}* (20% + 5% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -131,7 +134,7 @@ class FuriousInstinctSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter' = None) -> dict:
         player_name = self.char.player_name
-        level = self.level
+        level = self.level_rank
         char = self.char
         condition = FuriousInstinctCondition(character=char, level=level)
         report_list = self.char.status.set_conditions(condition)
@@ -152,6 +155,54 @@ class FuriousInstinctSkill(BaseSkill):
         return report
 
 
+class FuriousRoarSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.FURIOUS_ROAR.value
+    DESCRIPTION = (
+        f'Libera um *Rugido Aterrorizante* que despedaça a alma dos inimigos '
+        f'com uma onda de terror que causa dano com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.BARBARIAN.value,
+        'skill_list': [
+            FuriousFurySkill.NAME,
+            FuriousInstinctSkill.NAME
+        ],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 4
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
+        }
+        damage_types = [DamageEnum.ROAR]
+
+        super().__init__(
+            name=FuriousRoarSkill.NAME,
+            description=FuriousRoarSkill.DESCRIPTION,
+            rank=FuriousRoarSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FuriousRoarSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.80
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import BARBARIAN_CHARACTER
     skill = FuriousFurySkill(BARBARIAN_CHARACTER)
@@ -170,3 +221,8 @@ if __name__ == '__main__':
     print(BARBARIAN_CHARACTER.bs.dexterity)
     print(BARBARIAN_CHARACTER.bs.multiplier_dexterity)
     BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousInstinctSkill)
+
+    skill = FuriousRoarSkill(BARBARIAN_CHARACTER)
+    print(skill)
+    print(BARBARIAN_CHARACTER.cs.physical_attack)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousRoarSkill)
