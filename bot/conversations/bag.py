@@ -859,6 +859,7 @@ async def use_item_consumable(
                 text=private_text,
                 user_id=target_id,
                 markdown=True,
+                close_by_owner=False,
             )
 
 
@@ -1375,6 +1376,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     text=text,
                     user_id=user_id,
                     chat_id=chat_id,
+                    close_by_owner=False,
                 )
     else:
         answer_text = 'Este item não existe mais.'
