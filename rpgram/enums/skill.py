@@ -1,5 +1,7 @@
 from enum import Enum
 
+from rpgram.enums.emojis import EmojiEnum
+
 
 class TargetEnum(Enum):
     SELF = 'self'
@@ -10,6 +12,8 @@ class TargetEnum(Enum):
 
 class SkillTypeEnum(Enum):
     ATTACK = 'attack'
+    BARRIER = 'barrier'
+    BUFF = 'buff'
     DEFENSE = 'defense'
     HEALING = 'healing'
 
@@ -21,17 +25,42 @@ class SkillDefenseEnum(Enum):
     NA = 'n/a'
 
 
+class TargetEmojiEnum(Enum):
+    SELF = '🙋'
+    SINGLE = '👤'
+    TEAM = '👥'
+    ALL = '🌐'
+
+
+class SkillTypeEmojiEnum(Enum):
+    ATTACK = EmojiEnum.ATTACK.value
+    DEFENSE = EmojiEnum.DEFEND.value
+    HEALING = EmojiEnum.HEALING.value
+    BUFF = '❇'
+    BARRIER = EmojiEnum.BARRIER_POINT.value
+
+
+class SkillDefenseEmojiEnum(Enum):
+    PHYSICAL = EmojiEnum.PHYSICAL_ATTACK.value
+    MAGICAL = EmojiEnum.MAGICAL_ATTACK.value
+    TRUE = '💯'
+    NA = '⚫'
+
+
 class BarbarianSkillEnum(Enum):
     FURIOUS_ATTACK = 'Ataque Furioso'
     WILD_STRIKE = 'Golpe Selvagem'
     FURIOUS_FURY = 'Fúria Furiosa'
     FURIOUS_INSTINCT = 'Instinto Furioso'
+    FURIOUS_ROAR = 'Rugido Furioso'
 
 
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'
     HEAVY_CHARGE = 'Investida Pesada'
+    IRON_CHARGE = 'Investida de Ferro'
+    STEEL_STORM = 'Tempestade de Aço'
 
 
 class SorcererSkillEnum(Enum):
@@ -40,6 +69,7 @@ class SorcererSkillEnum(Enum):
     MYSTICAL_VIGOR = 'Vigor Místico'
     PRISMATIC_SHOT = 'Disparo Prismático'
     PRISMATIC_SCINTILLATION = 'Cintilação Prismática'
+    PRISMATIC_SHIELD = 'Escudo Prismático'
 
 
 class WarriorSkillEnum(Enum):
@@ -47,6 +77,10 @@ class WarriorSkillEnum(Enum):
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
     QUICK_ATTACK = 'Ataque Rápido'
     LETHAL_ATTACK = 'Ataque Letal'
+    AEGIS_SHADOW = 'Sombra de Égide'
+    WAR_BANNER = 'Flâmula de Guerra'
+    HEROIC_INSPIRATION = 'Inspiração Heroíca'
+    WAR_CRY = 'Grito de Guerra'
 
 
 TARGET_ENUM_NOT_SELF = [TargetEnum.SINGLE, TargetEnum.TEAM, TargetEnum.ALL]

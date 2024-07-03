@@ -60,5 +60,6 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                 text=text,
                 user_id=player_id,
                 chat_id=chat_id,
-                markdown=True
+                markdown=True,
+                close_by_owner=False,
             )

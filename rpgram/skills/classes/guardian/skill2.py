@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from rpgram.constants.text import (
+    MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
@@ -41,7 +42,8 @@ class HeavyChargeSkill(BaseSkill):
     DESCRIPTION = (
         f'Assume uma postura ofensiva, avançando contra o inimigo '
         f'usando seu corpo massivo como arma, causando dano com base em '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (45% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -75,10 +77,121 @@ class HeavyChargeSkill(BaseSkill):
         )
 
 
+class IronChargeSkill(BaseSkill):
+    NAME = GuardianSkillEnum.IRON_CHARGE.value
+    DESCRIPTION = (
+        f'Avança através das linhas inimigas com uma força imparável '
+        f'como um ariete implacável, envolto em uma aura metálica '
+        f'causando dano com base em '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (130% + 5% x Rank x Nível) e '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (65% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.GUARDIAN.value,
+        'skill_list': [HeavyChargeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 0.65,
+            CombatStatsEnum.PHYSICAL_DEFENSE: 1.30,
+        }
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.PIERCING,
+        ]
+
+        super().__init__(
+            name=IronChargeSkill.NAME,
+            description=IronChargeSkill.DESCRIPTION,
+            rank=IronChargeSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=IronChargeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.25
+
+
+class SteelStormSkill(BaseSkill):
+    NAME = GuardianSkillEnum.STEEL_STORM.value
+    DESCRIPTION = (
+        f'Avança com um giro devastador revestido em uma energia metálica '
+        f'que desencadeia uma *Tempestade*, '
+        f'ceifando seus inimigos impiedosamente com '
+        f'dano baseado em '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 5% x Rank x Nível) e '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.GUARDIAN.value,
+        'skill_list': [HeavyChargeSkill.NAME, IronChargeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 4
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_DEFENSE: 1.00,
+            CombatStatsEnum.MAGICAL_DEFENSE: 1.00,
+        }
+        damage_types = [
+            DamageEnum.SLASHING,
+            DamageEnum.SLASHING,
+            DamageEnum.SLASHING,
+        ]
+
+        super().__init__(
+            name=SteelStormSkill.NAME,
+            description=SteelStormSkill.DESCRIPTION,
+            rank=SteelStormSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=SteelStormSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import GUARDIAN_CHARACTER
+
     skill = HeavyChargeSkill(GUARDIAN_CHARACTER)
     print(skill)
     print(GUARDIAN_CHARACTER.cs.physical_attack)
     print(GUARDIAN_CHARACTER.cs.physical_defense)
     GUARDIAN_CHARACTER.skill_tree.learn_skill(HeavyChargeSkill)
+
+    skill = IronChargeSkill(GUARDIAN_CHARACTER)
+    print(skill)
+    print(GUARDIAN_CHARACTER.cs.physical_attack)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(IronChargeSkill)
+
+    skill = SteelStormSkill(GUARDIAN_CHARACTER)
+    print(skill)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.cs.magical_defense)
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(SteelStormSkill)

@@ -113,7 +113,7 @@ class CombatStats:
         absolute_damage = (old_hp - new_hp)
         text = (
             f'{barrier_damage_text}'
-            f'*HP*: {old_show_hp} ››› {new_show_hp} (*{value}*).'
+            f'*HP*: {old_show_hp} ››› {new_show_hp} (*{remaining_damage}*).'
         )
 
         if not markdown:

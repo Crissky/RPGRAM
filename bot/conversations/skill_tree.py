@@ -4,12 +4,10 @@ informações dos jogadores.
 '''
 
 
-from operator import attrgetter
 from time import sleep
 from typing import List, Type
 from bson import ObjectId
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -17,8 +15,7 @@ from telegram.ext import (
     PrefixHandler,
 )
 
-from bot.constants.bag import NAV_BACK_BUTTON_TEXT
-from bot.constants.rest import COMMANDS as REST_COMMANDS
+from bot.constants.bag import NAV_LEFT_BACK_BUTTON_TEXT
 from bot.constants.skill_tree import (
     ACCESS_DENIED,
     ACTION_LEARN_SKILL_BUTTON_TEXT,
@@ -53,7 +50,6 @@ from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.conversations.enemy import (
     get_all_enemy_char_from_ambush_dict,
-    get_all_enemy_id_from_ambush_dict,
     get_enemy_char_from_ambush_dict,
     get_enemy_dict_from_ambush_dict,
     player_attack,
@@ -70,21 +66,17 @@ from bot.functions.char import (
     save_char
 )
 from bot.functions.chat import (
-    call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     edit_message_text,
     get_close_button,
     get_random_refresh_text,
     get_refresh_close_button,
-    get_refresh_close_keyboard,
-    is_verbose,
     reply_text,
     reply_typing
 )
 from bot.decorators import print_basic_infos
 from bot.decorators.player import (
-    alert_if_not_chat_owner,
     alert_if_not_chat_owner_to_anyway,
     alert_if_not_chat_owner_to_callback_data_to_dict
 )
@@ -100,8 +92,6 @@ from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.enums.skill import TARGET_ENUM_NOT_SELF, SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
-from rpgram.item import Item
-from rpgram.skills.factory import skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
 from rpgram.skills.skill_tree import ACTION_POINTS_EMOJI_TEXT
 
@@ -219,9 +209,8 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     skill_list = char.skill_tree.skill_list
     skill_name_list = [
         (
-            f'*H{i+1:02}*: '
-            f'*{skill_class.name.upper()}* '
-            f'(Nível: {skill_class.level})'
+            f'*H{i+1:02}*:'
+            f'*{skill_class.full_name_and_inline_info.upper()}*'
         )
         for i, skill_class in enumerate(skill_list)
     ]
@@ -279,9 +268,8 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     skill_list = char.skill_tree.skill_list
     skill_name_list = [
         (
-            f'*H{i+1:02}*: '
-            f'*{skill_class.name.upper()}* '
-            f'(Nível: {skill_class.level})'
+            f'*H{i+1:02}*:'
+            f'*{skill_class.full_name_and_inline_info.upper()}*'
         )
         for i, skill_class in enumerate(skill_list)
     ]
@@ -341,9 +329,8 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         skill_list = char.skill_tree.learnable_skill_list
         skill_name_list = [
             (
-                f'*H{i+1:02}*: '
-                f'*{skill_class.NAME.upper()}* '
-                f'(Rank: {skill_class.RANK})'
+                f'*H{i+1:02}*:'
+                f'*{skill_class.full_name_and_inline_info.upper()}*'
             )
             for i, skill_class in enumerate(skill_list)
         ]
@@ -742,6 +729,7 @@ async def action_use_skill(
             allow_sending_without_reply=True,
             markdown=True,
             silent=silent,
+            close_by_owner=False,
         )
         sleep(1)
 
@@ -1079,11 +1067,15 @@ def get_back_button(
 
     return [
         InlineKeyboardButton(
-            text=NAV_BACK_BUTTON_TEXT,
+            text=NAV_LEFT_BACK_BUTTON_TEXT,
             callback_data=callback_data_to_string({
                 'skill_back': command,
                 'user_id': user_id,
             })
+        ),
+        get_close_button(
+            user_id=user_id,
+            right_icon=True,
         )
     ]
 

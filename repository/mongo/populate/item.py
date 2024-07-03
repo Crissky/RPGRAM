@@ -461,7 +461,8 @@ def get_equipment_damage_type(
         damages_list = [
             e for e in DamageEnum
             if e not in [DamageEnum.SLASHING, DamageEnum.BLUDGEONING,
-                         DamageEnum.HITTING, DamageEnum.PIERCING]
+                         DamageEnum.HITTING, DamageEnum.PIERCING,
+                         DamageEnum.ROAR]
         ]
         if equip_class in SLASHING_WEAPONS:
             damage_types = [DamageEnum.SLASHING]

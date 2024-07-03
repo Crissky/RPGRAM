@@ -257,7 +257,8 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
             context=context,
             text=text,
             user_id=job.user_id,
-            markdown=True
+            markdown=True,
+            close_by_owner=False,
         )
 
 
@@ -292,6 +293,7 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
             user_id=user_id,
             chat_id=chat_id,
             markdown=True,
+            close_by_owner=False,
         )
 
 

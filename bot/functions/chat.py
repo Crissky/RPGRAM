@@ -85,7 +85,7 @@ async def send_private_message(
     chat_id: int = None,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
-    close_by_owner: bool = False,
+    close_by_owner: bool = True,
 ):
     ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
     envia mensagem para o grupo marcando o nome do jogador.
@@ -174,7 +174,8 @@ async def send_alert_or_message(
             user_id=user_id,
             chat_id=chat_id,
             markdown=markdown,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            close_by_owner=False,
         )
 
 
@@ -251,15 +252,17 @@ async def edit_message_text(
     need_response: bool = True,
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    close_by_owner: bool = True,
 ) -> Union[Message, bool]:
     '''Edita uma mensagem usando um Message ou um ContextTypes.
     '''
 
     markdown = ParseMode.MARKDOWN_V2 if markdown is True else None
+    owner_id = user_id if close_by_owner is True else None
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=user_id)
+        else get_close_keyboard(user_id=owner_id)
     )
     edit_text_kwargs = dict(
         text=new_text,
@@ -337,6 +340,7 @@ async def reply_text(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     silent: bool = None,
+    close_by_owner: bool = True,
 ) -> Message:
     '''Responde uma mensagem.
 
@@ -366,10 +370,11 @@ async def reply_text(
             silent = get_player_attribute_by_id(user_id, 'silent')
 
     markdown = ParseMode.MARKDOWN_V2 if markdown else None
+    owner_id = user_id if close_by_owner is True else None
     reply_markup = (
         reply_markup
         if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=user_id)
+        else get_close_keyboard(user_id=owner_id)
     )
     reply_text_kwargs = dict(
         text=text,

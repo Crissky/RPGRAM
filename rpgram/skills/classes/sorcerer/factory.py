@@ -6,6 +6,7 @@ from rpgram.skills.classes.sorcerer.skill1 import (
 )
 from rpgram.skills.classes.sorcerer.skill2 import (
     PrismaticScintillationSkill,
+    PrismaticShieldSkill,
     PrismaticShotSkill
 )
 from rpgram.skills.skill_base import BaseSkill
@@ -32,6 +33,8 @@ def sorcerer_skill_factory(
         skill_class = PrismaticShotSkill
     elif skill_class_name == PrismaticScintillationSkill.__name__:
         skill_class = PrismaticScintillationSkill
+    elif skill_class_name == PrismaticShieldSkill.__name__:
+        skill_class = PrismaticShieldSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -47,4 +50,5 @@ SORCERER_SKILL_LIST = [
     # SKILL2
     PrismaticShotSkill,
     PrismaticScintillationSkill,
+    PrismaticShieldSkill,
 ]

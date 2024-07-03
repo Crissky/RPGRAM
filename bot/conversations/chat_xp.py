@@ -95,6 +95,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             user_id=user_id,
             text=text,
+            close_by_owner=False,
         )
 
 

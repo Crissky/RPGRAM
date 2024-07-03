@@ -128,7 +128,7 @@ class Condition(StatsBooster):
     def __eq__(self, other):
         if isinstance(other, Condition):
             return all((
-                self.__class__ == other.__class__,
+                self.__class__.__name__ == other.__class__.__name__,
                 self.name == other.name
             ))
         elif isinstance(other, str):
