@@ -329,8 +329,8 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         skill_list = char.skill_tree.learnable_skill_list
         skill_name_list = [
             (
-                f'*H{i+1:02}*:'
-                f'*{skill_class.full_name_and_inline_info.upper()}*'
+                f'*H{i+1:02}*: '
+                f'*{skill_class.NAME.upper()}*'
             )
             for i, skill_class in enumerate(skill_list)
         ]
