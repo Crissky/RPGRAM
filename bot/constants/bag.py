@@ -105,6 +105,7 @@ TAKE_BUTTON_TEXT = f'{EmojiEnum.TAKE.value}Coletar'
 
 # NAVIGATION BUTTON TEXTS
 NAV_BACK_BUTTON_TEXT = f'Voltar{EmojiEnum.BACK.value}'
+NAV_LEFT_BACK_BUTTON_TEXT = f'{EmojiEnum.BACK.value}Voltar'
 NAV_PREVIOUS_BUTTON_TEXT = f'{EmojiEnum.PREVIOUS_PAGE.value} Anterior'
 NAV_NEXT_BUTTON_TEXT = f'Próxima {EmojiEnum.NEXT_PAGE.value}'
 NAV_PREVIOUS_ITEM_BUTTON_TEXT = f'{EmojiEnum.PREVIOUS_PAGE.value} Anterior'
