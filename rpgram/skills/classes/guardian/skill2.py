@@ -169,7 +169,7 @@ class SteelStormSkill(BaseSkill):
             skill_type=SkillTypeEnum.ATTACK,
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
-            use_equips_damage_types=False,
+            use_equips_damage_types=True,
             requirements=SteelStormSkill.REQUIREMENTS,
             damage_types=damage_types
         )
