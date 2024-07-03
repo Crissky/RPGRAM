@@ -18,7 +18,14 @@ from rpgram.conditions.condition import Condition
 from rpgram.dice import Dice
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
+from rpgram.enums.skill import (
+    SkillDefenseEmojiEnum,
+    SkillDefenseEnum,
+    SkillTypeEmojiEnum,
+    SkillTypeEnum,
+    TargetEmojiEnum,
+    TargetEnum
+)
 from rpgram.enums.stats_base import BaseStatsEnum
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
@@ -232,7 +239,9 @@ class BaseSkill:
     def attributes_power_texts(self) -> Iterable[str]:
         for attribute, multiplier in self.iter_multipliers():
             attribute_value = self[attribute]
-            attribute_percent = int(multiplier*100*self.level_multiplier)
+            attribute_percent = int(
+                round((multiplier + self.level_multiplier) * 100, 2)
+            )
             attribute_emoji = EmojiEnum[attribute.name].value
 
             yield (
@@ -250,16 +259,50 @@ class BaseSkill:
 
     # GETTERS
     @property
+    def full_name(self) -> str:
+        return (
+            f'{self.skill_type_emoji}'
+            f'{self.name}'
+        )
+
+    @property
+    def full_name_and_inline_info(self) -> str:
+        return (
+            f'{self.full_name}'
+            f'({self.rank_emoji}{self.rank}|{self.level_emoji}{self.level})'
+        )
+
+    @property
+    def target_emoji(self) -> str:
+        return TargetEmojiEnum[self.target_type.name].value
+
+    @property
+    def skill_type_emoji(self) -> str:
+        return SkillTypeEmojiEnum[self.skill_type.name].value
+
+    @property
+    def skill_defense_emoji(self) -> str:
+        return SkillDefenseEmojiEnum[self.skill_defense.name].value
+
+    @property
+    def rank_emoji(self):
+        return EmojiEnum.RANK.value
+
+    @property
     def rank_text(self) -> str:
         if self.rank == 0:
             return ''
-        return f'{EmojiEnum.RANK.value}*Rank*: {self.rank}\n'
+        return f'{self.rank_emoji}*Rank*: {self.rank}\n'
 
     @property
     def level_text(self) -> str:
         if self.level == 0:
             return ''
-        return f'{EmojiEnum.LEVEL.value}*Nível*: {self.level}\n'
+        return f'{self.level_emoji}*Nível*: {self.level}\n'
+
+    @property
+    def level_emoji(self):
+        return EmojiEnum.LEVEL.value
 
     @property
     def level_multiplier_dict(self) -> dict:
@@ -270,8 +313,7 @@ class BaseSkill:
         if isinstance(self.level_multiplier_dict, dict):
             return self.level_multiplier_dict[self.level]
         else:
-            level = max(0, (self.level - 1))
-            return 1 + (level / 20)
+            return (self.level / 20)
 
     @property
     def cost_text(self) -> str:
@@ -361,48 +403,51 @@ class BaseSkill:
     def target_type_text(self) -> str:
         if self.target_type == TargetEnum.SELF:
             target_type = 'Si Mesmo'
-        if self.target_type == TargetEnum.SINGLE:
+        elif self.target_type == TargetEnum.SINGLE:
             target_type = 'Único'
-        if self.target_type == TargetEnum.TEAM:
+        elif self.target_type == TargetEnum.TEAM:
             target_type = 'Equipe'
-        if self.target_type == TargetEnum.ALL:
+        elif self.target_type == TargetEnum.ALL:
             target_type = 'Todes'
 
-        return f'{EmojiEnum.TARGET_TYPE.value}*Tipo de Alvo*: {target_type}\n'
+        return (
+            f'{EmojiEnum.TARGET_TYPE.value}*Tipo de Alvo*: '
+            f'{self.target_emoji}{target_type}\n'
+        )
 
     @property
     def skill_type_text(self) -> str:
         if self.skill_type == SkillTypeEnum.ATTACK:
             skill_type = 'Ofensivo'
-        if self.skill_type == SkillTypeEnum.DEFENSE:
+        elif self.skill_type == SkillTypeEnum.BARRIER:
+            skill_type = 'Barreira'
+        elif self.skill_type == SkillTypeEnum.BUFF:
+            skill_type = 'Fortalecimento'
+        elif self.skill_type == SkillTypeEnum.DEFENSE:
             skill_type = 'Defensivo'
-        if self.skill_type == SkillTypeEnum.HEALING:
+        elif self.skill_type == SkillTypeEnum.HEALING:
             skill_type = 'Cura'
 
         return (
             f'{EmojiEnum.SKILL_TYPE.value}*Tipo de Habilidade*: '
-            f'{skill_type}\n'
+            f'{self.skill_type_emoji}{skill_type}\n'
         )
 
     @property
     def skill_defense_text(self) -> str:
         if self.skill_defense == SkillDefenseEnum.PHYSICAL:
-            emoji_text = EmojiEnum.PHYSICAL_ATTACK.value
             skill_defense = 'Físico'
-        if self.skill_defense == SkillDefenseEnum.MAGICAL:
-            emoji_text = EmojiEnum.MAGICAL_ATTACK.value
+        elif self.skill_defense == SkillDefenseEnum.MAGICAL:
             skill_defense = 'Mágico'
-        if self.skill_defense == SkillDefenseEnum.TRUE:
-            emoji_text = EmojiEnum.SKILL_DEFENSE_TRUE.value
+        elif self.skill_defense == SkillDefenseEnum.TRUE:
             skill_defense = 'Verdadeiro'
-        if self.skill_defense == SkillDefenseEnum.NA:
-            emoji_text = EmojiEnum.SKILL_DEFENSE_NA.value
+        elif self.skill_defense == SkillDefenseEnum.NA:
             skill_defense = 'Nenhum'
             return ''
 
         return (
             f'{EmojiEnum.SKILL_DEFENSE.value}*Tipo de Dano*: '
-            f'{emoji_text}{skill_defense}\n'
+            f'{self.skill_defense_emoji}{skill_defense}\n'
         )
 
     @property
@@ -434,18 +479,14 @@ class BaseSkill:
 
         if item in BaseStatsEnum.__members__:
             bs_enum = BaseStatsEnum[item]
-            return int(
-                self.base_stats[item] *
-                self.base_stats_multiplier[bs_enum] *
-                self.level_multiplier
-            )
+            stats_value = self.base_stats_multiplier[bs_enum]
+            sum_multiplier = round(stats_value + self.level_multiplier, 2)
+            return int(self.base_stats[item] * sum_multiplier)
         elif item in CombatStatsEnum.__members__:
             cs_enum = CombatStatsEnum[item]
-            return int(
-                self.combat_stats[item] *
-                self.combat_stats_multiplier[cs_enum] *
-                self.level_multiplier
-            )
+            stats_value = self.combat_stats_multiplier[cs_enum]
+            sum_multiplier = round(stats_value + self.level_multiplier, 2)
+            return int(self.combat_stats[item] * sum_multiplier)
         else:
             raise KeyError(f'"{item}" não é um atributo válido.')
 

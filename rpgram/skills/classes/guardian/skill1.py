@@ -42,7 +42,7 @@ class RobustBlockSkill(BaseSkill):
     DESCRIPTION = (
         f'Assume uma postura defensiva aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
-        f'*{CONSTITUTION_EMOJI_TEXT}*.'
+        f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -64,7 +64,7 @@ class RobustBlockSkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BUFF,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
@@ -99,7 +99,7 @@ class GuardianShieldSkill(BaseSkill):
     DESCRIPTION = (
         f'Erguendo o escudo com fé inabalável, evoca um *Escudo Familiar '
         f'Protetivo* que resguarda um aliado com uma barreira baseada na '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* por 5 turnos.'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Nível) por 5 turnos.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -121,7 +121,7 @@ class GuardianShieldSkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BARRIER,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,

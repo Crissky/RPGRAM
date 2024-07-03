@@ -40,7 +40,7 @@ class FuriousFurySkill(BaseSkill):
     DESCRIPTION = (
         f'Entra em um estado de *Fúria* que o leva a agir *Furiosamente*, '
         f'aumentando o *{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
-        f'*{STRENGTH_EMOJI_TEXT}*.'
+        f'*{STRENGTH_EMOJI_TEXT}* (100% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -62,7 +62,7 @@ class FuriousFurySkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BUFF,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
@@ -97,7 +97,7 @@ class FuriousInstinctSkill(BaseSkill):
     DESCRIPTION = (
         f'Desperta *Furiosamente* um *Instinto* que amplifica seus sentidos e '
         f'afia suas habilidades de combate, aumentando a '
-        f'*{DEXTERITY_EMOJI_TEXT}*.'
+        f'*{DEXTERITY_EMOJI_TEXT}* (20% + 5% x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -107,25 +107,25 @@ class FuriousInstinctSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
+        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
 
         super().__init__(
-            name=FuriousFurySkill.NAME,
-            description=FuriousFurySkill.DESCRIPTION,
-            rank=FuriousFurySkill.RANK,
+            name=FuriousInstinctSkill.NAME,
+            description=FuriousInstinctSkill.DESCRIPTION,
+            rank=FuriousInstinctSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BUFF,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
-            requirements=FuriousFurySkill.REQUIREMENTS,
+            requirements=FuriousInstinctSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 

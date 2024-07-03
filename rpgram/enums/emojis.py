@@ -6,7 +6,7 @@ class EmojiEnum(Enum):
     CLOSE_BAG = '🎒'
     DEAD = '☠️'
     DEFEND = '🛡'
-    ATTACK = '💥'
+    ATTACK = '🗡️'
     DICE = '🎲'
     DISCARD = '🗑️'
     DODGE = '🥾'
@@ -35,7 +35,7 @@ class EmojiEnum(Enum):
     PHYSICAL_ATTACK = '💥'
     PRECISION_ATTACK = '💫'
     MAGICAL_ATTACK = '✨'
-    PHYSICAL_DEFENSE = '🛡'
+    PHYSICAL_DEFENSE = '🔰'
     PRECISION_DEFENSE = '🔰'
     MAGICAL_DEFENSE = '🔮'
     HIT = '🎯'
@@ -65,7 +65,7 @@ class EmojiEnum(Enum):
     AMULET = '📿'
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
     LEVEL_UP = '🎊'
-    DESTROY_ITEM = '💥'
+    DESTROY_ITEM = '💣'
     SORT_ITEMS = '📚'
     STATS = '📈'
     GROUP = '👥'
@@ -117,8 +117,6 @@ class EmojiEnum(Enum):
     TARGET_TYPE = '🗳️'
     SKILL_TYPE = '📦'
     SKILL_DEFENSE = '⃣'
-    SKILL_DEFENSE_TRUE = '💯'
-    SKILL_DEFENSE_NA = '⚫'
     SPECIAL_DAMAGE = '🕋'
 
 

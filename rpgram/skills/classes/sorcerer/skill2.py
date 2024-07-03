@@ -33,7 +33,8 @@ class PrismaticShotSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SHOT.value
     DESCRIPTION = (
         f'Canalizando a energia mágica, dispara um feixe prismático '
-        f'causando dano com base em *{MAGICAL_ATTACK_EMOJI_TEXT}*.'
+        f'causando dano com base em '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -69,9 +70,9 @@ class PrismaticShotSkill(BaseSkill):
 class PrismaticScintillationSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SCINTILLATION.value
     DESCRIPTION = (
-        f'Canalizando a energia mágica, criando e lançando um artefato '
+        f'Canalizando a energia mágica, cria e lança um artefato '
         f'prismático que causa dano a *TODES os inimigos* com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.'
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

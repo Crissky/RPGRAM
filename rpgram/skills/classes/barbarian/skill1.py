@@ -33,8 +33,9 @@ class FuriousAttackSkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_ATTACK.value
     DESCRIPTION = (
         f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
-        f'inimigo com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*, mas possui '
-        f' uma baixa taxa de {HIT_EMOJI_TEXT}.'
+        f'inimigo com base em '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (190% + 5% x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -75,8 +76,9 @@ class WildStrikeSkill(BaseSkill):
     NAME = BarbarianSkillEnum.WILD_STRIKE.value
     DESCRIPTION = (
         f'Desfere um ataque com força bruta, causando dano ao '
-        f'alvo com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*, mas possui '
-        f' uma baixa taxa de {HIT_EMOJI_TEXT}.'
+        f'alvo com base em '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (240% + 5% x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

@@ -36,7 +36,8 @@ class QuickAttackSkill(BaseSkill):
         f'Executa uma sequência de golpes precisos '
         f'como um vendaval contra seu inimigo, '
         f'dificultando as chances de esquiva do oponente e '
-        f'causando dano com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'causando dano com base em '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (115% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -47,7 +48,7 @@ class QuickAttackSkill(BaseSkill):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PRECISION_ATTACK: 1.15001
+            CombatStatsEnum.PRECISION_ATTACK: 1.15
         }
         damage_types = None
 
@@ -77,7 +78,8 @@ class LethalAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.LETHAL_ATTACK.value
     DESCRIPTION = (
         f'Desfere um ataque preciso focando pontos vitais do inimigo, '
-        f'causando dano com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'causando dano com base em '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (165% + 5% x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

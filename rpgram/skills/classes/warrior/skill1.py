@@ -37,7 +37,8 @@ class PowerfulAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.POWERFUL_ATTACK.value
     DESCRIPTION = (
         f'Tenciona os músculos ao máximo e desfere um golpe devastador, '
-        f'causando dano com base em *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'causando dano com base em '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -73,9 +74,9 @@ class PowerfulAttackSkill(BaseSkill):
 class MoreThanPowerfulAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.MORE_THAN_POWERFUL_ATTACK.value
     DESCRIPTION = (
-        f'Tenciona muito os músculos além do máximo e desfere um '
+        f'Tenciona os músculos além do máximo e desfere um '
         f'golpe devastador, causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

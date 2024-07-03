@@ -94,7 +94,9 @@ class BarrierCondition(Condition):
 
     @property
     def barrier_points(self) -> int:
-        return int(self.power * (1 + ((self.level - 1) / 20)))
+        power_multiplier = (1 + (self.level / 10))
+        power_multiplier = round(power_multiplier, 2)
+        return int(self.power * power_multiplier)
 
     @property
     def current_barrier_points(self) -> int:

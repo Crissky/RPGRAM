@@ -70,7 +70,7 @@ class BerserkerCondition(DebuffCondition):
     @property
     def multiplier_strength(self) -> float:
         power = self.level / 20
-        return (1 + power)
+        return round(1 + power, 2)
 
     def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': ''}
@@ -143,7 +143,7 @@ class BlindnessCondition(DebuffCondition):
     @property
     def multiplier_dexterity(self) -> float:
         power = self.level / 20
-        return (1 - power)
+        return round(1 - power, 2)
 
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
@@ -176,7 +176,7 @@ class BurnCondition(DebuffCondition):
     @property
     def multiplier_constitution(self) -> float:
         power = self.level / 20
-        return (1 - power)
+        return round(1 - power, 2)
 
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
@@ -239,12 +239,12 @@ class CurseCondition(DebuffCondition):
     @property
     def multiplier_intelligence(self) -> float:
         power = self.level / 20
-        return (1 - power)
+        return round(1 - power, 2)
 
     @property
     def multiplier_wisdom(self) -> float:
         power = self.level / 20
-        return (1 - power)
+        return round(1 - power, 2)
 
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
@@ -279,12 +279,12 @@ class ExhaustionCondition(DebuffCondition):
     @property
     def multiplier_strength(self) -> float:
         power = self.level / 20
-        return (1 - power)
+        return round(1 - power, 2)
 
     @property
     def multiplier_dexterity(self) -> float:
         power = self.level / 20
-        return (1 - power)
+        return round(1 - power, 2)
 
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}

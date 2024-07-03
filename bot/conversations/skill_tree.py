@@ -209,9 +209,8 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     skill_list = char.skill_tree.skill_list
     skill_name_list = [
         (
-            f'*H{i+1:02}*: '
-            f'*{skill_class.name.upper()}* '
-            f'(Nível: {skill_class.level})'
+            f'*H{i+1:02}*:'
+            f'*{skill_class.full_name_and_inline_info.upper()}*'
         )
         for i, skill_class in enumerate(skill_list)
     ]
@@ -269,9 +268,8 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     skill_list = char.skill_tree.skill_list
     skill_name_list = [
         (
-            f'*H{i+1:02}*: '
-            f'*{skill_class.name.upper()}* '
-            f'(Nível: {skill_class.level})'
+            f'*H{i+1:02}*:'
+            f'*{skill_class.full_name_and_inline_info.upper()}*'
         )
         for i, skill_class in enumerate(skill_list)
     ]
@@ -331,9 +329,8 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         skill_list = char.skill_tree.learnable_skill_list
         skill_name_list = [
             (
-                f'*H{i+1:02}*: '
-                f'*{skill_class.NAME.upper()}* '
-                f'(Rank: {skill_class.RANK})'
+                f'*H{i+1:02}*:'
+                f'*{skill_class.full_name_and_inline_info.upper()}*'
             )
             for i, skill_class in enumerate(skill_list)
         ]

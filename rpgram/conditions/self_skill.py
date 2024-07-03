@@ -84,6 +84,7 @@ class RobustBlockCondition(SelfSkillCondition):
     @property
     def bonus_physical_defense(self) -> int:
         power = 1 + (self.level / 20)
+        power = round(power, 2)
         bonus_physical_defense = self.character.bs.constitution * power
 
         return int(bonus_physical_defense)
@@ -134,6 +135,7 @@ class FuriousFuryCondition(SelfSkillCondition):
     @property
     def bonus_physical_attack(self) -> int:
         power = 1 + (self.level / 20)
+        power = round(power, 2)
         bonus_physical_attack = self.character.bs.strength * power
 
         return int(bonus_physical_attack)
@@ -184,6 +186,7 @@ class FuriousInstinctCondition(SelfSkillCondition):
     @property
     def multiplier_dexterity(self) -> int:
         power = 1.20 + (self.level / 20)
+        power = round(power, 2)
 
         return power
 
@@ -235,6 +238,7 @@ class MysticalProtectionCondition(SelfSkillCondition):
     @property
     def bonus_magical_defense(self) -> int:
         power = 1 + (self.level / 20)
+        power = round(power, 2)
         bonus_magical_defense = self.character.bs.wisdom * power
 
         return int(bonus_magical_defense)
@@ -287,6 +291,7 @@ class MysticalConfluenceCondition(SelfSkillCondition):
     @property
     def bonus_magical_attack(self) -> int:
         power = 1 + (self.level / 20)
+        power = round(power, 2)
         bonus_magical_attack = self.character.bs.intelligence * power
 
         return int(bonus_magical_attack)
@@ -340,6 +345,7 @@ class MysticalVigorCondition(SelfSkillCondition):
     @property
     def bonus_hit_points(self) -> int:
         power = 2 + (self.level / 10)
+        power = round(power, 2)
         bonus_magical_attack = sum([
             self.character.bs.intelligence * power,
             self.character.bs.wisdom * power

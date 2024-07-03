@@ -44,7 +44,7 @@ class MysticalProtectionSkill(BaseSkill):
     DESCRIPTION = (
         f'Tece uma trama de energia *Mística* que concede '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
-        f'*{WISDOM_EMOJI_TEXT}*.'
+        f'*{WISDOM_EMOJI_TEXT}* (100% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -66,7 +66,7 @@ class MysticalProtectionSkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BUFF,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
@@ -102,7 +102,7 @@ class MysticalConfluenceSkill(BaseSkill):
         f'Manipulando os fluxos da magia, entrelaça diferentes tipos de '
         f'energias *Místicas* para amplificar seu '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
-        f'*{INTELLIGENCE_EMOJI_TEXT}*.'
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -124,7 +124,7 @@ class MysticalConfluenceSkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BUFF,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
@@ -159,7 +159,8 @@ class MysticalVigorSkill(BaseSkill):
     DESCRIPTION = (
         f'Evoca energias *Místicas* para fortalecer o seu espírito '
         f'aumentando os *{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
-        f'*{INTELLIGENCE_EMOJI_TEXT}* e na *{WISDOM_EMOJI_TEXT}*.'
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 10% x Nível)'
+        f'e na *{WISDOM_EMOJI_TEXT}* (200% + 10% x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -169,7 +170,7 @@ class MysticalVigorSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
+        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -183,7 +184,7 @@ class MysticalVigorSkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.DEFENSE,
+            skill_type=SkillTypeEnum.BUFF,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
@@ -218,7 +219,6 @@ if __name__ == '__main__':
     from rpgram.constants.test import SORCERER_CHARACTER
     skill = MysticalProtectionSkill(SORCERER_CHARACTER)
     print(skill)
-    print(SORCERER_CHARACTER.bs.intelligence)
     print(SORCERER_CHARACTER.bs.wisdom)
     print(SORCERER_CHARACTER.cs.magical_defense)
     print(skill.function())
@@ -227,7 +227,7 @@ if __name__ == '__main__':
 
     skill = MysticalConfluenceSkill(SORCERER_CHARACTER)
     print(skill)
-    print(SORCERER_CHARACTER.bs.wisdom)
+    print(SORCERER_CHARACTER.bs.intelligence)
     print(SORCERER_CHARACTER.cs.magical_attack)
     print(skill.function())
     print(SORCERER_CHARACTER.cs.magical_attack)

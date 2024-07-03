@@ -1,5 +1,7 @@
 from enum import Enum
 
+from rpgram.enums.emojis import EmojiEnum
+
 
 class TargetEnum(Enum):
     SELF = 'self'
@@ -10,6 +12,8 @@ class TargetEnum(Enum):
 
 class SkillTypeEnum(Enum):
     ATTACK = 'attack'
+    BARRIER = 'barrier'
+    BUFF = 'buff'
     DEFENSE = 'defense'
     HEALING = 'healing'
 
@@ -19,6 +23,28 @@ class SkillDefenseEnum(Enum):
     MAGICAL = 'magical'
     TRUE = 'true'
     NA = 'n/a'
+
+
+class TargetEmojiEnum(Enum):
+    SELF = '🙋'
+    SINGLE = '👤'
+    TEAM = '👥'
+    ALL = '🌐'
+
+
+class SkillTypeEmojiEnum(Enum):
+    ATTACK = EmojiEnum.ATTACK.value
+    DEFENSE = EmojiEnum.DEFEND.value
+    HEALING = EmojiEnum.HEALING.value
+    BUFF = '❇'
+    BARRIER = EmojiEnum.BARRIER_POINT.value
+
+
+class SkillDefenseEmojiEnum(Enum):
+    PHYSICAL = EmojiEnum.PHYSICAL_ATTACK.value
+    MAGICAL = EmojiEnum.MAGICAL_ATTACK.value
+    TRUE = '💯'
+    NA = '⚫'
 
 
 class BarbarianSkillEnum(Enum):

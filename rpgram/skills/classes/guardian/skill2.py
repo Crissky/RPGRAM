@@ -41,7 +41,8 @@ class HeavyChargeSkill(BaseSkill):
     DESCRIPTION = (
         f'Assume uma postura ofensiva, avançando contra o inimigo '
         f'usando seu corpo massivo como arma, causando dano com base em '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e *{PHYSICAL_ATTACK_EMOJI_TEXT}*.'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (90% + 5% x Nível) e '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (45% + 5% x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
