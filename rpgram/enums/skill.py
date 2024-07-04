@@ -36,7 +36,7 @@ class SkillTypeEmojiEnum(Enum):
     ATTACK = EmojiEnum.ATTACK.value
     DEFENSE = EmojiEnum.DEFEND.value
     HEALING = EmojiEnum.HEALING.value
-    BUFF = '❇'
+    BUFF = '🎖️'
     BARRIER = EmojiEnum.BARRIER_POINT.value
 
 
