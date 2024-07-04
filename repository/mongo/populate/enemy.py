@@ -198,7 +198,7 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
     }
     base_stats_list = list(base_stats_probs.keys())
     total_base_stats = len(base_stats_list)
-    partial_base_stats_points = int(enemy_char.base_stats.points * 0.50)
+    partial_base_stats_points = int(enemy_char.base_stats.points * 0.40)
 
     # Distribui os pontos de forma parcial e uniforme
     for i in range(partial_base_stats_points):
