@@ -76,6 +76,7 @@ class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
     QUICK_ATTACK = 'Ataque Rápido'
+    BLINK_ATTACK = 'Ataque Lampejante'
     LETHAL_ATTACK = 'Ataque Letal'
     AEGIS_SHADOW = 'Sombra de Égide'
     WAR_BANNER = 'Flâmula de Guerra'

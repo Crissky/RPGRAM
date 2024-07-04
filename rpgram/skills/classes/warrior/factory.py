@@ -4,6 +4,7 @@ from rpgram.skills.classes.warrior.skill1 import (
     PowerfulAttackSkill
 )
 from rpgram.skills.classes.warrior.skill2 import (
+    BlinkAttackSkill,
     LethalAttackSkill,
     QuickAttackSkill
 )
@@ -33,6 +34,8 @@ def warrior_skill_factory(
     # SKILL2
     elif skill_class_name == QuickAttackSkill.__name__:
         skill_class = QuickAttackSkill
+    elif skill_class_name == BlinkAttackSkill.__name__:
+        skill_class = BlinkAttackSkill
     elif skill_class_name == LethalAttackSkill.__name__:
         skill_class = LethalAttackSkill
     # SKILL3
@@ -57,6 +60,7 @@ WARRIOR_SKILL_LIST = [
 
     # SKILL2
     QuickAttackSkill,
+    BlinkAttackSkill,
     LethalAttackSkill,
 
     # SKILL3

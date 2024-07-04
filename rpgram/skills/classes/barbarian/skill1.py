@@ -34,7 +34,7 @@ class FuriousAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
         f'inimigo com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (190% + 5% x Rank x Nível), '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 1
@@ -46,7 +46,7 @@ class FuriousAttackSkill(BaseSkill):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 1.90,
+            CombatStatsEnum.PHYSICAL_ATTACK: 2.00,
         }
         damage_types = None
 
@@ -69,7 +69,7 @@ class FuriousAttackSkill(BaseSkill):
 
     @property
     def hit_multiplier(self) -> float:
-        return 0.80
+        return 0.75
 
 
 class WildStrikeSkill(BaseSkill):
@@ -77,7 +77,7 @@ class WildStrikeSkill(BaseSkill):
     DESCRIPTION = (
         f'Desfere um ataque com força bruta, causando dano ao '
         f'alvo com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (240% + 5% x Rank x Nível), '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (210% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 2
@@ -91,7 +91,7 @@ class WildStrikeSkill(BaseSkill):
         cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 2.40,
+            CombatStatsEnum.PHYSICAL_ATTACK: 2.10,
         }
         damage_types = None
 
@@ -114,7 +114,7 @@ class WildStrikeSkill(BaseSkill):
 
     @property
     def hit_multiplier(self) -> float:
-        return 0.70
+        return 0.90
 
 
 if __name__ == '__main__':

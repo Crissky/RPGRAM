@@ -160,7 +160,7 @@ class FuriousRoarSkill(BaseSkill):
     DESCRIPTION = (
         f'Libera um *Rugido Aterrorizante* que despedaça a alma dos inimigos '
         f'com uma onda de terror que causa dano com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível), '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (62% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 3
@@ -177,7 +177,7 @@ class FuriousRoarSkill(BaseSkill):
         cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
+            CombatStatsEnum.PHYSICAL_ATTACK: 0.62,
         }
         damage_types = [DamageEnum.ROAR]
 
@@ -197,10 +197,6 @@ class FuriousRoarSkill(BaseSkill):
             requirements=FuriousRoarSkill.REQUIREMENTS,
             damage_types=damage_types
         )
-
-    @property
-    def hit_multiplier(self) -> float:
-        return 0.80
 
 
 if __name__ == '__main__':
