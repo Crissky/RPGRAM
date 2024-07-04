@@ -1,3 +1,9 @@
+''' Módulo com as Condições do tipo SELF
+    Essas Condições usam dos stats do personagem atualizados, por isso 
+    recebem um personagem como argumento.
+'''
+
+
 from datetime import datetime
 from typing import TYPE_CHECKING, Union
 

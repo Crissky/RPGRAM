@@ -2,6 +2,7 @@ from datetime import timedelta
 from random import choice, randint
 from typing import Iterable
 
+from bson import ObjectId
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -97,7 +98,7 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
             callback=job_find_treasure,
             when=timedelta(minutes=minutes),
             chat_id=chat_id,
-            name=f'JOB_CREATE_EVENTE_TREASURE_{i}',
+            name=f'JOB_CREATE_EVENT_TREASURE_{ObjectId()}',
             job_kwargs=BASE_JOB_KWARGS,
         )
 

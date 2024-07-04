@@ -1,3 +1,8 @@
+''' Módulo com as Condições do tipo de Target diferente de SELF
+    Essas Condições usam o power fornecido no momendo da instância
+'''
+
+
 from datetime import datetime
 from typing import Union
 

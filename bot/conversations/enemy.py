@@ -5,6 +5,7 @@ from random import choice, randint, shuffle
 from time import sleep
 from typing import List, Union
 
+from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -145,7 +146,7 @@ async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
             callback=job_start_ambush,
             when=timedelta(minutes=minutes),
             chat_id=chat_id,
-            name=f'JOB_CREATE_AMBUSH_{i}',
+            name=f'JOB_CREATE_AMBUSH_{ObjectId()}',
             job_kwargs=BASE_JOB_KWARGS,
         )
 

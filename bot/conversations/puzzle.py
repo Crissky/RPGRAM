@@ -3,6 +3,7 @@ from operator import attrgetter
 from random import choice, randint, shuffle
 from typing import List
 
+from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -130,7 +131,7 @@ async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
             callback=job_start_puzzle,
             when=timedelta(minutes=minutes),
             chat_id=chat_id,
-            name=f'JOB_CREATE_PUZZLE_{i}',
+            name=f'JOB_CREATE_PUZZLE_{ObjectId()}',
             job_kwargs=BASE_JOB_KWARGS,
         )
 
