@@ -38,7 +38,7 @@ class PowerfulAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Tenciona os músculos ao máximo e desfere um golpe devastador, '
         f'causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -49,7 +49,7 @@ class PowerfulAttackSkill(BaseSkill):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.25,
         }
         damage_types = None
 
@@ -76,7 +76,7 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Tenciona os músculos além do máximo e desfere um '
         f'golpe devastador, causando dano com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -89,7 +89,7 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
         cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 2.00,
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
         }
         damage_types = None
 
@@ -109,10 +109,6 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
             requirements=MoreThanPowerfulAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
-
-    @property
-    def hit_multiplier(self) -> float:
-        return 1.10
 
 
 if __name__ == '__main__':
