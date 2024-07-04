@@ -61,7 +61,7 @@ class RobustBlockCondition(SelfSkillCondition):
     def __init__(
         self,
         character: 'BaseCharacter',
-        turn: int = 5,
+        turn: int = 10,
         level: int = 1
     ):
         super().__init__(
@@ -78,7 +78,7 @@ class RobustBlockCondition(SelfSkillCondition):
             f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
-            f'por 5 turnos.'
+            f'por {self.turn} turno(s).'
         )
 
     @property
@@ -112,7 +112,7 @@ class FuriousFuryCondition(SelfSkillCondition):
     def __init__(
         self,
         character: 'BaseCharacter',
-        turn: int = 5,
+        turn: int = 10,
         level: int = 1
     ):
         super().__init__(
@@ -129,7 +129,7 @@ class FuriousFuryCondition(SelfSkillCondition):
             f'Estado de *Fúria* que aumenta o *{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
             f'(100%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
-            f'por 5 turnos.'
+            f'por {self.turn} turno(s).'
         )
 
     @property
@@ -164,7 +164,7 @@ class FuriousInstinctCondition(SelfSkillCondition):
     def __init__(
         self,
         character: 'BaseCharacter',
-        turn: int = 5,
+        turn: int = 10,
         level: int = 1
     ):
         super().__init__(
@@ -180,7 +180,7 @@ class FuriousInstinctCondition(SelfSkillCondition):
         return (
             f'Instinto de *Fúria* que aumenta a *{DEXTERITY_EMOJI_TEXT}* '
             f'base em {int((self.multiplier_dexterity-1)*100)}% '
-            f' (20% + 5% x Nível por 5 turnos).'
+            f' (20% + 5% x Nível) por {self.turn} turno(s).'
         )
 
     @property
@@ -214,7 +214,7 @@ class MysticalProtectionCondition(SelfSkillCondition):
     def __init__(
         self,
         character: 'BaseCharacter',
-        turn: int = 5,
+        turn: int = 10,
         level: int = 1
     ):
         super().__init__(
@@ -232,7 +232,7 @@ class MysticalProtectionCondition(SelfSkillCondition):
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_magical_defense} pontos '
             f'(100%{EmojiEnum.WISDOM.value} + 10% x Nível) '
-            f'por 5 turnos.'
+            f'por {self.turn} turno(s).'
         )
 
     @property
@@ -267,7 +267,7 @@ class MysticalConfluenceCondition(SelfSkillCondition):
     def __init__(
         self,
         character: 'BaseCharacter',
-        turn: int = 5,
+        turn: int = 10,
         level: int = 1
     ):
         super().__init__(
@@ -285,7 +285,7 @@ class MysticalConfluenceCondition(SelfSkillCondition):
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_magical_attack} pontos '
             f'(100%{EmojiEnum.INTELLIGENCE.value} + 10% x Nível) '
-            f'por 5 turnos.'
+            f'por {self.turn} turno(s).'
         )
 
     @property
@@ -320,7 +320,7 @@ class MysticalVigorCondition(SelfSkillCondition):
     def __init__(
         self,
         character: 'BaseCharacter',
-        turn: int = 10,
+        turn: int = 15,
         level: int = 1
     ):
         super().__init__(
@@ -339,7 +339,7 @@ class MysticalVigorCondition(SelfSkillCondition):
             f'em {self.bonus_hit_points} pontos '
             f'(200%{EmojiEnum.INTELLIGENCE.value} + 20% x Nível) e'
             f'(200%{EmojiEnum.WISDOM.value} + 20% x Nível) '
-            f'por 10 turnos.'
+            f'por {self.turn} turno(s).'
         )
 
     @property
