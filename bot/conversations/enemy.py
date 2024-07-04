@@ -39,6 +39,7 @@ from bot.constants.enemy import (
     PATTERN_DEFEND,
     SECTION_END_DICT,
     SECTION_START_DICT,
+    SECTION_TEXT_ALLY_ATTACK,
     SECTION_TEXT_AMBUSH,
     SECTION_TEXT_AMBUSH_ATTACK,
     SECTION_TEXT_AMBUSH_COUNTER,
@@ -46,6 +47,7 @@ from bot.constants.enemy import (
     SECTION_TEXT_AMBUSH_XP,
     SECTION_TEXT_EXCOMMUNICATED,
     SECTION_TEXT_FAIL,
+    SECTION_TEXT_FAIL_ALLY_ATTACK,
     SECTION_TEXT_FAIL_AMBUSH_COUNTER,
     SECTION_TEXT_FAIL_AMBUSH_DEFENSE,
     SECTION_TEXT_FLEE
@@ -857,8 +859,14 @@ async def player_attack(
     attacker_skill: BaseSkill = None,
     query: CallbackQuery = None
 ) -> dict:
+    '''Função que o Jogador ataca um Inimigo
+    '''
+
+    if target_char and attacker_char.player_id == target_char.player_id:
+        target_char = None
+
     attacker_id = attacker_char.player_id
-    target_id = target_char.player_id
+    target_id = target_char.player_id if target_char else None
     enemy_id = str(enemy_char.player_id)
     reply_markup = get_reply_markup_from_ambush_dict(
         context=context,
@@ -874,8 +882,8 @@ async def player_attack(
     report_text += f'\n\n{TEXT_SEPARATOR}\n\n'
     counter_report = None
 
-    # ATACA se o ALVO DO INIMIGO e o INIMIGO estiverem vivos
-    if target_char.is_alive and enemy_char.is_alive:
+    # ATACA se INIMIGO estiver vivo
+    if enemy_char.is_alive:
         attack_report = attacker_char.to_attack(
             defender_char=enemy_char,
             defender_dice=None,
@@ -905,6 +913,7 @@ async def player_attack(
 
         if attack_report['dead']:
             reply_markup = REPLY_MARKUP_DEFAULT
+        if target_char and attack_report['dead']:
             base_xp = get_base_xp_from_player_attack(
                 enemy_char=enemy_char,
                 attacker_char=target_char,
@@ -952,18 +961,11 @@ async def player_attack(
             query=query
         )
     # NÃO ATACA se o ALVO DO INIMIGO ou o INIMIGO estiverem mortos
-    else:
-        if target_char.is_dead:
-            report_text = (
-                f'O ataque falhou, pois '
-                f'*{enemy_char.full_name_with_level}* fugiu já que '
-                f'*{target_char.player_name}* está morto.'
-            )
-        elif enemy_char.is_dead:
-            report_text = (
-                f'O ataque falhou, pois '
-                f'*{enemy_char.full_name_with_level}* está morto.'
-            )
+    elif enemy_char.is_dead:
+        report_text = (
+            f'O ataque falhou, pois '
+            f'*{enemy_char.full_name_with_level}* está morto.'
+        )
         print(report_text)
         report_text = new_report_text = create_text_in_box(
             text=report_text,
@@ -973,10 +975,17 @@ async def player_attack(
         )
 
     try:
+        if message_id is None:
+            raise BadRequest('Message to edit not found')
+        user_ids = [
+            _id
+            for _id in [attacker_id, target_id]
+            if _id is not None
+        ]
         await edit_message_text_and_forward(
             function_caller='PLAYER_ATTACK()',
             new_text=report_text,
-            user_ids=[attacker_id, target_id],
+            user_ids=user_ids,
             context=context,
             chat_id=chat_id,
             message_id=message_id,
@@ -1035,7 +1044,7 @@ async def player_attack(
             silent=True,
         )
 
-    if enemy_char.is_dead or target_char.is_dead:
+    if enemy_char.is_dead or (target_char and target_char.is_dead):
         remove_enemy_attack_job(
             context=context,
             user_id=target_id,
@@ -1053,6 +1062,69 @@ async def player_attack(
         )
 
     return {'text': new_report_text}
+
+
+async def player_attack_player(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    attacker_char: PlayerCharacter,
+    defender_char: NPCharacter,
+    to_dodge: bool = False,
+    attacker_skill: BaseSkill = None,
+) -> dict:
+    '''Função que o Jogador ataca outro Jogador
+    '''
+
+    attacker_id = attacker_char.player_id
+    defender_id = str(defender_char.player_id)
+
+    # ATACA se INIMIGO estiver vivo
+    if defender_char.is_alive:
+        attack_report = attacker_char.to_attack(
+            defender_char=defender_char,
+            defender_dice=None,
+            attacker_skill=attacker_skill,
+            to_dodge=to_dodge,
+            to_defend=True,
+            verbose=True,
+            markdown=True
+        )
+        report_text = attack_report['text']
+        attacker_skill: BaseSkill = attack_report['attack']['skill']
+
+        skill_defense_type = attacker_skill.skill_defense
+        report_text = create_text_in_box(
+            text=report_text,
+            section_name=SECTION_TEXT_ALLY_ATTACK,
+            section_start=SECTION_START_DICT[skill_defense_type],
+            section_end=SECTION_END_DICT[skill_defense_type],
+            clean_func=escape_for_citation_markdown_v2,
+        )
+    # NÃO ATACA se o ALVO estiver morto
+    elif defender_char.is_dead:
+        report_text = (
+            f'O ataque falhou, pois '
+            f'*{defender_char.full_name_with_level}* está morto.'
+        )
+        print(report_text)
+        report_text = create_text_in_box(
+            text=report_text,
+            section_name=SECTION_TEXT_FAIL_ALLY_ATTACK,
+            section_start=SECTION_HEAD_FAIL_START,
+            section_end=SECTION_HEAD_FAIL_END,
+        )
+
+    await reply_text(
+        function_caller='PLAYER_ATTACK_PLAYER()',
+        text=report_text,
+        context=context,
+        update=update,
+        need_response=False,
+        allow_sending_without_reply=True,
+        markdown=True,
+    )
+
+    return {'text': report_text}
 
 
 def resize_text(
