@@ -326,6 +326,11 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
             player_character.is_damaged or player_character.is_debuffed
         )
 
+        create_job_rest_action_point(
+            context=context,
+            chat_id=chat_id,
+            user_id=user_id,
+        )
         if battle or current_jobs or not player_need_rest:
             continue
         else:
@@ -335,11 +340,6 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
                 user_id=user_id,
             )
             texts.append(f'{player_name} - HP: {current_hp}')
-        create_job_rest_action_point(
-            context=context,
-            chat_id=chat_id,
-            user_id=user_id,
-        )
 
     if texts:
         players_hp = '\n'.join(texts)
