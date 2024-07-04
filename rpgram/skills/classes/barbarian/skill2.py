@@ -160,7 +160,7 @@ class FuriousRoarSkill(BaseSkill):
     DESCRIPTION = (
         f'Libera um *Rugido Aterrorizante* que despedaça a alma dos inimigos '
         f'com uma onda de terror que causa dano com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (62% + 5% x Rank x Nível), '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (62% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 3

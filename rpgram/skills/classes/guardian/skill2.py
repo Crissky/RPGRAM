@@ -136,9 +136,9 @@ class SteelStormSkill(BaseSkill):
         f'que desencadeia uma *Tempestade*, '
         f'ceifando seus inimigos impiedosamente com '
         f'dano baseado em '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (9% + 5% x Rank x Nível), '
-        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (9% + 5% x Rank x Nível) e '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (9% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível), '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível) e '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{

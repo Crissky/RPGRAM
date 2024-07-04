@@ -74,7 +74,7 @@ class PrismaticScintillationSkill(BaseSkill):
     DESCRIPTION = (
         f'Canaliza a energia mágica, cria e lança um artefato '
         f'prismático que causa dano a *TODES os inimigos* com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (50% + 2.5% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
