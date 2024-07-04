@@ -83,7 +83,7 @@ class IronChargeSkill(BaseSkill):
         f'Avança através das linhas inimigas com uma força imparável '
         f'como um ariete implacável, envolto em uma aura metálica '
         f'causando dano com base em '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível), '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível), '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
     )
@@ -98,7 +98,7 @@ class IronChargeSkill(BaseSkill):
         cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_DEFENSE: 0.75,
+            CombatStatsEnum.PHYSICAL_DEFENSE: 0.50,
             CombatStatsEnum.MAGICAL_DEFENSE: 0.50,
             CombatStatsEnum.PHYSICAL_ATTACK: 0.50,
         }
@@ -136,9 +136,9 @@ class SteelStormSkill(BaseSkill):
         f'que desencadeia uma *Tempestade*, '
         f'ceifando seus inimigos impiedosamente com '
         f'dano baseado em '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível), '
-        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível) e '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (9% + 5% x Rank x Nível), '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (9% + 5% x Rank x Nível) e '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (9% + 5% x Rank x Nível).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{
@@ -151,9 +151,9 @@ class SteelStormSkill(BaseSkill):
         cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_DEFENSE: 0.50,
-            CombatStatsEnum.MAGICAL_DEFENSE: 0.50,
-            CombatStatsEnum.PHYSICAL_ATTACK: 0.50,
+            CombatStatsEnum.PHYSICAL_DEFENSE: 0.09,
+            CombatStatsEnum.MAGICAL_DEFENSE: 0.09,
+            CombatStatsEnum.PHYSICAL_ATTACK: 0.09,
         }
         damage_types = [
             DamageEnum.BLUDGEONING,
