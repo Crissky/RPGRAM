@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.warrior.skill1 import (
     MoreThanPowerfulAttackSkill,
     PowerfulAttackSkill
@@ -53,7 +53,7 @@ def warrior_skill_factory(
     return skill_class(char, level)
 
 
-WARRIOR_SKILL_LIST = [
+WARRIOR_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     PowerfulAttackSkill,
     MoreThanPowerfulAttackSkill,

@@ -313,7 +313,11 @@ class BaseSkill:
         if isinstance(self.level_multiplier_dict, dict):
             return self.level_multiplier_dict[self.level]
         else:
-            return (self.level_rank / 20)
+            divisor = 20
+            if self.target_type == TargetEnum.TEAM:
+                divisor = 40
+
+            return (self.level_rank / divisor)
 
     @property
     def level_rank(self) -> int:

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.sorcerer.skill1 import (
     MysticalConfluenceSkill,
     MysticalProtectionSkill,
@@ -41,7 +41,7 @@ def sorcerer_skill_factory(
     return skill_class(char, level)
 
 
-SORCERER_SKILL_LIST = [
+SORCERER_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     MysticalProtectionSkill,
     MysticalConfluenceSkill,

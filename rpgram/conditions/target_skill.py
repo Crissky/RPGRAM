@@ -1,3 +1,8 @@
+''' Módulo com as Condições do tipo de Target diferente de SELF
+    Essas Condições usam o power fornecido no momendo da instância
+'''
+
+
 from datetime import datetime
 from typing import Union
 
@@ -19,7 +24,7 @@ class TargetSkillCondition(BuffCondition):
         name: str,
         frequency: Union[str, TurnEnum],
         power: int,
-        turn: int = 5,
+        turn: int = 1,
         level: int = 1,
         _id: Union[str, ObjectId] = None,
         created_at: datetime = None,
@@ -55,7 +60,7 @@ class WarBannerCondition(TargetSkillCondition):
     def __init__(
         self,
         power: int,
-        turn: int = 5,
+        turn: int = 10,
         level: int = 1,
     ):
         super().__init__(

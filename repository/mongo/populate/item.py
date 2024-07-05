@@ -373,7 +373,7 @@ def get_bonus_and_penality(
     '''
     rarity_bonus = BONUS_RARITY[rarity]
     if equip_type in [EquipmentEnum.TWO_HANDS.name]:
-        equip_type_bonus = 3.75
+        equip_type_bonus = 3.50
     elif equip_type in [EquipmentEnum.ONE_HAND.name]:
         equip_type_bonus = 1.50
     elif equip_type in [EquipmentEnum.ARMOR.name]:
@@ -626,7 +626,7 @@ def add_secret_stats(
     '''Retorna os atributos bônus do equipamento. 
     Esses atributos estarão disponíveis para o personagem quando 
     o item for identificado.
-    Os bônus são selecionado de maneira aleatórios. O total de bônus é baseado 
+    Os bônus são selecionado de maneira aleatória. O total de bônus é baseado 
     na raridade do item em na metade do nível de grupo.
     '''
 
@@ -666,15 +666,21 @@ def add_secret_stats(
         attr_probs[attribute] = 50
 
     count_multiplier = 0
+    max_multiplier_times = (
+        5
+        if equip_type in EQUIPS_NO_REDUCE_SECRET_STATS
+        else 3
+    )
     for _ in range(bonus):
         attribute = weighted_choice(**attr_probs)
 
-        if count_multiplier > 3:
+        if count_multiplier > max_multiplier_times:
             print('Foi atingido o limite de multiplicadores.')
             break
         elif attribute in secret_mutiplier_base_stats:
             secret_stats[attribute] += choice([.1, .25, .5, .75, 1.0])
             count_multiplier += 1
+            attr_probs[attribute] += 2.5
         elif attribute in secret_combat_stats:
             secret_stats[attribute] += randint(1, 10)
             attr_probs[attribute] += 15

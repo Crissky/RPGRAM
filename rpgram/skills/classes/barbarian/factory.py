@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.barbarian.skill1 import (
     FuriousAttackSkill,
     WildStrikeSkill
@@ -38,7 +38,7 @@ def barbarian_skill_factory(
     return skill_class(char, level)
 
 
-BARBARIAN_SKILL_LIST = [
+BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     FuriousAttackSkill,
     WildStrikeSkill,

@@ -3,6 +3,7 @@ Módulo responsável por exibir algumas variáveis de contexto
 '''
 
 
+from operator import attrgetter
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import (
@@ -45,6 +46,9 @@ from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo.populate.enemy import create_random_enemies
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.factory import condition_factory
+from rpgram.skills.factory import ALL_SKILL_DICT
+
+
 
 
 @skip_if_no_singup_player
@@ -76,6 +80,15 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 text += f'{index+1:02}: {job.name}\n'
         else:
             text += 'Nenhum job ativo.'
+    elif len(args) > 0 and args[0] in ['skill', 'skills', 'habilidade']:
+        text = 'Habilidades:\n\n'
+        for class_name, skill_list in ALL_SKILL_DICT.items():
+            class_name = class_name.upper()
+            text += f'- *{class_name}*:\n'
+            sorted_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
+            for i, skill in enumerate(sorted_list):
+                text += f'  {i+1:02} {skill.NAME} (RNK: {skill.RANK})\n'
+            text += '\n'
     else:
         text = f'"{args}" não é um argumento válido.'
 

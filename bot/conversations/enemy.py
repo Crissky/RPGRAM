@@ -5,6 +5,7 @@ from random import choice, randint, shuffle
 from time import sleep
 from typing import List, Union
 
+from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -145,7 +146,7 @@ async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
             callback=job_start_ambush,
             when=timedelta(minutes=minutes),
             chat_id=chat_id,
-            name=f'JOB_CREATE_AMBUSH_{i}',
+            name=f'JOB_CREATE_AMBUSH_{ObjectId()}',
             job_kwargs=BASE_JOB_KWARGS,
         )
 
@@ -442,16 +443,42 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
             section_start=SECTION_HEAD_FAIL_START,
             section_end=SECTION_HEAD_FAIL_END,
         )
-        await edit_message_text_and_forward(
-            function_caller='JOB_ENEMY_ATTACK()',
-            new_text=text,
-            user_ids=user_id,
-            context=context,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=True
-        )
+        try:
+            await edit_message_text_and_forward(
+                function_caller='JOB_ENEMY_ATTACK()',
+                new_text=text,
+                user_ids=user_id,
+                context=context,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=True
+            )
+        except BadRequest as e:
+            if e.message == 'Message to edit not found':
+                remove_ambush_enemy(context=context, enemy_id=enemy_id)
+                bad_request_text = (
+                    f'A mensagem original da emboscada, de id *{message_id}*, '
+                    f'não existe mais e o inimigo não está mais no dicionário '
+                    f'de emboscada.'
+                )
+                bad_request_text = create_text_in_box(
+                    text=bad_request_text,
+                    section_name=SECTION_TEXT_EXCOMMUNICATED,
+                    section_start=SECTION_HEAD_FAIL_START,
+                    section_end=SECTION_HEAD_FAIL_END,
+                )
+                await reply_text(
+                    function_caller='JOB_ENEMY_ATTACK()',
+                    text=bad_request_text,
+                    context=context,
+                    user_id=user_id,
+                    chat_id=chat_id,
+                    message_id=message_id,
+                    need_response=False,
+                    allow_sending_without_reply=True,
+                    markdown=True,
+                )
     elif enemy_char.is_immobilized:
         is_first_attack = True
         enemy_name = enemy_char.player_name

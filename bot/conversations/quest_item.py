@@ -1,6 +1,7 @@
 from datetime import timedelta
 from random import choice, randint
 
+from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -111,7 +112,7 @@ async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
             callback=job_start_item_quest,
             when=timedelta(minutes=minutes),
             chat_id=chat_id,
-            name=f'JOB_CREATE_ITEM_QUEST_{i}',
+            name=f'JOB_CREATE_ITEM_QUEST_{ObjectId()}',
             job_kwargs=BASE_JOB_KWARGS,
         )
 

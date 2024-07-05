@@ -56,6 +56,7 @@ from bot.constants.view_group import COMMANDS as view_group_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
 from bot.constants.seller import COMMANDS as seller_commands, SELLER_NAME
 from bot.constants.reset_char import COMMANDS as reset_char_commands
+from bot.constants.skill_tree import COMMANDS as skill_commands
 from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
@@ -170,6 +171,7 @@ def get_details_text(option: str) -> str:
         view_player_cmd = command_to_string(view_player_commands)
         seller_cmd = command_to_string(seller_commands)
         reset_char_cmd = command_to_string(reset_char_commands)
+        skill_cmd = command_to_string(skill_commands)
         text = (
             f'{SECTION_HEAD.format("COMANDOS")}\n\n'
 
@@ -247,7 +249,12 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.CHRYSUS_1.value}*LOJA*: /{seller_commands[0]}\n'
             f'INFO: Abre a loja do {SELLER_NAME}.\n'
-            f'Atalhos: {seller_cmd}'
+            f'Atalhos: {seller_cmd}\n\n'
+            
+            f'{EmojiEnum.SKILL_POINTS.value}*HABILIDADES*: '
+            f'/{skill_commands[0]}\n'
+            f'INFO: Abre o menu de gerenciamento de Habilidades.\n'
+            f'Atalhos: {skill_cmd}'
         )
     elif option == CALLBACK_STATS:
         add_stats_cmd = command_to_string(add_stats_commands)

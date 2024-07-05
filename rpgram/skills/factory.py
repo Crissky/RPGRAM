@@ -24,6 +24,15 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
+ALL_SKILL_DICT = {
+    'Bárbaro': BARBARIAN_SKILL_LIST,
+    'Feiticeiro': SORCERER_SKILL_LIST,
+    'Guardião': GUARDIAN_SKILL_LIST,
+    'Guerreiro': WARRIOR_SKILL_LIST,
+}
+
+
+
 def skill_factory(
     classe_name: Union[ClasseEnum, str],
     skill_class_name: str,
