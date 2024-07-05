@@ -479,7 +479,14 @@ async def check_upgrade_skill(
     try:
         skill_list = char.skill_tree.skill_list
         skill: BaseSkill = skill_list[skill_index]
-        markdown_skill_tree_sheet = skill.description_text
+        requirements = skill.requirements.show_requirements(
+            level=skill.level + 1,
+            rank=skill.rank
+        )
+        markdown_skill_tree_sheet = (
+            f'{skill.description_text}\n\n'
+            f'*Requerimentos*:\n{requirements}'
+        )
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
