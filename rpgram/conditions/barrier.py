@@ -203,6 +203,10 @@ class AegisShadowCondition(BarrierCondition):
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
 
 class PrismaticShieldCondition(BarrierCondition):
 
