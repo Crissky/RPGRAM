@@ -36,6 +36,7 @@ from bot.functions.char import add_conditions
 from bot.functions.config import get_attribute_group
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import (
+    ALERT_SECTION_HEAD,
     SECTION_HEAD_DEBUFF_END,
     SECTION_HEAD_DEBUFF_START,
     SECTION_HEAD_DEBUG_END,
@@ -47,8 +48,6 @@ from repository.mongo.populate.enemy import create_random_enemies
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.factory import condition_factory
 from rpgram.skills.factory import ALL_SKILL_DICT
-
-
 
 
 @skip_if_no_singup_player
@@ -81,13 +80,14 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             text += 'Nenhum job ativo.'
     elif len(args) > 0 and args[0] in ['skill', 'skills', 'habilidade']:
-        text = 'Habilidades:\n\n'
+        text = ALERT_SECTION_HEAD.format('*HABILIDADES*')
+        text += '\n\n'
         for class_name, skill_list in ALL_SKILL_DICT.items():
             class_name = class_name.upper()
-            text += f'- *{class_name}*:\n'
+            text += f'● *{class_name}*:\n'
             sorted_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
             for i, skill in enumerate(sorted_list):
-                text += f'  {i+1:02} {skill.NAME} (RNK: {skill.RANK})\n'
+                text += f'{i+1:02} *{skill.NAME}* (RNK: {skill.RANK})\n'
             text += '\n'
     else:
         text = f'"{args}" não é um argumento válido.'
