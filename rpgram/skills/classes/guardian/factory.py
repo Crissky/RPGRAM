@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.guardian.skill1 import (
     GuardianShieldSkill,
     RobustBlockSkill
@@ -38,7 +38,7 @@ def guardian_skill_factory(
     return skill_class(char, level)
 
 
-GUARDIAN_SKILL_LIST = [
+GUARDIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     RobustBlockSkill,
     GuardianShieldSkill,
