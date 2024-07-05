@@ -50,8 +50,8 @@ class Dice:
 
         if not isinstance(base_multiplier, float):
             base_multiplier = 0.025
-        if self.is_player:
-            base_multiplier = 0.035
+        if not isinstance(base_multiplier, float) and self.is_player:
+            base_multiplier = 0.030
 
         self.__base_multiplier = base_multiplier
 
