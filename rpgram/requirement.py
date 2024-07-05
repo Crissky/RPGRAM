@@ -41,6 +41,7 @@ class Requirement:
     ) -> dict:
         '''Analisa se o personagem possui os requisitos.
         '''
+
         errors = []
         level = max(1, int(level))
         rank = max(1, int(rank))
@@ -87,6 +88,39 @@ class Requirement:
             'pass': not bool(errors)
         }
 
+    def show_requirements(
+        self,
+        level: int = 1,
+        rank: int = 1,
+    ) -> dict:
+        '''Exibe os requisitos.
+        '''
+
+        text = ''
+        level = max(1, int(level))
+        rank = max(1, int(rank))
+        level_rank = int(level * rank)
+        level_rank = max(0, (level_rank - 1))
+        for attribute, value in self.base_stats.items():
+            value += (level_rank * 10)
+            attribute = attribute.replace('_', ' ').upper()
+            text += f'  {attribute}: {value}\n'
+        for attribute, value in self.combat_stats.items():
+            value += (level_rank * 20)
+            attribute = attribute.replace('_', ' ').upper()
+            text += f'  {attribute}: {value}\n'
+
+        text += f'  CLASSE: {self.classe_name}\n'
+
+        if self.skill_list:
+            value = '\n'.join(
+                f'    - {skill}'
+                for skill in self.skill_list
+            )
+            text += f'  SKILLS: \n{value}\n'
+
+        return text
+
     @property
     def level(self) -> int:
         return self.base_stats.get(BaseStatsEnum.LEVEL.value.lower(), 1)
@@ -105,6 +139,11 @@ class Requirement:
         text = ''
         for attribute, value in self.iter:
             attribute = attribute.replace('_', ' ').upper()
+            if isinstance(value, list):
+                value = '\n' + '\n'.join(
+                    f'    - {v}'
+                    for v in value
+                )
             text += f'  {attribute}: {value}\n'
 
         return text
