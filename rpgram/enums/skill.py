@@ -58,6 +58,7 @@ class BarbarianSkillEnum(Enum):
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'
+    SHIELD_WALL = 'Parede de Escudos'
     HEAVY_CHARGE = 'Investida Pesada'
     IRON_CHARGE = 'Investida de Ferro'
     STEEL_STORM = 'Tempestade de Aço'
