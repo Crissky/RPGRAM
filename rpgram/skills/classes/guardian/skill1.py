@@ -170,7 +170,7 @@ class ShieldWallSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
+        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
