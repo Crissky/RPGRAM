@@ -299,7 +299,11 @@ class BaseCharacter:
         '''
 
         BLOCK_MULTIPLIER = 0.50
-        MIN_DAMAGE_MULTIPLIER = 0.25
+        MIN_DAMAGE_MULTIPLIER = (
+            0.50
+            if defender_dice.is_critical_fail
+            else 0.25
+        )
 
         boosted_power_value = attacker_dice.boosted_power
         base_defense_value = defender_dice.get_base_stats(defense_name)
