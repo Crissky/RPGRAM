@@ -9,6 +9,10 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
+BASE_STATS_REQUIREMENT_MULTIPLIER = 10
+COMBAT_STATS_REQUIREMENT_MULTIPLIER = 20
+
+
 class Requirement:
     def __init__(self, **kwargs) -> None:
         self.base_stats = {BaseStatsEnum.LEVEL.value.lower(): 1}
@@ -48,14 +52,14 @@ class Requirement:
         level_rank = int(level * rank)
         level_rank = max(0, (level_rank - 1))
         for attribute, value in self.base_stats.items():
-            value += (level_rank * 10)
+            value += (level_rank * BASE_STATS_REQUIREMENT_MULTIPLIER)
             if value > character.base_stats[attribute]:
                 errors.append(
                     f'    {attribute}: '
                     f'"{value}" ({character.base_stats[attribute]}).'
                 )
         for attribute, value in self.combat_stats.items():
-            value += (level_rank * 20)
+            value += (level_rank * COMBAT_STATS_REQUIREMENT_MULTIPLIER)
             if value > character.combat_stats[attribute]:
                 errors.append(
                     f'    {attribute}: '
@@ -102,11 +106,11 @@ class Requirement:
         level_rank = int(level * rank)
         level_rank = max(0, (level_rank - 1))
         for attribute, value in self.base_stats.items():
-            value += (level_rank * 10)
+            value += (level_rank * BASE_STATS_REQUIREMENT_MULTIPLIER)
             attribute = attribute.replace('_', ' ').upper()
             text += f'  {attribute}: {value}\n'
         for attribute, value in self.combat_stats.items():
-            value += (level_rank * 20)
+            value += (level_rank * COMBAT_STATS_REQUIREMENT_MULTIPLIER)
             attribute = attribute.replace('_', ' ').upper()
             text += f'  {attribute}: {value}\n'
 
