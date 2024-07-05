@@ -114,7 +114,7 @@ class PrismaticShieldSkill(BaseSkill):
     DESCRIPTION = (
         f'Canaliza a energia mágica para envolver um aliado em um círculo '
         f'prismático que o salvaguardar com uma barreira baseada no '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 10% x Rank x Nível).'
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

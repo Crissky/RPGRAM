@@ -231,7 +231,7 @@ class PrismaticShieldCondition(BarrierCondition):
 
     @property
     def base_power_multiplier(self) -> float:
-        return 1.5
+        return 2.00
 
 
 if __name__ == '__main__':
