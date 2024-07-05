@@ -52,7 +52,7 @@ class BaseSkill:
     NAME: str = 'Base Skill'
     DESCRIPTION: str = 'Base Skill Classe'
     RANK: str = 'Base Rank'
-    REQUIREMENT: Requirement = Requirement()
+    REQUIREMENTS: Requirement = Requirement()
 
     def __init__(
         self,

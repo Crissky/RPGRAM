@@ -334,7 +334,8 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         skill_name_list = [
             (
                 f'*H{i+1:02}*: '
-                f'*{skill_class.NAME.upper()}*'
+                f'*{skill_class.NAME.upper()}* '
+                f'(RNK:{skill_class.RANK})'
             )
             for i, skill_class in enumerate(skill_list)
         ]
@@ -342,7 +343,14 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
             markdown_skill_tree_sheet = '\n'.join(skill_name_list)
         else:
             markdown_skill_tree_sheet = (
-                'Você já sabe tudo o que tinha para ser aprendido!!!'
+                f'*Parabéns, {char.player_name}!*\n\n'
+                f'Você alcançou um marco incrível: dominou todas as '
+                f'habilidades disponíveis! '
+                f'Sua dedicação e talento são inspiradores. '
+                f'Embora a jornada de aprendizado tenha chegado ao fim, '
+                f'a aventura continua. '
+                f'Você agora possui um arsenal completo de habilidades para '
+                f'explorar o mundo de maneiras ilimitadas.'
             )
     except ValueError as e:
         print(e)
@@ -471,7 +479,14 @@ async def check_upgrade_skill(
     try:
         skill_list = char.skill_tree.skill_list
         skill: BaseSkill = skill_list[skill_index]
-        markdown_skill_tree_sheet = skill.description_text
+        requirements = skill.requirements.show_requirements(
+            level=skill.level + 1,
+            rank=skill.rank
+        )
+        markdown_skill_tree_sheet = (
+            f'{skill.description_text}\n\n'
+            f'*Requerimentos*:\n{requirements}'
+        )
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
@@ -531,11 +546,14 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         skill_list = char.skill_tree.learnable_skill_list
         skill_class: Type[BaseSkill] = skill_list[skill_index]
+        requirements = skill_class.REQUIREMENTS.show_requirements(
+            rank=skill_class.RANK
+        )
         markdown_skill_tree_sheet = (
             f'*Habilidade*: *{skill_class.NAME.upper()}*\n'
             f'*Rank*: {skill_class.RANK}\n\n'
             f'*Descrição*: {skill_class.DESCRIPTION}\n\n'
-            f'*Requerimentos*:\n{skill_class.REQUIREMENT}'
+            f'*Requerimentos*:\n{requirements}'
         )
     except ValueError as e:
         print(e)

@@ -118,7 +118,9 @@ class PrismaticShieldSkill(BaseSkill):
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
+        'level': 40,
         'classe_name': ClasseEnum.SORCERER.value,
+        'skill_list': [PrismaticShotSkill.NAME],
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
