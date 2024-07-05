@@ -101,8 +101,8 @@ class WarBannerSkill(BaseSkill):
     NAME = WarriorSkillEnum.WAR_BANNER.value
     DESCRIPTION = (
         f'Usa a própria força e determinação para evocar a '
-        f'*Marca do Senhor da Guerra* e receber a inspiração de combate '
-        f'aumentando o '
+        f'*Marca do Senhor da Guerra* e conceder à equipe '
+        f'uma inspiração de combate que aumenta o '
         f'{PHYSICAL_ATTACK_EMOJI_TEXT}, '
         f'{PRECISION_ATTACK_EMOJI_TEXT} e '
         f'{MAGICAL_ATTACK_EMOJI_TEXT} com base na '
@@ -169,7 +169,7 @@ class HeroicInspirationSkill(BaseSkill):
         f'Libera uma explosão de '
         f'energia inspiradora, revigorando seu espírito e curando seu'
         f'{HIT_POINT_FULL_EMOJI_TEXT} com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -203,7 +203,7 @@ class HeroicInspirationSkill(BaseSkill):
         player_name = self.char.player_name
         dice = self.dice
         level = self.level_rank
-        power_multiplier = 2 + (level / 10)
+        power_multiplier = 3 + (level / 10)
         power = dice.boosted_physical_attack * power_multiplier
         power = (round(power))
 
@@ -226,11 +226,13 @@ class WarCrySkill(BaseSkill):
         f'Libera um grito que ecoa no campo de batalha, elevando os espíritos '
         f'dos aliados e curando seus '
         f'{HIT_POINT_FULL_EMOJI_TEXT} com base em '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 10% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
+        'level': 40,
         'classe_name': ClasseEnum.WARRIOR.value,
+        'skill_list': [HeroicInspirationSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -261,7 +263,7 @@ class WarCrySkill(BaseSkill):
         target_name = char.player_name
         dice = self.dice
         level = self.level_rank
-        power_multiplier = 1 + (level / 10)
+        power_multiplier = 1.50 + (level / 10)
         power = dice.boosted_physical_attack * power_multiplier
         power = (round(power))
 
