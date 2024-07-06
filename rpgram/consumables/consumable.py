@@ -14,6 +14,7 @@ from rpgram.enums.rarity import RarityEnum
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
+
 class Consumable:
     def __init__(
         self,
@@ -46,17 +47,8 @@ class Consumable:
     def function(self, target: 'BaseCharacter') -> dict:
         ...
 
-    @abstractmethod
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        ...
-
     def use(self, target: 'BaseCharacter') -> dict:
         report = self.function(target)
-
-        return report
-
-    def battle_use(self, target: 'BaseCharacter') -> dict:
-        report = self.battle_function(target)
 
         return report
 

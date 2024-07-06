@@ -41,7 +41,6 @@ from bot.constants.help import (
 )
 from bot.constants.add_stats import COMMANDS as add_stats_commands
 from bot.constants.bag import COMMANDS as bag_commands
-from bot.constants.battle import COMMANDS as battle_commands
 from bot.constants.classe import COMMANDS as classe_commands
 from bot.constants.config_group import COMMANDS as config_group_commands
 from bot.constants.config_player import COMMANDS as config_player_commands
@@ -156,7 +155,6 @@ def get_details_text(option: str) -> str:
     if option == CALLBACK_GENERAL or option is None:
         add_stats_cmd = command_to_string(add_stats_commands)
         bag_cmd = command_to_string(bag_commands)
-        battle_cmd = command_to_string(battle_commands)
         classe_cmd = command_to_string(classe_commands)
         config_group_cmd = command_to_string(config_group_commands)
         config_player_cmd = command_to_string(config_player_commands)
@@ -220,10 +218,6 @@ def get_details_text(option: str) -> str:
             f'INFO: Configura preferências do jogador.\n'
             f'Atalhos: {config_player_cmd}\n\n'
 
-            f'{EmojiEnum.BATTLE.value}*CRIAR BATALHA*: /{battle_commands[0]}\n'
-            f'INFO: Inicia uma batalha no grupo.\n'
-            f'Atalhos: {battle_cmd}\n\n'
-
             f'{EmojiEnum.REST.value}*INICIAR DESCANSO*: /{rest_commands[0]}\n'
             f'INFO: Recupera HP do personagem a cada hora '
             f'(mesmo se estiver 0).\n'
@@ -250,7 +244,7 @@ def get_details_text(option: str) -> str:
             f'{EmojiEnum.CHRYSUS_1.value}*LOJA*: /{seller_commands[0]}\n'
             f'INFO: Abre a loja do {SELLER_NAME}.\n'
             f'Atalhos: {seller_cmd}\n\n'
-            
+
             f'{EmojiEnum.SKILL_POINTS.value}*HABILIDADES*: '
             f'/{skill_commands[0]}\n'
             f'INFO: Abre o menu de gerenciamento de Habilidades.\n'

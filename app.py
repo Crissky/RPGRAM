@@ -12,7 +12,6 @@ from bot.conversations import (
     SIGNUP_GROUP_HANDLER,
     SIGNUP_PLAYER_HANDLER,
     CHAT_XP_HANDLER,
-    BATTLE_HANDLER,
     BAG_HANDLER,
     CLOSE_MSG_HANDLER,
     SELLER_HANDLER,
@@ -63,7 +62,6 @@ def main() -> None:
     application.add_handler(SIGNUP_GROUP_HANDLER)
     application.add_handler(SIGNUP_PLAYER_HANDLER)
     application.add_handler(CHAT_XP_HANDLER)
-    application.add_handler(BATTLE_HANDLER)
     application.add_handler(BAG_HANDLER)
     application.add_handler(CLOSE_MSG_HANDLER)
     application.add_handler(SELLER_HANDLER)

@@ -222,10 +222,6 @@ class BaseCharacter:
 
         return text
 
-    def battle_activate_status(self) -> List[dict]:
-        reports = self.__status.battle_activate(self)
-        return reports
-
     def add_action_points(self, value: int = 1) -> dict:
         return self.skill_tree.add_action_points(value)
 

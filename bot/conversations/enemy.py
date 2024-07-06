@@ -57,7 +57,6 @@ from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
 from bot.conversations.rest import create_job_rest_action_point
-from bot.decorators.battle import need_not_in_battle
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
@@ -518,7 +517,6 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
 
 @skip_if_no_singup_player
-@need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()
@@ -660,7 +658,6 @@ async def defend_enemy_attack(
 
 
 @skip_if_no_singup_player
-@need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()

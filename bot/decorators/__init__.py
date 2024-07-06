@@ -13,7 +13,6 @@ from bot.decorators.player import (
     alert_if_not_chat_owner_to_callback_data_to_dict
 )
 from bot.decorators.print import print_basic_infos
-from bot.decorators.battle import need_not_in_battle
 from bot.decorators.retry import retry_after
 from bot.decorators.char import skip_if_immobilized
 from bot.decorators.char import confusion

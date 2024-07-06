@@ -37,7 +37,6 @@ from bot.functions.chat import (
 from bot.decorators import (
     confusion,
     need_have_char,
-    need_not_in_battle,
     print_basic_infos,
     skip_if_dead_char,
     skip_if_immobilized,
@@ -60,7 +59,6 @@ from rpgram.constants.text import BASE_ATTRIBUTE_EMOJI_TEXT
 @confusion()
 @print_basic_infos
 @need_have_char
-@need_not_in_battle
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_typing(
         function_caller='ADD_STATS.START()',

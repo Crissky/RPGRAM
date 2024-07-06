@@ -47,9 +47,6 @@ class CureConsumable(Consumable):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
     def to_dict(self):
         super_dict = super().to_dict()
         return dict(

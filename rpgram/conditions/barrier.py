@@ -140,9 +140,6 @@ class BarrierCondition(Condition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
     def to_dict(self) -> dict:
         _dict = {
             'power': self.power,

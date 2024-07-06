@@ -53,20 +53,9 @@ class Condition(StatsBooster):
     def function(self, target: 'BaseCharacter') -> dict:
         ...
 
-    @abstractmethod
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        ...
-
     def activate(self, target: 'BaseCharacter') -> dict:
         report = self.function(target)
         report['condition_name'] = self.name
-        if self.__turn not in [-1, 0]:
-            self.__turn -= 1
-
-        return report
-
-    def battle_activate(self, target: 'BaseCharacter') -> dict:
-        report = self.battle_function(target)
         if self.__turn not in [-1, 0]:
             self.__turn -= 1
 
@@ -143,7 +132,7 @@ class Condition(StatsBooster):
 
     def __hash__(self) -> int:
         return hash(self.name)
-    
+
     def to_dict(self) -> dict:
         return {
             'name': self.name,

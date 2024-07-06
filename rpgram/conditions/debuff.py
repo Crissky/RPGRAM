@@ -25,6 +25,7 @@ from rpgram.enums.turn import TurnEnum
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
+
 class DebuffCondition(Condition):
 
     def __init__(
@@ -80,9 +81,6 @@ class BerserkerCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class BleedingCondition(DebuffCondition):
 
@@ -117,14 +115,11 @@ class BleedingCondition(DebuffCondition):
             value=damage,
             ignore_barrier=True,
         )
-        
+
         report['text'] = f'{self.full_name} -> ' + report['text']
         report['action'] = f'{self.name}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class BlindnessCondition(DebuffCondition):
@@ -156,9 +151,6 @@ class BlindnessCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class BurnCondition(DebuffCondition):
 
@@ -189,9 +181,6 @@ class BurnCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class ConfusionCondition(DebuffCondition):
 
@@ -217,9 +206,6 @@ class ConfusionCondition(DebuffCondition):
         report['action'] = f'{CONFUSION}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class CurseCondition(DebuffCondition):
@@ -256,9 +242,6 @@ class CurseCondition(DebuffCondition):
         report['action'] = f'{CURSE}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class ExhaustionCondition(DebuffCondition):
@@ -297,9 +280,6 @@ class ExhaustionCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class FrozenCondition(DebuffCondition):
 
@@ -322,9 +302,6 @@ class FrozenCondition(DebuffCondition):
         report['action'] = f'{FROZEN}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class ParalysisCondition(DebuffCondition):
@@ -349,9 +326,6 @@ class ParalysisCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class PetrifiedCondition(DebuffCondition):
 
@@ -374,9 +348,6 @@ class PetrifiedCondition(DebuffCondition):
         report['action'] = f'{PETRIFIED}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class PoisoningCondition(DebuffCondition):
@@ -410,9 +381,6 @@ class PoisoningCondition(DebuffCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class SilenceCondition(DebuffCondition):
 
@@ -434,9 +402,6 @@ class SilenceCondition(DebuffCondition):
         report['action'] = f'{SILENCE}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class StunnedCondition(DebuffCondition):
@@ -460,9 +425,6 @@ class StunnedCondition(DebuffCondition):
         report['action'] = f'{STUNNED}'
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class Debuffs:

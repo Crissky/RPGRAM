@@ -40,7 +40,6 @@ from bot.constants.seller import (
     TOTAL_EQUIPMENTS,
     TOTAL_MEAN_LEVELS
 )
-from bot.decorators.battle import need_not_in_battle
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
@@ -117,7 +116,6 @@ from rpgram.enums import EmojiEnum
 @allow_only_in_group
 @need_singup_group
 @skip_if_no_singup_player
-@need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion(START_ROUTES)

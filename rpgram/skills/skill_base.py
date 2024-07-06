@@ -200,10 +200,6 @@ class BaseSkill:
     def function(self, target: 'BaseCharacter') -> dict:
         ...
 
-    @abstractmethod
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        ...
-
     def pre_hit_function(self, target: 'BaseCharacter') -> dict:
         return {'text': ''}
 

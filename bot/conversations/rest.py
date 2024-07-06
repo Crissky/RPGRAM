@@ -24,7 +24,6 @@ from bot.constants.rest import (
     SECTION_TEXT_WAKEUP
 )
 from bot.decorators import (
-    need_not_in_battle,
     print_basic_infos,
     skip_if_no_have_char,
     skip_if_no_singup_player,
@@ -53,14 +52,13 @@ from constant.text import (
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
-from repository.mongo import BattleModel, CharacterModel, PlayerModel
-from rpgram import Battle, Player
+from repository.mongo import CharacterModel, PlayerModel
+from rpgram import Player
 from rpgram.characters import BaseCharacter
 
 
 @skip_if_no_singup_player
 @skip_if_no_have_char
-@need_not_in_battle
 @print_basic_infos
 async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso do personagem.
@@ -69,7 +67,6 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     em meia hora.'''
 
     char_model = CharacterModel()
-    battle_model = BattleModel()
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     job_name = get_rest_jobname(user_id=user_id)
@@ -79,13 +76,8 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     character_id = player_character._id
     current_hp = player_character.cs.show_hit_points
     debuffs_text = player_character.status.debuffs_text
-    battle: Battle = battle_model.get(query={
-        '$or': [{'blue_team': character_id}, {'red_team': character_id}]
-    })
 
-    if battle:
-        text = 'Você não pode descansar, pois está em batalha.'
-    elif current_jobs:
+    if current_jobs:
         reply_text_already_resting = choice(REPLY_TEXTS_ALREADY_RESTING)
         text = (
             f'{reply_text_already_resting}\n\n'
@@ -306,7 +298,6 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
 
     print('JOB_AUTOREST_MIDNIGHT()')
     char_model = CharacterModel()
-    battle_model = BattleModel()
     job = context.job
     chat_id = job.chat_id
     user_ids = get_players_id_by_chat_id(chat_id=chat_id)
@@ -319,9 +310,6 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         player_name = player_character.player_name
         character_id = player_character._id
         current_hp = player_character.cs.show_hit_points
-        battle: Battle = battle_model.get(query={
-            '$or': [{'blue_team': character_id}, {'red_team': character_id}]
-        })
         player_need_rest = (
             player_character.is_damaged or player_character.is_debuffed
         )
@@ -331,7 +319,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
             chat_id=chat_id,
             user_id=user_id,
         )
-        if battle or current_jobs or not player_need_rest:
+        if current_jobs or not player_need_rest:
             continue
         else:
             create_job_rest_cure(

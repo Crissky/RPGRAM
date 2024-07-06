@@ -1,5 +1,4 @@
 from bot.conversations.add_stats import ADD_STATS_HANDLERS
-from bot.conversations.battle import BATTLE_HANDLER
 from bot.conversations.chat_xp import CHAT_XP_HANDLER
 from bot.conversations.config_group import CONFIG_GROUP_HANDLERS
 from bot.conversations.config_player import CONFIG_PLAYER_HANDLERS

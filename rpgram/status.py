@@ -316,28 +316,6 @@ class Status:
 
         return ', '.join(names)
 
-    def battle_activate(self, char) -> List[dict]:
-        reports = []
-        for condition in self.__conditions:
-            if condition.frequency != TurnEnum.CONTINUOUS:
-                report = condition.battle_activate(char)
-                if condition.turn == 0:
-                    report['text'] += (
-                        f'\n'
-                        f'Condição "{condition.emoji_name}" '
-                        f'foi removida do Status.'
-                    )
-                reports.append(report)
-
-        # exclui todos as condition con turn igual a zero
-        self.__conditions = [
-            condition
-            for condition in self.__conditions
-            if condition.turn != 0
-        ]
-
-        return reports
-
     def attach_observer(self, observer):
         self.__observers.append(observer)
 

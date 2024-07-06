@@ -34,7 +34,6 @@ from bot.constants.puzzle import (
 )
 from bot.conversations.bag import send_drop_message
 from bot.decorators import (
-    need_not_in_battle,
     confusion,
     skip_if_dead_char,
     skip_if_immobilized,
@@ -245,7 +244,6 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
 
 @skip_if_no_singup_player
 # @skip_if_dead_char
-# @need_not_in_battle
 # @skip_if_immobilized
 # @confusion(START_ROUTES)
 @print_basic_infos
