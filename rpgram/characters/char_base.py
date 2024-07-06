@@ -388,6 +388,11 @@ class BaseCharacter:
         # ----------- HIT ----------- #
         else:
             # Get Damage
+            pre_hit_report = attacker_skill.pre_hit_function(
+                target=defender_char
+            )
+            pre_hit_text = pre_hit_report['text']
+            hit_text = ''
             damage = boosted_power_value
             is_immobilized = defender_char.is_immobilized
             if is_immobilized:
@@ -425,6 +430,11 @@ class BaseCharacter:
                 f' que defendeu recebendo *{total_damage}* pontos de dano'
             )
             if total_damage > 0:
+                hit_report = attacker_skill.hit_function(
+                    target=defender_char,
+                    damage=total_damage,
+                )
+                hit_text = hit_report['text']
                 damage_or_defend_text = (
                     f' e causou *{total_damage}* pontos de dano'
                 )
@@ -435,6 +445,15 @@ class BaseCharacter:
                 f'*{self.full_name_with_level}* *ATACOU* '
                 f'*{defender_player_name}*{damage_or_defend_text}.\n\n'
             )
+
+            # Put the Pre Hit and Hit Paragraph of the report['text']
+            if pre_hit_text:
+                report['text'] += f'{pre_hit_text}\n'
+            if hit_text:
+                report['text'] += f'{hit_text}\n'
+            if pre_hit_text or hit_text:
+                report['text'] += '\n'
+            
 
             # Put the Dice Paragraph of the report['text']
             if verbose:

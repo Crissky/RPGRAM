@@ -204,6 +204,12 @@ class BaseSkill:
     def battle_function(self, target: 'BaseCharacter') -> dict:
         ...
 
+    def pre_hit_function(self, target: 'BaseCharacter') -> dict:
+        return {'text': ''}
+
+    def hit_function(self, target: 'BaseCharacter', damage: int) -> dict:
+        return {'text': ''}
+
     def iter_multipliers(self) -> ITER_MULTIPLIERS_TYPE:
         return chain(
             self.base_stats_multiplier.items(),
