@@ -90,23 +90,21 @@ class CombatStats:
     def damage_hit_points(
         self,
         value: int,
-        action_name: str = None,
         markdown: bool = False,
+        ignore_barrier: bool = False,
     ) -> dict:
-        if action_name == 'physical_attack':
-            return self.physical_damage_hit_points(value, markdown)
-        elif action_name == 'precision_attack':
-            return self.physical_damage_hit_points(value, markdown)
-        elif action_name == 'magical_attack':
-            return self.magical_damage_hit_points(value, markdown)
 
         value = -int(abs(value))
         old_hp = self.current_hit_points
         old_show_hp = self.show_hit_points
         status = self.get_status()
-        barrier_damage_report = status.add_barrier_damage(value)
-        remaining_damage = -barrier_damage_report['remaining_damage']
-        barrier_damage_text = barrier_damage_report['text']
+        remaining_damage = value
+        barrier_damage_text = ''
+        if ignore_barrier is False:
+            barrier_damage_report = status.add_barrier_damage(value)
+            remaining_damage = -barrier_damage_report['remaining_damage']
+            barrier_damage_text = barrier_damage_report['text']
+
         self.set_damage(remaining_damage)
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
@@ -728,8 +726,9 @@ class CombatStats:
 
 
 if __name__ == '__main__':
-    base_stats = BaseStats(10)
+    base_stats = BaseStats(10, stats_boosters=[Status(conditions=[])])
     combat_stats = CombatStats(
+        base_stats=base_stats,
         level=10,
         base_strength=6,
         base_dexterity=6,
@@ -761,6 +760,7 @@ if __name__ == '__main__':
 
     # Testa se a função reviver revive com HP negativo.
     combat_stats = CombatStats(
+        base_stats=base_stats,
         level=10,
         base_strength=0,
         base_dexterity=0,

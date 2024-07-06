@@ -888,9 +888,10 @@ async def player_attack(
 ) -> dict:
     '''Função que o Jogador ataca um Inimigo
     '''
-
+    attacker_is_target = False
     if target_char and attacker_char.player_id == target_char.player_id:
-        target_char = None
+        target_char = attacker_char
+        attacker_is_target = True
 
     attacker_id = attacker_char.player_id
     target_id = target_char.player_id if target_char else None
@@ -940,7 +941,7 @@ async def player_attack(
 
         if attack_report['dead']:
             reply_markup = REPLY_MARKUP_DEFAULT
-        if target_char and attack_report['dead']:
+        if target_char and attack_report['dead'] and not attacker_is_target:
             base_xp = get_base_xp_from_player_attack(
                 enemy_char=enemy_char,
                 attacker_char=target_char,

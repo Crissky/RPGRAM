@@ -44,7 +44,7 @@ class AegisShadowSkill(BaseSkill):
     DESCRIPTION = (
         f'Canaliza a sua determinação para ser imbuído pelas '
         f'*Sombras do Lendário Escudo*, recebendo uma barreira com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{

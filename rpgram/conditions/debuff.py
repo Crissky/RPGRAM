@@ -113,7 +113,11 @@ class BleedingCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         power = self.power
         damage = target.combat_stats.hp * power
-        report = target.combat_stats.damage_hit_points(damage)
+        report = target.combat_stats.damage_hit_points(
+            value=damage,
+            ignore_barrier=True,
+        )
+        
         report['text'] = f'{self.full_name} -> ' + report['text']
         report['action'] = f'{self.name}'
 
@@ -396,7 +400,11 @@ class PoisoningCondition(DebuffCondition):
         return damage
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = target.combat_stats.damage_hit_points(self.damage)
+        damage = self.damage
+        report = target.combat_stats.damage_hit_points(
+            value=damage,
+            ignore_barrier=True,
+        )
         report['text'] = f'{self.full_name} -> ' + report['text']
         report['action'] = f'{self.name}'
 
