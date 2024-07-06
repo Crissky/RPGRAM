@@ -11,7 +11,7 @@ from bot.functions.chat import (
     reply_text_and_forward
 )
 from bot.functions.config import get_attribute_group
-from bot.functions.status import activated_condition
+from bot.functions.status import activated_condition, silenced_status
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 
@@ -25,7 +25,10 @@ from constant.text import (
 from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
-from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
+from rpgram.enums.debuff import (
+    IMMOBILIZED_DEBUFFS_NAMES,
+    SILENCED_DEBUFFS_NAMES
+)
 from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 
 CONFUSION_TEXT = [
@@ -325,6 +328,54 @@ def skip_if_immobilized(callback):
                 )
                 await call_telegram_message_function(
                     function_caller='CHAR.SKIP_IF_IMMOBILIZED()',
+                    function=update.effective_message.reply_text,
+                    context=context,
+                    need_response=False,
+                    skip_retry=False,
+                    **reply_text_kwargs,
+                )
+            return ConversationHandler.END
+    return wrapper
+
+
+def skip_if_silenced(callback):
+    '''Pula ação se o personagem estiver silenciado.
+    '''
+
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        print('@SKIP_IF_IMMOBILIZED')
+        chat_id = update.effective_chat.id
+        user_id = update.effective_user.id
+        status = silenced_status(user_id)
+
+        if not status:
+            return await callback(update, context)
+        else:
+            print(
+                f'\tUSER: {user_id} SKIPPED in '
+                f'CHAT: {chat_id} - SILENCED CHAR'
+            )
+            query = update.callback_query
+            conditions = status['condition_args']
+            text = (
+                f'Essa ação não pode ser realizada, pois seu personagem '
+                f'está '
+            )
+            conditions_names = [
+                DEBUFF_FULL_NAMES[condition['name'].upper()]
+                for condition in conditions
+                if condition['name'] in SILENCED_DEBUFFS_NAMES
+            ]
+            text += ', '.join(conditions_names)
+            if query:
+                await answer(query=query, text=text, show_alert=True)
+            else:
+                reply_text_kwargs = dict(
+                    text=text,
+                    allow_sending_without_reply=True
+                )
+                await call_telegram_message_function(
+                    function_caller='CHAR.SKIP_IF_SILENCED()',
                     function=update.effective_message.reply_text,
                     context=context,
                     need_response=False,

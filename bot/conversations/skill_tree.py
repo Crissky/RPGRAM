@@ -59,7 +59,8 @@ from bot.conversations.enemy import (
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
-    skip_if_immobilized
+    skip_if_immobilized,
+    skip_if_silenced
 )
 from bot.functions.char import (
     get_char_attribute,
@@ -596,6 +597,7 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @skip_if_dead_char
 @skip_if_immobilized
+@skip_if_silenced
 @confusion()
 @print_basic_infos
 async def action_use_skill(
