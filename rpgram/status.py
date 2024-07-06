@@ -4,7 +4,7 @@ Este módulo gerencia as Condições do Personagem.
 
 from datetime import datetime
 from random import choice, random
-from typing import List, Tuple, Union
+from typing import Iterable, List, Tuple, Type, Union
 
 from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
@@ -192,6 +192,20 @@ class Status:
             not condition.is_broken
         ]
 
+    def broken_all_barriers(self) -> dict:
+        total_damage = 0
+        report = {'text': '', 'total_damage': total_damage}
+        for condition in self.__conditions:
+            if isinstance(condition, BarrierCondition):
+                damage = condition.current_barrier_points
+                report['total_damage'] += damage
+                barrier_report = condition.damage_barrier_points(damage)
+                report['text'] += barrier_report['text'] + '\n'
+
+        report['text'] = report['text'].strip()
+        self.remove_broken_barrier()
+        return report
+
     def set_conditions(self, *conditions: Union[Condition, str]) -> List[dict]:
         report_list = []
         for condition in conditions:
@@ -201,6 +215,20 @@ class Status:
             report_list.append(report)
 
         return report_list
+
+    def get_filtered_condition(
+        self,
+        *filters: Tuple[Type[Condition]]
+    ) -> Iterable:
+        for condition in self.__conditions:
+            if any(isinstance(condition, filter) for filter in filters):
+                yield condition
+
+    def get_debuffs(self) -> Iterable:
+        yield from self.get_filtered_condition(DebuffCondition)
+
+    def get_barriers(self) -> Iterable:
+        yield from self.get_filtered_condition(BarrierCondition)
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(

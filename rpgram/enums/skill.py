@@ -50,6 +50,7 @@ class SkillDefenseEmojiEnum(Enum):
 class BarbarianSkillEnum(Enum):
     FURIOUS_ATTACK = 'Ataque Furioso'
     WILD_STRIKE = 'Golpe Selvagem'
+    WILD_RAM = 'Ariete Selvagem'
     FURIOUS_FURY = 'Fúria Furiosa'
     FURIOUS_INSTINCT = 'Instinto Furioso'
     FURIOUS_ROAR = 'Rugido Furioso'

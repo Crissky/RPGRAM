@@ -447,13 +447,15 @@ class BaseCharacter:
             )
 
             # Put the Pre Hit and Hit Paragraph of the report['text']
+            if pre_hit_text or hit_text:
+                report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
+                report['text'] += '\n'
             if pre_hit_text:
                 report['text'] += f'{pre_hit_text}\n'
             if hit_text:
                 report['text'] += f'{hit_text}\n'
             if pre_hit_text or hit_text:
                 report['text'] += '\n'
-            
 
             # Put the Dice Paragraph of the report['text']
             if verbose:

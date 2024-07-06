@@ -73,9 +73,10 @@ class BarrierCondition(Condition):
         new_bp = self.current_barrier_points
         new_show_bp = self.show_barrier_points
         absolute_damage = (old_bp - new_bp)
-        broke_text = 'QUEBROU!' if self.is_broken else ''
+        broke_text = ' QUEBROU!' if self.is_broken else ''
         text = (
-            f'*BP*: {old_show_bp} ››› {new_show_bp} (*{value}*){broke_text}.'
+            f'*{self.name}*: {old_show_bp} ››› {new_show_bp} '
+            f'(*{value}*){broke_text}.'
         )
 
         if not markdown:
