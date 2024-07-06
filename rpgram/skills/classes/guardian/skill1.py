@@ -83,8 +83,8 @@ class RobustBlockSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* se concentra em fortalecer a sua defesa '
-                f'assumindo uma postura defensiva aumentando a sua '
+                f'*{player_name}* se concentra em fortalecer a sua guarda '
+                f'assumindo uma postura preventiva aumentando a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -132,6 +132,11 @@ class GuardianShieldSkill(BaseSkill):
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
         target_name = char.player_name
+        target_name = (
+            'a si mesmo'
+            if target_name == player_name
+            else target_name
+        )
         dice = self.dice
         power = dice.boosted_physical_defense
         level = self.level_rank
@@ -195,6 +200,11 @@ class ShieldWallSkill(BaseSkill):
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
         target_name = char.player_name
+        target_name = (
+            'a si mesmo'
+            if target_name == player_name
+            else target_name
+        )
         dice = self.dice
         power = dice.boosted_physical_defense
         level = self.level_rank

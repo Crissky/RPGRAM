@@ -149,6 +149,11 @@ class PrismaticShieldSkill(BaseSkill):
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
         target_name = char.player_name
+        target_name = (
+            'a si mesmo'
+            if target_name == player_name
+            else target_name
+        )
         dice = self.dice
         power = dice.boosted_magical_attack
         level = self.level_rank
