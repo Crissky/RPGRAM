@@ -622,6 +622,30 @@ async def punishment(
     min_condition_level = int(group_level // 10) + 1
     max_condition_level = min_condition_level * 2
     for char in sorted_char_list:
+        if char.is_dead:
+            text = (
+                f'{char.player_name} está morto, por isso não vai receber '
+                f'a punição.'
+            )
+            text = create_text_in_box(
+                text=text,
+                section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+                section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+                section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
+            )
+            await reply_text_and_forward(
+                function_caller='PUNISHMENT()',
+                text=text,
+                context=context,
+                user_ids=char.player_id,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=True,
+                silent_forward=False,
+            )
+            continue
+
         quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
         debuff_sample = sample(debuff_list, quantity_sample)
         debuff_sample = [
