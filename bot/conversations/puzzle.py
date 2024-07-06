@@ -660,7 +660,7 @@ async def punishment(
             char=char,
         )
         report_damage = add_trap_damage(
-            min_ratio_damage=0.50,
+            min_ratio_damage=0.35,
             char=char,
         )
         text = (
