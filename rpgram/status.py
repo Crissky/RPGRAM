@@ -237,6 +237,7 @@ class Status:
         for condition in self.__conditions:
             if condition.frequency != TurnEnum.CONTINUOUS:
                 report = condition.activate(char)
+                report['is_debuff'] = isinstance(condition, DebuffCondition)
                 if condition.turn == 0:
                     if report['text']:
                         report['text'] += '\n'

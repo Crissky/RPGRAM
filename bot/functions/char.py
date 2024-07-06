@@ -308,10 +308,12 @@ def activate_conditions(
         char_model = CharacterModel()
         char: BaseCharacter = char_model.get(user_id)
 
-    activate_report = {'text': '', 'char': char}
+    activate_report = {'text': '', 'char': char, 'have_debuff': False}
     reports = char.activate_status()
     for report in reports:
         activate_report['text'] += report['text'] + '\n'
+        if not activate_report['have_debuff'] and report['is_debuff']:
+            activate_report['have_debuff'] = True
 
     activate_report['status'] = char.status.get_sheet()
     activate_report['status_verbose'] = char.status.get_sheet(verbose=True)

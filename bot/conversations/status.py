@@ -3,7 +3,7 @@ from bot.decorators.job import skip_if_spawn_timeout
 
 from bot.functions.char import activate_conditions
 from bot.functions.chat import send_private_message
-from bot.functions.player import get_players_id_by_chat_id
+from bot.functions.player import get_player_verbose, get_players_id_by_chat_id
 from constant.text import (
     SECTION_HEAD_STATUS_END,
     SECTION_HEAD_STATUS_START,
@@ -39,13 +39,15 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
         print('player_id:', player_id)
         char_model = CharacterModel()
         player_char: BaseCharacter = char_model.get(player_id)
+        verbose = get_player_verbose(player_id)
 
         if not player_char or player_char.is_dead:
             continue
 
         report = activate_conditions(char=player_char)
         text = report['text']
-        if text:
+        have_debuff = report.get('have_debuff')
+        if text and (have_debuff or verbose):
             text += f'{TEXT_SEPARATOR}\n\n'
             text += report['all_status_verbose']
             text = create_text_in_box(
@@ -62,4 +64,12 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                 chat_id=chat_id,
                 markdown=True,
                 close_by_owner=False,
+            )
+        else:
+            print(
+                f'REPORT DE JOB_ACTIVATE_CONDITIONS SKIPPADO PARA '
+                f'{player_char.player_name}({player_id}), '
+                f'have_debuff: {have_debuff}, '
+                f'verbose: {verbose}, '
+                f'text: "{text}"'
             )

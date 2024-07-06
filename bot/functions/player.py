@@ -28,6 +28,10 @@ def get_player_trocado(_id: Any) -> str:
     return get_player_attribute_by_id(_id=_id, attribute='trocado')
 
 
+def get_player_verbose(_id: Any) -> str:
+    return get_player_attribute_by_id(_id=_id, attribute='verbose')
+
+
 def get_players_attribute_by_chat_id(
     chat_id: int,
     attribute: str
