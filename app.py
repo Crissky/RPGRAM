@@ -160,7 +160,7 @@ def main() -> None:
         name='JOB_AUTOREST_MIDNIGHT',
         job_kwargs=BASE_JOB_KWARGS,
     )
-    
+
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
