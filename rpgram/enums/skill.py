@@ -74,7 +74,7 @@ class SorcererSkillEnum(Enum):
     PRISMATIC_SHIELD = 'Escudo Prismático'
     CHAOS_ORB = 'Orbe do Caos'
     CHAOS_VAMPIRISM = 'Vampirismo do Caos'
-    CAOS_WEAVER = 'Tecelão do Caos'
+    CHAOS_WEAVER = 'Tecelão do Caos'
 
 
 class WarriorSkillEnum(Enum):
