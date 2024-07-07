@@ -3,7 +3,7 @@ from rpgram.conditions.barrier import (
     AegisShadowCondition,
     GuardianShieldCondition,
     PrismaticShieldCondition,
-    SoulWeaverCondition
+    CaosWeaverCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -172,8 +172,8 @@ def condition_factory(
         condition_class = MysticalVigorCondition
     elif name == SorcererSkillEnum.PRISMATIC_SHIELD.value:
         condition_class = PrismaticShieldCondition
-    elif name == SorcererSkillEnum.SOUL_WEAVER.value:
-        condition_class = SoulWeaverCondition
+    elif name == SorcererSkillEnum.CAOS_WEAVER.value:
+        condition_class = CaosWeaverCondition
     # WARRIOR BUFFS
     elif name == WarriorSkillEnum.AEGIS_SHADOW.value:
         condition_class = AegisShadowCondition

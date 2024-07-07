@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from rpgram.conditions.barrier import SoulWeaverCondition
+from rpgram.conditions.barrier import CaosWeaverCondition
 from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT
 )
@@ -73,8 +73,8 @@ class ChaosOrbSkill(BaseSkill):
         )
 
 
-class MagicalVampirismSkill(BaseSkill):
-    NAME = SorcererSkillEnum.MAGICAL_VAMPIRISM.value
+class ChaosVampirismSkill(BaseSkill):
+    NAME = SorcererSkillEnum.CHAOS_VAMPIRISM.value
     DESCRIPTION = (
         f'Utiliza a energia do caos para gerar um *Vínculo Caótico* '
         f'com o inimigo e drenar a sua força vital, '
@@ -98,9 +98,9 @@ class MagicalVampirismSkill(BaseSkill):
         damage_types = [DamageEnum.CHAOS]
 
         super().__init__(
-            name=MagicalVampirismSkill.NAME,
-            description=MagicalVampirismSkill.DESCRIPTION,
-            rank=MagicalVampirismSkill.RANK,
+            name=ChaosVampirismSkill.NAME,
+            description=ChaosVampirismSkill.DESCRIPTION,
+            rank=ChaosVampirismSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -110,7 +110,7 @@ class MagicalVampirismSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.MAGICAL,
             char=char,
             use_equips_damage_types=False,
-            requirements=MagicalVampirismSkill.REQUIREMENTS,
+            requirements=ChaosVampirismSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -128,8 +128,8 @@ class MagicalVampirismSkill(BaseSkill):
         return heal_report
 
 
-class SoulWeaverSkill(BaseSkill):
-    NAME = SorcererSkillEnum.SOUL_WEAVER.value
+class CaosWeaverSkill(BaseSkill):
+    NAME = SorcererSkillEnum.CAOS_WEAVER.value
     DESCRIPTION = (
         f'Por meio da energia caótica, drenar a força vital do inimigo, '
         f'causando dano com base em '
@@ -153,9 +153,9 @@ class SoulWeaverSkill(BaseSkill):
         damage_types = [DamageEnum.CHAOS]
 
         super().__init__(
-            name=SoulWeaverSkill.NAME,
-            description=SoulWeaverSkill.DESCRIPTION,
-            rank=SoulWeaverSkill.RANK,
+            name=CaosWeaverSkill.NAME,
+            description=CaosWeaverSkill.DESCRIPTION,
+            rank=CaosWeaverSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -165,7 +165,7 @@ class SoulWeaverSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.MAGICAL,
             char=char,
             use_equips_damage_types=False,
-            requirements=SoulWeaverSkill.REQUIREMENTS,
+            requirements=CaosWeaverSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -178,7 +178,7 @@ class SoulWeaverSkill(BaseSkill):
         player_name = self.char.player_name
         power = total_damage
         level = self.level_rank
-        condition = SoulWeaverCondition(power=power, level=level)
+        condition = CaosWeaverCondition(power=power, level=level)
         report_list = self.char.status.set_conditions(condition)
         status_report_text = f'*{player_name}*: ' + "\n".join(
             [report["text"] for report in report_list]
@@ -195,7 +195,7 @@ if __name__ == '__main__':
     print(SORCERER_CHARACTER.cs.magical_attack)
     SORCERER_CHARACTER.skill_tree.learn_skill(ChaosOrbSkill)
 
-    skill = MagicalVampirismSkill(SORCERER_CHARACTER)
+    skill = ChaosVampirismSkill(SORCERER_CHARACTER)
     print(skill)
     print(SORCERER_CHARACTER.cs.magical_attack)
     # print(skill.hit_function(SORCERER_CHARACTER, 1000, 1500))
@@ -204,9 +204,9 @@ if __name__ == '__main__':
         attacker_skill=skill,
         verbose=True,
     )['text'])
-    SORCERER_CHARACTER.skill_tree.learn_skill(MagicalVampirismSkill)
+    SORCERER_CHARACTER.skill_tree.learn_skill(ChaosVampirismSkill)
 
-    skill = SoulWeaverSkill(SORCERER_CHARACTER)
+    skill = CaosWeaverSkill(SORCERER_CHARACTER)
     print(skill)
     print(SORCERER_CHARACTER.cs.magical_attack)
     # print(skill.hit_function(SORCERER_CHARACTER, 1000, 1500))
@@ -215,4 +215,4 @@ if __name__ == '__main__':
         attacker_skill=skill,
         verbose=True,
     )['text'])
-    SORCERER_CHARACTER.skill_tree.learn_skill(SoulWeaverSkill)
+    SORCERER_CHARACTER.skill_tree.learn_skill(CaosWeaverSkill)
