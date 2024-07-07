@@ -106,7 +106,11 @@ class Status:
 
     add_by_ratio = add_condition_by_ratio
 
-    def remove_condition(self, condition: Union[Condition, str]) -> dict:
+    def remove_condition(
+        self,
+        condition: Union[Condition, str],
+        ignore_not_find: bool = False
+    ) -> dict:
         if not isinstance(condition, (Condition, str)):
             raise TypeError(
                 f'O parâmetro deve ser do tipo Condition ou String. '
@@ -120,7 +124,7 @@ class Status:
             condition_name = condition
             condition_level = 1
 
-        report = {'condition_name': condition_name}
+        report = {'text': '', 'condition_name': condition_name}
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
@@ -135,7 +139,7 @@ class Status:
                     f'{condition_emoji_name} reduziu para NV: '
                     f'{new_condition_level}.'
                 )
-        else:
+        elif ignore_not_find is False:
             report['text'] = (
                 f'O status não possui a condição "{condition_name}".'
             )
@@ -151,14 +155,26 @@ class Status:
     ) -> List[dict]:
         report_list = []
         unique_conditions = sorted(set(conditions))
+
+        ignore_not_find = False
+        if len(unique_conditions) > 1:
+            ignore_not_find = True
+
         for condition_name in unique_conditions:
             condition_level = conditions.count(condition_name)
             condition = condition_factory(
                 name=condition_name,
                 level=condition_level
             )
-            report = self.remove_condition(condition)
-            report_list.append(report)
+            report = self.remove_condition(
+                condition=condition,
+                ignore_not_find=ignore_not_find
+            )
+            if report['text']:
+                report_list.append(report)
+
+        if not report_list:
+            report_list.append({'text': 'Nenhuma condição foi removida!'})
 
         return report_list
 
