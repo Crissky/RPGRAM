@@ -3,7 +3,6 @@ from enum import Enum
 
 class CollectionEnum(Enum):
     BAGS = 'bags'
-    BATTLE = 'battles'
     CHARACTERS = 'characters'
     CLASSES = 'classes'
     CONSUMABLES = 'consumables'

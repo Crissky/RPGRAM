@@ -57,7 +57,6 @@ from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import COMMANDS as REST_COMMANDS
 from bot.conversations.bag import send_drop_message
 from bot.conversations.rest import create_job_rest_action_point
-from bot.decorators.battle import need_not_in_battle
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
@@ -518,7 +517,6 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
 
 
 @skip_if_no_singup_player
-@need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()
@@ -660,7 +658,6 @@ async def defend_enemy_attack(
 
 
 @skip_if_no_singup_player
-@need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()
@@ -939,8 +936,7 @@ async def player_attack(
         new_report_text += ALERT_SECTION_HEAD.format('*XP*') + '\n'
         new_report_text += f'{report_xp["text"]}\n'
 
-        if attack_report['dead']:
-            reply_markup = REPLY_MARKUP_DEFAULT
+        # XP PARA O ALVO SE O INIMIGO MORREU
         if target_char and attack_report['dead'] and not attacker_is_target:
             base_xp = get_base_xp_from_player_attack(
                 enemy_char=enemy_char,
@@ -954,6 +950,7 @@ async def player_attack(
             )
             new_report_text += f'{target_report_xp["text"]}\n\n'
             new_report_text += f'O inimigo foi derrotado!!!\n\n'
+        # CONTRA-ATAQUE SE O INIMIGO ESQUIVO E O ATACANTE ESTIVER VIVO
         elif is_miss and attacker_char.is_alive:
             section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
             enemy_speech = get_enemy_counter_speech(enemy_char)
@@ -968,6 +965,15 @@ async def player_attack(
             )
             new_report_text += counter_report['text']
             save_char(char=attacker_char)
+
+        if enemy_char.is_alive and target_char and target_char.is_dead:
+            new_report_text += (
+                f'\n\n'
+                f'{target_char.full_name} ({target_char.player_name}) '
+                f'está morto, por isso a emboscada será encerrada.'
+            )
+        if attack_report['dead'] or target_char.is_dead:
+            reply_markup = REPLY_MARKUP_DEFAULT
 
         skill_defense_type = attacker_skill.skill_defense
         report_text = resize_text(report_text + new_report_text)
@@ -988,8 +994,9 @@ async def player_attack(
             enemy=enemy_char,
             query=query
         )
-    # NÃO ATACA se o ALVO DO INIMIGO ou o INIMIGO estiverem mortos
+    # NÃO ATACA se o INIMIGO estiver morto
     elif enemy_char.is_dead:
+        reply_markup = REPLY_MARKUP_DEFAULT
         report_text = (
             f'O ataque falhou, pois '
             f'*{enemy_char.full_name_with_level}* está morto.'
@@ -1005,11 +1012,11 @@ async def player_attack(
     try:
         if message_id is None:
             raise BadRequest('Message to edit not found')
-        user_ids = [
+        user_ids = list({
             _id
             for _id in [attacker_id, target_id]
             if _id is not None
-        ]
+        })
         await edit_message_text_and_forward(
             function_caller='PLAYER_ATTACK()',
             new_text=report_text,
@@ -1548,6 +1555,7 @@ def remove_enemy_attack_job(
     if not current_jobs:
         return False
     for job in current_jobs:
+        print('JOB REMOVIDO:', job.name)
         job.schedule_removal()
 
     return True

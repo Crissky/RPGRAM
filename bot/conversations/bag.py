@@ -89,7 +89,6 @@ from bot.constants.filters import (
 from bot.constants.seller import SELLER_NAME
 from bot.conversations.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
-    need_not_in_battle,
     print_basic_infos,
     retry_after,
     skip_if_dead_char,
@@ -177,7 +176,6 @@ from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 @skip_if_no_singup_player
 @skip_if_dead_char
-@need_not_in_battle
 @skip_if_immobilized
 @confusion(START_ROUTES)
 @print_basic_infos

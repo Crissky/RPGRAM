@@ -45,11 +45,6 @@ class IdentifyingConsumable(Consumable):
 
         return report
 
-    def battle_function(self, target) -> dict:
-        report = {"text": f"{self.name} não pode ser usado em batalha."}
-
-        return report
-
     def to_dict(self):
         super_dict = super().to_dict()
         return dict(
@@ -105,9 +100,6 @@ class XPConsumable(Consumable):
 
         return report
 
-    def battle_function(self, target) -> dict:
-        return self.function(target=target)
-
     def to_dict(self):
         super_dict = super().to_dict()
         return dict(
@@ -156,9 +148,6 @@ class TrocadoPouchConsumable(Consumable):
         report = target.add_trocado(self.price)
 
         return report
-
-    def battle_function(self, target) -> dict:
-        return self.function(target=target)
 
     def to_dict(self):
         super_dict = super().to_dict()
@@ -221,9 +210,6 @@ class GemstoneConsumable(Consumable):
         report = target.add_trocado(self.price)
 
         return report
-
-    def battle_function(self, target) -> dict:
-        return self.function(target=target)
 
     def to_dict(self):
         super_dict = super().to_dict()

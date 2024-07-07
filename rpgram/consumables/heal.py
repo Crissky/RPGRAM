@@ -58,11 +58,6 @@ class HealingConsumable(Consumable):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        report = target.status.add_condition(self.condition)
-
-        return report
-
     def to_dict(self):
         super_dict = super().to_dict()
         return dict(
@@ -124,9 +119,6 @@ class ReviveConsumable(Consumable):
         report = target.combat_stats.revive(self.power)
 
         return report
-
-    def battle_function(self, target) -> dict:
-        return self.function(target=target)
 
     def to_dict(self):
         super_dict = super().to_dict()

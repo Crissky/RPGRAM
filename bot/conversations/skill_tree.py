@@ -59,7 +59,8 @@ from bot.conversations.enemy import (
 from bot.decorators.char import (
     confusion,
     skip_if_dead_char,
-    skip_if_immobilized
+    skip_if_immobilized,
+    skip_if_silenced
 )
 from bot.functions.char import (
     get_char_attribute,
@@ -88,7 +89,11 @@ from constant.text import (
     SECTION_HEAD_SKILL_TREE_END,
     SECTION_HEAD_SKILL_TREE_START
 )
-from function.text import create_text_in_box
+from function.text import (
+    create_text_in_box,
+    escape_basic_markdown_v2,
+    escape_for_citation_markdown_v2
+)
 
 from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
@@ -596,6 +601,7 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @skip_if_dead_char
 @skip_if_immobilized
+@skip_if_silenced
 @confusion()
 @print_basic_infos
 async def action_use_skill(
@@ -757,11 +763,17 @@ async def action_use_skill(
     )
 
     for markdown_text in markdown_skill_tree_list:
+        if skill_type == SkillTypeEnum.ATTACK:
+            clean_func = escape_for_citation_markdown_v2
+        else:
+            clean_func = escape_basic_markdown_v2
+
         markdown_text = create_text_in_box(
             text=markdown_text,
             section_name=SECTION_TEXT_USE_SKILL_TREE,
             section_start=SECTION_HEAD_SKILL_TREE_START,
-            section_end=SECTION_HEAD_SKILL_TREE_END
+            section_end=SECTION_HEAD_SKILL_TREE_END,
+            clean_func=clean_func
         )
         await reply_text(
             function_caller='SKILL_TREE.ACTION_USE_SKILL()',

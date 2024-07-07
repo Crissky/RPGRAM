@@ -222,10 +222,6 @@ class BaseCharacter:
 
         return text
 
-    def battle_activate_status(self) -> List[dict]:
-        reports = self.__status.battle_activate(self)
-        return reports
-
     def add_action_points(self, value: int = 1) -> dict:
         return self.skill_tree.add_action_points(value)
 
@@ -432,7 +428,8 @@ class BaseCharacter:
             if total_damage > 0:
                 hit_report = attacker_skill.hit_function(
                     target=defender_char,
-                    damage=total_damage,
+                    damage=damage,
+                    total_damage=total_damage,
                 )
                 hit_text = hit_report['text']
                 damage_or_defend_text = (
@@ -447,13 +444,15 @@ class BaseCharacter:
             )
 
             # Put the Pre Hit and Hit Paragraph of the report['text']
+            if pre_hit_text or hit_text:
+                report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
+                report['text'] += '\n'
             if pre_hit_text:
                 report['text'] += f'{pre_hit_text}\n'
             if hit_text:
                 report['text'] += f'{hit_text}\n'
             if pre_hit_text or hit_text:
                 report['text'] += '\n'
-            
 
             # Put the Dice Paragraph of the report['text']
             if verbose:

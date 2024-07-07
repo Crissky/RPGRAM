@@ -73,9 +73,10 @@ class BarrierCondition(Condition):
         new_bp = self.current_barrier_points
         new_show_bp = self.show_barrier_points
         absolute_damage = (old_bp - new_bp)
-        broke_text = 'QUEBROU!' if self.is_broken else ''
+        broke_text = ' QUEBROU!' if self.is_broken else ''
         text = (
-            f'*BP*: {old_show_bp} ››› {new_show_bp} (*{value}*){broke_text}.'
+            f'*{self.name}*: {old_show_bp} ››› {new_show_bp} '
+            f'(*{value}*){broke_text}.'
         )
 
         if not markdown:
@@ -138,9 +139,6 @@ class BarrierCondition(Condition):
         report['action'] = self.name
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
     def to_dict(self) -> dict:
         _dict = {
@@ -238,6 +236,32 @@ class PrismaticShieldCondition(BarrierCondition):
         return 2.00
 
 
+class SoulWeaverCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=SorcererSkillEnum.SOUL_WEAVER.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Véu Caótico* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
@@ -252,6 +276,11 @@ if __name__ == '__main__':
     assert condition_factory(**condition.to_dict()) == condition
 
     condition = PrismaticShieldCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SoulWeaverCondition(100)
     print(condition)
     print(condition.to_dict())
     assert condition_factory(**condition.to_dict()) == condition

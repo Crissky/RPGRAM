@@ -34,7 +34,6 @@ from bot.constants.puzzle import (
 )
 from bot.conversations.bag import send_drop_message
 from bot.decorators import (
-    need_not_in_battle,
     confusion,
     skip_if_dead_char,
     skip_if_immobilized,
@@ -245,7 +244,6 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
 
 @skip_if_no_singup_player
 # @skip_if_dead_char
-# @need_not_in_battle
 # @skip_if_immobilized
 # @confusion(START_ROUTES)
 @print_basic_infos
@@ -622,6 +620,30 @@ async def punishment(
     min_condition_level = int(group_level // 10) + 1
     max_condition_level = min_condition_level * 2
     for char in sorted_char_list:
+        if char.is_dead:
+            text = (
+                f'{char.player_name} está morto, por isso não vai receber '
+                f'a punição.'
+            )
+            text = create_text_in_box(
+                text=text,
+                section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+                section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+                section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
+            )
+            await reply_text_and_forward(
+                function_caller='PUNISHMENT()',
+                text=text,
+                context=context,
+                user_ids=char.player_id,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=True,
+                silent_forward=False,
+            )
+            continue
+
         quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
         debuff_sample = sample(debuff_list, quantity_sample)
         debuff_sample = [
@@ -636,7 +658,7 @@ async def punishment(
             char=char,
         )
         report_damage = add_trap_damage(
-            min_ratio_damage=0.50,
+            min_ratio_damage=0.35,
             char=char,
         )
         text = (

@@ -109,9 +109,6 @@ class RobustBlockCondition(SelfSkillCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class FuriousFuryCondition(SelfSkillCondition):
 
@@ -161,9 +158,6 @@ class FuriousFuryCondition(SelfSkillCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class FuriousInstinctCondition(SelfSkillCondition):
 
@@ -210,9 +204,6 @@ class FuriousInstinctCondition(SelfSkillCondition):
         report['action'] = self.name
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class MysticalProtectionCondition(SelfSkillCondition):
@@ -264,9 +255,6 @@ class MysticalProtectionCondition(SelfSkillCondition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
-
 
 class MysticalConfluenceCondition(SelfSkillCondition):
 
@@ -316,9 +304,6 @@ class MysticalConfluenceCondition(SelfSkillCondition):
         report['action'] = self.name
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 class MysticalVigorCondition(SelfSkillCondition):
@@ -373,9 +358,6 @@ class MysticalVigorCondition(SelfSkillCondition):
         report['action'] = self.name
 
         return report
-
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        return self.function(target)
 
 
 if __name__ == '__main__':

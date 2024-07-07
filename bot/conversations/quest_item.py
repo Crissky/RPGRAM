@@ -37,7 +37,6 @@ from bot.constants.quest_item import (
 from bot.conversations.bag import send_drop_message
 from bot.decorators import (
     confusion,
-    need_not_in_battle,
     print_basic_infos,
     skip_if_dead_char,
     skip_if_immobilized,
@@ -215,7 +214,6 @@ async def job_fail_item_quest(context: ContextTypes.DEFAULT_TYPE):
 
 
 @skip_if_no_singup_player
-@need_not_in_battle
 @skip_if_dead_char
 @skip_if_immobilized
 @confusion()

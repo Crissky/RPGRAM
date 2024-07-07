@@ -68,11 +68,6 @@ class HealingCondition(Condition):
 
         return report
 
-    def battle_function(self, target: 'BaseCharacter') -> dict:
-        report = target.combat_stats.cure_hit_points(self.power)
-
-        return report
-
     @property
     def emoji(self) -> str:
         return self.__emoji

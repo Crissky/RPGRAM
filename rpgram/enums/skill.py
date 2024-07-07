@@ -50,6 +50,7 @@ class SkillDefenseEmojiEnum(Enum):
 class BarbarianSkillEnum(Enum):
     FURIOUS_ATTACK = 'Ataque Furioso'
     WILD_STRIKE = 'Golpe Selvagem'
+    WILD_RAM = 'Ariete Selvagem'
     FURIOUS_FURY = 'Fúria Furiosa'
     FURIOUS_INSTINCT = 'Instinto Furioso'
     FURIOUS_ROAR = 'Rugido Furioso'
@@ -71,6 +72,9 @@ class SorcererSkillEnum(Enum):
     PRISMATIC_SHOT = 'Disparo Prismático'
     PRISMATIC_SCINTILLATION = 'Cintilação Prismática'
     PRISMATIC_SHIELD = 'Escudo Prismático'
+    CHAOS_ORB = 'Orbe do Caos'
+    MAGICAL_VAMPIRISM = 'Vampirismo Mágico'
+    SOUL_WEAVER = 'Tecelão de Almas'
 
 
 class WarriorSkillEnum(Enum):

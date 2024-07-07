@@ -261,6 +261,11 @@ class WarCrySkill(BaseSkill):
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
         target_name = char.player_name
+        target_name = (
+            'seu corpo'
+            if target_name == player_name
+            else target_name
+        )
         dice = self.dice
         level = self.level_rank
         power_multiplier = 1.50 + (level / 10)
@@ -271,8 +276,8 @@ class WarCrySkill(BaseSkill):
         report_text = cure_report["text"]
         report = {
             'text': (
-                f'*{player_name}* liberta o *{self.name}*, '
-                f'curando as feridas de *{target_name}*.\n'
+                f'*{player_name}* liberta o *{self.name}* '
+                f'que cura as feridas de *{target_name}*.\n'
                 f'*{report_text}*({dice.text}).'
             )
         }

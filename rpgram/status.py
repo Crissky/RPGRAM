@@ -4,7 +4,7 @@ Este módulo gerencia as Condições do Personagem.
 
 from datetime import datetime
 from random import choice, random
-from typing import List, Tuple, Union
+from typing import Iterable, List, Tuple, Type, Union
 
 from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
@@ -67,8 +67,12 @@ class Status:
             )
         else:
             self.__conditions.append(new_condition)
+            barrier_value = ''
+            if isinstance(new_condition, BarrierCondition):
+                barrier_value = f' ({new_condition.barrier_points})'
             report['text'] = (
-                f'{emoji_name} NV: {new_condition.level} foi adicionado.'
+                f'{emoji_name} NV: {new_condition.level} foi adicionado'
+                f'{barrier_value}.'
             )
         self.__update_stats()
 
@@ -106,7 +110,11 @@ class Status:
 
     add_by_ratio = add_condition_by_ratio
 
-    def remove_condition(self, condition: Union[Condition, str]) -> dict:
+    def remove_condition(
+        self,
+        condition: Union[Condition, str],
+        ignore_not_find: bool = False
+    ) -> dict:
         if not isinstance(condition, (Condition, str)):
             raise TypeError(
                 f'O parâmetro deve ser do tipo Condition ou String. '
@@ -120,7 +128,7 @@ class Status:
             condition_name = condition
             condition_level = 1
 
-        report = {'condition_name': condition_name}
+        report = {'text': '', 'condition_name': condition_name}
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
@@ -135,7 +143,7 @@ class Status:
                     f'{condition_emoji_name} reduziu para NV: '
                     f'{new_condition_level}.'
                 )
-        else:
+        elif ignore_not_find is False:
             report['text'] = (
                 f'O status não possui a condição "{condition_name}".'
             )
@@ -151,14 +159,26 @@ class Status:
     ) -> List[dict]:
         report_list = []
         unique_conditions = sorted(set(conditions))
+
+        ignore_not_find = False
+        if len(unique_conditions) > 1:
+            ignore_not_find = True
+
         for condition_name in unique_conditions:
             condition_level = conditions.count(condition_name)
             condition = condition_factory(
                 name=condition_name,
                 level=condition_level
             )
-            report = self.remove_condition(condition)
-            report_list.append(report)
+            report = self.remove_condition(
+                condition=condition,
+                ignore_not_find=ignore_not_find
+            )
+            if report['text']:
+                report_list.append(report)
+
+        if not report_list:
+            report_list.append({'text': 'Nenhuma condição foi removida!'})
 
         return report_list
 
@@ -192,6 +212,20 @@ class Status:
             not condition.is_broken
         ]
 
+    def broken_all_barriers(self) -> dict:
+        total_damage = 0
+        report = {'text': '', 'total_damage': total_damage}
+        for condition in self.__conditions:
+            if isinstance(condition, BarrierCondition):
+                damage = condition.current_barrier_points
+                report['total_damage'] += damage
+                barrier_report = condition.damage_barrier_points(damage)
+                report['text'] += barrier_report['text'] + '\n'
+
+        report['text'] = report['text'].strip()
+        self.remove_broken_barrier()
+        return report
+
     def set_conditions(self, *conditions: Union[Condition, str]) -> List[dict]:
         report_list = []
         for condition in conditions:
@@ -201,6 +235,20 @@ class Status:
             report_list.append(report)
 
         return report_list
+
+    def get_filtered_condition(
+        self,
+        *filters: Tuple[Type[Condition]]
+    ) -> Iterable:
+        for condition in self.__conditions:
+            if any(isinstance(condition, filter) for filter in filters):
+                yield condition
+
+    def get_debuffs(self) -> Iterable:
+        yield from self.get_filtered_condition(DebuffCondition)
+
+    def get_barriers(self) -> Iterable:
+        yield from self.get_filtered_condition(BarrierCondition)
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
@@ -287,28 +335,6 @@ class Status:
             raise ValueError('Status não tem condições imobilizadoras.')
 
         return ', '.join(names)
-
-    def battle_activate(self, char) -> List[dict]:
-        reports = []
-        for condition in self.__conditions:
-            if condition.frequency != TurnEnum.CONTINUOUS:
-                report = condition.battle_activate(char)
-                if condition.turn == 0:
-                    report['text'] += (
-                        f'\n'
-                        f'Condição "{condition.emoji_name}" '
-                        f'foi removida do Status.'
-                    )
-                reports.append(report)
-
-        # exclui todos as condition con turn igual a zero
-        self.__conditions = [
-            condition
-            for condition in self.__conditions
-            if condition.turn != 0
-        ]
-
-        return reports
 
     def attach_observer(self, observer):
         self.__observers.append(observer)
