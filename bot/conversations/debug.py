@@ -80,6 +80,7 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = '*Jobs Atuais*:\n\n'
 
         if current_jobs:
+            current_jobs = sorted(current_jobs, key=attrgetter('name'))
             for index, job in enumerate(current_jobs):
                 text += f'{index+1:02}: {job.name}\n'
         else:
