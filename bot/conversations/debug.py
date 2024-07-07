@@ -62,7 +62,12 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_data = context.chat_data
         text = 'Conteúdo de "context.chat_data":\n\n'
         for key, value in chat_data.items():
-            text += f'{key}: {value}\n'
+            if key == 'ambushes':
+                text += f'{key}:\n'
+                for key2, value2 in value.items():
+                    text += f'{key2}: {[value2["enemy"]]}\n'
+            else:
+                text += f'{key}: {value}\n'
     elif len(args) > 0 and args[0] in ['enemy', 'inimigo']:
         group_level = get_attribute_group(chat_id, 'group_level')
         enemy_list = create_random_enemies(group_level=group_level)
