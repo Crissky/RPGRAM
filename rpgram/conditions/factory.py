@@ -2,7 +2,8 @@ from typing import TYPE_CHECKING
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
     GuardianShieldCondition,
-    PrismaticShieldCondition
+    PrismaticShieldCondition,
+    SoulWeaverCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -171,6 +172,8 @@ def condition_factory(
         condition_class = MysticalVigorCondition
     elif name == SorcererSkillEnum.PRISMATIC_SHIELD.value:
         condition_class = PrismaticShieldCondition
+    elif name == SorcererSkillEnum.SOUL_WEAVER.value:
+        condition_class = SoulWeaverCondition
     # WARRIOR BUFFS
     elif name == WarriorSkillEnum.AEGIS_SHADOW.value:
         condition_class = AegisShadowCondition

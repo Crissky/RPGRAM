@@ -72,6 +72,9 @@ class SorcererSkillEnum(Enum):
     PRISMATIC_SHOT = 'Disparo Prismático'
     PRISMATIC_SCINTILLATION = 'Cintilação Prismática'
     PRISMATIC_SHIELD = 'Escudo Prismático'
+    CHAOS_ORB = 'Orbe do Caos'
+    MAGICAL_VAMPIRISM = 'Vampirismo Mágico'
+    SOUL_WEAVER = 'Tecelão de Almas'
 
 
 class WarriorSkillEnum(Enum):

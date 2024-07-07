@@ -428,7 +428,8 @@ class BaseCharacter:
             if total_damage > 0:
                 hit_report = attacker_skill.hit_function(
                     target=defender_char,
-                    damage=total_damage,
+                    damage=damage,
+                    total_damage=total_damage,
                 )
                 hit_text = hit_report['text']
                 damage_or_defend_text = (

@@ -67,8 +67,12 @@ class Status:
             )
         else:
             self.__conditions.append(new_condition)
+            barrier_value = ''
+            if isinstance(new_condition, BarrierCondition):
+                barrier_value = f' ({new_condition.barrier_points})'
             report['text'] = (
-                f'{emoji_name} NV: {new_condition.level} foi adicionado.'
+                f'{emoji_name} NV: {new_condition.level} foi adicionado'
+                f'{barrier_value}.'
             )
         self.__update_stats()
 

@@ -9,6 +9,11 @@ from rpgram.skills.classes.sorcerer.skill2 import (
     PrismaticShieldSkill,
     PrismaticShotSkill
 )
+from rpgram.skills.classes.sorcerer.skill3 import (
+    ChaosOrbSkill,
+    MagicalVampirismSkill,
+    SoulWeaverSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -35,6 +40,13 @@ def sorcerer_skill_factory(
         skill_class = PrismaticScintillationSkill
     elif skill_class_name == PrismaticShieldSkill.__name__:
         skill_class = PrismaticShieldSkill
+    # SKILL3
+    elif skill_class_name == ChaosOrbSkill.__name__:
+        skill_class = ChaosOrbSkill
+    elif skill_class_name == MagicalVampirismSkill.__name__:
+        skill_class = MagicalVampirismSkill
+    elif skill_class_name == SoulWeaverSkill.__name__:
+        skill_class = SoulWeaverSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -51,4 +63,9 @@ SORCERER_SKILL_LIST: List[Type[BaseSkill]] = [
     PrismaticShotSkill,
     PrismaticScintillationSkill,
     PrismaticShieldSkill,
+
+    # SKILL3
+    ChaosOrbSkill,
+    MagicalVampirismSkill,
+    SoulWeaverSkill,
 ]
