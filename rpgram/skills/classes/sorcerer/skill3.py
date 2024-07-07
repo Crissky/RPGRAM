@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING
+from random import sample
+from typing import TYPE_CHECKING, List
 from rpgram.conditions.barrier import CaosWeaverCondition
 from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT
@@ -40,7 +41,7 @@ class ChaosOrbSkill(BaseSkill):
         f'Manipulando a essência da magia caótica, conjura um orbe '
         f'instável que transborda energia imprevisível, '
         f'causando dano com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (95% + 5% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -51,9 +52,9 @@ class ChaosOrbSkill(BaseSkill):
         cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.MAGICAL_ATTACK: 1.00,
+            CombatStatsEnum.MAGICAL_ATTACK: 0.95,
         }
-        damage_types = [DamageEnum.CHAOS]
+        damage_types = [DamageEnum.CHAOS, *random_damage_type()]
 
         super().__init__(
             name=ChaosOrbSkill.NAME,
@@ -79,7 +80,7 @@ class ChaosVampirismSkill(BaseSkill):
         f'Utiliza a energia do caos para gerar um *Vínculo Caótico* '
         f'com o inimigo e drenar a sua força vital, '
         f'causando dano com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
         f'curando a si em 20% do dano causado.'
     )
     RANK = 2
@@ -93,9 +94,9 @@ class ChaosVampirismSkill(BaseSkill):
         cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.MAGICAL_ATTACK: 1.25,
+            CombatStatsEnum.MAGICAL_ATTACK: 0.90,
         }
-        damage_types = [DamageEnum.CHAOS]
+        damage_types = [DamageEnum.CHAOS, *random_damage_type(2)]
 
         super().__init__(
             name=ChaosVampirismSkill.NAME,
@@ -133,7 +134,7 @@ class CaosWeaverSkill(BaseSkill):
     DESCRIPTION = (
         f'Por meio da energia caótica, drenar a força vital do inimigo, '
         f'causando dano com base em '
-        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
         f'tece um *Véu Caótico* que protege com uma '
         f'barreira baseada no dano causado (100% + 10% x Rank x Nível)'
     )
@@ -148,9 +149,9 @@ class CaosWeaverSkill(BaseSkill):
         cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.MAGICAL_ATTACK: 1.25,
+            CombatStatsEnum.MAGICAL_ATTACK: 0.90,
         }
-        damage_types = [DamageEnum.CHAOS]
+        damage_types = [DamageEnum.CHAOS, *random_damage_type(2)]
 
         super().__init__(
             name=CaosWeaverSkill.NAME,
@@ -186,6 +187,13 @@ class CaosWeaverSkill(BaseSkill):
         report = {'text': status_report_text}
 
         return report
+
+
+def random_damage_type(quantity: int = 1) -> List[DamageEnum]:
+    damage_enum_list = list(DamageEnum)
+    damage_enum_list.remove(DamageEnum.CHAOS)
+
+    return sample(damage_enum_list, quantity)
 
 
 if __name__ == '__main__':
