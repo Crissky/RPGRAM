@@ -70,7 +70,9 @@ class CureConsumable(Consumable):
         base_value = 50
         cure_multiplier = max(len(self.condition_target), 1)
         rarity_multiplier = get_enum_index(self.rarity) + 1
-        price = (base_value * cure_multiplier) + (rarity_multiplier * 10)
+        price = (base_value * cure_multiplier) - (rarity_multiplier * 10)
+        if cure_multiplier > 50:
+            price = price / 2
 
         return int(price)
 
