@@ -236,7 +236,7 @@ class PrismaticShieldCondition(BarrierCondition):
         return 2.00
 
 
-class CaosWeaverCondition(BarrierCondition):
+class ChaosWeaverCondition(BarrierCondition):
 
     def __init__(
         self,
@@ -246,7 +246,7 @@ class CaosWeaverCondition(BarrierCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=SorcererSkillEnum.CAOS_WEAVER.value,
+            name=SorcererSkillEnum.CHAOS_WEAVER.value,
             frequency=TurnEnum.START,
             power=power,
             damage=damage,
@@ -280,7 +280,7 @@ if __name__ == '__main__':
     print(condition.to_dict())
     assert condition_factory(**condition.to_dict()) == condition
 
-    condition = CaosWeaverCondition(100)
+    condition = ChaosWeaverCondition(100)
     print(condition)
     print(condition.to_dict())
     assert condition_factory(**condition.to_dict()) == condition

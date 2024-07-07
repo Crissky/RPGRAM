@@ -12,7 +12,7 @@ from rpgram.skills.classes.sorcerer.skill2 import (
 from rpgram.skills.classes.sorcerer.skill3 import (
     ChaosOrbSkill,
     ChaosVampirismSkill,
-    CaosWeaverSkill
+    ChaosWeaverSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -45,8 +45,8 @@ def sorcerer_skill_factory(
         skill_class = ChaosOrbSkill
     elif skill_class_name == ChaosVampirismSkill.__name__:
         skill_class = ChaosVampirismSkill
-    elif skill_class_name == CaosWeaverSkill.__name__:
-        skill_class = CaosWeaverSkill
+    elif skill_class_name == ChaosWeaverSkill.__name__:
+        skill_class = ChaosWeaverSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -67,5 +67,5 @@ SORCERER_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL3
     ChaosOrbSkill,
     ChaosVampirismSkill,
-    CaosWeaverSkill,
+    ChaosWeaverSkill,
 ]
