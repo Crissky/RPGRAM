@@ -13,6 +13,7 @@ from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.rest import (
     COMMANDS,
     MINUTES_TO_RECOVERY_ACTION_POINTS,
+    MINUTES_TO_RECOVERY_HIT_POINTS,
     REPLY_TEXT_REST_MIDDAY,
     REPLY_TEXT_REST_MIDNIGHT,
     REPLY_TEXTS_ALREADY_RESTING,
@@ -142,7 +143,7 @@ def create_job_rest_cure(
     job_name = get_rest_jobname(user_id)
     context.job_queue.run_repeating(
         callback=job_rest_cure,
-        interval=timedelta(minutes=30),
+        interval=timedelta(minutes=MINUTES_TO_RECOVERY_HIT_POINTS),
         chat_id=chat_id,
         user_id=user_id,
         data=user_id,
