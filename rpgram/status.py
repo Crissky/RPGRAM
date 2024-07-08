@@ -472,6 +472,10 @@ class Status:
 
     # Getters
     @property
+    def is_empty(self) -> bool:
+        return not bool(self.__conditions)
+
+    @property
     def debuffed(self) -> bool:
         for condition in self.__conditions:
             if isinstance(condition, DebuffCondition):

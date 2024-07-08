@@ -334,7 +334,9 @@ class CombatStats:
             self.__bonus_hit += int(sb.bonus_hit)
             self.__bonus_evasion += int(sb.bonus_evasion)
 
-        if is_dead_start is True:
+        if is_dead_start and self.dead and not self.is_status_empty:
+            self.clean_status_by_death()
+        elif is_dead_start is True:
             self.__death()
 
     def __add_death_counter(self):
@@ -414,6 +416,15 @@ class CombatStats:
             self.bonus_initiative +
             (self.level * 5)
         )
+
+    @property
+    def is_status_empty(self) -> bool:
+        status = self.get_status()
+
+        if isinstance(status, Status):
+            return status.is_empty
+        else:
+            return True
 
     @property
     def physical_attack(self) -> int:

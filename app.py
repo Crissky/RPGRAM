@@ -155,7 +155,7 @@ def main() -> None:
         callback=autorest_midnight,
         when=timedelta(minutes=2),
         chat_id=MY_GROUP_ID,
-        name='JOB_AUTOREST_MIDNIGHT',
+        name='JOB_AUTOREST_MIDNIGHT_ON_START',
         job_kwargs=BASE_JOB_KWARGS,
     )
 

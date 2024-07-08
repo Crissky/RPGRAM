@@ -131,30 +131,33 @@ class GuardianShieldSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
-        target_name = char.player_name
-        target_name = (
-            'a si mesmo'
-            if target_name == player_name
-            else target_name
-        )
-        dice = self.dice
-        power = dice.boosted_physical_defense
-        level = self.level_rank
-        condition = GuardianShieldCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{player_name}* se impõe contra o perigo, evocando um '
-                f'*Escudo Familiar Protetivo* para resguardar '
-                f'*{target_name}* com uma barreira '
-                f'*{condition.barrier_points_text}*({dice.text}).\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            target_name = char.player_name
+            target_name = (
+                'a si mesmo'
+                if target_name == player_name
+                else target_name
             )
-        }
+            dice = self.dice
+            power = dice.boosted_physical_defense
+            level = self.level_rank
+            condition = GuardianShieldCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* se impõe contra o perigo, evocando um '
+                    f'*Escudo Familiar Protetivo* para resguardar '
+                    f'*{target_name}* com uma barreira '
+                    f'*{condition.barrier_points_text}*({dice.text}).\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{player_name}* está morto.'}
 
         return report
 
@@ -199,30 +202,33 @@ class ShieldWallSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
-        target_name = char.player_name
-        target_name = (
-            'a si mesmo'
-            if target_name == player_name
-            else target_name
-        )
-        dice = self.dice
-        power = dice.boosted_physical_defense
-        level = self.level_rank
-        condition = GuardianShieldCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{player_name}* se impõe contra o perigo, evocando um '
-                f'*Escudo Familiar Protetivo* para resguardar '
-                f'*{target_name}* com uma barreira '
-                f'*{condition.barrier_points_text}*({dice.text}).\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            target_name = char.player_name
+            target_name = (
+                'a si mesmo'
+                if target_name == player_name
+                else target_name
             )
-        }
+            dice = self.dice
+            power = dice.boosted_physical_defense
+            level = self.level_rank
+            condition = GuardianShieldCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* se impõe contra o perigo, evocando um '
+                    f'*Escudo Familiar Protetivo* para resguardar '
+                    f'*{target_name}* com uma barreira '
+                    f'*{condition.barrier_points_text}*({dice.text}).\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{player_name}* está morto.'}
 
         return report
 
