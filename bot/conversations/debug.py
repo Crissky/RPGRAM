@@ -62,7 +62,7 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_data = context.chat_data
         text = 'Conteúdo de "context.chat_data":\n\n'
         for key, value in chat_data.items():
-            if key == 'ambushes':
+            if key == 'ambushes' and value:
                 text += f'{key}:\n'
                 for key2, value2 in value.items():
                     text += f'{key2}: {[value2["enemy"]]}\n'
