@@ -32,6 +32,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
     MysticalConfluenceCondition,
@@ -158,6 +159,8 @@ def condition_factory(
         condition_class = FuriousFuryCondition
     elif name == BarbarianSkillEnum.FURIOUS_INSTINCT.value:
         condition_class = FuriousInstinctCondition
+    elif name == BarbarianSkillEnum.FRENZY.value:
+        condition_class = FrenzyCondition
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition

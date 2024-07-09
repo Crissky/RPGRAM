@@ -53,6 +53,7 @@ class BarbarianSkillEnum(Enum):
     WILD_RAM = 'Ariete Selvagem'
     FURIOUS_FURY = 'Fúria Furiosa'
     FURIOUS_INSTINCT = 'Instinto Furioso'
+    FRENZY = 'Frenesi'
     FURIOUS_ROAR = 'Rugido Furioso'
 
 
