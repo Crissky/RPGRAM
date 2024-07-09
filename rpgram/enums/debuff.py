@@ -1,5 +1,7 @@
 from enum import Enum
 
+from rpgram.enums.skill import BarbarianSkillEnum
+
 
 class DebuffEnum(Enum):
     BERSERKER = 'Berserker'
@@ -53,7 +55,9 @@ POISONING = DebuffEnum.POISONING.name.title()
 SILENCE = DebuffEnum.SILENCE.name.title()
 STUNNED = DebuffEnum.STUNNED.name.title()
 
-CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION]
+FRENZY = BarbarianSkillEnum.FRENZY.value
+
+CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION, FRENZY]
 IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED, STUNNED]
 SILENCED_DEBUFFS_NAMES = [SILENCE]
 BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PETRIFIED]

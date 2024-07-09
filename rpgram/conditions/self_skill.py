@@ -16,7 +16,8 @@ from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
-    PHYSICAL_DEFENSE_EMOJI_TEXT
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
+    STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
@@ -180,7 +181,7 @@ class FuriousInstinctCondition(SelfSkillCondition):
         return (
             f'Instinto de *Fúria* que aumenta a *{DEXTERITY_EMOJI_TEXT}* '
             f'base em {int((self.multiplier_dexterity-1)*100)}% '
-            f' (20% + 5% x Nível) por {self.turn} turno(s).'
+            f'(20% + 5% x Nível) por {self.turn} turno(s).'
         )
 
     @property
@@ -193,6 +194,62 @@ class FuriousInstinctCondition(SelfSkillCondition):
     @property
     def emoji(self) -> str:
         return '‼️'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece em estado de '
+            f'*{self.name}*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+
+class FrenzyCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.FRENZY.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'O personagem fica em estado de *Frenesi*, aumentando a '
+            f'*{STRENGTH_EMOJI_TEXT}* e a *{DEXTERITY_EMOJI_TEXT}* '
+            f'base em {int((self.multiplier_dexterity-1)*100)}% '
+            f'(50% + 5% x Nível) por {self.turn} turno(s), '
+            f'mas pode atacar aliados ou a si.'
+        )
+
+    @property
+    def multiplier_dexterity(self) -> int:
+        power = 1.50 + (self.level / 20)
+        power = round(power, 2)
+
+        return power
+
+    @property
+    def multiplier_strength(self) -> int:
+        power = 1.50 + (self.level / 20)
+        power = round(power, 2)
+
+        return power
+
+    @property
+    def emoji(self) -> str:
+        return '🤬'
 
     def function(self, target: 'BaseCharacter') -> dict:
         text = (
@@ -379,6 +436,13 @@ if __name__ == '__main__':
     assert condition_factory(**_dict) == condition
 
     condition = FuriousInstinctCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
+
+    condition = FrenzyCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
     _dict = {'character': BASE_CHARACTER, **condition.to_dict()}

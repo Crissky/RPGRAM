@@ -184,6 +184,7 @@ class BaseSkill:
         self.base_stats = char.base_stats
         self.combat_stats = char.combat_stats
         self.equips = char.equips
+        self.status = char.status
         self.dice: Dice = dice
         self.use_equips_damage_types = use_equips_damage_types
         self.requirements = requirements
@@ -413,7 +414,8 @@ class BaseSkill:
         if self.use_equips_damage_types:
             special_damage_iter = chain(
                 special_damage_iter,
-                self.equips.special_damage_iter
+                self.equips.special_damage_iter,
+                self.status.special_damage_iter,
             )
 
         return special_damage_iter
