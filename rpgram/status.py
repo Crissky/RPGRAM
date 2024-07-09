@@ -4,7 +4,7 @@ Este módulo gerencia as Condições do Personagem.
 
 from datetime import datetime
 from random import choice, random
-from typing import Iterable, List, Tuple, Type, Union
+from typing import Iterable, Iterator, List, Tuple, Type, Union
 
 from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
@@ -14,12 +14,14 @@ from rpgram.conditions.barrier import BarrierCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
 from rpgram.conditions.factory import condition_factory
+from rpgram.conditions.special_damage_skill import SpecialDamageSkillCondition
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
     IMMOBILIZED_DEBUFFS_NAMES
 )
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
+from rpgram.skills.special_damage import SpecialDamage
 
 
 class Status:
@@ -501,6 +503,12 @@ class Status:
                 max_bp += condition.barrier_points
 
         return f'{current_bp}/{max_bp}'
+
+    @property
+    def special_damage_iter(self) -> Iterator[SpecialDamage]:
+        for condition in self.__conditions:
+            if isinstance(condition, SpecialDamageSkillCondition):
+                yield from condition.special_damage_iter
 
     conditions = property(lambda self: self.__conditions)
     bonus_strength = property(lambda self: self.__bonus_strength)
