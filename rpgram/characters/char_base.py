@@ -260,6 +260,10 @@ class BaseCharacter:
 
         attacker_dice = attacker_skill.dice
         defender_char = defender_dice.char
+        attacker_is_critical = attacker_dice.is_critical
+        defender_is_critical = defender_dice.is_critical
+        attacker_is_critical_fail = attacker_dice.is_critical_fail
+        defender_is_critical_fail = defender_dice.is_critical_fail
         accuracy = self.get_accuracy(
             attacker_skill=attacker_skill,
             defender_dice=defender_dice,
@@ -275,8 +279,18 @@ class BaseCharacter:
         if defender_dice.is_player is True:
             dodge_low_hp_bonus = defender_dice.irate_hp / 2.5
             dodge_score += dodge_low_hp_bonus
+
         if not defender_char.is_immobilized:
             is_dodged = (dodge_score >= accuracy)
+
+        if defender_is_critical_fail and not attacker_is_critical_fail:
+            is_dodged = False
+        elif not defender_is_critical and attacker_is_critical:
+            is_dodged = False
+        elif not defender_is_critical_fail and attacker_is_critical_fail:
+            is_dodged = True
+        elif defender_is_critical and not attacker_is_critical:
+            is_dodged = True
 
         return {
             'attacker_accuracy': accuracy,
