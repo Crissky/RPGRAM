@@ -77,6 +77,7 @@ from bot.constants.bag import (
     TAKE_BUTTON_TEXT,
     EQUIP_RIGHT_BUTTON_TEXT,
     DROPUSE_QUANTITY_OPTION_LIST,
+    TRANSMUTE_ITEM_BUTTON_TEXT,
     USE_MANY_BUTTON_TEXT,
     USE_MANY_BUTTON_VERBOSE_TEXT,
     VERBOSE_BUTTONS_THRESHOLD,
@@ -1585,9 +1586,8 @@ async def send_drop_message(
     if isinstance(items, Item):
         items = [items]
     for i, item in enumerate(items):
-        item_id = str(item._id)
         drop = item.quantity
-        take_break_buttons = get_take_break_buttons(drop, item_id)
+        take_break_buttons = get_take_break_buttons(drop, item)
         reply_markup_drop = InlineKeyboardMarkup([take_break_buttons])
         markdown_item_sheet = item.get_all_sheets(verbose=True, markdown=True)
         markdown_item_sheet = f'{text}:\n\n{markdown_item_sheet}'
@@ -2052,8 +2052,12 @@ def get_back_button(
 
 def get_take_break_buttons(
     drop: int,
-    item_id: str
+    item: Item,
 ) -> List[InlineKeyboardButton]:
+    item_id = str(item._id)
+    destroy_text = DESTROY_ITEM_BUTTON_TEXT
+    if isinstance(item.item, Equipment):
+        destroy_text = TRANSMUTE_ITEM_BUTTON_TEXT
     return [
         InlineKeyboardButton(
             text=TAKE_BUTTON_TEXT,
@@ -2063,7 +2067,7 @@ def get_take_break_buttons(
             })
         ),
         InlineKeyboardButton(
-            text=DESTROY_ITEM_BUTTON_TEXT,
+            text=destroy_text,
             callback_data=callback_data_to_string({
                 'act': CALLBACK_TEXT_DESTROY_ITEM,
                 '_id': item_id

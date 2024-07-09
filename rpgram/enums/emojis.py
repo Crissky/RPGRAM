@@ -66,6 +66,7 @@ class EmojiEnum(Enum):
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
     LEVEL_UP = '🎊'
     DESTROY_ITEM = '💣'
+    TRANSMUTE_ITEM = '♻️'
     SORT_ITEMS = '📚'
     STATS = '📈'
     GROUP = '👥'
