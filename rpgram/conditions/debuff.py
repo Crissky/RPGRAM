@@ -62,10 +62,10 @@ class BerserkerCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'O personagem fica enlouquecido ({BERSERKER}) por 5 turnos, '
-            f'Aumentando o multiplicador de Força em '
+            f'O personagem fica enlouquecido ({BERSERKER}) por '
+            f'{self.turn} turnos, aumentando o multiplicador de Força em '
             f'"{self.multiplier_strength:.2f}x" (5% x Nível), mas '
-            f'podendo atacar aliados ou a si.'
+            f'pode atacar aliados ou a si.'
         )
 
     @property
