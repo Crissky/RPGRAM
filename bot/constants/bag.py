@@ -73,6 +73,7 @@ ACCESS_DENIED = (
 # ACTION BUTTON TEXTS
 CLOSE_BAG_BUTTON_TEXT = f'Fechar Bolsa{EmojiEnum.CLOSE_BAG.value}'
 DESTROY_ITEM_BUTTON_TEXT = f'Quebrar{EmojiEnum.DESTROY_ITEM.value}'
+TRANSMUTE_ITEM_BUTTON_TEXT = f'Converter em XP{EmojiEnum.XP.value}'
 USE_MANY_BUTTON_TEXT = f'{EmojiEnum.USE_POTION.value}x{{quantity_option}}'
 DISCARD_MANY_BUTTON_TEXT = (
     f'{EmojiEnum.DISCARD.value}x{{quantity_option}}'
