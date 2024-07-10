@@ -148,8 +148,8 @@ class PrismaticShieldSkill(BaseSkill):
 
     def function(self, char: 'BaseCharacter') -> dict:
         player_name = self.char.player_name
+        target_name = char.player_name
         if char.is_alive:
-            target_name = char.player_name
             target_name = (
                 'a si mesmo'
                 if target_name == player_name
@@ -174,7 +174,7 @@ class PrismaticShieldSkill(BaseSkill):
                 )
             }
         else:
-            report = {'text': f'*{player_name}* está morto.'}
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
