@@ -229,10 +229,38 @@ class Status:
         return report
 
     def set_conditions(self, *conditions: Union[Condition, str]) -> List[dict]:
+        '''Adiciona ou substitui condições
+        '''
+
         report_list = []
         for condition in conditions:
             if condition in self.__conditions:
                 self.__conditions.remove(condition)
+            report = self.add_condition(condition)
+            report_list.append(report)
+
+        return report_list
+
+    def set_powerful_conditions(
+        self,
+        *conditions: Union[Condition]
+    ) -> List[dict]:
+        '''Adiciona ou substitui as condições se forem mais poderosas
+        '''
+
+        report_list = []
+        for condition in conditions:
+            if condition in self.__conditions:
+                new_turn = condition.turn
+                index = self.__conditions.index(condition)
+                current_condition = self.__conditions[index]
+                self.__conditions.remove(condition)
+                condition = (
+                    condition
+                    if condition.power >= current_condition.power
+                    else current_condition
+                )
+                condition.set_turn(new_turn)
             report = self.add_condition(condition)
             report_list.append(report)
 
