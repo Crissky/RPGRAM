@@ -407,17 +407,6 @@ class CombatStats:
         return not self.alive
 
     @property
-    def initiative(self) -> int:
-        return int(
-            (self.dexterity * 3) +
-            (self.intelligence * 3) +
-            (self.wisdom * 3) +
-            (self.charisma * 6) +
-            self.bonus_initiative +
-            (self.level * 5)
-        )
-
-    @property
     def is_status_empty(self) -> bool:
         status = self.get_status()
 
@@ -427,71 +416,130 @@ class CombatStats:
             return True
 
     @property
-    def physical_attack(self) -> int:
+    def base_initiative(self) -> int:
+        return int(
+            (self.dexterity * 3) +
+            (self.intelligence * 3) +
+            (self.wisdom * 3) +
+            (self.charisma * 6) +
+            (self.level * 5)
+        )
+
+    @property
+    def base_physical_attack(self) -> int:
         return int(
             (self.strength * 6) +
             (self.dexterity * 2) +
-            self.bonus_physical_attack +
             (self.level * 5)
         )
 
     @property
-    def precision_attack(self) -> int:
+    def base_precision_attack(self) -> int:
         return int(
             (self.strength * 2) +
             (self.dexterity * 5) +
-            self.bonus_precision_attack +
             (self.level * 5)
         )
 
     @property
-    def magical_attack(self) -> int:
+    def base_magical_attack(self) -> int:
         return int(
             (self.intelligence * 8) +
             (self.wisdom * 4) +
-            self.bonus_magical_attack +
             (self.level * 5)
         )
 
     @property
-    def physical_defense(self) -> int:
+    def base_physical_defense(self) -> int:
         return int(
             (self.constitution * 5) +
             (self.dexterity * 2) +
-            self.bonus_physical_defense +
             (self.level * 5)
         )
 
     @property
-    def magical_defense(self) -> int:
+    def base_magical_defense(self) -> int:
         return int(
             (self.wisdom * 8) +
             (self.intelligence * 4) +
             (self.constitution * 2) +
-            self.bonus_magical_defense +
             (self.level * 5)
         )
 
     @property
-    def hit(self) -> int:
+    def base_hit(self) -> int:
         return int(
             (self.dexterity * 4) +
             (self.intelligence * 3) +
             (self.wisdom * 3) +
             (self.charisma * 7) +
-            self.bonus_hit +
             (self.level * 5)
         )
 
     @property
-    def evasion(self) -> int:
+    def base_evasion(self) -> int:
         return int(
             (self.dexterity * 4) +
             (self.intelligence * 2) +
             (self.wisdom * 2) +
             (self.charisma * 7) +
-            self.bonus_evasion +
             (self.level * 5)
+        )
+
+    @property
+    def initiative(self) -> int:
+        return int(
+            self.base_initiative +
+            self.bonus_initiative
+        )
+
+    @property
+    def physical_attack(self) -> int:
+        return int(
+            self.base_physical_attack +
+            self.bonus_physical_attack
+        )
+
+    @property
+    def precision_attack(self) -> int:
+        return int(
+            self.base_precision_attack +
+            self.bonus_precision_attack
+        )
+
+    @property
+    def magical_attack(self) -> int:
+        return int(
+            self.base_magical_attack +
+            self.bonus_magical_attack
+        )
+
+    @property
+    def physical_defense(self) -> int:
+        return int(
+            self.base_physical_defense +
+            self.bonus_physical_defense
+        )
+
+    @property
+    def magical_defense(self) -> int:
+        return int(
+            self.base_magical_defense +
+            self.bonus_magical_defense
+        )
+
+    @property
+    def hit(self) -> int:
+        return int(
+            self.base_hit +
+            self.bonus_hit
+        )
+
+    @property
+    def evasion(self) -> int:
+        return int(
+            self.base_evasion +
+            self.bonus_evasion
         )
 
     # Setters
