@@ -111,6 +111,61 @@ class RobustBlockCondition(SelfSkillCondition):
         return report
 
 
+class CrystalArmorCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=GuardianSkillEnum.CRYSTAL_ARMOR.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Armadura forjada com *Cristais Místicos* que reduz a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* para aumentar a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
+            f'{self.bonus_magical_defense} pontos '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        bonus_physical_defense = -(self.character.cs.base_physical_defense / 2)
+
+        return int(bonus_physical_defense)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        power = (1 + (self.level / 10))
+        bonus_magical_defense = power * abs(self.bonus_physical_defense)
+
+        return int(bonus_magical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '💎'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{self.character.name}* permanece envolto pelos '
+            f'*Cristais Místicos*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
+
+
 class FuriousFuryCondition(SelfSkillCondition):
 
     def __init__(
@@ -422,6 +477,13 @@ if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
     condition = RobustBlockCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
+
+    condition = CrystalArmorCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
     _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
