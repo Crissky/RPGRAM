@@ -4,6 +4,8 @@ informações dos jogadores.
 '''
 
 
+from operator import attrgetter
+from random import choice
 from time import sleep
 from typing import List, Type
 from bson import ObjectId
@@ -22,7 +24,10 @@ from bot.constants.skill_tree import (
     ACTION_UPGRADE_SKILL_BUTTON_TEXT,
     ACTION_USE_SKILL_BUTTON_TEXT,
     COMMANDS,
+    HELP_SKILL_BUTTON_TEXT,
+    HELP_SKILL_TEXT,
     INTRO_SKILL_TEXT,
+    LIST_ALL_SKILL_BUTTON_TEXT,
     LIST_LEARN_SKILL_BUTTON_TEXT,
     LIST_UPGRADE_SKILL_BUTTON_TEXT,
     PATTERN_ACTION_LEARN_SKILL,
@@ -30,6 +35,8 @@ from bot.constants.skill_tree import (
     PATTERN_ACTION_USE_SKILL,
     PATTERN_CHECK_UPGRADE_SKILL,
     PATTERN_CHECK_USE_SKILL,
+    PATTERN_HELP_SKILL,
+    PATTERN_LIST_ALL_SKILL,
     PATTERN_LIST_LEARN_SKILL,
     PATTERN_LIST_UPGRADE_SKILL,
     PATTERN_LIST_USE_SKILL,
@@ -86,6 +93,7 @@ from bot.decorators.player import (
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
+    ALERT_SECTION_HEAD,
     SECTION_HEAD_SKILL_TREE_END,
     SECTION_HEAD_SKILL_TREE_START
 )
@@ -99,8 +107,10 @@ from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.characters.char_non_player import NPCharacter
 from rpgram.characters.char_player import PlayerCharacter
+from rpgram.enums.emojis import EmojiEnum, FaceEmojiEnum
 from rpgram.enums.skill import TARGET_ENUM_NOT_SELF, SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
+from rpgram.skills.factory import ALL_SKILL_DICT
 from rpgram.skills.skill_base import BaseSkill
 from rpgram.skills.skill_tree import ACTION_POINTS_EMOJI_TEXT
 
@@ -123,78 +133,69 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     classe_name = get_char_attribute(user_id=user_id, attribute='classe_name')
-    refresh = False
+    skill_back = True
+    help_skill = False
+    list_all_skill = False
 
     if query:
-        data = eval(query.data)
-        refresh = data.get(REFRESH_SKILL_TREE_PATTERN, False)
+        data = callback_data_to_dict(query.data)
+        skill_back = data.get('skill_back', False)
+        help_skill = data.get('help_skill', False)
+        list_all_skill = data.get('list_all_skill', False)
 
-    if classe_name:
+    main_buttons = get_main_buttons(user_id=user_id)
+    close_button = get_close_button(user_id=user_id)
+    main_buttons.append([close_button])
+    reply_markup = InlineKeyboardMarkup(main_buttons)
+    if classe_name and skill_back:
         markdown_skill_tree_sheet = INTRO_SKILL_TEXT
-        main_buttons = get_main_buttons(user_id=user_id,)
-        refresh_close_button = get_refresh_close_button(
-            user_id=user_id,
-            refresh_data=REFRESH_SKILL_TREE_PATTERN,
-            to_detail=False
-        )
-        reply_markup = InlineKeyboardMarkup([
-            main_buttons,
-            refresh_close_button
-        ])
-
-        if refresh:
-            '''"refresh_text" é usado para modificar a mensagem de maneira
-            aleatória para tentar evitar um erro (BadRequest)
-            quando não há mudanças no "markdown_player_sheet" usado na
-            função "edit_message_text".'''
-            refresh_text = get_random_refresh_text()
-            markdown_skill_tree_sheet = (
-                f'{refresh_text}\n'
-                f'{markdown_skill_tree_sheet}'
-            )
-
-        markdown_skill_tree_sheet = create_text_in_box(
-            text=markdown_skill_tree_sheet,
-            section_name=SECTION_TEXT_SKILL_TREE,
-            section_start=SECTION_HEAD_SKILL_TREE_START,
-            section_end=SECTION_HEAD_SKILL_TREE_END
-        )
-
-        if query:
-            await edit_message_text(
-                function_caller='SKILL_TREE.START()',
-                new_text=markdown_skill_tree_sheet,
-                context=context,
-                chat_id=chat_id,
-                message_id=message_id,
-                need_response=False,
-                markdown=True,
-                reply_markup=reply_markup,
-            )
-        else:
-            await reply_text(
-                function_caller='SKILL_TREE.START()',
-                text=markdown_skill_tree_sheet,
-                context=context,
-                update=update,
-                need_response=False,
-                markdown=True,
-                reply_markup=reply_markup,
-                silent=silent
-            )
-    else:
-        text = (
+    elif classe_name and help_skill:
+        markdown_skill_tree_sheet = HELP_SKILL_TEXT
+    elif classe_name and list_all_skill:
+        text = ALERT_SECTION_HEAD.format('*HABILIDADES*') + '\n\n'
+        for class_name, skill_list in ALL_SKILL_DICT.items():
+            class_name = class_name.upper()
+            text += f'● *{class_name}*:\n'
+            sorted_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
+            for i, skill in enumerate(sorted_list):
+                text += f'{i+1:02} *{skill.NAME}* (RNK: {skill.RANK})\n'
+            text += '\n'
+        markdown_skill_tree_sheet = text
+    elif not classe_name:
+        reply_markup = None
+        markdown_skill_tree_sheet = (
             f'Você ainda não criou um personagem!\n'
             f'Crie o seu personagem com o comando '
             f'/{create_char_commands[0]}.'
         )
+
+    emoji = choice(list(FaceEmojiEnum)).value
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=emoji + SECTION_TEXT_SKILL_TREE + emoji,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+    if query:
+        await edit_message_text(
+            function_caller='SKILL_TREE.START()',
+            new_text=markdown_skill_tree_sheet,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
+            reply_markup=reply_markup,
+        )
+    else:
         await reply_text(
             function_caller='SKILL_TREE.START()',
-            text=text,
+            text=markdown_skill_tree_sheet,
             context=context,
             update=update,
             need_response=False,
             markdown=True,
+            reply_markup=reply_markup,
             silent=silent
         )
 
@@ -917,27 +918,45 @@ async def action_learn_skill(
 
 def get_main_buttons(user_id: int) -> List[InlineKeyboardButton]:
     return [
-        InlineKeyboardButton(
-            text=LIST_USE_SKILL_BUTTON_TEXT,
-            callback_data=callback_data_to_string({
-                'list_use_skill': 1,
-                'user_id': user_id,
-            })
-        ),
-        InlineKeyboardButton(
-            text=LIST_LEARN_SKILL_BUTTON_TEXT,
-            callback_data=callback_data_to_string({
-                'list_learn_skill': 1,
-                'user_id': user_id,
-            })
-        ),
-        InlineKeyboardButton(
-            text=LIST_UPGRADE_SKILL_BUTTON_TEXT,
-            callback_data=callback_data_to_string({
-                'list_upgrade_skill': 1,
-                'user_id': user_id,
-            })
-        )
+        [
+            InlineKeyboardButton(
+                text=LIST_USE_SKILL_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'list_use_skill': 1,
+                    'user_id': user_id,
+                })
+            ),
+            InlineKeyboardButton(
+                text=LIST_LEARN_SKILL_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'list_learn_skill': 1,
+                    'user_id': user_id,
+                })
+            ),
+            InlineKeyboardButton(
+                text=LIST_UPGRADE_SKILL_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'list_upgrade_skill': 1,
+                    'user_id': user_id,
+                })
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=HELP_SKILL_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'help_skill': 1,
+                    'user_id': user_id,
+                })
+            ),
+            InlineKeyboardButton(
+                text=LIST_ALL_SKILL_BUTTON_TEXT,
+                callback_data=callback_data_to_string({
+                    'list_all_skill': 1,
+                    'user_id': user_id,
+                })
+            )
+        ]
     ]
 
 
@@ -1194,6 +1213,8 @@ SKILL_TREE_HANDLERS = [
     # MAIN ROUTE
     CallbackQueryHandler(start, pattern=PATTERN_MAIN),
     CallbackQueryHandler(start, pattern=PATTERN_SKILL_BACK_MAIN),
+    CallbackQueryHandler(start, pattern=PATTERN_HELP_SKILL),
+    CallbackQueryHandler(start, pattern=PATTERN_LIST_ALL_SKILL),
     # LIST ROUTES
     CallbackQueryHandler(list_use_skill, pattern=PATTERN_LIST_USE_SKILL),
     CallbackQueryHandler(list_use_skill, pattern=PATTERN_SKILL_BACK_LIST_USE),
