@@ -32,6 +32,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    CrystalArmorCondition,
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
@@ -41,6 +42,7 @@ from rpgram.conditions.self_skill import (
     RobustBlockCondition
 )
 from rpgram.conditions.target_skill import (
+    ShatterCondition,
     WarBannerCondition
 )
 from rpgram.enums.debuff import (
@@ -164,8 +166,12 @@ def condition_factory(
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
+    elif name == GuardianSkillEnum.CRYSTAL_ARMOR.value:
+        condition_class = CrystalArmorCondition
     elif name == GuardianSkillEnum.GUARDIAN_SHIELD.value:
         condition_class = GuardianShieldCondition
+    elif name == GuardianSkillEnum.SHATTER.value:
+        condition_class = ShatterCondition
     # SORCERER BUFFS
     elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
         condition_class = MysticalProtectionCondition

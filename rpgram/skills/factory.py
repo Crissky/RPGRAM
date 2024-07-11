@@ -32,7 +32,6 @@ ALL_SKILL_DICT = {
 }
 
 
-
 def skill_factory(
     classe_name: Union[ClasseEnum, str],
     skill_class_name: str,

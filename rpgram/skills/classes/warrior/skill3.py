@@ -139,7 +139,7 @@ class WarBannerSkill(BaseSkill):
         )
 
     def function(self, char: 'BaseCharacter') -> dict:
-        player_name = self.char.player_name
+        target_name = char.player_name
         if char.is_alive:
             power = self.char.bs.strength
             level = self.level_rank
@@ -150,7 +150,7 @@ class WarBannerSkill(BaseSkill):
             )
             report = {
                 'text': (
-                    f'*{player_name}* recebe a *Marca do Senhor da Guerra* '
+                    f'*{target_name}* recebe a *Marca do Senhor da Guerra* '
                     f'aumentando o '
                     f'{PHYSICAL_ATTACK_EMOJI_TEXT}, '
                     f'{PRECISION_ATTACK_EMOJI_TEXT} e '
@@ -161,7 +161,7 @@ class WarBannerSkill(BaseSkill):
                 )
             }
         else:
-            report = {'text': f'*{player_name}* está morto.'}
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 

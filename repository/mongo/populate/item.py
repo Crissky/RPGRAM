@@ -49,7 +49,11 @@ from repository.mongo.populate.item_constants import (
 )
 
 from rpgram.boosters import Equipment
-from rpgram.consumables import Consumable, TrocadoPouchConsumable
+from rpgram.consumables import (
+    Consumable,
+    GemstoneConsumable,
+    TrocadoPouchConsumable
+)
 from rpgram import Item
 from rpgram.enums import (
     AccessoryMaterialsEnum,
@@ -930,6 +934,9 @@ def choice_consumable(
 
     if isinstance(item, TrocadoPouchConsumable):
         quantity = int(quantity + group_level / 10)
+        quantity = max(1, quantity)
+    elif isinstance(item, GemstoneConsumable):
+        quantity = int(quantity + group_level / randint(20, 40))
         quantity = max(1, quantity)
 
     item = Item(item, quantity)
