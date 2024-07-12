@@ -269,15 +269,15 @@ class Status:
     def get_filtered_condition(
         self,
         *filters: Tuple[Type[Condition]]
-    ) -> Iterable:
+    ) -> Iterable[Condition]:
         for condition in self.__conditions:
             if any(isinstance(condition, filter) for filter in filters):
                 yield condition
 
-    def get_debuffs(self) -> Iterable:
+    def get_debuffs(self) -> Iterable[DebuffCondition]:
         yield from self.get_filtered_condition(DebuffCondition)
 
-    def get_barriers(self) -> Iterable:
+    def get_barriers(self) -> Iterable[BarrierCondition]:
         yield from self.get_filtered_condition(BarrierCondition)
 
     def clean_status(self) -> dict:

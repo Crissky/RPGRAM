@@ -48,6 +48,7 @@ from rpgram.conditions import (
 from rpgram.consumables import (
     Consumable,
     CureConsumable,
+    PanaceaConsumable,
     HealingConsumable,
     ReviveConsumable,
     IdentifyingConsumable,

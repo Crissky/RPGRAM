@@ -12,6 +12,7 @@ from rpgram.conditions import (
 )
 from rpgram.consumables import (
     CureConsumable,
+    PanaceaConsumable,
     GemstoneConsumable,
     HealingConsumable,
     IdentifyingConsumable,
@@ -285,18 +286,12 @@ CONSUMABLES = [
     {
         'name': 'Panacea',
         'description': (
-            f'Cura {GREATER_CURE_ITEMS_LEVEL} Nível das condições '
-            f'"{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
-            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
-            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+            f'Cura {GREATER_CURE_ITEMS_LEVEL} Níveis das condições negativas.'
         ),
-        'condition_target': sorted([
-            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
-            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
-        ] * GREATER_CURE_ITEMS_LEVEL),
+        'quantity_condition': GREATER_CURE_ITEMS_LEVEL,
         'weight': 1.23,
         'rarity': RarityEnum.RARE.name,
-        'class': CureConsumable
+        'class': PanaceaConsumable
     },
 
 
@@ -437,18 +432,12 @@ CONSUMABLES = [
     {
         'name': 'Greater Panacea',
         'description': (
-            f'Cura {MAJOR_CURE_ITEMS_LEVEL} Nível das condições '
-            f'"{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
-            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
-            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+            f'Cura {MAJOR_CURE_ITEMS_LEVEL} Nível das condições negativas.'
         ),
-        'condition_target': sorted([
-            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
-            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
-        ] * MAJOR_CURE_ITEMS_LEVEL),
+        'quantity_condition': MAJOR_CURE_ITEMS_LEVEL,
         'weight': 3.14,
         'rarity': RarityEnum.EPIC.name,
-        'class': CureConsumable
+        'class': PanaceaConsumable
     },
 
     # Major Cure Potions
@@ -588,18 +577,12 @@ CONSUMABLES = [
     {
         'name': 'Major Panacea',
         'description': (
-            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} Nível das condições '
-            f'"{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
-            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
-            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} Nível das condições negativas.'
         ),
-        'condition_target': sorted([
-            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
-            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
-        ] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'quantity_condition': SUPERIOR_CURE_ITEMS_LEVEL,
         'weight': 6.66,
         'rarity': RarityEnum.LEGENDARY.name,
-        'class': CureConsumable
+        'class': PanaceaConsumable
     },
 
     # Other Items
