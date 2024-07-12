@@ -131,15 +131,16 @@ class CrystalArmorCondition(SelfSkillCondition):
     def description(self) -> str:
         return (
             f'Armadura forjada com *Cristais Místicos* que reduz a '
-            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* para aumentar a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em *{self.bonus_physical_defense}* pontos para aumentar a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
-            f'{self.bonus_magical_defense} pontos '
+            f'*{self.bonus_magical_defense}* pontos '
             f'por {self.turn} turno(s).'
         )
 
     @property
     def bonus_physical_defense(self) -> int:
-        bonus_physical_defense = -(self.character.cs.base_physical_defense / 2)
+        bonus_physical_defense = -(self.character.cs.base_physical_defense / 4)
 
         return int(bonus_physical_defense)
 

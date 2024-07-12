@@ -40,8 +40,8 @@ class CrystalArmorSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTAL_ARMOR.value
     DESCRIPTION = (
         f'Forja uma armadura de *Cristais Místicos* que aumenta a '
-        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na redução de metade da '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT} Base* '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na redução de 25% da '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT} BASE* '
         f'mais um bônus de (10% x Rank x Nível) do valor reduzido.'
     )
     RANK = 1
