@@ -153,7 +153,7 @@ class CrystalArmorCondition(SelfSkillCondition):
 
     @property
     def emoji(self) -> str:
-        return '💎'
+        return '🟪'
 
     def function(self, target: 'BaseCharacter') -> dict:
         text = (

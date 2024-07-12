@@ -1,12 +1,16 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.self_skill import CrystalArmorCondition
+from rpgram.conditions.special_damage_skill import (
+    SDCrystallineInfusionCondition
+)
 from rpgram.conditions.target_skill_debuff import ShatterCondition
 from rpgram.constants.text import (
     MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     GuardianSkillEnum,
     SkillDefenseEnum,
@@ -95,6 +99,74 @@ class CrystalArmorSkill(BaseSkill):
         return report
 
 
+class CrystallineInfusionSkill(BaseSkill):
+    NAME = GuardianSkillEnum.CRYSTALLINE_INFUSION.value
+    DESCRIPTION = (
+        f'Embui as mãos do alvo em uma infusão de *Cristais Místicos* que '
+        f'concede dano de {get_damage_emoji_text(DamageEnum.CRYSTAL)} '
+        f'baseado na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (50% + 10% x Rank x Nível) e '
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.GUARDIAN.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 2
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=CrystallineInfusionSkill.NAME,
+            description=CrystallineInfusionSkill.DESCRIPTION,
+            rank=CrystallineInfusionSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=CrystallineInfusionSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        if char.is_alive:
+            target_name = (
+                'si mesmo'
+                if target_name == player_name
+                else target_name
+            )
+            power = int(self.char.cs.magical_defense / 2)
+            level = self.level_rank
+            condition = SDCrystallineInfusionCondition(
+                power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* imbuiu as mãos de *{target_name}* em uma '
+                    f'infusão de *Cristais Místicos*, concedendo dano de '
+                    f'{get_damage_emoji_text(DamageEnum.CRYSTAL)}.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
 class ShatterSkill(BaseSkill):
     NAME = GuardianSkillEnum.SHATTER.value
     DESCRIPTION = (
@@ -121,7 +193,7 @@ class ShatterSkill(BaseSkill):
             CombatStatsEnum.MAGICAL_DEFENSE: 0.75,
             CombatStatsEnum.PHYSICAL_DEFENSE: 0.50,
         }
-        damage_types = None
+        damage_types = [DamageEnum.CRYSTAL]
 
         super().__init__(
             name=ShatterSkill.NAME,
@@ -135,7 +207,7 @@ class ShatterSkill(BaseSkill):
             skill_type=SkillTypeEnum.ATTACK,
             skill_defense=SkillDefenseEnum.MAGICAL,
             char=char,
-            use_equips_damage_types=False,
+            use_equips_damage_types=True,
             requirements=ShatterSkill.REQUIREMENTS,
             damage_types=damage_types
         )
@@ -162,8 +234,55 @@ class ShatterSkill(BaseSkill):
         return report
 
 
+class CrystalChrysalisSkill(BaseSkill):
+    NAME = GuardianSkillEnum.CRYSTAL_CHRYSALIS.value
+    DESCRIPTION = (
+        f'Lança fragmentos de *Cristais Místicos* '
+        f'contra o oponente, causando dano com base em '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.GUARDIAN.value,
+        'skill_list': [CrystallineInfusionSkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_DEFENSE: 0.75,
+            CombatStatsEnum.PHYSICAL_DEFENSE: 0.50,
+        }
+        damage_types = [
+            DamageEnum.CRYSTAL,
+            DamageEnum.CRYSTAL,
+            DamageEnum.CRYSTAL
+        ]
+
+        super().__init__(
+            name=CrystalChrysalisSkill.NAME,
+            description=CrystalChrysalisSkill.DESCRIPTION,
+            rank=CrystalChrysalisSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=CrystalChrysalisSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import GUARDIAN_CHARACTER
+
     skill = CrystalArmorSkill(GUARDIAN_CHARACTER)
     print(skill)
     print(GUARDIAN_CHARACTER.cs.physical_defense)
@@ -172,6 +291,11 @@ if __name__ == '__main__':
     print(GUARDIAN_CHARACTER.cs.physical_defense)
     print(GUARDIAN_CHARACTER.cs.magical_defense)
     GUARDIAN_CHARACTER.skill_tree.learn_skill(CrystalArmorSkill)
+
+    skill = CrystallineInfusionSkill(GUARDIAN_CHARACTER)
+    print(skill)
+    print(skill.function(GUARDIAN_CHARACTER))
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(CrystallineInfusionSkill)
 
     skill = ShatterSkill(GUARDIAN_CHARACTER)
     print(skill)
@@ -186,3 +310,15 @@ if __name__ == '__main__':
     print(GUARDIAN_CHARACTER.cs.physical_defense)
     print(GUARDIAN_CHARACTER.cs.magical_defense)
     GUARDIAN_CHARACTER.skill_tree.learn_skill(ShatterSkill)
+
+    skill = CrystalChrysalisSkill(GUARDIAN_CHARACTER)
+    print(skill)
+    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.cs.magical_defense)
+    # print(skill.hit_function(GUARDIAN_CHARACTER, 1000, 1500))
+    print(GUARDIAN_CHARACTER.to_attack(
+        defender_char=GUARDIAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    GUARDIAN_CHARACTER.skill_tree.learn_skill(CrystalChrysalisSkill)

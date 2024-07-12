@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Union
 
 
 class DamageEnum(Enum):
@@ -21,6 +22,7 @@ class DamageEnum(Enum):
     POISON = 'Veneno'
     CHAOS = 'Caos'
     ROAR = 'Rugido'
+    CRYSTAL = 'Cristal'
 
 
 class DamageEmojiEnum(Enum):
@@ -43,6 +45,14 @@ class DamageEmojiEnum(Enum):
     POISON = '🐍'
     CHAOS = '🦇'
     ROAR = '🦁'
+    CRYSTAL = '🟣'
+
+
+def get_damage_emoji_text(damage: Union[DamageEnum, str]) -> str:
+    if isinstance(damage, str):
+        damage = DamageEnum[damage]
+    name = damage.name
+    return f'{DamageEmojiEnum[name].value}{damage.value}'
 
 
 MAGICAL_DAMAGE_TYPES = (
@@ -59,6 +69,7 @@ MAGICAL_DAMAGE_TYPES = (
     DamageEnum.ACID,
     DamageEnum.POISON,
     DamageEnum.CHAOS,
+    DamageEnum.CRYSTAL,
 )
 PHYSICAL_DAMAGE_TYPES = (
     DamageEnum.BLUDGEONING,

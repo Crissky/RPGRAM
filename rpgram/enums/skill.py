@@ -65,7 +65,9 @@ class GuardianSkillEnum(Enum):
     IRON_CHARGE = 'Investida de Ferro'
     STEEL_STORM = 'Tempestade de Aço'
     CRYSTAL_ARMOR = 'Armadura de Cristal'
+    CRYSTALLINE_INFUSION = 'Infusão Cristalina'
     SHATTER = 'Despedaçar'
+    CRYSTAL_CHRYSALIS = 'Crisálida de Cristal'
 
 
 class SorcererSkillEnum(Enum):

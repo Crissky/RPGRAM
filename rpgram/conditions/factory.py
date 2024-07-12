@@ -12,6 +12,7 @@ from rpgram.conditions.debuff import (
     BlindnessCondition,
     BurnCondition,
     ConfusionCondition,
+    CrystallizedCondition,
     CurseCondition,
     ExhaustionCondition,
     FrozenCondition,
@@ -41,6 +42,9 @@ from rpgram.conditions.self_skill import (
     MysticalVigorCondition,
     RobustBlockCondition
 )
+from rpgram.conditions.special_damage_skill import (
+    SDCrystallineInfusionCondition
+)
 from rpgram.conditions.target_skill_buff import (
     WarBannerCondition
 )
@@ -53,6 +57,7 @@ from rpgram.enums.debuff import (
     BLINDNESS,
     BURN,
     CONFUSION,
+    CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
     FROZEN,
@@ -125,6 +130,8 @@ def condition_factory(
         condition_class = BurnCondition
     elif name == CONFUSION:
         condition_class = ConfusionCondition
+    elif name == CRYSTALLIZED:
+        condition_class = CrystallizedCondition
     elif name == CURSE:
         condition_class = CurseCondition
     elif name == EXHAUSTION:
@@ -172,6 +179,8 @@ def condition_factory(
         condition_class = CrystalArmorCondition
     elif name == GuardianSkillEnum.GUARDIAN_SHIELD.value:
         condition_class = GuardianShieldCondition
+    elif name == GuardianSkillEnum.CRYSTALLINE_INFUSION.value:
+        condition_class = SDCrystallineInfusionCondition
     elif name == GuardianSkillEnum.SHATTER.value:
         condition_class = ShatterCondition
     # SORCERER BUFFS
