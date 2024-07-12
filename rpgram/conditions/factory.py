@@ -41,9 +41,11 @@ from rpgram.conditions.self_skill import (
     MysticalVigorCondition,
     RobustBlockCondition
 )
-from rpgram.conditions.target_skill import (
-    ShatterCondition,
+from rpgram.conditions.target_skill_buff import (
     WarBannerCondition
+)
+from rpgram.conditions.target_skill_debuff import (
+    ShatterCondition
 )
 from rpgram.enums.debuff import (
     BERSERKER,

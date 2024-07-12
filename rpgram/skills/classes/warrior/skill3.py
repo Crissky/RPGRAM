@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import AegisShadowCondition
-from rpgram.conditions.target_skill import WarBannerCondition
+from rpgram.conditions.target_skill_buff import WarBannerCondition
 from rpgram.constants.text import (
     HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,

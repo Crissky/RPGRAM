@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.self_skill import CrystalArmorCondition
-from rpgram.conditions.target_skill import ShatterCondition
+from rpgram.conditions.target_skill_debuff import ShatterCondition
 from rpgram.constants.text import (
     MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
