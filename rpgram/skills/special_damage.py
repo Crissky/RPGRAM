@@ -125,6 +125,12 @@ class SpecialDamage:
         return DamageEmojiEnum[self.__damage_type.name].value
 
     @property
+    def damage_emoji_name(self) -> str:
+        '''Retorna o emoji e o nome do type dano.'''
+
+        return f'{self.damage_emoji}{self.damage_name}'
+
+    @property
     def damage(self) -> int:
         '''Retorna o dano obtido aleatóriamente entre o min_damage e o 
         max_damage.

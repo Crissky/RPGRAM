@@ -56,6 +56,16 @@ class BarbarianSkillEnum(Enum):
     FURIOUS_INSTINCT = 'Instinto Furioso'
     FRENZY = 'Frenesi'
     FURIOUS_ROAR = 'Rugido Furioso'
+    WILD_FORGE = 'Forja Selvagem'
+
+    # Special Damage
+    WILD_FIRE = 'Fogo Selvagem'
+    WILD_LIGHTNING = 'Raio Selvagem'
+    WILD_WIND = 'Vento Selvagem'
+    WILD_ROCK = 'Rocha Selvagem'
+    WILD_GROUND = 'Terra Selvagem'
+    WILD_ACID = 'Ácido Selvagem'
+    WILD_POISON = 'Veneno Selvagem'
 
 
 class GuardianSkillEnum(Enum):

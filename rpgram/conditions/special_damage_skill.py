@@ -9,7 +9,7 @@ from rpgram.enums.damage import (
     DamageEnum,
     get_damage_emoji_text
 )
-from rpgram.enums.skill import GuardianSkillEnum
+from rpgram.enums.skill import BarbarianSkillEnum, GuardianSkillEnum
 from rpgram.enums.turn import TurnEnum
 from rpgram.skills.special_damage import SpecialDamage
 
@@ -71,10 +71,10 @@ class SpecialDamageSkillCondition(BuffCondition):
         return '🔷'
 
     @property
-    def damage_emoji_texts(self) -> str:
+    def damage_emoji_name(self) -> str:
         return ', '.join([
-            get_damage_emoji_text(damage_type)
-            for damage_type in self.damage_types
+            damage.damage_emoji_name
+            for damage in self.special_damage_iter
         ])
 
     @property
@@ -106,6 +106,16 @@ class SpecialDamageSkillCondition(BuffCondition):
                 )
             else:
                 break
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        text = (
+            f'*{self.full_name}*: '
+            f'*{target.name}* está imbuído com a *{self.name}*.'
+        )
+        report = {'text': text}
+        report['action'] = self.name
+
+        return report
 
     def to_dict(self) -> dict:
         _dict = {'power': self._power}
@@ -142,21 +152,249 @@ class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
     def emoji(self) -> str:
         return DamageEmojiEnum.CRYSTAL.value
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{target.name}* está imbuído com a *{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
 
-        return report
+class SDWildFireCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_FIRE.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.FIRE],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.FIRE.value
+
+
+class SDWildLightningCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_LIGHTNING.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.LIGHTNING],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.LIGHTNING.value
+
+
+class SDWildWindCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_WIND.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.WIND],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.WIND.value
+
+
+class SDWildRockCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_ROCK.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.ROCK],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.ROCK.value
+
+
+class SDWildGroundCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_GROUND.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.GROUND],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.GROUND.value
+
+
+class SDWildAcidCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_ACID.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.ACID],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.ACID.value
+
+
+class SDWildPoisonCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.WILD_POISON.value,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.POISON],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Selvagem* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.POISON.value
 
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
     condition = SDCrystallineInfusionCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildFireCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildLightningCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildWindCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildRockCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildGroundCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildAcidCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = SDWildPoisonCondition(100)
     print(condition)
     print(condition.to_dict())
     assert condition_factory(**condition.to_dict()) == condition

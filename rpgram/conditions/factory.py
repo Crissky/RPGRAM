@@ -43,7 +43,14 @@ from rpgram.conditions.self_skill import (
     RobustBlockCondition
 )
 from rpgram.conditions.special_damage_skill import (
-    SDCrystallineInfusionCondition
+    SDCrystallineInfusionCondition,
+    SDWildAcidCondition,
+    SDWildFireCondition,
+    SDWildGroundCondition,
+    SDWildLightningCondition,
+    SDWildPoisonCondition,
+    SDWildRockCondition,
+    SDWildWindCondition
 )
 from rpgram.conditions.target_skill_buff import (
     WarBannerCondition
@@ -172,6 +179,20 @@ def condition_factory(
         condition_class = FuriousInstinctCondition
     elif name == BarbarianSkillEnum.FRENZY.value:
         condition_class = FrenzyCondition
+    elif name == BarbarianSkillEnum.WILD_FIRE.value:
+        condition_class = SDWildFireCondition
+    elif name == BarbarianSkillEnum.WILD_LIGHTNING.value:
+        condition_class = SDWildLightningCondition
+    elif name == BarbarianSkillEnum.WILD_WIND.value:
+        condition_class = SDWildWindCondition
+    elif name == BarbarianSkillEnum.WILD_ROCK.value:
+        condition_class = SDWildRockCondition
+    elif name == BarbarianSkillEnum.WILD_GROUND.value:
+        condition_class = SDWildGroundCondition
+    elif name == BarbarianSkillEnum.WILD_ACID.value:
+        condition_class = SDWildAcidCondition
+    elif name == BarbarianSkillEnum.WILD_POISON.value:
+        condition_class = SDWildPoisonCondition
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
