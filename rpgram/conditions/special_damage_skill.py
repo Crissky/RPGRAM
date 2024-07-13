@@ -145,7 +145,7 @@ class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'infusão de *Cristais Místicos* que '
+            f'Infusão de *Cristais Místicos* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 

@@ -102,7 +102,7 @@ class CrystalArmorSkill(BaseSkill):
 class CrystallineInfusionSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTALLINE_INFUSION.value
     DESCRIPTION = (
-        f'Embui as mãos do alvo em uma infusão de *Cristais Místicos* que '
+        f'Imbui as mãos do alvo em uma infusão de *Cristais Místicos* que '
         f'concede dano de *{get_damage_emoji_text(DamageEnum.CRYSTAL)}* '
         f'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível) e '
