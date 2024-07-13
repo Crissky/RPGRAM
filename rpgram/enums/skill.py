@@ -51,10 +51,21 @@ class BarbarianSkillEnum(Enum):
     FURIOUS_ATTACK = 'Ataque Furioso'
     WILD_STRIKE = 'Golpe Selvagem'
     WILD_RAM = 'Ariete Selvagem'
+    SEISMIC_IMPACT = 'Impacto Sísmico'
     FURIOUS_FURY = 'Fúria Furiosa'
     FURIOUS_INSTINCT = 'Instinto Furioso'
     FRENZY = 'Frenesi'
     FURIOUS_ROAR = 'Rugido Furioso'
+    WILD_FORGE = 'Forja Selvagem'
+
+    # Special Damage
+    WILD_FIRE = 'Fogo Selvagem'
+    WILD_LIGHTNING = 'Raio Selvagem'
+    WILD_WIND = 'Vento Selvagem'
+    WILD_ROCK = 'Rocha Selvagem'
+    WILD_GROUND = 'Terra Selvagem'
+    WILD_ACID = 'Ácido Selvagem'
+    WILD_POISON = 'Veneno Selvagem'
 
 
 class GuardianSkillEnum(Enum):
@@ -65,7 +76,9 @@ class GuardianSkillEnum(Enum):
     IRON_CHARGE = 'Investida de Ferro'
     STEEL_STORM = 'Tempestade de Aço'
     CRYSTAL_ARMOR = 'Armadura de Cristal'
+    CRYSTALLINE_INFUSION = 'Infusão Cristalina'
     SHATTER = 'Despedaçar'
+    CRYSTAL_CHRYSALIS = 'Crisálida de Cristal'
 
 
 class SorcererSkillEnum(Enum):

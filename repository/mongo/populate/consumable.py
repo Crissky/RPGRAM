@@ -12,6 +12,7 @@ from rpgram.conditions import (
 )
 from rpgram.consumables import (
     CureConsumable,
+    PanaceaConsumable,
     GemstoneConsumable,
     HealingConsumable,
     IdentifyingConsumable,
@@ -43,13 +44,14 @@ from rpgram.enums import (
     RarityEnum,
     TrocadoEnum,
     TurnEnum
-    )
+)
 from rpgram.enums.debuff import (
     BERSERKER,
     BLEEDING,
     BLINDNESS,
     BURN,
     CONFUSION,
+    CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
     FROZEN,
@@ -65,6 +67,7 @@ CURE_ITEMS_LEVEL = 1
 GREATER_CURE_ITEMS_LEVEL = 5
 MAJOR_CURE_ITEMS_LEVEL = 10
 SUPERIOR_CURE_ITEMS_LEVEL = 50
+EPIC_CURE_ITEMS_LEVEL = 100
 
 
 CONSUMABLES = [
@@ -213,6 +216,16 @@ CONSUMABLES = [
         'class': CureConsumable
     },
     {
+        'name': 'Acid Solvent',
+        'description': (
+            f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+        ),
+        'condition_target': ([CRYSTALLIZED] * CURE_ITEMS_LEVEL),
+        'weight': 0.10,
+        'rarity': RarityEnum.COMMON.name,
+        'class': CureConsumable
+    },
+    {
         'name': 'Mystical Incense',
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{CURSE}".'
@@ -285,18 +298,12 @@ CONSUMABLES = [
     {
         'name': 'Panacea',
         'description': (
-            f'Cura {GREATER_CURE_ITEMS_LEVEL} Nível das condições '
-            f'"{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
-            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
-            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+            f'Cura {GREATER_CURE_ITEMS_LEVEL} Níveis das condições negativas.'
         ),
-        'condition_target': sorted([
-            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
-            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
-        ] * GREATER_CURE_ITEMS_LEVEL),
+        'quantity_condition': GREATER_CURE_ITEMS_LEVEL,
         'weight': 1.23,
         'rarity': RarityEnum.RARE.name,
-        'class': CureConsumable
+        'class': PanaceaConsumable
     },
 
 
@@ -353,6 +360,16 @@ CONSUMABLES = [
             f'condição "{CONFUSION}".'
         ),
         'condition_target': ([CONFUSION] * GREATER_CURE_ITEMS_LEVEL),
+        'weight': 0.20,
+        'rarity': RarityEnum.UNCOMMON.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Greater Acid Solvent',
+        'description': (
+            f'Cura {GREATER_CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+        ),
+        'condition_target': ([CRYSTALLIZED] * GREATER_CURE_ITEMS_LEVEL),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -437,18 +454,12 @@ CONSUMABLES = [
     {
         'name': 'Greater Panacea',
         'description': (
-            f'Cura {MAJOR_CURE_ITEMS_LEVEL} Nível das condições '
-            f'"{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
-            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
-            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+            f'Cura {MAJOR_CURE_ITEMS_LEVEL} Nível das condições negativas.'
         ),
-        'condition_target': sorted([
-            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
-            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
-        ] * MAJOR_CURE_ITEMS_LEVEL),
+        'quantity_condition': MAJOR_CURE_ITEMS_LEVEL,
         'weight': 3.14,
         'rarity': RarityEnum.EPIC.name,
-        'class': CureConsumable
+        'class': PanaceaConsumable
     },
 
     # Major Cure Potions
@@ -504,6 +515,16 @@ CONSUMABLES = [
             f'condição "{CONFUSION}".'
         ),
         'condition_target': ([CONFUSION] * MAJOR_CURE_ITEMS_LEVEL),
+        'weight': 0.40,
+        'rarity': RarityEnum.RARE.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Major Acid Solvent',
+        'description': (
+            f'Cura {MAJOR_CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+        ),
+        'condition_target': ([CRYSTALLIZED] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -588,18 +609,167 @@ CONSUMABLES = [
     {
         'name': 'Major Panacea',
         'description': (
-            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} Nível das condições '
-            f'"{BERSERKER}", "{BLEEDING}", "{BLINDNESS}", '
-            f'"{BURN}", "{CONFUSION}", "{CURSE}", "{EXHAUSTION}", "{FROZEN}", '
-            f'"{PARALYSIS}", "{PETRIFIED}", "{POISONING}", "{SILENCE}".'
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} Nível das condições negativas.'
         ),
-        'condition_target': sorted([
-            BERSERKER, BLEEDING, BLINDNESS, BURN, CONFUSION, CURSE,
-            EXHAUSTION, FROZEN, PARALYSIS, PETRIFIED, POISONING, SILENCE
-        ] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'quantity_condition': SUPERIOR_CURE_ITEMS_LEVEL,
         'weight': 6.66,
         'rarity': RarityEnum.LEGENDARY.name,
+        'class': PanaceaConsumable
+    },
+
+    # Superior Cure Potions
+    {
+        'name': "Superior GrayMage's Pipe",
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{BERSERKER}".'
+        ),
+        'condition_target': ([BERSERKER] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.40,
+        'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
+    },
+
+    {
+        'name': 'Superior Cotton Bandage',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{BLEEDING}".'
+        ),
+        'condition_target': ([BLEEDING] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.80,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Eye Drops',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{BLINDNESS}".'
+        ),
+        'condition_target': ([BLINDNESS] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.80,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Aloe Compress',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{BURN}".'
+        ),
+        'condition_target': ([BURN] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.80,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Red Remedy',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{CONFUSION}".'
+        ),
+        'condition_target': ([CONFUSION] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.80,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Acid Solvent',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+        ),
+        'condition_target': ([CRYSTALLIZED] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.80,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Mystical Incense',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{CURSE}".'
+        ),
+        'condition_target': ([CURSE] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 1.60,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Energy Potion',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{EXHAUSTION}".'
+        ),
+        'condition_target': ([EXHAUSTION] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 2.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Hot Potion',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{FROZEN}".'
+        ),
+        'condition_target': ([FROZEN] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 2.00,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Vitamin Fruit',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{PARALYSIS}".'
+        ),
+        'condition_target': ([PARALYSIS] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 4.40,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Gold Needle',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{PETRIFIED}".'
+        ),
+        'condition_target': ([PETRIFIED] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 1.20,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Antidote',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{POISONING}".'
+        ),
+        'condition_target': ([POISONING] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 1.20,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Echo Herb',
+        'description': (
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
+            f'condição "{SILENCE}".'
+        ),
+        'condition_target': ([SILENCE] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'weight': 0.80,
+        'rarity': RarityEnum.EPIC.name,
+        'class': CureConsumable
+    },
+    {
+        'name': 'Superior Panacea',
+        'description': (
+            f'Cura {EPIC_CURE_ITEMS_LEVEL} Nível das condições negativas.'
+        ),
+        'quantity_condition': EPIC_CURE_ITEMS_LEVEL,
+        'weight': 13.32,
+        'rarity': RarityEnum.MYTHIC.name,
+        'class': PanaceaConsumable
     },
 
     # Other Items

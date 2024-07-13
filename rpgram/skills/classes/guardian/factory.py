@@ -11,6 +11,8 @@ from rpgram.skills.classes.guardian.skill2 import (
 )
 from rpgram.skills.classes.guardian.skill3 import (
     CrystalArmorSkill,
+    CrystalChrysalisSkill,
+    CrystallineInfusionSkill,
     ShatterSkill
 )
 from rpgram.skills.skill_base import BaseSkill
@@ -42,8 +44,12 @@ def guardian_skill_factory(
     # SKILL3
     elif skill_class_name == CrystalArmorSkill.__name__:
         skill_class = CrystalArmorSkill
+    elif skill_class_name == CrystallineInfusionSkill.__name__:
+        skill_class = CrystallineInfusionSkill
     elif skill_class_name == ShatterSkill.__name__:
         skill_class = ShatterSkill
+    elif skill_class_name == CrystalChrysalisSkill.__name__:
+        skill_class = CrystalChrysalisSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -63,5 +69,7 @@ GUARDIAN_SKILL_LIST: List[Type[BaseSkill]] = [
 
     # SKILL3
     CrystalArmorSkill,
+    CrystallineInfusionSkill,
     ShatterSkill,
+    CrystalChrysalisSkill,
 ]

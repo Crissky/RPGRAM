@@ -9,6 +9,7 @@ from rpgram.conditions.debuff import (
     BlindnessCondition,
     BurnCondition,
     ConfusionCondition,
+    CrystallizedCondition,
     CurseCondition,
     ExhaustionCondition,
     FrozenCondition,
@@ -124,6 +125,12 @@ class SpecialDamage:
         return DamageEmojiEnum[self.__damage_type.name].value
 
     @property
+    def damage_emoji_name(self) -> str:
+        '''Retorna o emoji e o nome do type dano.'''
+
+        return f'{self.damage_emoji}{self.damage_name}'
+
+    @property
     def damage(self) -> int:
         '''Retorna o dano obtido aleatóriamente entre o min_damage e o 
         max_damage.
@@ -225,6 +232,9 @@ class SpecialDamage:
         elif self.damage_type == DamageEnum.ROAR:
             min_multiplier = 0.07
             max_multiplier = 0.77
+        elif self.damage_type == DamageEnum.CRYSTAL:
+            min_multiplier = 0.51
+            max_multiplier = 0.76
 
         return {'min': min_multiplier, 'max': max_multiplier}
 
@@ -345,6 +355,11 @@ class SpecialDamage:
             condition_list.extend([
                 dict(condition=self.partial(StunnedCondition), ratio=0.10),
                 dict(condition=self.partial(ConfusionCondition), ratio=0.10),
+            ])
+        elif self.damage_type == DamageEnum.CRYSTAL:
+            condition_list.extend([
+                dict(condition=self.partial(CrystallizedCondition), ratio=0.10),
+                dict(condition=self.partial(BleedingCondition), ratio=0.10),
             ])
 
         return condition_list * self.__status_multiplier

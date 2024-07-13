@@ -12,6 +12,7 @@ from rpgram.conditions.debuff import (
     BlindnessCondition,
     BurnCondition,
     ConfusionCondition,
+    CrystallizedCondition,
     CurseCondition,
     ExhaustionCondition,
     FrozenCondition,
@@ -41,9 +42,21 @@ from rpgram.conditions.self_skill import (
     MysticalVigorCondition,
     RobustBlockCondition
 )
-from rpgram.conditions.target_skill import (
-    ShatterCondition,
+from rpgram.conditions.special_damage_skill import (
+    SDCrystallineInfusionCondition,
+    SDWildAcidCondition,
+    SDWildFireCondition,
+    SDWildGroundCondition,
+    SDWildLightningCondition,
+    SDWildPoisonCondition,
+    SDWildRockCondition,
+    SDWildWindCondition
+)
+from rpgram.conditions.target_skill_buff import (
     WarBannerCondition
+)
+from rpgram.conditions.target_skill_debuff import (
+    ShatterCondition
 )
 from rpgram.enums.debuff import (
     BERSERKER,
@@ -51,6 +64,7 @@ from rpgram.enums.debuff import (
     BLINDNESS,
     BURN,
     CONFUSION,
+    CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
     FROZEN,
@@ -123,6 +137,8 @@ def condition_factory(
         condition_class = BurnCondition
     elif name == CONFUSION:
         condition_class = ConfusionCondition
+    elif name == CRYSTALLIZED:
+        condition_class = CrystallizedCondition
     elif name == CURSE:
         condition_class = CurseCondition
     elif name == EXHAUSTION:
@@ -163,6 +179,20 @@ def condition_factory(
         condition_class = FuriousInstinctCondition
     elif name == BarbarianSkillEnum.FRENZY.value:
         condition_class = FrenzyCondition
+    elif name == BarbarianSkillEnum.WILD_FIRE.value:
+        condition_class = SDWildFireCondition
+    elif name == BarbarianSkillEnum.WILD_LIGHTNING.value:
+        condition_class = SDWildLightningCondition
+    elif name == BarbarianSkillEnum.WILD_WIND.value:
+        condition_class = SDWildWindCondition
+    elif name == BarbarianSkillEnum.WILD_ROCK.value:
+        condition_class = SDWildRockCondition
+    elif name == BarbarianSkillEnum.WILD_GROUND.value:
+        condition_class = SDWildGroundCondition
+    elif name == BarbarianSkillEnum.WILD_ACID.value:
+        condition_class = SDWildAcidCondition
+    elif name == BarbarianSkillEnum.WILD_POISON.value:
+        condition_class = SDWildPoisonCondition
     # GUARDIAN BUFFS
     elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
         condition_class = RobustBlockCondition
@@ -170,6 +200,8 @@ def condition_factory(
         condition_class = CrystalArmorCondition
     elif name == GuardianSkillEnum.GUARDIAN_SHIELD.value:
         condition_class = GuardianShieldCondition
+    elif name == GuardianSkillEnum.CRYSTALLINE_INFUSION.value:
+        condition_class = SDCrystallineInfusionCondition
     elif name == GuardianSkillEnum.SHATTER.value:
         condition_class = ShatterCondition
     # SORCERER BUFFS

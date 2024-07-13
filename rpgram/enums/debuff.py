@@ -9,6 +9,7 @@ class DebuffEnum(Enum):
     BLINDNESS = 'Cego'
     BURN = 'Afogueado'
     CONFUSION = 'Confuso'
+    CRYSTALLIZED = 'Cristalizado'
     CURSE = 'Amaldiçoado'
     EXHAUSTION = 'Exausto'
     FROZEN = 'Congelado'
@@ -25,9 +26,10 @@ class DebuffEmojiEnum(Enum):
     BLINDNESS = '🕶️'
     BURN = '❤️‍🔥'  # 🔥
     CONFUSION = '🌀'
+    CRYSTALLIZED = '🧊'
     CURSE = '🎃'
     EXHAUSTION = '💧'
-    FROZEN = '🥶'  # ❄️
+    FROZEN = '🥶'
     PARALYSIS = '♒︎'
     PETRIFIED = '🗿'  # 🪨
     POISONING = '🍄'
@@ -46,6 +48,7 @@ BLEEDING = DebuffEnum.BLEEDING.name.title()
 BLINDNESS = DebuffEnum.BLINDNESS.name.title()
 BURN = DebuffEnum.BURN.name.title()
 CONFUSION = DebuffEnum.CONFUSION.name.title()
+CRYSTALLIZED = DebuffEnum.CRYSTALLIZED.name.title()
 CURSE = DebuffEnum.CURSE.name.title()
 EXHAUSTION = DebuffEnum.EXHAUSTION.name.title()
 FROZEN = DebuffEnum.FROZEN.name.title()
@@ -58,9 +61,11 @@ STUNNED = DebuffEnum.STUNNED.name.title()
 FRENZY = BarbarianSkillEnum.FRENZY.value
 
 CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION, FRENZY]
-IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PARALYSIS, PETRIFIED, STUNNED]
+IMMOBILIZED_DEBUFFS_NAMES = [
+    CRYSTALLIZED, FROZEN, PARALYSIS, PETRIFIED, STUNNED
+]
 SILENCED_DEBUFFS_NAMES = [SILENCE]
-BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [FROZEN, PETRIFIED]
+BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [CRYSTALLIZED, FROZEN, PETRIFIED]
 
 if __name__ == '__main__':
     debuff_name_list = [debuff.name for debuff in DebuffEnum]

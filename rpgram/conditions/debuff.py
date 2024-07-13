@@ -9,6 +9,7 @@ from rpgram.enums.debuff import (
     BLINDNESS,
     BURN,
     CONFUSION,
+    CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
     FROZEN,
@@ -207,6 +208,28 @@ class ConfusionCondition(DebuffCondition):
 
         return report
 
+
+class CrystallizedCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 7, level: int = 1):
+        super().__init__(
+            name=CRYSTALLIZED,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return f'O personagem não pode realizar ações por {self.turn} turnos.'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': ''}
+        if self.turn != 1:
+            report['text'] = 'Personagem está cristalizado.'
+        report['action'] = f'{CRYSTALLIZED}'
+
+        return report
 
 class CurseCondition(DebuffCondition):
 
@@ -434,6 +457,7 @@ class Debuffs:
         BlindnessCondition,
         BurnCondition,
         ConfusionCondition,
+        CrystallizedCondition,
         CurseCondition,
         ExhaustionCondition,
         FrozenCondition,
@@ -456,6 +480,7 @@ if __name__ == '__main__':
     print(BlindnessCondition())
     print(BurnCondition())
     print(ConfusionCondition())
+    print(CrystallizedCondition())
     print(CurseCondition())
     print(ExhaustionCondition())
     print(FrozenCondition())

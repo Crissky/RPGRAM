@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.barbarian.skill1 import (
     FuriousAttackSkill,
+    SeismicImpactSkill,
     WildRamSkill,
     WildStrikeSkill
 )
@@ -10,6 +11,7 @@ from rpgram.skills.classes.barbarian.skill2 import (
     FuriousInstinctSkill,
     FuriousRoarSkill
 )
+from rpgram.skills.classes.barbarian.skill3 import WildForgeSkill
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -29,6 +31,8 @@ def barbarian_skill_factory(
         skill_class = WildStrikeSkill
     elif skill_class_name == WildRamSkill.__name__:
         skill_class = WildRamSkill
+    elif skill_class_name == SeismicImpactSkill.__name__:
+        skill_class = SeismicImpactSkill
     # SKILL2
     elif skill_class_name == FuriousFurySkill.__name__:
         skill_class = FuriousFurySkill
@@ -38,6 +42,9 @@ def barbarian_skill_factory(
         skill_class = FrenzySkill
     elif skill_class_name == FuriousRoarSkill.__name__:
         skill_class = FuriousRoarSkill
+    # SKILL3
+    elif skill_class_name == WildForgeSkill.__name__:
+        skill_class = WildForgeSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -49,10 +56,14 @@ BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     FuriousAttackSkill,
     WildStrikeSkill,
     WildRamSkill,
+    SeismicImpactSkill,
 
     # SKILL2
     FuriousFurySkill,
     FuriousInstinctSkill,
     FrenzySkill,
     FuriousRoarSkill,
+    
+    # SKILL3
+    WildForgeSkill,
 ]

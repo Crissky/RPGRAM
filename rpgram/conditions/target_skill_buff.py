@@ -10,12 +10,10 @@ from bson import ObjectId
 from rpgram.conditions.buff import BuffCondition
 from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT,
-    MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
-    PHYSICAL_DEFENSE_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
-from rpgram.enums.skill import GuardianSkillEnum, WarriorSkillEnum
+from rpgram.enums.skill import WarriorSkillEnum
 from rpgram.enums.turn import TurnEnum
 
 
@@ -23,7 +21,7 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-class TargetSkillCondition(BuffCondition):
+class TargetSkillBuffCondition(BuffCondition):
 
     def __init__(
         self,
@@ -61,7 +59,7 @@ class TargetSkillCondition(BuffCondition):
         return _dict
 
 
-class WarBannerCondition(TargetSkillCondition):
+class WarBannerCondition(TargetSkillBuffCondition):
 
     def __init__(
         self,
@@ -113,69 +111,10 @@ class WarBannerCondition(TargetSkillCondition):
         return report
 
 
-class ShatterCondition(TargetSkillCondition):
-
-    def __init__(
-        self,
-        power: int,
-        turn: int = 10,
-        level: int = 1,
-    ):
-        super().__init__(
-            name=GuardianSkillEnum.SHATTER.value,
-            frequency=TurnEnum.START,
-            power=power,
-            turn=turn,
-            level=level,
-        )
-
-    @property
-    def description(self) -> str:
-        return (
-            f'Fragmentos de *Cristais Místicos* que diminuem a '
-            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
-            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* {self.power} pontos.'
-        )
-
-    @property
-    def power(self) -> int:
-        power_multiplier = 0.05 + (self.level / 100)
-        power_multiplier = round(power_multiplier, 2)
-
-        return int(self._power * power_multiplier)
-
-    @property
-    def bonus_magical_defense(self) -> int:
-        return -(self.power)
-
-    @property
-    def bonus_physical_defense(self) -> int:
-        return -(self.power)
-
-    @property
-    def emoji(self) -> str:
-        return '💔'
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{target.name}* permanece cravejado de '
-            f'fragmentos de *Cristais Místicos*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
-
-        return report
-
-
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
-    condition = WarBannerCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
 
-    condition = ShatterCondition(100)
+    condition = WarBannerCondition(100)
     print(condition)
     print(condition.to_dict())
     assert condition_factory(**condition.to_dict()) == condition

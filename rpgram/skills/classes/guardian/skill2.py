@@ -71,7 +71,7 @@ class HeavyChargeSkill(BaseSkill):
             skill_type=SkillTypeEnum.ATTACK,
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
-            use_equips_damage_types=False,
+            use_equips_damage_types=True,
             requirements=HeavyChargeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
@@ -119,7 +119,7 @@ class IronChargeSkill(BaseSkill):
             skill_type=SkillTypeEnum.ATTACK,
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
-            use_equips_damage_types=False,
+            use_equips_damage_types=True,
             requirements=IronChargeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
