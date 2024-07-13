@@ -108,12 +108,13 @@ class SpecialDamageSkillCondition(BuffCondition):
                 break
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{target.name}* está imbuído com a *{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* está imbuído com a *{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -144,7 +145,7 @@ class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'infusão de *Cristais Místicos* que '
+            f'Infusão de *Cristais Místicos* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 

@@ -101,12 +101,13 @@ class RobustBlockCondition(SelfSkillCondition):
         return '🙅🏿'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece na *Postura Defensiva*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece na *Postura Defensiva*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -156,13 +157,14 @@ class CrystalArmorCondition(SelfSkillCondition):
         return '🟪'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece envolto pelos '
-            f'*Cristais Místicos*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece envolto pelos '
+                f'*Cristais Místicos*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -205,13 +207,14 @@ class FuriousFuryCondition(SelfSkillCondition):
         return '😤'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece em estado de '
-            f'*{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece em estado de '
+                f'*{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -252,13 +255,14 @@ class FuriousInstinctCondition(SelfSkillCondition):
         return '‼️'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece em estado de '
-            f'*{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece em estado de '
+                f'*{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -308,13 +312,14 @@ class FrenzyCondition(SelfSkillCondition):
         return '🤬'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece em estado de '
-            f'*{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece em estado de '
+                f'*{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -358,13 +363,14 @@ class MysticalProtectionCondition(SelfSkillCondition):
         return '🧘🏾'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece coberto pela '
-            f'*{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece coberto pela '
+                f'*{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -408,13 +414,14 @@ class MysticalConfluenceCondition(SelfSkillCondition):
         return '🧘🏾'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* permanece imbuído pela '
-            f'*{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece imbuído pela '
+                f'*{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 
@@ -462,13 +469,14 @@ class MysticalVigorCondition(SelfSkillCondition):
         return '🧘🏾'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{self.character.name}* está revigorado pelo '
-            f'*{self.name}*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* está revigorado pelo '
+                f'*{self.name}*.'
+            )
+            report['text'] = text
 
         return report
 

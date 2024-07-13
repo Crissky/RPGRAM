@@ -75,10 +75,9 @@ class BerserkerCondition(DebuffCondition):
         return round(1 + power, 2)
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = f'Personagem está enlouquecido ({BERSERKER}).'
-        report['action'] = f'{BERSERKER}'
 
         return report
 
@@ -148,7 +147,7 @@ class BlindnessCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está cego.'
-        report['action'] = f'{BLINDNESS}'
+        report['action'] = f'{self.name}'
 
         return report
 
@@ -178,7 +177,7 @@ class BurnCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está com queimaduras.'
-        report['action'] = f'{BURN}'
+        report['action'] = f'{self.name}'
 
         return report
 
@@ -201,10 +200,9 @@ class ConfusionCondition(DebuffCondition):
         )
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = 'Personagem está confuso.'
-        report['action'] = f'{CONFUSION}'
 
         return report
 
@@ -224,10 +222,9 @@ class CrystallizedCondition(DebuffCondition):
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = 'Personagem está cristalizado.'
-        report['action'] = f'{CRYSTALLIZED}'
 
         return report
 
@@ -262,7 +259,7 @@ class CurseCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está amaldiçoado.'
-        report['action'] = f'{CURSE}'
+        report['action'] = f'{self.name}'
 
         return report
 
@@ -299,7 +296,7 @@ class ExhaustionCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está exausto.'
-        report['action'] = f'{EXHAUSTION}'
+        report['action'] = f'{self.name}'
 
         return report
 
@@ -319,10 +316,9 @@ class FrozenCondition(DebuffCondition):
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = 'Personagem está congelado.'
-        report['action'] = f'{FROZEN}'
 
         return report
 
@@ -342,10 +338,9 @@ class ParalysisCondition(DebuffCondition):
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = 'Personagem está paralisado.'
-        report['action'] = f'{PARALYSIS}'
 
         return report
 
@@ -365,10 +360,9 @@ class PetrifiedCondition(DebuffCondition):
         return 'O personagem não pode realizar ações.'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = 'Personagem está petrificado.'
-        report['action'] = f'{PETRIFIED}'
 
         return report
 
@@ -422,7 +416,7 @@ class SilenceCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {}
         report['text'] = 'Personagem está silenciado.'
-        report['action'] = f'{SILENCE}'
+        report['action'] = f'{self.name}'
 
         return report
 
@@ -442,10 +436,9 @@ class StunnedCondition(DebuffCondition):
         return f'O personagem não pode realizar ações por {self.turn} turno.'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': ''}
+        report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = 'Personagem está atordoado.'
-        report['action'] = f'{STUNNED}'
 
         return report
 

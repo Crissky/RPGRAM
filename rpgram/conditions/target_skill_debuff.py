@@ -102,13 +102,14 @@ class ShatterCondition(TargetSkillDebuffCondition):
         return '💔'
 
     def function(self, target: 'BaseCharacter') -> dict:
-        text = (
-            f'*{self.full_name}*: '
-            f'*{target.name}* permanece cravejado de '
-            f'fragmentos de *Cristais Místicos*.'
-        )
-        report = {'text': text}
-        report['action'] = self.name
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* permanece cravejado de '
+                f'fragmentos de *Cristais Místicos*.'
+            )
+            report['text'] = text
 
         return report
 
