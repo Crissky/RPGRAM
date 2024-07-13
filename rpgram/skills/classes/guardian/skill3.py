@@ -103,9 +103,9 @@ class CrystallineInfusionSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTALLINE_INFUSION.value
     DESCRIPTION = (
         f'Embui as mãos do alvo em uma infusão de *Cristais Místicos* que '
-        f'concede dano de {get_damage_emoji_text(DamageEnum.CRYSTAL)} '
+        f'concede dano de *{get_damage_emoji_text(DamageEnum.CRYSTAL)}* '
         f'baseado na '
-        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (50% + 10% x Rank x Nível) e '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível) e '
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -144,7 +144,7 @@ class CrystallineInfusionSkill(BaseSkill):
                 if target_name == player_name
                 else target_name
             )
-            power = int(self.char.cs.magical_defense / 2)
+            power = self.char.cs.magical_defense
             level = self.level_rank
             condition = SDCrystallineInfusionCondition(
                 power=power, level=level)
@@ -177,7 +177,7 @@ class ShatterSkill(BaseSkill):
         f'além de reduzir a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-        f' com base no dano causado (5% + 1% x Rank x Nível).'
+        f'com base no dano causado (5% + 1% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
