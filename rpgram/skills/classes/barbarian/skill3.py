@@ -40,7 +40,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 class WildForgeSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.FURIOUS_FURY.value
+    NAME = BarbarianSkillEnum.WILD_FORGE.value
     DESCRIPTION = (
         f'Imbui a própria arma com algum *Elemento Selvagem* aleatório '
         f'com base no '
