@@ -288,6 +288,7 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if skill_name_list:
         markdown_skill_tree_sheet = '\n'.join(skill_name_list)
         markdown_skill_tree_sheet += f'\n\n*{char.current_action_points_text}*'
+        markdown_skill_tree_sheet += f'\n*{char.skill_points_text}*'
     else:
         markdown_skill_tree_sheet = 'Você ainda não aprendeu uma habilidade!!!'
 
@@ -353,6 +354,7 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
             markdown_skill_tree_sheet += (
                 f'\n\n*{char.current_action_points_text}*'
             )
+            markdown_skill_tree_sheet += f'\n*{char.skill_points_text}*'
         else:
             markdown_skill_tree_sheet = (
                 f'*Parabéns, {char.player_name}!*\n\n'
@@ -497,8 +499,10 @@ async def check_upgrade_skill(
             rank=skill.rank
         )
         markdown_skill_tree_sheet = (
-            f'{skill.description_text}\n\n'
-            f'*Requerimentos*:\n{requirements}'
+            f'{skill.description_text}\n'
+            f'*Requerimentos*:\n{requirements}\n'
+            f'*{char.current_action_points_text}*\n'
+            f'*{char.skill_points_text}*'
         )
     except ValueError as e:
         print(e)
@@ -566,7 +570,9 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'*Habilidade*: *{skill_class.NAME.upper()}*\n'
             f'*Rank*: {skill_class.RANK}\n\n'
             f'*Descrição*: {skill_class.DESCRIPTION}\n\n'
-            f'*Requerimentos*:\n{requirements}'
+            f'*Requerimentos*:\n{requirements}\n'
+            f'*{char.current_action_points_text}*\n'
+            f'*{char.skill_points_text}*'
         )
     except ValueError as e:
         print(e)

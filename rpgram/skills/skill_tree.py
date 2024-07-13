@@ -61,11 +61,11 @@ class SkillTree:
         if skill_class_name in self.skill_list:
             skill = self.get_skill(skill_class_name)
             report['text'] = (
-                f'Você já sabe usar a habilidade "{skill.name}".'
+                f'Você já sabe usar a habilidade *{skill.name}*.'
             )
         elif not self.have_skill_points:
             report['text'] = (
-                f'Você não tem {self.skill_points_name} suficientes.'
+                f'Você não tem *{self.skill_points_name}* suficientes.'
             )
         else:
             new_skill = skill_factory(
@@ -75,7 +75,7 @@ class SkillTree:
             )
             report['skill'] = new_skill
             report['text'] = (
-                f'Você aprendeu a habilidade "{new_skill.name}".'
+                f'Você aprendeu a habilidade *{new_skill.name}*.'
             )
             self.__skill_list.append(new_skill)
 
@@ -85,12 +85,11 @@ class SkillTree:
         report = {'text': '', 'skill': None}
         if skill_class_name not in self.skill_list:
             report['text'] = (
-                f'Você não sabe usar a habilidade '
-                f'"{skill_class_name}".'
+                f'Você não sabe usar a habilidade *{skill_class_name}*.'
             )
         elif not self.have_skill_points:
             report['text'] = (
-                f'Você não tem {self.skill_points_name} suficientes.'
+                f'Você não tem *{self.skill_points_name}* suficientes.'
             )
         else:
             skill = self.get_skill(skill_class_name)
@@ -106,13 +105,13 @@ class SkillTree:
                 new_level = skill.level
                 report['skill'] = skill
                 report['text'] = (
-                    f'A habilidade "{skill.name}" foi aprimorada do '
+                    f'A habilidade *{skill.name}* foi aprimorada do '
                     f'nível {old_level} para {new_level}.'
                 )
             else:
                 report['text'] = (
                     f'Você não atende aos requisitos para aprimorar a '
-                    f'habilidade "{skill.name}"\n\n'
+                    f'habilidade *{skill.name}*\n\n'
                     f'{requirements_report["text"]}'
                 )
 

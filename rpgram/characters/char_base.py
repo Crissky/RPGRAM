@@ -640,6 +640,9 @@ class BaseCharacter:
     current_action_points_text: str = property(
         fget=lambda self: self.__skill_tree.current_action_points_text
     )
+    skill_points_text: str = property(
+        fget=lambda self: self.__skill_tree.skill_points_text
+    )
     bs = base_stats
     cs = combat_stats
     race_name: str = property(lambda self: self.race.name)
