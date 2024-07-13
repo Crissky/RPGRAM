@@ -280,10 +280,10 @@ class BaseCharacter:
             dodge_low_hp_bonus = defender_dice.irate_hp / 2.5
             dodge_score += dodge_low_hp_bonus
 
-        if not defender_char.is_immobilized:
-            is_dodged = (dodge_score >= accuracy)
-
-        if defender_is_critical_fail and not attacker_is_critical_fail:
+        is_dodged = (dodge_score >= accuracy)
+        if defender_char.is_immobilized:
+            is_dodged = False
+        elif defender_is_critical_fail and not attacker_is_critical_fail:
             is_dodged = False
         elif not defender_is_critical and attacker_is_critical:
             is_dodged = False
