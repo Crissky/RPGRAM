@@ -226,6 +226,8 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     if skill_name_list:
         markdown_skill_tree_sheet = '\n'.join(skill_name_list)
+        markdown_skill_tree_sheet += f'\n\n*{char.current_action_points_text}*'
+
     else:
         markdown_skill_tree_sheet = 'Você ainda não aprendeu uma habilidade!!!'
 
@@ -285,6 +287,7 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     ]
     if skill_name_list:
         markdown_skill_tree_sheet = '\n'.join(skill_name_list)
+        markdown_skill_tree_sheet += f'\n\n*{char.current_action_points_text}*'
     else:
         markdown_skill_tree_sheet = 'Você ainda não aprendeu uma habilidade!!!'
 
@@ -347,6 +350,9 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         if skill_name_list:
             markdown_skill_tree_sheet = '\n'.join(skill_name_list)
+            markdown_skill_tree_sheet += (
+                f'\n\n*{char.current_action_points_text}*'
+            )
         else:
             markdown_skill_tree_sheet = (
                 f'*Parabéns, {char.player_name}!*\n\n'
@@ -419,6 +425,7 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         skill_list = char.skill_tree.skill_list
         skill: BaseSkill = skill_list[skill_index]
         markdown_skill_tree_sheet = skill.description_text
+        markdown_skill_tree_sheet += f'\n*{char.current_action_points_text}*'
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
