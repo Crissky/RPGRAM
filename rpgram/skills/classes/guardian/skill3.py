@@ -89,8 +89,8 @@ class CrystalArmorSkill(BaseSkill):
             'text': (
                 f'*{player_name}* forja uma armadura de *Cristais Místicos*, '
                 f'reduzindo a sua '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
-                f'em favor de aumentar a sua {MAGICAL_DEFENSE_EMOJI_TEXT}.\n\n'
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em favor de aumentar a sua '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )

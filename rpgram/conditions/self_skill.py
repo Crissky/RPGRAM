@@ -12,6 +12,7 @@ from bson import ObjectId
 from rpgram.conditions.buff import BuffCondition
 from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
+    EVASION_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
@@ -23,6 +24,7 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     GuardianSkillEnum,
+    MageSkillEnum,
     SorcererSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
@@ -163,6 +165,63 @@ class CrystalArmorCondition(SelfSkillCondition):
                 f'*{self.full_name}*: '
                 f'*{self.character.name}* permanece envolto pelos '
                 f'*Cristais Místicos*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class RockArmorCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=MageSkillEnum.ROCK_ARMOR.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Uma pesada *Armadura de Rocha* conjurada com magia que reduz a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em *{self.bonus_evasion}* pontos para aumentar a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em '
+            f'*{self.bonus_physical_defense}* pontos '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_evasion(self) -> int:
+        bonus_evasion = -(self.character.cs.base_evasion / 4)
+
+        return int(bonus_evasion)
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        power = (1 + (self.level / 6.666))
+        bonus_physical_defense = power * abs(self.bonus_evasion)
+
+        return int(bonus_physical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🪨🛡'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece protegido pela '
+                f'*Armadura de Rocha*.'
             )
             report['text'] = text
 
@@ -493,6 +552,13 @@ if __name__ == '__main__':
     assert condition_factory(**_dict) == condition
 
     condition = CrystalArmorCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
+    
+    condition = RockArmorCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
     _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
