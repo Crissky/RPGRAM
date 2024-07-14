@@ -23,6 +23,7 @@ class DamageEnum(Enum):
     CHAOS = 'Caos'
     ROAR = 'Rugido'
     CRYSTAL = 'Cristal'
+    BLAST = 'Explosão'
 
 
 class DamageEmojiEnum(Enum):
@@ -46,6 +47,7 @@ class DamageEmojiEnum(Enum):
     CHAOS = '🦇'
     ROAR = '🦁'
     CRYSTAL = '🟣'
+    BLAST = '🧨'
 
 
 def get_damage_emoji_text(damage: Union[DamageEnum, str]) -> str:

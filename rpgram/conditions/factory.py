@@ -40,7 +40,8 @@ from rpgram.conditions.self_skill import (
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
-    RobustBlockCondition
+    RobustBlockCondition,
+    RockArmorCondition
 )
 from rpgram.conditions.special_damage_skill import (
     SDCrystallineInfusionCondition,
@@ -78,6 +79,7 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     GuardianSkillEnum,
+    MageSkillEnum,
     SorcererSkillEnum,
     WarriorSkillEnum
 )
@@ -204,6 +206,9 @@ def condition_factory(
         condition_class = SDCrystallineInfusionCondition
     elif name == GuardianSkillEnum.SHATTER.value:
         condition_class = ShatterCondition
+    # MAGE BUFFS
+    elif name == MageSkillEnum.ROCK_ARMOR.value:
+        condition_class = RockArmorCondition
     # SORCERER BUFFS
     elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
         condition_class = MysticalProtectionCondition

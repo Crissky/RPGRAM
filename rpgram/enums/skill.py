@@ -81,6 +81,17 @@ class GuardianSkillEnum(Enum):
     CRYSTAL_CHRYSALIS = 'Crisálida de Cristal'
 
 
+class MageSkillEnum(Enum):
+    FIRE_BALL = 'Bola de Fogo'
+    WATER_BUBBLE = 'Bolha de Água'
+    WIND_GUST = 'Rajada de Vento'
+    EARTH_BREAK = 'Quebra-Terra'
+    MAGIC_BLAST = 'Explosão Mágica'
+    ICE_SHARD = 'Fragmento de Gelo'
+    ROCK_ARMOR = 'Armadura de Rocha'
+    FULMINANT_LIGHTNING = 'Raio Fulminante'
+
+
 class SorcererSkillEnum(Enum):
     MYSTICAL_PROTECTION = 'Proteção Mística'
     MYSTICAL_CONFLUENCE = 'Confluência Mística'
