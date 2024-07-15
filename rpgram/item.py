@@ -6,7 +6,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.boosters.equipment import Equipment
 from rpgram.consumables.consumable import Consumable
-from rpgram.consumables.cure import CureConsumable
+from rpgram.consumables.cure import CureConsumable, PanaceaConsumable
 from rpgram.consumables.heal import HealingConsumable, ReviveConsumable
 from rpgram.consumables.other import (
     GemstoneConsumable,
@@ -130,10 +130,12 @@ class Item:
                 order += 4
             elif isinstance(self.item, CureConsumable):
                 order += 5
-            elif isinstance(self.item, ReviveConsumable):
+            elif isinstance(self.item, PanaceaConsumable):
                 order += 6
-            elif isinstance(self.item, HealingConsumable):
+            elif isinstance(self.item, ReviveConsumable):
                 order += 7
+            elif isinstance(self.item, HealingConsumable):
+                order += 8
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 

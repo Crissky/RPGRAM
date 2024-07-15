@@ -93,6 +93,7 @@ class EmojiEnum(Enum):
     CONFIG = '⚙️'
     HEALING_CONSUMABLE = '❤️'
     CURE_CONSUMABLE = '💊'
+    PANACEA_CONSUMABLE = '🏺'
     REVIVE_CONSUMABLE = '👼'
     OTHER_CONSUMABLE = '🧧'
     IDENTIFY_CONSUMABLE = '🔎'
