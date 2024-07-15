@@ -130,7 +130,7 @@ class PanaceaConsumable(Consumable):
 
     @property
     def emoji_type(self) -> str:
-        return EmojiEnum.CURE_CONSUMABLE.value
+        return EmojiEnum.PANACEA_CONSUMABLE.value
 
     @property
     def price(self) -> int:
