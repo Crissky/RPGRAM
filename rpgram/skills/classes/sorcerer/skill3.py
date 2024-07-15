@@ -181,7 +181,8 @@ class ChaosWeaverSkill(BaseSkill):
         level = self.level_rank
         condition = ChaosWeaverCondition(power=power, level=level)
         report_list = self.char.status.set_conditions(condition)
-        status_report_text = f'*{player_name}*: ' + "\n".join(
+        status_report_text = f'*{player_name}*: '
+        status_report_text += "\n".join(
             [report["text"] for report in report_list]
         )
         report = {'text': status_report_text}
