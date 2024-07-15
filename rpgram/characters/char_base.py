@@ -518,10 +518,10 @@ class BaseCharacter:
                     report['text'] += '\n\n'
                     report['text'] += ALERT_SECTION_HEAD_ADD_STATUS
                     report['text'] += f'*{defender_player_name}*:'
-                    if status_report['effective'] is True:
-                        report['text'] += '\n' + status_report['text']
                     if hit_status_text:
                         report['text'] += '\n' + hit_status_text
+                    if status_report['effective'] is True:
+                        report['text'] += '\n' + status_report['text']
 
             # Put the Dead Paragraph of the report['text']
             if defender_char.is_dead:
