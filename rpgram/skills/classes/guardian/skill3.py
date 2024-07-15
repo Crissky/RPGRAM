@@ -220,16 +220,17 @@ class ShatterSkill(BaseSkill):
     ) -> dict:
         report = {'text': ''}
         target_name = target.player_name
-        power = int(total_damage)
-        level = self.level_rank
-        condition = ShatterCondition(power=power, level=level)
-        new_turn = condition.turn + 1
-        condition.set_turn(new_turn)
-        status_report_list = target.status.set_powerful_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in status_report_list]
-        )
-        report['text'] = f'*{target_name}* - {status_report_text}'
+        if target.is_alive:
+            power = int(total_damage)
+            level = self.level_rank
+            condition = ShatterCondition(power=power, level=level)
+            status_report_list = target.status.set_powerful_conditions(
+                condition
+            )
+            status_report_text = "\n".join(
+                [report["text"] for report in status_report_list]
+            )
+            report['status_text'] = status_report_text
 
         return report
 

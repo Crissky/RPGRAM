@@ -403,6 +403,7 @@ class BaseCharacter:
             )
             pre_hit_text = pre_hit_report['text']
             hit_text = ''
+            hit_status_text = ''
             damage = boosted_power_value
             is_immobilized = defender_char.is_immobilized
             if is_immobilized:
@@ -435,6 +436,12 @@ class BaseCharacter:
             )
             report.update(damage_report)
 
+            activate_status_to_attack = ''
+            if defender_char.is_alive:
+                activate_status_to_attack = (
+                    self.activate_status_to_attack(defender_char)
+                )
+
             # Put the General Paragraph of the report['text']
             damage_or_defend_text = (
                 f' que defendeu recebendo *{total_damage}* pontos de dano'
@@ -446,6 +453,7 @@ class BaseCharacter:
                     total_damage=total_damage,
                 )
                 hit_text = hit_report['text']
+                hit_status_text = hit_report.get('status_text', '')
                 damage_or_defend_text = (
                     f' e causou *{total_damage}* pontos de dano'
                 )
@@ -498,19 +506,22 @@ class BaseCharacter:
             report['text'] += damage_report['text']
 
             # Put the Activate Status of the report['text']
-            if defender_char.is_alive:
-                report['text'] += self.activate_status_to_attack(defender_char)
+            if activate_status_to_attack:
+                report['text'] += activate_status_to_attack
 
             # Put the New Status Paragraph of the report['text']
             if defender_char.is_alive:
                 status_report = defender_char.status.add_condition_by_ratio(
                     *condition_ratio_list
                 )
-                if status_report['effective'] is True:
+                if status_report['effective'] is True or hit_status_text:
                     report['text'] += '\n\n'
                     report['text'] += ALERT_SECTION_HEAD_ADD_STATUS
-                    report['text'] += f'*{defender_player_name}*:\n'
-                    report['text'] += status_report['text']
+                    report['text'] += f'*{defender_player_name}*:'
+                    if status_report['effective'] is True:
+                        report['text'] += '\n' + status_report['text']
+                    if hit_status_text:
+                        report['text'] += '\n' + hit_status_text
 
             # Put the Dead Paragraph of the report['text']
             if defender_char.is_dead:
