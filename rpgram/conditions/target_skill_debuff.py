@@ -9,10 +9,11 @@ from typing import TYPE_CHECKING, Union
 from bson import ObjectId
 from rpgram.conditions.debuff import DebuffCondition
 from rpgram.constants.text import (
+    EVASION_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
-from rpgram.enums.skill import GuardianSkillEnum
+from rpgram.enums.skill import GuardianSkillEnum, MageSkillEnum
 from rpgram.enums.turn import TurnEnum
 
 
@@ -114,10 +115,65 @@ class ShatterCondition(TargetSkillDebuffCondition):
         return report
 
 
+class MuddyCondition(TargetSkillDebuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=MageSkillEnum.MUDDY.value,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Lama pegajosa que diminui a '
+            f'*{EVASION_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.08 + (self.level / 50)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_evasion(self) -> int:
+        return -(self.power)
+
+    @property
+    def emoji(self) -> str:
+        return '🦶🏾'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* permanece *Enlameado*.'
+            )
+            report['text'] = text
+
+        return report
+
+
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
     condition = ShatterCondition(100)
+    print(condition)
+    print(condition.to_dict())
+    assert condition_factory(**condition.to_dict()) == condition
+
+    condition = MuddyCondition(100)
     print(condition)
     print(condition.to_dict())
     assert condition_factory(**condition.to_dict()) == condition

@@ -37,6 +37,8 @@ from rpgram.conditions.self_skill import (
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
+    LavaSkinCondition,
+    MistFormCondition,
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
@@ -57,6 +59,7 @@ from rpgram.conditions.target_skill_buff import (
     WarBannerCondition
 )
 from rpgram.conditions.target_skill_debuff import (
+    MuddyCondition,
     ShatterCondition
 )
 from rpgram.enums.debuff import (
@@ -209,6 +212,12 @@ def condition_factory(
     # MAGE BUFFS
     elif name == MageSkillEnum.ROCK_ARMOR.value:
         condition_class = RockArmorCondition
+    elif name == MageSkillEnum.LAVA_SKIN.value:
+        condition_class = LavaSkinCondition
+    elif name == MageSkillEnum.MIST_FORM.value:
+        condition_class = MistFormCondition
+    elif name == MageSkillEnum.MUDDY.value:
+        condition_class = MuddyCondition
     # SORCERER BUFFS
     elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
         condition_class = MysticalProtectionCondition
