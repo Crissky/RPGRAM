@@ -30,6 +30,72 @@ from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.skills.special_damage import SpecialDamage
+from rpgram.stats.stats_combat import (
+    EVASION_CHARISMA,
+    EVASION_DEXTERITY,
+    EVASION_INTELLIGENCE,
+    EVASION_WISDOM,
+    HIT_CHARISMA,
+    HIT_DEXTERITY,
+    HIT_INTELLIGENCE,
+    HIT_POINTS_CONSTITUTION,
+    HIT_POINTS_STRENGTH,
+    HIT_WISDOM,
+    INITIATIVE_CHARISMA,
+    INITIATIVE_DEXTERITY,
+    INITIATIVE_INTELLIGENCE,
+    INITIATIVE_WISDOM,
+    MAGICAL_ATTACK_INTELLIGENCE,
+    MAGICAL_ATTACK_WISDOM,
+    MAGICAL_DEFENSE_CONSTITUTION,
+    MAGICAL_DEFENSE_INTELLIGENCE,
+    MAGICAL_DEFENSE_WISDOM,
+    PHYSICAL_ATTACK_DEXTERITY,
+    PHYSICAL_ATTACK_STRENGTH,
+    PHYSICAL_DEFENSE_CONSTITUTION,
+    PHYSICAL_DEFENSE_DEXTERITY,
+    PRECISION_ATTACK_DEXTERITY,
+    PRECISION_ATTACK_STRENGTH
+)
+
+
+MULTIPLIER_BONUS_STRENGTH = sum([
+    HIT_POINTS_STRENGTH,
+    PHYSICAL_ATTACK_STRENGTH,
+    PRECISION_ATTACK_STRENGTH,
+])
+MULTIPLIER_BONUS_DEXTERITY = sum([
+    INITIATIVE_DEXTERITY,
+    PHYSICAL_ATTACK_DEXTERITY,
+    PRECISION_ATTACK_DEXTERITY,
+    PHYSICAL_DEFENSE_DEXTERITY,
+    HIT_DEXTERITY,
+    EVASION_DEXTERITY,
+])
+MULTIPLIER_BONUS_CONSTITUTION = sum([
+    HIT_POINTS_CONSTITUTION,
+    PHYSICAL_DEFENSE_CONSTITUTION,
+    MAGICAL_DEFENSE_CONSTITUTION,
+])
+MULTIPLIER_BONUS_INTELLIGENCE = sum([
+    INITIATIVE_INTELLIGENCE,
+    MAGICAL_ATTACK_INTELLIGENCE,
+    MAGICAL_DEFENSE_INTELLIGENCE,
+    HIT_INTELLIGENCE,
+    EVASION_INTELLIGENCE,
+])
+MULTIPLIER_BONUS_WISDOM = sum([
+    INITIATIVE_WISDOM,
+    MAGICAL_ATTACK_WISDOM,
+    MAGICAL_DEFENSE_WISDOM,
+    HIT_WISDOM,
+    EVASION_WISDOM,
+])
+MULTIPLIER_BONUS_CHARISMA = sum([
+    INITIATIVE_CHARISMA,
+    HIT_CHARISMA,
+    EVASION_CHARISMA,
+])
 
 
 class Equipment(StatsBooster):
@@ -513,12 +579,12 @@ class Equipment(StatsBooster):
     @property
     def power(self) -> int:
         return int(sum([
-            (self.bonus_strength * 20),
-            (self.bonus_dexterity * 20),
-            (self.bonus_constitution * 30),
-            (self.bonus_intelligence * 20),
-            (self.bonus_wisdom * 20),
-            (self.bonus_charisma * 20),
+            (self.bonus_strength * MULTIPLIER_BONUS_STRENGTH),
+            (self.bonus_dexterity * MULTIPLIER_BONUS_DEXTERITY),
+            (self.bonus_constitution * MULTIPLIER_BONUS_CONSTITUTION),
+            (self.bonus_intelligence * MULTIPLIER_BONUS_INTELLIGENCE),
+            (self.bonus_wisdom * MULTIPLIER_BONUS_WISDOM),
+            (self.bonus_charisma * MULTIPLIER_BONUS_CHARISMA),
 
             (self.bonus_hit_points / Equipment.AVG_HP_MULTIPLIER),
             self.bonus_initiative,
@@ -783,3 +849,10 @@ if __name__ == '__main__':
         bonus_evasion=109,
     )
     print('COMPARE:\n', sword.compare(shield))
+
+    print('MULTIPLIER_BONUS_STRENGTH', MULTIPLIER_BONUS_STRENGTH)
+    print('MULTIPLIER_BONUS_DEXTERITY', MULTIPLIER_BONUS_DEXTERITY)
+    print('MULTIPLIER_BONUS_CONSTITUTION', MULTIPLIER_BONUS_CONSTITUTION)
+    print('MULTIPLIER_BONUS_INTELLIGENCE', MULTIPLIER_BONUS_INTELLIGENCE)
+    print('MULTIPLIER_BONUS_WISDOM', MULTIPLIER_BONUS_WISDOM)
+    print('MULTIPLIER_BONUS_CHARISMA', MULTIPLIER_BONUS_CHARISMA)
