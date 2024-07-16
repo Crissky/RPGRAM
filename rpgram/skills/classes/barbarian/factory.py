@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.barbarian.skill1 import (
-    FuriousAttackSkill,
+    PrimalAttackSkill,
     SeismicImpactSkill,
-    WildRamSkill,
-    WildStrikeSkill
+    PrimalRamSkill,
+    PrimalStrikeSkill
 )
 from rpgram.skills.classes.barbarian.skill2 import (
     FrenzySkill,
@@ -25,12 +25,12 @@ def barbarian_skill_factory(
     level: int = 1
 ) -> BaseSkill:
     # SKILL1
-    if skill_class_name == FuriousAttackSkill.__name__:
-        skill_class = FuriousAttackSkill
-    elif skill_class_name == WildStrikeSkill.__name__:
-        skill_class = WildStrikeSkill
-    elif skill_class_name == WildRamSkill.__name__:
-        skill_class = WildRamSkill
+    if skill_class_name == PrimalAttackSkill.__name__:
+        skill_class = PrimalAttackSkill
+    elif skill_class_name == PrimalStrikeSkill.__name__:
+        skill_class = PrimalStrikeSkill
+    elif skill_class_name == PrimalRamSkill.__name__:
+        skill_class = PrimalRamSkill
     elif skill_class_name == SeismicImpactSkill.__name__:
         skill_class = SeismicImpactSkill
     # SKILL2
@@ -53,9 +53,9 @@ def barbarian_skill_factory(
 
 BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
-    FuriousAttackSkill,
-    WildStrikeSkill,
-    WildRamSkill,
+    PrimalAttackSkill,
+    PrimalStrikeSkill,
+    PrimalRamSkill,
     SeismicImpactSkill,
 
     # SKILL2
