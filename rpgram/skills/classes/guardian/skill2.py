@@ -5,7 +5,7 @@ from rpgram.constants.text import (
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     GuardianSkillEnum,
     SkillDefenseEnum,
@@ -41,7 +41,8 @@ class HeavyChargeSkill(BaseSkill):
     NAME = GuardianSkillEnum.HEAVY_CHARGE.value
     DESCRIPTION = (
         f'Assume uma postura ofensiva, avançando contra o inimigo '
-        f'usando seu corpo massivo como arma, causando dano com base em '
+        f'usando seu corpo massivo como arma, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base em '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
     )
@@ -82,7 +83,9 @@ class IronChargeSkill(BaseSkill):
     DESCRIPTION = (
         f'Avança através das linhas inimigas com uma força imparável '
         f'como um ariete implacável, envolto em uma aura metálica '
-        f'causando dano com base em '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base em '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível), '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
@@ -135,7 +138,9 @@ class SteelStormSkill(BaseSkill):
         f'Avança com um giro devastador revestido em uma energia metálica '
         f'que desencadeia uma *Tempestade*, '
         f'ceifando seus inimigos impiedosamente com '
-        f'dano baseado em '
+        f'dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* baseado em '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível), '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível) e '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível).'

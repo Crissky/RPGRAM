@@ -12,7 +12,7 @@ from rpgram.constants.text import (
     STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     SkillDefenseEnum,
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': 'Fúria Selvagem',
+    'name': 'Fúria Implacável',
     'description': (
         'Caminho da fúria incontrolável do Bárbaro, a força bruta e a '
         'ferocidade que o definem em combate. '
@@ -223,7 +223,8 @@ class FuriousRoarSkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_ROAR.value
     DESCRIPTION = (
         f'Libera um *Rugido Aterrorizante* que despedaça a alma dos inimigos '
-        f'com uma onda de terror que causa dano com base no '
+        f'com uma onda de terror que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.ROAR)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (87% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )

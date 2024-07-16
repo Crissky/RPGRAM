@@ -171,7 +171,8 @@ class ShatterSkill(BaseSkill):
     NAME = GuardianSkillEnum.SHATTER.value
     DESCRIPTION = (
         f'Se envolve com um balandrau de *Cristais Místicos* e avança '
-        f'contra o oponente, causando dano com base em '
+        f'contra o oponente, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* com base em '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível), '
         f'além de reduzir a '
@@ -239,7 +240,8 @@ class CrystalChrysalisSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTAL_CHRYSALIS.value
     DESCRIPTION = (
         f'Lança fragmentos de *Cristais Místicos* '
-        f'contra o oponente, causando dano com base em '
+        f'contra o oponente, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* com base em '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
     )

@@ -5,7 +5,7 @@ from rpgram.constants.text import (
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     SkillDefenseEnum,
@@ -124,7 +124,8 @@ class PrimalRamSkill(BaseSkill):
     DESCRIPTION = (
         f'Abaixa a cabeça e investe contra o inimigo como um '
         f'*Ariete de Guerra*, destruindo qualquer barreira antes de aplicar '
-        f'o dano baseado em '
+        f'o dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* baseado em '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (160% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -178,7 +179,8 @@ class SeismicImpactSkill(BaseSkill):
     DESCRIPTION = (
         f'Com uma força descomunal, ergue sua arma e a golpeia violentamente '
         f'contra o chão, liberando uma onda de choque que faz a terra '
-        f'tremer e se despedaçar ao redor, causando dano baseado em '
+        f'tremer e se despedaçar ao redor, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* baseado em '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (132% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
