@@ -2,10 +2,16 @@ from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.mage.skill1 import (
     EarthBreakSkill,
     FireBallSkill,
+    FireStormSkill,
     FulminantLightningSkill,
     IceShardSkill,
+    LavaSkinSkill,
     MagicBlastSkill,
+    MistFormSkill,
+    MudShotSkill,
     RockArmorSkill,
+    SandStormSkill,
+    ScorchingBreathSkill,
     WaterBubbleSkill,
     WindGustSkill
 )
@@ -38,6 +44,18 @@ def mage_skill_factory(
         skill_class = FulminantLightningSkill
     elif skill_class_name == RockArmorSkill.__name__:
         skill_class = RockArmorSkill
+    elif skill_class_name == ScorchingBreathSkill.__name__:
+        skill_class = ScorchingBreathSkill
+    elif skill_class_name == FireStormSkill.__name__:
+        skill_class = FireStormSkill
+    elif skill_class_name == LavaSkinSkill.__name__:
+        skill_class = LavaSkinSkill
+    elif skill_class_name == MistFormSkill.__name__:
+        skill_class = MistFormSkill
+    elif skill_class_name == MudShotSkill.__name__:
+        skill_class = MudShotSkill
+    elif skill_class_name == SandStormSkill.__name__:
+        skill_class = SandStormSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -54,4 +72,10 @@ MAGE_SKILL_LIST: List[Type[BaseSkill]] = [
     IceShardSkill,
     FulminantLightningSkill,
     RockArmorSkill,
+    ScorchingBreathSkill,
+    FireStormSkill,
+    LavaSkinSkill,
+    MistFormSkill,
+    MudShotSkill,
+    SandStormSkill,
 ]

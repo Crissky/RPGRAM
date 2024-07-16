@@ -90,6 +90,13 @@ class MageSkillEnum(Enum):
     ICE_SHARD = 'Fragmento de Gelo'
     ROCK_ARMOR = 'Armadura de Rocha'
     FULMINANT_LIGHTNING = 'Raio Fulminante'
+    SCORCHING_BREATH = 'Sopro Escaldante'
+    FIRE_STORM = 'Tormenta de Fogo'
+    LAVA_SKIN = 'Pele de Lava'
+    MIST_FORM = 'Forma de Névoa'
+    MUD_SHOT = 'Disparo de Lama'
+    MUDDY = 'Enlameado'
+    SAND_STORM = 'Tempestade de Areia'
 
 
 class SorcererSkillEnum(Enum):

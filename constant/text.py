@@ -5,6 +5,9 @@ TITLE_HEAD = '┏─━─━─━─━∞◆∞━─━─━─━─┓\n{
 SHOP_TITLE_HEAD = '┏─━─━─━─━∞🉐∞━─━─━─━─┓\n{}\n┗─━─━─━─━∞🈹∞━─━─━─━─┛'
 SECTION_HEAD = '◇── {} ──◇'
 ALERT_SECTION_HEAD = '{} ──◇'
+ALERT_SECTION_HEAD_STATUS = (
+    f'{ALERT_SECTION_HEAD.format("*STATUS*")}\n'
+)
 ALERT_SECTION_HEAD_ADD_STATUS = (
     f'{ALERT_SECTION_HEAD.format("*STATUS ADICIONADOS*")}\n'
 )

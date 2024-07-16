@@ -2,19 +2,20 @@
 Este módulo gerencia as Condições do Personagem.
 '''
 
-from datetime import datetime
 from random import choice, random
 from typing import Iterable, Iterator, List, Tuple, Type, Union
 
-from bson import ObjectId
 from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.barrier import BarrierCondition
 from rpgram.conditions.condition import Condition
-from rpgram.conditions.debuff import DEBUFFS, DebuffCondition
+from rpgram.conditions.debuff import DebuffCondition
 from rpgram.conditions.factory import condition_factory
+from rpgram.conditions.heal import HealingCondition
+from rpgram.conditions.self_skill import SelfSkillCondition
 from rpgram.conditions.special_damage_skill import SpecialDamageSkillCondition
+from rpgram.conditions.target_skill_buff import TargetSkillBuffCondition
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
     IMMOBILIZED_DEBUFFS_NAMES
@@ -280,6 +281,11 @@ class Status:
     def get_barriers(self) -> Iterable[BarrierCondition]:
         yield from self.get_filtered_condition(BarrierCondition)
 
+    def get_condition(self, condition_name: str) -> Condition:
+        for condition in self.__conditions:
+            if condition == condition_name:
+                return condition
+
     def clean_status(self) -> dict:
         condition_names = ', '.join(
             [condition.emoji_name for condition in self.__conditions]
@@ -320,7 +326,7 @@ class Status:
                     if report['text']:
                         report['text'] += '\n'
                     report['text'] += (
-                        f'Condição "{condition.emoji_name}"'
+                        f'Condição "{condition.emoji_name}" '
                         f'foi removida do Status.'
                     )
                 reports.append(report)
@@ -365,6 +371,20 @@ class Status:
             raise ValueError('Status não tem condições imobilizadoras.')
 
         return ', '.join(names)
+
+    def condition_type_order(self, condition: Condition) -> int:
+        if isinstance(condition, BarrierCondition):
+            return 1
+        elif isinstance(condition,  HealingCondition):
+            return 2
+        elif isinstance(condition, DebuffCondition):
+            return 3
+        elif isinstance(condition, SpecialDamageSkillCondition):
+            return 4
+        elif isinstance(condition, TargetSkillBuffCondition):
+            return 5
+        elif isinstance(condition, SelfSkillCondition):
+            return 6
 
     def attach_observer(self, observer):
         self.__observers.append(observer)
@@ -538,7 +558,16 @@ class Status:
             if isinstance(condition, SpecialDamageSkillCondition):
                 yield from condition.special_damage_iter
 
-    conditions = property(lambda self: self.__conditions)
+    @property
+    def conditions(self) -> List[Condition]:
+        self.__conditions.sort(
+            key=lambda c: (
+                self.condition_type_order(c),
+                c.name,
+            )
+        )
+        return self.__conditions
+
     bonus_strength = property(lambda self: self.__bonus_strength)
     bonus_dexterity = property(lambda self: self.__bonus_dexterity)
     bonus_constitution = property(lambda self: self.__bonus_constitution)

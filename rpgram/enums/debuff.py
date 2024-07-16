@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Union
 
 from rpgram.enums.skill import BarbarianSkillEnum
 
@@ -66,6 +67,14 @@ IMMOBILIZED_DEBUFFS_NAMES = [
 ]
 SILENCED_DEBUFFS_NAMES = [SILENCE]
 BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [CRYSTALLIZED, FROZEN, PETRIFIED]
+
+
+def get_debuff_emoji_text(damage: Union[DebuffEnum, str]) -> str:
+    if isinstance(damage, str):
+        damage = DebuffEnum[damage]
+    name = damage.name
+    return f'{DebuffEmojiEnum[name].value}{damage.name.title()}'
+
 
 if __name__ == '__main__':
     debuff_name_list = [debuff.name for debuff in DebuffEnum]

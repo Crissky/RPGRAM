@@ -190,7 +190,7 @@ class SeismicImpactSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
+        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.32,

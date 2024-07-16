@@ -62,7 +62,7 @@ class CombatStats:
         self.__damage = int(damage)
         self.__death_counter = int(death_counter)
 
-        self.__stats_boosters = set(base_stats.stats_boosters)
+        self.__stats_boosters = base_stats.stats_boosters
         self.__boost_stats(is_init=True)
 
     def set_damage(self, value: int) -> None:
