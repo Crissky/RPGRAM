@@ -11,7 +11,7 @@ from rpgram.skills.classes.barbarian.skill2 import (
     FuriousInstinctSkill,
     FuriousRoarSkill
 )
-from rpgram.skills.classes.barbarian.skill3 import WildForgeSkill
+from rpgram.skills.classes.barbarian.skill3 import FafnirsScalesSkill, HydraFangsSkill, RaijusFootstepsSkill, SalamandersBreathSkill, SweepingRocSkill, WildForgeSkill
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -45,6 +45,16 @@ def barbarian_skill_factory(
     # SKILL3
     elif skill_class_name == WildForgeSkill.__name__:
         skill_class = WildForgeSkill
+    elif skill_class_name == SalamandersBreathSkill.__name__:
+        skill_class = SalamandersBreathSkill
+    elif skill_class_name == SweepingRocSkill.__name__:
+        skill_class = SweepingRocSkill
+    elif skill_class_name == HydraFangsSkill.__name__:
+        skill_class = HydraFangsSkill
+    elif skill_class_name == RaijusFootstepsSkill.__name__:
+        skill_class = RaijusFootstepsSkill
+    elif skill_class_name == FafnirsScalesSkill.__name__:
+        skill_class = FafnirsScalesSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -66,4 +76,9 @@ BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     
     # SKILL3
     WildForgeSkill,
+    SalamandersBreathSkill,
+    SweepingRocSkill,
+    HydraFangsSkill,
+    RaijusFootstepsSkill,
+    FafnirsScalesSkill,
 ]

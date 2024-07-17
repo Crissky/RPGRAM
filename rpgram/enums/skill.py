@@ -57,6 +57,11 @@ class BarbarianSkillEnum(Enum):
     FRENZY = 'Frenesi'
     FURIOUS_ROAR = 'Rugido Furioso'
     WILD_FORGE = 'Forja Selvagem'
+    SALAMANDERS_BREATH = 'Bafo de Salamandra'
+    SWEEPING_ROC = 'Rasante de Roc'
+    HYDRA_FANGS = 'Presas da Hidra'
+    RAIJUS_FOOTSTEPS = 'Passos de Raijū'
+    FAFNIRS_SCALES = 'Escamas de Fáfnir'
 
     # Special Damage
     WILD_FIRE = 'Fogo Selvagem'

@@ -13,6 +13,7 @@ from rpgram.conditions.buff import BuffCondition
 from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
     EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
@@ -492,6 +493,118 @@ class FrenzyCondition(SelfSkillCondition):
         return report
 
 
+class RaijusFootstepsCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.RAIJUS_FOOTSTEPS.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Transe Sobrenatural* que aumenta o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.bonus_evasion} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.strength * power
+
+        return int(bonus_hit)
+
+    @property
+    def bonus_evasion(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.strength * power
+
+        return int(bonus_hit)
+
+    @property
+    def emoji(self) -> str:
+        return '⚡🐺'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece em *Transe Sobrenatural*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class FafnirsScalesCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BarbarianSkillEnum.FAFNIRS_SCALES.value,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Pele e Músculos Petrificados* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
+            f'aumenta com base na vida perdida, '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        power = 2 + (self.level / 10) + (self.character.cs.irate_hp * 2)
+        power = round(power, 2)
+        bonus_physical_defense = self.character.bs.strength * power
+
+        return int(bonus_physical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🏔️🐲'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece com '
+                f'*Pele e Músculos Petrificados*.'
+            )
+            report['text'] = text
+
+        return report
+
+
 class MysticalProtectionCondition(SelfSkillCondition):
 
     def __init__(
@@ -703,6 +816,20 @@ if __name__ == '__main__':
     assert condition_factory(**_dict) == condition
 
     condition = FrenzyCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
+
+    condition = RaijusFootstepsCondition(BASE_CHARACTER)
+    print(condition)
+    print(condition.to_dict())
+    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+    _dict.pop('need_character')
+    assert condition_factory(**_dict) == condition
+
+    condition = FafnirsScalesCondition(BASE_CHARACTER)
     print(condition)
     print(condition.to_dict())
     _dict = {'character': BASE_CHARACTER, **condition.to_dict()}

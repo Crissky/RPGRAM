@@ -34,6 +34,7 @@ from rpgram.conditions.heal import (
 )
 from rpgram.conditions.self_skill import (
     CrystalArmorCondition,
+    FafnirsScalesCondition,
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
@@ -42,6 +43,7 @@ from rpgram.conditions.self_skill import (
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
+    RaijusFootstepsCondition,
     RobustBlockCondition,
     RockArmorCondition
 )
@@ -184,6 +186,10 @@ def condition_factory(
         condition_class = FuriousInstinctCondition
     elif name == BarbarianSkillEnum.FRENZY.value:
         condition_class = FrenzyCondition
+    elif name == BarbarianSkillEnum.RAIJUS_FOOTSTEPS.value:
+        condition_class = RaijusFootstepsCondition
+    elif name == BarbarianSkillEnum.FAFNIRS_SCALES.value:
+        condition_class = FafnirsScalesCondition
     elif name == BarbarianSkillEnum.WILD_FIRE.value:
         condition_class = SDWildFireCondition
     elif name == BarbarianSkillEnum.WILD_LIGHTNING.value:
