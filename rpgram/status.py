@@ -45,9 +45,11 @@ class Status:
 
         self.__conditions = conditions
 
-        self.__update_stats()
-
-    def add_condition(self, new_condition: Condition) -> dict:
+    def add_condition(
+        self,
+        new_condition: Condition,
+        notify: bool = True
+    ) -> dict:
         if not isinstance(new_condition, Condition):
             raise TypeError(
                 f'O parâmetro deve ser do tipo Condition. '
@@ -77,13 +79,15 @@ class Status:
                 f'{emoji_name} NV: {new_condition.level} foi adicionado'
                 f'{barrier_value}.'
             )
-        self.__update_stats()
+
+        if notify is True:
+            self.notify_observers()
 
         return report
 
     add = add_condition
 
-    def add_condition_by_ratio(
+    def add_conditions_by_ratio(
         self,
         *condition_ratio_tuple: Tuple[dict]
     ) -> dict:
@@ -103,20 +107,25 @@ class Status:
             resist_score = random()
             # test
             if resist_score < ratio:
-                report_text = self.add_condition(condition_class())['text']
+                report_text = self.add_condition(
+                    condition_class(),
+                    notify=False
+                )['text']
                 report['text'] += f'{report_text}\n'
                 report['effective'] = True
 
         report['text'] = report['text'].rstrip()
+        self.notify_observers()
 
         return report
 
-    add_by_ratio = add_condition_by_ratio
+    add_by_ratio = add_conditions_by_ratio
 
     def remove_condition(
         self,
         condition: Union[Condition, str],
-        ignore_not_find: bool = False
+        ignore_not_find: bool = False,
+        notify: bool = True
     ) -> dict:
         if not isinstance(condition, (Condition, str)):
             raise TypeError(
@@ -155,7 +164,9 @@ class Status:
             report['text'] = (
                 f'O status não possui a condição "{condition_name}".'
             )
-        self.__update_stats()
+
+        if notify is True:
+            self.notify_observers()
 
         return report
 
@@ -180,13 +191,16 @@ class Status:
             )
             report = self.remove_condition(
                 condition=condition,
-                ignore_not_find=ignore_not_find
+                ignore_not_find=ignore_not_find,
+                notify=False
             )
             if report['text']:
                 report_list.append(report)
 
         if not report_list:
             report_list.append({'text': 'Nenhuma condição foi removida!'})
+
+        self.notify_observers()
 
         return report_list
 
@@ -242,8 +256,10 @@ class Status:
         for condition in conditions:
             if condition in self.__conditions:
                 self.__conditions.remove(condition)
-            report = self.add_condition(condition)
+            report = self.add_condition(condition, notify=False)
             report_list.append(report)
+
+        self.notify_observers()
 
         return report_list
 
@@ -267,8 +283,10 @@ class Status:
                     else current_condition
                 )
                 condition.set_turn(new_turn)
-            report = self.add_condition(condition)
+            report = self.add_condition(condition, notify=False)
             report_list.append(report)
+
+        self.notify_observers()
 
         return report_list
 
@@ -314,7 +332,7 @@ class Status:
             [condition.emoji_name for condition in self.__conditions]
         )
         self.__conditions = []
-        self.__update_stats()
+        self.notify_observers()
 
         return {
             'text': (
@@ -419,57 +437,21 @@ class Status:
         for observer in self.__observers:
             observer.update()
 
-    def __update_stats(self):
-        self.__bonus_strength = 0
-        self.__bonus_dexterity = 0
-        self.__bonus_constitution = 0
-        self.__bonus_intelligence = 0
-        self.__bonus_wisdom = 0
-        self.__bonus_charisma = 0
+    def get_attr_sum_from_conditions(self, attribute: str) -> int:
+        value = sum([
+            getattr(condition, attribute)
+            for condition in self.conditions
+        ])
 
-        self.__multiplier_strength = 1
-        self.__multiplier_dexterity = 1
-        self.__multiplier_constitution = 1
-        self.__multiplier_intelligence = 1
-        self.__multiplier_wisdom = 1
-        self.__multiplier_charisma = 1
+        return int(value)
 
-        self.__bonus_hit_points = 0
-        self.__bonus_initiative = 0
-        self.__bonus_physical_attack = 0
-        self.__bonus_precision_attack = 0
-        self.__bonus_magical_attack = 0
-        self.__bonus_physical_defense = 0
-        self.__bonus_magical_defense = 0
-        self.__bonus_hit = 0
-        self.__bonus_evasion = 0
+    def get_multiplier_sum_from_conditions(self, attribute: str) -> float:
+        value = 1.0 + sum([
+            getattr(condition, attribute) - 1.0
+            for condition in self.conditions
+        ])
 
-        for c in self.conditions:
-            self.__bonus_strength += int(c.bonus_strength)
-            self.__bonus_dexterity += int(c.bonus_dexterity)
-            self.__bonus_constitution += int(c.bonus_constitution)
-            self.__bonus_intelligence += int(c.bonus_intelligence)
-            self.__bonus_wisdom += int(c.bonus_wisdom)
-            self.__bonus_charisma += int(c.bonus_charisma)
-
-            self.__multiplier_strength += c.multiplier_strength - 1.0
-            self.__multiplier_dexterity += c.multiplier_dexterity - 1.0
-            self.__multiplier_constitution += c.multiplier_constitution - 1.0
-            self.__multiplier_intelligence += c.multiplier_intelligence - 1.0
-            self.__multiplier_wisdom += c.multiplier_wisdom - 1.0
-            self.__multiplier_charisma += c.multiplier_charisma - 1.0
-
-            self.__bonus_hit_points += int(c.bonus_hit_points)
-            self.__bonus_initiative += int(c.bonus_initiative)
-            self.__bonus_physical_attack += int(c.bonus_physical_attack)
-            self.__bonus_precision_attack += int(c.bonus_precision_attack)
-            self.__bonus_magical_attack += int(c.bonus_magical_attack)
-            self.__bonus_physical_defense += int(c.bonus_physical_defense)
-            self.__bonus_magical_defense += int(c.bonus_magical_defense)
-            self.__bonus_hit += int(c.bonus_hit)
-            self.__bonus_evasion += int(c.bonus_evasion)
-
-        self.notify_observers()
+        return max(value, 0.1)
 
     def to_list(self) -> List[str]:
         return [condition.name for condition in self.__conditions]
@@ -587,35 +569,106 @@ class Status:
             key=lambda c: (
                 self.condition_type_order(c),
                 c.name,
+                -c.level,
             )
         )
         return self.__conditions
 
-    bonus_strength = property(lambda self: self.__bonus_strength)
-    bonus_dexterity = property(lambda self: self.__bonus_dexterity)
-    bonus_constitution = property(lambda self: self.__bonus_constitution)
-    bonus_intelligence = property(lambda self: self.__bonus_intelligence)
-    bonus_wisdom = property(lambda self: self.__bonus_wisdom)
-    bonus_charisma = property(lambda self: self.__bonus_charisma)
-    multiplier_strength = property(lambda self: self.__multiplier_strength)
-    multiplier_dexterity = property(lambda self: self.__multiplier_dexterity)
-    multiplier_constitution = property(
-        lambda self: self.__multiplier_constitution)
-    multiplier_intelligence = property(
-        lambda self: self.__multiplier_intelligence)
-    multiplier_wisdom = property(lambda self: self.__multiplier_wisdom)
-    multiplier_charisma = property(lambda self: self.__multiplier_charisma)
-    bonus_hit_points = property(lambda self: self.__bonus_hit_points)
-    bonus_initiative = property(lambda self: self.__bonus_initiative)
-    bonus_physical_attack = property(lambda self: self.__bonus_physical_attack)
-    bonus_precision_attack = property(
-        lambda self: self.__bonus_precision_attack)
-    bonus_magical_attack = property(lambda self: self.__bonus_magical_attack)
-    bonus_physical_defense = property(
-        lambda self: self.__bonus_physical_defense)
-    bonus_magical_defense = property(lambda self: self.__bonus_magical_defense)
-    bonus_hit = property(lambda self: self.__bonus_hit)
-    bonus_evasion = property(lambda self: self.__bonus_evasion)
+    @property
+    def bonus_strength(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_strength')
+
+    @property
+    def bonus_dexterity(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_dexterity')
+
+    @property
+    def bonus_constitution(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_constitution')
+
+    @property
+    def bonus_intelligence(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_intelligence')
+
+    @property
+    def bonus_wisdom(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_wisdom')
+
+    @property
+    def bonus_charisma(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_charisma')
+
+    @property
+    def multiplier_strength(self) -> float:
+        return self.get_multiplier_sum_from_conditions(
+            'multiplier_strength'
+        )
+
+    @property
+    def multiplier_dexterity(self) -> float:
+        return self.get_multiplier_sum_from_conditions(
+            'multiplier_dexterity'
+        )
+
+    @property
+    def multiplier_constitution(self) -> float:
+        return self.get_multiplier_sum_from_conditions(
+            'multiplier_constitution'
+        )
+
+    @property
+    def multiplier_intelligence(self) -> float:
+        return self.get_multiplier_sum_from_conditions(
+            'multiplier_intelligence'
+        )
+
+    @property
+    def multiplier_wisdom(self) -> float:
+        return self.get_multiplier_sum_from_conditions(
+            'multiplier_wisdom'
+        )
+
+    @property
+    def multiplier_charisma(self) -> float:
+        return self.get_multiplier_sum_from_conditions(
+            'multiplier_charisma'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_hit_points')
+
+    @property
+    def bonus_initiative(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_initiative')
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_physical_attack')
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_precision_attack')
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_magical_attack')
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_physical_defense')
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_magical_defense')
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_hit')
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.get_attr_sum_from_conditions('bonus_evasion')
 
 
 if __name__ == '__main__':

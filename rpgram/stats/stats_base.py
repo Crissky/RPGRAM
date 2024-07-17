@@ -50,9 +50,8 @@ class BaseStats:
         self.__base_wisdom = int(base_wisdom)
         self.__base_charisma = int(base_charisma)
 
-        self.__stats_boosters = set(stats_boosters)
+        self.__stats_boosters = stats_boosters
 
-        self.update()
         self.check_attributes()
 
     def __get_points(self) -> int:
@@ -87,41 +86,27 @@ class BaseStats:
         new_value = getattr(self, attribute) + points
         setattr(self, attribute, new_value)
 
+    def get_attr_sum_from_stats_boosters(self, attribute: str) -> int:
+        value = sum([
+            getattr(stats_booster, attribute)
+            for stats_booster in self.__stats_boosters
+        ])
+
+        return int(value)
+
+    def get_multiplier_sum_from_stats_boosters(self, attribute: str) -> float:
+        value = 1.0 + sum([
+            getattr(stats_booster, attribute) - 1.0
+            for stats_booster in self.__stats_boosters
+        ])
+
+        return max(value, 0.1)
+
     def update(self) -> None:
-        self.__boost_stats()
+        return None
 
     def check_attributes(self) -> None:
         self.__get_points()
-
-    def __boost_stats(self) -> None:
-        self.__bonus_strength = 0
-        self.__bonus_dexterity = 0
-        self.__bonus_constitution = 0
-        self.__bonus_intelligence = 0
-        self.__bonus_wisdom = 0
-        self.__bonus_charisma = 0
-
-        self.__multiplier_strength = 1
-        self.__multiplier_dexterity = 1
-        self.__multiplier_constitution = 1
-        self.__multiplier_intelligence = 1
-        self.__multiplier_wisdom = 1
-        self.__multiplier_charisma = 1
-
-        for sb in self.__stats_boosters:
-            self.__bonus_strength += int(sb.bonus_strength)
-            self.__bonus_dexterity += int(sb.bonus_dexterity)
-            self.__bonus_constitution += int(sb.bonus_constitution)
-            self.__bonus_intelligence += int(sb.bonus_intelligence)
-            self.__bonus_wisdom += int(sb.bonus_wisdom)
-            self.__bonus_charisma += int(sb.bonus_charisma)
-
-            self.__multiplier_strength += sb.multiplier_strength - 1.0
-            self.__multiplier_dexterity += sb.multiplier_dexterity - 1.0
-            self.__multiplier_constitution += sb.multiplier_constitution - 1.0
-            self.__multiplier_intelligence += sb.multiplier_intelligence - 1.0
-            self.__multiplier_wisdom += sb.multiplier_wisdom - 1.0
-            self.__multiplier_charisma += sb.multiplier_charisma - 1.0
 
     def get_stats_boosters(self, stats_booster_name: str) -> StatsBooster:
         for sb in self.__stats_boosters:
@@ -351,76 +336,64 @@ class BaseStats:
     # Attribute Bonus
     @property
     def bonus_strength(self) -> int:
-        return self.__bonus_strength
+        return self.get_attr_sum_from_stats_boosters('bonus_strength')
 
     @property
     def bonus_dexterity(self) -> int:
-        return self.__bonus_dexterity
+        return self.get_attr_sum_from_stats_boosters('bonus_dexterity')
 
     @property
     def bonus_constitution(self) -> int:
-        return self.__bonus_constitution
+        return self.get_attr_sum_from_stats_boosters('bonus_constitution')
 
     @property
     def bonus_intelligence(self) -> int:
-        return self.__bonus_intelligence
+        return self.get_attr_sum_from_stats_boosters('bonus_intelligence')
 
     @property
     def bonus_wisdom(self) -> int:
-        return self.__bonus_wisdom
+        return self.get_attr_sum_from_stats_boosters('bonus_wisdom')
 
     @property
     def bonus_charisma(self) -> int:
-        return self.__bonus_charisma
+        return self.get_attr_sum_from_stats_boosters('bonus_charisma')
 
     # Getters and Setters
     # Attribute Bonus
     @property
     def multiplier_strength(self) -> float:
-        return (
-            self.__multiplier_strength
-            if self.__multiplier_strength >= 0.1
-            else 0.1
+        return self.get_multiplier_sum_from_stats_boosters(
+            'multiplier_strength'
         )
 
     @property
     def multiplier_dexterity(self) -> float:
-        return (
-            self.__multiplier_dexterity
-            if self.__multiplier_dexterity >= 0.1
-            else 0.1
+        return self.get_multiplier_sum_from_stats_boosters(
+            'multiplier_dexterity'
         )
 
     @property
     def multiplier_constitution(self) -> float:
-        return (
-            self.__multiplier_constitution
-            if self.__multiplier_constitution >= 0.1
-            else 0.1
+        return self.get_multiplier_sum_from_stats_boosters(
+            'multiplier_constitution'
         )
 
     @property
     def multiplier_intelligence(self) -> float:
-        return (
-            self.__multiplier_intelligence
-            if self.__multiplier_intelligence >= 0.1
-            else 0.1
+        return self.get_multiplier_sum_from_stats_boosters(
+            'multiplier_intelligence'
         )
 
     @property
     def multiplier_wisdom(self) -> float:
-        return (
-            self.__multiplier_wisdom
-            if self.__multiplier_wisdom >= 0.1
-            else 0.1
+        return self.get_multiplier_sum_from_stats_boosters(
+            'multiplier_wisdom'
         )
 
     @property
     def multiplier_charisma(self) -> float:
-        return (
-            self.__multiplier_charisma
-            if self.__multiplier_charisma >= 0.1
-            else 0.1
+        return self.get_multiplier_sum_from_stats_boosters(
+            'multiplier_charisma'
         )
 
     # Getters
@@ -453,7 +426,7 @@ class BaseStats:
     # Stats Boosters
     @property
     def stats_boosters(self) -> set:
-        return set(self.__stats_boosters)
+        return self.__stats_boosters
 
     def __getitem__(self, key: str) -> int:
         key = key.upper()

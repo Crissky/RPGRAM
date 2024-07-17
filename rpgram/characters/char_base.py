@@ -511,7 +511,7 @@ class BaseCharacter:
 
             # Put the New Status Paragraph of the report['text']
             if defender_char.is_alive:
-                status_report = defender_char.status.add_condition_by_ratio(
+                status_report = defender_char.status.add_conditions_by_ratio(
                     *condition_ratio_list
                 )
                 if status_report['effective'] is True or hit_status_text:

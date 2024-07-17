@@ -67,7 +67,6 @@ class Equips:
         self.__ring = None
         self.__amulet = None
 
-        self.__equipments_weight = 0
         self.__observers = []
 
         self.__created_at = created_at
@@ -92,8 +91,6 @@ class Equips:
             self.equip(amulet)
 
         self.__init = False
-
-        self.__update_stats()
 
     def equip(
         self, new_equipment: Equipment, hand: str = None
@@ -178,7 +175,9 @@ class Equips:
                 old_equipments.append(self.amulet)
             self.__amulet = new_equipment
 
-        self.__update_stats()
+        if not self.__init:
+            self.notify_observers()
+
         return old_equipments
 
     def equiped_two_handed_weapon(self) -> bool:
@@ -227,7 +226,7 @@ class Equips:
             self.__left_hand = None
             self.__right_hand = None
 
-        self.__update_stats()
+        self.notify_observers()
         return equipment
 
     def attach_observer(self, observer):
@@ -240,62 +239,29 @@ class Equips:
         for observer in self.__observers:
             observer.update()
 
-    def __update_stats(self):
-        self.__equipments_weight = 0
+    def get_attr_sum_from_equipments(self, attribute: str) -> int:
+        value = sum([
+            getattr(equipment, attribute)
+            for equipment in self
+        ])
 
-        self.__bonus_strength = 0
-        self.__bonus_dexterity = 0
-        self.__bonus_constitution = 0
-        self.__bonus_intelligence = 0
-        self.__bonus_wisdom = 0
-        self.__bonus_charisma = 0
+        return int(value)
 
-        self.__multiplier_strength = 1
-        self.__multiplier_dexterity = 1
-        self.__multiplier_constitution = 1
-        self.__multiplier_intelligence = 1
-        self.__multiplier_wisdom = 1
-        self.__multiplier_charisma = 1
+    def get_weight_sum_from_equipments(self, attribute: str) -> float:
+        value = sum([
+            getattr(equipment, attribute)
+            for equipment in self
+        ])
 
-        self.__bonus_hit_points = 0
-        self.__bonus_initiative = 0
-        self.__bonus_physical_attack = 0
-        self.__bonus_precision_attack = 0
-        self.__bonus_magical_attack = 0
-        self.__bonus_physical_defense = 0
-        self.__bonus_magical_defense = 0
-        self.__bonus_hit = 0
-        self.__bonus_evasion = 0
+        return float(value)
 
-        equips = list(self)
-        for e in equips:
-            self.__equipments_weight += float(e.weight)
+    def get_multiplier_sum_from_equipments(self, attribute: str) -> float:
+        value = 1.0 + sum([
+            getattr(equipment, attribute) - 1.0
+            for equipment in self
+        ])
 
-            self.__bonus_strength += int(e.bonus_strength)
-            self.__bonus_dexterity += int(e.bonus_dexterity)
-            self.__bonus_constitution += int(e.bonus_constitution)
-            self.__bonus_intelligence += int(e.bonus_intelligence)
-            self.__bonus_wisdom += int(e.bonus_wisdom)
-            self.__bonus_charisma += int(e.bonus_charisma)
-
-            self.__multiplier_strength += e.multiplier_strength - 1.0
-            self.__multiplier_dexterity += e.multiplier_dexterity - 1.0
-            self.__multiplier_constitution += e.multiplier_constitution - 1.0
-            self.__multiplier_intelligence += e.multiplier_intelligence - 1.0
-            self.__multiplier_wisdom += e.multiplier_wisdom - 1.0
-            self.__multiplier_charisma += e.multiplier_charisma - 1.0
-
-            self.__bonus_hit_points += int(e.bonus_hit_points)
-            self.__bonus_initiative += int(e.bonus_initiative)
-            self.__bonus_physical_attack += int(e.bonus_physical_attack)
-            self.__bonus_precision_attack += int(e.bonus_precision_attack)
-            self.__bonus_magical_attack += int(e.bonus_magical_attack)
-            self.__bonus_physical_defense += int(e.bonus_physical_defense)
-            self.__bonus_magical_defense += int(e.bonus_magical_defense)
-            self.__bonus_hit += int(e.bonus_hit)
-            self.__bonus_evasion += int(e.bonus_evasion)
-
-        self.notify_observers()
+        return max(value, 0.1)
 
     def compare(self, equipment: Equipment, is_sell: bool = False) -> str:
         other_equipment = []
@@ -386,17 +352,17 @@ class Equips:
                 f'*{SECTION_HEAD.format("BÔNUS E MULTIPLICADORES")}*\n'
 
                 f'`{STRENGTH_EMOJI_TEXT}: {self.strength:+} '
-                f'x({self.__multiplier_strength:+.2f})`\n'
+                f'x({self.multiplier_strength:+.2f})`\n'
                 f'`{DEXTERITY_EMOJI_TEXT}: {self.dexterity:+} '
-                f'x({self.__multiplier_dexterity:+.2f})`\n'
+                f'x({self.multiplier_dexterity:+.2f})`\n'
                 f'`{CONSTITUTION_EMOJI_TEXT}: {self.constitution:+} '
-                f'x({self.__multiplier_constitution:+.2f})`\n'
+                f'x({self.multiplier_constitution:+.2f})`\n'
                 f'`{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:+} '
-                f'x({self.__multiplier_intelligence:+.2f})`\n'
+                f'x({self.multiplier_intelligence:+.2f})`\n'
                 f'`{WISDOM_EMOJI_TEXT}: {self.wisdom:+} '
-                f'x({self.__multiplier_wisdom:+.2f})`\n'
+                f'x({self.multiplier_wisdom:+.2f})`\n'
                 f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:+} '
-                f'x({self.__multiplier_charisma:+.2f})`\n\n'
+                f'x({self.multiplier_charisma:+.2f})`\n\n'
 
                 f'`{HIT_POINT_FULL_EMOJI_TEXT}: {self.hp:+}`\n'
                 f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:+}`\n'
@@ -512,48 +478,122 @@ class Equips:
     boots = property(lambda self: self.__boots)
     ring = property(lambda self: self.__ring)
     amulet = property(lambda self: self.__amulet)
-    equipments_weight = property(lambda self: self.__equipments_weight)
 
-    strength = bonus_strength = property(
-        fget=lambda self: self.__bonus_strength)
-    dexterity = bonus_dexterity = property(
-        fget=lambda self: self.__bonus_dexterity)
-    constitution = bonus_constitution = property(
-        fget=lambda self: self.__bonus_constitution)
-    intelligence = bonus_intelligence = property(
-        fget=lambda self: self.__bonus_intelligence)
-    wisdom = bonus_wisdom = property(
-        fget=lambda self: self.__bonus_wisdom)
-    charisma = bonus_charisma = property(
-        fget=lambda self: self.__bonus_charisma)
-    multiplier_strength = property(
-        fget=lambda self: self.__multiplier_strength)
-    multiplier_dexterity = property(
-        fget=lambda self: self.__multiplier_dexterity)
-    multiplier_constitution = property(
-        fget=lambda self: self.__multiplier_constitution)
-    multiplier_intelligence = property(
-        fget=lambda self: self.__multiplier_intelligence)
-    multiplier_wisdom = property(
-        fget=lambda self: self.__multiplier_wisdom)
-    multiplier_charisma = property(
-        fget=lambda self: self.__multiplier_charisma)
-    hp = hit_points = bonus_hit_points = property(
-        fget=lambda self: self.__bonus_hit_points)
-    initiative = bonus_initiative = property(
-        fget=lambda self: self.__bonus_initiative)
-    physical_attack = bonus_physical_attack = property(
-        fget=lambda self: self.__bonus_physical_attack)
-    precision_attack = bonus_precision_attack = property(
-        fget=lambda self: self.__bonus_precision_attack)
-    magical_attack = bonus_magical_attack = property(
-        fget=lambda self: self.__bonus_magical_attack)
-    physical_defense = bonus_physical_defense = property(
-        fget=lambda self: self.__bonus_physical_defense)
-    magical_defense = bonus_magical_defense = property(
-        fget=lambda self: self.__bonus_magical_defense)
-    hit = bonus_hit = property(fget=lambda self: self.__bonus_hit)
-    evasion = bonus_evasion = property(fget=lambda self: self.__bonus_evasion)
+    @property
+    def equipments_weight(self) -> int:
+        return self.get_weight_sum_from_equipments('weight')
+
+    @property
+    def bonus_strength(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_strength')
+
+    @property
+    def bonus_dexterity(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_dexterity')
+
+    @property
+    def bonus_constitution(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_constitution')
+
+    @property
+    def bonus_intelligence(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_intelligence')
+
+    @property
+    def bonus_wisdom(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_wisdom')
+
+    @property
+    def bonus_charisma(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_charisma')
+
+    @property
+    def multiplier_strength(self) -> float:
+        return self.get_multiplier_sum_from_equipments(
+            'multiplier_strength'
+        )
+
+    @property
+    def multiplier_dexterity(self) -> float:
+        return self.get_multiplier_sum_from_equipments(
+            'multiplier_dexterity'
+        )
+
+    @property
+    def multiplier_constitution(self) -> float:
+        return self.get_multiplier_sum_from_equipments(
+            'multiplier_constitution'
+        )
+
+    @property
+    def multiplier_intelligence(self) -> float:
+        return self.get_multiplier_sum_from_equipments(
+            'multiplier_intelligence'
+        )
+
+    @property
+    def multiplier_wisdom(self) -> float:
+        return self.get_multiplier_sum_from_equipments(
+            'multiplier_wisdom'
+        )
+
+    @property
+    def multiplier_charisma(self) -> float:
+        return self.get_multiplier_sum_from_equipments(
+            'multiplier_charisma'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_hit_points')
+
+    @property
+    def bonus_initiative(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_initiative')
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_physical_attack')
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_precision_attack')
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_magical_attack')
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_physical_defense')
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_magical_defense')
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_hit')
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.get_attr_sum_from_equipments('bonus_evasion')
+
+    strength = bonus_strength
+    dexterity = bonus_dexterity
+    constitution = bonus_constitution
+    intelligence = bonus_intelligence
+    wisdom = bonus_wisdom
+    charisma = bonus_charisma
+    hp = hit_points = bonus_hit_points
+    initiative = bonus_initiative
+    physical_attack = bonus_physical_attack
+    precision_attack = bonus_precision_attack
+    magical_attack = bonus_magical_attack
+    physical_defense = bonus_physical_defense
+    magical_defense = bonus_magical_defense
+    hit = bonus_hit
+    evasion = bonus_evasion
 
 
 if __name__ == '__main__':

@@ -92,7 +92,6 @@ class CombatStats:
         self.__death_counter = int(death_counter)
 
         self.__stats_boosters = base_stats.stats_boosters
-        self.__boost_stats(is_init=True)
 
     def set_damage(self, value: int) -> None:
         is_dead_start = self.dead
@@ -216,7 +215,6 @@ class CombatStats:
         return report
 
     def clean_status_by_death(self) -> dict:
-        status_class_name = Status.__name__
         status = self.get_status()
 
         if isinstance(status, Status):
@@ -224,7 +222,7 @@ class CombatStats:
             self.__death()
             return status_report
         else:
-            raise AttributeError(f'"{status_class_name}" não encontrado.')
+            raise AttributeError(f'"{Status.__name__}" não encontrado.')
 
     def get_status(self) -> Status:
         status_class_name = Status.__name__
@@ -333,46 +331,29 @@ class CombatStats:
 
         return report
 
+    def get_attr_sum_from_stats_boosters(self, attribute: str) -> int:
+        value = sum([
+            getattr(stats_booster, attribute)
+            for stats_booster in self.__stats_boosters
+        ])
+
+        return int(value)
+
     def update(self) -> None:
-        self.__boost_stats()
+        self.check_if_dead()
 
-    def __boost_stats(self, is_init: bool = False) -> None:
-        is_dead_start = False
-        if is_init is False:
-            # Evita erro quando o self.__bonus_hit_points não existe no init
-            is_dead_start = self.dead
-
-        self.__bonus_hit_points = 0
-        self.__bonus_initiative = 0
-        self.__bonus_physical_attack = 0
-        self.__bonus_precision_attack = 0
-        self.__bonus_magical_attack = 0
-        self.__bonus_physical_defense = 0
-        self.__bonus_magical_defense = 0
-        self.__bonus_hit = 0
-        self.__bonus_evasion = 0
-
-        for sb in self.__stats_boosters:
-            self.__bonus_hit_points += int(sb.bonus_hit_points)
-            self.__bonus_initiative += int(sb.bonus_initiative)
-            self.__bonus_physical_attack += int(sb.bonus_physical_attack)
-            self.__bonus_precision_attack += int(sb.bonus_precision_attack)
-            self.__bonus_magical_attack += int(sb.bonus_magical_attack)
-            self.__bonus_physical_defense += int(sb.bonus_physical_defense)
-            self.__bonus_magical_defense += int(sb.bonus_magical_defense)
-            self.__bonus_hit += int(sb.bonus_hit)
-            self.__bonus_evasion += int(sb.bonus_evasion)
-
-        if is_dead_start and self.dead and not self.is_status_empty:
+    def check_if_dead(self) -> None:
+        if self.dead and not self.is_status_empty:
             self.clean_status_by_death()
-        elif is_dead_start is True:
+        elif self.dead:
             self.__death()
 
     def __add_death_counter(self):
         self.__death_counter += 1
 
     def __death(self):
-        self.__damage = self.hit_points
+        if self.__damage > self.hit_points:
+            self.__damage = self.hit_points
 
     # Getters
     # Combat Attributes
@@ -607,40 +588,40 @@ class CombatStats:
     # Getters
     # Bonus Combat Attributes
     @property
+    def bonus_hit_points(self) -> int:
+        return self.get_attr_sum_from_stats_boosters('bonus_hit_points')
+
+    @property
     def bonus_initiative(self) -> int:
-        return self.__bonus_initiative
+        return self.get_attr_sum_from_stats_boosters('bonus_initiative')
 
     @property
     def bonus_physical_attack(self) -> int:
-        return self.__bonus_physical_attack
+        return self.get_attr_sum_from_stats_boosters('bonus_physical_attack')
 
     @property
     def bonus_precision_attack(self) -> int:
-        return self.__bonus_precision_attack
+        return self.get_attr_sum_from_stats_boosters('bonus_precision_attack')
 
     @property
     def bonus_magical_attack(self) -> int:
-        return self.__bonus_magical_attack
+        return self.get_attr_sum_from_stats_boosters('bonus_magical_attack')
 
     @property
     def bonus_physical_defense(self) -> int:
-        return self.__bonus_physical_defense
+        return self.get_attr_sum_from_stats_boosters('bonus_physical_defense')
 
     @property
     def bonus_magical_defense(self) -> int:
-        return self.__bonus_magical_defense
-
-    @property
-    def bonus_hit_points(self) -> int:
-        return self.__bonus_hit_points
+        return self.get_attr_sum_from_stats_boosters('bonus_magical_defense')
 
     @property
     def bonus_hit(self) -> int:
-        return self.__bonus_hit
+        return self.get_attr_sum_from_stats_boosters('bonus_hit')
 
     @property
     def bonus_evasion(self) -> int:
-        return self.__bonus_evasion
+        return self.get_attr_sum_from_stats_boosters('bonus_evasion')
 
     @property
     def death_counter(self) -> int:
@@ -654,7 +635,7 @@ class CombatStats:
     # Stats Boosters
     @property
     def stats_boosters(self) -> set:
-        return set(self.__stats_boosters)
+        return self.__stats_boosters
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         base_init = self.initiative - self.bonus_initiative
