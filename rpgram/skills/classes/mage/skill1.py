@@ -543,9 +543,8 @@ class LavaSkinSkill(BaseSkill):
             [report["text"] for report in report_list]
         )
 
-        burn_condition = self.char.status.get_condition(BURN)
-        if burn_condition:
-            status_report = self.char.status.remove_condition(burn_condition)
+        status_report = self.char.status.cure_condition(BURN)
+        if not status_report['is_fail']:
             status_report_text += "\n" + status_report['text']
 
         report = {
@@ -865,6 +864,7 @@ if __name__ == '__main__':
     print(MAGE_CHARACTER.bs.wisdom)
     print(MAGE_CHARACTER.cs.physical_defense)
     print(MAGE_CHARACTER.cs.magical_defense)
+    print(skill.function())
     print(skill.function())
     print(MAGE_CHARACTER.bs.wisdom)
     print(MAGE_CHARACTER.cs.physical_defense)

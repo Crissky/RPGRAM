@@ -131,12 +131,17 @@ class Status:
             condition_name = condition
             condition_level = 1
 
-        report = {'text': '', 'condition_name': condition_name}
+        report = {
+            'text': '',
+            'condition_name': condition_name,
+            'is_fail': True
+        }
         if condition in self.__conditions:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
             condition_emoji_name = new_condition.emoji_name
             new_condition = new_condition.remove_level(condition_level)
+            report['is_fail'] = False
             if not new_condition:
                 report['text'] = f'{condition_emoji_name} foi removido.'
                 self.__conditions.pop(index)
@@ -285,6 +290,24 @@ class Status:
         for condition in self.__conditions:
             if condition == condition_name:
                 return condition
+
+    def cure_condition(self, condition: Union[str, Condition]) -> dict:
+        if isinstance(condition, Condition):
+            condition_name = condition.name
+        elif isinstance(condition, str):
+            condition_name = condition
+
+        condition = self.get_condition(condition)
+        if condition:
+            report = self.remove_condition(condition)
+        else:
+            report = {
+                'text': f'O status não possui a condição "{condition_name}".',
+                'condition_name': condition_name,
+                'is_fail': True
+            }
+
+        return report
 
     def clean_status(self) -> dict:
         condition_names = ', '.join(
