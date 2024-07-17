@@ -19,7 +19,7 @@ from rpgram.constants.text import (
     WISDOM_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.debuff import BURN, DebuffEnum, get_debuff_emoji_text
 from rpgram.enums.skill import (
     MageSkillEnum,
@@ -39,7 +39,8 @@ class FireBallSkill(BaseSkill):
     NAME = MageSkillEnum.FIRE_BALL.value
     DESCRIPTION = (
         f'Com movimentos incisivos, conjura uma *Bola de Fogo* e a lança '
-        f'contra um alvo, causando dano com base em '
+        f'contra um alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -77,7 +78,8 @@ class WaterBubbleSkill(BaseSkill):
     NAME = MageSkillEnum.WATER_BUBBLE.value
     DESCRIPTION = (
         f'Com movimentos suaves, conjura uma *Bolha de Água* e a lança '
-        f'contra um alvo, causando dano com base em '
+        f'contra um alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -115,7 +117,8 @@ class WindGustSkill(BaseSkill):
     NAME = MageSkillEnum.WIND_GUST.value
     DESCRIPTION = (
         f'Com movimentos undosos, conjura uma *Rajada de Vento* que vai de '
-        f'encontro ao alvo, causando dano com base em '
+        f'encontro ao alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -153,7 +156,8 @@ class EarthBreakSkill(BaseSkill):
     NAME = MageSkillEnum.EARTH_BREAK.value
     DESCRIPTION = (
         f'Com um movimento brusco, *Quebra-Terra* '
-        f'debaixo de um alvo, causando dano com base em '
+        f'debaixo de um alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -192,7 +196,9 @@ class MagicBlastSkill(BaseSkill):
     DESCRIPTION = (
         f'Concentra energia em um ponto específico, resultando em uma '
         f'*Explosão Mágica* devastadora '
-        f'que causa dano com base em '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -233,7 +239,9 @@ class IceShardSkill(BaseSkill):
     DESCRIPTION = (
         f'Com um gesto rápido e preciso, conjura uma *Estaca Afiada '
         f'de Gelo Puro*, lançando-a em alta velocidade '
-        f'em direção ao seu alvo, causando dano com base em '
+        f'em direção ao seu alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.COLD)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -274,7 +282,8 @@ class FulminantLightningSkill(BaseSkill):
     DESCRIPTION = (
         f'Canalisa na ponta dos dedos uma energia infrene '
         f'e dispara no alvo um *Raio Fulminante* '
-        f'que causa dano com base em '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -377,7 +386,9 @@ class ScorchingBreathSkill(BaseSkill):
     DESCRIPTION = (
         f'Canaliza a energia nos pulmões e sopra um jato concentrado de '
         f'*Vapor Superaquecido* '
-        f'contra um alvo, causando dano com base em '
+        f'contra um alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
         f'adiciona a condição {get_debuff_emoji_text(DebuffEnum.BURN)}.'
     )
@@ -438,7 +449,9 @@ class FireStormSkill(BaseSkill):
     DESCRIPTION = (
         f'Com um abanar de mãos, cria um *Tornado de Fogo* que se move pelo '
         f'campo de batalha, queimando tudo o que encontra e '
-        f'causando dano com base no '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (87% + 2.5% x Rank x Nível).'
     )
     RANK = 3
@@ -530,9 +543,8 @@ class LavaSkinSkill(BaseSkill):
             [report["text"] for report in report_list]
         )
 
-        burn_condition = self.char.status.get_condition(BURN)
-        if burn_condition:
-            status_report = self.char.status.remove_condition(burn_condition)
+        status_report = self.char.status.cure_condition(BURN)
+        if not status_report['is_fail']:
             status_report_text += "\n" + status_report['text']
 
         report = {
@@ -617,7 +629,9 @@ class MudShotSkill(BaseSkill):
     DESCRIPTION = (
         f'Lança uma bola de lama compacta contra um alvo, explodindo ao '
         f'impacto e espalhando lama pegajosa '
-        f'contra um alvo, causando dano com base em '
+        f'contra um alvo, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
         f'diminuindo a sua *{EVASION_EMOJI_TEXT}* '
         f'com base no dano causado (8% + 2% x Rank x Nível).'
@@ -686,7 +700,9 @@ class SandStormSkill(BaseSkill):
         f'Conjura uma *Tempestade de Areia* que varre o campo de batalha, '
         f'obscurecendo a visão dos inimigos '
         f'({get_debuff_emoji_text(DebuffEnum.BLINDNESS)}) e '
-        f'causando dano com base no '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (87% + 2.5% x Rank x Nível).'
     )
     RANK = 3
@@ -848,6 +864,7 @@ if __name__ == '__main__':
     print(MAGE_CHARACTER.bs.wisdom)
     print(MAGE_CHARACTER.cs.physical_defense)
     print(MAGE_CHARACTER.cs.magical_defense)
+    print(skill.function())
     print(skill.function())
     print(MAGE_CHARACTER.bs.wisdom)
     print(MAGE_CHARACTER.cs.physical_defense)

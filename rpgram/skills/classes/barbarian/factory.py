@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.barbarian.skill1 import (
-    FuriousAttackSkill,
+    PrimalAttackSkill,
     SeismicImpactSkill,
-    WildRamSkill,
-    WildStrikeSkill
+    PrimalRamSkill,
+    PrimalStrikeSkill
 )
 from rpgram.skills.classes.barbarian.skill2 import (
     FrenzySkill,
@@ -11,7 +11,7 @@ from rpgram.skills.classes.barbarian.skill2 import (
     FuriousInstinctSkill,
     FuriousRoarSkill
 )
-from rpgram.skills.classes.barbarian.skill3 import WildForgeSkill
+from rpgram.skills.classes.barbarian.skill3 import FafnirsScalesSkill, HydraFangsSkill, RaijusFootstepsSkill, SalamandersBreathSkill, SweepingRocSkill, WildForgeSkill
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -25,12 +25,12 @@ def barbarian_skill_factory(
     level: int = 1
 ) -> BaseSkill:
     # SKILL1
-    if skill_class_name == FuriousAttackSkill.__name__:
-        skill_class = FuriousAttackSkill
-    elif skill_class_name == WildStrikeSkill.__name__:
-        skill_class = WildStrikeSkill
-    elif skill_class_name == WildRamSkill.__name__:
-        skill_class = WildRamSkill
+    if skill_class_name == PrimalAttackSkill.__name__:
+        skill_class = PrimalAttackSkill
+    elif skill_class_name == PrimalStrikeSkill.__name__:
+        skill_class = PrimalStrikeSkill
+    elif skill_class_name == PrimalRamSkill.__name__:
+        skill_class = PrimalRamSkill
     elif skill_class_name == SeismicImpactSkill.__name__:
         skill_class = SeismicImpactSkill
     # SKILL2
@@ -45,6 +45,16 @@ def barbarian_skill_factory(
     # SKILL3
     elif skill_class_name == WildForgeSkill.__name__:
         skill_class = WildForgeSkill
+    elif skill_class_name == SalamandersBreathSkill.__name__:
+        skill_class = SalamandersBreathSkill
+    elif skill_class_name == SweepingRocSkill.__name__:
+        skill_class = SweepingRocSkill
+    elif skill_class_name == HydraFangsSkill.__name__:
+        skill_class = HydraFangsSkill
+    elif skill_class_name == RaijusFootstepsSkill.__name__:
+        skill_class = RaijusFootstepsSkill
+    elif skill_class_name == FafnirsScalesSkill.__name__:
+        skill_class = FafnirsScalesSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -53,9 +63,9 @@ def barbarian_skill_factory(
 
 BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
-    FuriousAttackSkill,
-    WildStrikeSkill,
-    WildRamSkill,
+    PrimalAttackSkill,
+    PrimalStrikeSkill,
+    PrimalRamSkill,
     SeismicImpactSkill,
 
     # SKILL2
@@ -66,4 +76,9 @@ BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     
     # SKILL3
     WildForgeSkill,
+    SalamandersBreathSkill,
+    SweepingRocSkill,
+    HydraFangsSkill,
+    RaijusFootstepsSkill,
+    FafnirsScalesSkill,
 ]

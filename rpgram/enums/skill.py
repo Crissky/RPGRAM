@@ -48,15 +48,20 @@ class SkillDefenseEmojiEnum(Enum):
 
 
 class BarbarianSkillEnum(Enum):
-    FURIOUS_ATTACK = 'Ataque Furioso'
-    WILD_STRIKE = 'Golpe Selvagem'
-    WILD_RAM = 'Ariete Selvagem'
+    PRIMAL_ATTACK = 'Ataque Primal'
+    PRIMAL_STRIKE = 'Golpe Primal'
+    PRIMAL_RAM = 'Ariete Primal'
     SEISMIC_IMPACT = 'Impacto Sísmico'
     FURIOUS_FURY = 'Fúria Furiosa'
     FURIOUS_INSTINCT = 'Instinto Furioso'
     FRENZY = 'Frenesi'
     FURIOUS_ROAR = 'Rugido Furioso'
     WILD_FORGE = 'Forja Selvagem'
+    SALAMANDERS_BREATH = 'Bafo de Salamandra'
+    SWEEPING_ROC = 'Rasante de Roc'
+    HYDRA_FANGS = 'Presas da Hidra'
+    RAIJUS_FOOTSTEPS = 'Passos de Raijū'
+    FAFNIRS_SCALES = 'Escamas de Fáfnir'
 
     # Special Damage
     WILD_FIRE = 'Fogo Selvagem'

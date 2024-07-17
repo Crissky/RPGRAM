@@ -5,7 +5,7 @@ from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     SkillDefenseEnum,
     SkillTypeEnum,
@@ -35,7 +35,8 @@ class PrismaticShotSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SHOT.value
     DESCRIPTION = (
         f'Canaliza a energia mágica, dispara um feixe prismático '
-        f'causando dano com base em '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -72,8 +73,10 @@ class PrismaticShotSkill(BaseSkill):
 class PrismaticScintillationSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SCINTILLATION.value
     DESCRIPTION = (
-        f'Canaliza a energia mágica, cria e lança um artefato '
-        f'prismático que causa dano a *TODES os inimigos* com base em '
+        f'Canaliza a energia mágica, criando e lançando um artefato '
+        f'prismático que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
+        f'a *TODES os inimigos* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
     )
     RANK = 2

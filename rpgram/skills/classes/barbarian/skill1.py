@@ -5,7 +5,7 @@ from rpgram.constants.text import (
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     SkillDefenseEnum,
@@ -31,8 +31,8 @@ SKILL_WAY_DESCRIPTION = {
 }
 
 
-class FuriousAttackSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.FURIOUS_ATTACK.value
+class PrimalAttackSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.PRIMAL_ATTACK.value
     DESCRIPTION = (
         f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
         f'inimigo com base em '
@@ -53,9 +53,9 @@ class FuriousAttackSkill(BaseSkill):
         damage_types = None
 
         super().__init__(
-            name=FuriousAttackSkill.NAME,
-            description=FuriousAttackSkill.DESCRIPTION,
-            rank=FuriousAttackSkill.RANK,
+            name=PrimalAttackSkill.NAME,
+            description=PrimalAttackSkill.DESCRIPTION,
+            rank=PrimalAttackSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -65,7 +65,7 @@ class FuriousAttackSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
-            requirements=FuriousAttackSkill.REQUIREMENTS,
+            requirements=PrimalAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -74,8 +74,8 @@ class FuriousAttackSkill(BaseSkill):
         return 0.75
 
 
-class WildStrikeSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.WILD_STRIKE.value
+class PrimalStrikeSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.PRIMAL_STRIKE.value
     DESCRIPTION = (
         f'Desfere um ataque com força bruta, causando dano ao '
         f'alvo com base em '
@@ -86,7 +86,7 @@ class WildStrikeSkill(BaseSkill):
     REQUIREMENTS = Requirement(**{
         'level': 40,
         'classe_name': ClasseEnum.BARBARIAN.value,
-        'skill_list': [FuriousAttackSkill.NAME]
+        'skill_list': [PrimalAttackSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -98,9 +98,9 @@ class WildStrikeSkill(BaseSkill):
         damage_types = None
 
         super().__init__(
-            name=WildStrikeSkill.NAME,
-            description=WildStrikeSkill.DESCRIPTION,
-            rank=WildStrikeSkill.RANK,
+            name=PrimalStrikeSkill.NAME,
+            description=PrimalStrikeSkill.DESCRIPTION,
+            rank=PrimalStrikeSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -110,7 +110,7 @@ class WildStrikeSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
             use_equips_damage_types=True,
-            requirements=WildStrikeSkill.REQUIREMENTS,
+            requirements=PrimalStrikeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -119,12 +119,13 @@ class WildStrikeSkill(BaseSkill):
         return 0.90
 
 
-class WildRamSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.WILD_RAM.value
+class PrimalRamSkill(BaseSkill):
+    NAME = BarbarianSkillEnum.PRIMAL_RAM.value
     DESCRIPTION = (
         f'Abaixa a cabeça e investe contra o inimigo como um '
         f'*Ariete de Guerra*, destruindo qualquer barreira antes de aplicar '
-        f'o dano baseado em '
+        f'o dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* baseado em '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (160% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -132,7 +133,7 @@ class WildRamSkill(BaseSkill):
     REQUIREMENTS = Requirement(**{
         'level': 40,
         'classe_name': ClasseEnum.BARBARIAN.value,
-        'skill_list': [FuriousAttackSkill.NAME]
+        'skill_list': [PrimalAttackSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -144,9 +145,9 @@ class WildRamSkill(BaseSkill):
         damage_types = [DamageEnum.BLUDGEONING]
 
         super().__init__(
-            name=WildRamSkill.NAME,
-            description=WildRamSkill.DESCRIPTION,
-            rank=WildRamSkill.RANK,
+            name=PrimalRamSkill.NAME,
+            description=PrimalRamSkill.DESCRIPTION,
+            rank=PrimalRamSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -155,8 +156,8 @@ class WildRamSkill(BaseSkill):
             skill_type=SkillTypeEnum.ATTACK,
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
-            use_equips_damage_types=False,
-            requirements=WildRamSkill.REQUIREMENTS,
+            use_equips_damage_types=True,
+            requirements=PrimalRamSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -178,7 +179,8 @@ class SeismicImpactSkill(BaseSkill):
     DESCRIPTION = (
         f'Com uma força descomunal, ergue sua arma e a golpeia violentamente '
         f'contra o chão, liberando uma onda de choque que faz a terra '
-        f'tremer e se despedaçar ao redor, causando dano baseado em '
+        f'tremer e se despedaçar ao redor, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* baseado em '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (132% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -186,7 +188,7 @@ class SeismicImpactSkill(BaseSkill):
     REQUIREMENTS = Requirement(**{
         'level': 80,
         'classe_name': ClasseEnum.BARBARIAN.value,
-        'skill_list': [FuriousAttackSkill.NAME, WildStrikeSkill.NAME]
+        'skill_list': [PrimalAttackSkill.NAME, PrimalStrikeSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -222,17 +224,17 @@ class SeismicImpactSkill(BaseSkill):
 if __name__ == '__main__':
     from rpgram.constants.test import BARBARIAN_CHARACTER
     from rpgram.conditions.barrier import GuardianShieldCondition
-    skill = FuriousAttackSkill(BARBARIAN_CHARACTER)
+    skill = PrimalAttackSkill(BARBARIAN_CHARACTER)
     print(skill)
     print(BARBARIAN_CHARACTER.cs.physical_attack)
-    BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousAttackSkill)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(PrimalAttackSkill)
 
-    skill = WildStrikeSkill(BARBARIAN_CHARACTER)
+    skill = PrimalStrikeSkill(BARBARIAN_CHARACTER)
     print(skill)
     print(BARBARIAN_CHARACTER.cs.physical_attack)
-    BARBARIAN_CHARACTER.skill_tree.learn_skill(WildStrikeSkill)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(PrimalStrikeSkill)
 
-    skill = WildRamSkill(BARBARIAN_CHARACTER)
+    skill = PrimalRamSkill(BARBARIAN_CHARACTER)
     print(skill)
     print(BARBARIAN_CHARACTER.cs.physical_attack)
     barrier_condition = GuardianShieldCondition(power=50_000)
@@ -244,7 +246,7 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     print(BARBARIAN_CHARACTER.status)
-    BARBARIAN_CHARACTER.skill_tree.learn_skill(WildRamSkill)
+    BARBARIAN_CHARACTER.skill_tree.learn_skill(PrimalRamSkill)
 
     skill = SeismicImpactSkill(BARBARIAN_CHARACTER)
     print(skill)

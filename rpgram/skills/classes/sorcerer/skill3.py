@@ -5,7 +5,7 @@ from rpgram.constants.text import (
     MAGICAL_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     SkillDefenseEnum,
     SkillTypeEnum,
@@ -40,7 +40,9 @@ class ChaosOrbSkill(BaseSkill):
     DESCRIPTION = (
         f'Manipulando a essência da magia caótica, conjura um orbe '
         f'instável que transborda energia imprevisível, '
-        f'causando dano com base em '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
+        f'*❓❓❓* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (95% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -79,7 +81,9 @@ class ChaosVampirismSkill(BaseSkill):
     DESCRIPTION = (
         f'Utiliza a energia do caos para gerar um *Vínculo Caótico* '
         f'com o inimigo e drenar a sua força vital, '
-        f'causando dano com base em '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
+        f'*❓❓❓* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
         f'curando a si em 20% do dano causado.'
     )
@@ -132,10 +136,12 @@ class ChaosVampirismSkill(BaseSkill):
 class ChaosWeaverSkill(BaseSkill):
     NAME = SorcererSkillEnum.CHAOS_WEAVER.value
     DESCRIPTION = (
-        f'Por meio da energia caótica, drenar a força vital do inimigo, '
-        f'causando dano com base em '
+        f'Por meio da energia caótica, drena a força vital do inimigo, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
+        f'*❓❓❓* com base em '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
-        f'tece um *Véu Caótico* que protege com uma '
+        f'tece um *Véu Caótico* que o protege com uma '
         f'barreira baseada no dano causado (100% + 10% x Rank x Nível)'
     )
     RANK = 2

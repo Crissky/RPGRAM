@@ -32,6 +32,35 @@ from rpgram.boosters import StatsBooster
 from rpgram.status import Status
 
 
+GENERAL_LEVEL = 5
+HIT_POINTS_CONSTITUTION = 23
+HIT_POINTS_STRENGTH = 12
+HIT_POINTS_LEVEL = 100
+INITIATIVE_DEXTERITY = 3
+INITIATIVE_INTELLIGENCE = 3
+INITIATIVE_WISDOM = 3
+INITIATIVE_CHARISMA = 6
+PHYSICAL_ATTACK_STRENGTH = 6
+PHYSICAL_ATTACK_DEXTERITY = 2
+PRECISION_ATTACK_STRENGTH = 2
+PRECISION_ATTACK_DEXTERITY = 5
+MAGICAL_ATTACK_INTELLIGENCE = 8
+MAGICAL_ATTACK_WISDOM = 4
+PHYSICAL_DEFENSE_CONSTITUTION = 5
+PHYSICAL_DEFENSE_DEXTERITY = 2
+MAGICAL_DEFENSE_WISDOM = 8
+MAGICAL_DEFENSE_INTELLIGENCE = 4
+MAGICAL_DEFENSE_CONSTITUTION = 2
+HIT_DEXTERITY = 4
+HIT_INTELLIGENCE = 3
+HIT_WISDOM = 3
+HIT_CHARISMA = 7
+EVASION_DEXTERITY = 4
+EVASION_INTELLIGENCE = 2
+EVASION_WISDOM = 2
+EVASION_CHARISMA = 7
+
+
 class CombatStats:
     def __init__(
         self,
@@ -351,10 +380,10 @@ class CombatStats:
     def hit_points(self) -> int:
         return int(
             10 +
-            (self.constitution * 23) +
-            (self.strength * 12) +
+            (self.constitution * HIT_POINTS_CONSTITUTION) +
+            (self.strength * HIT_POINTS_STRENGTH) +
             self.bonus_hit_points +
-            (self.level * 100)
+            (self.level * HIT_POINTS_LEVEL)
         )
 
     @property
@@ -418,72 +447,72 @@ class CombatStats:
     @property
     def base_initiative(self) -> int:
         return int(
-            (self.dexterity * 3) +
-            (self.intelligence * 3) +
-            (self.wisdom * 3) +
-            (self.charisma * 6) +
-            (self.level * 5)
+            (self.dexterity * INITIATIVE_DEXTERITY) +
+            (self.intelligence * INITIATIVE_INTELLIGENCE) +
+            (self.wisdom * INITIATIVE_WISDOM) +
+            (self.charisma * INITIATIVE_CHARISMA) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_physical_attack(self) -> int:
         return int(
-            (self.strength * 6) +
-            (self.dexterity * 2) +
-            (self.level * 5)
+            (self.strength * PHYSICAL_ATTACK_STRENGTH) +
+            (self.dexterity * PHYSICAL_ATTACK_DEXTERITY) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_precision_attack(self) -> int:
         return int(
-            (self.strength * 2) +
-            (self.dexterity * 5) +
-            (self.level * 5)
+            (self.strength * PRECISION_ATTACK_STRENGTH) +
+            (self.dexterity * PRECISION_ATTACK_DEXTERITY) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_magical_attack(self) -> int:
         return int(
-            (self.intelligence * 8) +
-            (self.wisdom * 4) +
-            (self.level * 5)
+            (self.intelligence * MAGICAL_ATTACK_INTELLIGENCE) +
+            (self.wisdom * MAGICAL_ATTACK_WISDOM) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_physical_defense(self) -> int:
         return int(
-            (self.constitution * 5) +
-            (self.dexterity * 2) +
-            (self.level * 5)
+            (self.constitution * PHYSICAL_DEFENSE_CONSTITUTION) +
+            (self.dexterity * PHYSICAL_DEFENSE_DEXTERITY) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_magical_defense(self) -> int:
         return int(
-            (self.wisdom * 8) +
-            (self.intelligence * 4) +
-            (self.constitution * 2) +
-            (self.level * 5)
+            (self.wisdom * MAGICAL_DEFENSE_WISDOM) +
+            (self.intelligence * MAGICAL_DEFENSE_INTELLIGENCE) +
+            (self.constitution * MAGICAL_DEFENSE_CONSTITUTION) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_hit(self) -> int:
         return int(
-            (self.dexterity * 4) +
-            (self.intelligence * 3) +
-            (self.wisdom * 3) +
-            (self.charisma * 7) +
-            (self.level * 5)
+            (self.dexterity * HIT_DEXTERITY) +
+            (self.intelligence * HIT_INTELLIGENCE) +
+            (self.wisdom * HIT_WISDOM) +
+            (self.charisma * HIT_CHARISMA) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property
     def base_evasion(self) -> int:
         return int(
-            (self.dexterity * 4) +
-            (self.intelligence * 2) +
-            (self.wisdom * 2) +
-            (self.charisma * 7) +
-            (self.level * 5)
+            (self.dexterity * EVASION_DEXTERITY) +
+            (self.intelligence * EVASION_INTELLIGENCE) +
+            (self.wisdom * EVASION_WISDOM) +
+            (self.charisma * EVASION_CHARISMA) +
+            (self.level * GENERAL_LEVEL)
         )
 
     @property

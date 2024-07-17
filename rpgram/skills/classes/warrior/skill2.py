@@ -3,7 +3,7 @@ from rpgram.constants.text import (
     PRECISION_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
-from rpgram.enums.damage import DamageEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
     SkillDefenseEnum,
     SkillTypeEnum,
@@ -81,7 +81,8 @@ class BlinkAttackSkill(BaseSkill):
         f'Executa um único golpe rápido como um relâmpago, '
         f'imperceptível aos olhos destreinados, '
         f'dificultando as chances de esquiva do oponente e '
-        f'causando dano com base em '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base em '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
     )
     RANK = 2

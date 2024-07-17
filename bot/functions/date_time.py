@@ -36,6 +36,7 @@ BOOSTED_DAYS = [
     date(year=2000, month=5, day=9),    # Dia do Goku
     date(year=2000, month=6, day=15),   # Dia do Homem
     date(year=2000, month=6, day=24),   # São João
+    date(year=2000, month=7, day=16),   # Nossa Senhora do Carmo
     date(year=2000, month=9, day=7),    # Independência do Brasil
     get_programmer_day(),               # Dia do Programador
     date(year=2000, month=10, day=12),  # Nossa Senhora Aparecida (Crianças)

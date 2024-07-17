@@ -25,12 +25,12 @@ Dice multiplier percent base (0.025, 0.035)
 from random import randint
 from typing import TYPE_CHECKING
 
-from rpgram.stats.stats_base import BaseStats
-from rpgram.stats.stats_combat import CombatStats
 
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
     from rpgram.skills.skill_base import BaseSkill
+    from rpgram.stats.stats_base import BaseStats
+    from rpgram.stats.stats_combat import CombatStats
 
 
 class Dice:
@@ -142,11 +142,11 @@ class Dice:
     char = character
 
     @property
-    def base_stats(self) -> BaseStats:
+    def base_stats(self) -> 'BaseStats':
         return self.__base_stats
 
     @property
-    def combat_stats(self) -> CombatStats:
+    def combat_stats(self) -> 'CombatStats':
         return self.__combat_stats
 
     @property
