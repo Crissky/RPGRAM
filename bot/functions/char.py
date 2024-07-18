@@ -138,7 +138,7 @@ def add_trap_damage(
     min_ratio_damage: float,
     user_id: int = None,
     char: BaseCharacter = None,
-    type_damage: DamageEnum = None,
+    damage_type: DamageEnum = None,
 ) -> dict:
     '''Função que adiciona dano ao personagem.
     '''
@@ -158,11 +158,11 @@ def add_trap_damage(
     boosted_ratio = min(0.99, boosted_ratio)
     base_damage = int(char.combat_stats.hit_points * boosted_ratio)
 
-    if type_damage in PHYSICAL_DAMAGE_TYPES:
+    if damage_type in PHYSICAL_DAMAGE_TYPES:
         defense = char.combat_stats.physical_defense
         damage = int(base_damage + defense)
         damage_report = char.combat_stats.physical_damage_hit_points(damage)
-    elif type_damage in MAGICAL_DAMAGE_TYPES:
+    elif damage_type in MAGICAL_DAMAGE_TYPES:
         defense = char.combat_stats.magical_defense
         damage = int(base_damage + defense)
         damage_report = char.combat_stats.magical_damage_hit_points(damage)
@@ -174,7 +174,7 @@ def add_trap_damage(
 
     return dict(
         char=char,
-        type_damage=type_damage,
+        type_damage=damage_type,
         min_ratio_damage=min_ratio_damage,
         boosted_ratio=boosted_ratio,
         **damage_report,

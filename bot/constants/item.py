@@ -1000,6 +1000,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1150,6 +1151,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BLINDNESS, 'effectiveness': 0.75},
             {'condition': BERSERKER, 'effectiveness': 0.50},
             {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1166,6 +1169,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.DARK,
         [
             {'condition': BLINDNESS, 'effectiveness': 1.00},
+            {'condition': FEARING, 'effectiveness': 0.75},
+            {'condition': FEARING, 'effectiveness': 0.75},
             {'condition': BERSERKER, 'effectiveness': 0.50},
         ]
     ),
@@ -1239,6 +1244,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': BERSERKER, 'effectiveness': 0.50},
             {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1320,8 +1327,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1464,6 +1471,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': BERSERKER, 'effectiveness': 0.50},
             {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
