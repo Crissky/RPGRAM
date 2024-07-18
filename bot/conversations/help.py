@@ -79,8 +79,9 @@ from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import ClasseModel, ItemModel, RaceModel
 from rpgram.boosters import Equipment
 
+from rpgram.conditions import ALL_DEBUFFS
 from rpgram.conditions.debuff import DEBUFFS
-from rpgram.conditions.heal import HEALSTATUS
+from rpgram.conditions.heal import HEAL_STATUS
 from rpgram.consumables import (
     CureConsumable,
     HealingConsumable,
@@ -731,10 +732,13 @@ def get_details_text(option: str) -> str:
 
             f'*LISTA DE DEBUFFS*:\n\n'
         )
-        for debuff in DEBUFFS:
+        for debuff in ALL_DEBUFFS:
             debuff_name = debuff.name.upper()
-            debuff_name = DebuffEnum[debuff_name].value
-            text += f'*Nome*: {debuff.emoji}{debuff.name} ({debuff_name})\n'
+            if debuff_name in DebuffEnum.__members__:
+                debuff_name = f' ({DebuffEnum[debuff_name].value})'
+            else:
+                debuff_name = ''
+            text += f'*Nome*: {debuff.emoji_name}{debuff_name}\n'
             text += f'*Descrição*: {debuff.description}\n\n'
         text = text.strip()
     elif option == CALLBACK_HEALSTATUS:
@@ -757,7 +761,7 @@ def get_details_text(option: str) -> str:
             f'*LISTA DE CONDIÇÕES DE CURA*:\n\n'
         )
 
-        for heal_status in HEALSTATUS:
+        for heal_status in HEAL_STATUS:
             text += f'*Nome*: {heal_status.emoji}{heal_status.name}\n'
             text += f'*Descrição*: {heal_status.description}\n\n'
         text = text.strip()

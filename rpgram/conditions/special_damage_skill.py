@@ -6,8 +6,7 @@ from bson import ObjectId
 from rpgram.conditions.buff import BuffCondition
 from rpgram.enums.damage import (
     DamageEmojiEnum,
-    DamageEnum,
-    get_damage_emoji_text
+    DamageEnum
 )
 from rpgram.enums.skill import BarbarianSkillEnum, GuardianSkillEnum
 from rpgram.enums.turn import TurnEnum
