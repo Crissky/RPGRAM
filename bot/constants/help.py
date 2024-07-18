@@ -1,5 +1,6 @@
 COMMANDS = ['help', 'ajuda']
 
+
 # Callbacks
 CALLBACK_PLAYER = 'callback_player'
 CALLBACK_GROUP = 'callback_group'
@@ -19,6 +20,8 @@ CALLBACK_REVIVE_CONSUMABLE = 'callback_revive_consumable'
 CALLBACK_OTHER_CONSUMABLE = 'callback_other_consumable'
 CALLBACK_TROCADOPOUCH_CONSUMABLE = 'callback_trocado_consumable'
 CALLBACK_GEMSTONE_CONSUMABLE = 'callback_gemstone_consumable'
+CALLBACK_SPECIAL_DAMAGE = 'callback_special_damage'
+
 
 # TEXTS
 SECTION_TEXT_HELP = 'AJUDA'

@@ -12,6 +12,7 @@ from rpgram.conditions.debuff import (
     CrystallizedCondition,
     CurseCondition,
     ExhaustionCondition,
+    FearingCondition,
     FrozenCondition,
     ParalysisCondition,
     PetrifiedCondition,
@@ -238,6 +239,9 @@ class SpecialDamage:
         elif self.damage_type == DamageEnum.BLAST:
             min_multiplier = 0.54
             max_multiplier = 0.78
+        elif self.damage_type == DamageEnum.SONIC:
+            min_multiplier = 0.31
+            max_multiplier = 0.49
 
         return {'min': min_multiplier, 'max': max_multiplier}
 
@@ -357,7 +361,7 @@ class SpecialDamage:
         elif self.damage_type == DamageEnum.ROAR:
             condition_list.extend([
                 dict(condition=self.partial(StunnedCondition), ratio=0.10),
-                dict(condition=self.partial(ConfusionCondition), ratio=0.10),
+                dict(condition=self.partial(FearingCondition), ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.CRYSTAL:
             condition_list.extend([
@@ -368,6 +372,11 @@ class SpecialDamage:
             condition_list.extend([
                 dict(condition=self.partial(StunnedCondition), ratio=0.10),
                 dict(condition=self.partial(BurnCondition), ratio=0.10),
+            ])
+        elif self.damage_type == DamageEnum.SONIC:
+            condition_list.extend([
+                dict(condition=self.partial(StunnedCondition), ratio=0.10),
+                dict(condition=self.partial(ConfusionCondition), ratio=0.10),
             ])
 
         return condition_list * self.__status_multiplier

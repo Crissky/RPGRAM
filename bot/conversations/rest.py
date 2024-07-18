@@ -143,7 +143,7 @@ def create_job_rest_cure(
     job_name = get_rest_jobname(user_id)
     context.job_queue.run_repeating(
         callback=job_rest_cure,
-        interval=timedelta(minutes=MINUTES_TO_RECOVERY_HIT_POINTS),
+        interval=timedelta(minutes=1),
         chat_id=chat_id,
         user_id=user_id,
         data=user_id,
@@ -191,24 +191,27 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     min_level = max(1, int(level / 20 * 0.90))
     max_level = max(2, int(level / 20 * 1.10))
     heal_low_hp_bonus = 1 + player_character.cs.irate_hp
-    status_debuff_bonus = player_character.status.total_level_debuff // 10
+    status_debuff_bonus = player_character.status.total_level_debuff // 5
     condition_quantity = randint(min_level, max_level)
     condition_quantity = int(
         (condition_quantity + status_debuff_bonus) * heal_low_hp_bonus
     )
 
+    old_show_hp = player_character.cs.show_hit_points
     if player_character.is_dead:
         report = player_character.cs.revive()
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
     else:
         max_hp = player_character.cs.hp
-        heal = int(max_hp * 0.10) * heal_low_hp_bonus
+        heal = int(max_hp * 0.15) * heal_low_hp_bonus
         report = player_character.cs.cure_hit_points(heal)
     status_report = player_character.status.remove_random_debuff_conditions(
         condition_quantity
     )
+    new_show_hp = player_character.cs.show_hit_points
+    true_cure = report['true_cure']
     save_char(char=player_character)
-    report_text = report['text']
+    report_text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{true_cure}*).'
     hp_reporting = (
         f'{revive_reporting}'
         f'Seu personagem curou HP❤️‍🩹 descansando!\n\n'

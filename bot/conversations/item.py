@@ -281,13 +281,13 @@ async def activated_trap(
     message_id = update.effective_message.message_id
     (
         text_open_trap,
-        trap_type_damage_enum,
+        trap_damage_type_enum,
         trap_condition_list
     ) = choice(REPLY_TEXTS_FIND_TRAP_OPEN)
     text_find_trap_damage = choice(
         REPLY_TEXTS_FIND_TRAP_DAMAGE
     ).format(user_name=user_name)
-    type_damage_name = trap_type_damage_enum.name
+    type_damage_name = trap_damage_type_enum.name
     type_damage_ratio = TRAP_DAMAGE_TYPE_RATIO[type_damage_name]
 
     condition_report = add_conditions_from_trap(
@@ -298,7 +298,7 @@ async def activated_trap(
     damage_report = add_trap_damage(
         min_ratio_damage=type_damage_ratio,
         char=condition_report['char'],
-        type_damage=trap_type_damage_enum
+        damage_type=trap_damage_type_enum
     )
 
     damage = (
@@ -311,7 +311,7 @@ async def activated_trap(
     text = (
         f'{text_open_trap}\n\n'
         f'{text_find_trap_damage} "{absolute_damage}"({damage}) '
-        f'pontos de dano do tipo "{trap_type_damage_enum.value}".\n\n'
+        f'pontos de dano do tipo "{trap_damage_type_enum.value}".\n\n'
         f'{condition_report_text}'
     )
     if damage_report['dead']:

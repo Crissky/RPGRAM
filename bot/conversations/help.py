@@ -34,6 +34,7 @@ from bot.constants.help import (
     CALLBACK_PLAYER,
     CALLBACK_RACES,
     CALLBACK_REVIVE_CONSUMABLE,
+    CALLBACK_SPECIAL_DAMAGE,
     CALLBACK_STATS,
     CALLBACK_TROCADOPOUCH_CONSUMABLE,
     COMMANDS,
@@ -106,7 +107,9 @@ from rpgram.enums import (
     OmamoriMaterialEnum,
     SeishinWearbleMaterialEnum,
 )
+from rpgram.enums.damage import DamageEnum
 from rpgram.enums.debuff import DebuffEnum
+from rpgram.skills.special_damage import SpecialDamage
 from rpgram.stats.stats_combat import (
     EVASION_CHARISMA,
     EVASION_DEXTERITY,
@@ -640,6 +643,38 @@ def get_details_text(option: str) -> str:
             f'a `Inteligência`(x{EVASION_INTELLIGENCE}) e '
             f'o `Nível`(x{GENERAL_LEVEL}).'
         )
+    elif option == CALLBACK_SPECIAL_DAMAGE:
+        text = (
+            f'{EmojiEnum.SPECIAL_DAMAGE.value}*DANO ESPECIAL*\n\n'
+
+            f'O `Dano Especial` é um dano adicional que armas e habilidades '
+            f'podem causar. Para armas, o valor do dano é baseado nos '
+            f'atributos de ataque da arma e no seu nível. '
+            f'Já para habilidades, o valor do dano é baseado no *Poder'
+            f'{EmojiEnum.EQUIPMENT_POWER.value}*.\n'
+            f'Além do dano extra, o `Dano Especial` pode causar condições '
+            f'negativas (*Debuff*).\n\n`Danos Especiais` '
+            f'com 100 de *Poder{EmojiEnum.EQUIPMENT_POWER.value}*:\n\n'
+        )
+        for damage in DamageEnum:
+            special_damage = SpecialDamage(
+                base_damage=100,
+                damage_type=damage,
+                equipment_level=100,
+            )
+            condition_ratio_list = special_damage.condition_ratio_list
+            contition_text = '\n'.join([
+                (
+                    f'    *{condition_dict["condition"]().emoji_name}*: '
+                    f'{condition_dict["ratio"]*100}%'
+                )
+                for condition_dict in condition_ratio_list
+            ])
+            text += (
+                f'*{special_damage.damage_help_emoji_text}*\n'
+                f'{contition_text}\n\n'
+            )
+
     elif option == CALLBACK_ITEMS:
         bag_cmd = command_to_string(bag_commands)
         text = (
@@ -970,9 +1005,12 @@ def get_help_reply_markup(update: Update):
     config_text = f'Grupo{EmojiEnum.GROUP.value}'
     player_text = f'{EmojiEnum.PLAYER.value}Jogador'
     equips_text = f'Equipamentos{EmojiEnum.EQUIPS.value}'
-    base_attributes_text = f'{EmojiEnum.BASE_ATTRIBUTES.value}Atributos Base'
+    base_attributes_text = f'{EmojiEnum.BASE_ATTRIBUTES.value}Atrib. Base'
     combat_attributes_text = (
-        f'Atributos de Combate{EmojiEnum.COMBAT_ATTRIBUTES.value}'
+        f'Atrib. de Combate{EmojiEnum.COMBAT_ATTRIBUTES.value}'
+    )
+    special_damage_text = (
+        f'Danos Especiais{EmojiEnum.SPECIAL_DAMAGE.value}'
     )
     items_text = f'{EmojiEnum.ITEMS.value}Itens'
     debuffs_text = f'{EmojiEnum.STATUS.value}Status(Debuffs)'
@@ -1062,6 +1100,16 @@ def get_help_reply_markup(update: Update):
                 text=combat_attributes_text,
                 callback_data=(
                     f'{{"option":"{CALLBACK_COMBAT_ATTRIBUTES}",'
+                    f'"user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_SPECIAL_DAMAGE:
+        buttons3.append(
+            InlineKeyboardButton(
+                text=special_damage_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_SPECIAL_DAMAGE}",'
                     f'"user_id":{user_id}}}'
                 )
             )

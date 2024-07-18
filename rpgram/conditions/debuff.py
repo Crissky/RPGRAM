@@ -12,6 +12,7 @@ from rpgram.enums.debuff import (
     CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
+    FEARING,
     FROZEN,
     PARALYSIS,
     PETRIFIED,
@@ -228,6 +229,7 @@ class CrystallizedCondition(DebuffCondition):
 
         return report
 
+
 class CurseCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
@@ -297,6 +299,43 @@ class ExhaustionCondition(DebuffCondition):
         report = {}
         report['text'] = 'Personagem está exausto.'
         report['action'] = f'{self.name}'
+
+        return report
+
+
+class FearingCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 2, level: int = 1):
+        super().__init__(
+            name=FEARING,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'O personagem não pode realizar ações por {self.turn} turnos '
+            f'e tem seu multiplicador de Constituição reduzido em '
+            f'"{self.multiplier_constitution - 1:.2f}x" e de Sabedoria em '
+            f'"{self.multiplier_wisdom - 1:.2f}x" (5% x Nível).'
+        )
+
+    @property
+    def multiplier_constitution(self) -> float:
+        power = self.level / 20
+        return round(1 - power, 2)
+
+    @property
+    def multiplier_wisdom(self) -> float:
+        power = self.level / 20
+        return round(1 - power, 2)
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            report['text'] = 'Personagem está amedrontado.'
 
         return report
 
@@ -453,6 +492,7 @@ class Debuffs:
         CrystallizedCondition,
         CurseCondition,
         ExhaustionCondition,
+        FearingCondition,
         FrozenCondition,
         ParalysisCondition,
         PetrifiedCondition,
@@ -468,6 +508,8 @@ class Debuffs:
 
 DEBUFFS = Debuffs()
 if __name__ == '__main__':
+    from rpgram.conditions.factory import condition_factory
+
     print(BerserkerCondition())
     print(BleedingCondition())
     print(BlindnessCondition())
@@ -476,6 +518,7 @@ if __name__ == '__main__':
     print(CrystallizedCondition())
     print(CurseCondition())
     print(ExhaustionCondition())
+    print(FearingCondition())
     print(FrozenCondition())
     print(ParalysisCondition())
     print(PetrifiedCondition())
@@ -484,3 +527,78 @@ if __name__ == '__main__':
     print(StunnedCondition() in IMMOBILIZED_DEBUFFS_NAMES)
     print('BerserkerCondition(level=10).multiplier_strength:',
           BerserkerCondition(level=10).multiplier_strength)
+
+    condition = BerserkerCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = BleedingCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = BlindnessCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = BurnCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = ConfusionCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = CrystallizedCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = CurseCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = ExhaustionCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = FearingCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = FrozenCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = ParalysisCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = PetrifiedCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = PoisoningCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = SilenceCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition
+
+    condition = StunnedCondition()
+    print(condition.to_dict())
+    _dict = {**condition.to_dict()}
+    assert condition_factory(**_dict) == condition

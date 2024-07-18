@@ -8,8 +8,10 @@ from rpgram.enums.debuff import (
     BLINDNESS,
     BURN,
     CONFUSION,
+    CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
+    FEARING,
     FROZEN,
     PARALYSIS,
     PETRIFIED,
@@ -54,6 +56,9 @@ TRAP_DAMAGE_TYPE_RATIO = {
     DamageEnum.ACID.name: 0.40,
     DamageEnum.POISON.name: 0.40,
     DamageEnum.CHAOS.name: 0.45,
+    DamageEnum.CRYSTAL.name: 0.35,
+    DamageEnum.BLAST.name: 0.50,
+    DamageEnum.SONIC.name: 0.35,
 }
 
 
@@ -633,7 +638,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Com cuidado, você abre o objeto, mas antes que perceba, uma explosão '
         'irrompe.',
-        DamageEnum.FIRE,
+        DamageEnum.BLAST,
         [
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.25},
@@ -864,6 +869,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -940,15 +947,14 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Ao destravar, uma explosão sônica ensurdecedora faz você perder '
         'a audição temporariamente.',
-        DamageEnum.MAGIC,
+        DamageEnum.SONIC,
         [
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.50},
             {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': STUNNED, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -994,6 +1000,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1144,6 +1151,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BLINDNESS, 'effectiveness': 0.75},
             {'condition': BERSERKER, 'effectiveness': 0.50},
             {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1160,6 +1169,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         DamageEnum.DARK,
         [
             {'condition': BLINDNESS, 'effectiveness': 1.00},
+            {'condition': FEARING, 'effectiveness': 0.75},
+            {'condition': FEARING, 'effectiveness': 0.75},
             {'condition': BERSERKER, 'effectiveness': 0.50},
         ]
     ),
@@ -1170,9 +1181,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': CURSE, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1197,7 +1209,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     ),
     (
         'Ao destravar, você aciona uma explosão que o arremessa longe.',
-        DamageEnum.FIRE,
+        DamageEnum.BLAST,
         [
             {'condition': BURN, 'effectiveness': 0.75},
             {'condition': BURN, 'effectiveness': 0.50},
@@ -1205,7 +1217,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
             {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': STUNNED, 'effectiveness': 0.75},
+            {'condition': STUNNED, 'effectiveness': 0.50},
+            {'condition': STUNNED, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1230,6 +1244,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': BERSERKER, 'effectiveness': 0.50},
             {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1311,8 +1327,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         [
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1400,17 +1416,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
     (
         'Ao remover a cobertura, uma explosão sônica ensurdecedora enche '
         'o ambiente.',
-        DamageEnum.MAGIC,
+        DamageEnum.SONIC,
         [
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
+            {'condition': CONFUSION, 'effectiveness': 0.75},
             {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': STUNNED, 'effectiveness': 0.75},
+            {'condition': STUNNED, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1460,6 +1471,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': BERSERKER, 'effectiveness': 0.50},
             {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1605,9 +1618,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.75},
             {'condition': CURSE, 'effectiveness': 0.50},
             {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1695,6 +1708,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
             {'condition': CURSE, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1828,6 +1845,53 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
             {'condition': PETRIFIED, 'effectiveness': 0.25},
             {'condition': POISONING, 'effectiveness': 0.25},
             {'condition': SILENCE, 'effectiveness': 0.25},
+        ]
+    ),
+    (
+        'Ao girar a chave, um brilho intenso de cristais o envolveu.',
+        DamageEnum.CRYSTAL,
+        [
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+        ]
+    ),
+    (
+        'Assim que o lacre foi rompido, estilhaços cristalinos surgiram.',
+        DamageEnum.CRYSTAL,
+        [
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+        ]
+    ),
+    (
+        'Com um estalo, uma rajada de cristais disparou em sua direção.',
+        DamageEnum.CRYSTAL,
+        [
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+        ]
+    ),
+    (
+        'Ao levantar a tampa, uma explosão de cristais se espalhou pelo ar.',
+        DamageEnum.CRYSTAL,
+        [
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
+        ]
+    ),
+    (
+        'Ao soltar o fecho, você foi imediatamente cercado por cristais '
+        'cintilantes.',
+        DamageEnum.CRYSTAL,
+        [
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': BLEEDING, 'effectiveness': 0.50},
         ]
     ),
 ]
