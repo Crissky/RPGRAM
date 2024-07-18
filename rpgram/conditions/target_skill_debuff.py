@@ -165,15 +165,28 @@ class MuddyCondition(TargetSkillDebuffCondition):
         return report
 
 
+class TargetDebuffs:
+    __list = [
+        ShatterCondition,
+        MuddyCondition,
+    ]
+
+    def __init__(self, default_power: int = 100):
+        self.default_power = default_power
+
+    def __iter__(self):
+        for condition_class in self.__list:
+            yield condition_class(power=self.default_power)
+
+
+TARGET_DEBUFFS = TargetDebuffs()
+
+
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
-    condition = ShatterCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = MuddyCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
+    for target_debuff in TARGET_DEBUFFS:
+        condition = target_debuff
+        print(condition)
+        print(condition.to_dict())
+        assert condition_factory(**condition.to_dict()) == condition

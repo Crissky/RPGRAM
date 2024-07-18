@@ -198,7 +198,7 @@ class HealStatus:
             yield condition_class()
 
 
-HEALSTATUS = HealStatus()
+HEAL_STATUS = HealStatus()
 
 
 if __name__ == '__main__':

@@ -1,8 +1,7 @@
 from functools import partial
 from random import randint
-from typing import Dict, List, Union
+from typing import TYPE_CHECKING, Dict, List, Union
 
-from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
     BerserkerCondition,
     BleedingCondition,
@@ -21,6 +20,10 @@ from rpgram.conditions.debuff import (
     StunnedCondition
 )
 from rpgram.enums.damage import DamageEmojiEnum, DamageEnum
+
+
+if TYPE_CHECKING:
+    from rpgram.conditions.condition import Condition
 
 
 class SpecialDamage:
@@ -62,7 +65,7 @@ class SpecialDamage:
 
         return self.__damage
 
-    def partial(self, condition_class: Condition) -> partial:
+    def partial(self, condition_class: 'Condition') -> partial:
         return partial(condition_class, level=self.condition_level)
 
     # Getters
