@@ -15,6 +15,7 @@ from rpgram.conditions.debuff import (
     CrystallizedCondition,
     CurseCondition,
     ExhaustionCondition,
+    FearingCondition,
     FrozenCondition,
     ParalysisCondition,
     PetrifiedCondition,
@@ -73,6 +74,7 @@ from rpgram.enums.debuff import (
     CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
+    FEARING,
     FROZEN,
     PARALYSIS,
     PETRIFIED,
@@ -150,6 +152,8 @@ def condition_factory(
         condition_class = CurseCondition
     elif name == EXHAUSTION:
         condition_class = ExhaustionCondition
+    elif name == FEARING:
+        condition_class = FearingCondition
     elif name == FROZEN:
         condition_class = FrozenCondition
     elif name == PARALYSIS:
