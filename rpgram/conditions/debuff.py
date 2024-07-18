@@ -12,6 +12,7 @@ from rpgram.enums.debuff import (
     CRYSTALLIZED,
     CURSE,
     EXHAUSTION,
+    FEARING,
     FROZEN,
     PARALYSIS,
     PETRIFIED,
@@ -228,6 +229,7 @@ class CrystallizedCondition(DebuffCondition):
 
         return report
 
+
 class CurseCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
@@ -297,6 +299,43 @@ class ExhaustionCondition(DebuffCondition):
         report = {}
         report['text'] = 'Personagem está exausto.'
         report['action'] = f'{self.name}'
+
+        return report
+
+
+class FearingCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 2, level: int = 1):
+        super().__init__(
+            name=FEARING,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'O personagem não pode realizar ações por {self.turn} turnos '
+            f'e tem seu multiplicador de Constituição reduzido em '
+            f'"{self.multiplier_constitution - 1:.2f}x" e de Sabedoria em '
+            f'"{self.multiplier_wisdom - 1:.2f}x" (5% x Nível).'
+        )
+
+    @property
+    def multiplier_constitution(self) -> float:
+        power = self.level / 20
+        return round(1 - power, 2)
+
+    @property
+    def multiplier_wisdom(self) -> float:
+        power = self.level / 20
+        return round(1 - power, 2)
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            report['text'] = 'Personagem está amedrontado.'
 
         return report
 
@@ -476,6 +515,7 @@ if __name__ == '__main__':
     print(CrystallizedCondition())
     print(CurseCondition())
     print(ExhaustionCondition())
+    print(FearingCondition())
     print(FrozenCondition())
     print(ParalysisCondition())
     print(PetrifiedCondition())

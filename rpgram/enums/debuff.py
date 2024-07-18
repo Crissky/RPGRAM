@@ -1,7 +1,6 @@
+from rpgram.enums.skill import BarbarianSkillEnum
 from enum import Enum
 from typing import Union
-
-from rpgram.enums.skill import BarbarianSkillEnum
 
 
 class DebuffEnum(Enum):
@@ -13,6 +12,7 @@ class DebuffEnum(Enum):
     CRYSTALLIZED = 'Cristalizado'
     CURSE = 'Amaldiçoado'
     EXHAUSTION = 'Exausto'
+    FEARING = 'Medo'
     FROZEN = 'Congelado'
     PARALYSIS = 'Paralisado'
     PETRIFIED = 'Petrificado'
@@ -30,6 +30,7 @@ class DebuffEmojiEnum(Enum):
     CRYSTALLIZED = '🧊'
     CURSE = '🎃'
     EXHAUSTION = '💧'
+    FEARING = '😰'
     FROZEN = '🥶'
     PARALYSIS = '♒︎'
     PETRIFIED = '🗿'  # 🪨
@@ -52,6 +53,7 @@ CONFUSION = DebuffEnum.CONFUSION.name.title()
 CRYSTALLIZED = DebuffEnum.CRYSTALLIZED.name.title()
 CURSE = DebuffEnum.CURSE.name.title()
 EXHAUSTION = DebuffEnum.EXHAUSTION.name.title()
+FEARING = DebuffEnum.FEARING.name.title()
 FROZEN = DebuffEnum.FROZEN.name.title()
 PARALYSIS = DebuffEnum.PARALYSIS.name.title()
 PETRIFIED = DebuffEnum.PETRIFIED.name.title()
@@ -61,9 +63,10 @@ STUNNED = DebuffEnum.STUNNED.name.title()
 
 FRENZY = BarbarianSkillEnum.FRENZY.value
 
+
 CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION, FRENZY]
 IMMOBILIZED_DEBUFFS_NAMES = [
-    CRYSTALLIZED, FROZEN, PARALYSIS, PETRIFIED, STUNNED
+    CRYSTALLIZED, FROZEN, PARALYSIS, PETRIFIED, STUNNED, FEARING
 ]
 SILENCED_DEBUFFS_NAMES = [SILENCE]
 BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [CRYSTALLIZED, FROZEN, PETRIFIED]

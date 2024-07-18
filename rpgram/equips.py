@@ -1,5 +1,4 @@
 from datetime import datetime
-from random import randint
 from statistics import mean
 from typing import Iterator, List, Union
 

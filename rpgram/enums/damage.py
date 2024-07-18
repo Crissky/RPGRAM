@@ -24,6 +24,7 @@ class DamageEnum(Enum):
     ROAR = 'Rugido'
     CRYSTAL = 'Cristal'
     BLAST = 'Explosão'
+    SONIC = 'Sônico'
 
 
 class DamageEmojiEnum(Enum):
@@ -48,6 +49,7 @@ class DamageEmojiEnum(Enum):
     ROAR = '🦁'
     CRYSTAL = '🟣'
     BLAST = '🧨'
+    SONIC = '🔊'
 
 
 def get_damage_emoji_text(damage: Union[DamageEnum, str]) -> str:
@@ -81,18 +83,18 @@ PHYSICAL_DAMAGE_TYPES = (
     DamageEnum.ROCK,
     DamageEnum.GROUND,
     DamageEnum.ROAR,
+    DamageEnum.BLAST,
+    DamageEnum.SONIC,
 )
 
 if __name__ == '__main__':
-    damage_enum_length = len(DamageEnum) + 1
-    magical_length = len(MAGICAL_DAMAGE_TYPES)
-    physical_length = len(PHYSICAL_DAMAGE_TYPES)
-    if damage_enum_length == magical_length + physical_length:
-        print('DamageEnum OK!!!')
-    else:
+
+    errors = []
+    for damage in DamageEnum:
+        if damage not in MAGICAL_DAMAGE_TYPES and damage not in PHYSICAL_DAMAGE_TYPES:
+            errors.append(damage)
+    if errors:
         raise ValueError(
-            'DamageEnum is not OK!!!\n'
-            f'damage_enum_length: {damage_enum_length}\n'
-            f'magical_length: {magical_length}\n'
-            f'physical_length: {physical_length}\n'
+            f'DamageEnum not in MAGICAL_DAMAGE_TYPES or PHYSICAL_DAMAGE_TYPES:'
+            f'{errors}'
         )
