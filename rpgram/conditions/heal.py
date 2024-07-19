@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Union
+from enum import Enum
+from typing import TYPE_CHECKING, Iterable, Union
 
 from bson import ObjectId
 from rpgram.conditions.condition import Condition
@@ -35,7 +36,7 @@ class HealingCondition(Condition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         power: int,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
@@ -69,6 +70,10 @@ class HealingCondition(Condition):
         return report
 
     @property
+    def name(self) -> str:
+        return self.enum_name.value
+
+    @property
     def emoji(self) -> str:
         return self.__emoji
 
@@ -77,7 +82,7 @@ class Heal1Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL1.value,
+            name=HealingConsumableEnum.HEAL1,
             power=MINOR_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -90,7 +95,7 @@ class Heal2Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL2.value,
+            name=HealingConsumableEnum.HEAL2,
             power=LIGHT_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -103,7 +108,7 @@ class Heal3Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL3.value,
+            name=HealingConsumableEnum.HEAL3,
             power=HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -116,7 +121,7 @@ class Heal4Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL4.value,
+            name=HealingConsumableEnum.HEAL4,
             power=GREATER_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -129,7 +134,7 @@ class Heal5Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL5.value,
+            name=HealingConsumableEnum.HEAL5,
             power=RARE_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -142,7 +147,7 @@ class Heal6Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL6.value,
+            name=HealingConsumableEnum.HEAL6,
             power=EPIC_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -155,7 +160,7 @@ class Heal7Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL7.value,
+            name=HealingConsumableEnum.HEAL7,
             power=LEGENDARY_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -168,7 +173,7 @@ class Heal8Condition(HealingCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=HealingConsumableEnum.HEAL8.value,
+            name=HealingConsumableEnum.HEAL8,
             power=MYTHIC_HEALING_POTION_TURNPOWER,
             frequency=TurnEnum.START,
             turn=turn,
@@ -193,15 +198,17 @@ class HealStatus:
         Heal8Condition,
     ]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[HealingCondition]:
         for condition_class in self.__list:
             yield condition_class()
 
 
-HEAL_STATUS = HealStatus()
+HEAL_STATUS: Iterable[HealingCondition] = HealStatus()
 
 
 if __name__ == '__main__':
+    from rpgram.conditions.factory import condition_factory
+
     print(Heal1Condition())
     print(Heal2Condition())
     print(Heal3Condition())
@@ -210,3 +217,9 @@ if __name__ == '__main__':
     print(Heal6Condition())
     print(Heal7Condition())
     print(Heal8Condition())
+
+    for debuff in HEAL_STATUS:
+        condition = debuff
+        print(condition.to_dict())
+        _dict = {**condition.to_dict()}
+        assert condition_factory(**_dict) == condition

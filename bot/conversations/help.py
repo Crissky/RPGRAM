@@ -733,12 +733,8 @@ def get_details_text(option: str) -> str:
             f'*LISTA DE DEBUFFS*:\n\n'
         )
         for debuff in ALL_DEBUFFS:
-            debuff_name = debuff.name.upper()
-            if debuff_name in DebuffEnum.__members__:
-                debuff_name = f' ({DebuffEnum[debuff_name].value})'
-            else:
-                debuff_name = ''
-            text += f'*Nome*: {debuff.emoji_name}{debuff_name}\n'
+            debuff_name = f'({debuff.enum_name.value})'
+            text += f'*Nome*: {debuff.emoji_name} {debuff_name}\n'
             text += f'*Descrição*: {debuff.description}\n\n'
         text = text.strip()
     elif option == CALLBACK_HEALSTATUS:

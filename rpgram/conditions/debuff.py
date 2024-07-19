@@ -1,24 +1,11 @@
 from datetime import datetime
+from enum import Enum
 from bson import ObjectId
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Iterable, Union
 
 from rpgram.conditions.condition import Condition
 from rpgram.enums.debuff import (
-    BERSERKER,
-    BLEEDING,
-    BLINDNESS,
-    BURN,
-    CONFUSION,
-    CRYSTALLIZED,
-    CURSE,
-    EXHAUSTION,
-    FEARING,
-    FROZEN,
-    PARALYSIS,
-    PETRIFIED,
-    POISONING,
-    SILENCE,
-    STUNNED,
+    DebuffEnum,
 )
 from rpgram.enums.debuff import IMMOBILIZED_DEBUFFS_NAMES
 from rpgram.enums.turn import TurnEnum
@@ -32,7 +19,7 @@ class DebuffCondition(Condition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,
@@ -55,7 +42,7 @@ class BerserkerCondition(DebuffCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=BERSERKER,
+            name=DebuffEnum.BERSERKER,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -64,7 +51,7 @@ class BerserkerCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'O personagem fica enlouquecido ({BERSERKER}) por '
+            f'O personagem fica enlouquecido ({self.name}) por '
             f'{self.turn} turnos, aumentando o multiplicador de Força em '
             f'"{self.multiplier_strength:.2f}x" (5% x Nível), mas '
             f'pode atacar aliados ou a si.'
@@ -78,7 +65,7 @@ class BerserkerCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': '', 'action': self.name}
         if self.turn != 1:
-            report['text'] = f'Personagem está enlouquecido ({BERSERKER}).'
+            report['text'] = f'Personagem está enlouquecido ({self.name}).'
 
         return report
 
@@ -87,7 +74,7 @@ class BleedingCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=BLEEDING,
+            name=DebuffEnum.BLEEDING,
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
@@ -127,7 +114,7 @@ class BlindnessCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=BLINDNESS,
+            name=DebuffEnum.BLINDNESS,
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
@@ -157,7 +144,7 @@ class BurnCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=BURN,
+            name=DebuffEnum.BURN,
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
@@ -187,7 +174,7 @@ class ConfusionCondition(DebuffCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=CONFUSION,
+            name=DebuffEnum.CONFUSION,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -212,7 +199,7 @@ class CrystallizedCondition(DebuffCondition):
 
     def __init__(self, turn: int = 7, level: int = 1):
         super().__init__(
-            name=CRYSTALLIZED,
+            name=DebuffEnum.CRYSTALLIZED,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -234,7 +221,7 @@ class CurseCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=CURSE,
+            name=DebuffEnum.CURSE,
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
@@ -270,7 +257,7 @@ class ExhaustionCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=EXHAUSTION,
+            name=DebuffEnum.EXHAUSTION,
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
@@ -307,7 +294,7 @@ class FearingCondition(DebuffCondition):
 
     def __init__(self, turn: int = 2, level: int = 1):
         super().__init__(
-            name=FEARING,
+            name=DebuffEnum.FEARING,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -344,7 +331,7 @@ class FrozenCondition(DebuffCondition):
 
     def __init__(self, turn: int = 5, level: int = 1):
         super().__init__(
-            name=FROZEN,
+            name=DebuffEnum.FROZEN,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -366,7 +353,7 @@ class ParalysisCondition(DebuffCondition):
 
     def __init__(self, turn: int = 3, level: int = 1):
         super().__init__(
-            name=PARALYSIS,
+            name=DebuffEnum.PARALYSIS,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -388,7 +375,7 @@ class PetrifiedCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=PETRIFIED,
+            name=DebuffEnum.PETRIFIED,
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
@@ -410,7 +397,7 @@ class PoisoningCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=POISONING,
+            name=DebuffEnum.POISONING,
             frequency=TurnEnum.START,
             turn=-1,
             level=level,
@@ -442,7 +429,7 @@ class SilenceCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
         super().__init__(
-            name=SILENCE,
+            name=DebuffEnum.SILENCE,
             frequency=TurnEnum.CONTINUOUS,
             turn=-1,
             level=level,
@@ -464,7 +451,7 @@ class StunnedCondition(DebuffCondition):
 
     def __init__(self, turn: int = 1, level: int = 1):
         super().__init__(
-            name=STUNNED,
+            name=DebuffEnum.STUNNED,
             frequency=TurnEnum.START,
             turn=turn,
             level=level,
@@ -501,12 +488,12 @@ class Debuffs:
         StunnedCondition,
     ]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[DebuffCondition]:
         for condition_class in self.__list:
             yield condition_class()
 
 
-DEBUFFS = Debuffs()
+DEBUFFS: Iterable[DebuffCondition] = Debuffs()
 
 
 if __name__ == '__main__':

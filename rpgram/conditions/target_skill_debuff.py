@@ -4,7 +4,8 @@
 
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Union
+from enum import Enum
+from typing import TYPE_CHECKING, Iterable, Union
 
 from bson import ObjectId
 from rpgram.conditions.debuff import DebuffCondition
@@ -25,7 +26,7 @@ class TargetSkillDebuffCondition(DebuffCondition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         power: int,
         turn: int = 1,
@@ -68,7 +69,7 @@ class ShatterCondition(TargetSkillDebuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=GuardianSkillEnum.SHATTER.value,
+            name=GuardianSkillEnum.SHATTER,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,
@@ -124,7 +125,7 @@ class MuddyCondition(TargetSkillDebuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=MageSkillEnum.MUDDY.value,
+            name=MageSkillEnum.MUDDY,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,
@@ -174,12 +175,12 @@ class TargetDebuffs:
     def __init__(self, default_power: int = 100):
         self.default_power = default_power
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[TargetSkillDebuffCondition]:
         for condition_class in self.__list:
             yield condition_class(power=self.default_power)
 
 
-TARGET_DEBUFFS = TargetDebuffs()
+TARGET_DEBUFFS: Iterable[TargetSkillDebuffCondition] = TargetDebuffs()
 
 
 if __name__ == '__main__':

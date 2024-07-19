@@ -4,6 +4,7 @@
 
 
 from datetime import datetime
+from enum import Enum
 from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
@@ -25,7 +26,7 @@ class TargetSkillBuffCondition(BuffCondition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         power: int,
         turn: int = 1,
@@ -68,7 +69,7 @@ class WarBannerCondition(TargetSkillBuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=WarriorSkillEnum.WAR_BANNER.value,
+            name=WarriorSkillEnum.WAR_BANNER,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,

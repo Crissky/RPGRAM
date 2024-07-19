@@ -3,21 +3,7 @@ import re
 
 from rpgram.enums import DamageEnum
 from rpgram.enums.debuff import (
-    BERSERKER,
-    BLEEDING,
-    BLINDNESS,
-    BURN,
-    CONFUSION,
-    CRYSTALLIZED,
-    CURSE,
-    EXHAUSTION,
-    FEARING,
-    FROZEN,
-    PARALYSIS,
-    PETRIFIED,
-    POISONING,
-    SILENCE,
-    STUNNED,
+    DebuffEnum
 )
 
 # Número máximo de itens que podem ser dropados por baú.
@@ -640,9 +626,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'irrompe.',
         DamageEnum.BLAST,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -650,9 +636,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'seu redor.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -660,8 +646,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'chuva de dardos afiados.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -669,10 +655,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'causando estragos.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -680,10 +666,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'descarga de magia elétrica.',
         DamageEnum.LIGHTNING,
         [
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -691,7 +677,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'de alçapão.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -699,10 +685,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'de ácido.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -710,9 +696,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em seu caminho.',
         DamageEnum.WIND,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -720,9 +706,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'insetos venenosos emerge.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -730,9 +716,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'envolve instantaneamente.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -740,10 +726,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'foi liberado.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -751,7 +737,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'para trás.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -759,15 +745,15 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em sua direção.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
         'Ao desamarrar as cordas, uma pedra pesada cai, o atingindo.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -775,8 +761,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'são disparados em sua direção.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -784,7 +770,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'sobre ti.',
         DamageEnum.ROCK,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -792,10 +778,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em seu alcance.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -803,16 +789,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'subterrânea.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
         'Ao destravar, uma lâmina afiada aparece, visando seus pés.',
         DamageEnum.SLASHING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -820,8 +806,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'que o envolve.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -829,7 +815,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'poço escuro.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -837,10 +823,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'tudo à sua volta.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -848,7 +834,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'flechas letais.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.8},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.8},
         ]
     ),
     (
@@ -856,10 +842,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'espalha por seu corpo.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -867,26 +853,26 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'criatura feroz.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
         'Com um gesto descuidado, você desencadeia uma explosão mágica.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -894,15 +880,15 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'arremessa para longe.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
         'Ao desatar o fecho, uma armadilha de espinhos afiados é ativada.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -910,9 +896,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'por um redemoinho.',
         DamageEnum.WIND,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -920,9 +906,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'prende seus pés.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -930,7 +916,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em um abismo escuro.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -938,10 +924,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'gás paralisante.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -949,12 +935,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'a audição temporariamente.',
         DamageEnum.SONIC,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.90},
-            {'condition': STUNNED, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -962,7 +948,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'água turbulenta.',
         DamageEnum.WATER,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -970,7 +956,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'escorregar e cair.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -978,8 +964,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma explosão de virotes.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -987,8 +973,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'dispara estacas afiadas.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -996,11 +982,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'envolve em trevas anômalas.',
         DamageEnum.DARK,
         [
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1008,8 +994,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'prende, imobilizando-o.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1017,7 +1003,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'pedras que caem sobre ti.',
         DamageEnum.ROCK,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1025,9 +1011,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'libera um gás.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1035,12 +1021,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'despeja dardos flamejantes sobre você.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1048,7 +1034,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'engolido por uma correnteza violenta.',
         DamageEnum.WATER,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1056,7 +1042,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'lança para um fosso fundo.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1064,13 +1050,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'flechas envenenadas.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1078,10 +1064,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma teia ácida pegajosa.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1089,9 +1075,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'rede de espinhos de aço.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1099,10 +1085,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'desencadeia uma tempestade de granizo.',
         DamageEnum.COLD,
         [
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1110,9 +1096,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'gás congelante.',
         DamageEnum.COLD,
         [
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.75},
-            {'condition': FROZEN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1120,11 +1106,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'queimando tudo ao seu redor.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1132,10 +1118,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'prende em um vórtice de vento.',
         DamageEnum.WIND,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1143,16 +1129,16 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'abismo interdimensional.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.75},
-            {'condition': BLINDNESS, 'effectiveness': 0.75},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1160,7 +1146,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'chuva de pedras.',
         DamageEnum.ROCK,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1168,10 +1154,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'sombras aterrorizantes.',
         DamageEnum.DARK,
         [
-            {'condition': BLINDNESS, 'effectiveness': 1.00},
-            {'condition': FEARING, 'effectiveness': 0.75},
-            {'condition': FEARING, 'effectiveness': 0.75},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1179,12 +1165,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'criaturas esfomeadas.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1192,7 +1178,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'labirinto subterrâneo.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1200,26 +1186,26 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'gás alucinógeno.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
         'Ao destravar, você aciona uma explosão que o arremessa longe.',
         DamageEnum.BLAST,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.75},
-            {'condition': STUNNED, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1227,10 +1213,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'ácido corrosivo.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1238,14 +1224,14 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em uma ilusão terrível.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1253,13 +1239,13 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'óleo flamejante.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1267,10 +1253,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'libera um enxame de insetos venenosos.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1278,8 +1264,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'cria um vácuo repentino.',
         DamageEnum.WIND,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1287,37 +1273,37 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'cair em um fosso com espetos.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 1.00},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
         'Com um giro da chave, uma explosão mágica irrompe.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1325,10 +1311,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'que liberta um monstro furioso.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1336,10 +1322,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma armadilha de vento cortante.',
         DamageEnum.WIND,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1347,10 +1333,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'elétricos em todas as direções.',
         DamageEnum.LIGHTNING,
         [
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1358,7 +1344,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'um terremoto.',
         DamageEnum.GROUND,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1366,11 +1352,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'causando estragos.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1378,14 +1364,14 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'solta um gás alucinógeno.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1393,7 +1379,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'armadilha de água em fúria.',
         DamageEnum.WATER,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1401,7 +1387,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'torrente de pedras.',
         DamageEnum.ROCK,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1409,8 +1395,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'lâminas afiadas.',
         DamageEnum.SLASHING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1418,10 +1404,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'o ambiente.',
         DamageEnum.SONIC,
         [
-            {'condition': CONFUSION, 'effectiveness': 0.75},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': STUNNED, 'effectiveness': 0.75},
-            {'condition': STUNNED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1429,7 +1415,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'prende seus membros.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1437,27 +1423,27 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'fumaça mágica.',
         DamageEnum.MAGIC,
         [
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BLINDNESS, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': CONFUSION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
-            {'condition': EXHAUSTION, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
-            {'condition': PETRIFIED, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': SILENCE, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1465,24 +1451,24 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'envolve em trevas de perdição.',
         DamageEnum.DARK,
         [
-            {'condition': BLINDNESS, 'effectiveness': 0.90},
-            {'condition': BLINDNESS, 'effectiveness': 0.90},
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
-            {'condition': BERSERKER, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.50},
         ]
     ),
     (
         'Com um clique, o mecanismo se abre, liberando um veneno paralisante.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
-            {'condition': PARALYSIS, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.75},
         ]
     ),
     (
@@ -1490,7 +1476,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma chuva de rochas.',
         DamageEnum.ROCK,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1498,7 +1484,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'armadilha de correntes letais.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1506,15 +1492,15 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'libera um gás venenoso.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 1.00},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1522,11 +1508,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'disparada em sua direção.',
         DamageEnum.SLASHING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1534,10 +1520,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'envolve em uma teia incandescente pegajosa.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1545,24 +1531,24 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma armadilha de granizo.',
         DamageEnum.COLD,
         [
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
         ]
     ),
     (
         'Com um clique, o mecanismo se abre, causando uma explosão de fogo.',
         DamageEnum.FIRE,
         [
-            {'condition': BURN, 'effectiveness': 1.00},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 1.00},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1570,11 +1556,11 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'flechas envenenadas.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BLEEDING, 'effectiveness': 0.75},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1582,10 +1568,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'armadilha de ácido corrosivo.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1593,10 +1579,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'enxame de insetos venenosos.',
         DamageEnum.POISON,
         [
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1604,10 +1590,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'corroendo tudo em seu alcance.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1615,12 +1601,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'criaturas famintas.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.75},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': CURSE, 'effectiveness': 0.50},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1628,7 +1614,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'que o faz escorregar em direção a um poço escuro.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1636,8 +1622,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'tempestade de granizo.',
         DamageEnum.COLD,
         [
-            {'condition': FROZEN, 'effectiveness': 0.50},
-            {'condition': FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1645,9 +1631,9 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em uma rede de fios abrolhosos de aço.',
         DamageEnum.SLASHING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1655,7 +1641,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'armadilha de pedras que caem em você.',
         DamageEnum.ROCK,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1663,12 +1649,12 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'desencadeia uma chuva de ácido.',
         DamageEnum.ACID,
         [
-            {'condition': BURN, 'effectiveness': 0.75},
-            {'condition': BURN, 'effectiveness': 0.50},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.50},
-            {'condition': POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.75},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1676,8 +1662,8 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'em sua direção.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1685,7 +1671,7 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'cair em um poço profundo.',
         DamageEnum.BLUDGEONING,
         [
-            {'condition': STUNNED, 'effectiveness': 0.90},
+            {'condition': DebuffEnum.STUNNED, 'effectiveness': 0.90},
         ]
     ),
     (
@@ -1693,10 +1679,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'de flechas afiadas.',
         DamageEnum.PIERCING,
         [
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1704,14 +1690,14 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'aterrorizante em sua direção.',
         DamageEnum.CHAOS,
         [
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
-            {'condition': FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FEARING, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1719,18 +1705,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'sussurro antigo: "Belendë ar mornië!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1738,18 +1724,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'voz etérea proclama: "Fëanturi vahai!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1757,18 +1743,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'sentença: "Ainuvalë melin!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1776,18 +1762,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'uma voz ecoa: "Nai tiruvantel ar varyuvantel!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1795,18 +1781,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'ancestral decreta: "Aina i ahërë!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1814,18 +1800,18 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'acompanhada por uma voz severa: "Erë enesselmo!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
@@ -1833,54 +1819,54 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'sinistra murmura: "Nai tiruvantes!"',
         DamageEnum.DIVINE,
         [
-            {'condition': BERSERKER, 'effectiveness': 0.25},
-            {'condition': BLEEDING, 'effectiveness': 0.25},
-            {'condition': BLINDNESS, 'effectiveness': 0.25},
-            {'condition': BURN, 'effectiveness': 0.25},
-            {'condition': CONFUSION, 'effectiveness': 0.25},
-            {'condition': CURSE, 'effectiveness': 0.25},
-            {'condition': EXHAUSTION, 'effectiveness': 0.25},
-            {'condition': FROZEN, 'effectiveness': 0.25},
-            {'condition': PARALYSIS, 'effectiveness': 0.25},
-            {'condition': PETRIFIED, 'effectiveness': 0.25},
-            {'condition': POISONING, 'effectiveness': 0.25},
-            {'condition': SILENCE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BERSERKER, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BLINDNESS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.BURN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CONFUSION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.CURSE, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.EXHAUSTION, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.FROZEN, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PARALYSIS, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.PETRIFIED, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.POISONING, 'effectiveness': 0.25},
+            {'condition': DebuffEnum.SILENCE, 'effectiveness': 0.25},
         ]
     ),
     (
         'Ao girar a chave, um brilho intenso de cristais o envolveu.',
         DamageEnum.CRYSTAL,
         [
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
         'Assim que o lacre foi rompido, estilhaços cristalinos surgiram.',
         DamageEnum.CRYSTAL,
         [
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
         'Com um estalo, uma rajada de cristais disparou em sua direção.',
         DamageEnum.CRYSTAL,
         [
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
         'Ao levantar a tampa, uma explosão de cristais se espalhou pelo ar.',
         DamageEnum.CRYSTAL,
         [
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
     (
@@ -1888,10 +1874,10 @@ REPLY_TEXTS_FIND_TRAP_OPEN = [
         'cintilantes.',
         DamageEnum.CRYSTAL,
         [
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': CRYSTALLIZED, 'effectiveness': 0.50},
-            {'condition': BLEEDING, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.CRYSTALLIZED, 'effectiveness': 0.50},
+            {'condition': DebuffEnum.BLEEDING, 'effectiveness': 0.50},
         ]
     ),
 ]

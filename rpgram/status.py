@@ -2,6 +2,7 @@
 Este módulo gerencia as Condições do Personagem.
 '''
 
+from enum import Enum
 from random import choice, random
 from typing import Iterable, Iterator, List, Tuple, Type, Union
 
@@ -18,7 +19,7 @@ from rpgram.conditions.special_damage_skill import SpecialDamageSkillCondition
 from rpgram.conditions.target_skill_buff import TargetSkillBuffCondition
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
-    IMMOBILIZED_DEBUFFS_NAMES
+    IMMOBILIZED_DEBUFFS_NAMES,
 )
 from rpgram.constants.text import STATUS_EMOJI_TEXT
 from rpgram.enums.turn import TurnEnum
@@ -127,9 +128,9 @@ class Status:
         ignore_not_find: bool = False,
         notify: bool = True
     ) -> dict:
-        if not isinstance(condition, (Condition, str)):
+        if not isinstance(condition, (Condition, str, Enum)):
             raise TypeError(
-                f'O parâmetro deve ser do tipo Condition ou String. '
+                f'O parâmetro deve ser do tipo Condition, String ou Enum. '
                 f'Tipo: {type(condition)}.'
             )
 
@@ -138,6 +139,9 @@ class Status:
             condition_level = condition.level
         elif isinstance(condition, str):
             condition_name = condition
+            condition_level = 1
+        elif isinstance(condition, Enum):
+            condition_name = condition.name
             condition_level = 1
 
         report = {
@@ -309,11 +313,13 @@ class Status:
             if condition == condition_name:
                 return condition
 
-    def cure_condition(self, condition: Union[str, Condition]) -> dict:
+    def cure_condition(self, condition: Union[str, Condition, Enum]) -> dict:
         if isinstance(condition, Condition):
             condition_name = condition.name
         elif isinstance(condition, str):
             condition_name = condition
+        elif isinstance(condition, Enum):
+            condition_name = condition.name
 
         condition = self.get_condition(condition)
         if condition:
@@ -416,7 +422,7 @@ class Status:
     def condition_type_order(self, condition: Condition) -> int:
         if isinstance(condition, BarrierCondition):
             return 1
-        elif isinstance(condition,  HealingCondition):
+        elif isinstance(condition, HealingCondition):
             return 2
         elif isinstance(condition, DebuffCondition):
             return 3
@@ -672,6 +678,8 @@ class Status:
 
 
 if __name__ == '__main__':
+    from rpgram.enums.debuff import DebuffEnum
+
     status = Status(
         conditions=[],
     )
@@ -686,11 +694,11 @@ if __name__ == '__main__':
     status = Status(
         conditions=[
             Condition(
-                name='Poison',
+                name=DebuffEnum.POISONING,
                 frequency='CONTINUOUS',
             ),
             Condition(
-                name='Burn',
+                name=DebuffEnum.BURN,
                 frequency='CONTINUOUS',
             ),
         ],

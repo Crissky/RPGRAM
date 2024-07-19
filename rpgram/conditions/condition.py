@@ -4,6 +4,7 @@ Este módulo representa as condições positivas e negativas dos personagens.
 
 from abc import abstractmethod
 from datetime import datetime
+from enum import Enum
 from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
@@ -23,7 +24,7 @@ if TYPE_CHECKING:
 class Condition(StatsBooster):
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,
@@ -44,7 +45,7 @@ class Condition(StatsBooster):
                 f'Tipo: {type(frequency)}.'
             )
 
-        self.__name = name
+        self.__enum_name: Enum = name
         self.__frequency = frequency
         self.__turn = turn
         self.__level = level
@@ -121,7 +122,13 @@ class Condition(StatsBooster):
                 self.name == other.name
             ))
         elif isinstance(other, str):
-            return self.name.upper() == other.upper()
+            return any((
+                self.name.upper() == other.upper(),
+                self.__enum_name.name.upper() == other.upper(),
+                self.__enum_name.value.upper() == other.upper(),
+            ))
+        elif isinstance(other, Enum):
+            return self.__enum_name == other
         return False
 
     def __lt__(self, other):
@@ -135,18 +142,26 @@ class Condition(StatsBooster):
 
     def to_dict(self) -> dict:
         return {
-            'name': self.name,
+            'name': self.__enum_name.name,
             'turn': self.turn,
             'level': self.level,
         }
 
     # Getters
-    name = property(lambda self: self.__name)
-    emoji_name = property(lambda self: f'{self.emoji}{self.name}')
-    full_name = property(lambda self: f'{self.emoji_name}{self.level}')
-    frequency = property(lambda self: self.__frequency)
-    turn = property(lambda self: self.__turn)
-    level = property(lambda self: self.__level)
+    enum_name: Enum = property(lambda self: self.__enum_name)
+    emoji_name: str = property(lambda self: f'{self.emoji}{self.name}')
+    full_name: str = property(lambda self: f'{self.emoji_name}{self.level}')
+    frequency: TurnEnum = property(lambda self: self.__frequency)
+    turn: int = property(lambda self: self.__turn)
+    level: int = property(lambda self: self.__level)
+
+    @property
+    def true_name(self) -> str:
+        return self.__enum_name.name
+    
+    @property
+    def name(self) -> str:
+        return self.true_name.replace('_', ' ').title()
 
     @property
     def description(self) -> str:
@@ -169,10 +184,15 @@ class Condition(StatsBooster):
 
 
 if __name__ == '__main__':
+    from rpgram.enums.debuff import DebuffEnum
+
     poison = Condition(
-        name='Veneno',
+        name=DebuffEnum.POISONING,
         frequency='START',
     )
 
+    print('poison.name:', poison.name)
+    print('poison.emoji_name:', poison.emoji_name)
+    print('poison.full_name:', poison.full_name)
     print('POISON\n', poison)
     print('POISON DICT\n', poison.to_dict())

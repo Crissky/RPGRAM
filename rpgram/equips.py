@@ -1,6 +1,6 @@
 from datetime import datetime
 from statistics import mean
-from typing import Iterator, List, Union
+from typing import Iterable, Iterator, List, Union
 
 from bson import ObjectId
 
@@ -410,7 +410,7 @@ class Equips:
             updated_at=self.__updated_at,
         )
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[Equipment]:
         equips = [
             self.helmet, self.left_hand, self.right_hand,
             self.armor, self.boots, self.ring, self.amulet

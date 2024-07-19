@@ -1,4 +1,5 @@
 from itertools import chain
+from typing import Iterable
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.barrier import BarrierCondition
 from rpgram.conditions.barrier import GuardianShieldCondition
@@ -41,9 +42,9 @@ class AllDebuffs:
         TARGET_DEBUFFS,
     ]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[DebuffCondition]:
         for condition in chain(*self.__list):
             yield condition
 
 
-ALL_DEBUFFS = AllDebuffs()
+ALL_DEBUFFS: Iterable[DebuffCondition] = AllDebuffs()

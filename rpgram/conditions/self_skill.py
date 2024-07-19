@@ -5,6 +5,7 @@
 
 
 from datetime import datetime
+from enum import Enum
 from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
@@ -39,7 +40,7 @@ class SelfSkillCondition(BuffCondition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         character: 'BaseCharacter',
         frequency: Union[str, TurnEnum],
         turn: int = 1,
@@ -75,7 +76,7 @@ class RobustBlockCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=GuardianSkillEnum.ROBUST_BLOCK.value,
+            name=GuardianSkillEnum.ROBUST_BLOCK,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -124,7 +125,7 @@ class CrystalArmorCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=GuardianSkillEnum.CRYSTAL_ARMOR.value,
+            name=GuardianSkillEnum.CRYSTAL_ARMOR,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -181,7 +182,7 @@ class RockArmorCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=MageSkillEnum.ROCK_ARMOR.value,
+            name=MageSkillEnum.ROCK_ARMOR,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -238,7 +239,7 @@ class LavaSkinCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=MageSkillEnum.LAVA_SKIN.value,
+            name=MageSkillEnum.LAVA_SKIN,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -298,7 +299,7 @@ class MistFormCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=MageSkillEnum.MIST_FORM.value,
+            name=MageSkillEnum.MIST_FORM,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -347,7 +348,7 @@ class FuriousFuryCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.FURIOUS_FURY.value,
+            name=BarbarianSkillEnum.FURIOUS_FURY,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -397,7 +398,7 @@ class FuriousInstinctCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.FURIOUS_INSTINCT.value,
+            name=BarbarianSkillEnum.FURIOUS_INSTINCT,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -445,7 +446,7 @@ class FrenzyCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.FRENZY.value,
+            name=BarbarianSkillEnum.FRENZY,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -502,7 +503,7 @@ class RaijusFootstepsCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.RAIJUS_FOOTSTEPS.value,
+            name=BarbarianSkillEnum.RAIJUS_FOOTSTEPS,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -562,7 +563,7 @@ class FafnirsScalesCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.FAFNIRS_SCALES.value,
+            name=BarbarianSkillEnum.FAFNIRS_SCALES,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -614,7 +615,7 @@ class MysticalProtectionCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=SorcererSkillEnum.MYSTICAL_PROTECTION.value,
+            name=SorcererSkillEnum.MYSTICAL_PROTECTION,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -665,7 +666,7 @@ class MysticalConfluenceCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=SorcererSkillEnum.MYSTICAL_CONFLUENCE.value,
+            name=SorcererSkillEnum.MYSTICAL_CONFLUENCE,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -716,7 +717,7 @@ class MysticalVigorCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=SorcererSkillEnum.MYSTICAL_VIGOR.value,
+            name=SorcererSkillEnum.MYSTICAL_VIGOR,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,

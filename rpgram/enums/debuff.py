@@ -45,38 +45,33 @@ DEBUFF_FULL_NAMES = {
 }
 
 
-BERSERKER = DebuffEnum.BERSERKER.name.title()
-BLEEDING = DebuffEnum.BLEEDING.name.title()
-BLINDNESS = DebuffEnum.BLINDNESS.name.title()
-BURN = DebuffEnum.BURN.name.title()
-CONFUSION = DebuffEnum.CONFUSION.name.title()
-CRYSTALLIZED = DebuffEnum.CRYSTALLIZED.name.title()
-CURSE = DebuffEnum.CURSE.name.title()
-EXHAUSTION = DebuffEnum.EXHAUSTION.name.title()
-FEARING = DebuffEnum.FEARING.name.title()
-FROZEN = DebuffEnum.FROZEN.name.title()
-PARALYSIS = DebuffEnum.PARALYSIS.name.title()
-PETRIFIED = DebuffEnum.PETRIFIED.name.title()
-POISONING = DebuffEnum.POISONING.name.title()
-SILENCE = DebuffEnum.SILENCE.name.title()
-STUNNED = DebuffEnum.STUNNED.name.title()
-
-FRENZY = BarbarianSkillEnum.FRENZY.value
-
-
-CONFUSION_DEBUFFS_NAMES = [BERSERKER, CONFUSION, FRENZY]
-IMMOBILIZED_DEBUFFS_NAMES = [
-    CRYSTALLIZED, FROZEN, PARALYSIS, PETRIFIED, STUNNED, FEARING
+CONFUSION_DEBUFFS_NAMES = [
+    DebuffEnum.BERSERKER.name,
+    DebuffEnum.CONFUSION.name,
+    BarbarianSkillEnum.FRENZY.name,
 ]
-SILENCED_DEBUFFS_NAMES = [SILENCE]
-BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [CRYSTALLIZED, FROZEN, PETRIFIED]
+IMMOBILIZED_DEBUFFS_NAMES = [
+    DebuffEnum.CRYSTALLIZED.name,
+    DebuffEnum.FEARING.name,
+    DebuffEnum.FROZEN.name,
+    DebuffEnum.PARALYSIS.name,
+    DebuffEnum.PETRIFIED.name,
+    DebuffEnum.STUNNED.name,
+]
+SILENCED_DEBUFFS_NAMES = [DebuffEnum.SILENCE.name]
+BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [
+    DebuffEnum.CRYSTALLIZED.name,
+    DebuffEnum.FROZEN.name,
+    DebuffEnum.PETRIFIED.name,
+]
 
 
 def get_debuff_emoji_text(damage: Union[DebuffEnum, str]) -> str:
     if isinstance(damage, str):
         damage = DebuffEnum[damage]
     name = damage.name
-    return f'{DebuffEmojiEnum[name].value}{damage.name.title()}'
+
+    return f'{DebuffEmojiEnum[name].value}{name.title()}'
 
 
 if __name__ == '__main__':

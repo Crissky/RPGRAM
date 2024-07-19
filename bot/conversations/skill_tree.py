@@ -46,7 +46,6 @@ from bot.constants.skill_tree import (
     PATTERN_SKILL_BACK_LIST_UPGRADE,
     PATTERN_SKILL_BACK_LIST_USE,
     PATTERN_SKILL_BACK_MAIN,
-    REFRESH_SKILL_TREE_PATTERN,
     SECTION_TEXT_LEARN_SKILL_TREE,
     SECTION_TEXT_SKILL_TREE,
     LIST_USE_SKILL_BUTTON_TEXT,
@@ -79,8 +78,6 @@ from bot.functions.chat import (
     callback_data_to_string,
     edit_message_text,
     get_close_button,
-    get_random_refresh_text,
-    get_refresh_close_button,
     message_edit_reply_markup,
     reply_text,
     reply_typing
@@ -107,7 +104,7 @@ from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.characters.char_non_player import NPCharacter
 from rpgram.characters.char_player import PlayerCharacter
-from rpgram.enums.emojis import EmojiEnum, FaceEmojiEnum
+from rpgram.enums.emojis import FaceEmojiEnum
 from rpgram.enums.skill import TARGET_ENUM_NOT_SELF, SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
 from rpgram.skills.factory import ALL_SKILL_DICT
