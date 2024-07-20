@@ -73,6 +73,16 @@ class BarbarianSkillEnum(Enum):
     WILD_POISON = 'Veneno Selvagem'
 
 
+class ClericSkillEnum(Enum):
+    IDUNNÇÇÇS_APPLE = 'Maçã de Idunn'
+    KRATOSÇÇÇS_WRATH = 'Ira de Kratos'
+    ULLRÇÇÇS_FOCUS = 'Foco de Ullr'
+    HECATEÇÇÇS_FLAMES = 'Chamas de Hecate'
+    OGUNÇÇÇS_CLOAK = 'Manto de Ogun'
+    ISISÇÇÇS_VEIL = 'Véu de Isis'
+    ANANSIÇÇÇS_TRICKERY = 'Artimanha de Anansi'
+
+
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'
