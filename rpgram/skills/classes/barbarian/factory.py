@@ -11,7 +11,14 @@ from rpgram.skills.classes.barbarian.skill2 import (
     FuriousInstinctSkill,
     FuriousRoarSkill
 )
-from rpgram.skills.classes.barbarian.skill3 import FafnirsScalesSkill, HydraFangsSkill, RaijusFootstepsSkill, SalamandersBreathSkill, SweepingRocSkill, WildForgeSkill
+from rpgram.skills.classes.barbarian.skill3 import (
+    FafnirsScalesSkill,
+    HydraFangsSkill,
+    RaijusFootstepsSkill,
+    SalamandersBreathSkill,
+    SweepingRocSkill,
+    WildForgeSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 

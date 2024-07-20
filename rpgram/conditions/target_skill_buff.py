@@ -10,11 +10,16 @@ from typing import TYPE_CHECKING, Iterable, Union
 from bson import ObjectId
 from rpgram.conditions.buff import BuffCondition
 from rpgram.constants.text import (
+    EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
-from rpgram.enums.skill import WarriorSkillEnum
+from rpgram.enums.skill import ClericSkillEnum, WarriorSkillEnum
 from rpgram.enums.turn import TurnEnum
 
 
@@ -46,12 +51,27 @@ class TargetSkillBuffCondition(BuffCondition):
         )
         self._power = int(power)
 
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* {self.function_text}'
+            )
+            report['text'] = text
+
+        return report
+
     @property
     def power(self) -> int:
         power_multiplier = 1 + (self.level / 10)
         power_multiplier = round(power_multiplier, 2)
 
         return int(self._power * power_multiplier)
+
+    @property
+    def function_text(self) -> str:
+        raise NotImplementedError()
 
     def to_dict(self) -> dict:
         _dict = {'power': self._power}
@@ -101,21 +121,285 @@ class WarBannerCondition(TargetSkillBuffCondition):
     def emoji(self) -> str:
         return '🚩'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* permanece com a *Marca do Senhor da Guerra*.'
-            )
-            report['text'] = text
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Marca do Senhor da Guerra*.'
 
-        return report
+
+class IdunnsAppleCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.IDUNNÇÇÇS_APPLE,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Beção de Idunn* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🍎'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece abençoado por *Idunn*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 5)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class KratossWrathCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.KRATOSÇÇÇS_WRATH,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Ira do Deus Grego da Guerra* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '😡'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Ira do Deus Grego da Guerra*.'
+
+
+class UllrsFocusCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.ULLRÇÇÇS_FOCUS,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Benção de Ullr* que aumenta o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🦌'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Benção de Ullr*.'
+
+
+class HecatesFlamesCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.HECATEÇÇÇS_FLAMES,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Fagulhas da Tocha de Hécate* que aumentam o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🗽'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com as *Fagulhas da Tocha de Hécate*.'
+
+
+class OgunsCloakCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.OGUNÇÇÇS_CLOAK,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Fragmentos de Metal dos Deuses* que aumentam a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '⛓️‍💥'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com os *Fragmentos de Metal dos Deuses*.'
+
+
+class IsissVeilCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.ISISÇÇÇS_VEIL,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Névoa Resplandecente de Energia Divina* que aumenta a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🌌'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Névoa Resplandecente de Energia Divina*.'
+
+
+class AnansisTrickeryCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.ANANSIÇÇÇS_TRICKERY,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Teia de Ilusões* que aumenta o '
+            f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* '
+            f' em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🕸️'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Teia de Ilusões*.'
 
 
 class TargetBuffs:
     __list = [
         WarBannerCondition,
+        IdunnsAppleCondition,
+        KratossWrathCondition,
+        UllrsFocusCondition,
+        HecatesFlamesCondition,
+        OgunsCloakCondition,
+        IsissVeilCondition,
+        AnansisTrickeryCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:
@@ -129,7 +413,7 @@ TARGET_BUFFS: Iterable[TargetSkillBuffCondition] = TargetBuffs()
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
-    condition = WarBannerCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
+    for condition in TargetBuffs():
+        print(condition)
+        print(condition.to_dict())
+        assert condition_factory(**condition.to_dict()) == condition

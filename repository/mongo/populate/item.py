@@ -936,7 +936,7 @@ def choice_consumable(
         quantity = int(quantity + group_level / 10)
         quantity = max(1, quantity)
     elif isinstance(item, GemstoneConsumable):
-        quantity = int(quantity + group_level / randint(20, 40))
+        quantity = int(quantity + group_level / 40)
         quantity = max(1, quantity)
 
     item = Item(item, quantity)

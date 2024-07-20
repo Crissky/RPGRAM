@@ -60,6 +60,13 @@ from rpgram.conditions.special_damage_skill import (
     SDWildWindCondition
 )
 from rpgram.conditions.target_skill_buff import (
+    AnansisTrickeryCondition,
+    HecatesFlamesCondition,
+    IdunnsAppleCondition,
+    IsissVeilCondition,
+    KratossWrathCondition,
+    OgunsCloakCondition,
+    UllrsFocusCondition,
     WarBannerCondition
 )
 from rpgram.conditions.target_skill_debuff import (
@@ -72,6 +79,7 @@ from rpgram.enums.debuff import (
 from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
+    ClericSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
     SorcererSkillEnum,
@@ -195,6 +203,21 @@ def condition_factory(
         condition_class = SDWildAcidCondition
     elif compare_condition(name, BarbarianSkillEnum.WILD_POISON):
         condition_class = SDWildPoisonCondition
+    # CLERIC BUFFS
+    elif compare_condition(name, ClericSkillEnum.IDUNNÇÇÇS_APPLE):
+        condition_class = IdunnsAppleCondition
+    elif compare_condition(name, ClericSkillEnum.KRATOSÇÇÇS_WRATH):
+        condition_class = KratossWrathCondition
+    elif compare_condition(name, ClericSkillEnum.ULLRÇÇÇS_FOCUS):
+        condition_class = UllrsFocusCondition
+    elif compare_condition(name, ClericSkillEnum.HECATEÇÇÇS_FLAMES):
+        condition_class = HecatesFlamesCondition
+    elif compare_condition(name, ClericSkillEnum.OGUNÇÇÇS_CLOAK):
+        condition_class = OgunsCloakCondition
+    elif compare_condition(name, ClericSkillEnum.ISISÇÇÇS_VEIL):
+        condition_class = IsissVeilCondition
+    elif compare_condition(name, ClericSkillEnum.ANANSIÇÇÇS_TRICKERY):
+        condition_class = AnansisTrickeryCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
@@ -238,7 +261,13 @@ def condition_factory(
 
 
 def compare_condition(name: str, condition_enum: Enum) -> bool:
-    return name in [condition_enum, condition_enum.name, condition_enum.value]
+    return (
+        name.upper() in [
+            condition_enum,
+            condition_enum.name.upper(),
+            condition_enum.value.upper(),
+        ]
+    )
 
 
 if __name__ == '__main__':
