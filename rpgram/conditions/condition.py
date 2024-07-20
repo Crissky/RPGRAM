@@ -161,7 +161,7 @@ class Condition(StatsBooster):
     
     @property
     def name(self) -> str:
-        return self.true_name.replace('_', ' ').title()
+        return self.true_name.replace('_', ' ').title().replace('ççç', "'")
 
     @property
     def description(self) -> str:

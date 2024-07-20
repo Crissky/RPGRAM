@@ -33,6 +33,9 @@ from rpgram.conditions.heal import Heal5Condition
 from rpgram.conditions.heal import Heal6Condition
 from rpgram.conditions.heal import Heal7Condition
 from rpgram.conditions.heal import Heal8Condition
+from rpgram.conditions.self_skill import SELF_BUFFS
+from rpgram.conditions.special_damage_skill import SPECIAL_DAMAGE_BUFFS
+from rpgram.conditions.target_skill_buff import TARGET_BUFFS
 from rpgram.conditions.target_skill_debuff import TARGET_DEBUFFS
 
 
@@ -47,4 +50,17 @@ class AllDebuffs:
             yield condition
 
 
+class AllBuffs:
+    __list = [
+        SELF_BUFFS,
+        SPECIAL_DAMAGE_BUFFS,
+        TARGET_BUFFS,
+    ]
+
+    def __iter__(self) -> Iterable[BuffCondition]:
+        for condition in chain(*self.__list):
+            yield condition
+
+
 ALL_DEBUFFS: Iterable[DebuffCondition] = AllDebuffs()
+ALL_BUFFS: Iterable[BuffCondition] = AllBuffs()

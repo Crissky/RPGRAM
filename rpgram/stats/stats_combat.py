@@ -360,11 +360,7 @@ class CombatStats:
     @property
     def hit_points(self) -> int:
         return int(
-            10 +
-            (self.constitution * HIT_POINTS_CONSTITUTION) +
-            (self.strength * HIT_POINTS_STRENGTH) +
-            self.bonus_hit_points +
-            (self.level * HIT_POINTS_LEVEL)
+            10 + self.base_hit_points + self.bonus_hit_points
         )
 
     @property
@@ -424,6 +420,15 @@ class CombatStats:
             return status.is_empty
         else:
             return True
+
+    @property
+    def base_hit_points(self) -> int:
+        return int(
+            10 +
+            (self.constitution * HIT_POINTS_CONSTITUTION) +
+            (self.strength * HIT_POINTS_STRENGTH) +
+            (self.level * HIT_POINTS_LEVEL)
+        )
 
     @property
     def base_initiative(self) -> int:

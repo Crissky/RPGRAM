@@ -177,9 +177,9 @@ def condition_factory(
         condition_class = FuriousInstinctCondition
     elif compare_condition(name, BarbarianSkillEnum.FRENZY):
         condition_class = FrenzyCondition
-    elif compare_condition(name, BarbarianSkillEnum.RAIJUS_FOOTSTEPS):
+    elif compare_condition(name, BarbarianSkillEnum.RAIJŪÇÇÇS_FOOTSTEPS):
         condition_class = RaijusFootstepsCondition
-    elif compare_condition(name, BarbarianSkillEnum.FAFNIRS_SCALES):
+    elif compare_condition(name, BarbarianSkillEnum.FAFNIRÇÇÇS_SCALES):
         condition_class = FafnirsScalesCondition
     elif compare_condition(name, BarbarianSkillEnum.WILD_FIRE):
         condition_class = SDWildFireCondition

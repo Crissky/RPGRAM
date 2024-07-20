@@ -6,7 +6,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Iterable, Union
 
 from bson import ObjectId
 
@@ -503,7 +503,7 @@ class RaijusFootstepsCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.RAIJUS_FOOTSTEPS,
+            name=BarbarianSkillEnum.RAIJŪÇÇÇS_FOOTSTEPS,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -563,7 +563,7 @@ class FafnirsScalesCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=BarbarianSkillEnum.FAFNIRS_SCALES,
+            name=BarbarianSkillEnum.FAFNIRÇÇÇS_SCALES,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,
@@ -761,6 +761,94 @@ class MysticalVigorCondition(SelfSkillCondition):
             report['text'] = text
 
         return report
+
+
+class FakeCharacter:
+    # BASE STATS
+    class FakeBaseStats:
+        strength = 100
+        dexterity = 100
+        constitution = 100
+        intelligence = 100
+        wisdom = 100
+        charisma = 100
+        base_strength = 100
+        base_dexterity = 100
+        base_constitution = 100
+        base_intelligence = 100
+        base_wisdom = 100
+        base_charisma = 100
+        bonus_strength = 100
+        bonus_dexterity = 100
+        bonus_constitution = 100
+        bonus_intelligence = 100
+        bonus_wisdom = 100
+        bonus_charisma = 100
+        multiplier_strength = 1.0
+        multiplier_dexterity = 1.0
+        multiplier_constitution = 1.0
+        multiplier_intelligence = 1.0
+        multiplier_wisdom = 1.0
+        multiplier_charisma = 1.0
+
+    # COMBAT STATS
+    class FakeCombatStats:
+        hit_points = 100
+        initiative = 100
+        physical_attack = 100
+        precision_attack = 100
+        magical_attack = 100
+        physical_defense = 100
+        magical_defense = 100
+        hit = 100
+        evasion = 100
+        base_hit_points = 100
+        base_initiative = 100
+        base_physical_attack = 100
+        base_precision_attack = 100
+        base_magical_attack = 100
+        base_physical_defense = 100
+        base_magical_defense = 100
+        base_hit = 100
+        base_evasion = 100
+        hit_points = 100
+        bonus_initiative = 100
+        bonus_physical_attack = 100
+        bonus_precision_attack = 100
+        bonus_magical_attack = 100
+        bonus_physical_defense = 100
+        bonus_magical_defense = 100
+        bonus_hit = 100
+        bonus_evasion = 100
+        irate_hp = 0.66
+
+    base_stats = bs = FakeBaseStats()
+    combat_stats = cs = FakeCombatStats()
+
+
+class SelfBuffs:
+    __list = [
+        RobustBlockCondition,
+        CrystalArmorCondition,
+        RockArmorCondition,
+        LavaSkinCondition,
+        MistFormCondition,
+        FuriousFuryCondition,
+        FuriousInstinctCondition,
+        FrenzyCondition,
+        RaijusFootstepsCondition,
+        FafnirsScalesCondition,
+        MysticalProtectionCondition,
+        MysticalConfluenceCondition,
+        MysticalVigorCondition,
+    ]
+
+    def __iter__(self) -> Iterable[SelfSkillCondition]:
+        for condition_class in self.__list:
+            yield condition_class(character=FakeCharacter())
+
+
+SELF_BUFFS: Iterable[SelfSkillCondition] = SelfBuffs()
 
 
 if __name__ == '__main__':

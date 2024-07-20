@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Iterator, List, Union
+from typing import TYPE_CHECKING, Iterable, Iterator, List, Union
 
 from bson import ObjectId
 
@@ -355,6 +355,28 @@ class SDWildPoisonCondition(SpecialDamageSkillCondition):
     @property
     def emoji(self) -> str:
         return DamageEmojiEnum.POISON.value
+
+
+class SpecialDamageBuffs:
+    __list = [
+        SDCrystallineInfusionCondition,
+        SDWildFireCondition,
+        SDWildLightningCondition,
+        SDWildWindCondition,
+        SDWildRockCondition,
+        SDWildGroundCondition,
+        SDWildAcidCondition,
+        SDWildPoisonCondition,
+    ]
+
+    def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:
+        for condition_class in self.__list:
+            yield condition_class(power=100)
+
+
+SPECIAL_DAMAGE_BUFFS: Iterable[SpecialDamageSkillCondition] = (
+    SpecialDamageBuffs()
+)
 
 
 if __name__ == '__main__':
