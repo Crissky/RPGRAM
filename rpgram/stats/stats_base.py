@@ -170,7 +170,11 @@ class BaseStats:
 
     @property
     def classe_level(self) -> int:
-        return (self.__level // 10) + 1
+        return int(
+            int(self.__level // 10) +
+            int(self.__level // 50) +
+            int(self.__level // 100)
+        ) + 1
 
     @property
     def next_level_xp(self) -> int:
