@@ -238,7 +238,13 @@ def condition_factory(
 
 
 def compare_condition(name: str, condition_enum: Enum) -> bool:
-    return name in [condition_enum, condition_enum.name, condition_enum.value]
+    return (
+        name.upper() in [
+            condition_enum,
+            condition_enum.name.upper(),
+            condition_enum.value.upper(),
+        ]
+        )
 
 
 if __name__ == '__main__':
