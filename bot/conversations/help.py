@@ -2,6 +2,7 @@
 Módulo responsável por gerenciar os comandos de ajuda.
 '''
 
+from random import sample
 import re
 from enum import Enum
 from operator import attrgetter
@@ -81,7 +82,6 @@ from repository.mongo import ClasseModel, ItemModel, RaceModel
 from rpgram.boosters import Equipment
 
 from rpgram.conditions import ALL_BUFFS, ALL_DEBUFFS
-from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.heal import HEAL_STATUS
 from rpgram.consumables import (
     CureConsumable,
@@ -110,7 +110,6 @@ from rpgram.enums import (
     SeishinWearbleMaterialEnum,
 )
 from rpgram.enums.damage import DamageEnum
-from rpgram.enums.debuff import DebuffEnum
 from rpgram.skills.special_damage import SpecialDamage
 from rpgram.stats.stats_combat import (
     EVASION_CHARISMA,
@@ -758,9 +757,9 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'*LISTA DE BUFFS*:\n\n'
+            f'*LISTA ALEATÓRIA DE BUFFS (20)*:\n\n'
         )
-        for buff in ALL_BUFFS:
+        for buff in sorted(sample(list(ALL_BUFFS), 20)):
             buff_name = f'({buff.enum_name.value})'
             text += f'*Nome*: {buff.emoji_name} {buff_name}\n'
             text += f'*Descrição*: {buff.description}\n\n'
