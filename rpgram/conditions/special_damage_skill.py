@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Iterator, List, Union
+from enum import Enum
+from typing import TYPE_CHECKING, Iterable, Iterator, List, Union
 
 from bson import ObjectId
 
@@ -21,7 +22,7 @@ class SpecialDamageSkillCondition(BuffCondition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         power: int,
         damage_types: List[Union[str, DamageEnum]],
@@ -133,7 +134,7 @@ class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=GuardianSkillEnum.CRYSTALLINE_INFUSION.value,
+            name=GuardianSkillEnum.CRYSTALLINE_INFUSION,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.CRYSTAL],
@@ -162,7 +163,7 @@ class SDWildFireCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_FIRE.value,
+            name=BarbarianSkillEnum.WILD_FIRE,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.FIRE],
@@ -191,7 +192,7 @@ class SDWildLightningCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_LIGHTNING.value,
+            name=BarbarianSkillEnum.WILD_LIGHTNING,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.LIGHTNING],
@@ -220,7 +221,7 @@ class SDWildWindCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_WIND.value,
+            name=BarbarianSkillEnum.WILD_WIND,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.WIND],
@@ -249,7 +250,7 @@ class SDWildRockCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_ROCK.value,
+            name=BarbarianSkillEnum.WILD_ROCK,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.ROCK],
@@ -278,7 +279,7 @@ class SDWildGroundCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_GROUND.value,
+            name=BarbarianSkillEnum.WILD_GROUND,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.GROUND],
@@ -307,7 +308,7 @@ class SDWildAcidCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_ACID.value,
+            name=BarbarianSkillEnum.WILD_ACID,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.ACID],
@@ -336,7 +337,7 @@ class SDWildPoisonCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BarbarianSkillEnum.WILD_POISON.value,
+            name=BarbarianSkillEnum.WILD_POISON,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.POISON],
@@ -354,6 +355,28 @@ class SDWildPoisonCondition(SpecialDamageSkillCondition):
     @property
     def emoji(self) -> str:
         return DamageEmojiEnum.POISON.value
+
+
+class SpecialDamageBuffs:
+    __list = [
+        SDCrystallineInfusionCondition,
+        SDWildFireCondition,
+        SDWildLightningCondition,
+        SDWildWindCondition,
+        SDWildRockCondition,
+        SDWildGroundCondition,
+        SDWildAcidCondition,
+        SDWildPoisonCondition,
+    ]
+
+    def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:
+        for condition_class in self.__list:
+            yield condition_class(power=100)
+
+
+SPECIAL_DAMAGE_BUFFS: Iterable[SpecialDamageSkillCondition] = (
+    SpecialDamageBuffs()
+)
 
 
 if __name__ == '__main__':

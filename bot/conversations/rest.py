@@ -143,7 +143,7 @@ def create_job_rest_cure(
     job_name = get_rest_jobname(user_id)
     context.job_queue.run_repeating(
         callback=job_rest_cure,
-        interval=timedelta(minutes=1),
+        interval=timedelta(minutes=MINUTES_TO_RECOVERY_HIT_POINTS),
         chat_id=chat_id,
         user_id=user_id,
         data=user_id,

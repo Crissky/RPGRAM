@@ -20,7 +20,7 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
-from rpgram.enums.debuff import BURN, DebuffEnum, get_debuff_emoji_text
+from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
 from rpgram.enums.skill import (
     MageSkillEnum,
     SkillDefenseEnum,
@@ -543,7 +543,7 @@ class LavaSkinSkill(BaseSkill):
             [report["text"] for report in report_list]
         )
 
-        status_report = self.char.status.cure_condition(BURN)
+        status_report = self.char.status.cure_condition(DebuffEnum.BURN)
         if not status_report['is_fail']:
             status_report_text += "\n" + status_report['text']
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 from statistics import mean
-from typing import Any, Dict, Iterator, List, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Union
 from bson import ObjectId
 
 from constant.text import SECTION_HEAD, TEXT_DELIMITER
@@ -29,7 +29,6 @@ from rpgram.enums.equipment import EquipmentEnum
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.skills.special_damage import SpecialDamage
 from rpgram.stats.stats_combat import (
     EVASION_CHARISMA,
     EVASION_DEXTERITY,
@@ -57,6 +56,9 @@ from rpgram.stats.stats_combat import (
     PRECISION_ATTACK_DEXTERITY,
     PRECISION_ATTACK_STRENGTH
 )
+
+if TYPE_CHECKING:
+    from rpgram.skills.special_damage import SpecialDamage
 
 
 MULTIPLIER_BONUS_STRENGTH = sum([
@@ -723,7 +725,9 @@ class Equipment(StatsBooster):
         return int(special_damage_base_value)
 
     @property
-    def special_damage_iter(self) -> Iterator[SpecialDamage]:
+    def special_damage_iter(self) -> Iterator['SpecialDamage']:
+        from rpgram.skills.special_damage import SpecialDamage
+
         damage_types = (
             self.damage_types
             if self.damage_types is not None

@@ -1,6 +1,5 @@
 from repository.mongo import ItemModel
 from rpgram.conditions import (
-    Condition,
     Heal1Condition,
     Heal2Condition,
     Heal3Condition,
@@ -42,24 +41,9 @@ from rpgram.consumables.other import (
 from rpgram.enums import (
     HealingConsumableEnum,
     RarityEnum,
-    TrocadoEnum,
-    TurnEnum
+    TrocadoEnum
 )
-from rpgram.enums.debuff import (
-    BERSERKER,
-    BLEEDING,
-    BLINDNESS,
-    BURN,
-    CONFUSION,
-    CRYSTALLIZED,
-    CURSE,
-    EXHAUSTION,
-    FROZEN,
-    PARALYSIS,
-    PETRIFIED,
-    POISONING,
-    SILENCE,
-)
+from rpgram.enums.debuff import DebuffEnum
 from rpgram.enums.trocado import TrocadoEnum
 
 
@@ -68,6 +52,21 @@ GREATER_CURE_ITEMS_LEVEL = 5
 MAJOR_CURE_ITEMS_LEVEL = 10
 SUPERIOR_CURE_ITEMS_LEVEL = 50
 EPIC_CURE_ITEMS_LEVEL = 100
+
+
+BERSERKER = DebuffEnum.BERSERKER.name.title()
+BLEEDING = DebuffEnum.BLEEDING.name.title()
+BLINDNESS = DebuffEnum.BLINDNESS.name.title()
+BURN = DebuffEnum.BURN.name.title()
+CONFUSION = DebuffEnum.CONFUSION.name.title()
+CRYSTALLIZED = DebuffEnum.CRYSTALLIZED.name.title()
+CURSE = DebuffEnum.CURSE.name.title()
+EXHAUSTION = DebuffEnum.EXHAUSTION.name.title()
+FROZEN = DebuffEnum.FROZEN.name.title()
+PARALYSIS = DebuffEnum.PARALYSIS.name.title()
+PETRIFIED = DebuffEnum.PETRIFIED.name.title()
+POISONING = DebuffEnum.POISONING.name.title()
+SILENCE = DebuffEnum.SILENCE.name.title()
 
 
 CONSUMABLES = [
@@ -170,7 +169,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{BERSERKER}".'
         ),
-        'condition_target': ([BERSERKER] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.BERSERKER.name] * CURE_ITEMS_LEVEL),
         'weight': 0.05,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -180,7 +179,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{BLEEDING}".'
         ),
-        'condition_target': ([BLEEDING] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.BLEEDING.name] * CURE_ITEMS_LEVEL),
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -190,7 +189,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{BLINDNESS}".'
         ),
-        'condition_target': ([BLINDNESS] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.BLINDNESS.name] * CURE_ITEMS_LEVEL),
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -200,7 +199,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{BURN}".'
         ),
-        'condition_target': ([BURN] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.BURN.name] * CURE_ITEMS_LEVEL),
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -210,7 +209,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{CONFUSION}".'
         ),
-        'condition_target': ([CONFUSION] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.CONFUSION.name] * CURE_ITEMS_LEVEL),
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -220,7 +219,9 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
         ),
-        'condition_target': ([CRYSTALLIZED] * CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CRYSTALLIZED.name] * CURE_ITEMS_LEVEL
+        ),
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -230,7 +231,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{CURSE}".'
         ),
-        'condition_target': ([CURSE] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.CURSE.name] * CURE_ITEMS_LEVEL),
         'weight': 0.20,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -240,7 +241,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{EXHAUSTION}".'
         ),
-        'condition_target': ([EXHAUSTION] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.EXHAUSTION.name] * CURE_ITEMS_LEVEL),
         'weight': 0.25,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -250,7 +251,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{FROZEN}".'
         ),
-        'condition_target': ([FROZEN] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.FROZEN.name] * CURE_ITEMS_LEVEL),
         'weight': 0.25,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -260,7 +261,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{PARALYSIS}".'
         ),
-        'condition_target': ([PARALYSIS] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.PARALYSIS.name] * CURE_ITEMS_LEVEL),
         'weight': 0.55,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -270,7 +271,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{PETRIFIED}".'
         ),
-        'condition_target': ([PETRIFIED] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.PETRIFIED.name] * CURE_ITEMS_LEVEL),
         'weight': 0.15,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -280,7 +281,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{POISONING}".'
         ),
-        'condition_target': ([POISONING] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.POISONING.name] * CURE_ITEMS_LEVEL),
         'weight': 0.15,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -290,7 +291,7 @@ CONSUMABLES = [
         'description': (
             f'Cura {CURE_ITEMS_LEVEL} Nível da condição "{SILENCE}".'
         ),
-        'condition_target': ([SILENCE] * CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.SILENCE.name] * CURE_ITEMS_LEVEL),
         'weight': 0.10,
         'rarity': RarityEnum.COMMON.name,
         'class': CureConsumable
@@ -314,7 +315,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BERSERKER}".'
         ),
-        'condition_target': ([BERSERKER] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BERSERKER.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.10,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -326,7 +329,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BLEEDING}".'
         ),
-        'condition_target': ([BLEEDING] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BLEEDING.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -337,7 +342,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BLINDNESS}".'
         ),
-        'condition_target': ([BLINDNESS] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BLINDNESS.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -348,7 +355,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BURN}".'
         ),
-        'condition_target': ([BURN] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BURN.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -359,7 +368,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{CONFUSION}".'
         ),
-        'condition_target': ([CONFUSION] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CONFUSION.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -367,9 +378,12 @@ CONSUMABLES = [
     {
         'name': 'Greater Acid Solvent',
         'description': (
-            f'Cura {GREATER_CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+            f'Cura {GREATER_CURE_ITEMS_LEVEL} '
+            f'Nível da condição "{CRYSTALLIZED}".'
         ),
-        'condition_target': ([CRYSTALLIZED] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CRYSTALLIZED.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -380,7 +394,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{CURSE}".'
         ),
-        'condition_target': ([CURSE] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CURSE.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -391,7 +407,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{EXHAUSTION}".'
         ),
-        'condition_target': ([EXHAUSTION] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.EXHAUSTION.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.50,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -402,7 +420,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{FROZEN}".'
         ),
-        'condition_target': ([FROZEN] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.FROZEN.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.50,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -413,7 +433,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{PARALYSIS}".'
         ),
-        'condition_target': ([PARALYSIS] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.PARALYSIS.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 1.10,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -424,7 +446,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{PETRIFIED}".'
         ),
-        'condition_target': ([PETRIFIED] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.PETRIFIED.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.30,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -435,7 +459,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{POISONING}".'
         ),
-        'condition_target': ([POISONING] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.POISONING.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.30,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -446,7 +472,9 @@ CONSUMABLES = [
             f'Cura {GREATER_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{SILENCE}".'
         ),
-        'condition_target': ([SILENCE] * GREATER_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.SILENCE.name] * GREATER_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.UNCOMMON.name,
         'class': CureConsumable
@@ -469,7 +497,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BERSERKER}".'
         ),
-        'condition_target': ([BERSERKER] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BERSERKER.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.20,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -481,7 +511,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BLEEDING}".'
         ),
-        'condition_target': ([BLEEDING] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BLEEDING.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -492,7 +524,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BLINDNESS}".'
         ),
-        'condition_target': ([BLINDNESS] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BLINDNESS.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -503,7 +537,7 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BURN}".'
         ),
-        'condition_target': ([BURN] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.BURN.name] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -514,7 +548,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{CONFUSION}".'
         ),
-        'condition_target': ([CONFUSION] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CONFUSION.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -522,9 +558,12 @@ CONSUMABLES = [
     {
         'name': 'Major Acid Solvent',
         'description': (
-            f'Cura {MAJOR_CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+            f'Cura {MAJOR_CURE_ITEMS_LEVEL} '
+            f'Nível da condição "{CRYSTALLIZED}".'
         ),
-        'condition_target': ([CRYSTALLIZED] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CRYSTALLIZED.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -535,7 +574,7 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{CURSE}".'
         ),
-        'condition_target': ([CURSE] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': ([DebuffEnum.CURSE.name] * MAJOR_CURE_ITEMS_LEVEL),
         'weight': 0.80,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -546,7 +585,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{EXHAUSTION}".'
         ),
-        'condition_target': ([EXHAUSTION] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.EXHAUSTION.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 1.00,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -557,7 +598,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{FROZEN}".'
         ),
-        'condition_target': ([FROZEN] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.FROZEN.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 1.00,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -568,7 +611,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{PARALYSIS}".'
         ),
-        'condition_target': ([PARALYSIS] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.PARALYSIS.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 2.20,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -579,7 +624,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{PETRIFIED}".'
         ),
-        'condition_target': ([PETRIFIED] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.PETRIFIED.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.60,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -590,7 +637,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{POISONING}".'
         ),
-        'condition_target': ([POISONING] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.POISONING.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.60,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -601,7 +650,9 @@ CONSUMABLES = [
             f'Cura {MAJOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{SILENCE}".'
         ),
-        'condition_target': ([SILENCE] * MAJOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.SILENCE.name] * MAJOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.RARE.name,
         'class': CureConsumable
@@ -624,7 +675,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BERSERKER}".'
         ),
-        'condition_target': ([BERSERKER] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BERSERKER.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.40,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -636,7 +689,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BLEEDING}".'
         ),
-        'condition_target': ([BLEEDING] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BLEEDING.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.80,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -647,7 +702,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BLINDNESS}".'
         ),
-        'condition_target': ([BLINDNESS] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BLINDNESS.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.80,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -658,7 +715,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{BURN}".'
         ),
-        'condition_target': ([BURN] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.BURN.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.80,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -669,7 +728,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{CONFUSION}".'
         ),
-        'condition_target': ([CONFUSION] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CONFUSION.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.80,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -677,9 +738,12 @@ CONSUMABLES = [
     {
         'name': 'Superior Acid Solvent',
         'description': (
-            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} Nível da condição "{CRYSTALLIZED}".'
+            f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} '
+            f'Nível da condição "{CRYSTALLIZED}".'
         ),
-        'condition_target': ([CRYSTALLIZED] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CRYSTALLIZED.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.80,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -690,7 +754,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{CURSE}".'
         ),
-        'condition_target': ([CURSE] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.CURSE.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 1.60,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -701,7 +767,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{EXHAUSTION}".'
         ),
-        'condition_target': ([EXHAUSTION] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.EXHAUSTION.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 2.00,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -712,7 +780,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{FROZEN}".'
         ),
-        'condition_target': ([FROZEN] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.FROZEN.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 2.00,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -723,7 +793,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{PARALYSIS}".'
         ),
-        'condition_target': ([PARALYSIS] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.PARALYSIS.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 4.40,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -734,7 +806,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{PETRIFIED}".'
         ),
-        'condition_target': ([PETRIFIED] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.PETRIFIED.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 1.20,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -745,7 +819,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{POISONING}".'
         ),
-        'condition_target': ([POISONING] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.POISONING.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 1.20,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable
@@ -756,7 +832,9 @@ CONSUMABLES = [
             f'Cura {SUPERIOR_CURE_ITEMS_LEVEL} níveis da '
             f'condição "{SILENCE}".'
         ),
-        'condition_target': ([SILENCE] * SUPERIOR_CURE_ITEMS_LEVEL),
+        'condition_target': (
+            [DebuffEnum.SILENCE.name] * SUPERIOR_CURE_ITEMS_LEVEL
+        ),
         'weight': 0.80,
         'rarity': RarityEnum.EPIC.name,
         'class': CureConsumable

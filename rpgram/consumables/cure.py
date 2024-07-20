@@ -106,7 +106,9 @@ class PanaceaConsumable(Consumable):
     def function(self, target: 'BaseCharacter') -> dict:
         condition_target = []
         for condition in target.status.get_debuffs():
-            condition_target.extend([condition.name] * self.quantity_condition)
+            condition_target.extend(
+                [condition.true_name] * self.quantity_condition
+            )
         report_list = target.status.remove_conditions(*condition_target)
         report_list = [report['text'] for report in report_list]
         report_list = list(dict.fromkeys(report_list))
@@ -146,7 +148,7 @@ if __name__ == '__main__':
     from rpgram.conditions.debuff import PoisoningCondition, SilenceCondition
     from rpgram import Status
 
-    poisoning_name = PoisoningCondition().name
+    poisoning_name = PoisoningCondition().name.upper()
     cure_consumable = CureConsumable(
         name='Cure Consumable',
         description='Cure Description',

@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import Union
 
 from bson import ObjectId
@@ -11,7 +12,7 @@ class BuffCondition(Condition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         turn: int = 1,
         level: int = 1,

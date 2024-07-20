@@ -4,7 +4,8 @@
 
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Union
+from enum import Enum
+from typing import TYPE_CHECKING, Iterable, Union
 
 from bson import ObjectId
 from rpgram.conditions.buff import BuffCondition
@@ -25,7 +26,7 @@ class TargetSkillBuffCondition(BuffCondition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         power: int,
         turn: int = 1,
@@ -68,7 +69,7 @@ class WarBannerCondition(TargetSkillBuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=WarriorSkillEnum.WAR_BANNER.value,
+            name=WarriorSkillEnum.WAR_BANNER,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,
@@ -110,6 +111,19 @@ class WarBannerCondition(TargetSkillBuffCondition):
             report['text'] = text
 
         return report
+
+
+class TargetBuffs:
+    __list = [
+        WarBannerCondition,
+    ]
+
+    def __iter__(self) -> Iterable[TargetSkillBuffCondition]:
+        for condition_class in self.__list:
+            yield condition_class(power=100)
+
+
+TARGET_BUFFS: Iterable[TargetSkillBuffCondition] = TargetBuffs()
 
 
 if __name__ == '__main__':

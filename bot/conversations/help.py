@@ -19,6 +19,7 @@ from telegram.ext import (
 from bot.constants.help import (
     ACCESS_DENIED,
     CALLBACK_BASE_ATTRIBUTES,
+    CALLBACK_BUFFS,
     CALLBACK_CLASSES,
     CALLBACK_CURE_CONSUMABLE,
     CALLBACK_DEBUFFS,
@@ -79,7 +80,7 @@ from function.text import create_text_in_box, escape_basic_markdown_v2
 from repository.mongo import ClasseModel, ItemModel, RaceModel
 from rpgram.boosters import Equipment
 
-from rpgram.conditions import ALL_DEBUFFS
+from rpgram.conditions import ALL_BUFFS, ALL_DEBUFFS
 from rpgram.conditions.debuff import DEBUFFS
 from rpgram.conditions.heal import HEAL_STATUS
 from rpgram.consumables import (
@@ -713,7 +714,7 @@ def get_details_text(option: str) -> str:
         text = (
             f'{EmojiEnum.STATUS.value}*STATUS(DEBUFFS)*\n\n'
 
-            f'Debuffs são *condições* que prejudicam o personagem de diversas '
+            f'Debuffs são *Condições* que prejudicam o personagem de diversas '
             f'maneiras - como causar dano ou reduzir as estatísticas.\n\n'
 
             f'Os debuffs podem durar uma quantidade fixa de turnos ou por '
@@ -733,13 +734,36 @@ def get_details_text(option: str) -> str:
             f'*LISTA DE DEBUFFS*:\n\n'
         )
         for debuff in ALL_DEBUFFS:
-            debuff_name = debuff.name.upper()
-            if debuff_name in DebuffEnum.__members__:
-                debuff_name = f' ({DebuffEnum[debuff_name].value})'
-            else:
-                debuff_name = ''
-            text += f'*Nome*: {debuff.emoji_name}{debuff_name}\n'
+            debuff_name = f'({debuff.enum_name.value})'
+            text += f'*Nome*: {debuff.emoji_name} {debuff_name}\n'
             text += f'*Descrição*: {debuff.description}\n\n'
+        text = text.strip()
+    elif option == CALLBACK_BUFFS:
+        text = (
+            f'{EmojiEnum.STATUS.value}*STATUS(BUFFS)*\n\n'
+
+            f'Buffs são *Condições* que auxiliam o personagem de diversas '
+            f'maneiras - como curar dano ou aprimorar as estatísticas.\n\n'
+
+            f'Os buffs podem durar uma quantidade fixa de turnos ou por '
+            f'tempo indeterminado.\n\n'
+
+            f'Quando o personagem com um buff de um tipo recebe novamente '
+            f'um mesmo buff, o número de turnos para se perder o benefício '
+            f'retorna para o valor inicial e o '
+            f'nível do buff é aumentado.\n\n'
+
+            f'O nível do buff irá influenciar em quanto de auxílio '
+            f'ele ira conceder ao personagem.\n\n'
+
+            f'{TEXT_SEPARATOR}\n\n'
+
+            f'*LISTA DE BUFFS*:\n\n'
+        )
+        for buff in ALL_BUFFS:
+            buff_name = f'({buff.enum_name.value})'
+            text += f'*Nome*: {buff.emoji_name} {buff_name}\n'
+            text += f'*Descrição*: {buff.description}\n\n'
         text = text.strip()
     elif option == CALLBACK_HEALSTATUS:
         text = (
@@ -748,11 +772,11 @@ def get_details_text(option: str) -> str:
             f'*Condições* de cura recuperam os Pontos de Vida (HP) do '
             f'personagem a cada turno.\n\n'
 
-            f'Essas *condições* geralmente são recebidas pelo uso de itens ou '
+            f'Essas *Condições* geralmente são recebidas pelo uso de itens ou '
             f'magias de cura durante a batalha, podendo durar alguns '
             f'turnos ou por um número indefinido de turnos.\n\n'
 
-            f'Fora de batalha, essas *condições* duram somente um turno, '
+            f'Fora de batalha, essas *Condições* duram somente um turno, '
             f'recebendo a cura de um turno multiplicada pelo total de turnos '
             f'faltantes.\n\n'
 
@@ -1013,12 +1037,19 @@ def get_help_reply_markup(update: Update):
     combat_attributes_text = (
         f'Atrib. de Combate{EmojiEnum.COMBAT_ATTRIBUTES.value}'
     )
+    if option == CALLBACK_BASE_ATTRIBUTES:
+        combat_attributes_text = (
+            f'{EmojiEnum.COMBAT_ATTRIBUTES.value}Atrib. de Combate'
+        )
     special_damage_text = (
         f'Danos Especiais{EmojiEnum.SPECIAL_DAMAGE.value}'
     )
     items_text = f'{EmojiEnum.ITEMS.value}Itens'
-    debuffs_text = f'{EmojiEnum.STATUS.value}Status(Debuffs)'
-    heal_status_text = f'Status(Cura){EmojiEnum.STATUS.value}'
+    debuffs_text = f'{EmojiEnum.STATUS.value}Debuffs'
+    buffs_text = f'Buffs{EmojiEnum.STATUS.value}'
+    if option == CALLBACK_DEBUFFS:
+        buffs_text = f'{EmojiEnum.STATUS.value}Buffs'
+    heal_status_text = f'Cura{EmojiEnum.STATUS.value}'
     general_text = f'Geral{EmojiEnum.GENERAL.value}'
     classes_text = f'{EmojiEnum.CLASS.value}Classes'
     races_text = f'Raças{EmojiEnum.RACE.value}'
@@ -1160,6 +1191,15 @@ def get_help_reply_markup(update: Update):
                 text=debuffs_text,
                 callback_data=(
                     f'{{"option":"{CALLBACK_DEBUFFS}","user_id":{user_id}}}'
+                )
+            )
+        )
+    if option != CALLBACK_BUFFS:
+        buttons6.append(
+            InlineKeyboardButton(
+                text=buffs_text,
+                callback_data=(
+                    f'{{"option":"{CALLBACK_BUFFS}","user_id":{user_id}}}'
                 )
             )
         )

@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import TYPE_CHECKING, Union
 
 from bson import ObjectId
@@ -22,7 +23,7 @@ class BarrierCondition(Condition):
 
     def __init__(
         self,
-        name: str,
+        name: Enum,
         frequency: Union[str, TurnEnum],
         power: int,
         damage: int = 0,
@@ -160,7 +161,7 @@ class GuardianShieldCondition(BarrierCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=GuardianSkillEnum.GUARDIAN_SHIELD.value,
+            name=GuardianSkillEnum.GUARDIAN_SHIELD,
             frequency=TurnEnum.START,
             power=power,
             damage=damage,
@@ -186,7 +187,7 @@ class AegisShadowCondition(BarrierCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=WarriorSkillEnum.AEGIS_SHADOW.value,
+            name=WarriorSkillEnum.AEGIS_SHADOW,
             frequency=TurnEnum.START,
             power=power,
             damage=damage,
@@ -216,7 +217,7 @@ class PrismaticShieldCondition(BarrierCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=SorcererSkillEnum.PRISMATIC_SHIELD.value,
+            name=SorcererSkillEnum.PRISMATIC_SHIELD,
             frequency=TurnEnum.START,
             power=power,
             damage=damage,
@@ -246,7 +247,7 @@ class ChaosWeaverCondition(BarrierCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=SorcererSkillEnum.CHAOS_WEAVER.value,
+            name=SorcererSkillEnum.CHAOS_WEAVER,
             frequency=TurnEnum.START,
             power=power,
             damage=damage,

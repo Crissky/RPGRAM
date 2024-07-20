@@ -1,5 +1,5 @@
 from random import choice, randint, sample
-from typing import NamedTuple, Union
+from typing import Iterable, NamedTuple, Union
 
 from rpgram.enums.rarity import RarityEnum
 
@@ -12,6 +12,18 @@ RARITY_RANGE_DICT = {
     RarityEnum.LEGENDARY: (3, 5, 4),
     RarityEnum.MYTHIC: (3, 7, 5),
 }
+
+
+class Coordinates(NamedTuple):
+    row: int
+    col: int
+    text: str
+
+    def __str__(self):
+        return f'{self.text}: {self.row}, {self.col}'
+
+    def __repr__(self):
+        return f'Coor<{self}>'
 
 
 class GridGame:
@@ -124,7 +136,7 @@ class GridGame:
 
         return '\n'.join(data)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[Coordinates]:
         for row in range(self.n_rows):
             for col in range(self.n_cols):
                 index = (row * self.n_cols) + col
@@ -161,18 +173,6 @@ class GridGame:
     is_failed: bool = property(lambda self: self.total_bad == self.size)
 
 
-class Coordinates(NamedTuple):
-    row: int
-    col: int
-    text: str
-
-    def __str__(self):
-        return f'{self.text}: {self.row}, {self.col}'
-
-    def __repr__(self):
-        return f'Coor<{self}>'
-
-
 if __name__ == '__main__':
     g = GridGame(3, 3)
     print(g.grid)
@@ -198,13 +198,12 @@ if __name__ == '__main__':
                 print([coor for coor in g])
                 switch_all(g)
                 print('-'*50)
-    
+
     # Test Rarity
     for rarity in RarityEnum:
         g = GridGame(rarity=rarity)
         print(f'rarity: {g.rarity}, n_rows: {g.n_rows}, n_cols: {g.n_cols}')
         print(g.n_rows)
-
 
     print(g.colors)
     print(g.is_solved)

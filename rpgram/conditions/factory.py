@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import TYPE_CHECKING
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
@@ -66,21 +67,7 @@ from rpgram.conditions.target_skill_debuff import (
     ShatterCondition
 )
 from rpgram.enums.debuff import (
-    BERSERKER,
-    BLEEDING,
-    BLINDNESS,
-    BURN,
-    CONFUSION,
-    CRYSTALLIZED,
-    CURSE,
-    EXHAUSTION,
-    FEARING,
-    FROZEN,
-    PARALYSIS,
-    PETRIFIED,
-    POISONING,
-    SILENCE,
-    STUNNED,
+    DebuffEnum,
 )
 from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
@@ -136,113 +123,113 @@ def condition_factory(
         raise TypeError(f'Personagem deve ser do tipo {BaseCharacter}')
 
     # DEBUFFS
-    if name == BERSERKER:
+    if compare_condition(name, DebuffEnum.BERSERKER):
         condition_class = BerserkerCondition
-    elif name == BLEEDING:
+    elif compare_condition(name, DebuffEnum.BLEEDING):
         condition_class = BleedingCondition
-    elif name == BLINDNESS:
+    elif compare_condition(name, DebuffEnum.BLINDNESS):
         condition_class = BlindnessCondition
-    elif name == BURN:
+    elif compare_condition(name, DebuffEnum.BURN):
         condition_class = BurnCondition
-    elif name == CONFUSION:
+    elif compare_condition(name, DebuffEnum.CONFUSION):
         condition_class = ConfusionCondition
-    elif name == CRYSTALLIZED:
+    elif compare_condition(name, DebuffEnum.CRYSTALLIZED):
         condition_class = CrystallizedCondition
-    elif name == CURSE:
+    elif compare_condition(name, DebuffEnum.CURSE):
         condition_class = CurseCondition
-    elif name == EXHAUSTION:
+    elif compare_condition(name, DebuffEnum.EXHAUSTION):
         condition_class = ExhaustionCondition
-    elif name == FEARING:
+    elif compare_condition(name, DebuffEnum.FEARING):
         condition_class = FearingCondition
-    elif name == FROZEN:
+    elif compare_condition(name, DebuffEnum.FROZEN):
         condition_class = FrozenCondition
-    elif name == PARALYSIS:
+    elif compare_condition(name, DebuffEnum.PARALYSIS):
         condition_class = ParalysisCondition
-    elif name == PETRIFIED:
+    elif compare_condition(name, DebuffEnum.PETRIFIED):
         condition_class = PetrifiedCondition
-    elif name == POISONING:
+    elif compare_condition(name, DebuffEnum.POISONING):
         condition_class = PoisoningCondition
-    elif name == SILENCE:
+    elif compare_condition(name, DebuffEnum.SILENCE):
         condition_class = SilenceCondition
-    elif name == STUNNED:
+    elif compare_condition(name, DebuffEnum.STUNNED):
         condition_class = StunnedCondition
     # HEALING BUFFS
-    elif name == HealingConsumableEnum.HEAL1.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL1):
         condition_class = Heal1Condition
-    elif name == HealingConsumableEnum.HEAL2.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL2):
         condition_class = Heal2Condition
-    elif name == HealingConsumableEnum.HEAL3.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL3):
         condition_class = Heal3Condition
-    elif name == HealingConsumableEnum.HEAL4.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL4):
         condition_class = Heal4Condition
-    elif name == HealingConsumableEnum.HEAL5.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL5):
         condition_class = Heal5Condition
-    elif name == HealingConsumableEnum.HEAL6.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL6):
         condition_class = Heal6Condition
-    elif name == HealingConsumableEnum.HEAL7.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL7):
         condition_class = Heal7Condition
-    elif name == HealingConsumableEnum.HEAL8.value:
+    elif compare_condition(name, HealingConsumableEnum.HEAL8):
         condition_class = Heal8Condition
     # BARBARIAN BUFFS
-    elif name == BarbarianSkillEnum.FURIOUS_FURY.value:
+    elif compare_condition(name, BarbarianSkillEnum.FURIOUS_FURY):
         condition_class = FuriousFuryCondition
-    elif name == BarbarianSkillEnum.FURIOUS_INSTINCT.value:
+    elif compare_condition(name, BarbarianSkillEnum.FURIOUS_INSTINCT):
         condition_class = FuriousInstinctCondition
-    elif name == BarbarianSkillEnum.FRENZY.value:
+    elif compare_condition(name, BarbarianSkillEnum.FRENZY):
         condition_class = FrenzyCondition
-    elif name == BarbarianSkillEnum.RAIJUS_FOOTSTEPS.value:
+    elif compare_condition(name, BarbarianSkillEnum.RAIJŪÇÇÇS_FOOTSTEPS):
         condition_class = RaijusFootstepsCondition
-    elif name == BarbarianSkillEnum.FAFNIRS_SCALES.value:
+    elif compare_condition(name, BarbarianSkillEnum.FAFNIRÇÇÇS_SCALES):
         condition_class = FafnirsScalesCondition
-    elif name == BarbarianSkillEnum.WILD_FIRE.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_FIRE):
         condition_class = SDWildFireCondition
-    elif name == BarbarianSkillEnum.WILD_LIGHTNING.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_LIGHTNING):
         condition_class = SDWildLightningCondition
-    elif name == BarbarianSkillEnum.WILD_WIND.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_WIND):
         condition_class = SDWildWindCondition
-    elif name == BarbarianSkillEnum.WILD_ROCK.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_ROCK):
         condition_class = SDWildRockCondition
-    elif name == BarbarianSkillEnum.WILD_GROUND.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_GROUND):
         condition_class = SDWildGroundCondition
-    elif name == BarbarianSkillEnum.WILD_ACID.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_ACID):
         condition_class = SDWildAcidCondition
-    elif name == BarbarianSkillEnum.WILD_POISON.value:
+    elif compare_condition(name, BarbarianSkillEnum.WILD_POISON):
         condition_class = SDWildPoisonCondition
     # GUARDIAN BUFFS
-    elif name == GuardianSkillEnum.ROBUST_BLOCK.value:
+    elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
-    elif name == GuardianSkillEnum.CRYSTAL_ARMOR.value:
+    elif compare_condition(name, GuardianSkillEnum.CRYSTAL_ARMOR):
         condition_class = CrystalArmorCondition
-    elif name == GuardianSkillEnum.GUARDIAN_SHIELD.value:
+    elif compare_condition(name, GuardianSkillEnum.GUARDIAN_SHIELD):
         condition_class = GuardianShieldCondition
-    elif name == GuardianSkillEnum.CRYSTALLINE_INFUSION.value:
+    elif compare_condition(name, GuardianSkillEnum.CRYSTALLINE_INFUSION):
         condition_class = SDCrystallineInfusionCondition
-    elif name == GuardianSkillEnum.SHATTER.value:
+    elif compare_condition(name, GuardianSkillEnum.SHATTER):
         condition_class = ShatterCondition
     # MAGE BUFFS
-    elif name == MageSkillEnum.ROCK_ARMOR.value:
+    elif compare_condition(name, MageSkillEnum.ROCK_ARMOR):
         condition_class = RockArmorCondition
-    elif name == MageSkillEnum.LAVA_SKIN.value:
+    elif compare_condition(name, MageSkillEnum.LAVA_SKIN):
         condition_class = LavaSkinCondition
-    elif name == MageSkillEnum.MIST_FORM.value:
+    elif compare_condition(name, MageSkillEnum.MIST_FORM):
         condition_class = MistFormCondition
-    elif name == MageSkillEnum.MUDDY.value:
+    elif compare_condition(name, MageSkillEnum.MUDDY):
         condition_class = MuddyCondition
     # SORCERER BUFFS
-    elif name == SorcererSkillEnum.MYSTICAL_PROTECTION.value:
+    elif compare_condition(name, SorcererSkillEnum.MYSTICAL_PROTECTION):
         condition_class = MysticalProtectionCondition
-    elif name == SorcererSkillEnum.MYSTICAL_CONFLUENCE.value:
+    elif compare_condition(name, SorcererSkillEnum.MYSTICAL_CONFLUENCE):
         condition_class = MysticalConfluenceCondition
-    elif name == SorcererSkillEnum.MYSTICAL_VIGOR.value:
+    elif compare_condition(name, SorcererSkillEnum.MYSTICAL_VIGOR):
         condition_class = MysticalVigorCondition
-    elif name == SorcererSkillEnum.PRISMATIC_SHIELD.value:
+    elif compare_condition(name, SorcererSkillEnum.PRISMATIC_SHIELD):
         condition_class = PrismaticShieldCondition
-    elif name == SorcererSkillEnum.CHAOS_WEAVER.value:
+    elif compare_condition(name, SorcererSkillEnum.CHAOS_WEAVER):
         condition_class = ChaosWeaverCondition
     # WARRIOR BUFFS
-    elif name == WarriorSkillEnum.AEGIS_SHADOW.value:
+    elif compare_condition(name, WarriorSkillEnum.AEGIS_SHADOW):
         condition_class = AegisShadowCondition
-    elif name == WarriorSkillEnum.WAR_BANNER.value:
+    elif compare_condition(name, WarriorSkillEnum.WAR_BANNER):
         condition_class = WarBannerCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
@@ -250,8 +237,12 @@ def condition_factory(
     return condition_class(**kwargs)
 
 
+def compare_condition(name: str, condition_enum: Enum) -> bool:
+    return name in [condition_enum, condition_enum.name, condition_enum.value]
+
+
 if __name__ == '__main__':
-    print(condition_factory(name=CONFUSION))
-    print(condition_factory(name=CONFUSION, turn=10))
-    print(condition_factory(name=CONFUSION, level=10))
-    print(condition_factory(name=CONFUSION, turn=10, level=10))
+    print(condition_factory(name=DebuffEnum.CONFUSION.name))
+    print(condition_factory(name=DebuffEnum.CONFUSION.name, turn=10))
+    print(condition_factory(name=DebuffEnum.CONFUSION.name, level=10))
+    print(condition_factory(name=DebuffEnum.CONFUSION.name, turn=10, level=10))

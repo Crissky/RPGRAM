@@ -153,7 +153,7 @@ class WildForgeSkill(BaseSkill):
 
 
 class SalamandersBreathSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.SALAMANDERS_BREATH.value
+    NAME = BarbarianSkillEnum.SALAMANDERÇÇÇS_BREATH.value
     DESCRIPTION = (
         f'*Espírito da Salamandra*: Respira fundo, '
         f'concentrando seu calor interno, e '
@@ -245,9 +245,9 @@ class SweepingRocSkill(BaseSkill):
 
 
 class HydraFangsSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.HYDRA_FANGS.value
+    NAME = BarbarianSkillEnum.HYDRAÇÇÇS_FANGS.value
     DESCRIPTION = (
-        f'*Espírito da Hydra*: Com movimentos de um predador implacável, '
+        f'*Espírito da Hidra*: Com movimentos de um predador implacável, '
         f'ataca com as armas envolvidas em '
         f'uma névoa ácida, '
         f'causando dano de '
@@ -313,7 +313,7 @@ class HydraFangsSkill(BaseSkill):
 
 
 class RaijusFootstepsSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.RAIJUS_FOOTSTEPS.value
+    NAME = BarbarianSkillEnum.RAIJŪÇÇÇS_FOOTSTEPS.value
     DESCRIPTION = (
         f'*Espírito da Raijū*: Entra em transe com seus olhos brilhando '
         f'como eletricidade, se tornando um raio implacável e movendo-se com '
@@ -375,7 +375,7 @@ class RaijusFootstepsSkill(BaseSkill):
 
 
 class FafnirsScalesSkill(BaseSkill):
-    NAME = BarbarianSkillEnum.FAFNIRS_SCALES.value
+    NAME = BarbarianSkillEnum.FAFNIRÇÇÇS_SCALES.value
     DESCRIPTION = (
         f'*Espírito da Fáfnir*: Tenciona os seus músculos, '
         f'os contraindo juntamente com a sua pele, transformando-os em pedra, '
