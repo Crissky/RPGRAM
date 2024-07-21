@@ -208,13 +208,13 @@ class HeroicInspirationSkill(BaseSkill):
         level = self.level_rank
         power_multiplier = 3 + (level / 10)
         power = dice.boosted_physical_attack * power_multiplier
-        power = (round(power))
+        power = round(power)
 
         cure_report = self.char.cs.cure_hit_points(power)
         report_text = cure_report["text"]
         report = {
             'text': (
-                f'*{player_name}* respira fundo se concentrando em acalmar a'
+                f'*{player_name}* respira fundo se concentrando em acalmar a '
                 f'sua mente, curando suas feridas.\n'
                 f'*{report_text}*({dice.text}).'
             )

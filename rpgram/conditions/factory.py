@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
     GuardianShieldCondition,
@@ -91,8 +91,11 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
+CONDITION_TYPES = Union[Condition, Enum, str]
+
+
 def condition_factory(
-    name: str = None,
+    name: CONDITION_TYPES = None,
     condition_name: str = None,
     turn: int = None,
     level: int = None,
@@ -101,7 +104,7 @@ def condition_factory(
     character: 'BaseCharacter' = None,
 ) -> Condition:
     from rpgram.characters.char_base import BaseCharacter
-    if isinstance(condition_name, str) and not isinstance(name, str):
+    if isinstance(condition_name, str) and name is None:
         name = condition_name
 
     kwargs = {}
@@ -260,9 +263,12 @@ def condition_factory(
     return condition_class(**kwargs)
 
 
-def compare_condition(name: str, condition_enum: Enum) -> bool:
+def compare_condition(name: CONDITION_TYPES, condition_enum: Enum) -> bool:
+    if isinstance(name, str):
+        name = name.upper()
+
     return (
-        name.upper() in [
+        name in [
             condition_enum,
             condition_enum.name.upper(),
             condition_enum.value.upper(),

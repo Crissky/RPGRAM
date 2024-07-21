@@ -242,7 +242,7 @@ def add_conditions_from_trap(
         condition_name = condition_trap['condition']
         if debuff_resistance <= effectiveness:
             condition = condition_factory(
-                condition_name,
+                name=condition_name,
                 level=condition_level
             )
             report = char.status.add(condition)
