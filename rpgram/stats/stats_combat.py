@@ -352,8 +352,7 @@ class CombatStats:
         self.__death_counter += 1
 
     def __death(self):
-        if self.__damage > self.hit_points:
-            self.__damage = self.hit_points
+        self.__damage = self.hit_points
 
     # Getters
     # Combat Attributes
