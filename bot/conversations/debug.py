@@ -146,7 +146,7 @@ async def get_random_debuff(
         condition_level = abs(int(condition_level))
         try:
             condition = condition_factory(
-                condition_name=condition_name,
+                name=condition_name,
                 level=condition_level
             )
         except ValueError as error:
