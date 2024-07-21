@@ -81,6 +81,7 @@ class ClericSkillEnum(Enum):
     OGUNÇÇÇS_CLOAK = 'Manto de Ogun'
     ISISÇÇÇS_VEIL = 'Véu de Isis'
     ANANSIÇÇÇS_TRICKERY = 'Artimanha de Anansi'
+    IXCHELÇÇÇS_AMPHORA = 'Ânfora de Ixchel'
 
 
 class GuardianSkillEnum(Enum):
