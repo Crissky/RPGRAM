@@ -129,6 +129,12 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
         group_level=group_level,
         random_level=True,
     )
+
+    if isinstance(consumable_item, GemstoneConsumable):
+        sub_quantity = int(consumable_item.quantity / 2)
+        if consumable_item.quantity > sub_quantity and sub_quantity > 0:
+            consumable_item.sub(quantity=sub_quantity)
+
     name = choice_enemy_name()
     race = choice_enemy_race_name()
     helped_name = f'{name} ({race})'
