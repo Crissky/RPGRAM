@@ -121,6 +121,8 @@ class CombatStats:
         markdown: bool = False,
         ignore_barrier: bool = False,
     ) -> dict:
+        '''Adiciona dano ao personagem.
+        '''
 
         value = -int(abs(value))
         old_hp = self.current_hit_points
