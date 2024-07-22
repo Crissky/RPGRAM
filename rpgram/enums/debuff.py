@@ -45,6 +45,9 @@ DEBUFF_FULL_NAMES = {
 }
 
 
+CURSED_DEBUFFS_NAMES = [
+    DebuffEnum.CURSE.name,
+]
 CONFUSION_DEBUFFS_NAMES = [
     DebuffEnum.BERSERKER.name,
     DebuffEnum.CONFUSION.name,
