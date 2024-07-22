@@ -82,6 +82,11 @@ class ClericSkillEnum(Enum):
     ISISÇÇÇS_VEIL = 'Véu de Isis'
     ANANSIÇÇÇS_TRICKERY = 'Artimanha de Anansi'
     IXCHELÇÇÇS_AMPHORA = 'Ânfora de Ixchel'
+    DHANVANTARIÇÇÇS_AMRITA = 'Amrita de Dhanvantari'
+    CONCEALMENT = 'Esconjuro'
+    HOLY_FIRE = 'Fogo Sagrado'
+    WILL_O_THE_WISP = 'Fogo-Fátuo'
+    GREEK_FIRE = 'Fogo Grego'
 
 
 class GuardianSkillEnum(Enum):

@@ -45,6 +45,9 @@ DEBUFF_FULL_NAMES = {
 }
 
 
+CURSED_DEBUFFS_NAMES = [
+    DebuffEnum.CURSE.name,
+]
 CONFUSION_DEBUFFS_NAMES = [
     DebuffEnum.BERSERKER.name,
     DebuffEnum.CONFUSION.name,
@@ -66,12 +69,26 @@ BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES = [
 ]
 
 
-def get_debuff_emoji_text(damage: Union[DebuffEnum, str]) -> str:
-    if isinstance(damage, str):
-        damage = DebuffEnum[damage]
-    name = damage.name
+def get_debuff_emoji_text(debuff_name: Union[DebuffEnum, str]) -> str:
+    '''Retorna string com o emoji e o nome do debuff.
+    '''
+
+    if isinstance(debuff_name, str):
+        debuff_name = DebuffEnum[debuff_name]
+    name = debuff_name.name
 
     return f'{DebuffEmojiEnum[name].value}{name.title()}'
+
+
+def get_debuffs_emoji_text(
+    *debuff_names: Union[DebuffEnum, str],
+    sep: str = ', '
+) -> str:
+    '''Retorna tupla de debuffs como uma string com o emoji e 
+    o nome do debuff separados pelo "sep".
+    '''
+
+    return sep.join([get_debuff_emoji_text(d) for d in debuff_names])
 
 
 if __name__ == '__main__':

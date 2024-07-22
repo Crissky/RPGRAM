@@ -245,6 +245,9 @@ class SpecialDamage:
         elif self.damage_type == DamageEnum.SONIC:
             min_multiplier = 0.31
             max_multiplier = 0.49
+        elif self.damage_type == DamageEnum.GHOSTLY:
+            min_multiplier = 0.33
+            max_multiplier = 0.66
 
         return {'min': min_multiplier, 'max': max_multiplier}
 
@@ -380,6 +383,11 @@ class SpecialDamage:
             condition_list.extend([
                 dict(condition=self.partial(StunnedCondition), ratio=0.10),
                 dict(condition=self.partial(ConfusionCondition), ratio=0.10),
+            ])
+        elif self.damage_type == DamageEnum.GHOSTLY:
+            condition_list.extend([
+                dict(condition=self.partial(FearingCondition), ratio=0.10),
+                dict(condition=self.partial(CurseCondition), ratio=0.10),
             ])
 
         return condition_list * self.__status_multiplier

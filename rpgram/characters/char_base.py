@@ -9,6 +9,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.factory import condition_factory
 from rpgram.dice import Dice
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.race import MALEGNE_RACES
 from rpgram.enums.skill import (
     MAGICAL_DEFENSE_ENUM_LIST,
     PHYSICAL_DEFENSE_ENUM_LIST
@@ -465,16 +466,10 @@ class BaseCharacter:
                 f'*{defender_player_name}*{damage_or_defend_text}.\n\n'
             )
 
-            # Put the Pre Hit and Hit Paragraph of the report['text']
-            if pre_hit_text or hit_text:
-                report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
-                report['text'] += '\n'
+            # Put the Pre Hit Paragraph of the report['text']
             if pre_hit_text:
-                report['text'] += f'{pre_hit_text}\n'
-            if hit_text:
-                report['text'] += f'{hit_text}\n'
-            if pre_hit_text or hit_text:
-                report['text'] += '\n'
+                report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
+                report['text'] += f'\n{pre_hit_text}\n\n'
 
             # Put the Dice Paragraph of the report['text']
             if verbose:
@@ -504,6 +499,12 @@ class BaseCharacter:
 
             # Put the Damage Paragraph of the report['text']
             report['text'] += damage_report['text']
+
+            # Put the Hit Paragraph of the report['text']
+            if hit_text:
+                report['text'] += f'\n\n'
+                report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
+                report['text'] += f'\n{hit_text}'
 
             # Put the Activate Status of the report['text']
             if activate_status_to_attack:
@@ -591,6 +592,18 @@ class BaseCharacter:
     @property
     def is_immobilized(self) -> bool:
         return self.status.immobilized
+
+    @property
+    def is_cursed(self) -> bool:
+        return self.status.cursed
+
+    @property
+    def is_malegne(self) -> bool:
+        race_name = self.race_name
+        return any((
+            race_name in MALEGNE_RACES,
+            self.is_cursed
+        ))
 
     @property
     def is_debuffed(self) -> bool:

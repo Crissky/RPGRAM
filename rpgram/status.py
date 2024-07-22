@@ -19,6 +19,7 @@ from rpgram.conditions.special_damage_skill import SpecialDamageSkillCondition
 from rpgram.conditions.target_skill_buff import TargetSkillBuffCondition
 from rpgram.enums.debuff import (
     BREAKABLE_IMMOBILIZED_DEBUFFS_NAMES,
+    CURSED_DEBUFFS_NAMES,
     IMMOBILIZED_DEBUFFS_NAMES,
 )
 from rpgram.constants.text import STATUS_EMOJI_TEXT
@@ -406,12 +407,34 @@ class Status:
             for condition in self.__conditions
         )
 
+    @property
+    def cursed(self) -> bool:
+        return any(
+            condition in CURSED_DEBUFFS_NAMES
+            for condition in self.__conditions
+        )
+
     def immobilized_names(self) -> str:
         '''Retorna os nomes das condições imobilizantes que o personagem 
         possui. Caso não haja condições desse tipo, retorna uma exceção.'''
+
         names = []
         for condition in self.__conditions:
             if condition in IMMOBILIZED_DEBUFFS_NAMES:
+                names.append(condition.full_name)
+
+        if not names:
+            raise ValueError('Status não tem condições imobilizadoras.')
+
+        return ', '.join(names)
+
+    def cursed_names(self) -> str:
+        '''Retorna os nomes das condições de maldição que o personagem 
+        possui. Caso não haja condições desse tipo, retorna uma exceção.'''
+
+        names = []
+        for condition in self.__conditions:
+            if condition in CURSED_DEBUFFS_NAMES:
                 names.append(condition.full_name)
 
         if not names:
