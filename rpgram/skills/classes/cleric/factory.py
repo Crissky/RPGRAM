@@ -8,7 +8,16 @@ from rpgram.skills.classes.cleric.skill1 import (
     OgunsCloakSkill,
     UllrsFocusSkill
 )
-from rpgram.skills.classes.cleric.skill2 import IxChelsAmphoraSkill
+from rpgram.skills.classes.cleric.skill2 import (
+    ConcealmentSkill,
+    DhanvantarisAmritaSkill,
+    HolyFireSkill,
+    IxChelsAmphoraSkill
+)
+from rpgram.skills.classes.cleric.skill3 import (
+    GreekFireSkill,
+    WillOTheWispSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -39,6 +48,17 @@ def cleric_skill_factory(
     # SKILL2
     elif skill_class_name == IxChelsAmphoraSkill.__name__:
         skill_class = IxChelsAmphoraSkill
+    elif skill_class_name == DhanvantarisAmritaSkill.__name__:
+        skill_class = DhanvantarisAmritaSkill
+    elif skill_class_name == ConcealmentSkill.__name__:
+        skill_class = ConcealmentSkill
+    elif skill_class_name == HolyFireSkill.__name__:
+        skill_class = HolyFireSkill
+    # SKILL3
+    elif skill_class_name == WillOTheWispSkill.__name__:
+        skill_class = WillOTheWispSkill
+    elif skill_class_name == GreekFireSkill.__name__:
+        skill_class = GreekFireSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -57,4 +77,11 @@ CLERIC_SKILL_LIST: List[Type[BaseSkill]] = [
 
     # SKILL2
     IxChelsAmphoraSkill,
+    DhanvantarisAmritaSkill,
+    ConcealmentSkill,
+    HolyFireSkill,
+
+    # SKILL3
+    WillOTheWispSkill,
+    GreekFireSkill,
 ]
