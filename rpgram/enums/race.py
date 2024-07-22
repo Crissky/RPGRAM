@@ -22,3 +22,10 @@ class RaceEnum(Enum):
     GNOLL = 'Gnoll'
     FOMORI = 'Fomori'
     NEPHILIM = 'Nefilim'
+
+
+MALEGNE_RACES = [
+    RaceEnum.SPECTRUM.value,
+    RaceEnum.FOMORI.value,
+    RaceEnum.NEPHILIM.value,
+]
