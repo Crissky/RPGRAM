@@ -40,7 +40,7 @@ class FireBallSkill(BaseSkill):
     DESCRIPTION = (
         f'Com movimentos incisivos, conjura uma *Bola de Fogo* e a lança '
         f'contra um alvo, causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -79,7 +79,7 @@ class WaterBubbleSkill(BaseSkill):
     DESCRIPTION = (
         f'Com movimentos suaves, conjura uma *Bolha de Água* e a lança '
         f'contra um alvo, causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -118,7 +118,7 @@ class WindGustSkill(BaseSkill):
     DESCRIPTION = (
         f'Com movimentos undosos, conjura uma *Rajada de Vento* que vai de '
         f'encontro ao alvo, causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -157,7 +157,7 @@ class EarthBreakSkill(BaseSkill):
     DESCRIPTION = (
         f'Com um movimento brusco, *Quebra-Terra* '
         f'debaixo de um alvo, causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -198,7 +198,7 @@ class MagicBlastSkill(BaseSkill):
         f'*Explosão Mágica* devastadora '
         f'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e '
-        f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -241,7 +241,7 @@ class IceShardSkill(BaseSkill):
         f'de Gelo Puro*, lançando-a em alta velocidade '
         f'em direção ao seu alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* e '
-        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -283,7 +283,7 @@ class FulminantLightningSkill(BaseSkill):
         f'Canalisa na ponta dos dedos uma energia infrene '
         f'e dispara no alvo um *Raio Fulminante* '
         f'que causa dano de '
-        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -388,7 +388,7 @@ class ScorchingBreathSkill(BaseSkill):
         f'*Vapor Superaquecido* '
         f'contra um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
-        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
         f'adiciona a condição {get_debuff_emoji_text(DebuffEnum.BURN)}.'
     )
@@ -631,7 +631,7 @@ class MudShotSkill(BaseSkill):
         f'impacto e espalhando lama pegajosa '
         f'contra um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e '
-        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
         f'diminuindo a sua *{EVASION_EMOJI_TEXT}* '
         f'com base no dano causado (8% + 2% x Rank x Nível).'
