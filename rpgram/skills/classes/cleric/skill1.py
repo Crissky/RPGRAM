@@ -91,24 +91,27 @@ class IdunnsAppleSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = IdunnsAppleCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com uma *Maçã Mágica* '
-                f'que aumenta o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = IdunnsAppleCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com uma *Maçã Mágica* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -149,25 +152,28 @@ class KratossWrathSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = KratossWrathCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com a '
-                f'*Ira do Deus Grego da Guerra* '
-                f'que aumenta o '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = KratossWrathCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com a '
+                    f'*Ira do Deus Grego da Guerra* '
+                    f'que aumenta o '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -208,25 +214,28 @@ class UllrsFocusSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = UllrsFocusCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com o '
-                f'*Foco de Ullr* '
-                f'que aumenta o '
-                f'*{PRECISION_ATTACK_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = UllrsFocusCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com o '
+                    f'*Foco de Ullr* '
+                    f'que aumenta o '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -267,25 +276,28 @@ class HecatesFlamesSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = HecatesFlamesCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com o '
-                f'*Chamas Mágicas* '
-                f'que aumentam o '
-                f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = HecatesFlamesCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com o '
+                    f'*Chamas Mágicas* '
+                    f'que aumentam o '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -326,25 +338,28 @@ class OgunsCloakSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = OgunsCloakCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com os '
-                f'*Fragmentos de Metal dos Deuses* '
-                f'que aumentam a '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = OgunsCloakCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com os '
+                    f'*Fragmentos de Metal dos Deuses* '
+                    f'que aumentam a '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -385,25 +400,28 @@ class IsissVeilSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = IsissVeilCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com a '
-                f'*Névoa Resplandecente de Energia Divina* '
-                f'que aumenta a '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = IsissVeilCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com a '
+                    f'*Névoa Resplandecente de Energia Divina* '
+                    f'que aumenta a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -445,25 +463,28 @@ class AnansisTrickerySkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = AnansisTrickeryCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com a '
-                f'*Teia de Ilusões* '
-                f'que aumenta o '
-                f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = AnansisTrickeryCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com a '
+                    f'*Teia de Ilusões* '
+                    f'que aumenta o '
+                    f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -512,26 +533,29 @@ class VidarsBraverySkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = VidarsBraveryCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é ungido com a *Bravura Indomita* '
-                f'que aumenta o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = VidarsBraveryCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é ungido com a *Bravura Indomita* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -582,27 +606,30 @@ class ArtemissArrowSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = ArtemissArrowCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é atingido pela *Flecha Lunar* '
-                f'que aumenta o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
-                f'*{HIT_EMOJI_TEXT}* e a '
-                f'*{EVASION_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = ArtemissArrowCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é atingido pela *Flecha Lunar* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+                    f'*{HIT_EMOJI_TEXT}* e a '
+                    f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -653,26 +680,29 @@ class CeridwensMagicPotionSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = CeridwensMagicPotionCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é banhado pela *Poção Mágica* '
-                f'que aumenta o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = CeridwensMagicPotionCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é banhado pela *Poção Mágica* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -734,32 +764,35 @@ class GraceOfThePantheonSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = GraceOfThePantheonCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado por um fragmentos da '
-                f'*{self.name}* '
-                f'que aumenta o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
-                f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
-                f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
-                f'*{HIT_EMOJI_TEXT}* e a '
-                f'*{EVASION_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = GraceOfThePantheonCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado por um fragmentos da '
+                    f'*{self.name}* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
+                    f'*{HIT_EMOJI_TEXT}* e a '
+                    f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 

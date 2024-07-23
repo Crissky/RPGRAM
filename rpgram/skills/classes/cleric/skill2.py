@@ -80,23 +80,26 @@ class IxChelsAmphoraSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        dice = self.dice
-        level = self.level_rank
-        power_multiplier = 2 + (level / 10)
-        power = dice.boosted_magical_defense * power_multiplier
-        power = round(power)
+        if char.is_alive:
+            dice = self.dice
+            level = self.level_rank
+            power_multiplier = 2 + (level / 10)
+            power = dice.boosted_magical_defense * power_multiplier
+            power = round(power)
 
-        cure_report = self.char.cs.cure_hit_points(power)
-        report_text = cure_report["text"]
-        report = {
-            'text': (
-                f'*{target_name}* é banhado pela águas de uma '
-                f'*Amphora Mística* que cura suas feridas.\n'
-                f'*{report_text}*({dice.text}).'
-            )
-        }
+            cure_report = self.char.cs.cure_hit_points(power)
+            report_text = cure_report["text"]
+            report = {
+                'text': (
+                    f'*{target_name}* é banhado pela águas de uma '
+                    f'*Amphora Mística* que cura suas feridas.\n'
+                    f'*{report_text}*({dice.text}).'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -138,25 +141,28 @@ class DhanvantarisAmritaSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        quantity = int(5 * level)
-        status_report = char.status.remove_random_debuff_conditions(
-            quantity=quantity
-        )
-        report_text = status_report["text"]
-        if report_text:
-            alert_section_head_status = ALERT_SECTION_HEAD.format(
-                f'*STATUS ({quantity})*'
+        if char.is_alive:
+            level = self.level_rank
+            quantity = int(5 * level)
+            status_report = char.status.remove_random_debuff_conditions(
+                quantity=quantity
             )
-            report_text = f'\n\n{alert_section_head_status}{report_text}'
-        report = {
-            'text': (
-                f'*{target_name}* é coberto pela *Amrita*.'
-                f'{report_text}'
-            )
-        }
+            report_text = status_report["text"]
+            if report_text:
+                alert_section_head_status = ALERT_SECTION_HEAD.format(
+                    f'*STATUS ({quantity})*'
+                )
+                report_text = f'\n\n{alert_section_head_status}{report_text}'
+            report = {
+                'text': (
+                    f'*{target_name}* é coberto pela *Amrita*.'
+                    f'{report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
