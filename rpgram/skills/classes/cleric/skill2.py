@@ -214,7 +214,7 @@ class ConcealmentSkill(BaseSkill):
         target_name = target.player_name
 
         if target.is_alive and target.is_malegne:
-            purge_damage = int(total_damage * 7)
+            purge_damage = int(total_damage * 6)
             damage_report = target.cs.damage_hit_points(
                 value=purge_damage,
                 markdown=True,
@@ -255,7 +255,7 @@ class HolyFireSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
         }
-        damage_types = [DamageEnum.BLESSING]
+        damage_types = [DamageEnum.FIRE, DamageEnum.BLESSING]
 
         super().__init__(
             name=HolyFireSkill.NAME,
@@ -284,7 +284,76 @@ class HolyFireSkill(BaseSkill):
         target_name = target.player_name
 
         if target.is_alive and target.is_malegne:
-            purge_damage = int(total_damage * 10)
+            purge_damage = int(total_damage * 9)
+            damage_report = target.cs.damage_hit_points(
+                value=purge_damage,
+                markdown=True,
+            )
+            report['text'] = damage_report['text']
+            for condition_name in CURSED_DEBUFFS_NAMES:
+                status_report = target.status.cure_condition(condition_name)
+                if not status_report['is_fail']:
+                    report['text'] += "\n" + status_report['text']
+
+        return report
+
+
+class DivinePunishmentSkill(BaseSkill):
+    NAME = ClericSkillEnum.DIVINE_PUNISHMENT.value
+    DESCRIPTION = (
+        f'Clama pela punição dos deuses que acenam gentilmente em favor do '
+        f'rogador, causando dano '
+        f'*{get_damage_emoji_text(DamageEnum.DIVINE)}* com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
+        f'O dano é centuplicado se o alvo for uma *Criatura Malégna* '
+        f'({", ".join(r.title() for r in MALEGNE_RACES)}) ou se estiver '
+        f'com uma *Condição Amaldiçoante* '
+        f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}), '
+        f'além disso, cura todas as *Condições Amaldiçoantes*.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.CLERIC.value,
+        'skill_list': [ConcealmentSkill.NAME, HolyFireSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 1.50,
+        }
+        damage_types = [DamageEnum.DIVINE]
+
+        super().__init__(
+            name=DivinePunishmentSkill.NAME,
+            description=DivinePunishmentSkill.DESCRIPTION,
+            rank=DivinePunishmentSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=DivinePunishmentSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        target_name = target.player_name
+
+        if target.is_alive and target.is_malegne:
+            purge_damage = int(total_damage * 99)
             damage_report = target.cs.damage_hit_points(
                 value=purge_damage,
                 markdown=True,
@@ -337,3 +406,15 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     CLERIC_CHARACTER.skill_tree.learn_skill(HolyFireSkill)
+
+    condition = CurseCondition(level=11)
+    CLERIC_CHARACTER.status.add_condition(condition)
+    skill = DivinePunishmentSkill(CLERIC_CHARACTER)
+    print(skill)
+    print(CLERIC_CHARACTER.cs.magical_attack)
+    print(CLERIC_CHARACTER.to_attack(
+        defender_char=CLERIC_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    CLERIC_CHARACTER.skill_tree.learn_skill(DivinePunishmentSkill)

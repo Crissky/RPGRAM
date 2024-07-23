@@ -390,6 +390,233 @@ class AnansisTrickeryCondition(TargetSkillBuffCondition):
         return 'permanece com a *Teia de Ilusões*.'
 
 
+class VidarsBraveryCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.VIDARÇÇÇS_BRAVERY,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Bravura Indomita* de um antigo *Guerreiro Silencioso* '
+            f'que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f' em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🇻'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Bravura Indomita*.'
+
+
+class ArtemissArrowCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.ARTEMISÇÇÇS_ARROW,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Flecha Lunar* da *Deusa da Lua* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+            f'*{HIT_EMOJI_TEXT}* e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f' em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🌙'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece afetado pela *Flecha Lunar*.'
+
+
+class CeridwensMagicPotionCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.CERIDWENÇÇÇS_MAGIC_POTION,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Poção Mágica* da *Deusa Feiticeira* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f' em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🧉'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece sob os efeitos da *Poção Mágica*.'
+
+
+class GraceOfThePantheonCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.GRACE_OF_THE_PANTHEON,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Fragmento da *{self.enum_name.value}* '
+            f'que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
+            f'*{HIT_EMOJI_TEXT}* e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f' em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🏛️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece sob a *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -400,6 +627,10 @@ class TargetBuffs:
         OgunsCloakCondition,
         IsissVeilCondition,
         AnansisTrickeryCondition,
+        VidarsBraveryCondition,
+        ArtemissArrowCondition,
+        CeridwensMagicPotionCondition,
+        GraceOfThePantheonCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

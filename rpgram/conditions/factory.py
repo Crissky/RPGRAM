@@ -61,12 +61,16 @@ from rpgram.conditions.special_damage_skill import (
 )
 from rpgram.conditions.target_skill_buff import (
     AnansisTrickeryCondition,
+    ArtemissArrowCondition,
+    CeridwensMagicPotionCondition,
+    GraceOfThePantheonCondition,
     HecatesFlamesCondition,
     IdunnsAppleCondition,
     IsissVeilCondition,
     KratossWrathCondition,
     OgunsCloakCondition,
     UllrsFocusCondition,
+    VidarsBraveryCondition,
     WarBannerCondition
 )
 from rpgram.conditions.target_skill_debuff import (
@@ -221,6 +225,14 @@ def condition_factory(
         condition_class = IsissVeilCondition
     elif compare_condition(name, ClericSkillEnum.ANANSIÇÇÇS_TRICKERY):
         condition_class = AnansisTrickeryCondition
+    elif compare_condition(name, ClericSkillEnum.VIDARÇÇÇS_BRAVERY):
+        condition_class = VidarsBraveryCondition
+    elif compare_condition(name, ClericSkillEnum.ARTEMISÇÇÇS_ARROW):
+        condition_class = ArtemissArrowCondition
+    elif compare_condition(name, ClericSkillEnum.CERIDWENÇÇÇS_MAGIC_POTION):
+        condition_class = CeridwensMagicPotionCondition
+    elif compare_condition(name, ClericSkillEnum.GRACE_OF_THE_PANTHEON):
+        condition_class = GraceOfThePantheonCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
