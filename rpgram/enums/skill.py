@@ -94,6 +94,17 @@ class ClericSkillEnum(Enum):
     GREEK_FIRE = 'Fogo Grego'
 
 
+class DruidSkillEnum(Enum):
+    RANGER_FALCON = 'Falcão Patrulheiro'
+    FELLOW_FALCON = 'Falcão Companheiro'
+    BODYGUARD_BEAR = 'Urso Guarda-costas'
+    FELLOW_BEAR = 'Urso Companheiro'
+    HUNTER_TIGER = 'Tigre Caçador'
+    FELLOW_TIGER = 'Tigre Companheiro'
+    WATCHER_OWL = 'Coruja Sentinela'
+    FELLOW_OWL = 'Coruja Companheira'
+
+
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'

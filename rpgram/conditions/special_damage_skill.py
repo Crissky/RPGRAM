@@ -9,7 +9,11 @@ from rpgram.enums.damage import (
     DamageEmojiEnum,
     DamageEnum
 )
-from rpgram.enums.skill import BarbarianSkillEnum, GuardianSkillEnum
+from rpgram.enums.skill import (
+    BarbarianSkillEnum,
+    DruidSkillEnum,
+    GuardianSkillEnum
+)
 from rpgram.enums.turn import TurnEnum
 from rpgram.skills.special_damage import SpecialDamage
 
@@ -357,6 +361,170 @@ class SDWildPoisonCondition(SpecialDamageSkillCondition):
         return DamageEmojiEnum.POISON.value
 
 
+class SDFellowFalconCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.FELLOW_FALCON,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.PIERCING, DamageEnum.FIRE],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🦅'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* '
+                f'permanece lutando ao lado do *{self.enum_name.value}*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class SDFellowBearCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.FELLOW_BEAR,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.BLUDGEONING, DamageEnum.GROUND],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🐻'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* '
+                f'permanece lutando ao lado do *{self.enum_name.value}*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class SDFellowTigerCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.FELLOW_TIGER,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.SLASHING, DamageEnum.LIGHTNING],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🐯'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* '
+                f'permanece lutando ao lado do *{self.enum_name.value}*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class SDFellowOwlCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.FELLOW_OWL,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.MAGIC, DamageEnum.WIND],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🦉'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* '
+                f'permanece lutando ao lado da *{self.enum_name.value}*.'
+            )
+            report['text'] = text
+
+        return report
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -367,6 +535,10 @@ class SpecialDamageBuffs:
         SDWildGroundCondition,
         SDWildAcidCondition,
         SDWildPoisonCondition,
+        SDFellowFalconCondition,
+        SDFellowBearCondition,
+        SDFellowTigerCondition,
+        SDFellowOwlCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:
@@ -382,42 +554,7 @@ SPECIAL_DAMAGE_BUFFS: Iterable[SpecialDamageSkillCondition] = (
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
-    condition = SDCrystallineInfusionCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildFireCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildLightningCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildWindCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildRockCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildGroundCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildAcidCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = SDWildPoisonCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
+    for condition in SpecialDamageBuffs():
+        print(condition)
+        print(condition.to_dict())
+        assert condition_factory(**condition.to_dict()) == condition
