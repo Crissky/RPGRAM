@@ -3,12 +3,16 @@ from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.target_skill_buff import (
     AnansisTrickeryCondition,
+    ArtemissArrowCondition,
+    CeridwensMagicPotionCondition,
+    GraceOfThePantheonCondition,
     HecatesFlamesCondition,
     IdunnsAppleCondition,
     IsissVeilCondition,
     KratossWrathCondition,
     OgunsCloakCondition,
-    UllrsFocusCondition
+    UllrsFocusCondition,
+    VidarsBraveryCondition
 )
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
@@ -87,24 +91,27 @@ class IdunnsAppleSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = IdunnsAppleCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com uma *Maçã Mágica* '
-                f'que aumenta o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = IdunnsAppleCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com uma *Maçã Mágica* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -145,25 +152,28 @@ class KratossWrathSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = KratossWrathCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com a '
-                f'*Ira do Deus Grego da Guerra* '
-                f'que aumenta o '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = KratossWrathCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com a '
+                    f'*Ira do Deus Grego da Guerra* '
+                    f'que aumenta o '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -204,25 +214,28 @@ class UllrsFocusSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = UllrsFocusCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com o '
-                f'*Foco de Ullr* '
-                f'que aumenta o '
-                f'*{PRECISION_ATTACK_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = UllrsFocusCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com o '
+                    f'*Foco de Ullr* '
+                    f'que aumenta o '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -263,25 +276,28 @@ class HecatesFlamesSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = HecatesFlamesCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com o '
-                f'*Chamas Mágicas* '
-                f'que aumentam o '
-                f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = HecatesFlamesCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com o '
+                    f'*Chamas Mágicas* '
+                    f'que aumentam o '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -322,25 +338,28 @@ class OgunsCloakSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = OgunsCloakCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com os '
-                f'*Fragmentos de Metal dos Deuses* '
-                f'que aumentam a '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = OgunsCloakCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com os '
+                    f'*Fragmentos de Metal dos Deuses* '
+                    f'que aumentam a '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -381,25 +400,28 @@ class IsissVeilSkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = IsissVeilCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com a '
-                f'*Névoa Resplandecente de Energia Divina* '
-                f'que aumenta a '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = IsissVeilCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com a '
+                    f'*Névoa Resplandecente de Energia Divina* '
+                    f'que aumenta a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -441,25 +463,336 @@ class AnansisTrickerySkill(BaseSkill):
             damage_types=damage_types
         )
 
-    def function(self, char: 'BaseCharacter' = None) -> dict:
+    def function(self, char: 'BaseCharacter') -> dict:
         target_name = char.player_name
-        level = self.level_rank
-        power = self.char.cs.wisdom
-        condition = AnansisTrickeryCondition(power=power, level=level)
-        report_list = char.status.set_conditions(condition)
-        status_report_text = "\n".join(
-            [report["text"] for report in report_list]
-        )
-        report = {
-            'text': (
-                f'*{target_name}* é agraciado com a '
-                f'*Teia de Ilusões* '
-                f'que aumenta o '
-                f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}*.\n\n'
-                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
-                f'{status_report_text}'
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = AnansisTrickeryCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
             )
-        }
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado com a '
+                    f'*Teia de Ilusões* '
+                    f'que aumenta o '
+                    f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
+class VidarsBraverySkill(BaseSkill):
+    NAME = ClericSkillEnum.VIDARÇÇÇS_BRAVERY.value
+    DESCRIPTION = (
+        f'Unge um aliado com a *Bravura Indomita* de Vigar, '
+        f'aumentando o '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
+        f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.CLERIC.value,
+        'skill_list': [
+            IdunnsAppleSkill.NAME,
+            KratossWrathSkill.NAME,
+            OgunsCloakSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=VidarsBraverySkill.NAME,
+            description=VidarsBraverySkill.DESCRIPTION,
+            rank=VidarsBraverySkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=VidarsBraverySkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        target_name = char.player_name
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = VidarsBraveryCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{target_name}* é ungido com a *Bravura Indomita* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
+class ArtemissArrowSkill(BaseSkill):
+    NAME = ClericSkillEnum.ARTEMISÇÇÇS_ARROW.value
+    DESCRIPTION = (
+        f'Atira contra um aliado uma *Flecha Lunar* que desperta os '
+        f'instintos de combate do alvo, '
+        f'aumentando o '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+        f'*{HIT_EMOJI_TEXT}* e a '
+        f'*{EVASION_EMOJI_TEXT}* com base na '
+        f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.CLERIC.value,
+        'skill_list': [
+            IdunnsAppleSkill.NAME,
+            UllrsFocusSkill.NAME,
+            AnansisTrickerySkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=ArtemissArrowSkill.NAME,
+            description=ArtemissArrowSkill.DESCRIPTION,
+            rank=ArtemissArrowSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ArtemissArrowSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        target_name = char.player_name
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = ArtemissArrowCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{target_name}* é atingido pela *Flecha Lunar* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+                    f'*{HIT_EMOJI_TEXT}* e a '
+                    f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
+class CeridwensMagicPotionSkill(BaseSkill):
+    NAME = ClericSkillEnum.CERIDWENÇÇÇS_MAGIC_POTION.value
+    DESCRIPTION = (
+        f'Chama a realidade um antigo *Caldeirão Encantado* que derrama sobre '
+        f'um aliado uma *Poção Mágica* que desperta os seus '
+        f'poderes sobrenaturais, '
+        f'aumentando o '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
+        f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.CLERIC.value,
+        'skill_list': [
+            IdunnsAppleSkill.NAME,
+            HecatesFlamesSkill.NAME,
+            IsissVeilSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=CeridwensMagicPotionSkill.NAME,
+            description=CeridwensMagicPotionSkill.DESCRIPTION,
+            rank=CeridwensMagicPotionSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=CeridwensMagicPotionSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        target_name = char.player_name
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = CeridwensMagicPotionCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{target_name}* é banhado pela *Poção Mágica* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
+class GraceOfThePantheonSkill(BaseSkill):
+    NAME = ClericSkillEnum.GRACE_OF_THE_PANTHEON.value
+    DESCRIPTION = (
+        f'Agraciado pelos deuses, sua fé inabalável concede a um aliado um '
+        f'fragmento da *{ClericSkillEnum.GRACE_OF_THE_PANTHEON.value}*, '
+        f'aumentando o '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
+        f'*{HIT_EMOJI_TEXT}* e a '
+        f'*{EVASION_EMOJI_TEXT}* com base na '
+        f'*{WISDOM_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.CLERIC.value,
+        'skill_list': [
+            IdunnsAppleSkill.NAME,
+            KratossWrathSkill.NAME,
+            UllrsFocusSkill.NAME,
+            HecatesFlamesSkill.NAME,
+            OgunsCloakSkill.NAME,
+            IsissVeilSkill.NAME,
+            AnansisTrickerySkill.NAME,
+            VidarsBraverySkill.NAME,
+            ArtemissArrowSkill.NAME,
+            CeridwensMagicPotionSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 4
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=GraceOfThePantheonSkill.NAME,
+            description=GraceOfThePantheonSkill.DESCRIPTION,
+            rank=GraceOfThePantheonSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=GraceOfThePantheonSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        target_name = char.player_name
+        if char.is_alive:
+            level = self.level_rank
+            power = self.char.cs.wisdom
+            condition = GraceOfThePantheonCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{target_name}* é agraciado por um fragmentos da '
+                    f'*{self.name}* '
+                    f'que aumenta o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
+                    f'*{HIT_EMOJI_TEXT}* e a '
+                    f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
 
         return report
 
@@ -522,3 +855,47 @@ if __name__ == '__main__':
     print(skill.function(CLERIC_CHARACTER))
     print(CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
     CLERIC_CHARACTER.skill_tree.learn_skill(AnansisTrickerySkill)
+
+    skill = VidarsBraverySkill(CLERIC_CHARACTER)
+    print(skill)
+    print(CLERIC_CHARACTER.bs.wisdom)
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
+          CLERIC_CHARACTER.cs.physical_defense)
+    print(skill.function(CLERIC_CHARACTER))
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
+          CLERIC_CHARACTER.cs.physical_defense)
+    CLERIC_CHARACTER.skill_tree.learn_skill(VidarsBraverySkill)
+
+    skill = ArtemissArrowSkill(CLERIC_CHARACTER)
+    print(skill)
+    print(CLERIC_CHARACTER.bs.wisdom)
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.precision_attack,
+          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    print(skill.function(CLERIC_CHARACTER))
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.precision_attack,
+          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    CLERIC_CHARACTER.skill_tree.learn_skill(ArtemissArrowSkill)
+
+    skill = CeridwensMagicPotionSkill(CLERIC_CHARACTER)
+    print(skill)
+    print(CLERIC_CHARACTER.bs.wisdom)
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.magical_attack,
+          CLERIC_CHARACTER.cs.magical_defense)
+    print(skill.function(CLERIC_CHARACTER))
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.magical_attack,
+          CLERIC_CHARACTER.cs.magical_defense)
+    CLERIC_CHARACTER.skill_tree.learn_skill(CeridwensMagicPotionSkill)
+
+    skill = GraceOfThePantheonSkill(CLERIC_CHARACTER)
+    print(skill)
+    print(CLERIC_CHARACTER.bs.wisdom)
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
+          CLERIC_CHARACTER.cs.precision_attack, CLERIC_CHARACTER.cs.magical_attack,
+          CLERIC_CHARACTER.cs.physical_defense, CLERIC_CHARACTER.cs.magical_defense,
+          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    print(skill.function(CLERIC_CHARACTER))
+    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
+          CLERIC_CHARACTER.cs.precision_attack, CLERIC_CHARACTER.cs.magical_attack,
+          CLERIC_CHARACTER.cs.physical_defense, CLERIC_CHARACTER.cs.magical_defense,
+          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    CLERIC_CHARACTER.skill_tree.learn_skill(GraceOfThePantheonSkill)

@@ -81,12 +81,28 @@ class ClericSkillEnum(Enum):
     OGUNÇÇÇS_CLOAK = 'Manto de Ogun'
     ISISÇÇÇS_VEIL = 'Véu de Isis'
     ANANSIÇÇÇS_TRICKERY = 'Artimanha de Anansi'
+    VIDARÇÇÇS_BRAVERY = 'Bravura de Vidar'
+    ARTEMISÇÇÇS_ARROW = 'Flecha de Artemis'
+    CERIDWENÇÇÇS_MAGIC_POTION = 'Poção Mágica de Ceridwen'
+    GRACE_OF_THE_PANTHEON = 'Graça do Panteão'
     IXCHELÇÇÇS_AMPHORA = 'Ânfora de Ixchel'
     DHANVANTARIÇÇÇS_AMRITA = 'Amrita de Dhanvantari'
     CONCEALMENT = 'Esconjuro'
     HOLY_FIRE = 'Fogo Sagrado'
+    DIVINE_PUNISHMENT = 'Punição Divina'
     WILL_O_THE_WISP = 'Fogo-Fátuo'
     GREEK_FIRE = 'Fogo Grego'
+
+
+class DruidSkillEnum(Enum):
+    RANGER_FALCON = 'Falcão Patrulheiro'
+    FELLOW_FALCON = 'Falcão Companheiro'
+    GUARDIAN_BEAR = 'Urso Guardião'
+    FELLOW_BEAR = 'Urso Companheiro'
+    HUNTER_TIGER = 'Tigre Caçador'
+    FELLOW_TIGER = 'Tigre Companheiro'
+    WATCHER_OWL = 'Coruja Sentinela'
+    FELLOW_OWL = 'Coruja Companheira'
 
 
 class GuardianSkillEnum(Enum):

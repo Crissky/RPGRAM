@@ -1,16 +1,21 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.cleric.skill1 import (
     AnansisTrickerySkill,
+    ArtemissArrowSkill,
+    CeridwensMagicPotionSkill,
+    GraceOfThePantheonSkill,
     HecatesFlamesSkill,
     IdunnsAppleSkill,
     IsissVeilSkill,
     KratossWrathSkill,
     OgunsCloakSkill,
-    UllrsFocusSkill
+    UllrsFocusSkill,
+    VidarsBraverySkill
 )
 from rpgram.skills.classes.cleric.skill2 import (
     ConcealmentSkill,
     DhanvantarisAmritaSkill,
+    DivinePunishmentSkill,
     HolyFireSkill,
     IxChelsAmphoraSkill
 )
@@ -45,6 +50,14 @@ def cleric_skill_factory(
         skill_class = IsissVeilSkill
     elif skill_class_name == AnansisTrickerySkill.__name__:
         skill_class = AnansisTrickerySkill
+    elif skill_class_name == VidarsBraverySkill.__name__:
+        skill_class = VidarsBraverySkill
+    elif skill_class_name == ArtemissArrowSkill.__name__:
+        skill_class = ArtemissArrowSkill
+    elif skill_class_name == CeridwensMagicPotionSkill.__name__:
+        skill_class = CeridwensMagicPotionSkill
+    elif skill_class_name == GraceOfThePantheonSkill.__name__:
+        skill_class = GraceOfThePantheonSkill
     # SKILL2
     elif skill_class_name == IxChelsAmphoraSkill.__name__:
         skill_class = IxChelsAmphoraSkill
@@ -54,6 +67,8 @@ def cleric_skill_factory(
         skill_class = ConcealmentSkill
     elif skill_class_name == HolyFireSkill.__name__:
         skill_class = HolyFireSkill
+    elif skill_class_name == DivinePunishmentSkill.__name__:
+        skill_class = DivinePunishmentSkill
     # SKILL3
     elif skill_class_name == WillOTheWispSkill.__name__:
         skill_class = WillOTheWispSkill
@@ -74,12 +89,17 @@ CLERIC_SKILL_LIST: List[Type[BaseSkill]] = [
     OgunsCloakSkill,
     IsissVeilSkill,
     AnansisTrickerySkill,
+    VidarsBraverySkill,
+    ArtemissArrowSkill,
+    CeridwensMagicPotionSkill,
+    GraceOfThePantheonSkill,
 
     # SKILL2
     IxChelsAmphoraSkill,
     DhanvantarisAmritaSkill,
     ConcealmentSkill,
     HolyFireSkill,
+    DivinePunishmentSkill,
 
     # SKILL3
     WillOTheWispSkill,

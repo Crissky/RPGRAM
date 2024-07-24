@@ -9,6 +9,10 @@ from rpgram.skills.classes.cleric.factory import (
     CLERIC_SKILL_LIST,
     cleric_skill_factory
 )
+from rpgram.skills.classes.druid.factory import (
+    DRUID_SKILL_LIST,
+    druid_skill_factory
+)
 from rpgram.skills.classes.guardian.factory import (
     guardian_skill_factory,
     GUARDIAN_SKILL_LIST
@@ -35,6 +39,7 @@ if TYPE_CHECKING:
 ALL_SKILL_DICT = {
     'Bárbaro': BARBARIAN_SKILL_LIST,
     'Clérigo': CLERIC_SKILL_LIST,
+    'Druida': DRUID_SKILL_LIST,
     'Feiticeiro': SORCERER_SKILL_LIST,
     'Guardião': GUARDIAN_SKILL_LIST,
     'Guerreiro': WARRIOR_SKILL_LIST,
@@ -59,7 +64,7 @@ def skill_factory(
     elif ClasseEnum.CLERIC.value == classe_name:
         class_skill_factory = cleric_skill_factory
     elif ClasseEnum.DRUID.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = druid_skill_factory
     elif ClasseEnum.SORCERER.value == classe_name:
         class_skill_factory = sorcerer_skill_factory
     elif ClasseEnum.WARRIOR.value == classe_name:
@@ -132,7 +137,7 @@ def skill_list_factory(
     elif ClasseEnum.CLERIC.value == classe_name:
         return CLERIC_SKILL_LIST
     elif ClasseEnum.DRUID.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return DRUID_SKILL_LIST
     elif ClasseEnum.SORCERER.value == classe_name:
         return SORCERER_SKILL_LIST
     elif ClasseEnum.WARRIOR.value == classe_name:

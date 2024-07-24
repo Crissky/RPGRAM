@@ -19,7 +19,11 @@ from rpgram.constants.text import (
     PHYSICAL_DEFENSE_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
-from rpgram.enums.skill import ClericSkillEnum, WarriorSkillEnum
+from rpgram.enums.skill import (
+    ClericSkillEnum,
+    DruidSkillEnum,
+    WarriorSkillEnum
+)
 from rpgram.enums.turn import TurnEnum
 
 
@@ -370,7 +374,7 @@ class AnansisTrickeryCondition(TargetSkillBuffCondition):
         return (
             f'*Teia de Ilusões* que aumenta o '
             f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* '
-            f' em {self.power} pontos.'
+            f'em {self.power} pontos.'
         )
 
     @property
@@ -390,6 +394,405 @@ class AnansisTrickeryCondition(TargetSkillBuffCondition):
         return 'permanece com a *Teia de Ilusões*.'
 
 
+class VidarsBraveryCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.VIDARÇÇÇS_BRAVERY,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Bravura Indomita* de um antigo *Guerreiro Silencioso* '
+            f'que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🇻'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Bravura Indomita*.'
+
+
+class ArtemissArrowCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.ARTEMISÇÇÇS_ARROW,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Flecha Lunar* da *Deusa da Lua* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+            f'*{HIT_EMOJI_TEXT}* e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🌙'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece afetado pela *Flecha Lunar*.'
+
+
+class CeridwensMagicPotionCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.CERIDWENÇÇÇS_MAGIC_POTION,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Poção Mágica* da *Deusa Feiticeira* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🧉'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece sob os efeitos da *Poção Mágica*.'
+
+
+class GraceOfThePantheonCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ClericSkillEnum.GRACE_OF_THE_PANTHEON,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Fragmento da *{self.enum_name.value}* '
+            f'que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
+            f'*{HIT_EMOJI_TEXT}* e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🏛️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece sob a *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class RangerFalconCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.RANGER_FALCON,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o vigia, '
+            f'aumentando o '
+            f'*{HIT_EMOJI_TEXT}* e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🚨🦅'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece vigiado pelo *{self.enum_name.value}*.'
+
+
+class BodyguardBearCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.GUARDIAN_BEAR,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o protege, '
+            f'aumentando o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* e a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🛡️🐻'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece protegido pelo *{self.enum_name.value}*.'
+
+
+class HunterTigerCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.HUNTER_TIGER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que persegue ao seu lado, '
+            f'aumentando o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '💪🐯'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece caçando com o *{self.enum_name.value}*.'
+
+
+class WatcherOwlCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.WATCHER_OWL,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que observa o plano místico, '
+            f'aumentando o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e o '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🔮🦉'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece observando com a *{self.enum_name.value}*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -400,6 +803,14 @@ class TargetBuffs:
         OgunsCloakCondition,
         IsissVeilCondition,
         AnansisTrickeryCondition,
+        VidarsBraveryCondition,
+        ArtemissArrowCondition,
+        CeridwensMagicPotionCondition,
+        GraceOfThePantheonCondition,
+        RangerFalconCondition,
+        BodyguardBearCondition,
+        HunterTigerCondition,
+        WatcherOwlCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

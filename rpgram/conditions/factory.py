@@ -51,6 +51,10 @@ from rpgram.conditions.self_skill import (
 )
 from rpgram.conditions.special_damage_skill import (
     SDCrystallineInfusionCondition,
+    SDFellowBearCondition,
+    SDFellowFalconCondition,
+    SDFellowOwlCondition,
+    SDFellowTigerCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -61,13 +65,21 @@ from rpgram.conditions.special_damage_skill import (
 )
 from rpgram.conditions.target_skill_buff import (
     AnansisTrickeryCondition,
+    ArtemissArrowCondition,
+    BodyguardBearCondition,
+    CeridwensMagicPotionCondition,
+    GraceOfThePantheonCondition,
     HecatesFlamesCondition,
+    HunterTigerCondition,
     IdunnsAppleCondition,
     IsissVeilCondition,
     KratossWrathCondition,
     OgunsCloakCondition,
+    RangerFalconCondition,
     UllrsFocusCondition,
-    WarBannerCondition
+    VidarsBraveryCondition,
+    WarBannerCondition,
+    WatcherOwlCondition
 )
 from rpgram.conditions.target_skill_debuff import (
     MuddyCondition,
@@ -80,6 +92,7 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     ClericSkillEnum,
+    DruidSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
     SorcererSkillEnum,
@@ -221,6 +234,31 @@ def condition_factory(
         condition_class = IsissVeilCondition
     elif compare_condition(name, ClericSkillEnum.ANANSIÇÇÇS_TRICKERY):
         condition_class = AnansisTrickeryCondition
+    elif compare_condition(name, ClericSkillEnum.VIDARÇÇÇS_BRAVERY):
+        condition_class = VidarsBraveryCondition
+    elif compare_condition(name, ClericSkillEnum.ARTEMISÇÇÇS_ARROW):
+        condition_class = ArtemissArrowCondition
+    elif compare_condition(name, ClericSkillEnum.CERIDWENÇÇÇS_MAGIC_POTION):
+        condition_class = CeridwensMagicPotionCondition
+    elif compare_condition(name, ClericSkillEnum.GRACE_OF_THE_PANTHEON):
+        condition_class = GraceOfThePantheonCondition
+    # DRUID BUFFS
+    elif compare_condition(name, DruidSkillEnum.RANGER_FALCON):
+        condition_class = RangerFalconCondition
+    elif compare_condition(name, DruidSkillEnum.FELLOW_FALCON):
+        condition_class = SDFellowFalconCondition
+    elif compare_condition(name, DruidSkillEnum.GUARDIAN_BEAR):
+        condition_class = BodyguardBearCondition
+    elif compare_condition(name, DruidSkillEnum.FELLOW_BEAR):
+        condition_class = SDFellowBearCondition
+    elif compare_condition(name, DruidSkillEnum.HUNTER_TIGER):
+        condition_class = HunterTigerCondition
+    elif compare_condition(name, DruidSkillEnum.FELLOW_TIGER):
+        condition_class = SDFellowTigerCondition
+    elif compare_condition(name, DruidSkillEnum.WATCHER_OWL):
+        condition_class = WatcherOwlCondition
+    elif compare_condition(name, DruidSkillEnum.FELLOW_OWL):
+        condition_class = SDFellowOwlCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
