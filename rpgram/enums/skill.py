@@ -97,7 +97,7 @@ class ClericSkillEnum(Enum):
 class DruidSkillEnum(Enum):
     RANGER_FALCON = 'Falcão Patrulheiro'
     FELLOW_FALCON = 'Falcão Companheiro'
-    BODYGUARD_BEAR = 'Urso Guarda-costas'
+    GUARDIAN_BEAR = 'Urso Guardião'
     FELLOW_BEAR = 'Urso Companheiro'
     HUNTER_TIGER = 'Tigre Caçador'
     FELLOW_TIGER = 'Tigre Companheiro'

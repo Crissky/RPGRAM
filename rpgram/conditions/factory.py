@@ -247,7 +247,7 @@ def condition_factory(
         condition_class = RangerFalconCondition
     elif compare_condition(name, DruidSkillEnum.FELLOW_FALCON):
         condition_class = SDFellowFalconCondition
-    elif compare_condition(name, DruidSkillEnum.BODYGUARD_BEAR):
+    elif compare_condition(name, DruidSkillEnum.GUARDIAN_BEAR):
         condition_class = BodyguardBearCondition
     elif compare_condition(name, DruidSkillEnum.FELLOW_BEAR):
         condition_class = SDFellowBearCondition

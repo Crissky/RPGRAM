@@ -317,7 +317,7 @@ class DivinePunishmentSkill(BaseSkill):
         f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}), '
         f'além disso, cura todas as *Condições Amaldiçoantes*.'
     )
-    RANK = 2
+    RANK = 3
     REQUIREMENTS = Requirement(**{
         'level': 80,
         'classe_name': ClasseEnum.CLERIC.value,
@@ -325,7 +325,7 @@ class DivinePunishmentSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
+        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.50,

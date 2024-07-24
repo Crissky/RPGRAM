@@ -673,7 +673,7 @@ class BodyguardBearCondition(TargetSkillBuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=DruidSkillEnum.BODYGUARD_BEAR,
+            name=DruidSkillEnum.GUARDIAN_BEAR,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,

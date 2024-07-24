@@ -116,10 +116,10 @@ class RangerFalconSkill(BaseSkill):
         return report
 
 
-class BodyguardBearSkill(BaseSkill):
-    NAME = DruidSkillEnum.BODYGUARD_BEAR.value
+class GuardianBearSkill(BaseSkill):
+    NAME = DruidSkillEnum.GUARDIAN_BEAR.value
     DESCRIPTION = (
-        f'Convoca um companheiro *{DruidSkillEnum.BODYGUARD_BEAR.value}* '
+        f'Convoca um companheiro *{DruidSkillEnum.GUARDIAN_BEAR.value}* '
         f'que o protege e o auxilia nos combates, '
         f'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* e a '
@@ -144,9 +144,9 @@ class BodyguardBearSkill(BaseSkill):
         damage_types = None
 
         super().__init__(
-            name=BodyguardBearSkill.NAME,
-            description=BodyguardBearSkill.DESCRIPTION,
-            rank=BodyguardBearSkill.RANK,
+            name=GuardianBearSkill.NAME,
+            description=GuardianBearSkill.DESCRIPTION,
+            rank=GuardianBearSkill.RANK,
             level=level,
             cost=cost,
             base_stats_multiplier=base_stats_multiplier,
@@ -156,7 +156,7 @@ class BodyguardBearSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
-            requirements=BodyguardBearSkill.REQUIREMENTS,
+            requirements=GuardianBearSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -334,13 +334,13 @@ if __name__ == '__main__':
     print(DRUID_CHARACTER.cs.hit, DRUID_CHARACTER.cs.evasion)
     DRUID_CHARACTER.skill_tree.learn_skill(RangerFalconSkill)
 
-    skill = BodyguardBearSkill(DRUID_CHARACTER)
+    skill = GuardianBearSkill(DRUID_CHARACTER)
     print(skill)
     print(DRUID_CHARACTER.cs.wisdom)
     print(DRUID_CHARACTER.cs.hit_points, DRUID_CHARACTER.cs.physical_defense)
     print(skill.function(DRUID_CHARACTER))
     print(DRUID_CHARACTER.cs.hit_points, DRUID_CHARACTER.cs.physical_defense)
-    DRUID_CHARACTER.skill_tree.learn_skill(BodyguardBearSkill)
+    DRUID_CHARACTER.skill_tree.learn_skill(GuardianBearSkill)
 
     skill = HunterTigerSkill(DRUID_CHARACTER)
     print(skill)

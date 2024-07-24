@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.druid.skill1 import (
-    BodyguardBearSkill,
+    GuardianBearSkill,
     HunterTigerSkill,
     RangerFalconSkill,
     WatcherOwlSkill
@@ -20,8 +20,8 @@ def druid_skill_factory(
     # SKILL1
     if skill_class_name == RangerFalconSkill.__name__:
         skill_class = RangerFalconSkill
-    elif skill_class_name == BodyguardBearSkill.__name__:
-        skill_class = BodyguardBearSkill
+    elif skill_class_name == GuardianBearSkill.__name__:
+        skill_class = GuardianBearSkill
     elif skill_class_name == HunterTigerSkill.__name__:
         skill_class = HunterTigerSkill
     elif skill_class_name == WatcherOwlSkill.__name__:
@@ -35,7 +35,7 @@ def druid_skill_factory(
 DRUID_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     RangerFalconSkill,
-    BodyguardBearSkill,
+    GuardianBearSkill,
     HunterTigerSkill,
     WatcherOwlSkill,
 ]
