@@ -60,6 +60,7 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
+from bot.functions.job import remove_job_by_name
 from bot.functions.keyboard import reshape_row_buttons
 
 from constant.text import (
@@ -176,13 +177,14 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
         **reply_text_kwargs
     )
     message_id = response.message_id
-    put_grid_in_dict(message_id, context, grid)
+    job_name = get_puzzle_job_name(message_id)
+    put_grid_in_dict(context=context, message_id=message_id, grid=grid)
     context.job_queue.run_once(
         callback=job_timeout_puzzle,
         when=timedelta(minutes=minutes),
         data=dict(message_id=message_id),
         chat_id=chat_id,
-        name=f'JOB_TIMEOUT_PUZZLE_{message_id}',
+        name=job_name,
         job_kwargs=BASE_JOB_KWARGS,
     )
 
@@ -199,7 +201,7 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
     data = job.data
     message_id = data['message_id']
     is_spawn_time = is_group_spawn_time(chat_id)
-    grid = get_grid_from_dict(message_id, context)
+    grid = get_grid_from_dict(context=context, message_id=message_id)
     section_name = f'{SECTION_TEXT_PUZZLE} {grid.rarity.value.upper()}'
 
     if not is_spawn_time:
@@ -239,7 +241,7 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
         need_response=False,
         markdown=True
     )
-    remove_grid_from_dict(message_id, context)
+    remove_grid_from_dict(context=context, message_id=message_id)
 
 
 @skip_if_no_singup_player
@@ -253,7 +255,7 @@ async def switch_puzzle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     chat_id = query.message.chat_id
     message_id = query.message.message_id
-    grid = get_grid_from_dict(message_id, context)
+    grid = get_grid_from_dict(context=context, message_id=message_id)
     data = callback_data_to_dict(query.data)
     row = data['row']
     col = data['col']
@@ -289,12 +291,14 @@ async def solved(
     query: CallbackQuery,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    print('PUZZLE.SOLVED()')
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GOD_WINS_FEEDBACK_TEXTS)
-    remove_grid_from_dict(message_id, context)
+    remove_timeout_puzzle_job(context=context, message_id=message_id)
+    remove_grid_from_dict(context=context, message_id=message_id)
     reply_markup = get_close_keyboard(None)
     await puzzle_edit_message_text(
         grid=grid,
@@ -326,6 +330,7 @@ async def failed(
     query: CallbackQuery,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    print('PUZZLE.FAILED()')
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
@@ -342,7 +347,8 @@ async def failed(
         section_end=SECTION_HEAD_PUZZLE_FAIL_END,
         reply_markup=reply_markup,
     )
-    remove_grid_from_dict(message_id, context)
+    remove_timeout_puzzle_job(context=context, message_id=message_id)
+    remove_grid_from_dict(context=context, message_id=message_id)
     await punishment(
         chat_id=chat_id,
         context=context,
@@ -355,6 +361,7 @@ async def good_move(
     query: CallbackQuery,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    print('PUZZLE.GOOD_MOVE()')
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
@@ -379,6 +386,7 @@ async def bad_move(
     query: CallbackQuery,
     context: ContextTypes.DEFAULT_TYPE
 ):
+    print('PUZZLE.BAD_MOVE()')
     chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
@@ -460,15 +468,31 @@ def get_grid_buttons(grid: GridGame) -> List[InlineKeyboardButton]:
     )
 
 
-def put_grid_in_dict(
-    message_id: int,
+def get_puzzle_job_name(message_id):
+    return f'JOB_TIMEOUT_PUZZLE_{message_id}'
+
+
+def remove_timeout_puzzle_job(
     context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+) -> bool:
+    '''Remove o job de Timeout do Puzzle.
+    '''
+
+    job_name = get_puzzle_job_name(message_id=message_id)
+    return remove_job_by_name(context=context, job_name=job_name)
+
+
+def put_grid_in_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
     grid: GridGame,
 ):
     '''Adiciona o grid ao dicionário de Grids, em que a chave é a 
     message_id.
     '''
 
+    print('PUZZLE.PUT_GRID_IN_DICT()')
     grids = context.chat_data.get('grids', {})
     grids[message_id] = {'grid': grid}
     if not 'grids' in context.chat_data:
@@ -476,9 +500,11 @@ def put_grid_in_dict(
 
 
 def get_grid_from_dict(
+    context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
-    context: ContextTypes.DEFAULT_TYPE
 ) -> GridGame:
+
+    print('PUZZLE.GET_GRID_FROM_DICT()')
     grids = context.chat_data.get('grids', {})
     grid_dict = grids.get(message_id, {})
     grid = grid_dict.get('grid', None)
@@ -487,9 +513,11 @@ def get_grid_from_dict(
 
 
 def remove_grid_from_dict(
+    context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
-    context: ContextTypes.DEFAULT_TYPE
 ):
+
+    print('PUZZLE.REMOVE_GRID_FROM_DICT()')
     grids = context.chat_data.get('grids', {})
     grids.pop(message_id, None)
     context.chat_data['grids'] = grids

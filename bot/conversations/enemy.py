@@ -80,6 +80,7 @@ from bot.functions.chat import (
     reply_typing
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
+from bot.functions.job import remove_job_by_name
 from constant.text import (
     ALERT_SECTION_HEAD,
     SECTION_HEAD,
@@ -1486,6 +1487,7 @@ async def add_xp_group(
     '''Adiciona XP aos jogadores vivos durante a emboscada.
     '''
 
+    print('ADD_XP_GROUP()')
     char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
 
     total_allies = len(char_list)
@@ -1550,15 +1552,7 @@ def remove_enemy_attack_job(
         user_id=user_id,
         enemy=enemy_char
     )
-    current_jobs = context.job_queue.get_jobs_by_name(job_name)
-    print('current_jobs', current_jobs)
-    if not current_jobs:
-        return False
-    for job in current_jobs:
-        print('JOB REMOVIDO:', job.name)
-        job.schedule_removal()
-
-    return True
+    return remove_job_by_name(context=context, job_name=job_name)
 
 
 async def enemy_drop_random_loot(
