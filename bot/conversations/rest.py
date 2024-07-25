@@ -203,7 +203,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         revive_reporting = '🧚‍♂️REVIVEU🧚‍♀️\n\n'
     else:
         max_hp = player_character.cs.hp
-        heal = int(max_hp * 0.15) * heal_low_hp_bonus
+        heal = int(max_hp * 0.10) * heal_low_hp_bonus
         report = player_character.cs.cure_hit_points(heal)
     status_report = player_character.status.remove_random_debuff_conditions(
         condition_quantity
