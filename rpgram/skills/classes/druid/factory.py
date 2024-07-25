@@ -5,6 +5,12 @@ from rpgram.skills.classes.druid.skill1 import (
     RangerFalconSkill,
     WatcherOwlSkill
 )
+from rpgram.skills.classes.druid.skill2 import (
+    VineArmorSkill,
+    VineBucklerSkill,
+    VineSpikedSpaulderSkill,
+    VineWhipSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -26,6 +32,15 @@ def druid_skill_factory(
         skill_class = HunterTigerSkill
     elif skill_class_name == WatcherOwlSkill.__name__:
         skill_class = WatcherOwlSkill
+    # SKILL2
+    elif skill_class_name == VineWhipSkill.__name__:
+        skill_class = VineWhipSkill
+    elif skill_class_name == VineBucklerSkill.__name__:
+        skill_class = VineBucklerSkill
+    elif skill_class_name == VineSpikedSpaulderSkill.__name__:
+        skill_class = VineSpikedSpaulderSkill
+    elif skill_class_name == VineArmorSkill.__name__:
+        skill_class = VineArmorSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -38,4 +53,10 @@ DRUID_SKILL_LIST: List[Type[BaseSkill]] = [
     GuardianBearSkill,
     HunterTigerSkill,
     WatcherOwlSkill,
+
+    # SKILL2
+    VineWhipSkill,
+    VineBucklerSkill,
+    VineSpikedSpaulderSkill,
+    VineArmorSkill,
 ]

@@ -56,6 +56,7 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowFalconCondition,
     SDFellowOwlCondition,
     SDFellowTigerCondition,
+    SDVineThornySpaulderCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -79,6 +80,9 @@ from rpgram.conditions.target_skill_buff import (
     RangerFalconCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
+    VineArmorCondition,
+    VineBucklerCondition,
+    VineSpikedSpaulderCondition,
     WarBannerCondition,
     WatcherOwlCondition
 )
@@ -262,6 +266,14 @@ def condition_factory(
         condition_class = WatcherOwlCondition
     elif compare_condition(name, DruidSkillEnum.FELLOW_OWL):
         condition_class = SDFellowOwlCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_BUCKLER):
+        condition_class = VineBucklerCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_SPIKED_SPAULDER):
+        condition_class = VineSpikedSpaulderCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_THORNY_SPAULDER):
+        condition_class = SDVineThornySpaulderCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_ARMOR):
+        condition_class = VineArmorCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
