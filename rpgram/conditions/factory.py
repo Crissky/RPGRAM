@@ -18,6 +18,7 @@ from rpgram.conditions.debuff import (
     ExhaustionCondition,
     FearingCondition,
     FrozenCondition,
+    ImprisonedCondition,
     ParalysisCondition,
     PetrifiedCondition,
     PoisoningCondition,
@@ -55,6 +56,8 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowFalconCondition,
     SDFellowOwlCondition,
     SDFellowTigerCondition,
+    SDPoisonousSapCondition,
+    SDVineThornySpaulderCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -78,6 +81,9 @@ from rpgram.conditions.target_skill_buff import (
     RangerFalconCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
+    VineArmorCondition,
+    VineBucklerCondition,
+    VineSpikedSpaulderCondition,
     WarBannerCondition,
     WatcherOwlCondition
 )
@@ -167,6 +173,8 @@ def condition_factory(
         condition_class = FearingCondition
     elif compare_condition(name, DebuffEnum.FROZEN):
         condition_class = FrozenCondition
+    elif compare_condition(name, DebuffEnum.IMPRISONED):
+        condition_class = ImprisonedCondition
     elif compare_condition(name, DebuffEnum.PARALYSIS):
         condition_class = ParalysisCondition
     elif compare_condition(name, DebuffEnum.PETRIFIED):
@@ -259,6 +267,16 @@ def condition_factory(
         condition_class = WatcherOwlCondition
     elif compare_condition(name, DruidSkillEnum.FELLOW_OWL):
         condition_class = SDFellowOwlCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_BUCKLER):
+        condition_class = VineBucklerCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_SPIKED_SPAULDER):
+        condition_class = VineSpikedSpaulderCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_THORNY_SPAULDER):
+        condition_class = SDVineThornySpaulderCondition
+    elif compare_condition(name, DruidSkillEnum.VINE_ARMOR):
+        condition_class = VineArmorCondition
+    elif compare_condition(name, DruidSkillEnum.POISONOUS_SAP):
+        condition_class = SDPoisonousSapCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

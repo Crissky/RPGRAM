@@ -525,6 +525,76 @@ class SDFellowOwlCondition(SpecialDamageSkillCondition):
         return report
 
 
+class SDVineThornySpaulderCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.VINE_THORNY_SPAULDER,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.PIERCING],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🍇'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* '
+                f'permanece equipado com a *{self.enum_name.value}*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class SDPoisonousSapCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.POISONOUS_SAP,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.POISON],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.POISON.value + '🍯'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -539,6 +609,8 @@ class SpecialDamageBuffs:
         SDFellowBearCondition,
         SDFellowTigerCondition,
         SDFellowOwlCondition,
+        SDVineThornySpaulderCondition,
+        SDPoisonousSapCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

@@ -16,6 +16,7 @@ from rpgram.conditions.debuff import (
     ParalysisCondition,
     PetrifiedCondition,
     PoisoningCondition,
+    ImprisonedCondition,
     SilenceCondition,
     StunnedCondition
 )
@@ -248,6 +249,9 @@ class SpecialDamage:
         elif self.damage_type == DamageEnum.GHOSTLY:
             min_multiplier = 0.33
             max_multiplier = 0.66
+        elif self.damage_type == DamageEnum.PLANTY:
+            min_multiplier = 0.20
+            max_multiplier = 0.41
 
         return {'min': min_multiplier, 'max': max_multiplier}
 
@@ -388,6 +392,11 @@ class SpecialDamage:
             condition_list.extend([
                 dict(condition=self.partial(FearingCondition), ratio=0.10),
                 dict(condition=self.partial(CurseCondition), ratio=0.10),
+            ])
+        elif self.damage_type == DamageEnum.PLANTY:
+            condition_list.extend([
+                dict(condition=self.partial(PoisoningCondition), ratio=0.10),
+                dict(condition=self.partial(ImprisonedCondition), ratio=0.10),
             ])
 
         return condition_list * self.__status_multiplier

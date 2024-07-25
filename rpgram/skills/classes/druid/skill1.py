@@ -1,11 +1,20 @@
 
 from typing import TYPE_CHECKING
 from constant.text import (
-    ALERT_SECTION_HEAD,
     ALERT_SECTION_HEAD_ADD_STATUS
 )
-from rpgram.conditions.special_damage_skill import SDFellowBearCondition, SDFellowFalconCondition, SDFellowOwlCondition, SDFellowTigerCondition
-from rpgram.conditions.target_skill_buff import BodyguardBearCondition, HunterTigerCondition, RangerFalconCondition, WatcherOwlCondition
+from rpgram.conditions.special_damage_skill import (
+    SDFellowBearCondition,
+    SDFellowFalconCondition,
+    SDFellowOwlCondition,
+    SDFellowTigerCondition
+)
+from rpgram.conditions.target_skill_buff import (
+    BodyguardBearCondition,
+    HunterTigerCondition,
+    RangerFalconCondition,
+    WatcherOwlCondition
+)
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
@@ -19,19 +28,12 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
-from rpgram.enums.debuff import (
-    CURSED_DEBUFFS_NAMES,
-    get_debuffs_emoji_text
-)
-from rpgram.enums.race import MALEGNE_RACES
 from rpgram.enums.skill import (
-    ClericSkillEnum,
     DruidSkillEnum,
     SkillDefenseEnum,
     SkillTypeEnum,
     TargetEnum
 )
-from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -95,8 +97,8 @@ class RangerFalconSkill(BaseSkill):
         player_name = self.char.player_name
         char = self.char
         level = self.level_rank
-        power = self.char.cs.wisdom
-        sd_power = self.char.cs.physical_attack
+        power = char.cs.wisdom
+        sd_power = char.cs.physical_attack
         condition = RangerFalconCondition(power=power, level=level)
         sd_condition = SDFellowFalconCondition(power=sd_power, level=level)
         report_list = char.status.set_conditions(condition)
@@ -164,8 +166,8 @@ class GuardianBearSkill(BaseSkill):
         player_name = self.char.player_name
         char = self.char
         level = self.level_rank
-        power = self.char.cs.wisdom
-        sd_power = self.char.cs.physical_attack
+        power = char.cs.wisdom
+        sd_power = char.cs.physical_attack
         condition = BodyguardBearCondition(power=power, level=level)
         sd_condition = SDFellowBearCondition(power=sd_power, level=level)
         report_list = char.status.set_conditions(condition)
@@ -233,8 +235,8 @@ class HunterTigerSkill(BaseSkill):
         player_name = self.char.player_name
         char = self.char
         level = self.level_rank
-        power = self.char.cs.wisdom
-        sd_power = self.char.cs.physical_attack
+        power = char.cs.wisdom
+        sd_power = char.cs.physical_attack
         condition = HunterTigerCondition(power=power, level=level)
         sd_condition = SDFellowTigerCondition(power=sd_power, level=level)
         report_list = char.status.set_conditions(condition)
@@ -302,8 +304,8 @@ class WatcherOwlSkill(BaseSkill):
         player_name = self.char.player_name
         char = self.char
         level = self.level_rank
-        power = self.char.cs.wisdom
-        sd_power = self.char.cs.physical_attack
+        power = char.cs.wisdom
+        sd_power = char.cs.physical_attack
         condition = WatcherOwlCondition(power=power, level=level)
         sd_condition = SDFellowOwlCondition(power=sd_power, level=level)
         report_list = char.status.set_conditions(condition)
@@ -330,7 +332,7 @@ if __name__ == '__main__':
     print(skill)
     print(DRUID_CHARACTER.cs.wisdom)
     print(DRUID_CHARACTER.cs.hit, DRUID_CHARACTER.cs.evasion)
-    print(skill.function(DRUID_CHARACTER))
+    print(skill.function())
     print(DRUID_CHARACTER.cs.hit, DRUID_CHARACTER.cs.evasion)
     DRUID_CHARACTER.skill_tree.learn_skill(RangerFalconSkill)
 
@@ -338,7 +340,7 @@ if __name__ == '__main__':
     print(skill)
     print(DRUID_CHARACTER.cs.wisdom)
     print(DRUID_CHARACTER.cs.hit_points, DRUID_CHARACTER.cs.physical_defense)
-    print(skill.function(DRUID_CHARACTER))
+    print(skill.function())
     print(DRUID_CHARACTER.cs.hit_points, DRUID_CHARACTER.cs.physical_defense)
     DRUID_CHARACTER.skill_tree.learn_skill(GuardianBearSkill)
 
@@ -347,7 +349,7 @@ if __name__ == '__main__':
     print(DRUID_CHARACTER.cs.wisdom)
     print(DRUID_CHARACTER.cs.physical_attack,
           DRUID_CHARACTER.cs.precision_attack)
-    print(skill.function(DRUID_CHARACTER))
+    print(skill.function())
     print(DRUID_CHARACTER.cs.physical_attack,
           DRUID_CHARACTER.cs.precision_attack)
     DRUID_CHARACTER.skill_tree.learn_skill(HunterTigerSkill)
@@ -357,7 +359,7 @@ if __name__ == '__main__':
     print(DRUID_CHARACTER.cs.wisdom)
     print(DRUID_CHARACTER.cs.magical_attack,
           DRUID_CHARACTER.cs.magical_defense)
-    print(skill.function(DRUID_CHARACTER))
+    print(skill.function())
     print(DRUID_CHARACTER.cs.magical_attack,
           DRUID_CHARACTER.cs.magical_defense)
     DRUID_CHARACTER.skill_tree.learn_skill(WatcherOwlSkill)

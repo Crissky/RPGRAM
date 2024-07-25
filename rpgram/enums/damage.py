@@ -26,6 +26,7 @@ class DamageEnum(Enum):
     BLAST = 'Explosão'
     SONIC = 'Sônico'
     GHOSTLY = 'Fantasmagórico'
+    PLANTY = 'Planta'
 
 
 class DamageEmojiEnum(Enum):
@@ -52,6 +53,7 @@ class DamageEmojiEnum(Enum):
     BLAST = '🧨'
     SONIC = '🔊'
     GHOSTLY = '👻'
+    PLANTY = '🎋'
 
 
 def get_damage_emoji_text(damage: Union[DamageEnum, str]) -> str:

@@ -103,6 +103,12 @@ class DruidSkillEnum(Enum):
     FELLOW_TIGER = 'Tigre Companheiro'
     WATCHER_OWL = 'Coruja Sentinela'
     FELLOW_OWL = 'Coruja Companheira'
+    VINE_WHIP = 'Chicote de Vinha'
+    VINE_BUCKLER = 'Broquel de Vinha'
+    VINE_SPIKED_SPAULDER = 'Espaldeira Espinhosa de Vinha'
+    VINE_THORNY_SPAULDER = 'Espaldeira Espinheta de Vinha'
+    VINE_ARMOR = 'Armadura de Vinha'
+    POISONOUS_SAP = 'Seiva Venenosa'
 
 
 class GuardianSkillEnum(Enum):

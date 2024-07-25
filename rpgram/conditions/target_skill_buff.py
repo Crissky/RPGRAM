@@ -793,6 +793,149 @@ class WatcherOwlCondition(TargetSkillBuffCondition):
         return f'permanece observando com a *{self.enum_name.value}*.'
 
 
+class VineBucklerCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.VINE_BUCKLER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos e a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return int(self.power / 2)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🛡🍇'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
+
+class VineSpikedSpaulderCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.VINE_SPIKED_SPAULDER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos e a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return int(self.power / 2)
+
+    @property
+    def emoji(self) -> str:
+        return '🌵🍇'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class VineArmorCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.VINE_ARMOR,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos e a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return int(self.power / 2)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🧥🍇'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 3 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -811,6 +954,9 @@ class TargetBuffs:
         BodyguardBearCondition,
         HunterTigerCondition,
         WatcherOwlCondition,
+        VineBucklerCondition,
+        VineSpikedSpaulderCondition,
+        VineArmorCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

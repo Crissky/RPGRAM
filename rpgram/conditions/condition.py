@@ -85,7 +85,7 @@ class Condition(StatsBooster):
         self.__turn = 1
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
-        text = f'*Condição*: {self.name}\n'
+        text = f'*Condição*: {self.emoji_name}\n'
 
         if verbose:
             text += (
