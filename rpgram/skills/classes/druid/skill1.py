@@ -1,11 +1,20 @@
 
 from typing import TYPE_CHECKING
 from constant.text import (
-    ALERT_SECTION_HEAD,
     ALERT_SECTION_HEAD_ADD_STATUS
 )
-from rpgram.conditions.special_damage_skill import SDFellowBearCondition, SDFellowFalconCondition, SDFellowOwlCondition, SDFellowTigerCondition
-from rpgram.conditions.target_skill_buff import BodyguardBearCondition, HunterTigerCondition, RangerFalconCondition, WatcherOwlCondition
+from rpgram.conditions.special_damage_skill import (
+    SDFellowBearCondition,
+    SDFellowFalconCondition,
+    SDFellowOwlCondition,
+    SDFellowTigerCondition
+)
+from rpgram.conditions.target_skill_buff import (
+    BodyguardBearCondition,
+    HunterTigerCondition,
+    RangerFalconCondition,
+    WatcherOwlCondition
+)
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
@@ -19,19 +28,12 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
-from rpgram.enums.debuff import (
-    CURSED_DEBUFFS_NAMES,
-    get_debuffs_emoji_text
-)
-from rpgram.enums.race import MALEGNE_RACES
 from rpgram.enums.skill import (
-    ClericSkillEnum,
     DruidSkillEnum,
     SkillDefenseEnum,
     SkillTypeEnum,
     TargetEnum
 )
-from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
