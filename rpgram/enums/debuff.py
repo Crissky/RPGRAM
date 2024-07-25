@@ -14,6 +14,7 @@ class DebuffEnum(Enum):
     EXHAUSTION = 'Exausto'
     FEARING = 'Medo'
     FROZEN = 'Congelado'
+    IMPRISONED = 'Aprisionado'
     PARALYSIS = 'Paralisado'
     PETRIFIED = 'Petrificado'
     POISONING = 'Envenenado'
@@ -32,6 +33,7 @@ class DebuffEmojiEnum(Enum):
     EXHAUSTION = '💧'
     FEARING = '😰'
     FROZEN = '🥶'
+    IMPRISONED = '🪢'
     PARALYSIS = '♒︎'
     PETRIFIED = '🗿'  # 🪨
     POISONING = '🍄'
@@ -57,6 +59,7 @@ IMMOBILIZED_DEBUFFS_NAMES = [
     DebuffEnum.CRYSTALLIZED.name,
     DebuffEnum.FEARING.name,
     DebuffEnum.FROZEN.name,
+    DebuffEnum.IMPRISONED.name,
     DebuffEnum.PARALYSIS.name,
     DebuffEnum.PETRIFIED.name,
     DebuffEnum.STUNNED.name,

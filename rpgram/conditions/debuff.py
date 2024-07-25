@@ -349,6 +349,28 @@ class FrozenCondition(DebuffCondition):
         return report
 
 
+class ImprisonedCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 2, level: int = 1):
+        super().__init__(
+            name=DebuffEnum.IMPRISONED,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return f'O personagem não pode realizar ações por {self.turn} turnos.'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            report['text'] = 'Personagem está aprisionado.'
+
+        return report
+
+
 class ParalysisCondition(DebuffCondition):
 
     def __init__(self, turn: int = 3, level: int = 1):
@@ -481,6 +503,7 @@ class Debuffs:
         ExhaustionCondition,
         FearingCondition,
         FrozenCondition,
+        ImprisonedCondition,
         ParalysisCondition,
         PetrifiedCondition,
         PoisoningCondition,
@@ -499,20 +522,9 @@ DEBUFFS: Iterable[DebuffCondition] = Debuffs()
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
 
-    print(BerserkerCondition())
-    print(BleedingCondition())
-    print(BlindnessCondition())
-    print(BurnCondition())
-    print(ConfusionCondition())
-    print(CrystallizedCondition())
-    print(CurseCondition())
-    print(ExhaustionCondition())
-    print(FearingCondition())
-    print(FrozenCondition())
-    print(ParalysisCondition())
-    print(PetrifiedCondition())
-    print(PoisoningCondition())
-    print(SilenceCondition())
+    for condition in Debuffs():
+        print(condition)
+
     print(StunnedCondition() in IMMOBILIZED_DEBUFFS_NAMES)
     print('BerserkerCondition(level=10).multiplier_strength:',
           BerserkerCondition(level=10).multiplier_strength)

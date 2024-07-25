@@ -18,6 +18,7 @@ from rpgram.conditions.debuff import (
     ExhaustionCondition,
     FearingCondition,
     FrozenCondition,
+    ImprisonedCondition,
     ParalysisCondition,
     PetrifiedCondition,
     PoisoningCondition,
@@ -167,6 +168,8 @@ def condition_factory(
         condition_class = FearingCondition
     elif compare_condition(name, DebuffEnum.FROZEN):
         condition_class = FrozenCondition
+    elif compare_condition(name, DebuffEnum.IMPRISONED):
+        condition_class = ImprisonedCondition
     elif compare_condition(name, DebuffEnum.PARALYSIS):
         condition_class = ParalysisCondition
     elif compare_condition(name, DebuffEnum.PETRIFIED):
