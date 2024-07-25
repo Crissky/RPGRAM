@@ -525,7 +525,7 @@ class SDFellowOwlCondition(SpecialDamageSkillCondition):
         return report
 
 
-class SDVineThornySpaulderCondition(SpecialDamageSkillCondition):
+class SDThornySpaulderCondition(SpecialDamageSkillCondition):
 
     def __init__(
         self,
@@ -534,7 +534,7 @@ class SDVineThornySpaulderCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=DruidSkillEnum.VINE_THORNY_SPAULDER,
+            name=DruidSkillEnum.THORNY_SPAULDER,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.PIERCING],
@@ -609,7 +609,7 @@ class SpecialDamageBuffs:
         SDFellowBearCondition,
         SDFellowTigerCondition,
         SDFellowOwlCondition,
-        SDVineThornySpaulderCondition,
+        SDThornySpaulderCondition,
         SDPoisonousSapCondition,
     ]
 

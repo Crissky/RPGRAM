@@ -57,7 +57,7 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowOwlCondition,
     SDFellowTigerCondition,
     SDPoisonousSapCondition,
-    SDVineThornySpaulderCondition,
+    SDThornySpaulderCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -81,9 +81,9 @@ from rpgram.conditions.target_skill_buff import (
     RangerFalconCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
-    VineArmorCondition,
+    OakArmorCondition,
     VineBucklerCondition,
-    VineSpikedSpaulderCondition,
+    SilkFlossSpaulderCondition,
     WarBannerCondition,
     WatcherOwlCondition
 )
@@ -269,12 +269,12 @@ def condition_factory(
         condition_class = SDFellowOwlCondition
     elif compare_condition(name, DruidSkillEnum.VINE_BUCKLER):
         condition_class = VineBucklerCondition
-    elif compare_condition(name, DruidSkillEnum.VINE_SPIKED_SPAULDER):
-        condition_class = VineSpikedSpaulderCondition
-    elif compare_condition(name, DruidSkillEnum.VINE_THORNY_SPAULDER):
-        condition_class = SDVineThornySpaulderCondition
-    elif compare_condition(name, DruidSkillEnum.VINE_ARMOR):
-        condition_class = VineArmorCondition
+    elif compare_condition(name, DruidSkillEnum.SILK_FLOSS_SPAULDER):
+        condition_class = SilkFlossSpaulderCondition
+    elif compare_condition(name, DruidSkillEnum.THORNY_SPAULDER):
+        condition_class = SDThornySpaulderCondition
+    elif compare_condition(name, DruidSkillEnum.OAK_ARMOR):
+        condition_class = OakArmorCondition
     elif compare_condition(name, DruidSkillEnum.POISONOUS_SAP):
         condition_class = SDPoisonousSapCondition
     # GUARDIAN BUFFS

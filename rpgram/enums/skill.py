@@ -104,10 +104,12 @@ class DruidSkillEnum(Enum):
     WATCHER_OWL = 'Coruja Sentinela'
     FELLOW_OWL = 'Coruja Companheira'
     VINE_WHIP = 'Chicote de Vinha'
+    SILK_FLOSS_SWORD = 'Espada de Paineira'
+    OAK_WARHAMMER = 'Martelo de Guerra de Carvalho'
     VINE_BUCKLER = 'Broquel de Vinha'
-    VINE_SPIKED_SPAULDER = 'Espaldeira Espinhosa de Vinha'
-    VINE_THORNY_SPAULDER = 'Espaldeira Espinheta de Vinha'
-    VINE_ARMOR = 'Armadura de Vinha'
+    SILK_FLOSS_SPAULDER = 'Espaldeira de Paineira'
+    THORNY_SPAULDER = 'Espaldeira Espinheta'
+    OAK_ARMOR = 'Armadura de Carvalho'
     POISONOUS_SAP = 'Seiva Venenosa'
 
 

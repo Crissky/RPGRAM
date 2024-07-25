@@ -6,9 +6,11 @@ from rpgram.skills.classes.druid.skill1 import (
     WatcherOwlSkill
 )
 from rpgram.skills.classes.druid.skill2 import (
-    VineArmorSkill,
+    OakArmorSkill,
+    OakWarhammerSkill,
+    SilkFlossSwordSkill,
     VineBucklerSkill,
-    VineSpikedSpaulderSkill,
+    SilkFlossSpaulderSkill,
     VineWhipSkill
 )
 from rpgram.skills.classes.druid.skill3 import (
@@ -38,12 +40,16 @@ def druid_skill_factory(
     # SKILL2
     elif skill_class_name == VineWhipSkill.__name__:
         skill_class = VineWhipSkill
+    elif skill_class_name == SilkFlossSwordSkill.__name__:
+        skill_class = SilkFlossSwordSkill
+    elif skill_class_name == OakWarhammerSkill.__name__:
+        skill_class = OakWarhammerSkill
     elif skill_class_name == VineBucklerSkill.__name__:
         skill_class = VineBucklerSkill
-    elif skill_class_name == VineSpikedSpaulderSkill.__name__:
-        skill_class = VineSpikedSpaulderSkill
-    elif skill_class_name == VineArmorSkill.__name__:
-        skill_class = VineArmorSkill
+    elif skill_class_name == SilkFlossSpaulderSkill.__name__:
+        skill_class = SilkFlossSpaulderSkill
+    elif skill_class_name == OakArmorSkill.__name__:
+        skill_class = OakArmorSkill
     # SKILL3
     elif skill_class_name == PoisonousSapSkill.__name__:
         skill_class = PoisonousSapSkill
@@ -59,12 +65,14 @@ DRUID_SKILL_LIST: List[Type[BaseSkill]] = [
     GuardianBearSkill,
     HunterTigerSkill,
     WatcherOwlSkill,
+    SilkFlossSwordSkill,
+    OakWarhammerSkill,
 
     # SKILL2
     VineWhipSkill,
     VineBucklerSkill,
-    VineSpikedSpaulderSkill,
-    VineArmorSkill,
+    SilkFlossSpaulderSkill,
+    OakArmorSkill,
 
     # SKILL3
     PoisonousSapSkill,
