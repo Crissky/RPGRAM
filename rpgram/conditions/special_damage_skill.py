@@ -566,6 +566,35 @@ class SDVineThornySpaulderCondition(SpecialDamageSkillCondition):
         return report
 
 
+class SDPoisonousSapCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.POISONOUS_SAP,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.POISON],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.POISON.value + '🍯'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -581,6 +610,7 @@ class SpecialDamageBuffs:
         SDFellowTigerCondition,
         SDFellowOwlCondition,
         SDVineThornySpaulderCondition,
+        SDPoisonousSapCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

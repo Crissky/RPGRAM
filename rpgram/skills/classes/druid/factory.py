@@ -11,6 +11,9 @@ from rpgram.skills.classes.druid.skill2 import (
     VineSpikedSpaulderSkill,
     VineWhipSkill
 )
+from rpgram.skills.classes.druid.skill3 import (
+    PoisonousSapSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -41,6 +44,9 @@ def druid_skill_factory(
         skill_class = VineSpikedSpaulderSkill
     elif skill_class_name == VineArmorSkill.__name__:
         skill_class = VineArmorSkill
+    # SKILL3
+    elif skill_class_name == PoisonousSapSkill.__name__:
+        skill_class = PoisonousSapSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -59,4 +65,7 @@ DRUID_SKILL_LIST: List[Type[BaseSkill]] = [
     VineBucklerSkill,
     VineSpikedSpaulderSkill,
     VineArmorSkill,
+
+    # SKILL3
+    PoisonousSapSkill,
 ]
