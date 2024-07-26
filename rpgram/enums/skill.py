@@ -157,6 +157,7 @@ class MultiClasseSkillEnum(Enum):
 
 class RogueSkillEnum(Enum):
     VIPERÇÇÇS_FANGS = 'Presas de Víbora'
+    PHANTOM_STRIKE = 'Golpe Fantasma'
 
 
 class SorcererSkillEnum(Enum):
