@@ -34,6 +34,7 @@ from rpgram.enums.skill import (
     SkillTypeEnum,
     TargetEnum
 )
+from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -325,6 +326,252 @@ class WatcherOwlSkill(BaseSkill):
         return report
 
 
+class FireBirdSkill(BaseSkill):
+    NAME = DruidSkillEnum.FIRE_BIRD.value
+    DESCRIPTION = (
+        f'Conjura um *Pássaro Flamejante* que '
+        f'voa rapidamente, atacando com um rasante e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DRUID.value,
+        'skill_list': [RangerFalconSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
+        }
+        damage_types = [
+            DamageEnum.PIERCING,
+            DamageEnum.FIRE,
+        ]
+
+        super().__init__(
+            name=FireBirdSkill.NAME,
+            description=FireBirdSkill.DESCRIPTION,
+            rank=FireBirdSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FireBirdSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.50
+
+
+class FireBirdSkill(BaseSkill):
+    NAME = DruidSkillEnum.FIRE_BIRD.value
+    DESCRIPTION = (
+        f'Conjura um *Pássaro Flamejante* que '
+        f'voa rapidamente, atacando com um rasante e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DRUID.value,
+        'skill_list': [RangerFalconSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
+        }
+        damage_types = [
+            DamageEnum.PIERCING,
+            DamageEnum.FIRE,
+        ]
+
+        super().__init__(
+            name=FireBirdSkill.NAME,
+            description=FireBirdSkill.DESCRIPTION,
+            rank=FireBirdSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FireBirdSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.50
+
+
+class UrseismicTremorSkill(BaseSkill):
+    NAME = DruidSkillEnum.URSEISMIC_TREMOR.value
+    DESCRIPTION = (
+        f'Conjura um *Urso Gigantesco* que '
+        f'golpeia o chão, estilhaçando a terra em um mosaico sísmico e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (105% + 2.5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DRUID.value,
+        'skill_list': [GuardianBearSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.05,
+        }
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.GROUND,
+        ]
+
+        super().__init__(
+            name=UrseismicTremorSkill.NAME,
+            description=UrseismicTremorSkill.DESCRIPTION,
+            rank=UrseismicTremorSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=UrseismicTremorSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.90
+
+
+class ThunderingOnslaughtSkill(BaseSkill):
+    NAME = DruidSkillEnum.THUNDERING_ONSLAUGHT.value
+    DESCRIPTION = (
+        f'Conjura um *Tigre da Tempestade* que '
+        f'concentra uma enorme quantidade de energia em suas garras e '
+        f'avança sobre o inimigo, desferindo um golpe devastador que libera '
+        f'uma descarga elétrica, ignorando as defesas do oponente e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DRUID.value,
+        'skill_list': [HunterTigerSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 0.50,
+        }
+        damage_types = [
+            DamageEnum.SLASHING,
+            DamageEnum.LIGHTNING,
+        ]
+
+        super().__init__(
+            name=ThunderingOnslaughtSkill.NAME,
+            description=ThunderingOnslaughtSkill.DESCRIPTION,
+            rank=ThunderingOnslaughtSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.TRUE,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ThunderingOnslaughtSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class MagicGaleSkill(BaseSkill):
+    NAME = DruidSkillEnum.MAGIC_GALE.value
+    DESCRIPTION = (
+        f'Conjura uma *Coruja Mística* que '
+        f'concentra sua energia mágica, '
+        f'infundindo-a em uma poderosa rajada de vento, '
+        f'causando dano '
+        f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DRUID.value,
+        'skill_list': [WatcherOwlSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
+        }
+        damage_types = [
+            DamageEnum.MAGIC,
+            DamageEnum.WIND,
+        ]
+
+        super().__init__(
+            name=MagicGaleSkill.NAME,
+            description=MagicGaleSkill.DESCRIPTION,
+            rank=MagicGaleSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=MagicGaleSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import DRUID_CHARACTER
 
@@ -364,7 +611,42 @@ if __name__ == '__main__':
           DRUID_CHARACTER.cs.magical_defense)
     DRUID_CHARACTER.skill_tree.learn_skill(WatcherOwlSkill)
 
-    print('\n'.join(
-        report['text']
-        for report in DRUID_CHARACTER.activate_status()
-    ))
+    skill = FireBirdSkill(DRUID_CHARACTER)
+    print(skill)
+    print(DRUID_CHARACTER.cs.physical_attack)
+    print(DRUID_CHARACTER.to_attack(
+        defender_char=DRUID_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    DRUID_CHARACTER.skill_tree.learn_skill(FireBirdSkill)
+
+    skill = UrseismicTremorSkill(DRUID_CHARACTER)
+    print(skill)
+    print(DRUID_CHARACTER.cs.physical_attack)
+    print(DRUID_CHARACTER.to_attack(
+        defender_char=DRUID_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    DRUID_CHARACTER.skill_tree.learn_skill(UrseismicTremorSkill)
+
+    skill = ThunderingOnslaughtSkill(DRUID_CHARACTER)
+    print(skill)
+    print(DRUID_CHARACTER.cs.physical_attack)
+    print(DRUID_CHARACTER.to_attack(
+        defender_char=DRUID_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    DRUID_CHARACTER.skill_tree.learn_skill(ThunderingOnslaughtSkill)
+
+    skill = MagicGaleSkill(DRUID_CHARACTER)
+    print(skill)
+    print(DRUID_CHARACTER.cs.physical_attack)
+    print(DRUID_CHARACTER.to_attack(
+        defender_char=DRUID_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    DRUID_CHARACTER.skill_tree.learn_skill(MagicGaleSkill)

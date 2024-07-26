@@ -525,7 +525,7 @@ class SDFellowOwlCondition(SpecialDamageSkillCondition):
         return report
 
 
-class SDVineThornySpaulderCondition(SpecialDamageSkillCondition):
+class SDThornySpaulderCondition(SpecialDamageSkillCondition):
 
     def __init__(
         self,
@@ -534,7 +534,7 @@ class SDVineThornySpaulderCondition(SpecialDamageSkillCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=DruidSkillEnum.VINE_THORNY_SPAULDER,
+            name=DruidSkillEnum.THORNY_SPAULDER,
             frequency=TurnEnum.START,
             power=power,
             damage_types=[DamageEnum.PIERCING],
@@ -595,6 +595,64 @@ class SDPoisonousSapCondition(SpecialDamageSkillCondition):
         return DamageEmojiEnum.POISON.value + '🍯'
 
 
+class SDIgneousSapCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.IGNEOUS_SAP,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.FIRE],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.FIRE.value + '🍯'
+
+
+class SDEscarchaSapCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DruidSkillEnum.ESCARCHA_SAP,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.COLD],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.COLD.value + '🍯'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -609,8 +667,10 @@ class SpecialDamageBuffs:
         SDFellowBearCondition,
         SDFellowTigerCondition,
         SDFellowOwlCondition,
-        SDVineThornySpaulderCondition,
+        SDThornySpaulderCondition,
         SDPoisonousSapCondition,
+        SDIgneousSapCondition,
+        SDEscarchaSapCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

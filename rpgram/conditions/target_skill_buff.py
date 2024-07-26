@@ -19,6 +19,7 @@ from rpgram.constants.text import (
     PHYSICAL_DEFENSE_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
@@ -836,7 +837,7 @@ class VineBucklerCondition(TargetSkillBuffCondition):
         return f'permanece equipado com o *{self.enum_name.value}*.'
 
 
-class VineSpikedSpaulderCondition(TargetSkillBuffCondition):
+class SilkFlossSpaulderCondition(TargetSkillBuffCondition):
 
     def __init__(
         self,
@@ -845,7 +846,7 @@ class VineSpikedSpaulderCondition(TargetSkillBuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=DruidSkillEnum.VINE_SPIKED_SPAULDER,
+            name=DruidSkillEnum.SILK_FLOSS_SPAULDER,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,
@@ -886,7 +887,7 @@ class VineSpikedSpaulderCondition(TargetSkillBuffCondition):
         return int(self._power * power_multiplier)
 
 
-class VineArmorCondition(TargetSkillBuffCondition):
+class OakArmorCondition(TargetSkillBuffCondition):
 
     def __init__(
         self,
@@ -895,7 +896,7 @@ class VineArmorCondition(TargetSkillBuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=DruidSkillEnum.VINE_ARMOR,
+            name=DruidSkillEnum.OAK_ARMOR,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,
@@ -922,7 +923,7 @@ class VineArmorCondition(TargetSkillBuffCondition):
 
     @property
     def emoji(self) -> str:
-        return '🧥🍇'
+        return EmojiEnum.ARMOR.value + '🍇'
 
     @property
     def function_text(self) -> str:
@@ -955,8 +956,8 @@ class TargetBuffs:
         HunterTigerCondition,
         WatcherOwlCondition,
         VineBucklerCondition,
-        VineSpikedSpaulderCondition,
-        VineArmorCondition,
+        SilkFlossSpaulderCondition,
+        OakArmorCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

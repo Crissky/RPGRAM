@@ -203,7 +203,7 @@ class SweepingRocSkill(BaseSkill):
         f'realiza um salto veloz em direção ao alvo e '
         f'executa um golpe devastador '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.WIND)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.WIND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
     )
@@ -251,7 +251,7 @@ class HydraFangsSkill(BaseSkill):
         f'ataca com as armas envolvidas em '
         f'uma névoa ácida, '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.ACID)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.ACID)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
         f'adicionando as condições '

@@ -1104,7 +1104,7 @@ async def player_attack_player(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
     attacker_char: PlayerCharacter,
-    defender_char: NPCharacter,
+    defender_char: PlayerCharacter,
     to_dodge: bool = False,
     attacker_skill: BaseSkill = None,
 ) -> dict:
@@ -1616,7 +1616,12 @@ async def enemy_drop_random_loot(
         if item is not None
     ]
     shuffle(drops)
-    text = f'{enemy_char.full_name_with_level} fugiu e deixou para trás'
+
+    if from_attack:
+        text = f'{enemy_char.full_name_with_level} foi derrotado e deixou'
+    else:
+        text = f'{enemy_char.full_name_with_level} fugiu e deixou para trás'
+
     await send_drop_message(
         context=context,
         items=drops,
