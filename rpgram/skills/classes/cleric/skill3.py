@@ -78,7 +78,7 @@ class GreekFireSkill(BaseSkill):
         f'Por meio de um engenhoso artefato antigo, invoca as '
         f'*Chamas Negras das Fornalhas de Hefesto* para golpear o oponente, '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )

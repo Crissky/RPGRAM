@@ -243,8 +243,8 @@ class SapiousCubeSkill(BaseSkill):
         f'Conjura os poderes da natureza para materializar um '
         f'*Cubo Gelatinoso*, composto por diversos tipos de *Seivas*, '
         f'ao redor do alvo, causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.POISON)}*, '
-        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.POISON)}*, de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )

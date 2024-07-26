@@ -48,7 +48,7 @@ class VineWhipSkill(BaseSkill):
         f'Com um movimento rápido, germina instantaneamente sua arma em um '
         f'*Chicote de Vinha* para atacar o oponente, '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.PLANTY)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PLANTY)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -89,8 +89,8 @@ class SilkFlossSwordSkill(BaseSkill):
         f'Com maestria, desabrocha prontamente sua arma em uma '
         f'*Espada Espiheta* e ataca o oponente, '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.PLANTY)}*, '
-        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PLANTY)}*, de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -137,8 +137,8 @@ class OakWarhammerSkill(BaseSkill):
         f'Desabrolha sua arma em um gigantesco '
         f'*{DruidSkillEnum.OAK_WARHAMMER.value}* para atacar o oponente, '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.PLANTY)}*, '
-        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PLANTY)}*, de '
+        f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível).'
     )

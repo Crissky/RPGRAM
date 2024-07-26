@@ -332,7 +332,7 @@ class FireBirdSkill(BaseSkill):
         f'Conjura um *Pássaro Flamejante* que '
         f'voa rapidamente, atacando com um rasante e '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
     )
