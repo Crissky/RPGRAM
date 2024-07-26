@@ -52,10 +52,12 @@ from rpgram.conditions.self_skill import (
 )
 from rpgram.conditions.special_damage_skill import (
     SDCrystallineInfusionCondition,
+    SDEscarchaSapCondition,
     SDFellowBearCondition,
     SDFellowFalconCondition,
     SDFellowOwlCondition,
     SDFellowTigerCondition,
+    SDIgneousSapCondition,
     SDPoisonousSapCondition,
     SDThornySpaulderCondition,
     SDWildAcidCondition,
@@ -277,6 +279,10 @@ def condition_factory(
         condition_class = OakArmorCondition
     elif compare_condition(name, DruidSkillEnum.POISONOUS_SAP):
         condition_class = SDPoisonousSapCondition
+    elif compare_condition(name, DruidSkillEnum.IGNEOUS_SAP):
+        condition_class = SDIgneousSapCondition
+    elif compare_condition(name, DruidSkillEnum.ESCARCHA_SAP):
+        condition_class = SDEscarchaSapCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
