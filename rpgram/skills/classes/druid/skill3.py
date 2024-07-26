@@ -29,9 +29,14 @@ if TYPE_CHECKING:
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': '',
+    'name': 'Bruxo Verde',
     'description': (
-        ''
+        'O Bruxo Verde domina a alquimia da Seiva para criar '
+        'aprimoramentos e feitiços. '
+        'Através de um profundo conhecimento das plantas e de '
+        'seus poderes, o Druida manipula a Seiva para '
+        'imbuir seus equipamentos com propriedades mágicas e '
+        'para manipulá-la como um instrumento de ataque.'
     )
 }
 

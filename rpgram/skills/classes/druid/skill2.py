@@ -35,9 +35,14 @@ if TYPE_CHECKING:
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': '',
+    'name': 'Forja Verde',
     'description': (
-        ''
+        'A Forja Verde representa o domínio do Druida sobre a '
+        'a vida e a matéria Verde da natureza, moldando-a para criar '
+        'armas e armaduras imbuídas de vida. '
+        'O Druida transforma a matéria prima da floresta em '
+        'ferramentas poderosas, dando-lhe a capacidade de defender '
+        'a natureza e seus aliados.'
     )
 }
 
