@@ -151,6 +151,10 @@ class MageSkillEnum(Enum):
     SAND_STORM = 'Tempestade de Areia'
 
 
+class RogueSkillEnum(Enum):
+    VIPERÇÇÇS_FANGS = 'Presas de Víbora'
+
+
 class SorcererSkillEnum(Enum):
     MYSTICAL_PROTECTION = 'Proteção Mística'
     MYSTICAL_CONFLUENCE = 'Confluência Mística'
