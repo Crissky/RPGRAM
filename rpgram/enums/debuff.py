@@ -12,7 +12,7 @@ class DebuffEnum(Enum):
     CRYSTALLIZED = 'Cristalizado'
     CURSE = 'Amaldiçoado'
     EXHAUSTION = 'Exausto'
-    FEARING = 'Medo'
+    FEARING = 'Amedrontado'
     FROZEN = 'Congelado'
     IMPRISONED = 'Aprisionado'
     PARALYSIS = 'Paralisado'
