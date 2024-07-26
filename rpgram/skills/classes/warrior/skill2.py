@@ -12,6 +12,9 @@ from rpgram.enums.skill import (
 )
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
+from rpgram.skills.classes.multiclasse.precision_attack import (
+    QuickAttackSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
@@ -29,50 +32,6 @@ SKILL_WAY_DESCRIPTION = {
         'eliminando seus inimigos com golpes rápidos e letais.'
     )
 }
-
-
-class QuickAttackSkill(BaseSkill):
-    NAME = WarriorSkillEnum.QUICK_ATTACK.value
-    DESCRIPTION = (
-        f'Executa uma sequência de golpes precisos '
-        f'como um vendaval contra seu inimigo, '
-        f'dificultando as chances de esquiva do oponente e '
-        f'causando dano com base em '
-        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
-    )
-    RANK = 1
-    REQUIREMENTS = Requirement(**{
-        'classe_name': ClasseEnum.WARRIOR.value,
-    })
-
-    def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
-        base_stats_multiplier = {}
-        combat_stats_multiplier = {
-            CombatStatsEnum.PRECISION_ATTACK: 1.00
-        }
-        damage_types = None
-
-        super().__init__(
-            name=QuickAttackSkill.NAME,
-            description=QuickAttackSkill.DESCRIPTION,
-            rank=QuickAttackSkill.RANK,
-            level=level,
-            cost=cost,
-            base_stats_multiplier=base_stats_multiplier,
-            combat_stats_multiplier=combat_stats_multiplier,
-            target_type=TargetEnum.SINGLE,
-            skill_type=SkillTypeEnum.ATTACK,
-            skill_defense=SkillDefenseEnum.PHYSICAL,
-            char=char,
-            use_equips_damage_types=True,
-            requirements=QuickAttackSkill.REQUIREMENTS,
-            damage_types=damage_types
-        )
-
-    @property
-    def hit_multiplier(self) -> float:
-        return 1.25
 
 
 class BlinkAttackSkill(BaseSkill):
@@ -169,14 +128,29 @@ if __name__ == '__main__':
     skill = QuickAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.precision_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(QuickAttackSkill)
 
     skill = BlinkAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.precision_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(BlinkAttackSkill)
 
     skill = LethalAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.precision_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(LethalAttackSkill)

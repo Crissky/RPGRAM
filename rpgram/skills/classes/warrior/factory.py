@@ -1,12 +1,14 @@
 from typing import TYPE_CHECKING, List, Type
+from rpgram.skills.classes.multiclasse.precision_attack import (
+    QuickAttackSkill
+)
 from rpgram.skills.classes.warrior.skill1 import (
     MoreThanPowerfulAttackSkill,
     PowerfulAttackSkill
 )
 from rpgram.skills.classes.warrior.skill2 import (
     BlinkAttackSkill,
-    LethalAttackSkill,
-    QuickAttackSkill
+    LethalAttackSkill
 )
 from rpgram.skills.classes.warrior.skill3 import (
     AegisShadowSkill,

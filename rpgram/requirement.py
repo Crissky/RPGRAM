@@ -18,6 +18,7 @@ class Requirement:
         self.base_stats = {BaseStatsEnum.LEVEL.value.lower(): 1}
         self.combat_stats = {}
         self.classe_name: str = kwargs.pop('classe_name', None)
+        self.classe_name_list = kwargs.pop('classe_name_list', [])
         self.skill_list = kwargs.pop('skill_list', [])
         kwargs = {k.lower(): v for k, v in kwargs.items()}
 
@@ -51,6 +52,7 @@ class Requirement:
         rank = max(1, int(rank))
         level_rank = int(level * rank)
         level_rank = max(0, (level_rank - 1))
+        char_classe_name = character.classe_name
         for attribute, value in self.base_stats.items():
             value += (level_rank * BASE_STATS_REQUIREMENT_MULTIPLIER)
             if value > character.base_stats[attribute]:
@@ -66,11 +68,25 @@ class Requirement:
                     f'"{value}" ({character.combat_stats[attribute]}).'
                 )
 
-        if self.classe_name and self.classe_name != character.classe_name:
+        if self.classe_name and self.classe_name != char_classe_name:
             errors.append(
                 f'    Classe: '
                 f'"{self.classe_name.title()}" '
-                f'({character.classe_name.title()}).'
+                f'({char_classe_name.title()}).'
+            )
+
+        if (
+            self.classe_name_list and
+            char_classe_name not in self.classe_name_list
+        ):
+            classe_names = ', '.join(
+                classe_name.title()
+                for classe_name in self.classe_name_list
+            )
+            errors.append(
+                f'    Classes: '
+                f'"{classe_names}" '
+                f'({char_classe_name.title()}).'
             )
 
         for skill in self.skill_list:

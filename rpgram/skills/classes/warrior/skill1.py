@@ -116,9 +116,19 @@ if __name__ == '__main__':
     skill = PowerfulAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.physical_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(PowerfulAttackSkill)
 
     skill = MoreThanPowerfulAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.physical_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(MoreThanPowerfulAttackSkill)
