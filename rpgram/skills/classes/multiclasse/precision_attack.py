@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from rpgram.constants.text import PRECISION_ATTACK_EMOJI_TEXT
+from rpgram.constants.text import HIT_EMOJI_TEXT, PRECISION_ATTACK_EMOJI_TEXT
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.skill import (
     MultiClasseSkillEnum,
@@ -20,10 +20,11 @@ class QuickAttackSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.QUICK_ATTACK.value
     DESCRIPTION = (
         f'Executa uma sequência de golpes precisos '
-        f'como um vendaval contra seu inimigo, '
+        f'como um vendaval contra o inimigo, '
         f'dificultando as chances de esquiva do oponente e '
-        f'causando dano com base em '
-        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'causando dano com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{

@@ -36,7 +36,7 @@ class PrismaticShotSkill(BaseSkill):
     DESCRIPTION = (
         f'Canaliza a energia mágica, dispara um feixe prismático '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base em '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -76,7 +76,7 @@ class PrismaticScintillationSkill(BaseSkill):
         f'Canaliza a energia mágica, criando e lançando um artefato '
         f'prismático que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
-        f'a *TODES os inimigos* com base em '
+        f'a *TODES os inimigos* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
     )
     RANK = 2

@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from rpgram.constants.text import (
+    HIT_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
@@ -41,8 +42,9 @@ class BlinkAttackSkill(BaseSkill):
         f'imperceptível aos olhos destreinados, '
         f'dificultando as chances de esquiva do oponente e '
         f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base em '
-        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -86,7 +88,7 @@ class LethalAttackSkill(BaseSkill):
     DESCRIPTION = (
         f'Desfere um ataque preciso focando pontos vitais do inimigo, '
         f'ignorando suas defesas e '
-        f'causando dano com base em '
+        f'causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (75% + 5% x Rank x Nível).'
     )
     RANK = 3

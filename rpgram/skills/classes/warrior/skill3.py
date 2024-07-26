@@ -171,7 +171,7 @@ class HeroicInspirationSkill(BaseSkill):
     DESCRIPTION = (
         f'Libera uma explosão de '
         f'energia inspiradora, revigorando seu espírito e curando seu'
-        f'{HIT_POINT_FULL_EMOJI_TEXT} com base em '
+        f'{HIT_POINT_FULL_EMOJI_TEXT} com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -228,7 +228,7 @@ class WarCrySkill(BaseSkill):
     DESCRIPTION = (
         f'Libera um grito que ecoa no campo de batalha, elevando os espíritos '
         f'dos aliados e curando seus '
-        f'{HIT_POINT_FULL_EMOJI_TEXT} com base em '
+        f'{HIT_POINT_FULL_EMOJI_TEXT} com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 10% x Rank x Nível).'
     )
     RANK = 2

@@ -42,7 +42,7 @@ class ChaosOrbSkill(BaseSkill):
         f'instável que transborda energia imprevisível, '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
-        f'*❓❓❓* com base em '
+        f'*❓❓❓* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (95% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -83,7 +83,7 @@ class ChaosVampirismSkill(BaseSkill):
         f'com o inimigo e drenar a sua força vital, '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
-        f'*❓❓❓* com base em '
+        f'*❓❓❓* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
         f'curando a si em 20% do dano causado.'
     )
@@ -139,7 +139,7 @@ class ChaosWeaverSkill(BaseSkill):
         f'Por meio da energia caótica, drena a força vital do inimigo, '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
-        f'*❓❓❓* com base em '
+        f'*❓❓❓* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
         f'tece um *Véu Caótico* que o protege com uma '
         f'barreira baseada no dano causado (100% + 10% x Rank x Nível)'
