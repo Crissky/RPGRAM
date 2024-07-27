@@ -157,6 +157,8 @@ class MultiClasseSkillEnum(Enum):
 
 class RogueSkillEnum(Enum):
     VIPERÇÇÇS_FANGS = 'Presas de Víbora'
+    DOUBLE_FANGS = 'Presas Duplas'
+    TAIPAN_INOCULATE = 'Inocula de Taipan'
     PHANTOM_STRIKE = 'Golpe Fantasma'
 
 

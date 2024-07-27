@@ -256,7 +256,8 @@ class HydraFangsSkill(BaseSkill):
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
         f'adicionando as condições '
         f'{get_debuff_emoji_text(DebuffEnum.BURN)} e '
-        f'{get_debuff_emoji_text(DebuffEnum.POISONING)}.'
+        f'{get_debuff_emoji_text(DebuffEnum.POISONING)} '
+        f'com nível igual a (Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

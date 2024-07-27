@@ -1,7 +1,9 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.multiclasse.precision_attack import QuickAttackSkill
 from rpgram.skills.classes.rogue.skill1 import (
+    DoubleFangsSkill,
     PhantomStrikeSkill,
+    TaipanInoculateSkill,
     VipersFangSkill
 )
 from rpgram.skills.skill_base import BaseSkill
@@ -19,6 +21,10 @@ def rogue_skill_factory(
     # SKILL1
     if skill_class_name == VipersFangSkill.__name__:
         skill_class = VipersFangSkill
+    elif skill_class_name == DoubleFangsSkill.__name__:
+        skill_class = DoubleFangsSkill
+    elif skill_class_name == TaipanInoculateSkill.__name__:
+        skill_class = TaipanInoculateSkill
     elif skill_class_name == QuickAttackSkill.__name__:
         skill_class = QuickAttackSkill
     elif skill_class_name == PhantomStrikeSkill.__name__:
@@ -32,6 +38,8 @@ def rogue_skill_factory(
 ROGUE_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     VipersFangSkill,
+    DoubleFangsSkill,
+    TaipanInoculateSkill,
     QuickAttackSkill,
     PhantomStrikeSkill,
 ]

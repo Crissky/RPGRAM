@@ -1,11 +1,14 @@
 
 from typing import TYPE_CHECKING
+from rpgram.conditions.debuff import PoisoningCondition
 from rpgram.constants.text import (
     HIT_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
+from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     RogueSkillEnum,
     SkillDefenseEnum,
@@ -71,6 +74,109 @@ class VipersFangSkill(BaseSkill):
         )
 
 
+class DoubleFangsSkill(BaseSkill):
+    NAME = RogueSkillEnum.DOUBLE_FANGS.value
+    DESCRIPTION = (
+        f'Com dois movimentos rápidos, golpeia o inimigo duas vezes '
+        f'com uma arma *Envenenada*, causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.ROGUE.value,
+        'skill_list': [VipersFangSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 3
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 1.50,
+        }
+        damage_types = [DamageEnum.POISON, DamageEnum.POISON]
+
+        super().__init__(
+            name=DoubleFangsSkill.NAME,
+            description=DoubleFangsSkill.DESCRIPTION,
+            rank=DoubleFangsSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=DoubleFangsSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class TaipanInoculateSkill(BaseSkill):
+    NAME = RogueSkillEnum.TAIPAN_INOCULATE.value
+    DESCRIPTION = (
+        f'Lança um ataque com a arma banhada em uma toxina poderosa que '
+        f'causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.POISON)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
+        f'adiciona a condição '
+        f'{get_debuff_emoji_text(DebuffEnum.POISONING)} com nível igual a '
+        f'2 x (Rank x Nível + {EmojiEnum.DICE.value}).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.ROGUE.value,
+        'skill_list': [VipersFangSkill.NAME, DoubleFangsSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        cost = 4
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 1.50,
+        }
+        damage_types = [DamageEnum.POISON, DamageEnum.LIGHTNING]
+
+        super().__init__(
+            name=TaipanInoculateSkill.NAME,
+            description=TaipanInoculateSkill.DESCRIPTION,
+            rank=TaipanInoculateSkill.RANK,
+            level=level,
+            cost=cost,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=TaipanInoculateSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        target_name = target.player_name
+        if target.is_alive:
+            level = (self.level_rank + self.dice.value) * 2
+
+            poisoning_condition = PoisoningCondition(level=level)
+            status_report = target.status.add_condition(poisoning_condition)
+            report['status_text'] = status_report['text']
+
+        return report
+
+
 class PhantomStrikeSkill(BaseSkill):
     NAME = RogueSkillEnum.PHANTOM_STRIKE.value
     DESCRIPTION = (
@@ -131,6 +237,26 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     ROGUE_CHARACTER.skill_tree.learn_skill(VipersFangSkill)
+
+    skill = DoubleFangsSkill(ROGUE_CHARACTER)
+    print(skill)
+    print(ROGUE_CHARACTER.cs.precision_attack)
+    print(ROGUE_CHARACTER.to_attack(
+        defender_char=ROGUE_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    ROGUE_CHARACTER.skill_tree.learn_skill(DoubleFangsSkill)
+
+    skill = TaipanInoculateSkill(ROGUE_CHARACTER)
+    print(skill)
+    print(ROGUE_CHARACTER.cs.precision_attack)
+    print(ROGUE_CHARACTER.to_attack(
+        defender_char=ROGUE_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    ROGUE_CHARACTER.skill_tree.learn_skill(TaipanInoculateSkill)
 
     skill = QuickAttackSkill(ROGUE_CHARACTER)
     print(skill)
