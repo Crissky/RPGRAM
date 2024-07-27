@@ -37,7 +37,7 @@ class PowerfulAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.POWERFUL_ATTACK.value
     DESCRIPTION = (
         f'Tenciona os músculos ao máximo e desfere um golpe devastador, '
-        f'causando dano com base em '
+        f'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -75,7 +75,7 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.MORE_THAN_POWERFUL_ATTACK.value
     DESCRIPTION = (
         f'Tenciona os músculos além do máximo e desfere um '
-        f'golpe devastador, causando dano com base em '
+        f'golpe devastador, causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -116,9 +116,19 @@ if __name__ == '__main__':
     skill = PowerfulAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.physical_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(PowerfulAttackSkill)
 
     skill = MoreThanPowerfulAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.physical_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(MoreThanPowerfulAttackSkill)

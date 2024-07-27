@@ -44,9 +44,13 @@ if TYPE_CHECKING:
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': '',
+    'name': 'Pacto Selvagem',
     'description': (
-        ''
+        'O Pacto Selvagem representa a conexão intrínseca do Druida '
+        'com os animais da floresta. '
+        'Através deste pacto, o Druida cultiva um vínculo profundo com a '
+        'natureza, tornando-o capaz de convocar criaturas selvagens para '
+        'auxiliá-lo em suas jornadas.'
     )
 }
 

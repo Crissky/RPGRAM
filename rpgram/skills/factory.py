@@ -21,6 +21,10 @@ from rpgram.skills.classes.mage.factory import (
     MAGE_SKILL_LIST,
     mage_skill_factory
 )
+from rpgram.skills.classes.rogue.factory import (
+    ROGUE_SKILL_LIST,
+    rogue_skill_factory
+)
 from rpgram.skills.classes.sorcerer.factory import (
     SORCERER_SKILL_LIST,
     sorcerer_skill_factory
@@ -43,6 +47,7 @@ ALL_SKILL_DICT = {
     'Feiticeiro': SORCERER_SKILL_LIST,
     'Guardião': GUARDIAN_SKILL_LIST,
     'Guerreiro': WARRIOR_SKILL_LIST,
+    'Ladino': ROGUE_SKILL_LIST,
     'Mago': MAGE_SKILL_LIST,
 }
 
@@ -70,7 +75,7 @@ def skill_factory(
     elif ClasseEnum.WARRIOR.value == classe_name:
         class_skill_factory = warrior_skill_factory
     elif ClasseEnum.ROGUE.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = rogue_skill_factory
     elif ClasseEnum.MAGE.value == classe_name:
         class_skill_factory = mage_skill_factory
     elif ClasseEnum.PALADIN.value == classe_name:
@@ -143,7 +148,7 @@ def skill_list_factory(
     elif ClasseEnum.WARRIOR.value == classe_name:
         return WARRIOR_SKILL_LIST
     elif ClasseEnum.ROGUE.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return ROGUE_SKILL_LIST
     elif ClasseEnum.MAGE.value == classe_name:
         return MAGE_SKILL_LIST
     elif ClasseEnum.PALADIN.value == classe_name:

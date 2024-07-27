@@ -151,6 +151,17 @@ class MageSkillEnum(Enum):
     SAND_STORM = 'Tempestade de Areia'
 
 
+class MultiClasseSkillEnum(Enum):
+    QUICK_ATTACK = 'Ataque Rápido'
+
+
+class RogueSkillEnum(Enum):
+    VIPERÇÇÇS_FANGS = 'Presas de Víbora'
+    DOUBLE_FANGS = 'Presas Duplas'
+    TAIPAN_INOCULATE = 'Inocula de Taipan'
+    PHANTOM_STRIKE = 'Golpe Fantasma'
+
+
 class SorcererSkillEnum(Enum):
     MYSTICAL_PROTECTION = 'Proteção Mística'
     MYSTICAL_CONFLUENCE = 'Confluência Mística'
@@ -166,7 +177,6 @@ class SorcererSkillEnum(Enum):
 class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
-    QUICK_ATTACK = 'Ataque Rápido'
     BLINK_ATTACK = 'Ataque Lampejante'
     LETHAL_ATTACK = 'Ataque Letal'
     AEGIS_SHADOW = 'Sombra de Égide'

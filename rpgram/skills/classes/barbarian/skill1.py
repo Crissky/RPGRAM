@@ -35,7 +35,7 @@ class PrimalAttackSkill(BaseSkill):
     NAME = BarbarianSkillEnum.PRIMAL_ATTACK.value
     DESCRIPTION = (
         f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
-        f'inimigo com base em '
+        f'inimigo com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -78,7 +78,7 @@ class PrimalStrikeSkill(BaseSkill):
     NAME = BarbarianSkillEnum.PRIMAL_STRIKE.value
     DESCRIPTION = (
         f'Desfere um ataque com força bruta, causando dano ao '
-        f'alvo com base em '
+        f'alvo com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (210% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
