@@ -386,7 +386,12 @@ class BaseCharacter:
         defense_name = defense_name.title()
 
         # ---------- DODGE ---------- #
-        if (is_miss := to_dodge and dodge_report['is_dodged']):
+        is_miss = all((
+            to_dodge,
+            dodge_report['is_dodged'],
+            not attacker_skill.is_elusive
+        ))
+        if is_miss:
             attacker_dice_text = attacker_dice.text
             defender_dice_text = defender_dice.text
             report['text'] = (

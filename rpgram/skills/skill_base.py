@@ -68,6 +68,7 @@ class BaseSkill:
         char: 'BaseCharacter',
         cost: int = None,
         dice: Union[int, Tuple[int, float]] = 20,
+        is_elusive: bool = False,
         use_equips_damage_types: bool = False,
         requirements: Union[Requirement, Dict[str, Any]] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
@@ -186,6 +187,7 @@ class BaseSkill:
         self.equips = char.equips
         self.status = char.status
         self.dice: Dice = dice
+        self.is_elusive = is_elusive
         self.use_equips_damage_types = use_equips_damage_types
         self.requirements = requirements
         self.damage_types = damage_types
@@ -357,6 +359,9 @@ class BaseSkill:
             self.skill_type != SkillTypeEnum.ATTACK
         )):
             return ''
+        elif self.is_elusive:
+            return f'{EmojiEnum.HIT2.value}*Acerto*: Ineludível\n'
+
         hit_percent = int(self.hit_multiplier*100)
         return (
             f'{EmojiEnum.HIT2.value}*Acerto*: '
