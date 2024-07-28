@@ -217,6 +217,50 @@ class PhantomStrikeSkill(BaseSkill):
         return 1.50
 
 
+class ElusiveAssaultSkill(BaseSkill):
+    NAME = RogueSkillEnum.ELUSIVE_ASSAULT.value
+    DESCRIPTION = (
+        f'Avança como um raio contra o oponente, ricocheteando para '
+        f'enganar suas defesas e '
+        f'atacando-o com um movimento preciso, '
+        f'causando dano '
+        f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) '
+        f'Essa habilidade não pode ser esquivada.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.ROGUE.value,
+        'skill_list': [QuickAttackSkill.NAME, PhantomStrikeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 1.25
+        }
+        damage_types = [DamageEnum.GHOSTLY, DamageEnum.LIGHTNING]
+
+        super().__init__(
+            name=ElusiveAssaultSkill.NAME,
+            description=ElusiveAssaultSkill.DESCRIPTION,
+            rank=ElusiveAssaultSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            is_elusive=True,
+            requirements=ElusiveAssaultSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import ROGUE_CHARACTER
 
@@ -269,3 +313,14 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     ROGUE_CHARACTER.skill_tree.learn_skill(PhantomStrikeSkill)
+
+    skill = ElusiveAssaultSkill(ROGUE_CHARACTER)
+    print(skill)
+    print(ROGUE_CHARACTER.cs.precision_attack)
+    print(ROGUE_CHARACTER.to_attack(
+        defender_char=ROGUE_CHARACTER,
+        attacker_skill=skill,
+        to_dodge=True,
+        verbose=True,
+    )['text'])
+    ROGUE_CHARACTER.skill_tree.learn_skill(ElusiveAssaultSkill)
