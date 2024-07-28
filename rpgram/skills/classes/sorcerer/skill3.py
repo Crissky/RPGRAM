@@ -51,7 +51,6 @@ class ChaosOrbSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 0.95,
@@ -63,7 +62,6 @@ class ChaosOrbSkill(BaseSkill):
             description=ChaosOrbSkill.DESCRIPTION,
             rank=ChaosOrbSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -95,7 +93,6 @@ class ChaosVampirismSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 0.90,
@@ -107,7 +104,6 @@ class ChaosVampirismSkill(BaseSkill):
             description=ChaosVampirismSkill.DESCRIPTION,
             rank=ChaosVampirismSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -152,7 +148,6 @@ class ChaosWeaverSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 0.90,
@@ -164,7 +159,6 @@ class ChaosWeaverSkill(BaseSkill):
             description=ChaosWeaverSkill.DESCRIPTION,
             rank=ChaosWeaverSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

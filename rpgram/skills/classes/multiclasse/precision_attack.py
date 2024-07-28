@@ -35,7 +35,6 @@ class QuickAttackSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.00
@@ -47,7 +46,6 @@ class QuickAttackSkill(BaseSkill):
             description=QuickAttackSkill.DESCRIPTION,
             rank=QuickAttackSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

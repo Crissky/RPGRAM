@@ -45,7 +45,6 @@ class PrimalAttackSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 2.00,
@@ -57,7 +56,6 @@ class PrimalAttackSkill(BaseSkill):
             description=PrimalAttackSkill.DESCRIPTION,
             rank=PrimalAttackSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -90,7 +88,6 @@ class PrimalStrikeSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 2.10,
@@ -102,7 +99,6 @@ class PrimalStrikeSkill(BaseSkill):
             description=PrimalStrikeSkill.DESCRIPTION,
             rank=PrimalStrikeSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -137,7 +133,6 @@ class PrimalRamSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.60,
@@ -149,7 +144,6 @@ class PrimalRamSkill(BaseSkill):
             description=PrimalRamSkill.DESCRIPTION,
             rank=PrimalRamSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -192,7 +186,6 @@ class SeismicImpactSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.32,
@@ -204,7 +197,6 @@ class SeismicImpactSkill(BaseSkill):
             description=SeismicImpactSkill.DESCRIPTION,
             rank=SeismicImpactSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,

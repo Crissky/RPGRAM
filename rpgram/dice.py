@@ -251,6 +251,13 @@ class Dice:
 
     boosted_skill_power = boosted_power
 
+    def __repr__(self) -> str:
+        skill_name = ''
+        if self.skill:
+            skill_name = f'skill={self.skill.name}'
+
+        return f'Dice<value={self.value}, char={self.char.name}, {skill_name}>'
+
 
 if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
@@ -259,6 +266,7 @@ if __name__ == '__main__':
 
     dice = Dice(character=BASE_CHARACTER, skill=phy_atk, faces=20)
     dice.throw()
+    print(dice)
     print(dice.value)
     print(dice.text)
     print(dice.throw())

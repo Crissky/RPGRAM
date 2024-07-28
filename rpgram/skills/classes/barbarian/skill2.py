@@ -52,7 +52,6 @@ class FuriousFurySkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -62,7 +61,6 @@ class FuriousFurySkill(BaseSkill):
             description=FuriousFurySkill.DESCRIPTION,
             rank=FuriousFurySkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -111,7 +109,6 @@ class FuriousInstinctSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -121,7 +118,6 @@ class FuriousInstinctSkill(BaseSkill):
             description=FuriousInstinctSkill.DESCRIPTION,
             rank=FuriousInstinctSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -174,7 +170,6 @@ class FrenzySkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -184,7 +179,6 @@ class FrenzySkill(BaseSkill):
             description=FrenzySkill.DESCRIPTION,
             rank=FrenzySkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -239,7 +233,6 @@ class FuriousRoarSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 0.87,
@@ -251,7 +244,6 @@ class FuriousRoarSkill(BaseSkill):
             description=FuriousRoarSkill.DESCRIPTION,
             rank=FuriousRoarSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,

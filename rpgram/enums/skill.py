@@ -160,6 +160,9 @@ class RogueSkillEnum(Enum):
     DOUBLE_FANGS = 'Presas Duplas'
     TAIPAN_INOCULATE = 'Inocula de Taipan'
     PHANTOM_STRIKE = 'Golpe Fantasma'
+    ELUSIVE_ASSAULT = 'Investida Elusiva'
+    SHADOW_STEPS = 'Passos Sombrios'
+    CHAOTIC_STEPS = 'Passos Caóticos'
 
 
 class SorcererSkillEnum(Enum):

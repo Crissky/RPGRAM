@@ -57,7 +57,6 @@ class PoisonousSapSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -67,7 +66,6 @@ class PoisonousSapSkill(BaseSkill):
             description=PoisonousSapSkill.DESCRIPTION,
             rank=PoisonousSapSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -124,7 +122,6 @@ class IgneousSapSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -134,7 +131,6 @@ class IgneousSapSkill(BaseSkill):
             description=IgneousSapSkill.DESCRIPTION,
             rank=IgneousSapSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -191,7 +187,6 @@ class EscarchaSapSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -201,7 +196,6 @@ class EscarchaSapSkill(BaseSkill):
             description=EscarchaSapSkill.DESCRIPTION,
             rank=EscarchaSapSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -265,7 +259,6 @@ class SapiousCubeSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
@@ -281,7 +274,6 @@ class SapiousCubeSkill(BaseSkill):
             description=SapiousCubeSkill.DESCRIPTION,
             rank=SapiousCubeSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

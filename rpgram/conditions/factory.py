@@ -36,6 +36,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    ChaoticStepsCondition,
     CrystalArmorCondition,
     FafnirsScalesCondition,
     FrenzyCondition,
@@ -48,7 +49,8 @@ from rpgram.conditions.self_skill import (
     MysticalVigorCondition,
     RaijusFootstepsCondition,
     RobustBlockCondition,
-    RockArmorCondition
+    RockArmorCondition,
+    ShadowStepsCondition
 )
 from rpgram.conditions.special_damage_skill import (
     SDCrystallineInfusionCondition,
@@ -103,6 +105,7 @@ from rpgram.enums.skill import (
     DruidSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
+    RogueSkillEnum,
     SorcererSkillEnum,
     WarriorSkillEnum
 )
@@ -303,6 +306,11 @@ def condition_factory(
         condition_class = MistFormCondition
     elif compare_condition(name, MageSkillEnum.MUDDY):
         condition_class = MuddyCondition
+    # ROGUE BUFFS
+    elif compare_condition(name, RogueSkillEnum.SHADOW_STEPS):
+        condition_class = ShadowStepsCondition
+    elif compare_condition(name, RogueSkillEnum.CHAOTIC_STEPS):
+        condition_class = ChaoticStepsCondition
     # SORCERER BUFFS
     elif compare_condition(name, SorcererSkillEnum.MYSTICAL_PROTECTION):
         condition_class = MysticalProtectionCondition

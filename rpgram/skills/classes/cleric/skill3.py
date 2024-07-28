@@ -47,7 +47,6 @@ class WillOTheWispSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -59,7 +58,6 @@ class WillOTheWispSkill(BaseSkill):
             description=WillOTheWispSkill.DESCRIPTION,
             rank=WillOTheWispSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -90,7 +88,6 @@ class GreekFireSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -102,7 +99,6 @@ class GreekFireSkill(BaseSkill):
             description=GreekFireSkill.DESCRIPTION,
             rank=GreekFireSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

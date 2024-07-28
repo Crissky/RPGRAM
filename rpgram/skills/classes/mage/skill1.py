@@ -63,7 +63,6 @@ class FireBallSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -75,7 +74,6 @@ class FireBallSkill(BaseSkill):
             description=FireBallSkill.DESCRIPTION,
             rank=FireBallSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -102,7 +100,6 @@ class WaterBubbleSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -114,7 +111,6 @@ class WaterBubbleSkill(BaseSkill):
             description=WaterBubbleSkill.DESCRIPTION,
             rank=WaterBubbleSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -141,7 +137,6 @@ class WindGustSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -153,7 +148,6 @@ class WindGustSkill(BaseSkill):
             description=WindGustSkill.DESCRIPTION,
             rank=WindGustSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -180,7 +174,6 @@ class EarthBreakSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -192,7 +185,6 @@ class EarthBreakSkill(BaseSkill):
             description=EarthBreakSkill.DESCRIPTION,
             rank=EarthBreakSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -223,7 +215,6 @@ class MagicBlastSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.50,
@@ -235,7 +226,6 @@ class MagicBlastSkill(BaseSkill):
             description=MagicBlastSkill.DESCRIPTION,
             rank=MagicBlastSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -266,7 +256,6 @@ class IceShardSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.50,
@@ -278,7 +267,6 @@ class IceShardSkill(BaseSkill):
             description=IceShardSkill.DESCRIPTION,
             rank=IceShardSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -308,7 +296,6 @@ class FulminantLightningSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.50,
@@ -320,7 +307,6 @@ class FulminantLightningSkill(BaseSkill):
             description=FulminantLightningSkill.DESCRIPTION,
             rank=FulminantLightningSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -350,7 +336,6 @@ class RockArmorSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -360,7 +345,6 @@ class RockArmorSkill(BaseSkill):
             description=RockArmorSkill.DESCRIPTION,
             rank=RockArmorSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -417,7 +401,6 @@ class ScorchingBreathSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.75,
@@ -429,7 +412,6 @@ class ScorchingBreathSkill(BaseSkill):
             description=ScorchingBreathSkill.DESCRIPTION,
             rank=ScorchingBreathSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -479,7 +461,6 @@ class FireStormSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 0.87,
@@ -491,7 +472,6 @@ class FireStormSkill(BaseSkill):
             description=FireStormSkill.DESCRIPTION,
             rank=FireStormSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,
@@ -525,7 +505,6 @@ class LavaSkinSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -535,7 +514,6 @@ class LavaSkinSkill(BaseSkill):
             description=LavaSkinSkill.DESCRIPTION,
             rank=LavaSkinSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -593,7 +571,6 @@ class MistFormSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -603,7 +580,6 @@ class MistFormSkill(BaseSkill):
             description=MistFormSkill.DESCRIPTION,
             rank=MistFormSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -661,7 +637,6 @@ class MudShotSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.75,
@@ -673,7 +648,6 @@ class MudShotSkill(BaseSkill):
             description=MudShotSkill.DESCRIPTION,
             rank=MudShotSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -730,7 +704,6 @@ class SandStormSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 0.87,
@@ -742,7 +715,6 @@ class SandStormSkill(BaseSkill):
             description=SandStormSkill.DESCRIPTION,
             rank=SandStormSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,

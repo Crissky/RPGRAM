@@ -63,7 +63,6 @@ class VineWhipSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.25,
@@ -75,7 +74,6 @@ class VineWhipSkill(BaseSkill):
             description=VineWhipSkill.DESCRIPTION,
             rank=VineWhipSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -107,7 +105,6 @@ class SilkFlossSwordSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
@@ -123,7 +120,6 @@ class SilkFlossSwordSkill(BaseSkill):
             description=SilkFlossSwordSkill.DESCRIPTION,
             rank=SilkFlossSwordSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -155,7 +151,6 @@ class OakWarhammerSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.75,
@@ -171,7 +166,6 @@ class OakWarhammerSkill(BaseSkill):
             description=OakWarhammerSkill.DESCRIPTION,
             rank=OakWarhammerSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -201,7 +195,6 @@ class VineBucklerSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -211,7 +204,6 @@ class VineBucklerSkill(BaseSkill):
             description=VineBucklerSkill.DESCRIPTION,
             rank=VineBucklerSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -266,7 +258,6 @@ class SilkFlossSpaulderSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -276,7 +267,6 @@ class SilkFlossSpaulderSkill(BaseSkill):
             description=SilkFlossSpaulderSkill.DESCRIPTION,
             rank=SilkFlossSpaulderSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -333,7 +323,6 @@ class OakArmorSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -343,7 +332,6 @@ class OakArmorSkill(BaseSkill):
             description=OakArmorSkill.DESCRIPTION,
             rank=OakArmorSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,

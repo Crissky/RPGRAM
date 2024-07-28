@@ -50,7 +50,6 @@ class RobustBlockSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -60,7 +59,6 @@ class RobustBlockSkill(BaseSkill):
             description=RobustBlockSkill.DESCRIPTION,
             rank=RobustBlockSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -107,7 +105,6 @@ class GuardianShieldSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -117,7 +114,6 @@ class GuardianShieldSkill(BaseSkill):
             description=GuardianShieldSkill.DESCRIPTION,
             rank=GuardianShieldSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -178,7 +174,6 @@ class ShieldWallSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -188,7 +183,6 @@ class ShieldWallSkill(BaseSkill):
             description=ShieldWallSkill.DESCRIPTION,
             rank=ShieldWallSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,

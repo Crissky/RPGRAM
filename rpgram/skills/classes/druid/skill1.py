@@ -76,7 +76,6 @@ class RangerFalconSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -86,7 +85,6 @@ class RangerFalconSkill(BaseSkill):
             description=RangerFalconSkill.DESCRIPTION,
             rank=RangerFalconSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -145,7 +143,6 @@ class GuardianBearSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -155,7 +152,6 @@ class GuardianBearSkill(BaseSkill):
             description=GuardianBearSkill.DESCRIPTION,
             rank=GuardianBearSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -214,7 +210,6 @@ class HunterTigerSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -224,7 +219,6 @@ class HunterTigerSkill(BaseSkill):
             description=HunterTigerSkill.DESCRIPTION,
             rank=HunterTigerSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -283,7 +277,6 @@ class WatcherOwlSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -293,7 +286,6 @@ class WatcherOwlSkill(BaseSkill):
             description=WatcherOwlSkill.DESCRIPTION,
             rank=WatcherOwlSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -348,7 +340,6 @@ class FireBirdSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
@@ -363,7 +354,6 @@ class FireBirdSkill(BaseSkill):
             description=FireBirdSkill.DESCRIPTION,
             rank=FireBirdSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -398,7 +388,6 @@ class FireBirdSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
@@ -413,7 +402,6 @@ class FireBirdSkill(BaseSkill):
             description=FireBirdSkill.DESCRIPTION,
             rank=FireBirdSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -449,7 +437,6 @@ class UrseismicTremorSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.05,
@@ -464,7 +451,6 @@ class UrseismicTremorSkill(BaseSkill):
             description=UrseismicTremorSkill.DESCRIPTION,
             rank=UrseismicTremorSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,
@@ -501,7 +487,6 @@ class ThunderingOnslaughtSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 0.50,
@@ -516,7 +501,6 @@ class ThunderingOnslaughtSkill(BaseSkill):
             description=ThunderingOnslaughtSkill.DESCRIPTION,
             rank=ThunderingOnslaughtSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -548,7 +532,6 @@ class MagicGaleSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
@@ -563,7 +546,6 @@ class MagicGaleSkill(BaseSkill):
             description=MagicGaleSkill.DESCRIPTION,
             rank=MagicGaleSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

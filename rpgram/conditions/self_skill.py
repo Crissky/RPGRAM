@@ -22,11 +22,13 @@ from rpgram.constants.text import (
     PHYSICAL_DEFENSE_EMOJI_TEXT,
     STRENGTH_EMOJI_TEXT
 )
+from rpgram.enums.damage import DamageEmojiEnum
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
+    RogueSkillEnum,
     SorcererSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
@@ -727,10 +729,10 @@ class MysticalVigorCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Conjunto de energias *Místicas* que aumenta o '
+            f'Conjunto de *Energias Místicas* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
-            f'(200%{EmojiEnum.INTELLIGENCE.value} + 20% x Nível) e'
+            f'(200%{EmojiEnum.INTELLIGENCE.value} + 20% x Nível) e '
             f'(200%{EmojiEnum.WISDOM.value} + 20% x Nível) '
             f'por {self.turn} turno(s).'
         )
@@ -757,6 +759,106 @@ class MysticalVigorCondition(SelfSkillCondition):
                 f'*{self.full_name}*: '
                 f'*{self.character.name}* está revigorado pelo '
                 f'*{self.name}*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class ShadowStepsCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=RogueSkillEnum.SHADOW_STEPS,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Move-se pelas *Sombras*, como um *Fastasma*, aumentando o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 1 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.dexterity * power
+
+        return int(bonus_hit)
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.DARK.value + '👣'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece andando pela *Sombras*.'
+            )
+            report['text'] = text
+
+        return report
+
+
+class ChaoticStepsCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=RogueSkillEnum.CHAOTIC_STEPS,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Move-se de maneira errática e imprevisível, aumentando a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.bonus_evasion} pontos '
+            f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_evasion(self) -> int:
+        power = 1 + (self.level / 10)
+        power = round(power, 2)
+        bonus_evasion = self.character.bs.dexterity * power
+
+        return int(bonus_evasion)
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.CHAOS.value + '👣'
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* permanece com o Andar Errático.'
             )
             report['text'] = text
 
@@ -841,6 +943,8 @@ class SelfBuffs:
         MysticalProtectionCondition,
         MysticalConfluenceCondition,
         MysticalVigorCondition,
+        ShadowStepsCondition,
+        ChaoticStepsCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:
@@ -855,93 +959,9 @@ if __name__ == '__main__':
     from rpgram.constants.test import BASE_CHARACTER
     from rpgram.conditions.factory import condition_factory
 
-    condition = RobustBlockCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = CrystalArmorCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = RockArmorCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = LavaSkinCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = MistFormCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = FuriousFuryCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = FuriousInstinctCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = FrenzyCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = RaijusFootstepsCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = FafnirsScalesCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = MysticalProtectionCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = MysticalConfluenceCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
-
-    condition = MysticalVigorCondition(BASE_CHARACTER)
-    print(condition)
-    print(condition.to_dict())
-    _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
-    _dict.pop('need_character')
-    assert condition_factory(**_dict) == condition
+    for condition in SelfBuffs():
+        print(condition)
+        print(condition.to_dict())
+        _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
+        _dict.pop('need_character')
+        assert condition_factory(**_dict) == condition
