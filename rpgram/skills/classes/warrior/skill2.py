@@ -54,7 +54,6 @@ class BlinkAttackSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.00
@@ -66,7 +65,6 @@ class BlinkAttackSkill(BaseSkill):
             description=BlinkAttackSkill.DESCRIPTION,
             rank=BlinkAttackSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -99,7 +97,6 @@ class LethalAttackSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 0.75
@@ -111,7 +108,6 @@ class LethalAttackSkill(BaseSkill):
             description=LethalAttackSkill.DESCRIPTION,
             rank=LethalAttackSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

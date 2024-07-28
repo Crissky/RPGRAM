@@ -52,7 +52,6 @@ class AegisShadowSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -62,7 +61,6 @@ class AegisShadowSkill(BaseSkill):
             description=AegisShadowSkill.DESCRIPTION,
             rank=AegisShadowSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -116,7 +114,6 @@ class WarBannerSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -126,7 +123,6 @@ class WarBannerSkill(BaseSkill):
             description=WarBannerSkill.DESCRIPTION,
             rank=WarBannerSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,
@@ -180,7 +176,6 @@ class HeroicInspirationSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -190,7 +185,6 @@ class HeroicInspirationSkill(BaseSkill):
             description=HeroicInspirationSkill.DESCRIPTION,
             rank=HeroicInspirationSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -239,7 +233,6 @@ class WarCrySkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -249,7 +242,6 @@ class WarCrySkill(BaseSkill):
             description=WarCrySkill.DESCRIPTION,
             rank=WarCrySkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,

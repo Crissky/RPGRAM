@@ -49,7 +49,6 @@ class VipersFangSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.25,
@@ -61,7 +60,6 @@ class VipersFangSkill(BaseSkill):
             description=VipersFangSkill.DESCRIPTION,
             rank=VipersFangSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -90,7 +88,6 @@ class DoubleFangsSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.50,
@@ -102,7 +99,6 @@ class DoubleFangsSkill(BaseSkill):
             description=DoubleFangsSkill.DESCRIPTION,
             rank=DoubleFangsSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -135,7 +131,6 @@ class TaipanInoculateSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.50,
@@ -147,7 +142,6 @@ class TaipanInoculateSkill(BaseSkill):
             description=TaipanInoculateSkill.DESCRIPTION,
             rank=TaipanInoculateSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -196,7 +190,6 @@ class PhantomStrikeSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.00
@@ -208,7 +201,6 @@ class PhantomStrikeSkill(BaseSkill):
             description=PhantomStrikeSkill.DESCRIPTION,
             rank=PhantomStrikeSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

@@ -54,7 +54,6 @@ class CrystalArmorSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -64,7 +63,6 @@ class CrystalArmorSkill(BaseSkill):
             description=CrystalArmorSkill.DESCRIPTION,
             rank=CrystalArmorSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -113,7 +111,6 @@ class CrystallineInfusionSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -123,7 +120,6 @@ class CrystallineInfusionSkill(BaseSkill):
             description=CrystallineInfusionSkill.DESCRIPTION,
             rank=CrystallineInfusionSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -188,7 +184,6 @@ class ShatterSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_DEFENSE: 0.75,
@@ -201,7 +196,6 @@ class ShatterSkill(BaseSkill):
             description=ShatterSkill.DESCRIPTION,
             rank=ShatterSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -253,7 +247,6 @@ class CrystalChrysalisSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_DEFENSE: 0.75,
@@ -270,7 +263,6 @@ class CrystalChrysalisSkill(BaseSkill):
             description=CrystalChrysalisSkill.DESCRIPTION,
             rank=CrystalChrysalisSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

@@ -46,7 +46,6 @@ class PowerfulAttackSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.25,
@@ -58,7 +57,6 @@ class PowerfulAttackSkill(BaseSkill):
             description=PowerfulAttackSkill.DESCRIPTION,
             rank=PowerfulAttackSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -86,7 +84,6 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
@@ -98,7 +95,6 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
             description=MoreThanPowerfulAttackSkill.DESCRIPTION,
             rank=MoreThanPowerfulAttackSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

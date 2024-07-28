@@ -58,7 +58,6 @@ class IxChelsAmphoraSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -68,7 +67,6 @@ class IxChelsAmphoraSkill(BaseSkill):
             description=IxChelsAmphoraSkill.DESCRIPTION,
             rank=IxChelsAmphoraSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -119,7 +117,6 @@ class DhanvantarisAmritaSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -129,7 +126,6 @@ class DhanvantarisAmritaSkill(BaseSkill):
             description=DhanvantarisAmritaSkill.DESCRIPTION,
             rank=DhanvantarisAmritaSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -186,7 +182,6 @@ class ConcealmentSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.00,
@@ -198,7 +193,6 @@ class ConcealmentSkill(BaseSkill):
             description=ConcealmentSkill.DESCRIPTION,
             rank=ConcealmentSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -256,7 +250,6 @@ class HolyFireSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.25,
@@ -268,7 +261,6 @@ class HolyFireSkill(BaseSkill):
             description=HolyFireSkill.DESCRIPTION,
             rank=HolyFireSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -325,7 +317,6 @@ class DivinePunishmentSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.MAGICAL_ATTACK: 1.50,
@@ -337,7 +328,6 @@ class DivinePunishmentSkill(BaseSkill):
             description=DivinePunishmentSkill.DESCRIPTION,
             rank=DivinePunishmentSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,

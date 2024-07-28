@@ -65,7 +65,6 @@ class WildForgeSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -75,7 +74,6 @@ class WildForgeSkill(BaseSkill):
             description=WildForgeSkill.DESCRIPTION,
             rank=WildForgeSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -171,7 +169,6 @@ class SalamandersBreathSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
@@ -183,7 +180,6 @@ class SalamandersBreathSkill(BaseSkill):
             description=SalamandersBreathSkill.DESCRIPTION,
             rank=SalamandersBreathSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -215,7 +211,6 @@ class SweepingRocSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
@@ -227,7 +222,6 @@ class SweepingRocSkill(BaseSkill):
             description=SweepingRocSkill.DESCRIPTION,
             rank=SweepingRocSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -267,7 +261,6 @@ class HydraFangsSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_ATTACK: 1.25,
@@ -279,7 +272,6 @@ class HydraFangsSkill(BaseSkill):
             description=HydraFangsSkill.DESCRIPTION,
             rank=HydraFangsSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -331,7 +323,6 @@ class RaijusFootstepsSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -341,7 +332,6 @@ class RaijusFootstepsSkill(BaseSkill):
             description=RaijusFootstepsSkill.DESCRIPTION,
             rank=RaijusFootstepsSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -394,7 +384,6 @@ class FafnirsScalesSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -404,7 +393,6 @@ class FafnirsScalesSkill(BaseSkill):
             description=FafnirsScalesSkill.DESCRIPTION,
             rank=FafnirsScalesSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,

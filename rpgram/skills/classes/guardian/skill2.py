@@ -52,7 +52,6 @@ class HeavyChargeSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_DEFENSE: 0.75,
@@ -65,7 +64,6 @@ class HeavyChargeSkill(BaseSkill):
             description=HeavyChargeSkill.DESCRIPTION,
             rank=HeavyChargeSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -98,7 +96,6 @@ class IronChargeSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_DEFENSE: 0.50,
@@ -115,7 +112,6 @@ class IronChargeSkill(BaseSkill):
             description=IronChargeSkill.DESCRIPTION,
             rank=IronChargeSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -153,7 +149,6 @@ class SteelStormSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {
             CombatStatsEnum.PHYSICAL_DEFENSE: 0.09,
@@ -172,7 +167,6 @@ class SteelStormSkill(BaseSkill):
             description=SteelStormSkill.DESCRIPTION,
             rank=SteelStormSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.TEAM,

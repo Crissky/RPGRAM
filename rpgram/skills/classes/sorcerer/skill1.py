@@ -52,7 +52,6 @@ class MysticalProtectionSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -62,7 +61,6 @@ class MysticalProtectionSkill(BaseSkill):
             description=MysticalProtectionSkill.DESCRIPTION,
             rank=MysticalProtectionSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -110,7 +108,6 @@ class MysticalConfluenceSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -120,7 +117,6 @@ class MysticalConfluenceSkill(BaseSkill):
             description=MysticalConfluenceSkill.DESCRIPTION,
             rank=MysticalConfluenceSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
@@ -170,7 +166,6 @@ class MysticalVigorSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -180,7 +175,6 @@ class MysticalVigorSkill(BaseSkill):
             description=MysticalVigorSkill.DESCRIPTION,
             rank=MysticalVigorSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,

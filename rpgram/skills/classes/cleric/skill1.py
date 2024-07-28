@@ -69,7 +69,6 @@ class IdunnsAppleSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -79,7 +78,6 @@ class IdunnsAppleSkill(BaseSkill):
             description=IdunnsAppleSkill.DESCRIPTION,
             rank=IdunnsAppleSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -130,7 +128,6 @@ class KratossWrathSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -140,7 +137,6 @@ class KratossWrathSkill(BaseSkill):
             description=KratossWrathSkill.DESCRIPTION,
             rank=KratossWrathSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -192,7 +188,6 @@ class UllrsFocusSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -202,7 +197,6 @@ class UllrsFocusSkill(BaseSkill):
             description=UllrsFocusSkill.DESCRIPTION,
             rank=UllrsFocusSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -254,7 +248,6 @@ class HecatesFlamesSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -264,7 +257,6 @@ class HecatesFlamesSkill(BaseSkill):
             description=HecatesFlamesSkill.DESCRIPTION,
             rank=HecatesFlamesSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -316,7 +308,6 @@ class OgunsCloakSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -326,7 +317,6 @@ class OgunsCloakSkill(BaseSkill):
             description=OgunsCloakSkill.DESCRIPTION,
             rank=OgunsCloakSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -378,7 +368,6 @@ class IsissVeilSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -388,7 +377,6 @@ class IsissVeilSkill(BaseSkill):
             description=IsissVeilSkill.DESCRIPTION,
             rank=IsissVeilSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -441,7 +429,6 @@ class AnansisTrickerySkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 2
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -451,7 +438,6 @@ class AnansisTrickerySkill(BaseSkill):
             description=AnansisTrickerySkill.DESCRIPTION,
             rank=AnansisTrickerySkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -511,7 +497,6 @@ class VidarsBraverySkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -521,7 +506,6 @@ class VidarsBraverySkill(BaseSkill):
             description=VidarsBraverySkill.DESCRIPTION,
             rank=VidarsBraverySkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -584,7 +568,6 @@ class ArtemissArrowSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -594,7 +577,6 @@ class ArtemissArrowSkill(BaseSkill):
             description=ArtemissArrowSkill.DESCRIPTION,
             rank=ArtemissArrowSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -658,7 +640,6 @@ class CeridwensMagicPotionSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 3
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -668,7 +649,6 @@ class CeridwensMagicPotionSkill(BaseSkill):
             description=CeridwensMagicPotionSkill.DESCRIPTION,
             rank=CeridwensMagicPotionSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
@@ -742,7 +722,6 @@ class GraceOfThePantheonSkill(BaseSkill):
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
-        cost = 4
         base_stats_multiplier = {}
         combat_stats_multiplier = {}
         damage_types = None
@@ -752,7 +731,6 @@ class GraceOfThePantheonSkill(BaseSkill):
             description=GraceOfThePantheonSkill.DESCRIPTION,
             rank=GraceOfThePantheonSkill.RANK,
             level=level,
-            cost=cost,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SINGLE,
