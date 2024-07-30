@@ -1,15 +1,18 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.sorcerer.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     MysticalConfluenceSkill,
     MysticalProtectionSkill,
     MysticalVigorSkill
 )
 from rpgram.skills.classes.sorcerer.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     PrismaticScintillationSkill,
     PrismaticShieldSkill,
     PrismaticShotSkill
 )
 from rpgram.skills.classes.sorcerer.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
     ChaosOrbSkill,
     ChaosVampirismSkill,
     ChaosWeaverSkill
@@ -68,4 +71,9 @@ SORCERER_SKILL_LIST: List[Type[BaseSkill]] = [
     ChaosOrbSkill,
     ChaosVampirismSkill,
     ChaosWeaverSkill,
+]
+SORCERER_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
+    skill_way3,
 ]

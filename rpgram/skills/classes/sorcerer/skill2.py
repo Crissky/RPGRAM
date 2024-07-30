@@ -20,17 +20,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Domínio Anímico',
-    'description': (
-        'Área da mágia que visa controlar os elementos não naturais. '
-        'As habilidades desse grupo se concentram em conceder ao Feiticeiro '
-        'acesso a magias sobrenaturais, permitindo que ele combine e '
-        'explore seus diferentes efeitos em combate.'
-    )
-}
-
-
 class PrismaticShotSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SHOT.value
     DESCRIPTION = (
@@ -174,6 +163,22 @@ class PrismaticShieldSkill(BaseSkill):
             report = {'text': f'*{target_name}* está morto.'}
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Domínio Anímico',
+    'description': (
+        'Área da mágia que visa controlar os elementos não naturais. '
+        'As habilidades desse grupo se concentram em conceder ao Feiticeiro '
+        'acesso a magias sobrenaturais, permitindo que ele combine e '
+        'explore seus diferentes efeitos em combate.'
+    ),
+    'skill_list': [
+        PrismaticShotSkill,
+        PrismaticScintillationSkill,
+        PrismaticShieldSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

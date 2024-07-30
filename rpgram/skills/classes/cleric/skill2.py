@@ -30,20 +30,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Misericórdia',
-    'description': (
-        'Movidos por compaixão e devoção à justiça, '
-        'os Clérigos do Caminho da Misericórdia dedicam seus poderes '
-        'à cura dos aflitos e à redenção dos corrompidos. '
-        'Através de magias restauradoras e ataques sagrados purificadores, '
-        'eles combatem o mal em todas as suas formas, '
-        'aliviando o sofrimento e restaurando a esperança nos corações '
-        'dos inocentes.'
-    )
-}
-
-
 class IxChelsAmphoraSkill(BaseSkill):
     NAME = ClericSkillEnum.IXCHELÇÇÇS_AMPHORA.value
     DESCRIPTION = (
@@ -361,6 +347,27 @@ class DivinePunishmentSkill(BaseSkill):
                     report['text'] += "\n" + status_report['text']
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Misericórdia',
+    'description': (
+        'Movidos por compaixão e devoção à justiça, '
+        'os Clérigos do Caminho da Misericórdia dedicam seus poderes '
+        'à cura dos aflitos e à redenção dos corrompidos. '
+        'Através de magias restauradoras e ataques sagrados purificadores, '
+        'eles combatem o mal em todas as suas formas, '
+        'aliviando o sofrimento e restaurando a esperança nos corações '
+        'dos inocentes.'
+    ),
+    'skill_list': [
+        IxChelsAmphoraSkill,
+        DhanvantarisAmritaSkill,
+        ConcealmentSkill,
+        HolyFireSkill,
+        DivinePunishmentSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

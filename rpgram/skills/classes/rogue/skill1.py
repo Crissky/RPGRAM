@@ -27,14 +27,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Assassino Letal',
-    'description': (
-        ''
-    )
-}
-
-
 class VipersFangSkill(BaseSkill):
     NAME = RogueSkillEnum.VIPERÇÇÇS_FANGS.value
     DESCRIPTION = (
@@ -259,6 +251,25 @@ class ElusiveAssaultSkill(BaseSkill):
             requirements=ElusiveAssaultSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Assassino Letal',
+    'description': (
+        'Mestre na morte silenciosa, seu foco está em eliminar seus inimigos '
+        'com eficiência. '
+        'O Assassino Letal é um mestre da execução precisa, '
+        'capaz de eliminar seus inimigos, utilizando armas afiadas e '
+        'venenos para infligir feridas mortais.'
+    ),
+    'skill_list': [
+        VipersFangSkill,
+        DoubleFangsSkill,
+        TaipanInoculateSkill,
+        PhantomStrikeSkill,
+        ElusiveAssaultSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

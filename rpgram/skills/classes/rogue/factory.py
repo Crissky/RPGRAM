@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.multiclasse.precision_attack import QuickAttackSkill
 from rpgram.skills.classes.rogue.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     DoubleFangsSkill,
     ElusiveAssaultSkill,
     PhantomStrikeSkill,
@@ -8,6 +9,7 @@ from rpgram.skills.classes.rogue.skill1 import (
     VipersFangSkill
 )
 from rpgram.skills.classes.rogue.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     ChaoticStepsSkill,
     ChaoticStrikeSkill,
     ShadowStepsSkill,
@@ -67,4 +69,8 @@ ROGUE_SKILL_LIST: List[Type[BaseSkill]] = [
     ChaoticStepsSkill,
     ShadowStrikeSkill,
     ChaoticStrikeSkill,
+]
+ROGUE_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
 ]

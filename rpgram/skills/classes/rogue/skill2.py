@@ -27,14 +27,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Mestre das Sombras',
-    'description': (
-        ''
-    )
-}
-
-
 class ShadowStepsSkill(BaseSkill):
     NAME = RogueSkillEnum.SHADOW_STEPS.value
     DESCRIPTION = (
@@ -226,6 +218,25 @@ class ChaoticStrikeSkill(BaseSkill):
             requirements=ChaoticStrikeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Mestre das Sombras',
+    'description': (
+        'O Mestre das Sombras é um especialista em manipular a escuridão '
+        'para seu proveito. '
+        'Ele se move silenciosamente, explorando as profundezas da trevas '
+        'como se fosse parte dela. '
+        'Suas habilidades se concentram em enganar e confundir seus '
+        'inimigos, utilizando as sombras como sua aliada.'
+    ),
+    'skill_list': [
+        ShadowStepsSkill,
+        ChaoticStepsSkill,
+        ShadowStrikeSkill,
+        ChaoticStrikeSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

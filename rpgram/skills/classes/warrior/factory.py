@@ -3,14 +3,17 @@ from rpgram.skills.classes.multiclasse.precision_attack import (
     QuickAttackSkill
 )
 from rpgram.skills.classes.warrior.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     MoreThanPowerfulAttackSkill,
     PowerfulAttackSkill
 )
 from rpgram.skills.classes.warrior.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     BlinkAttackSkill,
     LethalAttackSkill
 )
 from rpgram.skills.classes.warrior.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
     AegisShadowSkill,
     HeroicInspirationSkill,
     WarBannerSkill,
@@ -70,4 +73,9 @@ WARRIOR_SKILL_LIST: List[Type[BaseSkill]] = [
     WarBannerSkill,
     HeroicInspirationSkill,
     WarCrySkill,
+]
+WARRIOR_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
+    skill_way3,
 ]

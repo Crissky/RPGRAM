@@ -1,17 +1,20 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.barbarian.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     PrimalAttackSkill,
     SeismicImpactSkill,
     PrimalRamSkill,
     PrimalStrikeSkill
 )
 from rpgram.skills.classes.barbarian.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     FrenzySkill,
     FuriousFurySkill,
     FuriousInstinctSkill,
     FuriousRoarSkill
 )
 from rpgram.skills.classes.barbarian.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
     FafnirsScalesSkill,
     HydraFangsSkill,
     RaijusFootstepsSkill,
@@ -80,7 +83,7 @@ BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     FuriousInstinctSkill,
     FrenzySkill,
     FuriousRoarSkill,
-    
+
     # SKILL3
     WildForgeSkill,
     SalamandersBreathSkill,
@@ -88,4 +91,9 @@ BARBARIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     HydraFangsSkill,
     RaijusFootstepsSkill,
     FafnirsScalesSkill,
+]
+BARBARIAN_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
+    skill_way3,
 ]

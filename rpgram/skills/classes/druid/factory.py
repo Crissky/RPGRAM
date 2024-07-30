@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.druid.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     FireBirdSkill,
     GuardianBearSkill,
     HunterTigerSkill,
@@ -10,6 +11,7 @@ from rpgram.skills.classes.druid.skill1 import (
     WatcherOwlSkill
 )
 from rpgram.skills.classes.druid.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     OakArmorSkill,
     OakWarhammerSkill,
     SilkFlossSwordSkill,
@@ -18,6 +20,7 @@ from rpgram.skills.classes.druid.skill2 import (
     VineWhipSkill
 )
 from rpgram.skills.classes.druid.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
     EscarchaSapSkill,
     IgneousSapSkill,
     PoisonousSapSkill,
@@ -104,4 +107,9 @@ DRUID_SKILL_LIST: List[Type[BaseSkill]] = [
     IgneousSapSkill,
     EscarchaSapSkill,
     SapiousCubeSkill,
+]
+DRUID_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
+    skill_way3,
 ]

@@ -25,21 +25,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Guardião dos Cristais',
-    'description': (
-        'Caminho que transforma o Guardião em um protetor místico imbuído '
-        'do poder dos cristais, capaz de erguer um escudo poderosos '
-        'contra as forças arcanas e retaliar seus inimigos com ataques '
-        'mágicos devastadores. '
-        'Através de habilidades que canalizam a energia dos cristais, '
-        'o Guardião se torna um bastião contra a magia, absorvendo feitiços '
-        'e conjurando rajadas de energia cintilante para '
-        'dizimar seus oponentes.'
-    )
-}
-
-
 class CrystalArmorSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTAL_ARMOR.value
     DESCRIPTION = (
@@ -273,6 +258,27 @@ class CrystalChrysalisSkill(BaseSkill):
             requirements=CrystalChrysalisSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Guardião dos Cristais',
+    'description': (
+        'Caminho que transforma o Guardião em um protetor místico imbuído '
+        'do poder dos cristais, capaz de erguer um escudo poderosos '
+        'contra as forças arcanas e retaliar seus inimigos com ataques '
+        'mágicos devastadores. '
+        'Através de habilidades que canalizam a energia dos cristais, '
+        'o Guardião se torna um bastião contra a magia, absorvendo feitiços '
+        'e conjurando rajadas de energia cintilante para '
+        'dizimar seus oponentes.'
+    ),
+    'skill_list': [
+        CrystalArmorSkill,
+        CrystallineInfusionSkill,
+        ShatterSkill,
+        CrystalChrysalisSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

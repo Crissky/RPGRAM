@@ -20,23 +20,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Fortaleza Inabalável',
-    'description': (
-        'O caminho da Fortaleza Inabalável transforma o Guardião '
-        'em um bastião inabalável, pronto para enfrentar qualquer desafio. '
-        'Através dessas habilidades, o Guardião se torna um escudo '
-        'impenetrável para seus aliados, capaz de suportar os golpes '
-        'mais devastadores e proteger seus companheiros de batalha. '
-        'Sua resistência inquebrantável inspira confiança e serve como um '
-        'farol de esperança em meio ao caos. '
-        'Cada investida inimiga é repelida com força redobrada, '
-        'demonstrando a força inabalável do Guardião e garantindo a '
-        'vitória final.'
-    )
-}
-
-
 class RobustBlockSkill(BaseSkill):
     NAME = GuardianSkillEnum.ROBUST_BLOCK.value
     DESCRIPTION = (
@@ -225,6 +208,29 @@ class ShieldWallSkill(BaseSkill):
             report = {'text': f'*{target_name}* está morto.'}
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Fortaleza Inabalável',
+    'description': (
+        'O caminho da Fortaleza Inabalável transforma o Guardião '
+        'em um bastião inabalável, pronto para enfrentar qualquer desafio. '
+        'Através dessas habilidades, o Guardião se torna um escudo '
+        'impenetrável para seus aliados, capaz de suportar os golpes '
+        'mais devastadores e proteger seus companheiros de batalha. '
+        'Sua resistência inquebrantável inspira confiança e serve como um '
+        'farol de esperança em meio ao caos. '
+        'Cada investida inimiga é repelida com força redobrada, '
+        'demonstrando a força inabalável do Guardião e garantindo a '
+        'vitória final.'
+    ),
+    'skill_list': [
+        RobustBlockSkill,
+        GuardianShieldSkill,
+        ShieldWallSkill,
+    ]
+}
+
 
 if __name__ == '__main__':
     from rpgram.constants.test import GUARDIAN_CHARACTER

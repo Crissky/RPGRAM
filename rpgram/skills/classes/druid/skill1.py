@@ -43,18 +43,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Pacto Selvagem',
-    'description': (
-        'O Pacto Selvagem representa a conexão intrínseca do Druida '
-        'com os animais da floresta. '
-        'Através deste pacto, o Druida cultiva um vínculo profundo com a '
-        'natureza, tornando-o capaz de convocar criaturas selvagens para '
-        'auxiliá-lo em suas jornadas.'
-    )
-}
-
-
 class RangerFalconSkill(BaseSkill):
     NAME = DruidSkillEnum.RANGER_FALCON.value
     DESCRIPTION = (
@@ -556,6 +544,29 @@ class MagicGaleSkill(BaseSkill):
             requirements=MagicGaleSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Pacto Selvagem',
+    'description': (
+        'O Pacto Selvagem representa a conexão intrínseca do Druida '
+        'com os animais da floresta. '
+        'Através deste pacto, o Druida cultiva um vínculo profundo com a '
+        'natureza, tornando-o capaz de convocar criaturas selvagens para '
+        'auxiliá-lo em suas jornadas.'
+    ),
+    'skill_list': [
+        RangerFalconSkill,
+        GuardianBearSkill,
+        HunterTigerSkill,
+        WatcherOwlSkill,
+        FireBirdSkill,
+        FireBirdSkill,
+        UrseismicTremorSkill,
+        ThunderingOnslaughtSkill,
+        MagicGaleSkill,
+    ]
+}
 
 
 if __name__ == '__main__':
