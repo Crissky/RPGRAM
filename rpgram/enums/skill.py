@@ -163,6 +163,8 @@ class RogueSkillEnum(Enum):
     ELUSIVE_ASSAULT = 'Investida Elusiva'
     SHADOW_STEPS = 'Passos Sombrios'
     CHAOTIC_STEPS = 'Passos Caóticos'
+    SHADOW_STRIKE = 'Golpe Sombrio'
+    CHAOTIC_STRIKE = 'Golpe Caótico'
 
 
 class SorcererSkillEnum(Enum):

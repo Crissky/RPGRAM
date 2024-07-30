@@ -7,7 +7,12 @@ from rpgram.skills.classes.rogue.skill1 import (
     TaipanInoculateSkill,
     VipersFangSkill
 )
-from rpgram.skills.classes.rogue.skill2 import ChaoticStepsSkill, ShadowStepsSkill
+from rpgram.skills.classes.rogue.skill2 import (
+    ChaoticStepsSkill,
+    ChaoticStrikeSkill,
+    ShadowStepsSkill,
+    ShadowStrikeSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -38,6 +43,10 @@ def rogue_skill_factory(
         skill_class = ShadowStepsSkill
     elif skill_class_name == ChaoticStepsSkill.__name__:
         skill_class = ChaoticStepsSkill
+    elif skill_class_name == ShadowStrikeSkill.__name__:
+        skill_class = ShadowStrikeSkill
+    elif skill_class_name == ChaoticStrikeSkill.__name__:
+        skill_class = ChaoticStrikeSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -56,4 +65,6 @@ ROGUE_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     ShadowStepsSkill,
     ChaoticStepsSkill,
+    ShadowStrikeSkill,
+    ChaoticStrikeSkill,
 ]
