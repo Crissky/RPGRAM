@@ -27,18 +27,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Fúria Implacável',
-    'description': (
-        'Caminho da fúria incontrolável do Bárbaro, a força bruta e a '
-        'ferocidade que o definem em combate. '
-        'As habilidades desse grupo se concentram em aumentar o dano do '
-        'Bárbaro, sua resistência e sua capacidade de entrar em fúrias '
-        'cada vez mais poderosas.'
-    )
-}
-
-
 class FuriousFurySkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_FURY.value
     DESCRIPTION = (
@@ -256,6 +244,24 @@ class FuriousRoarSkill(BaseSkill):
         )
 
 
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Fúria Implacável',
+    'description': (
+        'Caminho da fúria incontrolável do Bárbaro, a força bruta e a '
+        'ferocidade que o definem em combate. '
+        'As habilidades desse grupo se concentram em aumentar o dano do '
+        'Bárbaro, sua resistência e sua capacidade de entrar em fúrias '
+        'cada vez mais poderosas.'
+    ),
+    'skill_list': [
+        FuriousFurySkill,
+        FuriousInstinctSkill,
+        FrenzySkill,
+        FuriousRoarSkill,
+    ]
+}
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import BARBARIAN_CHARACTER
     skill = FuriousFurySkill(BARBARIAN_CHARACTER)
@@ -274,7 +280,7 @@ if __name__ == '__main__':
     print(BARBARIAN_CHARACTER.bs.dexterity)
     print(BARBARIAN_CHARACTER.bs.multiplier_dexterity)
     BARBARIAN_CHARACTER.skill_tree.learn_skill(FuriousInstinctSkill)
-    
+
     skill = FrenzySkill(BARBARIAN_CHARACTER)
     print(skill)
     print(BARBARIAN_CHARACTER.bs.strength)

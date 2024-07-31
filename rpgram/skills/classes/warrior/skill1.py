@@ -17,22 +17,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Combate Brutal',
-    'description': (
-        'O caminho do Combate Brutal molda o Guerreiro em um agente de '
-        'destruição implacável, utilizando força bruta e '
-        'ferocidade inigualável para esmagar seus oponentes. '
-        'Dominando a arte do combate, o Guerreiro se torna um '
-        'mestre da violência, capaz de infligir danos devastadores '
-        'com cada golpe. '
-        'Habilidades brutais como Ataques Múltiplos, Golpes Poderosos '
-        'e Ataques Implacáveis transformam o Guerreiro em um redemoinho '
-        'de fúria, dizimando inimigos em um turbilhão de aço e sangue.'
-    )
-}
-
-
 class PowerfulAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.POWERFUL_ATTACK.value
     DESCRIPTION = (
@@ -105,6 +89,26 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
             requirements=MoreThanPowerfulAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Combate Brutal',
+    'description': (
+        'O caminho do Combate Brutal molda o Guerreiro em um agente de '
+        'destruição implacável, utilizando força bruta e '
+        'ferocidade inigualável para esmagar seus oponentes. '
+        'Dominando a arte do combate, o Guerreiro se torna um '
+        'mestre da violência, capaz de infligir danos devastadores '
+        'com cada golpe. '
+        'Habilidades brutais como Ataques Múltiplos, Golpes Poderosos '
+        'e Ataques Implacáveis transformam o Guerreiro em um redemoinho '
+        'de fúria, dizimando inimigos em um turbilhão de aço e sangue.'
+    ),
+    'skill_list': [
+        PowerfulAttackSkill,
+        MoreThanPowerfulAttackSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

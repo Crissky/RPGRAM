@@ -256,7 +256,7 @@ def get_details_text(option: str) -> str:
             f'(mesmo se estiver 0).\n'
             f'Atalhos: {rest_cmd}\n\n'
 
-            f'{EmojiEnum.CLASS.value}*CLASSES*: /{classe_commands[0]}\n'
+            f'{EmojiEnum.CLASSE.value}*CLASSES*: /{classe_commands[0]}\n'
             f'INFO: Exibe as classes existentes no jogo, tanto para os '
             f'jogadores, quanto as classes exclusivas para os NPCs.\n'
             f'Atalhos: {classe_cmd}\n\n'
@@ -803,7 +803,7 @@ def get_details_text(option: str) -> str:
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'{EmojiEnum.CLASS.value}*CLASSES*: /{classe_commands[0]}\n'
+            f'{EmojiEnum.CLASSE.value}*CLASSES*: /{classe_commands[0]}\n'
             f'Use o argumento *"all"* ou *"a"* para exibir todas as classes.'
             f'\n\n'
         )
@@ -1050,7 +1050,7 @@ def get_help_reply_markup(update: Update):
         buffs_text = f'{EmojiEnum.STATUS.value}Buffs'
     heal_status_text = f'Cura{EmojiEnum.STATUS.value}'
     general_text = f'Geral{EmojiEnum.GENERAL.value}'
-    classes_text = f'{EmojiEnum.CLASS.value}Classes'
+    classes_text = f'{EmojiEnum.CLASSE.value}Classes'
     races_text = f'Raças{EmojiEnum.RACE.value}'
     healing_consumable_text = (
         f'{EmojiEnum.HEALING_CONSUMABLE.value}Itens Cura(HP)'

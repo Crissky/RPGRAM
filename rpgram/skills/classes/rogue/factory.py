@@ -1,13 +1,20 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.multiclasse.precision_attack import QuickAttackSkill
 from rpgram.skills.classes.rogue.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     DoubleFangsSkill,
     ElusiveAssaultSkill,
     PhantomStrikeSkill,
     TaipanInoculateSkill,
     VipersFangSkill
 )
-from rpgram.skills.classes.rogue.skill2 import ChaoticStepsSkill, ShadowStepsSkill
+from rpgram.skills.classes.rogue.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
+    ChaoticStepsSkill,
+    ChaoticStrikeSkill,
+    ShadowStepsSkill,
+    ShadowStrikeSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -38,6 +45,10 @@ def rogue_skill_factory(
         skill_class = ShadowStepsSkill
     elif skill_class_name == ChaoticStepsSkill.__name__:
         skill_class = ChaoticStepsSkill
+    elif skill_class_name == ShadowStrikeSkill.__name__:
+        skill_class = ShadowStrikeSkill
+    elif skill_class_name == ChaoticStrikeSkill.__name__:
+        skill_class = ChaoticStrikeSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -56,4 +67,10 @@ ROGUE_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     ShadowStepsSkill,
     ChaoticStepsSkill,
+    ShadowStrikeSkill,
+    ChaoticStrikeSkill,
+]
+ROGUE_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
 ]

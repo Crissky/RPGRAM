@@ -12,7 +12,7 @@ LIST_USE_SKILL_BUTTON_TEXT = f'{EmojiEnum.USE_SKILL.value}Usar'
 LIST_LEARN_SKILL_BUTTON_TEXT = f'Aprender{EmojiEnum.LEARN_SKILL.value}'
 LIST_UPGRADE_SKILL_BUTTON_TEXT = f'Aprimorar{EmojiEnum.UPGRADE_SKILL.value}'
 HELP_SKILL_BUTTON_TEXT = f'{EmojiEnum.DETAIL.value}Informações'
-LIST_ALL_SKILL_BUTTON_TEXT = f'Listar Todas{EmojiEnum.LIST.value}'
+LIST_ALL_SKILL_BUTTON_TEXT = f'Classes{EmojiEnum.CLASSE.value}'
 ACTION_USE_SKILL_BUTTON_TEXT = f'{EmojiEnum.USE_SKILL.value}Usar'
 ACTION_LEARN_SKILL_BUTTON_TEXT = f'{EmojiEnum.LEARN_SKILL.value}Aprender'
 ACTION_UPGRADE_SKILL_BUTTON_TEXT = f'{EmojiEnum.UPGRADE_SKILL.value}Aprimorar'
@@ -20,6 +20,9 @@ SECTION_TEXT_SKILL_TREE = ' HABILIDADES '
 SECTION_TEXT_USE_SKILL_TREE = 'USAR HABILIDADE'
 SECTION_TEXT_LEARN_SKILL_TREE = 'APRENDER HABILIDADE'
 SECTION_TEXT_UPGRADE_SKILL_TREE = 'APRIMORAR HABILIDADE'
+SECTION_TEXT_CHOICE_CLASSE_SKILL_TREE = 'ESCOLHA UMA CLASSE'
+SECTION_TEXT_CHOICE_WAY_SKILL_TREE = 'ESCOLHA UM CAMINHO'
+SECTION_TEXT_WAY_SKILL_TREE = 'CAMINHO'
 REFRESH_SKILL_TREE_PATTERN = 'refresh_view_skill_tree'
 INTRO_SKILL_TEXT = (
     'Aqui você terá acesso a um arsenal de '
@@ -71,6 +74,8 @@ PATTERN_MAIN = fr'^{{"{REFRESH_SKILL_TREE_PATTERN}":1'
 
 PATTERN_HELP_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("help_skill")}:'
 PATTERN_LIST_ALL_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_all_skill")}:'
+PATTERN_LIST_CLASSE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_classe_skill")}:'
+PATTERN_LIST_WAY_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_way_skill")}:'
 
 PATTERN_LIST_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_use_skill")}:'
 PATTERN_LIST_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_learn_skill")}:'
@@ -79,6 +84,7 @@ PATTERN_LIST_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_upgrade_skill"
 PATTERN_CHECK_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_use_skill")}:'
 PATTERN_CHECK_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_learn_skill")}:'
 PATTERN_CHECK_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_upgrade_skill")}:'
+PATTERN_CHECK_WAY_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_way_skill")}:'
 
 PATTERN_ACTION_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_use_skill")}:'
 PATTERN_ACTION_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_learn_skill")}:'
@@ -88,6 +94,7 @@ PATTERN_SKILL_BACK_MAIN = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"main"'
 PATTERN_SKILL_BACK_LIST_USE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_use"'
 PATTERN_SKILL_BACK_LIST_LEARN = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_learn"'
 PATTERN_SKILL_BACK_LIST_UPGRADE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_upgrade"'
+PATTERN_SKILL_BACK_LIST_CLASSE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_classe"'
 
 
 # ALERT BUTTON TEXTS

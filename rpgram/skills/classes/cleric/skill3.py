@@ -17,21 +17,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Artefatos Sagrados',
-    'description': (
-        'Mergulhando nos mistérios arcanos de relíquias sagradas e '
-        'artefatos ancestrais, '
-        'os Clérigos do Caminho dos Artefatos Sagrados canalizam o poder '
-        'divino através desses objetos imbuídos de magia divina. '
-        'Através de rituais sagrados e encantamentos poderosos, '
-        'eles despertam os poderes adormecidos desses artefatos, '
-        'conjurando magias devastadoras e concedendo bênçãos divinas '
-        'aos seus aliados.'
-    )
-}
-
-
 class WillOTheWispSkill(BaseSkill):
     NAME = ClericSkillEnum.WILL_O_THE_WISP.value
     DESCRIPTION = (
@@ -109,6 +94,25 @@ class GreekFireSkill(BaseSkill):
             requirements=GreekFireSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Artefatos Sagrados',
+    'description': (
+        'Mergulhando nos mistérios arcanos de relíquias sagradas e '
+        'artefatos ancestrais, '
+        'os Clérigos do Caminho dos Artefatos Sagrados canalizam o poder '
+        'divino através desses objetos imbuídos de magia divina. '
+        'Através de rituais sagrados e encantamentos poderosos, '
+        'eles despertam os poderes adormecidos desses artefatos, '
+        'conjurando magias devastadoras e concedendo bênçãos divinas '
+        'aos seus aliados.'
+    ),
+    'skill_list': [
+        WillOTheWispSkill,
+        GreekFireSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

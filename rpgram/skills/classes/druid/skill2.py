@@ -34,19 +34,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Forja Verde',
-    'description': (
-        'A Forja Verde representa o domínio do Druida sobre a '
-        'a vida e a matéria Verde da natureza, moldando-a para criar '
-        'armas e armaduras imbuídas de vida. '
-        'O Druida transforma a matéria prima da floresta em '
-        'ferramentas poderosas, dando-lhe a capacidade de defender '
-        'a natureza e seus aliados.'
-    )
-}
-
-
 class VineWhipSkill(BaseSkill):
     NAME = DruidSkillEnum.VINE_WHIP.value
     DESCRIPTION = (
@@ -362,6 +349,27 @@ class OakArmorSkill(BaseSkill):
         }
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Forja Verde',
+    'description': (
+        'A Forja Verde representa o domínio do Druida sobre a '
+        'a vida e a matéria Verde da natureza, moldando-a para criar '
+        'armas e armaduras imbuídas de vida. '
+        'O Druida transforma a matéria prima da floresta em '
+        'ferramentas poderosas, dando-lhe a capacidade de defender '
+        'a natureza e seus aliados.'
+    ),
+    'skill_list': [
+        VineWhipSkill,
+        SilkFlossSwordSkill,
+        OakWarhammerSkill,
+        VineBucklerSkill,
+        SilkFlossSpaulderSkill,
+        OakArmorSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

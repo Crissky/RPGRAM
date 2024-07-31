@@ -39,19 +39,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Espírito Selvagem',
-    'description': (
-        'O caminho da Espírito Selvagem transforma o Bárbaro em um canal vivo '
-        'das forças da natureza, utilizando habilidades ancestrais para '
-        'manipular os elementos selvagens e liberar a '
-        'fúria indomável da fera interior. '
-        'Através de rituais primitivos e conexão profunda com os elementos, '
-        'o Bárbaro se torna um agente da destruição natural.'
-    )
-}
-
-
 class WildForgeSkill(BaseSkill):
     NAME = BarbarianSkillEnum.WILD_FORGE.value
     DESCRIPTION = (
@@ -201,7 +188,8 @@ class SweepingRocSkill(BaseSkill):
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -425,6 +413,27 @@ class FafnirsScalesSkill(BaseSkill):
         }
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Espírito Selvagem',
+    'description': (
+        'O caminho da Espírito Selvagem transforma o Bárbaro em um canal vivo '
+        'das forças da natureza, utilizando habilidades ancestrais para '
+        'manipular os elementos selvagens e liberar a '
+        'fúria indomável da fera interior. '
+        'Através de rituais primitivos e conexão profunda com os elementos, '
+        'o Bárbaro se torna um agente da destruição natural.'
+    ),
+    'skill_list': [
+        WildForgeSkill,
+        SalamandersBreathSkill,
+        SweepingRocSkill,
+        HydraFangsSkill,
+        RaijusFootstepsSkill,
+        FafnirsScalesSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

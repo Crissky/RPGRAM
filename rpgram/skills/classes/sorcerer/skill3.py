@@ -20,21 +20,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Tecelão do Caos',
-    'description': (
-        'O Tecelão do Caos manipula as energias arcanas de forma '
-        'imprevisível e caótica para gerar efeitos devastadores e '
-        'desorientar seus inimigos. '
-        'Através de feitiços que combinam elementos de diferentes, '
-        'o Feiticeiro se torna um agente da imprevisibilidade, '
-        'capaz de lançar rajadas de energia caótica, '
-        'conjurar criaturas de outras dimensões e distorcer o '
-        'próprio tecido da realidade.'
-    )
-}
-
-
 class ChaosOrbSkill(BaseSkill):
     NAME = SorcererSkillEnum.CHAOS_ORB.value
     DESCRIPTION = (
@@ -195,6 +180,26 @@ def random_damage_type(quantity: int = 1) -> List[DamageEnum]:
     damage_enum_list.remove(DamageEnum.CHAOS)
 
     return sample(damage_enum_list, quantity)
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Tecelão do Caos',
+    'description': (
+        'O Tecelão do Caos manipula as energias arcanas de forma '
+        'imprevisível e caótica para gerar efeitos devastadores e '
+        'desorientar seus inimigos. '
+        'Através de feitiços que combinam elementos de diferentes, '
+        'o Feiticeiro se torna um agente da imprevisibilidade, '
+        'capaz de lançar rajadas de energia caótica, '
+        'conjurar criaturas de outras dimensões e distorcer o '
+        'próprio tecido da realidade.'
+    ),
+    'skill_list': [
+        ChaosOrbSkill,
+        ChaosVampirismSkill,
+        ChaosWeaverSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

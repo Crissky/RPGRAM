@@ -40,20 +40,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Benção do Panteão',
-    'description': (
-        'Imbuídos da fé inabalável nos deuses, '
-        'os Clérigos do Caminho da Benção do Panteão canalizam a força '
-        'divina para auxiliar seus aliados em combate. '
-        'Através de invocações sagradas e bênçãos divinas, '
-        'eles concedem aos seus companheiros melhorias nos '
-        'Atributos de Combate, elevando-os a feitos grandiosos em nome das '
-        'divindades que veneram.'
-    )
-}
-
-
 class IdunnsAppleSkill(BaseSkill):
     NAME = ClericSkillEnum.IDUNNÇÇÇS_APPLE.value
     DESCRIPTION = (
@@ -773,6 +759,33 @@ class GraceOfThePantheonSkill(BaseSkill):
             report = {'text': f'*{target_name}* está morto.'}
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Benção do Panteão',
+    'description': (
+        'Imbuídos da fé inabalável nos deuses, '
+        'os Clérigos do Caminho da Benção do Panteão canalizam a força '
+        'divina para auxiliar seus aliados em combate. '
+        'Através de invocações sagradas e bênçãos divinas, '
+        'eles concedem aos seus companheiros melhorias nos '
+        'Atributos de Combate, elevando-os a feitos grandiosos em nome das '
+        'divindades que veneram.'
+    ),
+    'skill_list': [
+        IdunnsAppleSkill,
+        KratossWrathSkill,
+        UllrsFocusSkill,
+        HecatesFlamesSkill,
+        OgunsCloakSkill,
+        IsissVeilSkill,
+        AnansisTrickerySkill,
+        VidarsBraverySkill,
+        ArtemissArrowSkill,
+        CeridwensMagicPotionSkill,
+        GraceOfThePantheonSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

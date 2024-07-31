@@ -26,19 +26,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Poder Inato',
-    'description': (
-        'O caminho da conexão inata do Feiticeiro com a magia, '
-        'sua capacidade de manipular energias místicas e '
-        'moldá-las à sua vontade. '
-        'As habilidades desse grupo se concentram em aprimorar o poder bruto '
-        'das magias do Feiticeiro, sua capacidade de lançá-las com mais '
-        'eficiência, e sua resistência a efeitos mágicos.'
-    )
-}
-
-
 class MysticalProtectionSkill(BaseSkill):
     NAME = SorcererSkillEnum.MYSTICAL_PROTECTION.value
     DESCRIPTION = (
@@ -207,6 +194,24 @@ class MysticalVigorSkill(BaseSkill):
         }
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Poder Inato',
+    'description': (
+        'O caminho da conexão inata do Feiticeiro com a magia, '
+        'sua capacidade de manipular energias místicas e '
+        'moldá-las à sua vontade. '
+        'As habilidades desse grupo se concentram em aprimorar o poder bruto '
+        'das magias do Feiticeiro, sua capacidade de lançá-las com mais '
+        'eficiência, e sua resistência a efeitos mágicos.'
+    ),
+    'skill_list': [
+        MysticalProtectionSkill,
+        MysticalConfluenceSkill,
+        MysticalVigorSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

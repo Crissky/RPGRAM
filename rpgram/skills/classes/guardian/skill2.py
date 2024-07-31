@@ -20,23 +20,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Titã Implacável',
-    'description': (
-        'O Titã Implacável encarna a força bruta do Guardião, '
-        'utilizando seu corpo como arma devastadora para esmagar '
-        'seus inimigos. '
-        'Através desse caminho de habilidades, '
-        'o Guardião se torna um mestre do combate corpo a corpo, '
-        'capaz de infligir danos colossais e dominar o campo de batalha '
-        'com pura ferocidade. '
-        'Cada golpe carrega a fúria titânica, '
-        'impulsionando o Guardião a superar qualquer obstáculo e conquistar '
-        'a vitória a qualquer custo.'
-    )
-}
-
-
 class HeavyChargeSkill(BaseSkill):
     NAME = GuardianSkillEnum.HEAVY_CHARGE.value
     DESCRIPTION = (
@@ -177,6 +160,28 @@ class SteelStormSkill(BaseSkill):
             requirements=SteelStormSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Titã Implacável',
+    'description': (
+        'O Titã Implacável encarna a força bruta do Guardião, '
+        'utilizando seu corpo como arma devastadora para esmagar '
+        'seus inimigos. '
+        'Através desse caminho de habilidades, '
+        'o Guardião se torna um mestre do combate corpo a corpo, '
+        'capaz de infligir danos colossais e dominar o campo de batalha '
+        'com pura ferocidade. '
+        'Cada golpe carrega a fúria titânica, '
+        'impulsionando o Guardião a superar qualquer obstáculo e conquistar '
+        'a vitória a qualquer custo.'
+    ),
+    'skill_list': [
+        HeavyChargeSkill,
+        IronChargeSkill,
+        SteelStormSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

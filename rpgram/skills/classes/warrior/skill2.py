@@ -22,19 +22,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Maestria em Combate',
-    'description': (
-        'O caminho da Maestria em Combate transforma o Guerreiro '
-        'em um virtuoso do combate, transcendendo a força bruta e '
-        'empunhando as armas com precisão mortal. '
-        'Através de um arsenal de técnicas elaboradas e movimentos precisos, '
-        'o Guerreiro se torna um arauto da morte no campo de batalha, '
-        'eliminando seus inimigos com golpes rápidos e letais.'
-    )
-}
-
-
 class BlinkAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.BLINK_ATTACK.value
     DESCRIPTION = (
@@ -118,6 +105,23 @@ class LethalAttackSkill(BaseSkill):
             requirements=LethalAttackSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Maestria em Combate',
+    'description': (
+        'O caminho da Maestria em Combate transforma o Guerreiro '
+        'em um virtuoso do combate, transcendendo a força bruta e '
+        'empunhando as armas com precisão mortal. '
+        'Através de um arsenal de técnicas elaboradas e movimentos precisos, '
+        'o Guerreiro se torna um arauto da morte no campo de batalha, '
+        'eliminando seus inimigos com golpes rápidos e letais.'
+    ),
+    'skill_list': [
+        BlinkAttackSkill,
+        LethalAttackSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

@@ -28,19 +28,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Bruxo Verde',
-    'description': (
-        'O Bruxo Verde domina a alquimia da Seiva para criar '
-        'aprimoramentos e feitiços. '
-        'Através de um profundo conhecimento das plantas e de '
-        'seus poderes, o Druida manipula a Seiva para '
-        'imbuir seus equipamentos com propriedades mágicas e '
-        'para manipulá-la como um instrumento de ataque.'
-    )
-}
-
-
 class PoisonousSapSkill(BaseSkill):
     NAME = DruidSkillEnum.POISONOUS_SAP.value
     DESCRIPTION = (
@@ -284,6 +271,25 @@ class SapiousCubeSkill(BaseSkill):
             requirements=SapiousCubeSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Bruxo Verde',
+    'description': (
+        'O Bruxo Verde domina a alquimia da Seiva para criar '
+        'aprimoramentos e feitiços. '
+        'Através de um profundo conhecimento das plantas e de '
+        'seus poderes, o Druida manipula a Seiva para '
+        'imbuir seus equipamentos com propriedades mágicas e '
+        'para manipulá-la como um instrumento de ataque.'
+    ),
+    'skill_list': [
+        PoisonousSapSkill,
+        IgneousSapSkill,
+        EscarchaSapSkill,
+        SapiousCubeSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

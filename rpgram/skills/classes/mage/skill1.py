@@ -35,20 +35,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Elementalista',
-    'description': (
-        'Mergulhando nos segredos primordiais da tecelagem mágica, '
-        'os Magos do Caminho do Elementalista dominam os quatro elementos '
-        'básicos (Fogo, Terra, Água e Ar) e seus derivados. '
-        'Através da combinação magistral desses elementos, '
-        'eles conjuram magias de imenso poder e versatilidade, '
-        'manipulando o campo de batalha e controlando as forças da '
-        'natureza em proveito próprio.'
-    )
-}
-
-
 class FireBallSkill(BaseSkill):
     NAME = MageSkillEnum.FIRE_BALL.value
     DESCRIPTION = (
@@ -741,6 +727,36 @@ class SandStormSkill(BaseSkill):
             report['status_text'] = status_report['text']
 
         return report
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Elementalista',
+    'description': (
+        'Mergulhando nos segredos primordiais da tecelagem mágica, '
+        'os Magos do Caminho do Elementalista dominam os quatro elementos '
+        'básicos (Fogo, Terra, Água e Ar) e seus derivados. '
+        'Através da combinação magistral desses elementos, '
+        'eles conjuram magias de imenso poder e versatilidade, '
+        'manipulando o campo de batalha e controlando as forças da '
+        'natureza em proveito próprio.'
+    ),
+    'skill_list': [
+        FireBallSkill,
+        WaterBubbleSkill,
+        WindGustSkill,
+        EarthBreakSkill,
+        MagicBlastSkill,
+        IceShardSkill,
+        FulminantLightningSkill,
+        RockArmorSkill,
+        ScorchingBreathSkill,
+        FireStormSkill,
+        LavaSkinSkill,
+        MistFormSkill,
+        MudShotSkill,
+        SandStormSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

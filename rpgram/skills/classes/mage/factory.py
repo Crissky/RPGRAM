@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.mage.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     EarthBreakSkill,
     FireBallSkill,
     FireStormSkill,
@@ -78,4 +79,7 @@ MAGE_SKILL_LIST: List[Type[BaseSkill]] = [
     MistFormSkill,
     MudShotSkill,
     SandStormSkill,
+]
+MAGE_SKILL_WAYS: List[dict] = [
+    skill_way1,
 ]

@@ -74,7 +74,7 @@ class EmojiEnum(Enum):
     STATUS = '🗂'
     CHARACTER = '👤'
     RACE = '🧝'
-    CLASS = '🧙‍♂️'
+    CLASSE = '🧙‍♂️'
     EQUIPS = '⚔️'
     BASE_ATTRIBUTES = '📑'
     COMBAT_ATTRIBUTES = '👊'

@@ -43,18 +43,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Pacto Selvagem',
-    'description': (
-        'O Pacto Selvagem representa a conexão intrínseca do Druida '
-        'com os animais da floresta. '
-        'Através deste pacto, o Druida cultiva um vínculo profundo com a '
-        'natureza, tornando-o capaz de convocar criaturas selvagens para '
-        'auxiliá-lo em suas jornadas.'
-    )
-}
-
-
 class RangerFalconSkill(BaseSkill):
     NAME = DruidSkillEnum.RANGER_FALCON.value
     DESCRIPTION = (
@@ -370,54 +358,6 @@ class FireBirdSkill(BaseSkill):
         return 1.50
 
 
-class FireBirdSkill(BaseSkill):
-    NAME = DruidSkillEnum.FIRE_BIRD.value
-    DESCRIPTION = (
-        f'Conjura um *Pássaro Flamejante* que '
-        f'voa rapidamente, atacando com um rasante e '
-        f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
-        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
-    )
-    RANK = 2
-    REQUIREMENTS = Requirement(**{
-        'level': 40,
-        'classe_name': ClasseEnum.DRUID.value,
-        'skill_list': [RangerFalconSkill.NAME]
-    })
-
-    def __init__(self, char: 'BaseCharacter', level: int = 1):
-        base_stats_multiplier = {}
-        combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
-        }
-        damage_types = [
-            DamageEnum.PIERCING,
-            DamageEnum.FIRE,
-        ]
-
-        super().__init__(
-            name=FireBirdSkill.NAME,
-            description=FireBirdSkill.DESCRIPTION,
-            rank=FireBirdSkill.RANK,
-            level=level,
-            base_stats_multiplier=base_stats_multiplier,
-            combat_stats_multiplier=combat_stats_multiplier,
-            target_type=TargetEnum.SINGLE,
-            skill_type=SkillTypeEnum.ATTACK,
-            skill_defense=SkillDefenseEnum.MAGICAL,
-            char=char,
-            use_equips_damage_types=False,
-            requirements=FireBirdSkill.REQUIREMENTS,
-            damage_types=damage_types
-        )
-
-    @property
-    def hit_multiplier(self) -> float:
-        return 1.50
-
-
 class UrseismicTremorSkill(BaseSkill):
     NAME = DruidSkillEnum.URSEISMIC_TREMOR.value
     DESCRIPTION = (
@@ -556,6 +496,28 @@ class MagicGaleSkill(BaseSkill):
             requirements=MagicGaleSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Pacto Selvagem',
+    'description': (
+        'O Pacto Selvagem representa a conexão intrínseca do Druida '
+        'com os animais da floresta. '
+        'Através deste pacto, o Druida cultiva um vínculo profundo com a '
+        'natureza, tornando-o capaz de convocar criaturas selvagens para '
+        'auxiliá-lo em suas jornadas.'
+    ),
+    'skill_list': [
+        RangerFalconSkill,
+        GuardianBearSkill,
+        HunterTigerSkill,
+        WatcherOwlSkill,
+        FireBirdSkill,
+        UrseismicTremorSkill,
+        ThunderingOnslaughtSkill,
+        MagicGaleSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

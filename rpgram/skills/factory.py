@@ -3,34 +3,42 @@ from typing import TYPE_CHECKING, List, Type, Union
 from rpgram.enums.classe import ClasseEnum
 from rpgram.skills.classes.barbarian.factory import (
     BARBARIAN_SKILL_LIST,
+    BARBARIAN_SKILL_WAYS,
     barbarian_skill_factory
 )
 from rpgram.skills.classes.cleric.factory import (
     CLERIC_SKILL_LIST,
+    CLERIC_SKILL_WAYS,
     cleric_skill_factory
 )
 from rpgram.skills.classes.druid.factory import (
     DRUID_SKILL_LIST,
+    DRUID_SKILL_WAYS,
     druid_skill_factory
 )
 from rpgram.skills.classes.guardian.factory import (
+    GUARDIAN_SKILL_WAYS,
     guardian_skill_factory,
     GUARDIAN_SKILL_LIST
 )
 from rpgram.skills.classes.mage.factory import (
     MAGE_SKILL_LIST,
+    MAGE_SKILL_WAYS,
     mage_skill_factory
 )
 from rpgram.skills.classes.rogue.factory import (
     ROGUE_SKILL_LIST,
+    ROGUE_SKILL_WAYS,
     rogue_skill_factory
 )
 from rpgram.skills.classes.sorcerer.factory import (
     SORCERER_SKILL_LIST,
+    SORCERER_SKILL_WAYS,
     sorcerer_skill_factory
 )
 from rpgram.skills.classes.warrior.factory import (
     WARRIOR_SKILL_LIST,
+    WARRIOR_SKILL_WAYS,
     warrior_skill_factory
 )
 from rpgram.skills.skill_base import BaseSkill
@@ -41,14 +49,24 @@ if TYPE_CHECKING:
 
 
 ALL_SKILL_DICT = {
-    'Bárbaro': BARBARIAN_SKILL_LIST,
-    'Clérigo': CLERIC_SKILL_LIST,
-    'Druida': DRUID_SKILL_LIST,
-    'Feiticeiro': SORCERER_SKILL_LIST,
-    'Guardião': GUARDIAN_SKILL_LIST,
-    'Guerreiro': WARRIOR_SKILL_LIST,
-    'Ladino': ROGUE_SKILL_LIST,
-    'Mago': MAGE_SKILL_LIST,
+    ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_LIST,
+    ClasseEnum.CLERIC.value: CLERIC_SKILL_LIST,
+    ClasseEnum.DRUID.value: DRUID_SKILL_LIST,
+    ClasseEnum.SORCERER.value: SORCERER_SKILL_LIST,
+    ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_LIST,
+    ClasseEnum.WARRIOR.value: WARRIOR_SKILL_LIST,
+    ClasseEnum.ROGUE.value: ROGUE_SKILL_LIST,
+    ClasseEnum.MAGE.value: MAGE_SKILL_LIST,
+}
+ALL_SKILL_WAY_DICT = {
+    ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
+    ClasseEnum.CLERIC.value: CLERIC_SKILL_WAYS,
+    ClasseEnum.DRUID.value: DRUID_SKILL_WAYS,
+    ClasseEnum.SORCERER.value: SORCERER_SKILL_WAYS,
+    ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_WAYS,
+    ClasseEnum.WARRIOR.value: WARRIOR_SKILL_WAYS,
+    ClasseEnum.ROGUE.value: ROGUE_SKILL_WAYS,
+    ClasseEnum.MAGE.value: MAGE_SKILL_WAYS,
 }
 
 

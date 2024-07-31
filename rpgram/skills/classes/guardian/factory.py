@@ -1,15 +1,18 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.guardian.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     GuardianShieldSkill,
     RobustBlockSkill,
     ShieldWallSkill
 )
 from rpgram.skills.classes.guardian.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     HeavyChargeSkill,
     IronChargeSkill,
     SteelStormSkill
 )
 from rpgram.skills.classes.guardian.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
     CrystalArmorSkill,
     CrystalChrysalisSkill,
     CrystallineInfusionSkill,
@@ -72,4 +75,9 @@ GUARDIAN_SKILL_LIST: List[Type[BaseSkill]] = [
     CrystallineInfusionSkill,
     ShatterSkill,
     CrystalChrysalisSkill,
+]
+GUARDIAN_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
+    skill_way3,
 ]

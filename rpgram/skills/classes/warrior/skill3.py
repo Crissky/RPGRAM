@@ -24,21 +24,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Liderança',
-    'description': (
-        'O caminho da Liderança transforma o Guerreiro em um '
-        'líder inspirador e comandante implacável, '
-        'capaz de unir seus aliados e guiá-los à vitória através de '
-        'sua força, bravura e carisma. '
-        'Através de habilidades que inspiram coragem, '
-        'fortalecem o grupo e amplificam a presença do Guerreiro no '
-        'campo de batalha, ele se torna um farol de esperança e um '
-        'símbolo de resistência.'
-    )
-}
-
-
 class AegisShadowSkill(BaseSkill):
     NAME = WarriorSkillEnum.AEGIS_SHADOW.value
     DESCRIPTION = (
@@ -280,6 +265,27 @@ class WarCrySkill(BaseSkill):
         return report
 
 
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Liderança',
+    'description': (
+        'O caminho da Liderança transforma o Guerreiro em um '
+        'líder inspirador e comandante implacável, '
+        'capaz de unir seus aliados e guiá-los à vitória através de '
+        'sua força, bravura e carisma. '
+        'Através de habilidades que inspiram coragem, '
+        'fortalecem o grupo e amplificam a presença do Guerreiro no '
+        'campo de batalha, ele se torna um farol de esperança e um '
+        'símbolo de resistência.'
+    ),
+    'skill_list': [
+        AegisShadowSkill,
+        WarBannerSkill,
+        HeroicInspirationSkill,
+        WarCrySkill,
+    ]
+}
+
+
 if __name__ == '__main__':
     from rpgram.constants.test import WARRIOR_CHARACTER
     skill = AegisShadowSkill(WARRIOR_CHARACTER)
@@ -295,7 +301,7 @@ if __name__ == '__main__':
     print(WARRIOR_CHARACTER.cs.show_hit_points)
     print(skill.function(WARRIOR_CHARACTER))
     WARRIOR_CHARACTER.skill_tree.learn_skill(HeroicInspirationSkill)
-    
+
     skill = WarCrySkill(WARRIOR_CHARACTER)
     print(skill)
     WARRIOR_CHARACTER.cs.damage_hit_points(3000)

@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.cleric.skill1 import (
+    SKILL_WAY_DESCRIPTION as skill_way1,
     AnansisTrickerySkill,
     ArtemissArrowSkill,
     CeridwensMagicPotionSkill,
@@ -13,6 +14,7 @@ from rpgram.skills.classes.cleric.skill1 import (
     VidarsBraverySkill
 )
 from rpgram.skills.classes.cleric.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
     ConcealmentSkill,
     DhanvantarisAmritaSkill,
     DivinePunishmentSkill,
@@ -20,6 +22,7 @@ from rpgram.skills.classes.cleric.skill2 import (
     IxChelsAmphoraSkill
 )
 from rpgram.skills.classes.cleric.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
     GreekFireSkill,
     WillOTheWispSkill
 )
@@ -104,4 +107,9 @@ CLERIC_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL3
     WillOTheWispSkill,
     GreekFireSkill,
+]
+CLERIC_SKILL_WAYS: List[dict] = [
+    skill_way1,
+    skill_way2,
+    skill_way3,
 ]

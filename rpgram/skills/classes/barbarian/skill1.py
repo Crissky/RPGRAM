@@ -20,17 +20,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-SKILL_WAY_DESCRIPTION = {
-    'name': 'Combate Primal',
-    'description': (
-        'A maestria do Bárbaro em combate corpo a corpo selvagem e brutal. '
-        'As habilidades desse grupo se concentram em conceder ao Bárbaro '
-        'ataques poderosos, manobras brutais e habilidades de '
-        'combate instintivas.'
-    )
-}
-
-
 class PrimalAttackSkill(BaseSkill):
     NAME = BarbarianSkillEnum.PRIMAL_ATTACK.value
     DESCRIPTION = (
@@ -211,6 +200,23 @@ class SeismicImpactSkill(BaseSkill):
     @property
     def hit_multiplier(self) -> float:
         return 0.90
+
+
+SKILL_WAY_DESCRIPTION = {
+    'name': 'Combate Primal',
+    'description': (
+        'A maestria do Bárbaro em combate corpo a corpo selvagem e brutal. '
+        'As habilidades desse grupo se concentram em conceder ao Bárbaro '
+        'ataques poderosos, manobras brutais e habilidades de '
+        'combate instintivas.'
+    ),
+    'skill_list': [
+        PrimalAttackSkill,
+        PrimalStrikeSkill,
+        PrimalRamSkill,
+        SeismicImpactSkill,
+    ]
+}
 
 
 if __name__ == '__main__':

@@ -35,17 +35,23 @@ from bot.constants.skill_tree import (
     PATTERN_ACTION_USE_SKILL,
     PATTERN_CHECK_UPGRADE_SKILL,
     PATTERN_CHECK_USE_SKILL,
+    PATTERN_CHECK_WAY_SKILL,
     PATTERN_HELP_SKILL,
+    PATTERN_LIST_CLASSE_SKILL,
     PATTERN_LIST_ALL_SKILL,
     PATTERN_LIST_LEARN_SKILL,
     PATTERN_LIST_UPGRADE_SKILL,
     PATTERN_LIST_USE_SKILL,
+    PATTERN_LIST_WAY_SKILL,
     PATTERN_MAIN,
     PATTERN_CHECK_LEARN_SKILL,
+    PATTERN_SKILL_BACK_LIST_CLASSE,
     PATTERN_SKILL_BACK_LIST_LEARN,
     PATTERN_SKILL_BACK_LIST_UPGRADE,
     PATTERN_SKILL_BACK_LIST_USE,
     PATTERN_SKILL_BACK_MAIN,
+    SECTION_TEXT_CHOICE_CLASSE_SKILL_TREE,
+    SECTION_TEXT_CHOICE_WAY_SKILL_TREE,
     SECTION_TEXT_LEARN_SKILL_TREE,
     SECTION_TEXT_SKILL_TREE,
     LIST_USE_SKILL_BUTTON_TEXT,
@@ -107,7 +113,7 @@ from rpgram.characters.char_player import PlayerCharacter
 from rpgram.enums.emojis import FaceEmojiEnum
 from rpgram.enums.skill import TARGET_ENUM_NOT_SELF, SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
-from rpgram.skills.factory import ALL_SKILL_DICT
+from rpgram.skills.factory import ALL_SKILL_DICT, ALL_SKILL_WAY_DICT
 from rpgram.skills.skill_base import BaseSkill
 from rpgram.skills.skill_tree import ACTION_POINTS_EMOJI_TEXT
 
@@ -209,8 +215,6 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
-    query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
 
     skill_list = char.skill_tree.skill_list
@@ -270,8 +274,6 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
-    query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
 
     skill_list = char.skill_tree.skill_list
@@ -331,8 +333,6 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
-    query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     skill_list = []
 
@@ -403,6 +403,119 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @print_basic_infos
+async def list_classes(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await reply_typing(
+        function_caller='SKILL_TREE.LIST_CLASSES()',
+        update=update,
+        context=context,
+    )
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    user_name = update.effective_user.name
+    message_id = update.effective_message.id
+    classe_name_list = list(ALL_SKILL_WAY_DICT.keys())
+
+    markdown_skill_tree_sheet = (
+        f'*{user_name}*, '
+        f'escolha a *classe* que deseja listar os *Caminhos de Habilidades*.'
+    )
+
+    classe_buttons = get_classe_buttons(
+        classe_name_list=classe_name_list,
+        user_id=user_id,
+    )
+    back_button = get_back_button(user_id=user_id, to_main=True)
+    reply_markup = InlineKeyboardMarkup(
+        classe_buttons +
+        [back_button]
+    )
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_CHOICE_CLASSE_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.LIST_CLASSES()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def list_ways(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await reply_typing(
+        function_caller='SKILL_TREE.LIST_WAYS()',
+        update=update,
+        context=context,
+    )
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    user_name = update.effective_user.name
+    message_id = update.effective_message.id
+    query = update.callback_query
+    data = callback_data_to_dict(query.data)
+    classe_name = data['classe_name']
+    classe_skill_way_list = ALL_SKILL_WAY_DICT[classe_name]
+    way_name_list = [
+        classe_skill_way['name']
+        for classe_skill_way in classe_skill_way_list
+    ]
+    way_description_list = [
+        classe_skill_way['description']
+        for classe_skill_way in classe_skill_way_list
+    ]
+
+    markdown_skill_tree_sheet = (
+        f'*{user_name}*, '
+        f'escolha um caminho da classe *{classe_name}* '
+        f'que deseja listar as habilidades.\n\n'
+    )
+    markdown_skill_tree_sheet += '\n\n'.join([
+        f'*{name.upper()}*: {description}'
+        for name, description in zip(way_name_list, way_description_list)
+    ])
+
+    way_buttons = get_way_buttons(
+        way_name_list=way_name_list,
+        classe_name=classe_name,
+        user_id=user_id,
+    )
+    back_button = get_back_button(user_id=user_id, to_list_classe=True)
+    reply_markup = InlineKeyboardMarkup(
+        way_buttons +
+        [back_button]
+    )
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=SECTION_TEXT_CHOICE_WAY_SKILL_TREE,
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.LIST_WAYS()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
 async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await reply_typing(
         function_caller='SKILL_TREE.CHECK_USE_SKILL()',
@@ -413,7 +526,6 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -482,7 +594,6 @@ async def check_upgrade_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -541,7 +652,10 @@ async def check_upgrade_skill(
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @print_basic_infos
-async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_learn_skill(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
     await reply_typing(
         function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
         update=update,
@@ -551,7 +665,6 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -599,6 +712,57 @@ async def check_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await edit_message_text(
         function_caller='SKILL_TREE.CHECK_LEARN_SKILL()',
+        new_text=markdown_skill_tree_sheet,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True,
+        reply_markup=reply_markup,
+    )
+
+
+@alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
+@print_basic_infos
+async def check_way_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await reply_typing(
+        function_caller='SKILL_TREE.CHECK_WAY()',
+        update=update,
+        context=context,
+    )
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.id
+    query = update.callback_query
+    data = callback_data_to_dict(query.data)
+    classe_name = data['classe_name']
+    way_name = data['way_name']
+    classe_skill_way_list = ALL_SKILL_WAY_DICT[classe_name]
+
+    markdown_skill_tree_sheet = f'*{way_name.upper()}*.\n\n'
+    for skill_way in classe_skill_way_list:
+        if skill_way['name'] == way_name:
+            for skill in skill_way['skill_list']:
+                markdown_skill_tree_sheet += (
+                    f'*Habilidade*: *{skill.NAME.upper()}*\n'
+                    f'*Rank*: {skill.RANK}\n'
+                    f'*Descrição*: {skill.DESCRIPTION}\n\n'
+                )
+            break
+
+
+    back_button = get_back_button(user_id=user_id, to_list_classe=True)
+    reply_markup = InlineKeyboardMarkup([back_button])
+
+    markdown_skill_tree_sheet = create_text_in_box(
+        text=markdown_skill_tree_sheet,
+        section_name=way_name.upper(),
+        section_start=SECTION_HEAD_SKILL_TREE_START,
+        section_end=SECTION_HEAD_SKILL_TREE_END
+    )
+
+    await edit_message_text(
+        function_caller='SKILL_TREE.CHECK_WAY()',
         new_text=markdown_skill_tree_sheet,
         context=context,
         chat_id=chat_id,
@@ -816,7 +980,6 @@ async def action_upgrade_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -875,7 +1038,6 @@ async def action_learn_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -962,7 +1124,7 @@ def get_main_buttons(user_id: int) -> List[InlineKeyboardButton]:
             InlineKeyboardButton(
                 text=LIST_ALL_SKILL_BUTTON_TEXT,
                 callback_data=callback_data_to_string({
-                    'list_all_skill': 1,
+                    'list_classe_skill': 1,
                     'user_id': user_id,
                 })
             )
@@ -1002,6 +1164,66 @@ def get_skill_buttons(
     reshaped_items_buttons = reshape_row_buttons(
         buttons=items_buttons,
         buttons_per_row=5
+    )
+
+    return reshaped_items_buttons
+
+
+def get_classe_buttons(
+    classe_name_list: List[str],
+    user_id: int,
+) -> List[List[InlineKeyboardButton]]:
+
+    items_buttons = []
+    # Criando texto e botões das Classes
+    for classe_name in classe_name_list:
+        items_buttons.append(InlineKeyboardButton(
+            text=classe_name,
+            callback_data=callback_data_to_string({
+                'list_way_skill': 1,
+                'classe_name': classe_name,
+                'user_id': user_id,
+            })
+        ))
+
+    items_buttons.append(InlineKeyboardButton(
+        text=f'TODES',
+        callback_data=callback_data_to_string({
+            'list_all_skill': 1,
+            'user_id': user_id,
+        })
+    ))
+
+    reshaped_items_buttons = reshape_row_buttons(
+        buttons=items_buttons,
+        buttons_per_row=3
+    )
+
+    return reshaped_items_buttons
+
+
+def get_way_buttons(
+    way_name_list: List[str],
+    classe_name: str,
+    user_id: int,
+) -> List[List[InlineKeyboardButton]]:
+
+    items_buttons = []
+    # Criando texto e botões das Classes
+    for way_name in way_name_list:
+        items_buttons.append(InlineKeyboardButton(
+            text=way_name,
+            callback_data=callback_data_to_string({
+                'check_way_skill': 1,
+                'way_name': way_name,
+                'classe_name': classe_name,
+                'user_id': user_id,
+            })
+        ))
+
+    reshaped_items_buttons = reshape_row_buttons(
+        buttons=items_buttons,
+        buttons_per_row=1
     )
 
     return reshaped_items_buttons
@@ -1146,8 +1368,17 @@ def get_back_button(
     to_list_use: bool = False,
     to_list_learn: bool = False,
     to_list_upgrade: bool = False,
+    to_list_classe: bool = False,
+    to_list_way: bool = False,
 ) -> List[InlineKeyboardButton]:
-    to_list_list = [to_main, to_list_use, to_list_learn, to_list_upgrade]
+    to_list_list = [
+        to_main,
+        to_list_use,
+        to_list_learn,
+        to_list_upgrade,
+        to_list_classe,
+        to_list_way,
+    ]
     if to_list_list.count(True) != 1:
         raise ValueError('Somente um dos "to_list" deve ser True.')
     elif to_main is True:
@@ -1158,6 +1389,8 @@ def get_back_button(
         command = 'list_learn'
     elif to_list_upgrade is True:
         command = 'list_upgrade'
+    elif to_list_classe is True:
+        command = 'list_classe'
 
     return [
         InlineKeyboardButton(
@@ -1241,6 +1474,18 @@ SKILL_TREE_HANDLERS = [
         list_upgrade_skill,
         pattern=PATTERN_SKILL_BACK_LIST_UPGRADE
     ),
+    CallbackQueryHandler(
+        list_classes,
+        pattern=PATTERN_LIST_CLASSE_SKILL
+    ),
+    CallbackQueryHandler(
+        list_classes,
+        pattern=PATTERN_SKILL_BACK_LIST_CLASSE
+    ),
+    CallbackQueryHandler(
+        list_ways,
+        pattern=PATTERN_LIST_WAY_SKILL
+    ),
     # CHECK ROUTES
     CallbackQueryHandler(check_use_skill, pattern=PATTERN_CHECK_USE_SKILL),
     CallbackQueryHandler(check_learn_skill, pattern=PATTERN_CHECK_LEARN_SKILL),
@@ -1248,6 +1493,7 @@ SKILL_TREE_HANDLERS = [
         check_upgrade_skill,
         pattern=PATTERN_CHECK_UPGRADE_SKILL
     ),
+    CallbackQueryHandler(check_way_skill, pattern=PATTERN_CHECK_WAY_SKILL),
     # ACTION ROUTES
     CallbackQueryHandler(
         action_use_skill,
