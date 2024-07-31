@@ -188,7 +188,8 @@ class SweepingRocSkill(BaseSkill):
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
