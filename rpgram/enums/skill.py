@@ -182,6 +182,7 @@ class SorcererSkillEnum(Enum):
 class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
+    MUCH_MORE_THAN_POWERFUL_ATTACK = 'Ataque Muito Mais Que Poderoso'
     BLINK_ATTACK = 'Ataque Lampejante'
     LETHAL_ATTACK = 'Ataque Letal'
     AEGIS_SHADOW = 'Sombra de Égide'

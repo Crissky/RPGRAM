@@ -118,6 +118,7 @@ SKILL_WAY_DESCRIPTION = {
         'eliminando seus inimigos com golpes rápidos e letais.'
     ),
     'skill_list': [
+        QuickAttackSkill,
         BlinkAttackSkill,
         LethalAttackSkill,
     ]
