@@ -56,8 +56,7 @@ from bot.constants.skill_tree import (
     SECTION_TEXT_SKILL_TREE,
     LIST_USE_SKILL_BUTTON_TEXT,
     SECTION_TEXT_UPGRADE_SKILL_TREE,
-    SECTION_TEXT_USE_SKILL_TREE,
-    SECTION_TEXT_WAY_SKILL_TREE
+    SECTION_TEXT_USE_SKILL_TREE
 )
 from bot.constants.create_char import COMMANDS as create_char_commands
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
@@ -216,8 +215,6 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
-    query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
 
     skill_list = char.skill_tree.skill_list
@@ -277,8 +274,6 @@ async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE)
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
-    query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
 
     skill_list = char.skill_tree.skill_list
@@ -338,8 +333,6 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
-    query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     skill_list = []
 
@@ -424,7 +417,7 @@ async def list_classes(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = (
         f'*{user_name}*, '
-        f'escolha a classe que deseja listar os caminhos de habilidades.'
+        f'escolha a *classe* que deseja listar os *Caminhos de Habilidades*.'
     )
 
     classe_buttons = get_classe_buttons(
@@ -483,7 +476,8 @@ async def list_ways(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = (
         f'*{user_name}*, '
-        f'escolha o caminho que deseja listar as habilidades.\n\n'
+        f'escolha um caminho da classe *{classe_name}* '
+        f'que deseja listar as habilidades.\n\n'
     )
     markdown_skill_tree_sheet += '\n\n'.join([
         f'*{name.upper()}*: {description}'
@@ -532,7 +526,6 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -601,7 +594,6 @@ async def check_upgrade_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -673,7 +665,6 @@ async def check_learn_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -765,7 +756,7 @@ async def check_way_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = create_text_in_box(
         text=markdown_skill_tree_sheet,
-        section_name=SECTION_TEXT_WAY_SKILL_TREE,
+        section_name=way_name.upper(),
         section_start=SECTION_HEAD_SKILL_TREE_START,
         section_end=SECTION_HEAD_SKILL_TREE_END
     )
@@ -989,7 +980,6 @@ async def action_upgrade_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
@@ -1048,7 +1038,6 @@ async def action_learn_skill(
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     message_id = update.effective_message.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
     char: BaseCharacter = char_model.get(user_id)
     data = callback_data_to_dict(query.data)
