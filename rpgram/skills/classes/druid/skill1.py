@@ -358,54 +358,6 @@ class FireBirdSkill(BaseSkill):
         return 1.50
 
 
-class FireBirdSkill(BaseSkill):
-    NAME = DruidSkillEnum.FIRE_BIRD.value
-    DESCRIPTION = (
-        f'Conjura um *Pássaro Flamejante* que '
-        f'voa rapidamente, atacando com um rasante e '
-        f'causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
-        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
-    )
-    RANK = 2
-    REQUIREMENTS = Requirement(**{
-        'level': 40,
-        'classe_name': ClasseEnum.DRUID.value,
-        'skill_list': [RangerFalconSkill.NAME]
-    })
-
-    def __init__(self, char: 'BaseCharacter', level: int = 1):
-        base_stats_multiplier = {}
-        combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
-        }
-        damage_types = [
-            DamageEnum.PIERCING,
-            DamageEnum.FIRE,
-        ]
-
-        super().__init__(
-            name=FireBirdSkill.NAME,
-            description=FireBirdSkill.DESCRIPTION,
-            rank=FireBirdSkill.RANK,
-            level=level,
-            base_stats_multiplier=base_stats_multiplier,
-            combat_stats_multiplier=combat_stats_multiplier,
-            target_type=TargetEnum.SINGLE,
-            skill_type=SkillTypeEnum.ATTACK,
-            skill_defense=SkillDefenseEnum.MAGICAL,
-            char=char,
-            use_equips_damage_types=False,
-            requirements=FireBirdSkill.REQUIREMENTS,
-            damage_types=damage_types
-        )
-
-    @property
-    def hit_multiplier(self) -> float:
-        return 1.50
-
-
 class UrseismicTremorSkill(BaseSkill):
     NAME = DruidSkillEnum.URSEISMIC_TREMOR.value
     DESCRIPTION = (
@@ -560,7 +512,6 @@ SKILL_WAY_DESCRIPTION = {
         GuardianBearSkill,
         HunterTigerSkill,
         WatcherOwlSkill,
-        FireBirdSkill,
         FireBirdSkill,
         UrseismicTremorSkill,
         ThunderingOnslaughtSkill,
