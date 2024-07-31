@@ -162,8 +162,8 @@ class Status:
             else:
                 new_condition_level = new_condition.level
                 report['text'] = (
-                    f'{condition_emoji_name} reduziu para NV: '
-                    f'{new_condition_level}.'
+                    f'{condition_emoji_name} reduziu Nível: '
+                    f'{condition_level} ››› {new_condition_level}.'
                 )
         elif ignore_not_find is False:
             report['text'] = (
