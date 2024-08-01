@@ -156,9 +156,13 @@ class Condition(StatsBooster):
     level: int = property(lambda self: self.__level)
 
     @property
+    def trans_name(self) -> str:
+        return self.__enum_name.value
+
+    @property
     def true_name(self) -> str:
         return self.__enum_name.name
-    
+
     @property
     def name(self) -> str:
         return self.true_name.replace('_', ' ').title().replace('ççç', "'")

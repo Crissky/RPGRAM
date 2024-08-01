@@ -151,6 +151,19 @@ class MageSkillEnum(Enum):
     SAND_STORM = 'Tempestade de Areia'
 
 
+class PaladinSkillEnum(Enum):
+    SACRED_BALM = 'Bálsamo Sagrado'
+    GREENDRAGON_BALM = 'Bálsamo de Dragão Verde'
+    REDPHOENIX_BALM = 'Bálsamo de Fênix Vermelha'
+    BLUEDJINN_BALM = 'Bálsamo de Djinn Azul'
+    SQUIRE_ANOINTING = 'Unção do Escudeiro'
+    WARRIOR_ANOINTING = 'Unção do Guerreiro'
+    MAIDEN_ANOINTING = 'Unção da Donzela'
+    KNIGHT_ANOINTING = 'Unção do Cavaleiro'
+    COURTESAN_ANOINTING = 'Unção da Cortesã'
+    LORD_ANOINTING = 'Unção do Lorde'
+
+
 class MultiClasseSkillEnum(Enum):
     QUICK_ATTACK = 'Ataque Rápido'
 
@@ -182,6 +195,7 @@ class SorcererSkillEnum(Enum):
 class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
+    MUCH_MORE_THAN_POWERFUL_ATTACK = 'Ataque Muito Mais Que Poderoso'
     BLINK_ATTACK = 'Ataque Lampejante'
     LETHAL_ATTACK = 'Ataque Letal'
     AEGIS_SHADOW = 'Sombra de Égide'

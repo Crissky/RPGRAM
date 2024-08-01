@@ -5,6 +5,7 @@ from rpgram.skills.classes.multiclasse.precision_attack import (
 from rpgram.skills.classes.warrior.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     MoreThanPowerfulAttackSkill,
+    MuchMoreThanPowerfulAttackSkill,
     PowerfulAttackSkill
 )
 from rpgram.skills.classes.warrior.skill2 import (
@@ -36,6 +37,8 @@ def warrior_skill_factory(
         skill_class = PowerfulAttackSkill
     elif skill_class_name == MoreThanPowerfulAttackSkill.__name__:
         skill_class = MoreThanPowerfulAttackSkill
+    elif skill_class_name == MuchMoreThanPowerfulAttackSkill.__name__:
+        skill_class = MuchMoreThanPowerfulAttackSkill
     # SKILL2
     elif skill_class_name == QuickAttackSkill.__name__:
         skill_class = QuickAttackSkill
@@ -62,6 +65,7 @@ WARRIOR_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     PowerfulAttackSkill,
     MoreThanPowerfulAttackSkill,
+    MuchMoreThanPowerfulAttackSkill,
 
     # SKILL2
     QuickAttackSkill,

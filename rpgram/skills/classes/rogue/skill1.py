@@ -266,6 +266,7 @@ SKILL_WAY_DESCRIPTION = {
         VipersFangSkill,
         DoubleFangsSkill,
         TaipanInoculateSkill,
+        QuickAttackSkill,
         PhantomStrikeSkill,
         ElusiveAssaultSkill,
     ]

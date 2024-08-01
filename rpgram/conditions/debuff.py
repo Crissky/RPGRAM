@@ -37,6 +37,15 @@ class DebuffCondition(Condition):
             updated_at=updated_at,
         )
 
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            report['text'] = (
+                f'{self.full_name}: Personagem está {self.trans_name}.'
+            )
+
+        return report
+
 
 class BerserkerCondition(DebuffCondition):
 
@@ -61,13 +70,6 @@ class BerserkerCondition(DebuffCondition):
     def multiplier_strength(self) -> float:
         power = self.level / 20
         return round(1 + power, 2)
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = f'Personagem está enlouquecido ({self.name}).'
-
-        return report
 
 
 class BleedingCondition(DebuffCondition):
@@ -104,7 +106,7 @@ class BleedingCondition(DebuffCondition):
             ignore_barrier=True,
         )
 
-        report['text'] = f'{self.full_name} -> ' + report['text']
+        report['text'] = f'{self.full_name}: ' + report['text']
         report['action'] = f'{self.name}'
 
         return report
@@ -132,13 +134,6 @@ class BlindnessCondition(DebuffCondition):
         power = self.level / 20
         return round(1 - power, 2)
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {}
-        report['text'] = 'Personagem está cego.'
-        report['action'] = f'{self.name}'
-
-        return report
-
 
 class BurnCondition(DebuffCondition):
 
@@ -162,13 +157,6 @@ class BurnCondition(DebuffCondition):
         power = self.level / 20
         return round(1 - power, 2)
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {}
-        report['text'] = 'Personagem está com queimaduras.'
-        report['action'] = f'{self.name}'
-
-        return report
-
 
 class ConfusionCondition(DebuffCondition):
 
@@ -187,13 +175,6 @@ class ConfusionCondition(DebuffCondition):
             f'podendo atacar aliados ou a si.'
         )
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está confuso.'
-
-        return report
-
 
 class CrystallizedCondition(DebuffCondition):
 
@@ -208,13 +189,6 @@ class CrystallizedCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está cristalizado.'
-
-        return report
 
 
 class CurseCondition(DebuffCondition):
@@ -244,13 +218,6 @@ class CurseCondition(DebuffCondition):
     def multiplier_wisdom(self) -> float:
         power = self.level / 20
         return round(1 - power, 2)
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {}
-        report['text'] = 'Personagem está amaldiçoado.'
-        report['action'] = f'{self.name}'
-
-        return report
 
 
 class ExhaustionCondition(DebuffCondition):
@@ -282,13 +249,6 @@ class ExhaustionCondition(DebuffCondition):
         power = self.level / 20
         return round(1 - power, 2)
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {}
-        report['text'] = 'Personagem está exausto.'
-        report['action'] = f'{self.name}'
-
-        return report
-
 
 class FearingCondition(DebuffCondition):
 
@@ -319,13 +279,6 @@ class FearingCondition(DebuffCondition):
         power = self.level / 20
         return round(1 - power, 2)
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está amedrontado.'
-
-        return report
-
 
 class FrozenCondition(DebuffCondition):
 
@@ -340,13 +293,6 @@ class FrozenCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está congelado.'
-
-        return report
 
 
 class ImprisonedCondition(DebuffCondition):
@@ -363,13 +309,6 @@ class ImprisonedCondition(DebuffCondition):
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está aprisionado.'
-
-        return report
-
 
 class ParalysisCondition(DebuffCondition):
 
@@ -385,13 +324,6 @@ class ParalysisCondition(DebuffCondition):
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turnos.'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está paralisado.'
-
-        return report
-
 
 class PetrifiedCondition(DebuffCondition):
 
@@ -406,13 +338,6 @@ class PetrifiedCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return 'O personagem não pode realizar ações.'
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está petrificado.'
-
-        return report
 
 
 class PoisoningCondition(DebuffCondition):
@@ -441,7 +366,7 @@ class PoisoningCondition(DebuffCondition):
             value=damage,
             ignore_barrier=True,
         )
-        report['text'] = f'{self.full_name} -> ' + report['text']
+        report['text'] = f'{self.full_name}: ' + report['text']
         report['action'] = f'{self.name}'
 
         return report
@@ -461,13 +386,6 @@ class SilenceCondition(DebuffCondition):
     def description(self) -> str:
         return 'O personagem não pode usar feitiços, magias ou encantamentos.'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {}
-        report['text'] = 'Personagem está silenciado.'
-        report['action'] = f'{self.name}'
-
-        return report
-
 
 class StunnedCondition(DebuffCondition):
 
@@ -482,13 +400,6 @@ class StunnedCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return f'O personagem não pode realizar ações por {self.turn} turno.'
-
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            report['text'] = 'Personagem está atordoado.'
-
-        return report
 
 
 class Debuffs:
@@ -521,6 +432,7 @@ DEBUFFS: Iterable[DebuffCondition] = Debuffs()
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
+    from rpgram.constants.test import BASE_CHARACTER
 
     for condition in Debuffs():
         print(condition)
@@ -529,8 +441,11 @@ if __name__ == '__main__':
     print('BerserkerCondition(level=10).multiplier_strength:',
           BerserkerCondition(level=10).multiplier_strength)
 
-    for debuff in DEBUFFS:
+    for debuff in Debuffs():
         condition = debuff
         print(condition.to_dict())
         _dict = {**condition.to_dict()}
         assert condition_factory(**_dict) == condition
+
+    for condition in Debuffs():
+        print(condition.function(BASE_CHARACTER)['text'])

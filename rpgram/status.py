@@ -154,6 +154,7 @@ class Status:
             index = self.__conditions.index(condition)
             new_condition = self.__conditions[index]
             condition_emoji_name = new_condition.emoji_name
+            old_condition_level = new_condition.level
             new_condition = new_condition.remove_level(condition_level)
             report['is_fail'] = False
             if not new_condition:
@@ -163,7 +164,8 @@ class Status:
                 new_condition_level = new_condition.level
                 report['text'] = (
                     f'{condition_emoji_name} reduziu Nível: '
-                    f'{condition_level} ››› {new_condition_level}.'
+                    f'{old_condition_level} ››› {new_condition_level} '
+                    f'(-{condition_level})'
                 )
         elif ignore_not_find is False:
             report['text'] = (

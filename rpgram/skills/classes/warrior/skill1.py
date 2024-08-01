@@ -91,6 +91,47 @@ class MoreThanPowerfulAttackSkill(BaseSkill):
         )
 
 
+class MuchMoreThanPowerfulAttackSkill(BaseSkill):
+    NAME = WarriorSkillEnum.MUCH_MORE_THAN_POWERFUL_ATTACK.value
+    DESCRIPTION = (
+        f'Tenciona os músculos *Muito* além do máximo e desfere um '
+        f'golpe devastador, causando dano com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.WARRIOR.value,
+        'skill_list': [
+            PowerfulAttackSkill.NAME,
+            MoreThanPowerfulAttackSkill.NAME
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.75,
+        }
+        damage_types = None
+
+        super().__init__(
+            name=MuchMoreThanPowerfulAttackSkill.NAME,
+            description=MuchMoreThanPowerfulAttackSkill.DESCRIPTION,
+            rank=MuchMoreThanPowerfulAttackSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=MuchMoreThanPowerfulAttackSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Combate Brutal',
     'description': (
@@ -107,6 +148,7 @@ SKILL_WAY_DESCRIPTION = {
     'skill_list': [
         PowerfulAttackSkill,
         MoreThanPowerfulAttackSkill,
+        MuchMoreThanPowerfulAttackSkill,
     ]
 }
 
@@ -132,3 +174,13 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     WARRIOR_CHARACTER.skill_tree.learn_skill(MoreThanPowerfulAttackSkill)
+
+    skill = MuchMoreThanPowerfulAttackSkill(WARRIOR_CHARACTER)
+    print(skill)
+    print(WARRIOR_CHARACTER.cs.physical_attack)
+    print(WARRIOR_CHARACTER.to_attack(
+        defender_char=WARRIOR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    WARRIOR_CHARACTER.skill_tree.learn_skill(MuchMoreThanPowerfulAttackSkill)
