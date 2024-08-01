@@ -46,12 +46,27 @@ class TargetSkillDebuffCondition(DebuffCondition):
         )
         self._power = int(power)
 
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{target.name}* {self.function_text}'
+            )
+            report['text'] = text
+
+        return report
+
     @property
     def power(self) -> int:
         power_multiplier = 1 + (self.level / 10)
         power_multiplier = round(power_multiplier, 2)
 
         return int(self._power * power_multiplier)
+
+    @property
+    def function_text(self) -> str:
+        raise NotImplementedError()
 
     def to_dict(self) -> dict:
         _dict = {'power': self._power}
@@ -103,17 +118,9 @@ class ShatterCondition(TargetSkillDebuffCondition):
     def emoji(self) -> str:
         return '💔'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* permanece cravejado de '
-                f'fragmentos de *Cristais Místicos*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece cravejado de fragmentos de *Cristais Místicos*.'
 
 
 class MuddyCondition(TargetSkillDebuffCondition):
@@ -154,16 +161,9 @@ class MuddyCondition(TargetSkillDebuffCondition):
     def emoji(self) -> str:
         return '🦶🏾'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* permanece *Enlameado*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece *Enlameado*.'
 
 
 class TargetDebuffs:
@@ -185,9 +185,13 @@ TARGET_DEBUFFS: Iterable[TargetSkillDebuffCondition] = TargetDebuffs()
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
+    from rpgram.constants.test import BASE_CHARACTER
 
-    for target_debuff in TARGET_DEBUFFS:
+    for target_debuff in TargetDebuffs():
         condition = target_debuff
         print(condition)
         print(condition.to_dict())
         assert condition_factory(**condition.to_dict()) == condition
+
+    # for condition in TargetDebuffs():
+    #     print(condition.function(BASE_CHARACTER)['text'])

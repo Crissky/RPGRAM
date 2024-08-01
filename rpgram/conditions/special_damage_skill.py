@@ -124,7 +124,7 @@ class SpecialDamageSkillCondition(BuffCondition):
         if self.turn != 1:
             text = (
                 f'*{self.full_name}*: '
-                f'*{target.name}* está imbuído com *{self.enum_name.value}*.'
+                f'*{target.name}* {self.function_text}'
             )
             report['text'] = text
 
@@ -135,6 +135,10 @@ class SpecialDamageSkillCondition(BuffCondition):
         _dict.update(super().to_dict())
 
         return _dict
+
+    @property
+    def function_text(self) -> str:
+        return f'está imbuído com *{self.enum_name.value}*.'
 
 
 class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
@@ -397,17 +401,9 @@ class SDFellowFalconCondition(SpecialDamageSkillCondition):
     def emoji(self) -> str:
         return '🗡🦅'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* '
-                f'permanece lutando ao lado do *{self.enum_name.value}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado do *{self.enum_name.value}*.'
 
 
 class SDFellowBearCondition(SpecialDamageSkillCondition):
@@ -438,17 +434,9 @@ class SDFellowBearCondition(SpecialDamageSkillCondition):
     def emoji(self) -> str:
         return '🗡🐻'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* '
-                f'permanece lutando ao lado do *{self.enum_name.value}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado do *{self.enum_name.value}*.'
 
 
 class SDFellowTigerCondition(SpecialDamageSkillCondition):
@@ -479,17 +467,9 @@ class SDFellowTigerCondition(SpecialDamageSkillCondition):
     def emoji(self) -> str:
         return '🗡🐯'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* '
-                f'permanece lutando ao lado do *{self.enum_name.value}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado do *{self.enum_name.value}*.'
 
 
 class SDFellowOwlCondition(SpecialDamageSkillCondition):
@@ -520,17 +500,9 @@ class SDFellowOwlCondition(SpecialDamageSkillCondition):
     def emoji(self) -> str:
         return '🗡🦉'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* '
-                f'permanece lutando ao lado da *{self.enum_name.value}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado da *{self.enum_name.value}*.'
 
 
 class SDThornySpaulderCondition(SpecialDamageSkillCondition):
@@ -561,17 +533,9 @@ class SDThornySpaulderCondition(SpecialDamageSkillCondition):
     def emoji(self) -> str:
         return '🗡🍇'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{target.name}* '
-                f'permanece equipado com a *{self.enum_name.value}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com a *{self.enum_name.value}*.'
 
 
 class SDPoisonousSapCondition(SpecialDamageSkillCondition):
@@ -847,8 +811,12 @@ SPECIAL_DAMAGE_BUFFS: Iterable[SpecialDamageSkillCondition] = (
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
+    from rpgram.constants.test import BASE_CHARACTER
 
     for condition in SpecialDamageBuffs():
         print(condition)
         print(condition.to_dict())
         assert condition_factory(**condition.to_dict()) == condition
+
+    # for condition in SpecialDamageBuffs():
+    #     print(condition.function(BASE_CHARACTER)['text'])
