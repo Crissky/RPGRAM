@@ -26,6 +26,11 @@ from rpgram.skills.classes.mage.factory import (
     MAGE_SKILL_WAYS,
     mage_skill_factory
 )
+from rpgram.skills.classes.paladin.factory import (
+    PALADIN_SKILL_LIST,
+    PALADIN_SKILL_WAYS,
+    paladin_skill_factory
+)
 from rpgram.skills.classes.rogue.factory import (
     ROGUE_SKILL_LIST,
     ROGUE_SKILL_WAYS,
@@ -53,20 +58,22 @@ ALL_SKILL_DICT = {
     ClasseEnum.CLERIC.value: CLERIC_SKILL_LIST,
     ClasseEnum.DRUID.value: DRUID_SKILL_LIST,
     ClasseEnum.SORCERER.value: SORCERER_SKILL_LIST,
-    ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_LIST,
     ClasseEnum.WARRIOR.value: WARRIOR_SKILL_LIST,
     ClasseEnum.ROGUE.value: ROGUE_SKILL_LIST,
     ClasseEnum.MAGE.value: MAGE_SKILL_LIST,
+    ClasseEnum.PALADIN.value: PALADIN_SKILL_LIST,
+    ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
     ClasseEnum.CLERIC.value: CLERIC_SKILL_WAYS,
     ClasseEnum.DRUID.value: DRUID_SKILL_WAYS,
     ClasseEnum.SORCERER.value: SORCERER_SKILL_WAYS,
-    ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_WAYS,
     ClasseEnum.WARRIOR.value: WARRIOR_SKILL_WAYS,
     ClasseEnum.ROGUE.value: ROGUE_SKILL_WAYS,
     ClasseEnum.MAGE.value: MAGE_SKILL_WAYS,
+    ClasseEnum.PALADIN.value: PALADIN_SKILL_WAYS,
+    ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_WAYS,
 }
 
 
@@ -97,7 +104,7 @@ def skill_factory(
     elif ClasseEnum.MAGE.value == classe_name:
         class_skill_factory = mage_skill_factory
     elif ClasseEnum.PALADIN.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = paladin_skill_factory
     elif ClasseEnum.GUARDIAN.value == classe_name:
         class_skill_factory = guardian_skill_factory
     elif ClasseEnum.DUELIST.value == classe_name:
@@ -170,7 +177,7 @@ def skill_list_factory(
     elif ClasseEnum.MAGE.value == classe_name:
         return MAGE_SKILL_LIST
     elif ClasseEnum.PALADIN.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return PALADIN_SKILL_LIST
     elif ClasseEnum.GUARDIAN.value == classe_name:
         return GUARDIAN_SKILL_LIST
     elif ClasseEnum.DUELIST.value == classe_name:

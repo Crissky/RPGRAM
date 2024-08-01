@@ -23,6 +23,7 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
+    PaladinSkillEnum,
     WarriorSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
@@ -906,7 +907,7 @@ class OakArmorCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que aumenta o '
+            f'*{self.enum_name.value}* que aumenta a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_magical_defense} pontos e a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
@@ -937,6 +938,321 @@ class OakArmorCondition(TargetSkillBuffCondition):
         return int(self._power * power_multiplier)
 
 
+class SquireAnointingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.SQUIRE_ANOINTING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.SHIELD.value + '🪔'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com a *{self.enum_name.value}*.'
+
+
+class WarriorAnointingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.WARRIOR_ANOINTING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos, o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_precision_attack} pontos e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.SWORD.value + '🪔'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com a *{self.enum_name.value}*.'
+
+
+class MaidenAnointingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.MAIDEN_ANOINTING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos.'
+        )
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.CLOAK.value + '🪔'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com a *{self.enum_name.value}*.'
+
+
+class KnightAnointingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.KNIGHT_ANOINTING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos, o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_precision_attack} pontos, a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.KNIGHT.value + '🪔'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com a *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class CourtesanAnointingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.COURTESAN_ANOINTING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos, a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.COURTESAN.value + '🪔'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com a *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class LordAnointingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.LORD_ANOINTING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos, o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_precision_attack} pontos, a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.LORD.value + '🪔'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com a *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -958,6 +1274,12 @@ class TargetBuffs:
         VineBucklerCondition,
         SilkFlossSpaulderCondition,
         OakArmorCondition,
+        SquireAnointingCondition,
+        WarriorAnointingCondition,
+        MaidenAnointingCondition,
+        KnightAnointingCondition,
+        CourtesanAnointingCondition,
+        LordAnointingCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

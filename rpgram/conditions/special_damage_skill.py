@@ -12,7 +12,8 @@ from rpgram.enums.damage import (
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     DruidSkillEnum,
-    GuardianSkillEnum
+    GuardianSkillEnum,
+    PaladinSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
 from rpgram.skills.special_damage import SpecialDamage
@@ -90,10 +91,17 @@ class SpecialDamageSkillCondition(BuffCondition):
 
     @property
     def damage_help_emoji_text(self) -> str:
-        return ', '.join([
-            damage.damage_help_emoji_text
-            for damage in self.special_damage_iter
-        ])
+        special_damage_iter = list(self.special_damage_iter)
+        if len(special_damage_iter) > 1:
+            return ', '.join([
+                damage.damage_help_emoji_text
+                for damage in special_damage_iter[:-1]
+            ]) + ' e ' + special_damage_iter[-1].damage_help_emoji_text
+        else:
+            return ', '.join([
+                damage.damage_help_emoji_text
+                for damage in special_damage_iter
+            ])
 
     @property
     def special_damage_iter(self) -> Iterator[SpecialDamage]:
@@ -116,7 +124,7 @@ class SpecialDamageSkillCondition(BuffCondition):
         if self.turn != 1:
             text = (
                 f'*{self.full_name}*: '
-                f'*{target.name}* está imbuído com a *{self.name}*.'
+                f'*{target.name}* está imbuído com *{self.enum_name.value}*.'
             )
             report['text'] = text
 
@@ -653,6 +661,156 @@ class SDEscarchaSapCondition(SpecialDamageSkillCondition):
         return DamageEmojiEnum.COLD.value + '🍯'
 
 
+class SDSacredBalmCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.SACRED_BALM,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.BLESSING, DamageEnum.LIGHT],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return DamageEmojiEnum.LIGHT.value + '🌿'
+
+
+class SDGreenDragonBalmCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.GREENDRAGON_BALM,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[
+                DamageEnum.BLESSING,
+                DamageEnum.POISON,
+                DamageEnum.ACID,
+            ],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def emoji(self) -> str:
+        return '🐲🌿'
+
+
+class SDRedPhoenixBalmCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.REDPHOENIX_BALM,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[
+                DamageEnum.BLESSING,
+                DamageEnum.FIRE,
+                DamageEnum.WIND,
+            ],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def emoji(self) -> str:
+        return '🐦‍🔥🌿'
+
+
+class SDBlueDjinnBalmCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.BLUEDJINN_BALM,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[
+                DamageEnum.BLESSING,
+                DamageEnum.MAGIC,
+                DamageEnum.COLD,
+                DamageEnum.WATER,
+            ],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def emoji(self) -> str:
+        return '🧞🌿'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -671,6 +829,10 @@ class SpecialDamageBuffs:
         SDPoisonousSapCondition,
         SDIgneousSapCondition,
         SDEscarchaSapCondition,
+        SDSacredBalmCondition,
+        SDGreenDragonBalmCondition,
+        SDRedPhoenixBalmCondition,
+        SDBlueDjinnBalmCondition
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

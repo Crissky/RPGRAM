@@ -53,6 +53,8 @@ from rpgram.conditions.self_skill import (
     ShadowStepsCondition
 )
 from rpgram.conditions.special_damage_skill import (
+    SDBlueDjinnBalmCondition,
+    SDGreenDragonBalmCondition,
     SDCrystallineInfusionCondition,
     SDEscarchaSapCondition,
     SDFellowBearCondition,
@@ -61,7 +63,9 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowTigerCondition,
     SDIgneousSapCondition,
     SDPoisonousSapCondition,
+    SDRedPhoenixBalmCondition,
     SDThornySpaulderCondition,
+    SDSacredBalmCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -75,20 +79,26 @@ from rpgram.conditions.target_skill_buff import (
     ArtemissArrowCondition,
     BodyguardBearCondition,
     CeridwensMagicPotionCondition,
+    CourtesanAnointingCondition,
     GraceOfThePantheonCondition,
     HecatesFlamesCondition,
     HunterTigerCondition,
     IdunnsAppleCondition,
     IsissVeilCondition,
+    KnightAnointingCondition,
     KratossWrathCondition,
+    LordAnointingCondition,
+    MaidenAnointingCondition,
     OgunsCloakCondition,
     RangerFalconCondition,
+    SquireAnointingCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
     OakArmorCondition,
     VineBucklerCondition,
     SilkFlossSpaulderCondition,
     WarBannerCondition,
+    WarriorAnointingCondition,
     WatcherOwlCondition
 )
 from rpgram.conditions.target_skill_debuff import (
@@ -105,6 +115,7 @@ from rpgram.enums.skill import (
     DruidSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
+    PaladinSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum,
     WarriorSkillEnum
@@ -306,6 +317,27 @@ def condition_factory(
         condition_class = MistFormCondition
     elif compare_condition(name, MageSkillEnum.MUDDY):
         condition_class = MuddyCondition
+    # PALADIN BUFFS
+    elif compare_condition(name, PaladinSkillEnum.SACRED_BALM):
+        condition_class = SDSacredBalmCondition
+    elif compare_condition(name, PaladinSkillEnum.GREENDRAGON_BALM):
+        condition_class = SDGreenDragonBalmCondition
+    elif compare_condition(name, PaladinSkillEnum.REDPHOENIX_BALM):
+        condition_class = SDRedPhoenixBalmCondition
+    elif compare_condition(name, PaladinSkillEnum.BLUEDJINN_BALM):
+        condition_class = SDBlueDjinnBalmCondition
+    elif compare_condition(name, PaladinSkillEnum.SQUIRE_ANOINTING):
+        condition_class = SquireAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.WARRIOR_ANOINTING):
+        condition_class = WarriorAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.MAIDEN_ANOINTING):
+        condition_class = MaidenAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.KNIGHT_ANOINTING):
+        condition_class = KnightAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.COURTESAN_ANOINTING):
+        condition_class = CourtesanAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.LORD_ANOINTING):
+        condition_class = LordAnointingCondition
     # ROGUE BUFFS
     elif compare_condition(name, RogueSkillEnum.SHADOW_STEPS):
         condition_class = ShadowStepsCondition

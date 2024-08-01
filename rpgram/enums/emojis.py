@@ -63,6 +63,12 @@ class EmojiEnum(Enum):
     BOOTS = '🥾'
     RING = '💍'
     AMULET = '📿'
+    SHIELD = '🛡'
+    SWORD = '🗡'
+    CLOAK = '🥻'
+    KNIGHT = '⚜️'
+    COURTESAN = '🌹'
+    LORD = '🏰'
     CONSUMABLE = '⚱️'  # 🧴🧉🧪⚱️
     LEVEL_UP = '🎊'
     DESTROY_ITEM = '💣'
