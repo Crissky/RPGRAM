@@ -173,6 +173,9 @@ class PaladinSkillEnum(Enum):
     VLADS_PUNISHMENT = 'Punição de Vlad'
     CONFESSION = 'Confissão'
     PENITENCE = 'Penitência'
+    CONFISCATION = 'Confisco'
+    EXCOMMUNICATE = 'Excomungar'
+    EXILE = 'Exílio'
 
 
 class MultiClasseSkillEnum(Enum):

@@ -25,7 +25,10 @@ from rpgram.skills.classes.paladin.skill2 import (
 from rpgram.skills.classes.paladin.skill3 import (
     SKILL_WAY_DESCRIPTION as skill_way3,
     ConfessionSkill,
+    ConfiscationSkill,
     CutThroatSkill,
+    ExcommunicateSkill,
+    ExileSkill,
     FloggingsSkill,
     PenitenceSkill,
     VladsPunishmentSkill
@@ -87,6 +90,12 @@ def paladin_skill_factory(
         skill_class = ConfessionSkill
     elif skill_class_name == PenitenceSkill.__name__:
         skill_class = PenitenceSkill
+    elif skill_class_name == ConfiscationSkill.__name__:
+        skill_class = ConfiscationSkill
+    elif skill_class_name == ExcommunicateSkill.__name__:
+        skill_class = ExcommunicateSkill
+    elif skill_class_name == ExileSkill.__name__:
+        skill_class = ExileSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -120,6 +129,9 @@ PALADIN_SKILL_LIST: List[Type[BaseSkill]] = [
     VladsPunishmentSkill,
     ConfessionSkill,
     PenitenceSkill,
+    ConfiscationSkill,
+    ExcommunicateSkill,
+    ExileSkill,
 ]
 PALADIN_SKILL_WAYS: List[dict] = [
     skill_way1,
