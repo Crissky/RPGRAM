@@ -112,7 +112,7 @@ class TaipanInoculateSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
         f'adiciona a condição '
-        f'{get_debuff_emoji_text(DebuffEnum.POISONING)} com nível igual ao '
+        f'*{get_debuff_emoji_text(DebuffEnum.POISONING)}* com nível igual ao '
         f'2 x (Rank x Nível + {EmojiEnum.DICE.value}).'
     )
     RANK = 3
