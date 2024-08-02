@@ -13,6 +13,22 @@ from rpgram.skills.classes.paladin.skill1 import (
     SacredBalmSkill,
     WarriorAnointingSkill
 )
+from rpgram.skills.classes.paladin.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
+    ExcaliburSkill,
+    GungnirSkill,
+    KusanagiNoTsurugiSkill,
+    OsheSkill,
+    SudarshanaChakraSkill,
+    TyrfingSkill
+)
+from rpgram.skills.classes.paladin.skill3 import (
+    SKILL_WAY_DESCRIPTION as skill_way3,
+    ConfessionSkill,
+    CutThroatSkill,
+    FloggingsSkill,
+    VladsPunishmentSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -46,6 +62,28 @@ def paladin_skill_factory(
         skill_class = CourtesanAnointingSkill
     elif skill_class_name == LordAnointingSkill.__name__:
         skill_class = LordAnointingSkill
+    # SKILL2
+    elif skill_class_name == ExcaliburSkill.__name__:
+        skill_class = ExcaliburSkill
+    elif skill_class_name == KusanagiNoTsurugiSkill.__name__:
+        skill_class = KusanagiNoTsurugiSkill
+    elif skill_class_name == TyrfingSkill.__name__:
+        skill_class = TyrfingSkill
+    elif skill_class_name == OsheSkill.__name__:
+        skill_class = OsheSkill
+    elif skill_class_name == SudarshanaChakraSkill.__name__:
+        skill_class = SudarshanaChakraSkill
+    elif skill_class_name == GungnirSkill.__name__:
+        skill_class = GungnirSkill
+    # SKILL3
+    elif skill_class_name == FloggingsSkill.__name__:
+        skill_class = FloggingsSkill
+    elif skill_class_name == CutThroatSkill.__name__:
+        skill_class = CutThroatSkill
+    elif skill_class_name == VladsPunishmentSkill.__name__:
+        skill_class = VladsPunishmentSkill
+    elif skill_class_name == ConfessionSkill.__name__:
+        skill_class = ConfessionSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -64,7 +102,23 @@ PALADIN_SKILL_LIST: List[Type[BaseSkill]] = [
     KnightAnointingSkill,
     CourtesanAnointingSkill,
     LordAnointingSkill,
+
+    # SKILL2
+    ExcaliburSkill,
+    KusanagiNoTsurugiSkill,
+    TyrfingSkill,
+    OsheSkill,
+    SudarshanaChakraSkill,
+    GungnirSkill,
+
+    # SKILL3
+    FloggingsSkill,
+    CutThroatSkill,
+    VladsPunishmentSkill,
+    ConfessionSkill,
 ]
 PALADIN_SKILL_WAYS: List[dict] = [
     skill_way1,
+    skill_way2,
+    skill_way3,
 ]
