@@ -151,7 +151,7 @@ class HeroicInspirationSkill(BaseSkill):
     NAME = WarriorSkillEnum.HEROIC_INSPIRATION.value
     DESCRIPTION = (
         f'Libera uma explosão de '
-        f'energia inspiradora, revigorando seu espírito e curando seu'
+        f'energia inspiradora, revigorando seu espírito e curando seu '
         f'{HIT_POINT_FULL_EMOJI_TEXT} com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
