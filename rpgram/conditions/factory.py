@@ -381,6 +381,26 @@ def compare_condition(name: CONDITION_TYPES, condition_enum: Enum) -> bool:
     )
 
 
+def create_condition_to_dict(
+    condition: Condition,
+    character: 'BaseCharacter' = None
+) -> dict:
+    dict_condition = condition.to_dict()
+    if 'need_character' in dict_condition:
+        dict_condition['character'] = character
+        dict_condition.pop('need_character')
+
+    return dict_condition
+
+
+def copy_condition(
+    condition: Condition,
+    character: 'BaseCharacter' = None
+) -> Condition:
+    dict_condition = create_condition_to_dict(condition, character)
+    return condition_factory(**dict_condition)
+
+
 if __name__ == '__main__':
     print(condition_factory(name=DebuffEnum.CONFUSION.name))
     print(condition_factory(name=DebuffEnum.CONFUSION.name, turn=10))
