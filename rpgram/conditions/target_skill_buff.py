@@ -1292,8 +1292,12 @@ TARGET_BUFFS: Iterable[TargetSkillBuffCondition] = TargetBuffs()
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
+    from rpgram.constants.test import BASE_CHARACTER
 
     for condition in TargetBuffs():
         print(condition)
         print(condition.to_dict())
         assert condition_factory(**condition.to_dict()) == condition
+
+    # for condition in TargetBuffs():
+    #     print(condition.function(BASE_CHARACTER)['text'])

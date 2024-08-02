@@ -68,6 +68,21 @@ class SelfSkillCondition(BuffCondition):
 
         return _dict
 
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            text = (
+                f'*{self.full_name}*: '
+                f'*{self.character.name}* {self.function_text}'
+            )
+            report['text'] = text
+
+        return report
+
+    @property
+    def function_text(self) -> str:
+        raise NotImplementedError()
+
 
 class RobustBlockCondition(SelfSkillCondition):
 
@@ -106,16 +121,9 @@ class RobustBlockCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🙅🏿'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece na *Postura Defensiva*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece na *Postura Defensiva*.'
 
 
 class CrystalArmorCondition(SelfSkillCondition):
@@ -162,17 +170,9 @@ class CrystalArmorCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🟪'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece envolto pelos '
-                f'*Cristais Místicos*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto pelos *Cristais Místicos*.'
 
 
 class RockArmorCondition(SelfSkillCondition):
@@ -219,17 +219,9 @@ class RockArmorCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🪨🛡'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece protegido pela '
-                f'*Armadura de Rocha*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece protegido pela *Armadura de Rocha*.'
 
 
 class LavaSkinCondition(SelfSkillCondition):
@@ -279,17 +271,9 @@ class LavaSkinCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🌋🛡'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece encoberto pela '
-                f'*Lava Endurecida*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece encoberto pela *Lava Endurecida*.'
 
 
 class MistFormCondition(SelfSkillCondition):
@@ -329,16 +313,9 @@ class MistFormCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🧖'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece na *Forma Etérea*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece na *Forma Etérea*.'
 
 
 class FuriousFuryCondition(SelfSkillCondition):
@@ -378,17 +355,9 @@ class FuriousFuryCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '😤'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece em estado de '
-                f'*{self.name}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece em estado de *{self.trans_name}*.'
 
 
 class FuriousInstinctCondition(SelfSkillCondition):
@@ -426,17 +395,9 @@ class FuriousInstinctCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '‼️'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece em estado de '
-                f'*{self.name}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece em estado de *{self.trans_name}*.'
 
 
 class FrenzyCondition(SelfSkillCondition):
@@ -483,17 +444,9 @@ class FrenzyCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🤬'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece em estado de '
-                f'*{self.name}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece em estado de *{self.trans_name}*.'
 
 
 class RaijusFootstepsCondition(SelfSkillCondition):
@@ -544,16 +497,9 @@ class RaijusFootstepsCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '⚡🐺'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece em *Transe Sobrenatural*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece em *Transe Sobrenatural*.'
 
 
 class FafnirsScalesCondition(SelfSkillCondition):
@@ -595,17 +541,9 @@ class FafnirsScalesCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🏔️🐲'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece com '
-                f'*Pele e Músculos Petrificados*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece com *Pele e Músculos Petrificados*.'
 
 
 class MysticalProtectionCondition(SelfSkillCondition):
@@ -646,17 +584,9 @@ class MysticalProtectionCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🧘🏾'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece coberto pela '
-                f'*{self.name}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece coberto pela *{self.trans_name}*.'
 
 
 class MysticalConfluenceCondition(SelfSkillCondition):
@@ -697,17 +627,9 @@ class MysticalConfluenceCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🧘🏾'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece imbuído pela '
-                f'*{self.name}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece imbuído pela *{self.trans_name}*.'
 
 
 class MysticalVigorCondition(SelfSkillCondition):
@@ -752,17 +674,9 @@ class MysticalVigorCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return '🧘🏾'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* está revigorado pelo '
-                f'*{self.name}*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'está fortificado pelo *{self.trans_name}*.'
 
 
 class ShadowStepsCondition(SelfSkillCondition):
@@ -803,16 +717,9 @@ class ShadowStepsCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return DamageEmojiEnum.DARK.value + '👣'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece andando pela *Sombras*.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece andando pela *Sombras*.'
 
 
 class ChaoticStepsCondition(SelfSkillCondition):
@@ -853,16 +760,9 @@ class ChaoticStepsCondition(SelfSkillCondition):
     def emoji(self) -> str:
         return DamageEmojiEnum.CHAOS.value + '👣'
 
-    def function(self, target: 'BaseCharacter') -> dict:
-        report = {'text': '', 'action': self.name}
-        if self.turn != 1:
-            text = (
-                f'*{self.full_name}*: '
-                f'*{self.character.name}* permanece com o Andar Errático.'
-            )
-            report['text'] = text
-
-        return report
+    @property
+    def function_text(self) -> str:
+        return f'permanece com o *Andar Errático*.'
 
 
 class FakeCharacter:
@@ -924,6 +824,7 @@ class FakeCharacter:
         bonus_evasion = 100
         irate_hp = 0.66
 
+    name = 'Fake Char'
     base_stats = bs = FakeBaseStats()
     combat_stats = cs = FakeCombatStats()
 
@@ -965,3 +866,6 @@ if __name__ == '__main__':
         _dict = {'character': BASE_CHARACTER, **condition.to_dict()}
         _dict.pop('need_character')
         assert condition_factory(**_dict) == condition
+
+    # for condition in SelfBuffs():
+    #     print(condition.function(BASE_CHARACTER)['text'])

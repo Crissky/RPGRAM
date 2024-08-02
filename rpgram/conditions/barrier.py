@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Iterable, Union
 
 from bson import ObjectId
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
@@ -263,25 +263,30 @@ class ChaosWeaverCondition(BarrierCondition):
         )
 
 
+class BarrierBuffs:
+    __list = [
+        GuardianShieldCondition,
+        AegisShadowCondition,
+        PrismaticShieldCondition,
+        ChaosWeaverCondition,
+    ]
+
+    def __iter__(self) -> Iterable[BarrierCondition]:
+        for condition_class in self.__list:
+            yield condition_class(power=100)
+
+
+BARRIER_BUFFS: Iterable[BarrierCondition] = BarrierBuffs()
+
+
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
+    from rpgram.constants.test import BASE_CHARACTER
 
-    condition = GuardianShieldCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
+    for condition in BarrierBuffs():
+        print(condition)
+        print(condition.to_dict())
+        assert condition_factory(**condition.to_dict()) == condition
 
-    condition = AegisShadowCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = PrismaticShieldCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
-
-    condition = ChaosWeaverCondition(100)
-    print(condition)
-    print(condition.to_dict())
-    assert condition_factory(**condition.to_dict()) == condition
+    # for condition in BarrierBuffs():
+    #     print(condition.function(BASE_CHARACTER)['text'])

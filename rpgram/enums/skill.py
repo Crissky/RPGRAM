@@ -162,6 +162,16 @@ class PaladinSkillEnum(Enum):
     KNIGHT_ANOINTING = 'Unção do Cavaleiro'
     COURTESAN_ANOINTING = 'Unção da Cortesã'
     LORD_ANOINTING = 'Unção do Lorde'
+    EXCALIBUR = 'Excalibur'
+    KUSANAGI_NO_TSURUGI = 'Kusanagi-no-Tsurugi'
+    TYRFING = 'Tirfing'
+    OSHE = 'Oxé'
+    SUDARSHANA_CHAKRA = 'Sudarshana Chakra'
+    GUNGNIR = 'Gungnir'
+    FLOGGINGS = 'Flagelações'
+    CUT_THROAT = 'Degolar'
+    VLADS_PUNISHMENT = 'Punição de Vlad'
+    CONFESSION = 'Confissão'
 
 
 class MultiClasseSkillEnum(Enum):

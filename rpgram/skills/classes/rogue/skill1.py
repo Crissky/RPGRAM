@@ -112,7 +112,7 @@ class TaipanInoculateSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
         f'adiciona a condição '
-        f'{get_debuff_emoji_text(DebuffEnum.POISONING)} com nível igual a '
+        f'{get_debuff_emoji_text(DebuffEnum.POISONING)} com nível igual ao '
         f'2 x (Rank x Nível + {EmojiEnum.DICE.value}).'
     )
     RANK = 3
@@ -218,7 +218,7 @@ class ElusiveAssaultSkill(BaseSkill):
         f'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
-        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
         f'Essa habilidade não pode ser esquivada.'
     )
     RANK = 3
@@ -246,8 +246,8 @@ class ElusiveAssaultSkill(BaseSkill):
             skill_type=SkillTypeEnum.ATTACK,
             skill_defense=SkillDefenseEnum.PHYSICAL,
             char=char,
-            use_equips_damage_types=True,
             is_elusive=True,
+            use_equips_damage_types=True,
             requirements=ElusiveAssaultSkill.REQUIREMENTS,
             damage_types=damage_types
         )

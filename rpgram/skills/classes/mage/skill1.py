@@ -21,6 +21,7 @@ from rpgram.constants.text import (
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
+from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     MageSkillEnum,
     SkillDefenseEnum,
@@ -374,7 +375,9 @@ class ScorchingBreathSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
-        f'adiciona a condição {get_debuff_emoji_text(DebuffEnum.BURN)}.'
+        f'adiciona a condição '
+        f'{get_debuff_emoji_text(DebuffEnum.BURN)} com nível igual ao '
+        f'(Rank x Nível + {EmojiEnum.DICE.value}).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{
@@ -418,7 +421,7 @@ class ScorchingBreathSkill(BaseSkill):
         report = {'text': ''}
         target_name = target.player_name
         if target.is_alive:
-            level = self.level_rank
+            level = self.level_rank + self.dice.value
             condition = BurnCondition(level=level)
             status_report = target.status.add_condition(condition)
             report['status_text'] = status_report['text']
