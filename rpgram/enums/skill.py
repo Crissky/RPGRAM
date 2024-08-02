@@ -172,6 +172,7 @@ class PaladinSkillEnum(Enum):
     CUT_THROAT = 'Degolar'
     VLADS_PUNISHMENT = 'Punição de Vlad'
     CONFESSION = 'Confissão'
+    PENITENCE = 'Penitência'
 
 
 class MultiClasseSkillEnum(Enum):

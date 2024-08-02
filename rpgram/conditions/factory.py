@@ -47,6 +47,7 @@ from rpgram.conditions.self_skill import (
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
+    PenitenceCondition,
     RaijusFootstepsCondition,
     RobustBlockCondition,
     RockArmorCondition,
@@ -338,6 +339,8 @@ def condition_factory(
         condition_class = CourtesanAnointingCondition
     elif compare_condition(name, PaladinSkillEnum.LORD_ANOINTING):
         condition_class = LordAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.PENITENCE):
+        condition_class = PenitenceCondition
     # ROGUE BUFFS
     elif compare_condition(name, RogueSkillEnum.SHADOW_STEPS):
         condition_class = ShadowStepsCondition

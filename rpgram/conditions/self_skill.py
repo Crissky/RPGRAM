@@ -28,6 +28,7 @@ from rpgram.enums.skill import (
     BarbarianSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
+    PaladinSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum
 )
@@ -765,6 +766,66 @@ class ChaoticStepsCondition(SelfSkillCondition):
         return f'permanece com o *Andar Errático*.'
 
 
+class PenitenceCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=PaladinSkillEnum.PENITENCE,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Cilício Constringido* que fortalecer a fé, '
+            f'reduzindo o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* em '
+            f'{self.bonus_hit_points} pontos '
+            f'e aumentando o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em '
+            f'{self.bonus_physical_attack} pontos e a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
+            f'*{self.bonus_magical_defense}* pontos '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        bonus_hit_points = -(self.character.cs.base_hit_points * 0.25)
+
+        return int(bonus_hit_points)
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = (0.25 + (self.level / 100))
+        bonus_physical_attack = power * self.character.cs.base_physical_attack
+
+        return int(bonus_physical_attack)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        power = (0.25 + (self.level / 100))
+        bonus_magical_defense = power * self.character.cs.base_magical_defense
+
+        return int(bonus_magical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '⛓️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com o *Cilício Constringido*.'
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -846,6 +907,7 @@ class SelfBuffs:
         MysticalVigorCondition,
         ShadowStepsCondition,
         ChaoticStepsCondition,
+        PenitenceCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

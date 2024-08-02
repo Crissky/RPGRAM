@@ -27,6 +27,7 @@ from rpgram.skills.classes.paladin.skill3 import (
     ConfessionSkill,
     CutThroatSkill,
     FloggingsSkill,
+    PenitenceSkill,
     VladsPunishmentSkill
 )
 from rpgram.skills.skill_base import BaseSkill
@@ -84,6 +85,8 @@ def paladin_skill_factory(
         skill_class = VladsPunishmentSkill
     elif skill_class_name == ConfessionSkill.__name__:
         skill_class = ConfessionSkill
+    elif skill_class_name == PenitenceSkill.__name__:
+        skill_class = PenitenceSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -116,6 +119,7 @@ PALADIN_SKILL_LIST: List[Type[BaseSkill]] = [
     CutThroatSkill,
     VladsPunishmentSkill,
     ConfessionSkill,
+    PenitenceSkill,
 ]
 PALADIN_SKILL_WAYS: List[dict] = [
     skill_way1,
