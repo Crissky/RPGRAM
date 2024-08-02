@@ -47,6 +47,7 @@ from rpgram.conditions.self_skill import (
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
+    PenitenceCondition,
     RaijusFootstepsCondition,
     RobustBlockCondition,
     RockArmorCondition,
@@ -338,6 +339,8 @@ def condition_factory(
         condition_class = CourtesanAnointingCondition
     elif compare_condition(name, PaladinSkillEnum.LORD_ANOINTING):
         condition_class = LordAnointingCondition
+    elif compare_condition(name, PaladinSkillEnum.PENITENCE):
+        condition_class = PenitenceCondition
     # ROGUE BUFFS
     elif compare_condition(name, RogueSkillEnum.SHADOW_STEPS):
         condition_class = ShadowStepsCondition
@@ -376,6 +379,26 @@ def compare_condition(name: CONDITION_TYPES, condition_enum: Enum) -> bool:
             condition_enum.value.upper(),
         ]
     )
+
+
+def create_condition_to_dict(
+    condition: Condition,
+    character: 'BaseCharacter' = None
+) -> dict:
+    dict_condition = condition.to_dict()
+    if 'need_character' in dict_condition:
+        dict_condition['character'] = character
+        dict_condition.pop('need_character')
+
+    return dict_condition
+
+
+def copy_condition(
+    condition: Condition,
+    character: 'BaseCharacter' = None
+) -> Condition:
+    dict_condition = create_condition_to_dict(condition, character)
+    return condition_factory(**dict_condition)
 
 
 if __name__ == '__main__':

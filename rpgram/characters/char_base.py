@@ -505,15 +505,15 @@ class BaseCharacter:
             # Put the Damage Paragraph of the report['text']
             report['text'] += damage_report['text']
 
+            # Put the Activate Status of the report['text']
+            if activate_status_to_attack:
+                report['text'] += activate_status_to_attack
+
             # Put the Hit Paragraph of the report['text']
             if hit_text:
                 report['text'] += f'\n\n'
                 report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
                 report['text'] += f'\n{hit_text}'
-
-            # Put the Activate Status of the report['text']
-            if activate_status_to_attack:
-                report['text'] += activate_status_to_attack
 
             # Put the New Status Paragraph of the report['text']
             if defender_char.is_alive:

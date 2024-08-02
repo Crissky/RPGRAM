@@ -10,6 +10,7 @@ from constant.text import TEXT_DELIMITER, TEXT_SEPARATOR_2
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.barrier import BarrierCondition
+from rpgram.conditions.buff import BuffCondition
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import DebuffCondition
 from rpgram.conditions.factory import condition_factory
@@ -307,6 +308,9 @@ class Status:
 
     def get_debuffs(self) -> Iterable[DebuffCondition]:
         yield from self.get_filtered_condition(DebuffCondition)
+
+    def get_buffs(self) -> Iterable[BuffCondition]:
+        yield from self.get_filtered_condition(BuffCondition)
 
     def get_barriers(self) -> Iterable[BarrierCondition]:
         yield from self.get_filtered_condition(BarrierCondition)

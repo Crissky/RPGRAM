@@ -376,7 +376,7 @@ class ScorchingBreathSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
         f'adiciona a condição '
-        f'{get_debuff_emoji_text(DebuffEnum.BURN)} com nível igual ao '
+        f'*{get_debuff_emoji_text(DebuffEnum.BURN)}* com nível igual ao '
         f'(Rank x Nível + {EmojiEnum.DICE.value}).'
     )
     RANK = 3
@@ -481,7 +481,7 @@ class LavaSkinSkill(BaseSkill):
         f'*{WISDOM_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível), além de '
-        f'curar a condição {get_debuff_emoji_text(DebuffEnum.BURN)}.'
+        f'curar a condição *{get_debuff_emoji_text(DebuffEnum.BURN)}*.'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{
@@ -676,7 +676,7 @@ class SandStormSkill(BaseSkill):
     DESCRIPTION = (
         f'Conjura uma *Tempestade de Areia* que varre o campo de batalha, '
         f'obscurecendo a visão dos inimigos '
-        f'({get_debuff_emoji_text(DebuffEnum.BLINDNESS)}) e '
+        f'(*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}*) e '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
