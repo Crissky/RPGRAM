@@ -29,6 +29,7 @@ class QuickAttackSkill(BaseSkill):
     RANK = 1
     REQUIREMENTS = Requirement(**{
         'classe_name_list': [
+            ClasseEnum.DUELIST.value,
             ClasseEnum.ROGUE.value,
             ClasseEnum.WARRIOR.value,
         ],
