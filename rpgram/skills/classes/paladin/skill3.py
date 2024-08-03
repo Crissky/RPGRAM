@@ -479,7 +479,7 @@ class ExileSkill(BaseSkill):
         f'*{get_debuff_emoji_text(DebuffEnum.EXHAUSTION)}* com nível igual ao '
         f'(Rank x Nível).'
     )
-    RANK = 2
+    RANK = 3
     REQUIREMENTS = Requirement(**{
         'level': 80,
         'classe_name': ClasseEnum.PALADIN.value,

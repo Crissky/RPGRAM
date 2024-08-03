@@ -120,6 +120,11 @@ class DruidSkillEnum(Enum):
     SAPIOUS_CUBE = 'Cubo Seivoso'
 
 
+class DuelistSkillEnum(Enum):
+    WIND_BLADE = 'Lâmina de Vento'
+    SPLASH_FOUNT = "Fontaine D'éclaboussure"
+
+
 class GuardianSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'
