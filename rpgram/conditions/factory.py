@@ -76,11 +76,13 @@ from rpgram.conditions.special_damage_skill import (
     SDWildWindCondition
 )
 from rpgram.conditions.target_skill_buff import (
+    AgileFeetCondition,
     AnansisTrickeryCondition,
     ArtemissArrowCondition,
     BodyguardBearCondition,
     CeridwensMagicPotionCondition,
     CourtesanAnointingCondition,
+    EagleEyeCondition,
     GraceOfThePantheonCondition,
     HecatesFlamesCondition,
     HunterTigerCondition,
@@ -103,6 +105,8 @@ from rpgram.conditions.target_skill_buff import (
     WatcherOwlCondition
 )
 from rpgram.conditions.target_skill_debuff import (
+    AchillesHeelCondition,
+    DisarmorCondition,
     MuddyCondition,
     ShatterCondition
 )
@@ -114,6 +118,7 @@ from rpgram.enums.skill import (
     BarbarianSkillEnum,
     ClericSkillEnum,
     DruidSkillEnum,
+    DuelistSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
     PaladinSkillEnum,
@@ -298,6 +303,15 @@ def condition_factory(
         condition_class = SDIgneousSapCondition
     elif compare_condition(name, DruidSkillEnum.ESCARCHA_SAP):
         condition_class = SDEscarchaSapCondition
+    # DUELIST BUFFS
+    elif compare_condition(name, DuelistSkillEnum.AGILE_FEET):
+        condition_class = AgileFeetCondition
+    elif compare_condition(name, DuelistSkillEnum.EAGLE_EYE):
+        condition_class = EagleEyeCondition
+    elif compare_condition(name, DuelistSkillEnum.ACHILLEÇÇÇS_HEEL):
+        condition_class = AchillesHeelCondition
+    elif compare_condition(name, DuelistSkillEnum.DISARMOR):
+        condition_class = DisarmorCondition
     # GUARDIAN BUFFS
     elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

@@ -23,6 +23,7 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
+    DuelistSkillEnum,
     PaladinSkillEnum,
     WarriorSkillEnum
 )
@@ -1253,6 +1254,84 @@ class LordAnointingCondition(TargetSkillBuffCondition):
         return int(self._power * power_multiplier)
 
 
+class AgileFeetCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DuelistSkillEnum.AGILE_FEET,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* amplifica a capacidade de se esquivar '
+            f'dos ataques dos opoenentes, aumentando a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.bonus_evasion} pontos.'
+        )
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🩰'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com os *{self.enum_name.value}*.'
+
+
+class EagleEyeCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DuelistSkillEnum.EAGLE_EYE,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* amplifica a capacidade de analisar '
+            f'o combate, aumentando o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos.'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🦅👁️'
+
+    @property
+    def function_text(self) -> str:
+        return (
+            f'permanece analisando o combate com o *{self.enum_name.value}*.'
+        )
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1280,6 +1359,8 @@ class TargetBuffs:
         KnightAnointingCondition,
         CourtesanAnointingCondition,
         LordAnointingCondition,
+        AgileFeetCondition,
+        EagleEyeCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

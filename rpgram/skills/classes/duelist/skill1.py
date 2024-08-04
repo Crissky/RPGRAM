@@ -1,5 +1,12 @@
 from typing import TYPE_CHECKING
-from rpgram.constants.text import HIT_EMOJI_TEXT, PRECISION_ATTACK_EMOJI_TEXT
+from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from rpgram.conditions.target_skill_buff import AgileFeetCondition, EagleEyeCondition
+from rpgram.constants.text import (
+    DEXTERITY_EMOJI_TEXT,
+    EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT
+)
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (
@@ -126,15 +133,226 @@ class SplashFountSkill(BaseSkill):
         return report
 
 
+class AgileFeetSkill(BaseSkill):
+    NAME = DuelistSkillEnum.AGILE_FEET.value
+    DESCRIPTION = (
+        f'Com graça e agilidade, se torna um borrão de movimento, '
+        f'capaz de desviar de ataques com uma destreza impressionante, '
+        f'aumentando a '
+        f'*{EVASION_EMOJI_TEXT}* com base na '
+        f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.DUELIST.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=AgileFeetSkill.NAME,
+            description=AgileFeetSkill.DESCRIPTION,
+            rank=AgileFeetSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=AgileFeetSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = char.player_name
+        power = char.cs.dexterity
+        level = self.level_rank
+        condition = AgileFeetCondition(power=power, level=level)
+        report_list = char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* se torna um borrão de movimento, '
+                f'aumentando a *{EVASION_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class EagleEyeSkill(BaseSkill):
+    NAME = DuelistSkillEnum.EAGLE_EYE.value
+    DESCRIPTION = (
+        f'Usa sua percepção aguçada para analisar a situação do combate '
+        f'com uma clareza excepcional, permitindo antecipar os movimentos '
+        f'do oponente para antecipar a sua reação, '
+        f'aumentando o '
+        f'*{HIT_EMOJI_TEXT}* com base na '
+        f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.DUELIST.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=EagleEyeSkill.NAME,
+            description=EagleEyeSkill.DESCRIPTION,
+            rank=EagleEyeSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=EagleEyeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = char.player_name
+        power = char.cs.dexterity
+        level = self.level_rank
+        condition = EagleEyeCondition(power=power, level=level)
+        report_list = char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* amplifica a sua capacidade de analisar '
+                f'o combate, '
+                f'aumentando o *{HIT_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class LungeSkill(BaseSkill):
+    NAME = DuelistSkillEnum.LUNGE.value
+    DESCRIPTION = (
+        f'Concentra toda a sua força e '
+        f'executa um único ataque direto e conciso, '
+        f'visando um ponto vital do oponente, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DUELIST.value,
+        'skill_list': [AgileFeetSkill.NAME, EagleEyeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 1.50
+        }
+        damage_types = [DamageEnum.PIERCING]
+
+        super().__init__(
+            name=LungeSkill.NAME,
+            description=LungeSkill.DESCRIPTION,
+            rank=LungeSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=LungeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class TranspassSkill(BaseSkill):
+    NAME = DuelistSkillEnum.TRANSPASS.value
+    DESCRIPTION = (
+        f'Avança contra o oponente, superando as suas defesas e '
+        f'atingindo-o em seus pontos mais vulneráveis com um '
+        f'golpe preciso e poderoso, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (75% + 5% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.DUELIST.value,
+        'skill_list': [
+            AgileFeetSkill.NAME,
+            EagleEyeSkill.NAME,
+            LungeSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 0.75
+        }
+        damage_types = [DamageEnum.PIERCING]
+
+        super().__init__(
+            name=TranspassSkill.NAME,
+            description=TranspassSkill.DESCRIPTION,
+            rank=TranspassSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.TRUE,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=TranspassSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 SKILL_WAY_DESCRIPTION = {
-    'name': 'Pés Ligeiros',
+    'name': 'Dança da Morte',
     'description': (
-        ''
+        'O Dança da Morte é um duelista que transformou a arte da luta '
+        'em uma dança macabra. '
+        'Sua habilidade reside em prever os movimentos de seus '
+        'inimigos e contra-atacar com precisão mortal. '
+        'Ele é um mestre da esgrima, capaz de executar manobras acrobáticas e '
+        'golpes fulminantes que deixam seus oponentes perplexos.'
     ),
     'skill_list': [
         QuickAttackSkill,
         WindBladeSkill,
         SplashFountSkill,
+        AgileFeetSkill,
+        EagleEyeSkill,
+        LungeSkill,
+        TranspassSkill,
     ]
 }
 
@@ -171,3 +389,37 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     DUELIST_CHARACTER.skill_tree.learn_skill(SplashFountSkill)
+
+    skill = AgileFeetSkill(DUELIST_CHARACTER)
+    print(skill)
+    print(DUELIST_CHARACTER.cs.dexterity, DUELIST_CHARACTER.cs.evasion)
+    print(skill.function())
+    print(DUELIST_CHARACTER.cs.dexterity, DUELIST_CHARACTER.cs.evasion)
+    DUELIST_CHARACTER.skill_tree.learn_skill(AgileFeetSkill)
+
+    skill = EagleEyeSkill(DUELIST_CHARACTER)
+    print(skill)
+    print(DUELIST_CHARACTER.cs.dexterity, DUELIST_CHARACTER.cs.hit)
+    print(skill.function())
+    print(DUELIST_CHARACTER.cs.dexterity, DUELIST_CHARACTER.cs.hit)
+    DUELIST_CHARACTER.skill_tree.learn_skill(EagleEyeSkill)
+
+    skill = LungeSkill(DUELIST_CHARACTER)
+    print(skill)
+    print(DUELIST_CHARACTER.cs.precision_attack)
+    print(DUELIST_CHARACTER.to_attack(
+        defender_char=DUELIST_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    DUELIST_CHARACTER.skill_tree.learn_skill(LungeSkill)
+
+    skill = TranspassSkill(DUELIST_CHARACTER)
+    print(skill)
+    print(DUELIST_CHARACTER.cs.precision_attack)
+    print(DUELIST_CHARACTER.to_attack(
+        defender_char=DUELIST_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    DUELIST_CHARACTER.skill_tree.learn_skill(TranspassSkill)
