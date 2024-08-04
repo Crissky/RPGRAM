@@ -149,6 +149,22 @@ GUARDIAN_CLASSE = Classe(
     multiplier_wisdom=1.0,
     multiplier_charisma=1.0,
 )
+HERALD_CLASSE = Classe(
+    name=ClasseEnum.HERALD.value,
+    description='ARAUTO TESTE',
+    bonus_strength=10,
+    bonus_dexterity=10,
+    bonus_constitution=15,
+    bonus_intelligence=10,
+    bonus_wisdom=10,
+    bonus_charisma=10,
+    multiplier_strength=1.0,
+    multiplier_dexterity=1.0,
+    multiplier_constitution=1.5,
+    multiplier_intelligence=1.0,
+    multiplier_wisdom=1.0,
+    multiplier_charisma=1.0,
+)
 MAGE_CLASSE = Classe(
     name=ClasseEnum.MAGE.value,
     description='MAGO TESTE',
@@ -262,7 +278,7 @@ BASE_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 BARBARIAN_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='BARBARIAN TESTE',
     classe=BARBARIAN_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -278,7 +294,7 @@ BARBARIAN_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 CLERIC_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='CLERIC TESTE',
     classe=CLERIC_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -294,7 +310,7 @@ CLERIC_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 DRUID_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='DRUIDM TESTE',
     classe=DRUID_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -310,7 +326,7 @@ DRUID_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 DUELIST_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='DUELIST TESTE',
     classe=DUELIST_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -326,7 +342,7 @@ DUELIST_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 GUARDIAN_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='GUARDIAN TESTE',
     classe=GUARDIAN_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -341,8 +357,24 @@ GUARDIAN_CHARACTER = BaseCharacter(
     base_charisma=10,
     combat_damage=0,
 )
+HERALD_CHARACTER = BaseCharacter(
+    char_name='HERALD TESTE',
+    classe=HERALD_CLASSE,
+    race=HUMAN_RACE,
+    equips=EQUIPS,
+    _id='ffffffffffffffffffffffff',
+    level=101,
+    xp=0,
+    base_strength=10,
+    base_dexterity=10,
+    base_constitution=10,
+    base_intelligence=10,
+    base_wisdom=10,
+    base_charisma=10,
+    combat_damage=0,
+)
 MAGE_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='MAGEEM TESTE',
     classe=MAGE_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -358,7 +390,7 @@ MAGE_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 PALADIN_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='PALADIN TESTE',
     classe=PALADIN_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -374,7 +406,7 @@ PALADIN_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 ROGUE_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='ROGUEM TESTE',
     classe=ROGUE_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -390,7 +422,7 @@ ROGUE_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 SORCERER_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='SORCERER TESTE',
     classe=SORCERER_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -406,7 +438,7 @@ SORCERER_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 WARRIOR_CHARACTER = BaseCharacter(
-    char_name='PERSONAGEM TESTE',
+    char_name='WARRIOR TESTE',
     classe=WARRIOR_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
