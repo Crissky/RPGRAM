@@ -14,7 +14,12 @@ from rpgram.constants.text import (
     MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
-from rpgram.enums.skill import GuardianSkillEnum, MageSkillEnum
+from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.skill import (
+    DuelistSkillEnum,
+    GuardianSkillEnum,
+    MageSkillEnum
+)
 from rpgram.enums.turn import TurnEnum
 
 
@@ -166,10 +171,98 @@ class MuddyCondition(TargetSkillDebuffCondition):
         return f'permanece *Enlameado*.'
 
 
+class AchillesHeelCondition(TargetSkillDebuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DuelistSkillEnum.ACHILLEÇÇÇS_HEEL,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Ferida* que debilita a mobilidade, diminuindo a '
+            f'*{EVASION_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.05 + (self.level / 100)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_evasion(self) -> int:
+        return -(self.power)
+
+    @property
+    def emoji(self) -> str:
+        return '🩸🦶🏽'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com uma *Ferida Debilitante*.'
+
+
+class DisarmorCondition(TargetSkillDebuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=DuelistSkillEnum.DISARMOR,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Proteções Fragilizadas* que diminuem a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.05 + (self.level / 100)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return -(self.power)
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.SHIELD.value + '📉'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com as *Proteções Fragilizadas*.'
+
+
 class TargetDebuffs:
     __list = [
         ShatterCondition,
         MuddyCondition,
+        AchillesHeelCondition,
+        DisarmorCondition,
     ]
 
     def __init__(self, default_power: int = 100):

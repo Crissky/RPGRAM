@@ -375,7 +375,7 @@ class ScorchingBreathSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
-        f'adiciona a condição '
+        f'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BURN)}* com nível igual ao '
         f'(Rank x Nível + {EmojiEnum.DICE.value}).'
     )

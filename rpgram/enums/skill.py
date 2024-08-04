@@ -123,6 +123,15 @@ class DruidSkillEnum(Enum):
 class DuelistSkillEnum(Enum):
     WIND_BLADE = 'Lâmina de Vento'
     SPLASH_FOUNT = "Fontaine D'éclaboussure"
+    AGILE_FEET = 'Pés Ágeis'
+    EAGLE_EYE = 'Olho de Águia'
+    LUNGE = 'Estocada'
+    TRANSPASS = 'Transpassar'
+    INVERSE = 'Inversa'
+    DIRTY_BLOW = 'Golpe Sujo'
+    ACHILLEÇÇÇS_HEEL = 'Calcanhar de Aquiles'
+    DISARMOR = 'Desarmadurar'
+    SIEGFRIEDÇÇÇS_SHOULDER_BLADE = 'Omoplata de Siegfried'
 
 
 class GuardianSkillEnum(Enum):
