@@ -99,7 +99,7 @@ class CutThroatSkill(BaseSkill):
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'adiciona a condição '
+        f'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
         f'(Rank x Nível).'
     )
@@ -158,7 +158,7 @@ class VladsPunishmentSkill(BaseSkill):
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adiciona a condição '
+        f'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
         f'(Rank x Nível + {EmojiEnum.DICE.value}).'
     )
