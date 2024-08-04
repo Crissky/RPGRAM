@@ -121,6 +121,7 @@ from rpgram.enums.skill import (
     DuelistSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
+    MultiClasseSkillEnum,
     PaladinSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum,
@@ -313,12 +314,8 @@ def condition_factory(
     elif compare_condition(name, DuelistSkillEnum.DISARMOR):
         condition_class = DisarmorCondition
     # GUARDIAN BUFFS
-    elif compare_condition(name, GuardianSkillEnum.ROBUST_BLOCK):
-        condition_class = RobustBlockCondition
     elif compare_condition(name, GuardianSkillEnum.CRYSTAL_ARMOR):
         condition_class = CrystalArmorCondition
-    elif compare_condition(name, GuardianSkillEnum.GUARDIAN_SHIELD):
-        condition_class = GuardianShieldCondition
     elif compare_condition(name, GuardianSkillEnum.CRYSTALLINE_INFUSION):
         condition_class = SDCrystallineInfusionCondition
     elif compare_condition(name, GuardianSkillEnum.SHATTER):
@@ -376,6 +373,11 @@ def condition_factory(
         condition_class = AegisShadowCondition
     elif compare_condition(name, WarriorSkillEnum.WAR_BANNER):
         condition_class = WarBannerCondition
+    # MULTICLASSE BUFFS
+    elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
+        condition_class = RobustBlockCondition
+    elif compare_condition(name, MultiClasseSkillEnum.GUARDIAN_SHIELD):
+        condition_class = GuardianShieldCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
 

@@ -135,10 +135,7 @@ class DuelistSkillEnum(Enum):
 
 
 class GuardianSkillEnum(Enum):
-    ROBUST_BLOCK = 'Bloqueio Robusto'
-    GUARDIAN_SHIELD = 'Escudo Guardião'
     SHIELD_WALL = 'Parede de Escudos'
-    HEAVY_CHARGE = 'Investida Pesada'
     IRON_CHARGE = 'Investida de Ferro'
     STEEL_STORM = 'Tempestade de Aço'
     CRYSTAL_ARMOR = 'Armadura de Cristal'
@@ -192,10 +189,6 @@ class PaladinSkillEnum(Enum):
     EXILE = 'Exílio'
 
 
-class MultiClasseSkillEnum(Enum):
-    QUICK_ATTACK = 'Ataque Rápido'
-
-
 class RogueSkillEnum(Enum):
     VIPERÇÇÇS_FANGS = 'Presas de Víbora'
     DOUBLE_FANGS = 'Presas Duplas'
@@ -230,6 +223,13 @@ class WarriorSkillEnum(Enum):
     WAR_BANNER = 'Flâmula de Guerra'
     HEROIC_INSPIRATION = 'Inspiração Heroíca'
     WAR_CRY = 'Grito de Guerra'
+
+
+class MultiClasseSkillEnum(Enum):
+    QUICK_ATTACK = 'Ataque Rápido'
+    ROBUST_BLOCK = 'Bloqueio Robusto'
+    GUARDIAN_SHIELD = 'Escudo Guardião'
+    HEAVY_CHARGE = 'Investida Pesada'
 
 
 TARGET_ENUM_NOT_SELF = [TargetEnum.SINGLE, TargetEnum.TEAM, TargetEnum.ALL]

@@ -14,49 +14,11 @@ from rpgram.enums.skill import (
 )
 from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
+from rpgram.skills.classes.multiclasse.physical_defense import HeavyChargeSkill
 from rpgram.skills.skill_base import BaseSkill
 
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
-
-
-class HeavyChargeSkill(BaseSkill):
-    NAME = GuardianSkillEnum.HEAVY_CHARGE.value
-    DESCRIPTION = (
-        f'Assume uma postura ofensiva, avançando contra o inimigo '
-        f'usando seu corpo massivo como arma, causando dano de '
-        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base em '
-        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
-    )
-    RANK = 1
-    REQUIREMENTS = Requirement(**{
-        'classe_name': ClasseEnum.GUARDIAN.value,
-    })
-
-    def __init__(self, char: 'BaseCharacter', level: int = 1):
-        base_stats_multiplier = {}
-        combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_DEFENSE: 0.75,
-            CombatStatsEnum.PHYSICAL_ATTACK: 0.50,
-        }
-        damage_types = [DamageEnum.BLUDGEONING]
-
-        super().__init__(
-            name=HeavyChargeSkill.NAME,
-            description=HeavyChargeSkill.DESCRIPTION,
-            rank=HeavyChargeSkill.RANK,
-            level=level,
-            base_stats_multiplier=base_stats_multiplier,
-            combat_stats_multiplier=combat_stats_multiplier,
-            target_type=TargetEnum.SINGLE,
-            skill_type=SkillTypeEnum.ATTACK,
-            skill_defense=SkillDefenseEnum.PHYSICAL,
-            char=char,
-            use_equips_damage_types=True,
-            requirements=HeavyChargeSkill.REQUIREMENTS,
-            damage_types=damage_types
-        )
 
 
 class IronChargeSkill(BaseSkill):

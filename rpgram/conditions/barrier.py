@@ -8,7 +8,7 @@ from rpgram.conditions.condition import Condition
 from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
-    GuardianSkillEnum,
+    MultiClasseSkillEnum,
     SorcererSkillEnum,
     WarriorSkillEnum
 )
@@ -161,7 +161,7 @@ class GuardianShieldCondition(BarrierCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=GuardianSkillEnum.GUARDIAN_SHIELD,
+            name=MultiClasseSkillEnum.GUARDIAN_SHIELD,
             frequency=TurnEnum.START,
             power=power,
             damage=damage,
