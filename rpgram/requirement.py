@@ -130,7 +130,10 @@ class Requirement:
             attribute = attribute.replace('_', ' ').upper()
             text += f'  {attribute}: {value}\n'
 
-        text += f'  CLASSE: {self.classe_name}\n'
+        if self.classe_name:
+            text += f'  CLASSE: {self.classe_name}\n'
+        elif self.classe_name_list:
+            text += f'  CLASSES: ' + ' ou '.join(self.classe_name_list) + '\n'
 
         if self.skill_list:
             value = '\n'.join(
@@ -151,6 +154,11 @@ class Requirement:
             self.base_stats.items(),
             self.combat_stats.items(),
             {'classe': self.classe_name}.items() if self.classe_name else [],
+            (
+                {'classes': self.classe_name_list}.items()
+                if self.classe_name_list
+                else []
+            ),
             {'skills': self.skill_list}.items() if self.skill_list else [],
         )
 

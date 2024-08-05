@@ -28,6 +28,7 @@ from rpgram.enums.skill import (
     BarbarianSkillEnum,
     GuardianSkillEnum,
     MageSkillEnum,
+    MultiClasseSkillEnum,
     PaladinSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum
@@ -94,7 +95,7 @@ class RobustBlockCondition(SelfSkillCondition):
         level: int = 1
     ):
         super().__init__(
-            name=GuardianSkillEnum.ROBUST_BLOCK,
+            name=MultiClasseSkillEnum.ROBUST_BLOCK,
             character=character,
             frequency=TurnEnum.START,
             turn=turn,

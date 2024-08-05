@@ -5,7 +5,7 @@ informações dos jogadores.
 
 
 from operator import attrgetter
-from random import choice
+from random import choice, sample
 from time import sleep
 from typing import List, Type
 from bson import ObjectId
@@ -156,7 +156,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         markdown_skill_tree_sheet = HELP_SKILL_TEXT
     elif classe_name and list_all_skill:
         text = ALERT_SECTION_HEAD.format('*HABILIDADES*') + '\n\n'
-        for class_name, skill_list in ALL_SKILL_DICT.items():
+        for class_name, skill_list in sample(ALL_SKILL_DICT.items(), 10):
             class_name = class_name.upper()
             text += f'● *{class_name}*:\n'
             sorted_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))

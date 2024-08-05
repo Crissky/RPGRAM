@@ -1,13 +1,10 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.guardian.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
-    GuardianShieldSkill,
-    RobustBlockSkill,
     ShieldWallSkill
 )
 from rpgram.skills.classes.guardian.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
-    HeavyChargeSkill,
     IronChargeSkill,
     SteelStormSkill
 )
@@ -17,6 +14,11 @@ from rpgram.skills.classes.guardian.skill3 import (
     CrystalChrysalisSkill,
     CrystallineInfusionSkill,
     ShatterSkill
+)
+from rpgram.skills.classes.multiclasse.physical_defense import (
+    GuardianShieldSkill,
+    HeavyChargeSkill,
+    RobustBlockSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 

@@ -4,6 +4,7 @@ Módulo responsável por exibir algumas variáveis de contexto
 
 
 from operator import attrgetter
+from random import sample
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import (
@@ -88,7 +89,7 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif len(args) > 0 and args[0] in ['skill', 'skills', 'habilidade']:
         text = ALERT_SECTION_HEAD.format('*HABILIDADES*')
         text += '\n\n'
-        for class_name, skill_list in ALL_SKILL_DICT.items():
+        for class_name, skill_list in sample(ALL_SKILL_DICT.items(), 10):
             class_name = class_name.upper()
             text += f'● *{class_name}*:\n'
             sorted_list = sorted(skill_list, key=attrgetter('RANK', 'NAME'))
