@@ -44,6 +44,7 @@ from rpgram.conditions.self_skill import (
     FuriousInstinctCondition,
     LavaSkinCondition,
     MistFormCondition,
+    MysticBlockCondition,
     MysticalConfluenceCondition,
     MysticalProtectionCondition,
     MysticalVigorCondition,
@@ -120,6 +121,7 @@ from rpgram.enums.skill import (
     DruidSkillEnum,
     DuelistSkillEnum,
     GuardianSkillEnum,
+    HeraldSkillEnum,
     MageSkillEnum,
     MultiClasseSkillEnum,
     PaladinSkillEnum,
@@ -373,6 +375,9 @@ def condition_factory(
         condition_class = AegisShadowCondition
     elif compare_condition(name, WarriorSkillEnum.WAR_BANNER):
         condition_class = WarBannerCondition
+    # HERALD BUFFS
+    elif compare_condition(name, HeraldSkillEnum.MYSTIC_BLOCK):
+        condition_class = MysticBlockCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

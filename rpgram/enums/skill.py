@@ -144,6 +144,11 @@ class GuardianSkillEnum(Enum):
     CRYSTAL_CHRYSALIS = 'Crisálida de Cristal'
 
 
+class HeraldSkillEnum(Enum):
+    MYSTIC_BLOCK = 'Bloqueio Místico'
+    COLOSSAL_ONSLAUGHT = 'Investida Colossal'
+
+
 class MageSkillEnum(Enum):
     FIRE_BALL = 'Bola de Fogo'
     WATER_BUBBLE = 'Bolha de Água'

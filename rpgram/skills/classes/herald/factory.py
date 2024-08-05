@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.herald.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
+    ColossalOnslaughtSkill,
+    MysticBlockSkill,
 )
 from rpgram.skills.classes.multiclasse.physical_defense import (
     GuardianShieldSkill,
@@ -22,10 +24,14 @@ def herald_skill_factory(
     # SKILL1
     if skill_class_name == RobustBlockSkill.__name__:
         skill_class = RobustBlockSkill
+    elif skill_class_name == MysticBlockSkill.__name__:
+        skill_class = MysticBlockSkill
     elif skill_class_name == GuardianShieldSkill.__name__:
         skill_class = GuardianShieldSkill
     elif skill_class_name == HeavyChargeSkill.__name__:
         skill_class = HeavyChargeSkill
+    elif skill_class_name == ColossalOnslaughtSkill.__name__:
+        skill_class = ColossalOnslaughtSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -35,8 +41,10 @@ def herald_skill_factory(
 HERALD_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     RobustBlockSkill,
+    MysticBlockSkill,
     GuardianShieldSkill,
     HeavyChargeSkill,
+    ColossalOnslaughtSkill,
 ]
 HERALD_SKILL_WAYS: List[dict] = [
     skill_way1
