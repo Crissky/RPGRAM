@@ -105,7 +105,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'HP: {current_hp}\n'
             f'Status: {debuffs_text}\n\n'
             f'Seu personagem irá recuperar HP e Status a cada '
-            f'*{MINUTES_TO_RECOVERY_HIT_POINTS} minutos*.'
+            f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
     create_job_rest_action_point(
         context=context,
@@ -351,7 +351,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
             f'{reply_text_rest}\n\n'
             f'{players_hp}\n\n'
             f'Os personagens irão recuperar HP e Status a cada '
-            f'*{MINUTES_TO_RECOVERY_HIT_POINTS} minutos*.'
+            f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
 
         text = create_text_in_box(
