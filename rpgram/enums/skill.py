@@ -150,10 +150,6 @@ class HeraldSkillEnum(Enum):
 
 
 class MageSkillEnum(Enum):
-    FIRE_BALL = 'Bola de Fogo'
-    WATER_BUBBLE = 'Bolha de Água'
-    WIND_GUST = 'Rajada de Vento'
-    EARTH_BREAK = 'Quebra-Terra'
     MAGIC_BLAST = 'Explosão Mágica'
     ICE_SHARD = 'Fragmento de Gelo'
     ROCK_ARMOR = 'Armadura de Rocha'
@@ -235,6 +231,10 @@ class MultiClasseSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'
     HEAVY_CHARGE = 'Investida Pesada'
+    FIRE_BALL = 'Bola de Fogo'
+    WATER_BUBBLE = 'Bolha de Água'
+    WIND_GUST = 'Rajada de Vento'
+    EARTH_BREAK = 'Quebra-Terra'
 
 
 TARGET_ENUM_NOT_SELF = [TargetEnum.SINGLE, TargetEnum.TEAM, TargetEnum.ALL]
