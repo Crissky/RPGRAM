@@ -63,9 +63,10 @@ from rpgram.characters import BaseCharacter
 @print_basic_infos
 async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso do personagem.
-    O descanso faz com que o personagem recupere HP a cada meia hora.
+    O descanso faz com que o personagem recupere HP a cada 
+    "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.
     Se o personagem estiver morto, ele reviverá e recuperará 1 de HP 
-    em meia hora.'''
+    em "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.'''
 
     char_model = CharacterModel()
     chat_id = update.effective_chat.id
@@ -103,7 +104,8 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{reply_text_starting_rest}\n\n'
             f'HP: {current_hp}\n'
             f'Status: {debuffs_text}\n\n'
-            f'Seu personagem irá recuperar HP e Status a cada meia hora.'
+            f'Seu personagem irá recuperar HP e Status a cada '
+            f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
     create_job_rest_action_point(
         context=context,
@@ -296,9 +298,10 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
 async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso de todos os personagens do grupo que 
     não estão com o HP cheio.
-    O descanso faz com que o personagem recupere HP e Stauts a cada meia hora.
+    O descanso faz com que o personagem recupere HP e Stauts a cada 
+    "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.
     Se o personagem estiver morto, ele reviverá, recuperando 1 de HP 
-    em meia hora.'''
+    em "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.'''
 
     print('JOB_AUTOREST_MIDNIGHT()')
     char_model = CharacterModel()
@@ -347,7 +350,8 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'{reply_text_rest}\n\n'
             f'{players_hp}\n\n'
-            f'Os personagens irão recuperar HP e Status a cada meia hora.'
+            f'Os personagens irão recuperar HP e Status a cada '
+            f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
 
         text = create_text_in_box(

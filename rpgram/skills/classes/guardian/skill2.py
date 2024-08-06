@@ -17,6 +17,7 @@ from rpgram.requirement import Requirement
 from rpgram.skills.classes.multiclasse.physical_defense import HeavyChargeSkill
 from rpgram.skills.skill_base import BaseSkill
 
+
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
@@ -151,18 +152,27 @@ if __name__ == '__main__':
 
     skill = HeavyChargeSkill(GUARDIAN_CHARACTER)
     print(skill)
-    print(GUARDIAN_CHARACTER.cs.physical_attack)
-    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.to_attack(
+        defender_char=GUARDIAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     GUARDIAN_CHARACTER.skill_tree.learn_skill(HeavyChargeSkill)
 
     skill = IronChargeSkill(GUARDIAN_CHARACTER)
     print(skill)
-    print(GUARDIAN_CHARACTER.cs.physical_attack)
-    print(GUARDIAN_CHARACTER.cs.physical_defense)
+    print(GUARDIAN_CHARACTER.to_attack(
+        defender_char=GUARDIAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     GUARDIAN_CHARACTER.skill_tree.learn_skill(IronChargeSkill)
 
     skill = SteelStormSkill(GUARDIAN_CHARACTER)
     print(skill)
-    print(GUARDIAN_CHARACTER.cs.physical_defense)
-    print(GUARDIAN_CHARACTER.cs.magical_defense)
+    print(GUARDIAN_CHARACTER.to_attack(
+        defender_char=GUARDIAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
     GUARDIAN_CHARACTER.skill_tree.learn_skill(SteelStormSkill)
