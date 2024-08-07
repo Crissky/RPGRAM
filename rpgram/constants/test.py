@@ -69,6 +69,22 @@ EQUIPS = Equips(
     ring=ANY_RING,
     amulet=BRIGHT_AMULET,
 )
+ARCANIST_CLASSE = Classe(
+    name=ClasseEnum.ARCANIST.value,
+    description='ARCANISTA TESTE',
+    bonus_strength=10,
+    bonus_dexterity=10,
+    bonus_constitution=10,
+    bonus_intelligence=20,
+    bonus_wisdom=15,
+    bonus_charisma=10,
+    multiplier_strength=1.0,
+    multiplier_dexterity=1.0,
+    multiplier_constitution=1.0,
+    multiplier_intelligence=2.0,
+    multiplier_wisdom=1.5,
+    multiplier_charisma=1.0,
+)
 BARBARIAN_CLASSE = Classe(
     name=ClasseEnum.BARBARIAN.value,
     description='BÁRBARO TESTE',
@@ -277,6 +293,22 @@ BASE_CHARACTER = BaseCharacter(
     base_charisma=10,
     combat_damage=0,
 )
+ARCANIST_CHARACTER = BaseCharacter(
+    char_name='ARCANISTA TESTE',
+    classe=ARCANIST_CLASSE,
+    race=HUMAN_RACE,
+    equips=EQUIPS,
+    _id='ffffffffffffffffffffffff',
+    level=151,
+    xp=0,
+    base_strength=10,
+    base_dexterity=10,
+    base_constitution=10,
+    base_intelligence=10,
+    base_wisdom=10,
+    base_charisma=10,
+    combat_damage=0,
+)
 BARBARIAN_CHARACTER = BaseCharacter(
     char_name='BARBARIAN TESTE',
     classe=BARBARIAN_CLASSE,
@@ -310,7 +342,7 @@ CLERIC_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 DRUID_CHARACTER = BaseCharacter(
-    char_name='DRUIDM TESTE',
+    char_name='DRUID TESTE',
     classe=DRUID_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -374,7 +406,7 @@ HERALD_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 MAGE_CHARACTER = BaseCharacter(
-    char_name='MAGEEM TESTE',
+    char_name='MAGE TESTE',
     classe=MAGE_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,
@@ -406,7 +438,7 @@ PALADIN_CHARACTER = BaseCharacter(
     combat_damage=0,
 )
 ROGUE_CHARACTER = BaseCharacter(
-    char_name='ROGUEM TESTE',
+    char_name='ROGUE TESTE',
     classe=ROGUE_CLASSE,
     race=HUMAN_RACE,
     equips=EQUIPS,

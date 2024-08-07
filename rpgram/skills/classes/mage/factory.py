@@ -1,8 +1,6 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.mage.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
-    EarthBreakSkill,
-    FireBallSkill,
     FireStormSkill,
     FulminantLightningSkill,
     IceShardSkill,
@@ -12,7 +10,11 @@ from rpgram.skills.classes.mage.skill1 import (
     MudShotSkill,
     RockArmorSkill,
     SandStormSkill,
-    ScorchingBreathSkill,
+    ScorchingBreathSkill
+)
+from rpgram.skills.classes.multiclasse.magical_attack import (
+    EarthBreakSkill,
+    FireBallSkill,
     WaterBubbleSkill,
     WindGustSkill
 )

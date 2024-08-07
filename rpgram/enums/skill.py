@@ -47,6 +47,16 @@ class SkillDefenseEmojiEnum(Enum):
     NA = '⚫'
 
 
+class ArcanistSkillEnum(Enum):
+    FIRE_RAY = 'Raio de Fogo'
+    FIRE_WAVE = 'Onda de Fogo'
+    MAGMA_GEYSER = 'Gêiser de Magma'
+    SWIRL = 'Redemoinho'
+    SAND_GUST = 'Rajada de Areia'
+    MUD_TRAP = 'Armadilha de Lama'
+    TETRAGRAM_SHOT = 'Disparo Tetragrama'
+
+
 class BarbarianSkillEnum(Enum):
     PRIMAL_ATTACK = 'Ataque Primal'
     PRIMAL_STRIKE = 'Golpe Primal'
@@ -150,10 +160,6 @@ class HeraldSkillEnum(Enum):
 
 
 class MageSkillEnum(Enum):
-    FIRE_BALL = 'Bola de Fogo'
-    WATER_BUBBLE = 'Bolha de Água'
-    WIND_GUST = 'Rajada de Vento'
-    EARTH_BREAK = 'Quebra-Terra'
     MAGIC_BLAST = 'Explosão Mágica'
     ICE_SHARD = 'Fragmento de Gelo'
     ROCK_ARMOR = 'Armadura de Rocha'
@@ -235,6 +241,10 @@ class MultiClasseSkillEnum(Enum):
     ROBUST_BLOCK = 'Bloqueio Robusto'
     GUARDIAN_SHIELD = 'Escudo Guardião'
     HEAVY_CHARGE = 'Investida Pesada'
+    FIRE_BALL = 'Bola de Fogo'
+    WATER_BUBBLE = 'Bolha de Água'
+    WIND_GUST = 'Rajada de Vento'
+    EARTH_BREAK = 'Quebra-Terra'
 
 
 TARGET_ENUM_NOT_SELF = [TargetEnum.SINGLE, TargetEnum.TEAM, TargetEnum.ALL]
