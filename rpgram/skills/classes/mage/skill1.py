@@ -471,7 +471,7 @@ class MudShotSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
-        f'diminuindo a sua *{EVASION_EMOJI_TEXT}* '
+        f'diminuindo a *{EVASION_EMOJI_TEXT}* '
         f'com base no dano causado (8% + 2% x Rank x Nível).'
     )
     RANK = 3
