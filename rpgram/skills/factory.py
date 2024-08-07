@@ -1,6 +1,11 @@
 from typing import TYPE_CHECKING, List, Type, Union
 
 from rpgram.enums.classe import ClasseEnum
+from rpgram.skills.classes.arcanist.factory import (
+    ARCANIST_SKILL_LIST,
+    ARCANIST_SKILL_WAYS,
+    arcanist_skill_factory
+)
 from rpgram.skills.classes.barbarian.factory import (
     BARBARIAN_SKILL_LIST,
     BARBARIAN_SKILL_WAYS,
@@ -75,6 +80,7 @@ ALL_SKILL_DICT = {
     ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_LIST,
     ClasseEnum.DUELIST.value: DUELIST_SKILL_LIST,
     ClasseEnum.HERALD.value: HERALD_SKILL_LIST,
+    ClasseEnum.ARCANIST.value: ARCANIST_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
@@ -88,6 +94,7 @@ ALL_SKILL_WAY_DICT = {
     ClasseEnum.GUARDIAN.value: GUARDIAN_SKILL_WAYS,
     ClasseEnum.DUELIST.value: DUELIST_SKILL_WAYS,
     ClasseEnum.HERALD.value: HERALD_SKILL_WAYS,
+    ClasseEnum.ARCANIST.value: ARCANIST_SKILL_WAYS,
 }
 
 
@@ -126,7 +133,7 @@ def skill_factory(
     elif ClasseEnum.HERALD.value == classe_name:
         class_skill_factory = herald_skill_factory
     elif ClasseEnum.ARCANIST.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = arcanist_skill_factory
     elif ClasseEnum.BARD.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.BOUNTY_HUNTER.value == classe_name:
@@ -199,7 +206,7 @@ def skill_list_factory(
     elif ClasseEnum.HERALD.value == classe_name:
         return HERALD_SKILL_LIST
     elif ClasseEnum.ARCANIST.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return ARCANIST_SKILL_LIST
     elif ClasseEnum.BARD.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.BOUNTY_HUNTER.value == classe_name:

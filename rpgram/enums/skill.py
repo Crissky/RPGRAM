@@ -47,6 +47,16 @@ class SkillDefenseEmojiEnum(Enum):
     NA = '⚫'
 
 
+class ArcanistSkillEnum(Enum):
+    FIRE_RAY = 'Raio de Fogo'
+    FIRE_WAVE = 'Onda de Fogo'
+    MAGMA_GEYSER = 'Gêiser de Magma'
+    SWIRL = 'Redemoinho'
+    SAND_GUST = 'Rajada de Areia'
+    MUD_TRAP = 'Armadilha de Lama'
+    TETRAGRAM_SHOT = 'Disparo Tetragrama'
+
+
 class BarbarianSkillEnum(Enum):
     PRIMAL_ATTACK = 'Ataque Primal'
     PRIMAL_STRIKE = 'Golpe Primal'
