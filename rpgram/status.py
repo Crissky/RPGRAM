@@ -493,7 +493,7 @@ class Status:
 
     def get_condition_full_names(self, separator: str = '\n') -> str:
         return separator.join(
-            condition.full_name
+            f'{condition.full_name}, {condition.turn_text}'
             for condition in self.conditions
         )
 

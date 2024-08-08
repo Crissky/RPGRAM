@@ -186,6 +186,14 @@ class Condition(StatsBooster):
                 return emoji_members[name_upper].value
         return ''
 
+    @property
+    def turn_text(self) -> str:
+        turn = self.turn
+        if turn == -1:
+            turn = 'Contínuo'
+
+        return f'Turno: {turn}'
+
 
 if __name__ == '__main__':
     from rpgram.enums.debuff import DebuffEnum
