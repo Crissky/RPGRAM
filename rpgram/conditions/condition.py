@@ -81,7 +81,7 @@ class Condition(StatsBooster):
             raise ValueError('turn deve ser maior que zero ou -1.')
         self.__turn = turn
 
-    def last_turn(self):
+    def set_last_turn(self):
         self.__turn = 1
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:

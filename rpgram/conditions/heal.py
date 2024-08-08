@@ -65,7 +65,7 @@ class HealingCondition(Condition):
     def function(self, target: 'BaseCharacter') -> dict:
         remaining_heal = abs(self.power * self.turn)
         report = target.combat_stats.cure_hit_points(remaining_heal)
-        self.last_turn()
+        self.set_last_turn()
 
         return report
 
