@@ -303,7 +303,7 @@ class Status:
         *filters: Tuple[Type[Condition]]
     ) -> Iterable[Condition]:
         for condition in self.__conditions:
-            if any(isinstance(condition, filter) for filter in filters):
+            if isinstance(condition, filters):
                 yield condition
 
     def get_debuffs(self) -> Iterable[DebuffCondition]:
@@ -490,6 +490,12 @@ class Status:
 
     def to_list(self) -> List[str]:
         return [condition.name for condition in self.__conditions]
+
+    def get_condition_full_names(self, separator: str = '\n') -> str:
+        return separator.join(
+            condition.full_name
+            for condition in self.conditions
+        )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
         text = ''
