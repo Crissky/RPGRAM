@@ -81,7 +81,7 @@ class Condition(StatsBooster):
             raise ValueError('turn deve ser maior que zero ou -1.')
         self.__turn = turn
 
-    def last_turn(self):
+    def set_last_turn(self):
         self.__turn = 1
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
@@ -185,6 +185,14 @@ class Condition(StatsBooster):
             if name_upper in emoji_members:
                 return emoji_members[name_upper].value
         return ''
+
+    @property
+    def turn_text(self) -> str:
+        turn = self.turn
+        if turn == -1:
+            turn = 'Contínuo'
+
+        return f'Turno: {turn}'
 
 
 if __name__ == '__main__':

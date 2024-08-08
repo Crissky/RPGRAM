@@ -48,8 +48,9 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
         text = report['text']
         have_debuff = report.get('have_debuff')
         if text and (have_debuff or verbose):
-            # text += f'{TEXT_SEPARATOR}\n\n'
-            # text += report['all_status_verbose']
+            if not player_char.status.is_empty:
+                text += f'{TEXT_SEPARATOR}\n\n'
+                text += player_char.status.get_condition_full_names()
             text = create_text_in_box(
                 text=text,
                 section_name='STATUS REPORT',
