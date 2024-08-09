@@ -21,12 +21,12 @@ class EmojiEnum(Enum):
     LEVEL_CLASS = '🎓'
     XP = '🧬'
     ATTRIBUTE_POINTS = '🌟'
-    STRENGTH = '💪'
-    DEXTERITY = '🤸‍♂️'  # 🤺
-    CONSTITUTION = '🦾'
-    INTELLIGENCE = '🧠'
-    WISDOM = '🧘‍♂️'
-    CHARISMA = '🎭'
+    FOR = STRENGTH = '💪'
+    DES = DEXTERITY = '🤸‍♂️'  # 🤺
+    CON = CONSTITUTION = '🦾'
+    INT = INTELLIGENCE = '🧠'
+    SAB = WISDOM = '🧘‍♂️'
+    CAR = CHARISMA = '🎭'
     HIT_POINT_FULL = '❤️'
     HIT_POINT_INJURED = '❤️‍🩹'
     HIT_POINT_DEAD = '🖤'
