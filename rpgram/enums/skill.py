@@ -83,6 +83,11 @@ class BarbarianSkillEnum(Enum):
     WILD_POISON = 'Veneno Selvagem'
 
 
+class BardSkillEnum(Enum):
+    DISSONANCE = 'Dissonância'
+    RESONANCE = 'Resonância'
+
+
 class ClericSkillEnum(Enum):
     IDUNNÇÇÇS_APPLE = 'Maçã de Idunn'
     KRATOSÇÇÇS_WRATH = 'Ira de Kratos'
