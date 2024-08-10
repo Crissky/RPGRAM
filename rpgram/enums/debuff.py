@@ -1,5 +1,5 @@
-from rpgram.enums.skill import BarbarianSkillEnum
 from enum import Enum
+from rpgram.enums.skill import BarbarianSkillEnum
 from typing import Union
 
 
@@ -11,6 +11,7 @@ class DebuffEnum(Enum):
     CONFUSION = 'Confuso'
     CRYSTALLIZED = 'Cristalizado'
     CURSE = 'Amaldiçoado'
+    DEATH_SENTENCE = 'Sentença de Morte'
     EXHAUSTION = 'Exausto'
     FEARING = 'Amedrontado'
     FROZEN = 'Congelado'
@@ -31,6 +32,7 @@ class DebuffEmojiEnum(Enum):
     CRYSTALLIZED = '🧊'
     CURSE = '🎃'
     EXHAUSTION = '💧'
+    DEATH_SENTENCE = '🪦'
     FEARING = '😰'
     FROZEN = '🥶'
     IMPRISONED = '🪢'

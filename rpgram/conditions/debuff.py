@@ -220,6 +220,42 @@ class CurseCondition(DebuffCondition):
         return round(1 - power, 2)
 
 
+class DeathSentenceCondition(DebuffCondition):
+
+    def __init__(self, turn: int = 10, level: int = 1):
+        super().__init__(
+            name=DebuffEnum.DEATH_SENTENCE,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Personagem morrerá em *{self.turn} Turnos*.'
+        )
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': '', 'action': self.name}
+        if self.turn != 1:
+            turn = self.turn-1
+            turn_name = 'Turnos' if turn > 1 else 'Turno'
+            report['text'] = (
+                f'{self.full_name}: '
+                f'*{target.player_name}* morrerá em *{turn} {turn_name}*.'
+            )
+        else:
+            damage = target.cs.current_hit_points
+            report = target.combat_stats.damage_hit_points(
+                value=damage,
+                ignore_barrier=True,
+            )
+            report['text'] = f'{self.full_name}: ' + report['text']
+
+        return report
+
+
 class ExhaustionCondition(DebuffCondition):
 
     def __init__(self, turn: int = -1, level: int = 1):
@@ -411,6 +447,7 @@ class Debuffs:
         ConfusionCondition,
         CrystallizedCondition,
         CurseCondition,
+        DeathSentenceCondition,
         ExhaustionCondition,
         FearingCondition,
         FrozenCondition,

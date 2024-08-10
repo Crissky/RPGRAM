@@ -86,6 +86,12 @@ class BarbarianSkillEnum(Enum):
 class BardSkillEnum(Enum):
     DISSONANCE = 'Dissonância'
     RESONANCE = 'Resonância'
+    FATAL_CHORD = 'Acorde Fatal'
+    SUPERSONIC = 'Supersônico'
+    WAR_SONG = 'Canção de Guerra'
+    CRESCENT_MOON_BALLAD = 'Balada da Lua Crescente'
+    TRICKSTER_TROVA = 'Trova do Malandro'
+    INVIGORATING_SONG = 'Canto de Revigorante'
 
 
 class ClericSkillEnum(Enum):

@@ -345,6 +345,7 @@ BARD_CHARACTER = BaseCharacter(
     char_name='BARDO TESTE',
     classe=BARD_CLASSE,
     race=HUMAN_RACE,
+    player_id=10_000,
     equips=EQUIPS,
     _id='ffffffffffffffffffffffff',
     level=101,

@@ -180,7 +180,7 @@ class Condition(StatsBooster):
 
     @property
     def emoji(self) -> str:
-        name_upper = self.name.upper()
+        name_upper = self.enum_name.name
         for emoji_members in self.emoji_members_list:
             if name_upper in emoji_members:
                 return emoji_members[name_upper].value

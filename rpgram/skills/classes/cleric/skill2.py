@@ -73,7 +73,7 @@ class IxChelsAmphoraSkill(BaseSkill):
             power = dice.boosted_magical_defense * power_multiplier
             power = round(power)
 
-            cure_report = self.char.cs.cure_hit_points(power)
+            cure_report = char.cs.cure_hit_points(power)
             report_text = cure_report["text"]
             report = {
                 'text': (
