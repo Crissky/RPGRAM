@@ -4,6 +4,9 @@ from rpgram.skills.classes.bard.skill1 import (
     DissonanceSkill,
     ResonanceSkill
 )
+from rpgram.skills.classes.bard.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -33,5 +36,6 @@ BARD_SKILL_LIST: List[Type[BaseSkill]] = [
     ResonanceSkill,
 ]
 BARD_SKILL_WAYS: List[dict] = [
-    skill_way1
+    skill_way1,
+    skill_way2,
 ]
