@@ -21,6 +21,7 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
+    BardSkillEnum,
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
@@ -1332,6 +1333,111 @@ class EagleEyeCondition(TargetSkillBuffCondition):
         )
 
 
+class WarSongCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BardSkillEnum.WAR_SONG,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que inspira o alvo, '
+            f'aumentando o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🎶⚔️'
+
+    @property
+    def function_text(self) -> str:
+        return (
+            f'permanece inspirado pela *{self.enum_name.value}*.'
+        )
+
+
+class CrescentMoonSongCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BardSkillEnum.CRESCENT_MOON_SONG,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que inspira o alvo, '
+            f'aumentando o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🎶🌙'
+
+    @property
+    def function_text(self) -> str:
+        return (
+            f'permanece inspirado pela *{self.enum_name.value}*.'
+        )
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1361,6 +1467,8 @@ class TargetBuffs:
         LordAnointingCondition,
         AgileFeetCondition,
         EagleEyeCondition,
+        WarSongCondition,
+        CrescentMoonSongCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

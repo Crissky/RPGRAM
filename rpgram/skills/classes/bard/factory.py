@@ -6,6 +6,8 @@ from rpgram.skills.classes.bard.skill1 import (
 )
 from rpgram.skills.classes.bard.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
+    CrescentMoonSongSkill,
+    WarSongSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -24,6 +26,11 @@ def bard_skill_factory(
         skill_class = DissonanceSkill
     elif skill_class_name == ResonanceSkill.__name__:
         skill_class = ResonanceSkill
+    # SKILL2
+    elif skill_class_name == WarSongSkill.__name__:
+        skill_class = WarSongSkill
+    elif skill_class_name == CrescentMoonSongSkill.__name__:
+        skill_class = CrescentMoonSongSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -34,6 +41,8 @@ BARD_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     DissonanceSkill,
     ResonanceSkill,
+    WarSongSkill,
+    CrescentMoonSongSkill,
 ]
 BARD_SKILL_WAYS: List[dict] = [
     skill_way1,

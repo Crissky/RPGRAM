@@ -83,6 +83,7 @@ from rpgram.conditions.target_skill_buff import (
     BodyguardBearCondition,
     CeridwensMagicPotionCondition,
     CourtesanAnointingCondition,
+    CrescentMoonSongCondition,
     EagleEyeCondition,
     GraceOfThePantheonCondition,
     HecatesFlamesCondition,
@@ -102,6 +103,7 @@ from rpgram.conditions.target_skill_buff import (
     VineBucklerCondition,
     SilkFlossSpaulderCondition,
     WarBannerCondition,
+    WarSongCondition,
     WarriorAnointingCondition,
     WatcherOwlCondition
 )
@@ -117,6 +119,7 @@ from rpgram.enums.debuff import (
 from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
+    BardSkillEnum,
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
@@ -378,6 +381,11 @@ def condition_factory(
     # HERALD BUFFS
     elif compare_condition(name, HeraldSkillEnum.MYSTIC_BLOCK):
         condition_class = MysticBlockCondition
+    # BARD BUFFS
+    elif compare_condition(name, BardSkillEnum.WAR_SONG):
+        condition_class = WarSongCondition
+    elif compare_condition(name, BardSkillEnum.CRESCENT_MOON_SONG):
+        condition_class = CrescentMoonSongCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

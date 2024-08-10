@@ -86,6 +86,8 @@ class BarbarianSkillEnum(Enum):
 class BardSkillEnum(Enum):
     DISSONANCE = 'Dissonância'
     RESONANCE = 'Resonância'
+    WAR_SONG = 'Canção de Guerra'
+    CRESCENT_MOON_SONG = 'Canção da Lua Crescente'
 
 
 class ClericSkillEnum(Enum):
