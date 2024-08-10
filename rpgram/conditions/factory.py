@@ -15,6 +15,7 @@ from rpgram.conditions.debuff import (
     ConfusionCondition,
     CrystallizedCondition,
     CurseCondition,
+    DeathSentenceCondition,
     ExhaustionCondition,
     FearingCondition,
     FrozenCondition,
@@ -83,7 +84,7 @@ from rpgram.conditions.target_skill_buff import (
     BodyguardBearCondition,
     CeridwensMagicPotionCondition,
     CourtesanAnointingCondition,
-    CrescentMoonSongCondition,
+    CrescentMoonBalladCondition,
     EagleEyeCondition,
     GraceOfThePantheonCondition,
     HecatesFlamesCondition,
@@ -97,6 +98,7 @@ from rpgram.conditions.target_skill_buff import (
     OgunsCloakCondition,
     RangerFalconCondition,
     SquireAnointingCondition,
+    TricksterTrovaCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
     OakArmorCondition,
@@ -195,6 +197,8 @@ def condition_factory(
         condition_class = CrystallizedCondition
     elif compare_condition(name, DebuffEnum.CURSE):
         condition_class = CurseCondition
+    elif compare_condition(name, DebuffEnum.DEATH_SENTENCE):
+        condition_class = DeathSentenceCondition
     elif compare_condition(name, DebuffEnum.EXHAUSTION):
         condition_class = ExhaustionCondition
     elif compare_condition(name, DebuffEnum.FEARING):
@@ -384,8 +388,10 @@ def condition_factory(
     # BARD BUFFS
     elif compare_condition(name, BardSkillEnum.WAR_SONG):
         condition_class = WarSongCondition
-    elif compare_condition(name, BardSkillEnum.CRESCENT_MOON_SONG):
-        condition_class = CrescentMoonSongCondition
+    elif compare_condition(name, BardSkillEnum.CRESCENT_MOON_BALLAD):
+        condition_class = CrescentMoonBalladCondition
+    elif compare_condition(name, BardSkillEnum.TRICKSTER_TROVA):
+        condition_class = TricksterTrovaCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

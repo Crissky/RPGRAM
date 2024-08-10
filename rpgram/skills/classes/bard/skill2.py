@@ -2,11 +2,14 @@ from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.target_skill_buff import (
-    CrescentMoonSongCondition,
+    CrescentMoonBalladCondition,
+    TricksterTrovaCondition,
     WarSongCondition
 )
 from rpgram.constants.text import (
     CHARISMA_EMOJI_TEXT,
+    EVASION_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_ATTACK_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
@@ -32,7 +35,7 @@ if TYPE_CHECKING:
 class WarSongSkill(BaseSkill):
     NAME = BardSkillEnum.WAR_SONG.value
     DESCRIPTION = (
-        f'Entoa uma antiga canção de batalha para inspirar um companheiro, '
+        f'Entoa uma *Antiga Canção* de batalha para inspirar um companheiro, '
         f'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
@@ -95,7 +98,8 @@ class WarSongSkill(BaseSkill):
                 [report["text"] for report in report_list]
             )
             report['text'] += (
-                f'*\n\n{target_name}* também é inspirado pela '
+                f'\n\n'
+                f'*{target_name}* também é inspirado pela '
                 f'*{self.name}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -106,10 +110,10 @@ class WarSongSkill(BaseSkill):
         return report
 
 
-class CrescentMoonSongSkill(BaseSkill):
-    NAME = BardSkillEnum.CRESCENT_MOON_SONG.value
+class CrescentMoonBalladSkill(BaseSkill):
+    NAME = BardSkillEnum.CRESCENT_MOON_BALLAD.value
     DESCRIPTION = (
-        f'Solfea uma canção élfica que inspira um companheiro, '
+        f'Solfea uma *Balada Élfica* que inspira um companheiro, '
         f'aumentando o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
@@ -127,9 +131,9 @@ class CrescentMoonSongSkill(BaseSkill):
         damage_types = None
 
         super().__init__(
-            name=CrescentMoonSongSkill.NAME,
-            description=CrescentMoonSongSkill.DESCRIPTION,
-            rank=CrescentMoonSongSkill.RANK,
+            name=CrescentMoonBalladSkill.NAME,
+            description=CrescentMoonBalladSkill.DESCRIPTION,
+            rank=CrescentMoonBalladSkill.RANK,
             level=level,
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
@@ -138,7 +142,7 @@ class CrescentMoonSongSkill(BaseSkill):
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
-            requirements=CrescentMoonSongSkill.REQUIREMENTS,
+            requirements=CrescentMoonBalladSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -147,7 +151,7 @@ class CrescentMoonSongSkill(BaseSkill):
         target_name = char.player_name
         level = self.level_rank
         power = self.char.cs.charisma
-        self_condition = CrescentMoonSongCondition(power=power, level=level)
+        self_condition = CrescentMoonBalladCondition(power=power, level=level)
         report_list = self.char.status.set_conditions(self_condition)
         status_report_text = "\n".join(
             [report["text"] for report in report_list]
@@ -164,16 +168,171 @@ class CrescentMoonSongSkill(BaseSkill):
             )
         }
         if char.is_alive and self.char.player_id != char.player_id:
-            condition = WarSongCondition(power=power, level=level)
+            condition = CrescentMoonBalladCondition(power=power, level=level)
             report_list = char.status.set_conditions(condition)
             status_report_text = "\n".join(
                 [report["text"] for report in report_list]
             )
             report['text'] += (
-                f'*\n\n{target_name}* também é inspirado pela '
+                f'\n\n'
+                f'*{target_name}* também é inspirado pela '
                 f'*{self.name}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
+            )
+        elif char.is_dead:
+            report['text'] += f'\n\n*{target_name}* está morto.'
+
+        return report
+
+
+class TricksterTrovaSkill(BaseSkill):
+    NAME = BardSkillEnum.TRICKSTER_TROVA.value
+    DESCRIPTION = (
+        f'Surrura, como que contando um secredo, uma *Trova dos Halfling* '
+        f'que inspira um companheiro, '
+        f'aumentando o '
+        f'*{HIT_EMOJI_TEXT}*, '
+        f'*{EVASION_EMOJI_TEXT}* e o '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}* de ambos com base no '
+        f'*{CHARISMA_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.BARD.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=TricksterTrovaSkill.NAME,
+            description=TricksterTrovaSkill.DESCRIPTION,
+            rank=TricksterTrovaSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=TricksterTrovaSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        level = self.level_rank
+        power = self.char.cs.charisma
+        self_condition = TricksterTrovaCondition(power=power, level=level)
+        report_list = self.char.status.set_conditions(self_condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* se inspira pela *{self.name}*, '
+                f'que aumenta o '
+                f'*{HIT_EMOJI_TEXT}*, '
+                f'*{EVASION_EMOJI_TEXT}* e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+        if char.is_alive and self.char.player_id != char.player_id:
+            condition = TricksterTrovaCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report['text'] += (
+                f'\n\n'
+                f'*{target_name}* também é inspirado pela '
+                f'*{self.name}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        elif char.is_dead:
+            report['text'] += f'\n\n*{target_name}* está morto.'
+
+        return report
+
+
+class InvigoratingSongSkill(BaseSkill):
+    NAME = BardSkillEnum.INVIGORATING_SONG.value
+    DESCRIPTION = (
+        f'Executa uma melodia suave e calmante que transmite energia vital '
+        f'ao companheiro ferido, '
+        f'curando o *{HIT_POINT_FULL_EMOJI_TEXT}* de ambos com base na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível) e no '
+        f'*{CHARISMA_EMOJI_TEXT}* (750% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BARD.value,
+        'skill_list': [
+            WarSongSkill.NAME,
+            CrescentMoonBalladSkill.NAME,
+            TricksterTrovaSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=InvigoratingSongSkill.NAME,
+            description=InvigoratingSongSkill.DESCRIPTION,
+            rank=InvigoratingSongSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.HEALING,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=InvigoratingSongSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        dice = self.dice
+        level = self.level_rank
+        magical_attack_power_multiplier = 1 + (level / 10)
+        charisma_power_multiplier = 7.5 + (level / 10)
+        power = sum([
+            dice.boosted_magical_attack * magical_attack_power_multiplier,
+            self.char.cs.charisma * charisma_power_multiplier
+        ])
+        power = round(power)
+        cure_report = self.char.cs.cure_hit_points(power)
+        report_text = cure_report["text"]
+        report = {
+            'text': (
+                f'*{player_name}* é rodeado por uma melodia suave e '
+                f'calmante que cura suas feridas.\n'
+                f'*{report_text}*({dice.text}).'
+            )
+        }
+        if char.is_alive and self.char.player_id != char.player_id:
+            cure_report = char.cs.cure_hit_points(power)
+            report_text = cure_report["text"]
+            report['text'] += (
+                f'\n\n'
+                f'*{target_name}* é rodeado por uma melodia suave e '
+                f'calmante que cura suas feridas.\n'
+                f'*{report_text}*({dice.text}).'
             )
         elif char.is_dead:
             report['text'] += f'\n\n*{target_name}* está morto.'
@@ -192,7 +351,9 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         WarSongSkill,
-        CrescentMoonSongSkill,
+        CrescentMoonBalladSkill,
+        TricksterTrovaSkill,
+        InvigoratingSongSkill,
     ]
 }
 
@@ -210,7 +371,7 @@ if __name__ == '__main__':
           BARD_CHARACTER.cs.physical_defense, BARD_CHARACTER.cs.hp)
     BARD_CHARACTER.skill_tree.learn_skill(WarSongSkill)
 
-    skill = CrescentMoonSongSkill(BARD_CHARACTER)
+    skill = CrescentMoonBalladSkill(BARD_CHARACTER)
     print(skill)
     print(BARD_CHARACTER.bs.charisma)
     print(BARD_CHARACTER.cs.magical_attack,
@@ -218,7 +379,24 @@ if __name__ == '__main__':
     print(skill.function(BARBARIAN_CHARACTER))
     print(BARD_CHARACTER.cs.magical_attack,
           BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
-    BARD_CHARACTER.skill_tree.learn_skill(CrescentMoonSongSkill)
+    BARD_CHARACTER.skill_tree.learn_skill(CrescentMoonBalladSkill)
+
+    skill = TricksterTrovaSkill(BARD_CHARACTER)
+    print(skill)
+    print(BARD_CHARACTER.bs.charisma)
+    print(BARD_CHARACTER.cs.magical_attack,
+          BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
+    print(skill.function(BARBARIAN_CHARACTER))
+    print(BARD_CHARACTER.cs.magical_attack,
+          BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
+    BARD_CHARACTER.skill_tree.learn_skill(TricksterTrovaSkill)
+
+    BARBARIAN_CHARACTER.cs.damage_hit_points(10000)
+    skill = InvigoratingSongSkill(BARD_CHARACTER)
+    print(skill)
+    print(BARD_CHARACTER.cs.magical_attack, BARD_CHARACTER.bs.charisma)
+    print(skill.function(BARBARIAN_CHARACTER))
+    BARD_CHARACTER.skill_tree.learn_skill(InvigoratingSongSkill)
 
     print('\n'.join([
         report['text']

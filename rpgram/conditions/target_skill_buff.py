@@ -1388,7 +1388,7 @@ class WarSongCondition(TargetSkillBuffCondition):
         )
 
 
-class CrescentMoonSongCondition(TargetSkillBuffCondition):
+class CrescentMoonBalladCondition(TargetSkillBuffCondition):
 
     def __init__(
         self,
@@ -1397,7 +1397,7 @@ class CrescentMoonSongCondition(TargetSkillBuffCondition):
         level: int = 1,
     ):
         super().__init__(
-            name=BardSkillEnum.CRESCENT_MOON_SONG,
+            name=BardSkillEnum.CRESCENT_MOON_BALLAD,
             frequency=TurnEnum.START,
             power=power,
             turn=turn,
@@ -1438,6 +1438,56 @@ class CrescentMoonSongCondition(TargetSkillBuffCondition):
         )
 
 
+class TricksterTrovaCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=BardSkillEnum.TRICKSTER_TROVA,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que inspira o alvo, '
+            f'aumentando o '
+            f'*{HIT_EMOJI_TEXT}*, '
+            f'*{EVASION_EMOJI_TEXT}* e o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🎶🃏'
+
+    @property
+    def function_text(self) -> str:
+        return (
+            f'permanece inspirado pela *{self.enum_name.value}*.'
+        )
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1468,7 +1518,8 @@ class TargetBuffs:
         AgileFeetCondition,
         EagleEyeCondition,
         WarSongCondition,
-        CrescentMoonSongCondition,
+        CrescentMoonBalladCondition,
+        TricksterTrovaCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:
