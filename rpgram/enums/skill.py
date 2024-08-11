@@ -83,6 +83,13 @@ class BarbarianSkillEnum(Enum):
     WILD_POISON = 'Veneno Selvagem'
 
 
+class BountyHunterSkillEnum(Enum):
+    STAB = 'Apunhalar'
+    HUNTING_NET = 'Rede de Caça'
+    SHARP_FARO = 'Faro Aguçado'
+    INVESTIGATION = 'Investigação'
+
+
 class BardSkillEnum(Enum):
     DISSONANCE = 'Dissonância'
     RESONANCE = 'Resonância'
