@@ -95,13 +95,113 @@ class StabSkill(BaseSkill):
         return 0.75
 
 
+class QuickDrawSkill(BaseSkill):
+    NAME = BountyHunterSkillEnum.QUICK_DRAW.value
+    DESCRIPTION = (
+        f'Desenfunda sua arma com uma velocidade incrível, '
+        f'atacando contra o alvo antes que ele possa reagir, '
+        f'causando dano com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.BOUNTY_HUNTER.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.00
+        }
+        damage_types = None
+
+        super().__init__(
+            name=QuickDrawSkill.NAME,
+            description=QuickDrawSkill.DESCRIPTION,
+            rank=QuickDrawSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=QuickDrawSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.25
+
+
+class SurpriseAttackSkill(BaseSkill):
+    NAME = BountyHunterSkillEnum.SURPRISE_ATTACK.value
+    DESCRIPTION = (
+        f'Conhecendo o terreno como a palma de sua mão, '
+        f'embosca o inimigo e o ataca com um movimento rápido e silencioso, '
+        f'causando dano com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível), '
+        f'dobrando o dano se for *Acerto Crítico*{EmojiEnum.DICE.value}. '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BOUNTY_HUNTER.value,
+        'skill_list': [QuickDrawSkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.00
+        }
+        damage_types = None
+
+        super().__init__(
+            name=SurpriseAttackSkill.NAME,
+            description=SurpriseAttackSkill.DESCRIPTION,
+            rank=SurpriseAttackSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=SurpriseAttackSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        if target.is_alive:
+            damage_report = target.cs.damage_hit_points(value=total_damage)
+            report['text'] = damage_report['text']
+
+        return report
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.50
+
+
 class HuntingNetSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.HUNTING_NET.value
     DESCRIPTION = (
         f'Lança sobre o oponente uma *Rede* feita de fios cortantes de metal, '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
-        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível) e '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
         f'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.IMPRISONED)}* com nível igual ao '
         f'(Rank x Nível) se for *Acerto Crítico*{EmojiEnum.DICE.value}.'
@@ -114,7 +214,7 @@ class HuntingNetSkill(BaseSkill):
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.25,
         }
         damage_types = [DamageEnum.SLASHING]
 
@@ -143,9 +243,73 @@ class HuntingNetSkill(BaseSkill):
         report = {'text': ''}
         if target.is_alive and self.dice.is_critical:
             level = self.level_rank
-            bleeding_condition = ImprisonedCondition(level=level)
-            status_report = target.status.add_condition(bleeding_condition)
+            imprisoned_condition = ImprisonedCondition(level=level)
+            status_report = target.status.add_condition(imprisoned_condition)
             report['status_text'] = status_report['text']
+
+        return report
+
+
+class ChompTrapSkill(BaseSkill):
+    NAME = BountyHunterSkillEnum.CHOMP_TRAP.value
+    DESCRIPTION = (
+        f'Inspirada nas antigas armadilhas utilizadas para capturar '
+        f'grandes animais, '
+        f'lançar um dispositivo articular repleto de espinhos que '
+        f'causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
+        f'adiciona a condição '
+        f'*{get_debuff_emoji_text(DebuffEnum.IMPRISONED)}* e '
+        f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
+        f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BOUNTY_HUNTER.value,
+        'skill_list': [HuntingNetSkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
+        }
+        damage_types = [DamageEnum.PIERCING]
+
+        super().__init__(
+            name=ChompTrapSkill.NAME,
+            description=ChompTrapSkill.DESCRIPTION,
+            rank=ChompTrapSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ChompTrapSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        if target.is_alive and self.dice.value >= 15:
+            level = self.level_rank
+            imprisoned_condition = ImprisonedCondition(level=level)
+            status_report = target.status.add_condition(imprisoned_condition)
+            report['status_text'] = status_report['text']
+
+            bleeding_condition = BleedingCondition(level=level)
+            status_report = target.status.add_condition(bleeding_condition)
+            report['status_text'] += '\n' + status_report['text']
 
         return report
 
@@ -277,7 +441,10 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         StabSkill,
+        QuickDrawSkill,
+        SurpriseAttackSkill,
         HuntingNetSkill,
+        ChompTrapSkill,
         SharpFaroSkill,
         InvestigationSkill,
     ]
@@ -297,6 +464,26 @@ if __name__ == '__main__':
     )['text'])
     BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(StabSkill)
 
+    skill = QuickDrawSkill(BOUNTY_HUNTER_CHARACTER)
+    print(skill)
+    print(BOUNTY_HUNTER_CHARACTER.cs.physical_attack)
+    print(BOUNTY_HUNTER_CHARACTER.to_attack(
+        defender_char=BOUNTY_HUNTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(QuickDrawSkill)
+
+    skill = SurpriseAttackSkill(BOUNTY_HUNTER_CHARACTER)
+    print(skill)
+    print(BOUNTY_HUNTER_CHARACTER.cs.physical_attack)
+    print(BOUNTY_HUNTER_CHARACTER.to_attack(
+        defender_char=BOUNTY_HUNTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(SurpriseAttackSkill)
+
     skill = HuntingNetSkill(BOUNTY_HUNTER_CHARACTER)
     print(skill)
     print(BOUNTY_HUNTER_CHARACTER.cs.physical_attack)
@@ -306,6 +493,16 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(HuntingNetSkill)
+
+    skill = ChompTrapSkill(BOUNTY_HUNTER_CHARACTER)
+    print(skill)
+    print(BOUNTY_HUNTER_CHARACTER.cs.physical_attack)
+    print(BOUNTY_HUNTER_CHARACTER.to_attack(
+        defender_char=BOUNTY_HUNTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(ChompTrapSkill)
 
     skill = SharpFaroSkill(BOUNTY_HUNTER_CHARACTER)
     print(skill)

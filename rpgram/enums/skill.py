@@ -85,7 +85,10 @@ class BarbarianSkillEnum(Enum):
 
 class BountyHunterSkillEnum(Enum):
     STAB = 'Apunhalar'
+    QUICK_DRAW = 'Saque Rápido'
+    SURPRISE_ATTACK = 'Ataque Surpresa'
     HUNTING_NET = 'Rede de Caça'
+    CHOMP_TRAP = 'Armadilha Chomp'
     SHARP_FARO = 'Faro Aguçado'
     INVESTIGATION = 'Investigação'
 
