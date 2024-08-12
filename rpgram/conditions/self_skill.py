@@ -26,6 +26,7 @@ from rpgram.enums.damage import DamageEmojiEnum
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
+    BountyHunterSkillEnum,
     GuardianSkillEnum,
     HeraldSkillEnum,
     MageSkillEnum,
@@ -870,6 +871,105 @@ class MysticBlockCondition(SelfSkillCondition):
         return f'permanece envolto em uma *Aura Protetora*.'
 
 
+class SharpFaroCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BountyHunterSkillEnum.SHARP_FARO,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Olfato Apurado* que '
+            f'aumenta o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 1 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.dexterity * power
+
+        return int(bonus_hit)
+
+    @property
+    def emoji(self) -> str:
+        return '👃🏽'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com o *Olfato Apurado*.'
+
+
+class InvestigationCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BountyHunterSkillEnum.INVESTIGATION,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Analisa os oponentes para '
+            f'aumentar o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.bonus_evasion} pontos '
+            f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.dexterity * power
+
+        return int(bonus_hit)
+    
+    @property
+    def bonus_evasion(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_evasion = self.character.bs.dexterity * power
+
+        return int(bonus_evasion)
+
+    @property
+    def emoji(self) -> str:
+        return '🕵'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece *Analisando* os oponentes.'
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -953,6 +1053,8 @@ class SelfBuffs:
         ChaoticStepsCondition,
         PenitenceCondition,
         MysticBlockCondition,
+        SharpFaroCondition,
+        InvestigationCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

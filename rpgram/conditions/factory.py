@@ -43,6 +43,7 @@ from rpgram.conditions.self_skill import (
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
+    InvestigationCondition,
     LavaSkinCondition,
     MistFormCondition,
     MysticBlockCondition,
@@ -53,7 +54,8 @@ from rpgram.conditions.self_skill import (
     RaijusFootstepsCondition,
     RobustBlockCondition,
     RockArmorCondition,
-    ShadowStepsCondition
+    ShadowStepsCondition,
+    SharpFaroCondition
 )
 from rpgram.conditions.special_damage_skill import (
     SDBlueDjinnBalmCondition,
@@ -122,6 +124,7 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     BardSkillEnum,
+    BountyHunterSkillEnum,
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
@@ -392,6 +395,11 @@ def condition_factory(
         condition_class = CrescentMoonBalladCondition
     elif compare_condition(name, BardSkillEnum.TRICKSTER_TROVA):
         condition_class = TricksterTrovaCondition
+    # BOUNTY HUNTER BUFFS
+    elif compare_condition(name, BountyHunterSkillEnum.SHARP_FARO):
+        condition_class = SharpFaroCondition
+    elif compare_condition(name, BountyHunterSkillEnum.INVESTIGATION):
+        condition_class = InvestigationCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
