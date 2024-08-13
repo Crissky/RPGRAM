@@ -180,6 +180,10 @@ class HeraldSkillEnum(Enum):
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
 
 
+class KnightSkillEnum(Enum):
+    CHARGE = 'Carga'
+
+
 class MageSkillEnum(Enum):
     MAGIC_BLAST = 'Explosão Mágica'
     ICE_SHARD = 'Fragmento de Gelo'
