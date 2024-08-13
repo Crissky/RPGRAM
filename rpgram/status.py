@@ -486,7 +486,7 @@ class Status:
             for condition in self.conditions
         ])
 
-        return max(value, 0.1)
+        return value
 
     def to_list(self) -> List[str]:
         return [condition.name for condition in self.__conditions]

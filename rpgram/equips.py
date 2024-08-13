@@ -260,7 +260,7 @@ class Equips:
             for equipment in self
         ])
 
-        return max(value, 0.1)
+        return value
 
     def compare(self, equipment: Equipment, is_sell: bool = False) -> str:
         other_equipment = []

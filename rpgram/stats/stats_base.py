@@ -100,7 +100,7 @@ class BaseStats:
             for stats_booster in self.__stats_boosters
         ])
 
-        return max(value, 0.1)
+        return max(value, 0.10)
 
     def update(self) -> None:
         return None
