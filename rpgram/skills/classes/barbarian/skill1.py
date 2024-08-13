@@ -16,6 +16,7 @@ from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
+
 if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
@@ -222,6 +223,7 @@ SKILL_WAY_DESCRIPTION = {
 if __name__ == '__main__':
     from rpgram.constants.test import BARBARIAN_CHARACTER
     from rpgram.conditions.barrier import GuardianShieldCondition
+
     skill = PrimalAttackSkill(BARBARIAN_CHARACTER)
     print(skill)
     print(BARBARIAN_CHARACTER.cs.physical_attack)
