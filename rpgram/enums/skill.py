@@ -182,6 +182,7 @@ class HeraldSkillEnum(Enum):
 
 class KnightSkillEnum(Enum):
     CHARGE = 'Carga'
+    LEADERSHIP = 'Liderança'
 
 
 class MageSkillEnum(Enum):
