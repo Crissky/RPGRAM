@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from rpgram.conditions.debuff import StunnedCondition
 from rpgram.conditions.self_skill import ChampionInspirationCondition
 from rpgram.conditions.target_skill_buff import LeadershipCondition
 from rpgram.constants.text import (
@@ -13,6 +14,7 @@ from rpgram.constants.text import (
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
+from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
 from rpgram.enums.skill import (
     KnightSkillEnum,
     SkillDefenseEnum,
@@ -67,6 +69,116 @@ class ChargeSkill(BaseSkill):
             damage_types=damage_types
         )
 
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
+class HeavyChargeSkill(BaseSkill):
+    NAME = KnightSkillEnum.HEAVY_CHARGE.value
+    DESCRIPTION = (
+        f'Impulsiona-se sobre o inimigo com *Força Devastadora*, '
+        f'tornando-se uma força incontível no campo de batalha e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível). '
+        f'Essa habilidade possui baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.KNIGHT.value,
+        'skill_list': [ChargeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 3.00,
+        }
+        damage_types = None
+
+        super().__init__(
+            name=HeavyChargeSkill.NAME,
+            description=HeavyChargeSkill.DESCRIPTION,
+            rank=HeavyChargeSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=HeavyChargeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
+class SuperChargeSkill(BaseSkill):
+    NAME = KnightSkillEnum.SUPER_CHARGE.value
+    DESCRIPTION = (
+        f'Impulsiona-se sobre o inimigo com *Ímpeto Inimaginável*, '
+        f'tornando-se uma força irrefreável no campo de batalha, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (400% + 5% x Rank x Nível) e '
+        f'adicionando a condição '
+        f'*{get_debuff_emoji_text(DebuffEnum.STUNNED)}* com nível igual ao '
+        f'(Rank x Nível). '
+        f'Essa habilidade possui baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.KNIGHT.value,
+        'skill_list': [ChargeSkill.NAME, HeavyChargeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 4.00,
+        }
+        damage_types = None
+
+        super().__init__(
+            name=SuperChargeSkill.NAME,
+            description=SuperChargeSkill.DESCRIPTION,
+            rank=SuperChargeSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=SuperChargeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        if target.is_alive:
+            level = self.level_rank
+            bleeding_condition = StunnedCondition(level=level)
+            status_report = target.status.add_condition(bleeding_condition)
+            report['status_text'] = status_report['text']
+
+        return report
+    
     @property
     def hit_multiplier(self) -> float:
         return 0.75
@@ -230,6 +342,26 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     KNIGHT_CHARACTER.skill_tree.learn_skill(ChargeSkill)
+
+    skill = HeavyChargeSkill(KNIGHT_CHARACTER)
+    print(skill)
+    print(KNIGHT_CHARACTER.cs.precision_attack)
+    print(KNIGHT_CHARACTER.to_attack(
+        defender_char=KNIGHT_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    KNIGHT_CHARACTER.skill_tree.learn_skill(HeavyChargeSkill)
+
+    skill = SuperChargeSkill(KNIGHT_CHARACTER)
+    print(skill)
+    print(KNIGHT_CHARACTER.cs.precision_attack)
+    print(KNIGHT_CHARACTER.to_attack(
+        defender_char=KNIGHT_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    KNIGHT_CHARACTER.skill_tree.learn_skill(SuperChargeSkill)
 
     skill = ChampionInspirationSkill(KNIGHT_CHARACTER)
     print(skill)

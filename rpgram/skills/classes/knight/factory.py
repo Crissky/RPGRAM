@@ -3,7 +3,9 @@ from rpgram.skills.classes.knight.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     ChampionInspirationSkill,
     ChargeSkill,
+    HeavyChargeSkill,
     LeadershipSkill,
+    SuperChargeSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -20,6 +22,10 @@ def knight_skill_factory(
     # SKILL1
     if skill_class_name == ChargeSkill.__name__:
         skill_class = ChargeSkill
+    elif skill_class_name == HeavyChargeSkill.__name__:
+        skill_class = HeavyChargeSkill
+    elif skill_class_name == SuperChargeSkill.__name__:
+        skill_class = SuperChargeSkill
     elif skill_class_name == ChampionInspirationSkill.__name__:
         skill_class = ChampionInspirationSkill
     elif skill_class_name == LeadershipSkill.__name__:
@@ -33,6 +39,8 @@ def knight_skill_factory(
 KNIGHT_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     ChargeSkill,
+    HeavyChargeSkill,
+    SuperChargeSkill,
     ChampionInspirationSkill,
     LeadershipSkill,
 ]

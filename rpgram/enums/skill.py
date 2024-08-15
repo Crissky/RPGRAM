@@ -182,6 +182,8 @@ class HeraldSkillEnum(Enum):
 
 class KnightSkillEnum(Enum):
     CHARGE = 'Carga'
+    HEAVY_CHARGE = 'Carga Pesada'
+    SUPER_CHARGE = 'Super Carga'
     CHAMPION_INSPIRATION = 'Inspiração Campeã'
     LEADERSHIP = 'Liderança'
 
