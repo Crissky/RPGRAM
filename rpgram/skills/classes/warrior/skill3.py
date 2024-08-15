@@ -266,10 +266,10 @@ class WarCrySkill(BaseSkill):
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': 'Liderança',
+    'name': 'Herói',
     'description': (
-        'O caminho da Liderança transforma o Guerreiro em um '
-        'líder inspirador e comandante implacável, '
+        'O caminho da Herói transforma o Guerreiro em um '
+        'comandante inspirador e combatente implacável, '
         'capaz de unir seus aliados e guiá-los à vitória através de '
         'sua força, bravura e carisma. '
         'Através de habilidades que inspiram coragem, '
