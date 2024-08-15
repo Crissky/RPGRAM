@@ -41,7 +41,7 @@ class DebuffCondition(Condition):
         report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = (
-                f'{self.full_name}: Personagem está {self.trans_name}.'
+                f'*{self.full_name}*: Personagem está {self.trans_name}.'
             )
 
         return report
@@ -106,7 +106,7 @@ class BleedingCondition(DebuffCondition):
             ignore_barrier=True,
         )
 
-        report['text'] = f'{self.full_name}: ' + report['text']
+        report['text'] = f'*{self.full_name}*: ' + report['text']
         report['action'] = f'{self.name}'
 
         return report
@@ -242,7 +242,7 @@ class DeathSentenceCondition(DebuffCondition):
             turn = self.turn-1
             turn_name = 'Turnos' if turn > 1 else 'Turno'
             report['text'] = (
-                f'{self.full_name}: '
+                f'*{self.full_name}*: '
                 f'*{target.player_name}* morrerá em *{turn} {turn_name}*.'
             )
         else:
@@ -251,7 +251,7 @@ class DeathSentenceCondition(DebuffCondition):
                 value=damage,
                 ignore_barrier=True,
             )
-            report['text'] = f'{self.full_name}: ' + report['text']
+            report['text'] = f'*{self.full_name}*: ' + report['text']
 
         return report
 
@@ -402,7 +402,7 @@ class PoisoningCondition(DebuffCondition):
             value=damage,
             ignore_barrier=True,
         )
-        report['text'] = f'{self.full_name}: ' + report['text']
+        report['text'] = f'*{self.full_name}*: ' + report['text']
         report['action'] = f'{self.name}'
 
         return report
