@@ -1,7 +1,9 @@
 from typing import TYPE_CHECKING, List, Type
 from rpgram.skills.classes.knight.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
+    ChampionInspirationSkill,
     ChargeSkill,
+    LeadershipSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -18,6 +20,10 @@ def knight_skill_factory(
     # SKILL1
     if skill_class_name == ChargeSkill.__name__:
         skill_class = ChargeSkill
+    elif skill_class_name == ChampionInspirationSkill.__name__:
+        skill_class = ChampionInspirationSkill
+    elif skill_class_name == LeadershipSkill.__name__:
+        skill_class = LeadershipSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -27,6 +33,8 @@ def knight_skill_factory(
 KNIGHT_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     ChargeSkill,
+    ChampionInspirationSkill,
+    LeadershipSkill,
 ]
 KNIGHT_SKILL_WAYS: List[dict] = [
     skill_way1,

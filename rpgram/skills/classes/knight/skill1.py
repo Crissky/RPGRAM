@@ -1,7 +1,14 @@
 from typing import TYPE_CHECKING
 
+from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from rpgram.conditions.self_skill import ChampionInspirationCondition
+from rpgram.conditions.target_skill_buff import LeadershipCondition
 from rpgram.constants.text import (
+    CHARISMA_EMOJI_TEXT,
+    DEXTERITY_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_ATTACK_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
@@ -65,6 +72,135 @@ class ChargeSkill(BaseSkill):
         return 0.75
 
 
+class ChampionInspirationSkill(BaseSkill):
+    NAME = KnightSkillEnum.CHAMPION_INSPIRATION.value
+    DESCRIPTION = (
+        f'Libera uma explosão de energia inspiradora, '
+        f'fortalecendo o seu espírito e '
+        f'aumentando o '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
+        f'*{HIT_EMOJI_TEXT}* com base no '
+        f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.KNIGHT.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=ChampionInspirationSkill.NAME,
+            description=ChampionInspirationSkill.DESCRIPTION,
+            rank=ChampionInspirationSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ChampionInspirationSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level_rank
+        condition = ChampionInspirationCondition(character=char, level=level)
+        report_list = self.char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* liberou uma explosão de energia inspiradora '
+                f'aumentando o seu '
+                f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
+                f'*{HIT_EMOJI_TEXT}*.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class LeadershipSkill(BaseSkill):
+    NAME = KnightSkillEnum.LEADERSHIP.value
+    DESCRIPTION = (
+        f'Usa a própria força e determinação para despertar o seu '
+        f'*Espírito de Liderança* e conceder à equipe '
+        f'uma inspiração de combate que aumenta o '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e '
+        f'*{HIT_EMOJI_TEXT}* com base na '
+        f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível) e '
+        f'*{CHARISMA_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.KNIGHT.value,
+        'skill_list': [ChampionInspirationSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=LeadershipSkill.NAME,
+            description=LeadershipSkill.DESCRIPTION,
+            rank=LeadershipSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=LeadershipSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        target_name = char.player_name
+        if char.is_alive:
+            power = int(self.char.bs.dexterity + self.char.bs.charisma)
+            level = self.level_rank
+            condition = LeadershipCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{target_name}* recebe a *Inspiração do Líder* '
+                    f'aumentando o '
+                    f'{PHYSICAL_ATTACK_EMOJI_TEXT}, '
+                    f'{PRECISION_ATTACK_EMOJI_TEXT}, '
+                    f'{MAGICAL_ATTACK_EMOJI_TEXT} e '
+                    f'{HIT_EMOJI_TEXT} em '
+                    f'*{condition.power}* pontos.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Campeão',
     'description': (
@@ -94,3 +230,24 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     KNIGHT_CHARACTER.skill_tree.learn_skill(ChargeSkill)
+
+    skill = ChampionInspirationSkill(KNIGHT_CHARACTER)
+    print(skill)
+    print(KNIGHT_CHARACTER.bs.dexterity)
+    print(KNIGHT_CHARACTER.cs.precision_attack, KNIGHT_CHARACTER.cs.hit)
+    print(skill.function())
+    print(KNIGHT_CHARACTER.cs.precision_attack, KNIGHT_CHARACTER.cs.hit)
+    KNIGHT_CHARACTER.skill_tree.learn_skill(ChampionInspirationSkill)
+
+    skill = LeadershipSkill(KNIGHT_CHARACTER)
+    print(skill)
+    print(KNIGHT_CHARACTER.bs.dexterity, KNIGHT_CHARACTER.bs.charisma)
+    print(KNIGHT_CHARACTER.cs.precision_attack, KNIGHT_CHARACTER.cs.hit)
+    print(skill.function(KNIGHT_CHARACTER))
+    print(KNIGHT_CHARACTER.cs.precision_attack, KNIGHT_CHARACTER.cs.hit)
+    KNIGHT_CHARACTER.skill_tree.learn_skill(LeadershipSkill)
+
+    print('\n'.join([
+        report['text']
+        for report in KNIGHT_CHARACTER.activate_status()
+    ]))

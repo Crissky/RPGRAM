@@ -182,6 +182,7 @@ class HeraldSkillEnum(Enum):
 
 class KnightSkillEnum(Enum):
     CHARGE = 'Carga'
+    CHAMPION_INSPIRATION = 'Inspiração Campeã'
     LEADERSHIP = 'Liderança'
 
 

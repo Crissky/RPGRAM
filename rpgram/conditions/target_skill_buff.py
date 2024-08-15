@@ -25,6 +25,7 @@ from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
+    KnightSkillEnum,
     PaladinSkillEnum,
     WarriorSkillEnum
 )
@@ -1488,6 +1489,57 @@ class TricksterTrovaCondition(TargetSkillBuffCondition):
         )
 
 
+class LeadershipCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=KnightSkillEnum.LEADERSHIP,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Inspiração do Líder* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e '
+            f'*{HIT_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🌟'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Inspiração do Líder*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1520,6 +1572,7 @@ class TargetBuffs:
         WarSongCondition,
         CrescentMoonBalladCondition,
         TricksterTrovaCondition,
+        LeadershipCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

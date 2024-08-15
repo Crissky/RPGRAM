@@ -37,6 +37,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    ChampionInspirationCondition,
     ChaoticStepsCondition,
     CrystalArmorCondition,
     FafnirsScalesCondition,
@@ -95,6 +96,7 @@ from rpgram.conditions.target_skill_buff import (
     IsissVeilCondition,
     KnightAnointingCondition,
     KratossWrathCondition,
+    LeadershipCondition,
     LordAnointingCondition,
     MaidenAnointingCondition,
     OgunsCloakCondition,
@@ -130,6 +132,7 @@ from rpgram.enums.skill import (
     DuelistSkillEnum,
     GuardianSkillEnum,
     HeraldSkillEnum,
+    KnightSkillEnum,
     MageSkillEnum,
     MultiClasseSkillEnum,
     PaladinSkillEnum,
@@ -400,6 +403,11 @@ def condition_factory(
         condition_class = SharpFaroCondition
     elif compare_condition(name, BountyHunterSkillEnum.INVESTIGATION):
         condition_class = InvestigationCondition
+    # KNIGHT BUFFS
+    elif compare_condition(name, KnightSkillEnum.CHAMPION_INSPIRATION):
+        condition_class = ChampionInspirationCondition
+    elif compare_condition(name, KnightSkillEnum.LEADERSHIP):
+        condition_class = LeadershipCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
