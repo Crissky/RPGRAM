@@ -175,9 +175,25 @@ class GuardianSkillEnum(Enum):
     CRYSTAL_CHRYSALIS = 'Crisálida de Cristal'
 
 
+class HealerSkillEnum(Enum):
+    HEALING_TOUCH = 'Toque de Cura'
+    HEALING_HERB = 'Erva Curativa'
+    VITALITY_AURA = 'Aura de Vitalidade'
+    PROTECTIVE_AURA = 'Aura Protetiva'
+    REVIVE_RITUAL = 'Ritual de Reviver'
+
+
 class HeraldSkillEnum(Enum):
     MYSTIC_BLOCK = 'Bloqueio Místico'
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
+
+
+class KnightSkillEnum(Enum):
+    CHARGE = 'Carga'
+    HEAVY_CHARGE = 'Carga Pesada'
+    SUPER_CHARGE = 'Super Carga'
+    CHAMPION_INSPIRATION = 'Inspiração Campeã'
+    LEADERSHIP = 'Liderança'
 
 
 class MageSkillEnum(Enum):

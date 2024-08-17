@@ -86,9 +86,9 @@ class WarBannerSkill(BaseSkill):
         f'Usa a própria força e determinação para evocar a '
         f'*Marca do Senhor da Guerra* e conceder à equipe '
         f'uma inspiração de combate que aumenta o '
-        f'{PHYSICAL_ATTACK_EMOJI_TEXT}, '
-        f'{PRECISION_ATTACK_EMOJI_TEXT} e '
-        f'{MAGICAL_ATTACK_EMOJI_TEXT} com base na '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -151,8 +151,8 @@ class HeroicInspirationSkill(BaseSkill):
     NAME = WarriorSkillEnum.HEROIC_INSPIRATION.value
     DESCRIPTION = (
         f'Libera uma explosão de '
-        f'energia inspiradora, revigorando seu espírito e curando seu '
-        f'{HIT_POINT_FULL_EMOJI_TEXT} com base no '
+        f'energia inspiradora, revigorando o seu espírito e curando seu '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -207,7 +207,7 @@ class WarCrySkill(BaseSkill):
     DESCRIPTION = (
         f'Libera um grito que ecoa no campo de batalha, elevando os espíritos '
         f'dos aliados e curando seus '
-        f'{HIT_POINT_FULL_EMOJI_TEXT} com base no '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -266,10 +266,10 @@ class WarCrySkill(BaseSkill):
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': 'Liderança',
+    'name': 'Herói',
     'description': (
-        'O caminho da Liderança transforma o Guerreiro em um '
-        'líder inspirador e comandante implacável, '
+        'O caminho da Herói transforma o Guerreiro em um '
+        'comandante inspirador e combatente implacável, '
         'capaz de unir seus aliados e guiá-los à vitória através de '
         'sua força, bravura e carisma. '
         'Através de habilidades que inspiram coragem, '
