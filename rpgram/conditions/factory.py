@@ -4,7 +4,8 @@ from rpgram.conditions.barrier import (
     AegisShadowCondition,
     GuardianShieldCondition,
     PrismaticShieldCondition,
-    ChaosWeaverCondition
+    ChaosWeaverCondition,
+    ProtectiveAuraCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -108,6 +109,7 @@ from rpgram.conditions.target_skill_buff import (
     OakArmorCondition,
     VineBucklerCondition,
     SilkFlossSpaulderCondition,
+    VitalityAuraCondition,
     WarBannerCondition,
     WarSongCondition,
     WarriorAnointingCondition,
@@ -131,6 +133,7 @@ from rpgram.enums.skill import (
     DruidSkillEnum,
     DuelistSkillEnum,
     GuardianSkillEnum,
+    HealerSkillEnum,
     HeraldSkillEnum,
     KnightSkillEnum,
     MageSkillEnum,
@@ -408,6 +411,11 @@ def condition_factory(
         condition_class = ChampionInspirationCondition
     elif compare_condition(name, KnightSkillEnum.LEADERSHIP):
         condition_class = LeadershipCondition
+    # HEALER BUFFS
+    elif compare_condition(name, HealerSkillEnum.VITALITY_AURA):
+        condition_class = VitalityAuraCondition
+    elif compare_condition(name, HealerSkillEnum.PROTECTIVE_AURA):
+        condition_class = ProtectiveAuraCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

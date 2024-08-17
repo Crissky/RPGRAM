@@ -177,6 +177,10 @@ class GuardianSkillEnum(Enum):
 
 class HealerSkillEnum(Enum):
     HEALING_TOUCH = 'Toque de Cura'
+    HEALING_HERB = 'Erva Curativa'
+    VITALITY_AURA = 'Aura de Vitalidade'
+    PROTECTIVE_AURA = 'Aura Protetiva'
+    REVIVE_RITUAL = 'Ritual de Reviver'
 
 
 class HeraldSkillEnum(Enum):

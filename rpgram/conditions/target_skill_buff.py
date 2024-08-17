@@ -25,6 +25,7 @@ from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
+    HealerSkillEnum,
     KnightSkillEnum,
     PaladinSkillEnum,
     WarriorSkillEnum
@@ -1540,6 +1541,49 @@ class LeadershipCondition(TargetSkillBuffCondition):
         return 'permanece com a *Inspiração do Líder*.'
 
 
+class VitalityAuraCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.VITALITY_AURA,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🧖‍♀️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto pela *{self.trans_name}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 5)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1573,6 +1617,7 @@ class TargetBuffs:
         CrescentMoonBalladCondition,
         TricksterTrovaCondition,
         LeadershipCondition,
+        VitalityAuraCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

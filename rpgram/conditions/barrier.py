@@ -8,6 +8,7 @@ from rpgram.conditions.condition import Condition
 from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
+    HealerSkillEnum,
     MultiClasseSkillEnum,
     SorcererSkillEnum,
     WarriorSkillEnum
@@ -263,12 +264,39 @@ class ChaosWeaverCondition(BarrierCondition):
         )
 
 
+class ProtectiveAuraCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.PROTECTIVE_AURA,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Aura Protetiva* que salvaguarda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
         AegisShadowCondition,
         PrismaticShieldCondition,
         ChaosWeaverCondition,
+        ProtectiveAuraCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:
