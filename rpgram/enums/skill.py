@@ -175,6 +175,10 @@ class GuardianSkillEnum(Enum):
     CRYSTAL_CHRYSALIS = 'Crisálida de Cristal'
 
 
+class HealerSkillEnum(Enum):
+    HEALING_TOUCH = 'Toque de Cura'
+
+
 class HeraldSkillEnum(Enum):
     MYSTIC_BLOCK = 'Bloqueio Místico'
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
