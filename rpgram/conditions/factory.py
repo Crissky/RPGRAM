@@ -2,6 +2,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Union
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
+    AjaxShieldCondition,
     GuardianShieldCondition,
     PrismaticShieldCondition,
     ChaosWeaverCondition,
@@ -38,6 +39,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    ArenaDomainCondition,
     ChampionInspirationCondition,
     ChaoticStepsCondition,
     CrystalArmorCondition,
@@ -57,9 +59,12 @@ from rpgram.conditions.self_skill import (
     RobustBlockCondition,
     RockArmorCondition,
     ShadowStepsCondition,
-    SharpFaroCondition
+    SharpFaroCondition,
+    TurtleStanceCondition,
+    UnicornStanceCondition
 )
 from rpgram.conditions.special_damage_skill import (
+    SDAresBladeCondition,
     SDBlueDjinnBalmCondition,
     SDGreenDragonBalmCondition,
     SDCrystallineInfusionCondition,
@@ -132,6 +137,7 @@ from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
+    GladiatorSkillEnum,
     GuardianSkillEnum,
     HealerSkillEnum,
     HeraldSkillEnum,
@@ -416,6 +422,17 @@ def condition_factory(
         condition_class = VitalityAuraCondition
     elif compare_condition(name, HealerSkillEnum.PROTECTIVE_AURA):
         condition_class = ProtectiveAuraCondition
+    # GLADIATOR BUFFS
+    elif compare_condition(name, GladiatorSkillEnum.TURTLE_STANCE):
+        condition_class = TurtleStanceCondition
+    elif compare_condition(name, GladiatorSkillEnum.UNICORN_STANCE):
+        condition_class = UnicornStanceCondition
+    elif compare_condition(name, GladiatorSkillEnum.ARENA_DOMAIN):
+        condition_class = ArenaDomainCondition
+    elif compare_condition(name, GladiatorSkillEnum.ARES_BLADE):
+        condition_class = SDAresBladeCondition
+    elif compare_condition(name, GladiatorSkillEnum.AJAX_SHIELD):
+        condition_class = AjaxShieldCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

@@ -12,6 +12,7 @@ from rpgram.enums.damage import (
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     DruidSkillEnum,
+    GladiatorSkillEnum,
     GuardianSkillEnum,
     PaladinSkillEnum
 )
@@ -138,7 +139,7 @@ class SpecialDamageSkillCondition(BuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'está imbuído com *{self.enum_name.value}*.'
+        return f'está imbuído com *{self.trans_name}*.'
 
 
 class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
@@ -393,7 +394,7 @@ class SDFellowFalconCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'*{self.trans_name}* que o ajuda em batalha, '
             f'concedendo dano de {self.damage_help_emoji_text}.'
         )
 
@@ -403,7 +404,7 @@ class SDFellowFalconCondition(SpecialDamageSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece lutando ao lado do *{self.enum_name.value}*.'
+        return f'permanece lutando ao lado do *{self.trans_name}*.'
 
 
 class SDFellowBearCondition(SpecialDamageSkillCondition):
@@ -426,7 +427,7 @@ class SDFellowBearCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'*{self.trans_name}* que o ajuda em batalha, '
             f'concedendo dano de {self.damage_help_emoji_text}.'
         )
 
@@ -436,7 +437,7 @@ class SDFellowBearCondition(SpecialDamageSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece lutando ao lado do *{self.enum_name.value}*.'
+        return f'permanece lutando ao lado do *{self.trans_name}*.'
 
 
 class SDFellowTigerCondition(SpecialDamageSkillCondition):
@@ -459,7 +460,7 @@ class SDFellowTigerCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'*{self.trans_name}* que o ajuda em batalha, '
             f'concedendo dano de {self.damage_help_emoji_text}.'
         )
 
@@ -469,7 +470,7 @@ class SDFellowTigerCondition(SpecialDamageSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece lutando ao lado do *{self.enum_name.value}*.'
+        return f'permanece lutando ao lado do *{self.trans_name}*.'
 
 
 class SDFellowOwlCondition(SpecialDamageSkillCondition):
@@ -492,7 +493,7 @@ class SDFellowOwlCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que o ajuda em batalha, '
+            f'*{self.trans_name}* que o ajuda em batalha, '
             f'concedendo dano de {self.damage_help_emoji_text}.'
         )
 
@@ -502,7 +503,7 @@ class SDFellowOwlCondition(SpecialDamageSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece lutando ao lado da *{self.enum_name.value}*.'
+        return f'permanece lutando ao lado da *{self.trans_name}*.'
 
 
 class SDThornySpaulderCondition(SpecialDamageSkillCondition):
@@ -525,7 +526,7 @@ class SDThornySpaulderCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -535,7 +536,7 @@ class SDThornySpaulderCondition(SpecialDamageSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece equipado com a *{self.enum_name.value}*.'
+        return f'permanece equipado com a *{self.trans_name}*.'
 
 
 class SDPoisonousSapCondition(SpecialDamageSkillCondition):
@@ -558,7 +559,7 @@ class SDPoisonousSapCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -587,7 +588,7 @@ class SDIgneousSapCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -616,7 +617,7 @@ class SDEscarchaSapCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -645,7 +646,7 @@ class SDSacredBalmCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -678,7 +679,7 @@ class SDGreenDragonBalmCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -718,7 +719,7 @@ class SDRedPhoenixBalmCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -759,7 +760,7 @@ class SDBlueDjinnBalmCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*{self.enum_name.value}* que '
+            f'*{self.trans_name}* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -773,6 +774,51 @@ class SDBlueDjinnBalmCondition(SpecialDamageSkillCondition):
     @property
     def emoji(self) -> str:
         return '🧞🌿'
+
+
+class SDAresBladeCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.ARES_BLADE,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[
+                DamageEnum.SLASHING,
+                DamageEnum.FIRE,
+                DamageEnum.DIVINE,
+                DamageEnum.CHAOS,
+            ],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🏛️'
+
+    @property
+    def function_text(self) -> str:
+        return f'está portando a *{self.trans_name}*.'
 
 
 class SpecialDamageBuffs:
@@ -796,7 +842,8 @@ class SpecialDamageBuffs:
         SDSacredBalmCondition,
         SDGreenDragonBalmCondition,
         SDRedPhoenixBalmCondition,
-        SDBlueDjinnBalmCondition
+        SDBlueDjinnBalmCondition,
+        SDAresBladeCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

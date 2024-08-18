@@ -165,6 +165,16 @@ class DuelistSkillEnum(Enum):
     SIEGFRIEDÇÇÇS_SHOULDER_BLADE = 'Omoplata de Siegfried'
 
 
+class GladiatorSkillEnum(Enum):
+    ACHILLES_ATTACK = 'Ataque de Aquiles'
+    HERCULES_FURY = 'Fúria de Hércules'
+    ARES_BLADE = 'Lâmina de Ares'
+    AJAX_SHIELD = 'Escudo de Ajax'
+    TURTLE_STANCE = 'Postura de Tartaruga'
+    UNICORN_STANCE = 'Postura de Unicórnio'
+    ARENA_DOMAIN = 'Domínio da Arena'
+
+
 class GuardianSkillEnum(Enum):
     SHIELD_WALL = 'Parede de Escudos'
     IRON_CHARGE = 'Investida de Ferro'

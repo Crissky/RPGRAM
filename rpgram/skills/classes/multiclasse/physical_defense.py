@@ -74,7 +74,7 @@ class RobustBlockSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se concentra em fortalecer a sua guarda '
-                f'assumindo uma postura preventiva aumentando a sua '
+                f'assumindo uma postura preventiva que aumenta a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
