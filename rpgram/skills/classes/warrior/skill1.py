@@ -155,6 +155,7 @@ SKILL_WAY_DESCRIPTION = {
 
 if __name__ == '__main__':
     from rpgram.constants.test import WARRIOR_CHARACTER
+
     skill = PowerfulAttackSkill(WARRIOR_CHARACTER)
     print(skill)
     print(WARRIOR_CHARACTER.cs.physical_attack)
