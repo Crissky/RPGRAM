@@ -36,6 +36,11 @@ from rpgram.skills.classes.duelist.factory import (
     DUELIST_SKILL_WAYS,
     duelist_skill_factory
 )
+from rpgram.skills.classes.gladiator.factory import (
+    GLADIATOR_SKILL_LIST,
+    GLADIATOR_SKILL_WAYS,
+    gladiator_skill_factory
+)
 from rpgram.skills.classes.guardian.factory import (
     GUARDIAN_SKILL_WAYS,
     guardian_skill_factory,
@@ -105,6 +110,7 @@ ALL_SKILL_DICT = {
     ClasseEnum.BOUNTY_HUNTER.value: BOUNTY_HUNTER_SKILL_LIST,
     ClasseEnum.KNIGHT.value: KNIGHT_SKILL_LIST,
     ClasseEnum.HEALER.value: HEALER_SKILL_LIST,
+    ClasseEnum.GLADIATOR.value: GLADIATOR_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
@@ -123,6 +129,7 @@ ALL_SKILL_WAY_DICT = {
     ClasseEnum.BOUNTY_HUNTER.value: BOUNTY_HUNTER_SKILL_WAYS,
     ClasseEnum.KNIGHT.value: KNIGHT_SKILL_WAYS,
     ClasseEnum.HEALER.value: HEALER_SKILL_WAYS,
+    ClasseEnum.GLADIATOR.value: GLADIATOR_SKILL_WAYS,
 }
 
 
@@ -171,7 +178,7 @@ def skill_factory(
     elif ClasseEnum.HEALER.value == classe_name:
         class_skill_factory = healer_skill_factory
     elif ClasseEnum.GLADIATOR.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = gladiator_skill_factory
     elif ClasseEnum.SUMMONER.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.MERCENARY.value == classe_name:
@@ -244,7 +251,7 @@ def skill_list_factory(
     elif ClasseEnum.HEALER.value == classe_name:
         return HEALER_SKILL_LIST
     elif ClasseEnum.GLADIATOR.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return GLADIATOR_SKILL_LIST
     elif ClasseEnum.SUMMONER.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.MERCENARY.value == classe_name:

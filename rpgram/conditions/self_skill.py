@@ -28,6 +28,7 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     BountyHunterSkillEnum,
+    GladiatorSkillEnum,
     GuardianSkillEnum,
     HeraldSkillEnum,
     KnightSkillEnum,
@@ -1026,6 +1027,167 @@ class ChampionInspirationCondition(SelfSkillCondition):
         return f'permanece com a *{self.trans_name}*.'
 
 
+class TurtleStanceCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.TURTLE_STANCE,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos '
+            f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        power = 1 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_defense = self.character.bs.constitution * power
+
+        return int(bonus_physical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🐢'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece na *{self.trans_name}*.'
+
+
+class UnicornStanceCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.UNICORN_STANCE,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Postura ofensiva que aumenta a *{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_attack = self.character.bs.strength * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '🦄'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece na *{self.trans_name}*.'
+
+
+class ArenaDomainCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.ARENA_DOMAIN,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Estado de Fluxo* '
+            f'que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
+            f'*{HIT_EMOJI_TEXT}* e '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.__power} pontos '
+            f'(100%{EmojiEnum.STRENGTH.value} + '
+            f'100%{EmojiEnum.CONSTITUTION.value} + '
+            f'100%{EmojiEnum.WISDOM.value} + '
+            f'100%{EmojiEnum.CHARACTER.value} '
+            f'+ 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def __power(self) -> int:
+        power = 1 + (self.level / 10)
+        power = power * sum([
+            self.character.bs.strength,
+            self.character.bs.constitution,
+            self.character.bs.wisdom,
+            self.character.bs.charisma,
+        ])
+        power = round(power, 2)
+
+        return power
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.__power
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.__power
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.__power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.__power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.__power
+
+    @property
+    def emoji(self) -> str:
+        return '🏟'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com o *{self.trans_name}*.'
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -1112,6 +1274,9 @@ class SelfBuffs:
         SharpFaroCondition,
         InvestigationCondition,
         ChampionInspirationCondition,
+        TurtleStanceCondition,
+        UnicornStanceCondition,
+        ArenaDomainCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:
