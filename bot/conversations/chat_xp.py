@@ -10,6 +10,7 @@ from telegram.ext import (
     MessageHandler
 )
 
+from bot.constants.chat_xp import SECTION_TEXT_XP
 from bot.constants.filters import ALLOW_GAIN_XP_FILTER
 from bot.decorators import (
     skip_if_no_singup_group,
@@ -22,6 +23,7 @@ from bot.functions.chat import (
     call_telegram_message_function,
     send_private_message
 )
+from bot.functions.event import add_event_points_from_player
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_XP_END, SECTION_HEAD_XP_START
 
@@ -36,9 +38,6 @@ from repository.mongo import (
     PlayerModel
 )
 from rpgram.player import Player
-
-
-SECTION_TEXT_XP = 'EXPERIÊNCIA'
 
 
 @skip_if_no_singup_group
@@ -97,6 +96,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text=text,
             close_by_owner=False,
         )
+
+    group = await add_event_points_from_player(update=update, context=context)
 
 
 CHAT_XP_HANDLER = MessageHandler(

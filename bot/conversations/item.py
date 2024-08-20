@@ -78,20 +78,21 @@ from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum
 
 
-@skip_if_spawn_timeout
-async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
+async def create_find_treasure_event(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
     '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
     Está função é chamada em cada 00 e 30 minutos de cada hora.
     '''
-    job = context.job
-    chat_id = job.chat_id
+    chat_id = update.effective_chat.id
     now = get_brazil_time_now()
 
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1, 29)
+        minutes = randint(1, 10)
         print(
-            f'JOB_CREATE_FIND_TREASURE() - {now}: '
+            f'CREATE_FIND_TREASURE_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(
@@ -103,6 +104,7 @@ async def job_create_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         )
 
 
+@skip_if_spawn_timeout
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR 
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.

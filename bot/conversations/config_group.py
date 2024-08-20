@@ -18,6 +18,7 @@ from bot.functions.chat import (
     reply_typing
 )
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
+from bot.functions.config import update_total_players
 from bot.functions.general import get_attribute_group_or_player
 from function.text import escape_basic_markdown_v2
 
@@ -39,6 +40,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
     args = context.args
     group: Group = group_model.get(chat_id)
+    update_total_players(group=group)
 
     if len(args) == 2:
         attribute = args[0]

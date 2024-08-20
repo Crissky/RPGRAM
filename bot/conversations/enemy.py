@@ -126,20 +126,22 @@ from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
 from rpgram.skills.skill_base import BaseSkill
 
 
-async def job_create_ambush(context: ContextTypes.DEFAULT_TYPE):
+async def create_ambush_event(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
     '''Cria um evento de ataque de inimigo que ocorrerá entre 1 e 299 minutos.
     Está função é chamada em cada 3 horas.
     '''
 
-    job = context.job
-    chat_id = job.chat_id
+    chat_id = update.effective_chat.id
     now = get_brazil_time_now()
 
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1, 120)
+        minutes = randint(1, 10)
         print(
-            f'JOB_CREATE_AMBUSH() - {now}: '
+            f'CREATE_AMBUSH_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(

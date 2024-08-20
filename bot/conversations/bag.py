@@ -88,7 +88,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.constants.seller import SELLER_NAME
-from bot.conversations.chat_xp import SECTION_TEXT_XP
+from bot.constants.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
     print_basic_infos,
     retry_after,

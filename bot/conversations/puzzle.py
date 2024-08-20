@@ -107,7 +107,10 @@ from random import sample
 ) = range(1)
 
 
-async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
+async def create_puzzle_event(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
     '''Cria job do Puzzle de Thoth & Seshat.
 
     Thoth: Deus Egípcios da sabedoria, escrita e magia.
@@ -117,14 +120,13 @@ async def job_create_puzzle(context: ContextTypes.DEFAULT_TYPE):
     Associada a jogos de estratégia e desafios mentais.
     '''
 
-    job = context.job
-    chat_id = job.chat_id
+    chat_id = update.effective_chat.id
     now = get_brazil_time_now()
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(60, 120)
+        minutes = randint(1, 10)
         print(
-            f'JOB_CREATE_PUZZLE() - {now}: '
+            f'CREATE_PUZZLE_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(

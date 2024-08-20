@@ -93,18 +93,20 @@ from rpgram import Item, Player
 from rpgram.enums import EmojiEnum, TrocadoEnum
 
 
-async def job_create_item_quest(context: ContextTypes.DEFAULT_TYPE):
+async def create_item_quest_event(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
     '''Cria job da quest de pedido de items
     '''
 
-    job = context.job
-    chat_id = job.chat_id
+    chat_id = update.effective_chat.id
     now = get_brazil_time_now()
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1, 60)
+        minutes = randint(1, 10)
         print(
-            f'JOB_CREATE_ITEM_QUEST() - {now}: '
+            f'CREATE_ITEM_QUEST_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(
