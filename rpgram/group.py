@@ -148,6 +148,10 @@ class Group:
 
     def add_event_points(self, points: int) -> bool:
         self.current_event_points += points
+        self.current_event_points = min(
+            self.current_event_points,
+            self.max_event_points
+        )
 
         return self.current_event_points >= self.max_event_points
 
