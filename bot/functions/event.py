@@ -18,8 +18,8 @@ async def add_event_points_from_player(
     chat_id = update.effective_chat.id
 
     group: Group = group_model.get(chat_id)
-    group.add_event_points_from_player()
-    if group.can_trigger_event:
+    can_trigger_event = group.add_event_points_from_player()
+    if can_trigger_event:
         await create_event(update=update, context=context)
         group.reset_event_points()
 
