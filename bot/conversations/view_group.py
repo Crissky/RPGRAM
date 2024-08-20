@@ -21,6 +21,7 @@ from bot.functions.chat import (
     get_close_keyboard
 )
 from bot.decorators import print_basic_infos, need_singup_group
+from bot.functions.config import update_total_players
 from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_GROUP_END, SECTION_HEAD_GROUP_START
 from function.text import create_text_in_box
@@ -37,6 +38,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     group: Group = group_model.get(chat_id)
+    update_total_players(group=group)
     if group:
         text = create_text_in_box(
             text=f'{group}',

@@ -4,10 +4,15 @@ from typing import Union
 from bson import ObjectId
 
 from constant.text import SECTION_HEAD
-from function.date_time import datetime_to_string
+from function.date_time import (
+    datetime_to_string
+)
+from random import randint
+from random import randint
 
 
 MAX_NUM_PLAYERS = 3
+MAX_EVENT_POINTS_MULTIPLIER = 100
 
 
 class Group:
@@ -25,6 +30,8 @@ class Group:
         character_multiplier_xp: float = 1.0,
         group_level: int = 1,
         tier: dict = {},
+        total_players: int = 1,
+        current_event_points: int = 0,
         created_at: datetime = None,
         updated_at: datetime = None
     ) -> None:
@@ -41,10 +48,39 @@ class Group:
         self.multiplier_xp = float(multiplier_xp)
         self.character_multiplier_xp = float(character_multiplier_xp)
         self.tier = tier
+        self.__total_players = total_players
+        self.current_event_points = current_event_points
         self.created_at = created_at
         self.updated_at = updated_at
 
     # Getters
+    @property
+    def group_level(self) -> int:
+        group_level = 1
+        if self.tier:
+            group_level = sum(self.tier.values()) // len(self.tier)
+
+        return group_level
+
+    @property
+    def total_players(self) -> int:
+        return max(1, self.__total_players)
+
+    @property
+    def max_event_points(self) -> int:
+        return self.total_players * MAX_EVENT_POINTS_MULTIPLIER
+
+    @property
+    def show_event_points(self) -> str:
+        return (
+            f'Pontos de Evento: '
+            f'{self.current_event_points}/{self.max_event_points}'
+        )
+
+    @property
+    def can_trigger_event(self) -> bool:
+        return self.current_event_points >= self.max_event_points
+
     _id = property(lambda self: self.__id)
 
     def __setitem__(self, key, value):
@@ -107,13 +143,37 @@ class Group:
                 self.tier.pop(min_key)
                 self.tier[player_id] = level
 
-    @property
-    def group_level(self) -> int:
-        group_level = 1
-        if self.tier:
-            group_level = sum(self.tier.values()) // len(self.tier)
+    def set_total_players(self, total_players: int) -> None:
+        self.__total_players = total_players
 
-        return group_level
+    def add_event_points(self, points: int) -> bool:
+        self.current_event_points += points
+
+        return self.current_event_points >= self.max_event_points
+
+    def add_event_points_from_player(self) -> bool:
+        '''Fórmula para valores mínimos e máximos
+        min_value = ceil(
+            self.max_event_points / ((self.total_players/2)*60/MIN_ADD_MINUTES)
+        )
+        max_value = ceil(
+            self.max_event_points / ((self.total_players/2)*60/MAX_ADD_MINUTES)
+        )
+        '''
+
+        min_value = 17
+        max_value = 34
+        points = randint(min_value, max_value)
+
+        return self.add_event_points(points)
+
+    def add_event_points_from_group(self) -> bool:
+        points = int(self.max_event_points * 0.10)
+
+        return self.add_event_points(points)
+
+    def reset_event_points(self) -> None:
+        self.current_event_points = 0
 
     def __repr__(self) -> str:
         return (
@@ -128,6 +188,8 @@ class Group:
             f'Mult. de XP por Nível: '
             f'{self.character_multiplier_xp:.2f}\n'
             f'Nível do Grupo: {self.group_level}\n'
+            f'Total de Jogadores: {self.total_players}\n'
+            f'{self.show_event_points}\n'
             f'ID: {self.__id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
@@ -144,8 +206,10 @@ class Group:
             spawn_end_time=self.spawn_end_time,
             multiplier_xp=self.multiplier_xp,
             character_multiplier_xp=self.character_multiplier_xp,
-            tier=self.tier,
             group_level=self.group_level,
+            tier=self.tier,
+            total_players=self.total_players,
+            current_event_points=self.current_event_points,
             created_at=self.created_at,
             updated_at=self.updated_at
         )

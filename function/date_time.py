@@ -3,7 +3,10 @@ from random import randint
 
 import pytz
 
+
 UTC = pytz.UTC
+MIN_ADD_MINUTES = 5
+MAX_ADD_MINUTES = 10
 
 
 def get_brazil_time_now() -> datetime:
@@ -31,7 +34,7 @@ def add_random_minutes_now(dt: datetime = None) -> datetime:
     if not dt:
         dt = get_brazil_time_now()
     dt = replace_tzinfo(dt)
-    minutes = randint(5, 10)
+    minutes = randint(MIN_ADD_MINUTES, MAX_ADD_MINUTES)
     print(f"Adding {minutes} minutes")
 
     return dt + timedelta(minutes=minutes)

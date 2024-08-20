@@ -127,6 +127,7 @@ class EmojiEnum(Enum):
     SKILL_DEFENSE = '⃣'
     SPECIAL_DAMAGE = '🕋'
     LIST = '📋'
+    EVENT = '🗓️'
 
 
 class FaceEmojiEnum(Enum):

@@ -36,11 +36,8 @@ from bot.conversations import (
     PUZZLE_HANDLERS,
     RESET_CHAR_HANDLERS,
 )
-from bot.conversations.enemy import job_create_ambush
+from bot.conversations.event import job_add_event_points
 from bot.conversations.help import job_info_deploy_bot
-from bot.conversations.item import job_create_find_treasure
-from bot.conversations.puzzle import job_create_puzzle
-from bot.conversations.quest_item import job_create_item_quest
 from bot.conversations.rest import autorest_midnight
 from bot.conversations.seller import job_create_new_items
 from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
@@ -89,27 +86,11 @@ def main() -> None:
 
     # Add Jobs
     application.job_queue.run_repeating(
-        callback=job_create_find_treasure,
-        interval=timedelta(minutes=30),
-        first=get_last_hour(),
-        chat_id=MY_GROUP_ID,
-        name='JOB_EVENT_TREASURE',
-        job_kwargs=BASE_JOB_KWARGS,
-    )
-    application.job_queue.run_repeating(
         callback=job_activate_conditions,
         interval=timedelta(minutes=20),
         first=get_last_hour(),
         chat_id=MY_GROUP_ID,
         name='JOB_ACTIVATE_CONDITIONS',
-        job_kwargs=BASE_JOB_KWARGS,
-    )
-    application.job_queue.run_repeating(
-        callback=job_create_ambush,
-        interval=timedelta(hours=3),
-        first=get_midnight_hour(),
-        chat_id=MY_GROUP_ID,
-        name='JOB_CREATE_AMBUSH',
         job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
@@ -135,27 +116,26 @@ def main() -> None:
         name='JOB_CREATE_NEW_ITEMS',
         job_kwargs=BASE_JOB_KWARGS,
     )
-    application.job_queue.run_repeating(
-        callback=job_create_item_quest,
-        interval=timedelta(hours=4),
-        first=get_midnight_hour(get_yesterday=True),
+    application.job_queue.run_once(
+        callback=autorest_midnight,
+        when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
-        name='JOB_CREATE_QUEST_ITEM',
+        name='JOB_AUTOREST_MIDNIGHT_ON_START',
         job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_repeating(
-        callback=job_create_puzzle,
-        interval=timedelta(hours=6),
-        first=get_midnight_hour(get_yesterday=True),
+        callback=job_add_event_points,
+        interval=timedelta(minutes=20),
+        first=get_last_hour(),
         chat_id=MY_GROUP_ID,
-        name='JOB_CREATE_PUZZLE',
+        name='JOB_ADD_EVENT_POINTS',
         job_kwargs=BASE_JOB_KWARGS,
     )
     application.job_queue.run_once(
-        callback=autorest_midnight,
-        when=timedelta(minutes=2),
+        callback=job_add_event_points,
+        when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
-        name='JOB_AUTOREST_MIDNIGHT_ON_START',
+        name='JOB_ADD_EVENT_POINTS_ON_START',
         job_kwargs=BASE_JOB_KWARGS,
     )
 

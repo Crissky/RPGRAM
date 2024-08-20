@@ -22,11 +22,13 @@ from bot.constants.sign_up_player import CALLBACK_TEXT_NO
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.decorators import print_basic_infos
 
+from bot.decorators.group import need_singup_group
 from bot.functions.chat import (
     answer,
     call_telegram_message_function,
     edit_message_text
 )
+from bot.functions.config import update_total_players
 from constant.time import TEN_MINUTES_IN_SECONDS
 
 from repository.mongo import PlayerModel
@@ -38,6 +40,7 @@ from rpgram import Player
 START_ROUTES, END_ROUTES = range(2)
 
 
+@need_singup_group
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     player_model = PlayerModel()
@@ -122,6 +125,7 @@ async def create_account(
         need_response=False,
         markdown=False,
     )
+    update_total_players(chat_id=chat_id)
 
     return ConversationHandler.END
 
