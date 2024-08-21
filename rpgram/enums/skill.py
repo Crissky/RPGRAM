@@ -259,6 +259,12 @@ class RogueSkillEnum(Enum):
     CHAOTIC_STRIKE = 'Golpe Caótico'
 
 
+class SummonerSkillEnum(Enum):
+    FLAMING_SPECTER = 'Espectro de Flamejante'
+    KAPPA_FOUNTAIN = 'Fonte do Kappa'
+    PISKIE_WINDBAG = 'Sacovento do Piskie'
+
+
 class SorcererSkillEnum(Enum):
     MYSTICAL_PROTECTION = 'Proteção Mística'
     MYSTICAL_CONFLUENCE = 'Confluência Mística'

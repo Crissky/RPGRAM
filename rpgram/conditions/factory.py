@@ -4,6 +4,7 @@ from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
     GuardianShieldCondition,
+    PiskieWindbagCondition,
     PrismaticShieldCondition,
     ChaosWeaverCondition,
     ProtectiveAuraCondition
@@ -147,6 +148,7 @@ from rpgram.enums.skill import (
     PaladinSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum,
+    SummonerSkillEnum,
     WarriorSkillEnum
 )
 
@@ -433,6 +435,9 @@ def condition_factory(
         condition_class = SDAresBladeCondition
     elif compare_condition(name, GladiatorSkillEnum.AJAX_SHIELD):
         condition_class = AjaxShieldCondition
+    # SUMMONER BUFFS
+    elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
+        condition_class = PiskieWindbagCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
