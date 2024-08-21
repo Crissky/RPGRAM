@@ -260,7 +260,7 @@ class RogueSkillEnum(Enum):
 
 
 class SummonerSkillEnum(Enum):
-    FLAMING_SPECTER = 'Espectro de Flamejante'
+    FLAMING_SPECTER = 'Espectro Flamejante'
     KAPPA_FOUNTAIN = 'Fonte do Kappa'
     PISKIE_WINDBAG = 'Sacovento do Piskie'
 
