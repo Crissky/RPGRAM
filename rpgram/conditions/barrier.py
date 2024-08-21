@@ -12,6 +12,7 @@ from rpgram.enums.skill import (
     HealerSkillEnum,
     MultiClasseSkillEnum,
     SorcererSkillEnum,
+    SummonerSkillEnum,
     WarriorSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
@@ -321,6 +322,32 @@ class AjaxShieldCondition(BarrierCondition):
         return 2.00
 
 
+class PiskieWindbagCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=SummonerSkillEnum.PISKIE_WINDBAG,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Barreira de Ar Turbilhonante* que protege com '
+            f'*{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -329,6 +356,7 @@ class BarrierBuffs:
         ChaosWeaverCondition,
         ProtectiveAuraCondition,
         AjaxShieldCondition,
+        PiskieWindbagCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:

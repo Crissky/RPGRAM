@@ -172,7 +172,7 @@ class Group:
         return self.add_event_points(points)
 
     def add_event_points_from_group(self) -> bool:
-        points = int(self.max_event_points * 0.10)
+        points = int(self.max_event_points * 0.17)
 
         return self.add_event_points(points)
 
