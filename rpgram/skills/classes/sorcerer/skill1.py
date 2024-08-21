@@ -216,6 +216,7 @@ SKILL_WAY_DESCRIPTION = {
 
 if __name__ == '__main__':
     from rpgram.constants.test import SORCERER_CHARACTER
+
     skill = MysticalProtectionSkill(SORCERER_CHARACTER)
     print(skill)
     print(SORCERER_CHARACTER.bs.wisdom)
