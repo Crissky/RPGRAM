@@ -73,7 +73,8 @@ class FuriousFurySkill(BaseSkill):
             'text': (
                 f'*{player_name}* perde a concentração e entra em um estado '
                 f'de *Fúria*, aumentando o seu '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -129,9 +130,10 @@ class FuriousInstinctSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* desperta um instinto que amplifica seus '
-                f'sentidos e afia suas habilidades de combate '
-                f'aumentando a sua '
-                f'*{DEXTERITY_EMOJI_TEXT}*.\n\n'
+                f'sentidos e afia suas habilidades de combate, '
+                f'aumentando o multiplicador de '
+                f'*{DEXTERITY_EMOJI_TEXT}* '
+                f'em {condition.multiplier_dexterity} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -190,9 +192,13 @@ class FrenzySkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* acessa um estado de *Frenesi*, '
-                f'afiando suas habilidades de combate '
-                f'aumentando a sua '
-                f'*{STRENGTH_EMOJI_TEXT}* e *{DEXTERITY_EMOJI_TEXT}*.\n\n'
+                f'afiando suas habilidades de combate, '
+                f'aumentando o multiplicador de '
+                f'*{STRENGTH_EMOJI_TEXT}* '
+                f'em {condition.multiplier_strength} pontos '
+                f'e o multiplicador de '
+                f'*{DEXTERITY_EMOJI_TEXT}* '
+                f'em {condition.multiplier_dexterity} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
