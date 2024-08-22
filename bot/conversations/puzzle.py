@@ -124,7 +124,7 @@ async def create_puzzle_event(
     now = get_brazil_time_now()
     times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1, 10)
+        minutes = randint(1 + (i*10), 10 + (i*10))
         print(
             f'CREATE_PUZZLE_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
