@@ -48,6 +48,7 @@ from rpgram.conditions.self_skill import (
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
+    ImproviseCondition,
     InvestigationCondition,
     LavaSkinCondition,
     MistFormCondition,
@@ -144,6 +145,7 @@ from rpgram.enums.skill import (
     HeraldSkillEnum,
     KnightSkillEnum,
     MageSkillEnum,
+    MercenarySkillEnum,
     MultiClasseSkillEnum,
     PaladinSkillEnum,
     RogueSkillEnum,
@@ -438,6 +440,8 @@ def condition_factory(
     # SUMMONER BUFFS
     elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
         condition_class = PiskieWindbagCondition
+    elif compare_condition(name, MercenarySkillEnum.IMPROVISE):
+        condition_class = ImproviseCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
