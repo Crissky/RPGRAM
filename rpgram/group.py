@@ -13,6 +13,7 @@ from random import randint
 
 MAX_NUM_PLAYERS = 3
 MAX_EVENT_POINTS_MULTIPLIER = 100
+MAX_EXTRA_EVENT_POINTS = 3.0
 
 
 class Group:
@@ -32,9 +33,10 @@ class Group:
         tier: dict = {},
         total_players: int = 1,
         current_event_points: int = 0,
+        current_extra_event_points: float = 0.0,
         created_at: datetime = None,
         updated_at: datetime = None
-    ) -> None:
+    ):
         if isinstance(_id, str):
             _id = ObjectId(_id)
 
@@ -50,6 +52,7 @@ class Group:
         self.tier = tier
         self.__total_players = total_players
         self.current_event_points = current_event_points
+        self.current_extra_event_points = current_extra_event_points
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -78,8 +81,19 @@ class Group:
         )
 
     @property
+    def show_extra_event_points(self) -> str:
+        return (
+            f'Pontos de Evento Extra: '
+            f'{self.current_extra_event_points}/{MAX_EXTRA_EVENT_POINTS}'
+        )
+
+    @property
     def can_trigger_event(self) -> bool:
         return self.current_event_points >= self.max_event_points
+
+    @property
+    def can_trigger_extra_event(self) -> bool:
+        return self.current_extra_event_points >= 1.0
 
     _id = property(lambda self: self.__id)
 
@@ -132,7 +146,7 @@ class Group:
         else:
             raise KeyError(f'"{key}" não é uma chave válida.')
 
-    def add_tier(self, player_id: Union[int, str], level: int) -> None:
+    def add_tier(self, player_id: Union[int, str], level: int):
         player_id = str(player_id)
         if player_id in self.tier.keys() or len(self.tier) < MAX_NUM_PLAYERS:
             self.tier[player_id] = level
@@ -143,11 +157,11 @@ class Group:
                 self.tier.pop(min_key)
                 self.tier[player_id] = level
 
-    def set_total_players(self, total_players: int) -> None:
+    def set_total_players(self, total_players: int):
         self.__total_players = total_players
 
     def add_event_points(self, points: int) -> bool:
-        self.current_event_points += points
+        self.current_event_points += abs(int(points))
         self.current_event_points = min(
             self.current_event_points,
             self.max_event_points
@@ -173,11 +187,42 @@ class Group:
 
     def add_event_points_from_group(self) -> bool:
         points = int(self.max_event_points * 0.17)
+        if self.can_trigger_event:
+            self.add_extra_event_points(0.50)
 
         return self.add_event_points(points)
 
-    def reset_event_points(self) -> None:
+    def reset_event_points(self):
         self.current_event_points = 0
+
+    def add_extra_event_points(self, points: int) -> bool:
+        self.current_extra_event_points += abs(points)
+        self.current_extra_event_points = round(
+            self.current_extra_event_points,
+            2
+        )
+        self.current_extra_event_points = min(
+            self.current_extra_event_points,
+            MAX_EXTRA_EVENT_POINTS
+        )
+
+        return self.current_event_points >= self.max_event_points
+
+    def reset_extra_event_points(self):
+        self.current_extra_event_points = 0
+
+    def get_extra_event_points(self) -> int:
+        if self.can_trigger_extra_event:
+            extra_event_points = int(self.current_extra_event_points)
+            self.current_extra_event_points -= extra_event_points
+            self.current_extra_event_points = round(
+                self.current_extra_event_points,
+                2
+            )
+
+            return extra_event_points
+        else:
+            raise ValueError('Não é possível pegar ponto do evento extra.')
 
     def __repr__(self) -> str:
         return (
@@ -194,6 +239,7 @@ class Group:
             f'Nível do Grupo: {self.group_level}\n'
             f'Total de Jogadores: {self.total_players}\n'
             f'{self.show_event_points}\n'
+            f'{self.show_extra_event_points}\n'
             f'ID: {self.__id}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}\n'
@@ -214,6 +260,7 @@ class Group:
             tier=self.tier,
             total_players=self.total_players,
             current_event_points=self.current_event_points,
+            current_extra_event_points=self.current_extra_event_points,
             created_at=self.created_at,
             updated_at=self.updated_at
         )
