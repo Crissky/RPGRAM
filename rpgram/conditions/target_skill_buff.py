@@ -27,6 +27,7 @@ from rpgram.enums.skill import (
     DuelistSkillEnum,
     HealerSkillEnum,
     KnightSkillEnum,
+    NecromancerSkillEnum,
     PaladinSkillEnum,
     WarriorSkillEnum
 )
@@ -1584,6 +1585,43 @@ class VitalityAuraCondition(TargetSkillBuffCondition):
         return int(self._power * power_multiplier)
 
 
+class BoneBucklerCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=NecromancerSkillEnum.BONE_BUCKLER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🛡🦴'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1618,6 +1656,7 @@ class TargetBuffs:
         TricksterTrovaCondition,
         LeadershipCondition,
         VitalityAuraCondition,
+        BoneBucklerCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

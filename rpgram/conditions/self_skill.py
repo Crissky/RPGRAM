@@ -33,6 +33,7 @@ from rpgram.enums.skill import (
     HeraldSkillEnum,
     KnightSkillEnum,
     MageSkillEnum,
+    MercenarySkillEnum,
     MultiClasseSkillEnum,
     PaladinSkillEnum,
     RogueSkillEnum,
@@ -1188,6 +1189,50 @@ class ArenaDomainCondition(SelfSkillCondition):
         return f'permanece com o *{self.trans_name}*.'
 
 
+class ImproviseCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=MercenarySkillEnum.IMPROVISE,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Aprimoramento Improvisado* '
+            f'que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 1 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_attack = self.character.bs.dexterity * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '♻️🗡️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com o *Aprimoramento Improvisado*.'
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -1277,6 +1322,7 @@ class SelfBuffs:
         TurtleStanceCondition,
         UnicornStanceCondition,
         ArenaDomainCondition,
+        ImproviseCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

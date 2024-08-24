@@ -48,6 +48,7 @@ from rpgram.conditions.self_skill import (
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
+    ImproviseCondition,
     InvestigationCondition,
     LavaSkinCondition,
     MistFormCondition,
@@ -92,6 +93,7 @@ from rpgram.conditions.target_skill_buff import (
     AnansisTrickeryCondition,
     ArtemissArrowCondition,
     BodyguardBearCondition,
+    BoneBucklerCondition,
     CeridwensMagicPotionCondition,
     CourtesanAnointingCondition,
     CrescentMoonBalladCondition,
@@ -144,7 +146,9 @@ from rpgram.enums.skill import (
     HeraldSkillEnum,
     KnightSkillEnum,
     MageSkillEnum,
+    MercenarySkillEnum,
     MultiClasseSkillEnum,
+    NecromancerSkillEnum,
     PaladinSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum,
@@ -438,6 +442,11 @@ def condition_factory(
     # SUMMONER BUFFS
     elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
         condition_class = PiskieWindbagCondition
+    elif compare_condition(name, MercenarySkillEnum.IMPROVISE):
+        condition_class = ImproviseCondition
+    # NECROMANCER BUFFS
+    elif compare_condition(name, NecromancerSkillEnum.BONE_BUCKLER):
+        condition_class = BoneBucklerCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

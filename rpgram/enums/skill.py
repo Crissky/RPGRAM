@@ -220,6 +220,18 @@ class MageSkillEnum(Enum):
     SAND_STORM = 'Tempestade de Areia'
 
 
+class MercenarySkillEnum(Enum):
+    NOSEBREAKER = 'Quebra-Venta'
+    SKULLBREAKER = 'Quebra-Crânio'
+    IMPROVISE = 'Improvisar'
+
+
+class NecromancerSkillEnum(Enum):
+    BANNED_SOUL = 'Alma Penada'
+    UNDEAD_EMBRACE = 'Abraço de Morto-Vivo'
+    BONE_BUCKLER = 'Broquel de Osso'
+
+
 class PaladinSkillEnum(Enum):
     SACRED_BALM = 'Bálsamo Sagrado'
     GREENDRAGON_BALM = 'Bálsamo de Dragão Verde'
