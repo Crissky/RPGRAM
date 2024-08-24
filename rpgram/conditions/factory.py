@@ -93,7 +93,9 @@ from rpgram.conditions.target_skill_buff import (
     AnansisTrickeryCondition,
     ArtemissArrowCondition,
     BodyguardBearCondition,
+    BoneArmorCondition,
     BoneBucklerCondition,
+    BoneSpaulderCondition,
     CeridwensMagicPotionCondition,
     CourtesanAnointingCondition,
     CrescentMoonBalladCondition,
@@ -447,6 +449,10 @@ def condition_factory(
     # NECROMANCER BUFFS
     elif compare_condition(name, NecromancerSkillEnum.BONE_BUCKLER):
         condition_class = BoneBucklerCondition
+    elif compare_condition(name, NecromancerSkillEnum.BONE_SPAULDER):
+        condition_class = BoneSpaulderCondition
+    elif compare_condition(name, NecromancerSkillEnum.BONE_ARMOR):
+        condition_class = BoneArmorCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

@@ -1622,6 +1622,94 @@ class BoneBucklerCondition(TargetSkillBuffCondition):
         return f'permanece equipado com o *{self.enum_name.value}*.'
 
 
+class BoneSpaulderCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=NecromancerSkillEnum.BONE_SPAULDER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🦾🦴'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+    
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class BoneArmorCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=NecromancerSkillEnum.BONE_ARMOR,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.ARMOR.value + '🦴'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+    
+    @property
+    def power(self) -> int:
+        power_multiplier = 3 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1657,6 +1745,8 @@ class TargetBuffs:
         LeadershipCondition,
         VitalityAuraCondition,
         BoneBucklerCondition,
+        BoneSpaulderCondition,
+        BoneArmorCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

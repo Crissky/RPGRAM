@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.target_skill_buff import BoneBucklerCondition
+from rpgram.conditions.target_skill_buff import BoneArmorCondition, BoneBucklerCondition, BoneSpaulderCondition
 from rpgram.constants.text import (
     INTELLIGENCE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
@@ -28,7 +28,7 @@ class BoneBucklerSkill(BaseSkill):
         f'*Ossos* e *Névoa Necromântica*, '
         f'aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
-        f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -80,6 +80,128 @@ class BoneBucklerSkill(BaseSkill):
         return report
 
 
+class BoneSpaulderSkill(BaseSkill):
+    NAME = NecromancerSkillEnum.BONE_SPAULDER.value
+    DESCRIPTION = (
+        f'Forja uma *Espaldeira Esquelética* feita de '
+        f'*Ossos* e *Névoa Necromântica* e que '
+        f'aumenta a '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.NECROMANCER.value,
+        'skill_list': [BoneBucklerSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=BoneSpaulderSkill.NAME,
+            description=BoneSpaulderSkill.DESCRIPTION,
+            rank=BoneSpaulderSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=BoneSpaulderSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level_rank
+        power = char.cs.intelligence
+        condition = BoneSpaulderCondition(power=power, level=level)
+        report_list = char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* cria e equipa uma *{self.name}*, '
+                f'aumentando a '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class BoneArmorSkill(BaseSkill):
+    NAME = NecromancerSkillEnum.BONE_ARMOR.value
+    DESCRIPTION = (
+        f'Forja uma *Armadura Esquelética* com placas feitas de '
+        f'*Ossos* e *Névoa Necromântica* e que '
+        f'aumenta a '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.NECROMANCER.value,
+        'skill_list': [BoneBucklerSkill.NAME, BoneSpaulderSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=BoneArmorSkill.NAME,
+            description=BoneArmorSkill.DESCRIPTION,
+            rank=BoneArmorSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=BoneArmorSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level_rank
+        power = char.cs.intelligence
+        condition = BoneArmorCondition(power=power, level=level)
+        report_list = char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* cria e equipa uma *{self.name}*, '
+                f'aumentando a '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Ossífice',
     'description': (
@@ -96,6 +218,8 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         BoneBucklerSkill,
+        BoneSpaulderSkill,
+        BoneArmorSkill,
     ]
 }
 
@@ -110,3 +234,19 @@ if __name__ == '__main__':
     print(skill.function())
     print(NECROMANCER_CHARACTER.cs.physical_defense)
     NECROMANCER_CHARACTER.skill_tree.learn_skill(BoneBucklerSkill)
+
+    skill = BoneSpaulderSkill(NECROMANCER_CHARACTER)
+    print(skill)
+    print(NECROMANCER_CHARACTER.cs.intelligence)
+    print(NECROMANCER_CHARACTER.cs.physical_defense)
+    print(skill.function())
+    print(NECROMANCER_CHARACTER.cs.physical_defense)
+    NECROMANCER_CHARACTER.skill_tree.learn_skill(BoneSpaulderSkill)
+
+    skill = BoneArmorSkill(NECROMANCER_CHARACTER)
+    print(skill)
+    print(NECROMANCER_CHARACTER.cs.intelligence)
+    print(NECROMANCER_CHARACTER.cs.physical_defense)
+    print(skill.function())
+    print(NECROMANCER_CHARACTER.cs.physical_defense)
+    NECROMANCER_CHARACTER.skill_tree.learn_skill(BoneArmorSkill)
