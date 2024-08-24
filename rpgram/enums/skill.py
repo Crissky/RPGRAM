@@ -228,8 +228,13 @@ class MercenarySkillEnum(Enum):
 
 class NecromancerSkillEnum(Enum):
     BANNED_SOUL = 'Alma Penada'
+    VENGEFUL_SPIRIT = 'Espírito Vingativo'
     UNDEAD_EMBRACE = 'Abraço de Morto-Vivo'
+    ABYSSAL_CREATURE = 'Criatura Abissal'
+    THE_HORDE = 'A Horda'
     BONE_BUCKLER = 'Broquel de Osso'
+    BONE_SPAULDER = 'Espaldeira de Osso'
+    BONE_ARMOR = 'Armadura de Osso'
 
 
 class PaladinSkillEnum(Enum):
