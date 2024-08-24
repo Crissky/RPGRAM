@@ -20,7 +20,9 @@ async def add_event_points_from_player(
     group: Group = group_model.get(chat_id)
     can_trigger_event = group.add_event_points_from_player()
     if can_trigger_event:
-        await create_event(update=update, context=context)
+        total_events = 1 + group.get_extra_event_points()
+        for _ in range(total_events):
+            await create_event(update=update, context=context)
         group.reset_event_points()
 
     group_model.save(group)

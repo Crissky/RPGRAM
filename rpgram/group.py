@@ -197,10 +197,7 @@ class Group:
 
     def add_extra_event_points(self, points: int) -> bool:
         self.current_extra_event_points += abs(points)
-        self.current_extra_event_points = round(
-            self.current_extra_event_points,
-            2
-        )
+        self.round_current_extra_event_points()
         self.current_extra_event_points = min(
             self.current_extra_event_points,
             MAX_EXTRA_EVENT_POINTS
@@ -212,17 +209,19 @@ class Group:
         self.current_extra_event_points = 0
 
     def get_extra_event_points(self) -> int:
+        extra_event_points = 0
         if self.can_trigger_extra_event:
             extra_event_points = int(self.current_extra_event_points)
             self.current_extra_event_points -= extra_event_points
-            self.current_extra_event_points = round(
-                self.current_extra_event_points,
-                2
-            )
+            self.round_current_extra_event_points()
 
-            return extra_event_points
-        else:
-            raise ValueError('Não é possível pegar ponto do evento extra.')
+        return extra_event_points
+
+    def round_current_extra_event_points(self):
+        self.current_extra_event_points = round(
+            self.current_extra_event_points,
+            2
+        )
 
     def __repr__(self) -> str:
         return (
