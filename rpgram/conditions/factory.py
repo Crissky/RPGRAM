@@ -40,6 +40,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    AlertCondition,
     ArenaDomainCondition,
     ChampionInspirationCondition,
     ChaoticStepsCondition,
@@ -62,6 +63,7 @@ from rpgram.conditions.self_skill import (
     RockArmorCondition,
     ShadowStepsCondition,
     SharpFaroCondition,
+    SniffCondition,
     TurtleStanceCondition,
     UnicornStanceCondition
 )
@@ -152,6 +154,7 @@ from rpgram.enums.skill import (
     MultiClasseSkillEnum,
     NecromancerSkillEnum,
     PaladinSkillEnum,
+    RangerSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum,
     SummonerSkillEnum,
@@ -453,6 +456,11 @@ def condition_factory(
         condition_class = BoneSpaulderCondition
     elif compare_condition(name, NecromancerSkillEnum.BONE_ARMOR):
         condition_class = BoneArmorCondition
+    # RANGER BUFFS
+    elif compare_condition(name, RangerSkillEnum.SNIFF):
+        condition_class = SniffCondition
+    elif compare_condition(name, RangerSkillEnum.ALERT):
+        condition_class = AlertCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

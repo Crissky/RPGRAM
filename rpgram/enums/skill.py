@@ -264,6 +264,14 @@ class PaladinSkillEnum(Enum):
     EXILE = 'Exílio'
 
 
+class RangerSkillEnum(Enum):
+    K9_STRIKE = 'Golpe K9'
+    DOUBLE_AMBUSH = 'Emboscada Dupla'
+    THE_PACK = 'A Matilha'
+    SNIFF = 'Farejar'
+    ALERT = 'Alerta'
+
+
 class RogueSkillEnum(Enum):
     VIPERÇÇÇS_FANGS = 'Presas de Víbora'
     DOUBLE_FANGS = 'Presas Duplas'
