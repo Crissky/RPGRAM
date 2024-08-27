@@ -29,6 +29,7 @@ from rpgram.enums.skill import (
     KnightSkillEnum,
     NecromancerSkillEnum,
     PaladinSkillEnum,
+    ShamanSkillEnum,
     WarriorSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
@@ -1657,7 +1658,7 @@ class BoneSpaulderCondition(TargetSkillBuffCondition):
     @property
     def function_text(self) -> str:
         return f'permanece equipado com o *{self.enum_name.value}*.'
-    
+
     @property
     def power(self) -> int:
         power_multiplier = 2 + (self.level / 10)
@@ -1701,7 +1702,138 @@ class BoneArmorCondition(TargetSkillBuffCondition):
     @property
     def function_text(self) -> str:
         return f'permanece equipado com o *{self.enum_name.value}*.'
-    
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 3 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class VineCrosierCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.VINE_CROSIER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_attack} pontos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🦯🍇'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
+
+class WildCarnationCloakCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.WILD_CARNATION_CLOAK,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos.'
+        )
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.ARMOR.value + '🌸'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 2 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+
+class CrystalSapRingCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.CRYSTAL_SAP_RING,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que aumenta o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_attack} pontos e a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.RING.value + '🍯'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece equipado com o *{self.enum_name.value}*.'
+
     @property
     def power(self) -> int:
         power_multiplier = 3 + (self.level / 10)
@@ -1747,6 +1879,9 @@ class TargetBuffs:
         BoneBucklerCondition,
         BoneSpaulderCondition,
         BoneArmorCondition,
+        VineCrosierCondition,
+        WildCarnationCloakCondition,
+        CrystalSapRingCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

@@ -284,6 +284,12 @@ class RogueSkillEnum(Enum):
     CHAOTIC_STRIKE = 'Golpe Caótico'
 
 
+class ShamanSkillEnum(Enum):
+    VINE_CROSIER = 'Báculo de Vinha'
+    WILD_CARNATION_CLOAK = 'Manto de Cravo Selvagem'
+    CRYSTAL_SAP_RING = 'Anel de Seiva Cristalina'
+
+
 class SummonerSkillEnum(Enum):
     FLAMING_SPECTER = 'Espectro Flamejante'
     KAPPA_FOUNTAIN = 'Fonte do Kappa'

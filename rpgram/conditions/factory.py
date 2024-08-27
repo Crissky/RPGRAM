@@ -101,6 +101,7 @@ from rpgram.conditions.target_skill_buff import (
     CeridwensMagicPotionCondition,
     CourtesanAnointingCondition,
     CrescentMoonBalladCondition,
+    CrystalSapRingCondition,
     EagleEyeCondition,
     GraceOfThePantheonCondition,
     HecatesFlamesCondition,
@@ -121,11 +122,13 @@ from rpgram.conditions.target_skill_buff import (
     OakArmorCondition,
     VineBucklerCondition,
     SilkFlossSpaulderCondition,
+    VineCrosierCondition,
     VitalityAuraCondition,
     WarBannerCondition,
     WarSongCondition,
     WarriorAnointingCondition,
-    WatcherOwlCondition
+    WatcherOwlCondition,
+    WildCarnationCloakCondition
 )
 from rpgram.conditions.target_skill_debuff import (
     AchillesHeelCondition,
@@ -156,6 +159,7 @@ from rpgram.enums.skill import (
     PaladinSkillEnum,
     RangerSkillEnum,
     RogueSkillEnum,
+    ShamanSkillEnum,
     SorcererSkillEnum,
     SummonerSkillEnum,
     WarriorSkillEnum
@@ -461,6 +465,13 @@ def condition_factory(
         condition_class = SniffCondition
     elif compare_condition(name, RangerSkillEnum.ALERT):
         condition_class = AlertCondition
+    # SHAMAN BUFFS
+    elif compare_condition(name, ShamanSkillEnum.VINE_CROSIER):
+        condition_class = VineCrosierCondition
+    elif compare_condition(name, ShamanSkillEnum.WILD_CARNATION_CLOAK):
+        condition_class = WildCarnationCloakCondition
+    elif compare_condition(name, ShamanSkillEnum.CRYSTAL_SAP_RING):
+        condition_class = CrystalSapRingCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition
