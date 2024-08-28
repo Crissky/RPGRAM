@@ -18,7 +18,7 @@ from bot.decorators import (
     print_basic_infos
 )
 from bot.decorators.char import skip_if_dead_char_silent
-from bot.decorators.job import skip_if_spawn_timeout
+from bot.decorators.job import skip_command_if_spawn_timeout
 from bot.functions.char import add_xp
 from bot.functions.chat import (
     call_telegram_message_function,
@@ -44,7 +44,7 @@ from rpgram.player import Player
 @skip_if_no_singup_group
 @skip_if_no_singup_player
 @skip_if_dead_char_silent
-@skip_if_spawn_timeout
+@skip_command_if_spawn_timeout
 @print_basic_infos
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model = PlayerModel()
