@@ -36,8 +36,7 @@ def skip_command_if_spawn_timeout(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@SKIP_COMMAND_IF_SPAWN_TIMEOUT')
         group_model = GroupModel()
-        job = context.job
-        chat_id = job.chat_id
+        chat_id = update.effective_chat.id
         group: Group = group_model.get(chat_id)
         spawn_start_time = group.spawn_start_time
         spawn_end_time = group.spawn_end_time
@@ -49,7 +48,7 @@ def skip_command_if_spawn_timeout(callback):
         )
         if now.hour >= spawn_start_time and now.hour < spawn_end_time:
             print('\tAUTORIZADO - DENTRO DO HORÁRIO DE EVENTOS DO GRUPO.')
-            return await callback(context)
+            return await callback(update, context)
         else:
             print(
                 f'Evento job_activate_conditions foi skipado, '
