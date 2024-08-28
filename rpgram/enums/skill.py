@@ -288,6 +288,14 @@ class ShamanSkillEnum(Enum):
     VINE_CROSIER = 'Báculo de Vinha'
     WILD_CARNATION_CLOAK = 'Manto de Cravo Selvagem'
     CRYSTAL_SAP_RING = 'Anel de Seiva Cristalina'
+    FIGHTER_PANDINUS = 'Pandinus Lutador'
+    FELLOW_PANDINUS = 'Pandinus Companheiro'
+    PROTECTOR_TURTLE = 'Tartaruga Protetora'
+    FELLOW_TURTLE = 'Tartaruga Companheira'
+    CLAIRVOYANT_WOLF = 'Lobo Clarividente'
+    FELLOW_WOLF = 'Lobo Companheiro'
+    LOOKOUTER_YETI = 'Yeti Olhador'
+    FELLOW_YETI = 'Yeti Companheiro'
 
 
 class SummonerSkillEnum(Enum):

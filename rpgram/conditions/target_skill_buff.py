@@ -1842,6 +1842,178 @@ class CrystalSapRingCondition(TargetSkillBuffCondition):
         return int(self._power * power_multiplier)
 
 
+class FighterPandinusCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.FIGHTER_PANDINUS,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o guarda, '
+            f'aumentando o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🥊🦂'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando pelo *{self.enum_name.value}*.'
+
+
+class ProtectorTurtleCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.PROTECTOR_TURTLE,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que o defende, '
+            f'aumentando a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return self.power
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🛡️🐢'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece protegido pela *{self.enum_name.value}*.'
+
+
+class ClairvoyantWolfCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.CLAIRVOYANT_WOLF,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que fareja o futuro ao seu lado, '
+            f'aumentando o '
+            f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_magical_attack(self) -> int:
+        return self.power
+
+    @property
+    def bonus_evasion(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🧙🏽🐺'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece farejando o futuro com o *{self.enum_name.value}*.'
+
+
+class LookouterYetiCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.LOOKOUTER_YETI,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.enum_name.value}* que observa o plano místico, '
+            f'aumentando o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* e o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        return self.power
+
+    @property
+    def bonus_hit(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '👀🐻‍❄️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece observando *{self.enum_name.value}*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -1882,6 +2054,10 @@ class TargetBuffs:
         VineCrosierCondition,
         WildCarnationCloakCondition,
         CrystalSapRingCondition,
+        FighterPandinusCondition,
+        ProtectorTurtleCondition,
+        ClairvoyantWolfCondition,
+        LookouterYetiCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:
