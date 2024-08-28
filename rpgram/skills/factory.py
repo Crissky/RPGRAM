@@ -81,10 +81,20 @@ from rpgram.skills.classes.paladin.factory import (
     PALADIN_SKILL_WAYS,
     paladin_skill_factory
 )
+from rpgram.skills.classes.ranger.factory import (
+    RANGER_SKILL_LIST,
+    RANGER_SKILL_WAYS,
+    ranger_skill_factory
+)
 from rpgram.skills.classes.rogue.factory import (
     ROGUE_SKILL_LIST,
     ROGUE_SKILL_WAYS,
     rogue_skill_factory
+)
+from rpgram.skills.classes.shaman.factory import (
+    SHAMAN_SKILL_LIST,
+    SHAMAN_SKILL_WAYS,
+    shaman_skill_factory
 )
 from rpgram.skills.classes.sorcerer.factory import (
     SORCERER_SKILL_LIST,
@@ -129,6 +139,8 @@ ALL_SKILL_DICT = {
     ClasseEnum.SUMMONER.value: SUMMONER_SKILL_LIST,
     ClasseEnum.MERCENARY.value: MERCENARY_SKILL_LIST,
     ClasseEnum.NECROMANCER.value: NECROMANCER_SKILL_LIST,
+    ClasseEnum.RANGER.value: RANGER_SKILL_LIST,
+    ClasseEnum.SHAMAN.value: SHAMAN_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
@@ -151,6 +163,8 @@ ALL_SKILL_WAY_DICT = {
     ClasseEnum.SUMMONER.value: SUMMONER_SKILL_WAYS,
     ClasseEnum.MERCENARY.value: MERCENARY_SKILL_WAYS,
     ClasseEnum.NECROMANCER.value: NECROMANCER_SKILL_WAYS,
+    ClasseEnum.RANGER.value: RANGER_SKILL_WAYS,
+    ClasseEnum.SHAMAN.value: SHAMAN_SKILL_WAYS,
 }
 
 
@@ -207,9 +221,9 @@ def skill_factory(
     elif ClasseEnum.NECROMANCER.value == classe_name:
         class_skill_factory = necromancer_skill_factory
     elif ClasseEnum.RANGER.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = ranger_skill_factory
     elif ClasseEnum.SHAMAN.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = shaman_skill_factory
     elif ClasseEnum.SAMURAI.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.BERSERKIR.value == classe_name:
@@ -280,9 +294,9 @@ def skill_list_factory(
     elif ClasseEnum.NECROMANCER.value == classe_name:
         return NECROMANCER_SKILL_LIST
     elif ClasseEnum.RANGER.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return RANGER_SKILL_LIST
     elif ClasseEnum.SHAMAN.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return SHAMAN_SKILL_LIST
     elif ClasseEnum.SAMURAI.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.BERSERKIR.value == classe_name:

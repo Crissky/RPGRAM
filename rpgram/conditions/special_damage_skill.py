@@ -14,7 +14,8 @@ from rpgram.enums.skill import (
     DruidSkillEnum,
     GladiatorSkillEnum,
     GuardianSkillEnum,
-    PaladinSkillEnum
+    PaladinSkillEnum,
+    ShamanSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
 from rpgram.skills.special_damage import SpecialDamage
@@ -821,6 +822,142 @@ class SDAresBladeCondition(SpecialDamageSkillCondition):
         return f'está portando a *{self.trans_name}*.'
 
 
+class SDFellowPandinusCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.FELLOW_PANDINUS,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[
+                DamageEnum.PIERCING,
+                DamageEnum.ROCK,
+                DamageEnum.POISON
+            ],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🦂'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado do *{self.trans_name}*.'
+
+
+class SDFellowTurtleCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.FELLOW_TURTLE,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.BLUDGEONING, DamageEnum.WATER],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🐢'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado do *{self.trans_name}*.'
+
+
+class SDFellowWolfCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.FELLOW_WOLF,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.SLASHING, DamageEnum.LIGHT],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🐺'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado do *{self.trans_name}*.'
+
+
+class SDFellowYetiCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=ShamanSkillEnum.FELLOW_YETI,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.ROAR, DamageEnum.COLD],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que o ajuda em batalha, '
+            f'concedendo dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🐻‍❄️'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece lutando ao lado da *{self.trans_name}*.'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -844,6 +981,10 @@ class SpecialDamageBuffs:
         SDRedPhoenixBalmCondition,
         SDBlueDjinnBalmCondition,
         SDAresBladeCondition,
+        SDFellowPandinusCondition,
+        SDFellowTurtleCondition,
+        SDFellowWolfCondition,
+        SDFellowYetiCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

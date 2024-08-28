@@ -40,6 +40,7 @@ from rpgram.conditions.heal import (
     Heal8Condition,
 )
 from rpgram.conditions.self_skill import (
+    AlertCondition,
     ArenaDomainCondition,
     ChampionInspirationCondition,
     ChaoticStepsCondition,
@@ -62,12 +63,17 @@ from rpgram.conditions.self_skill import (
     RockArmorCondition,
     ShadowStepsCondition,
     SharpFaroCondition,
+    SniffCondition,
     TurtleStanceCondition,
     UnicornStanceCondition
 )
 from rpgram.conditions.special_damage_skill import (
     SDAresBladeCondition,
     SDBlueDjinnBalmCondition,
+    SDFellowPandinusCondition,
+    SDFellowTurtleCondition,
+    SDFellowWolfCondition,
+    SDFellowYetiCondition,
     SDGreenDragonBalmCondition,
     SDCrystallineInfusionCondition,
     SDEscarchaSapCondition,
@@ -97,9 +103,12 @@ from rpgram.conditions.target_skill_buff import (
     BoneBucklerCondition,
     BoneSpaulderCondition,
     CeridwensMagicPotionCondition,
+    ClairvoyantWolfCondition,
     CourtesanAnointingCondition,
     CrescentMoonBalladCondition,
+    CrystalSapRingCondition,
     EagleEyeCondition,
+    FighterPandinusCondition,
     GraceOfThePantheonCondition,
     HecatesFlamesCondition,
     HunterTigerCondition,
@@ -108,9 +117,11 @@ from rpgram.conditions.target_skill_buff import (
     KnightAnointingCondition,
     KratossWrathCondition,
     LeadershipCondition,
+    LookouterYetiCondition,
     LordAnointingCondition,
     MaidenAnointingCondition,
     OgunsCloakCondition,
+    ProtectorTurtleCondition,
     RangerFalconCondition,
     SquireAnointingCondition,
     TricksterTrovaCondition,
@@ -119,11 +130,13 @@ from rpgram.conditions.target_skill_buff import (
     OakArmorCondition,
     VineBucklerCondition,
     SilkFlossSpaulderCondition,
+    VineCrosierCondition,
     VitalityAuraCondition,
     WarBannerCondition,
     WarSongCondition,
     WarriorAnointingCondition,
-    WatcherOwlCondition
+    WatcherOwlCondition,
+    WildCarnationCloakCondition
 )
 from rpgram.conditions.target_skill_debuff import (
     AchillesHeelCondition,
@@ -152,7 +165,9 @@ from rpgram.enums.skill import (
     MultiClasseSkillEnum,
     NecromancerSkillEnum,
     PaladinSkillEnum,
+    RangerSkillEnum,
     RogueSkillEnum,
+    ShamanSkillEnum,
     SorcererSkillEnum,
     SummonerSkillEnum,
     WarriorSkillEnum
@@ -453,6 +468,34 @@ def condition_factory(
         condition_class = BoneSpaulderCondition
     elif compare_condition(name, NecromancerSkillEnum.BONE_ARMOR):
         condition_class = BoneArmorCondition
+    # RANGER BUFFS
+    elif compare_condition(name, RangerSkillEnum.SNIFF):
+        condition_class = SniffCondition
+    elif compare_condition(name, RangerSkillEnum.ALERT):
+        condition_class = AlertCondition
+    # SHAMAN BUFFS
+    elif compare_condition(name, ShamanSkillEnum.VINE_CROSIER):
+        condition_class = VineCrosierCondition
+    elif compare_condition(name, ShamanSkillEnum.WILD_CARNATION_CLOAK):
+        condition_class = WildCarnationCloakCondition
+    elif compare_condition(name, ShamanSkillEnum.CRYSTAL_SAP_RING):
+        condition_class = CrystalSapRingCondition
+    elif compare_condition(name, ShamanSkillEnum.FIGHTER_PANDINUS):
+        condition_class = FighterPandinusCondition
+    elif compare_condition(name, ShamanSkillEnum.PROTECTOR_TURTLE):
+        condition_class = ProtectorTurtleCondition
+    elif compare_condition(name, ShamanSkillEnum.CLAIRVOYANT_WOLF):
+        condition_class = ClairvoyantWolfCondition
+    elif compare_condition(name, ShamanSkillEnum.LOOKOUTER_YETI):
+        condition_class = LookouterYetiCondition
+    elif compare_condition(name, ShamanSkillEnum.FELLOW_PANDINUS):
+        condition_class = SDFellowPandinusCondition
+    elif compare_condition(name, ShamanSkillEnum.FELLOW_TURTLE):
+        condition_class = SDFellowTurtleCondition
+    elif compare_condition(name, ShamanSkillEnum.FELLOW_WOLF):
+        condition_class = SDFellowWolfCondition
+    elif compare_condition(name, ShamanSkillEnum.FELLOW_YETI):
+        condition_class = SDFellowYetiCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

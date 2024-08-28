@@ -36,6 +36,7 @@ from rpgram.enums.skill import (
     MercenarySkillEnum,
     MultiClasseSkillEnum,
     PaladinSkillEnum,
+    RangerSkillEnum,
     RogueSkillEnum,
     SorcererSkillEnum
 )
@@ -1233,6 +1234,104 @@ class ImproviseCondition(SelfSkillCondition):
         return f'permanece com o *Aprimoramento Improvisado*.'
 
 
+class SniffCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=RangerSkillEnum.SNIFF,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Fareja*, '
+            f'aumentando o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 1 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.dexterity * power
+
+        return int(bonus_hit)
+
+    @property
+    def emoji(self) -> str:
+        return '🐕‍🦺💨'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece *Farejando*.'
+
+
+class AlertCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=RangerSkillEnum.ALERT,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Estado de Alerta* que '
+            f'aumenta o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_precision_attack} pontos e o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'(200%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_precision_attack = self.character.bs.dexterity * power
+
+        return int(bonus_precision_attack)
+    
+    @property
+    def bonus_hit(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.dexterity * power
+
+        return int(bonus_hit)
+
+    @property
+    def emoji(self) -> str:
+        return '🐕‍🦺🚨'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece em *Estado de Alerta*.'
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -1323,6 +1422,8 @@ class SelfBuffs:
         UnicornStanceCondition,
         ArenaDomainCondition,
         ImproviseCondition,
+        SniffCondition,
+        AlertCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

@@ -264,6 +264,14 @@ class PaladinSkillEnum(Enum):
     EXILE = 'Exílio'
 
 
+class RangerSkillEnum(Enum):
+    K9_STRIKE = 'Golpe K9'
+    DOUBLE_AMBUSH = 'Emboscada Dupla'
+    THE_PACK = 'A Matilha'
+    SNIFF = 'Farejar'
+    ALERT = 'Alerta'
+
+
 class RogueSkillEnum(Enum):
     VIPERÇÇÇS_FANGS = 'Presas de Víbora'
     DOUBLE_FANGS = 'Presas Duplas'
@@ -274,6 +282,20 @@ class RogueSkillEnum(Enum):
     CHAOTIC_STEPS = 'Passos Caóticos'
     SHADOW_STRIKE = 'Golpe Sombrio'
     CHAOTIC_STRIKE = 'Golpe Caótico'
+
+
+class ShamanSkillEnum(Enum):
+    VINE_CROSIER = 'Báculo de Vinha'
+    WILD_CARNATION_CLOAK = 'Manto de Cravo Selvagem'
+    CRYSTAL_SAP_RING = 'Anel de Seiva Cristalina'
+    FIGHTER_PANDINUS = 'Pandinus Lutador'
+    FELLOW_PANDINUS = 'Pandinus Companheiro'
+    PROTECTOR_TURTLE = 'Tartaruga Protetora'
+    FELLOW_TURTLE = 'Tartaruga Companheira'
+    CLAIRVOYANT_WOLF = 'Lobo Clarividente'
+    FELLOW_WOLF = 'Lobo Companheiro'
+    LOOKOUTER_YETI = 'Yeti Olhador'
+    FELLOW_YETI = 'Yeti Companheiro'
 
 
 class SummonerSkillEnum(Enum):

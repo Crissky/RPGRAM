@@ -246,7 +246,7 @@ class HunterTigerSkill(BaseSkill):
 class WatcherOwlSkill(BaseSkill):
     NAME = DruidSkillEnum.WATCHER_OWL.value
     DESCRIPTION = (
-        f'Convoca um companheiro *{DruidSkillEnum.WATCHER_OWL.value}* '
+        f'Convoca uma companheira *{DruidSkillEnum.WATCHER_OWL.value}* '
         f'que observa o plano místico e o auxilia nos combates, '
         f'aumentando o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
