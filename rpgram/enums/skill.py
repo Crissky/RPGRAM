@@ -296,6 +296,10 @@ class ShamanSkillEnum(Enum):
     FELLOW_WOLF = 'Lobo Companheiro'
     LOOKOUTER_YETI = 'Yeti Olhador'
     FELLOW_YETI = 'Yeti Companheiro'
+    ROCK_PANDINUS = 'Pandinus de Rocha'
+    MAELSTROM = 'Voragem'
+    LASER_CLAW = 'Garra Laser'
+    SNOW_BREATH = 'Sopro de Neve'
 
 
 class SummonerSkillEnum(Enum):
