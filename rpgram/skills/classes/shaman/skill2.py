@@ -385,7 +385,7 @@ class MaelstromSkill(BaseSkill):
     NAME = ShamanSkillEnum.MAELSTROM.value
     DESCRIPTION = (
         f'Conjura uma *Tartaruga Anciã* que '
-        f'gira em grande velocidade, iniciando uma *Voragem* e '
+        f'gira em grande velocidade, iniciando um *Sorvedouro* e '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
