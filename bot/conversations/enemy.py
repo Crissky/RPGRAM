@@ -165,8 +165,8 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(
         group_level=group_level,
-        num_min_enemies=1,
-        num_max_enemies=3,
+        num_min_enemies=2,
+        num_max_enemies=4,
     )
     message_id = None
 

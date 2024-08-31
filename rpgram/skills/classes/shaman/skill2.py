@@ -32,6 +32,7 @@ from rpgram.enums.skill import (
     SkillTypeEnum,
     TargetEnum
 )
+from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -329,6 +330,198 @@ class LookouterYetiSkill(BaseSkill):
         return report
 
 
+class RockPandinusSkill(BaseSkill):
+    NAME = ShamanSkillEnum.ROCK_PANDINUS.value
+    DESCRIPTION = (
+        f'Conjura um *Pandinus de Pedra* que '
+        f'avança lentamente, atacando com uma ferroada e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}*, de '
+        f'*{get_damage_emoji_text(DamageEnum.ROCK)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.SHAMAN.value,
+        'skill_list': [FighterPandinusSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 3.00,
+        }
+        damage_types = [
+            DamageEnum.PIERCING,
+            DamageEnum.ROCK,
+            DamageEnum.POISON,
+        ]
+
+        super().__init__(
+            name=RockPandinusSkill.NAME,
+            description=RockPandinusSkill.DESCRIPTION,
+            rank=RockPandinusSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=RockPandinusSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
+class MaelstromSkill(BaseSkill):
+    NAME = ShamanSkillEnum.MAELSTROM.value
+    DESCRIPTION = (
+        f'Conjura uma *Tartaruga Anciã* que '
+        f'gira em grande velocidade, iniciando um *Sorvedouro* e '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.SHAMAN.value,
+        'skill_list': [ProtectorTurtleSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 1.50,
+        }
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.WATER,
+        ]
+
+        super().__init__(
+            name=MaelstromSkill.NAME,
+            description=MaelstromSkill.DESCRIPTION,
+            rank=MaelstromSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=MaelstromSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class LaserClawSkill(BaseSkill):
+    NAME = ShamanSkillEnum.LASER_CLAW.value
+    DESCRIPTION = (
+        f'Conjura um *Lobo Boreal* que '
+        f'avança contra o oponente, energizando sua *Garra* e '
+        f'destruindo qualquer barreira antes de aplicar '
+        f'dano de '
+        f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.SHAMAN.value,
+        'skill_list': [ClairvoyantWolfSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 1.00,
+        }
+        damage_types = [
+            DamageEnum.SLASHING,
+            DamageEnum.LIGHT,
+        ]
+
+        super().__init__(
+            name=LaserClawSkill.NAME,
+            description=LaserClawSkill.DESCRIPTION,
+            rank=LaserClawSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=LaserClawSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def pre_hit_function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': ''}
+        status_report = target.status.broken_all_barriers()
+        if status_report['text']:
+            report['text'] = status_report["text"]
+
+        return report
+
+
+class SnowBreathSkill(BaseSkill):
+    NAME = ShamanSkillEnum.SNOW_BREATH.value
+    DESCRIPTION = (
+        f'Conjura um *Yeti das Neves* que '
+        f'solta um *Rugido Gélido* que se propaga pelo campo de batalha, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.ROAR)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.COLD)}* com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.SHAMAN.value,
+        'skill_list': [LookouterYetiSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 1.00,
+        }
+        damage_types = [
+            DamageEnum.ROAR,
+            DamageEnum.COLD,
+        ]
+
+        super().__init__(
+            name=SnowBreathSkill.NAME,
+            description=SnowBreathSkill.DESCRIPTION,
+            rank=SnowBreathSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=SnowBreathSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Aliança Selvagem',
     'description': (
@@ -343,6 +536,10 @@ SKILL_WAY_DESCRIPTION = {
         ProtectorTurtleSkill,
         ClairvoyantWolfSkill,
         LookouterYetiSkill,
+        RockPandinusSkill,
+        MaelstromSkill,
+        LaserClawSkill,
+        SnowBreathSkill,
     ]
 }
 
@@ -389,6 +586,46 @@ if __name__ == '__main__':
     print(SHAMAN_CHARACTER.cs.hit_points,
           SHAMAN_CHARACTER.cs.hit)
     SHAMAN_CHARACTER.skill_tree.learn_skill(LookouterYetiSkill)
+
+    skill = RockPandinusSkill(SHAMAN_CHARACTER)
+    print(skill)
+    print(SHAMAN_CHARACTER.cs.magical_attack)
+    print(SHAMAN_CHARACTER.to_attack(
+        defender_char=SHAMAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    SHAMAN_CHARACTER.skill_tree.learn_skill(RockPandinusSkill)
+
+    skill = MaelstromSkill(SHAMAN_CHARACTER)
+    print(skill)
+    print(SHAMAN_CHARACTER.cs.magical_attack)
+    print(SHAMAN_CHARACTER.to_attack(
+        defender_char=SHAMAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    SHAMAN_CHARACTER.skill_tree.learn_skill(MaelstromSkill)
+
+    skill = LaserClawSkill(SHAMAN_CHARACTER)
+    print(skill)
+    print(SHAMAN_CHARACTER.cs.magical_attack)
+    print(SHAMAN_CHARACTER.to_attack(
+        defender_char=SHAMAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    SHAMAN_CHARACTER.skill_tree.learn_skill(LaserClawSkill)
+
+    skill = SnowBreathSkill(SHAMAN_CHARACTER)
+    print(skill)
+    print(SHAMAN_CHARACTER.cs.magical_attack)
+    print(SHAMAN_CHARACTER.to_attack(
+        defender_char=SHAMAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    SHAMAN_CHARACTER.skill_tree.learn_skill(SnowBreathSkill)
 
     # print('\n'.join([
     #     report['text']

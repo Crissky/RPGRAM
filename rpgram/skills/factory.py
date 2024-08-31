@@ -16,6 +16,11 @@ from rpgram.skills.classes.bard.factory import (
     BARD_SKILL_WAYS,
     bard_skill_factory
 )
+from rpgram.skills.classes.berserkir.factory import (
+    BERSERKIR_SKILL_LIST,
+    BERSERKIR_SKILL_WAYS,
+    berserkir_skill_factory
+)
 from rpgram.skills.classes.bounty_hunter.factory import (
     BOUNTY_HUNTER_SKILL_LIST,
     BOUNTY_HUNTER_SKILL_WAYS,
@@ -141,6 +146,7 @@ ALL_SKILL_DICT = {
     ClasseEnum.NECROMANCER.value: NECROMANCER_SKILL_LIST,
     ClasseEnum.RANGER.value: RANGER_SKILL_LIST,
     ClasseEnum.SHAMAN.value: SHAMAN_SKILL_LIST,
+    ClasseEnum.BERSERKIR.value: BERSERKIR_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
@@ -165,6 +171,7 @@ ALL_SKILL_WAY_DICT = {
     ClasseEnum.NECROMANCER.value: NECROMANCER_SKILL_WAYS,
     ClasseEnum.RANGER.value: RANGER_SKILL_WAYS,
     ClasseEnum.SHAMAN.value: SHAMAN_SKILL_WAYS,
+    ClasseEnum.BERSERKIR.value: BERSERKIR_SKILL_WAYS,
 }
 
 
@@ -224,15 +231,15 @@ def skill_factory(
         class_skill_factory = ranger_skill_factory
     elif ClasseEnum.SHAMAN.value == classe_name:
         class_skill_factory = shaman_skill_factory
-    elif ClasseEnum.SAMURAI.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.BERSERKIR.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = berserkir_skill_factory
     elif ClasseEnum.WEAPON_MASTER.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.SORCERER_SUPREME.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.LORD_OF_THE_ROGUES.value == classe_name:
+        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+    elif ClasseEnum.SAMURAI.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     else:
         raise ValueError(f'Classe {classe_name} não encontrada!')
@@ -297,15 +304,15 @@ def skill_list_factory(
         return RANGER_SKILL_LIST
     elif ClasseEnum.SHAMAN.value == classe_name:
         return SHAMAN_SKILL_LIST
-    elif ClasseEnum.SAMURAI.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.BERSERKIR.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return BERSERKIR_SKILL_LIST
     elif ClasseEnum.WEAPON_MASTER.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.SORCERER_SUPREME.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.LORD_OF_THE_ROGUES.value == classe_name:
+        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+    elif ClasseEnum.SAMURAI.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     else:
         raise ValueError(f'Classe {classe_name} não encontrada!')

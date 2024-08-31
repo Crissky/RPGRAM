@@ -9,8 +9,12 @@ from rpgram.skills.classes.shaman.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
     ClairvoyantWolfSkill,
     FighterPandinusSkill,
+    LaserClawSkill,
     LookouterYetiSkill,
-    ProtectorTurtleSkill
+    MaelstromSkill,
+    ProtectorTurtleSkill,
+    RockPandinusSkill,
+    SnowBreathSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -31,6 +35,7 @@ def shaman_skill_factory(
         skill_class = WildCarnationCloakSkill
     elif skill_class_name == CrystalSapRingSkill.__name__:
         skill_class = CrystalSapRingSkill
+    # SKILL2
     elif skill_class_name == FighterPandinusSkill.__name__:
         skill_class = FighterPandinusSkill
     elif skill_class_name == ProtectorTurtleSkill.__name__:
@@ -39,6 +44,14 @@ def shaman_skill_factory(
         skill_class = ClairvoyantWolfSkill
     elif skill_class_name == LookouterYetiSkill.__name__:
         skill_class = LookouterYetiSkill
+    elif skill_class_name == RockPandinusSkill.__name__:
+        skill_class = RockPandinusSkill
+    elif skill_class_name == MaelstromSkill.__name__:
+        skill_class = MaelstromSkill
+    elif skill_class_name == LaserClawSkill.__name__:
+        skill_class = LaserClawSkill
+    elif skill_class_name == SnowBreathSkill.__name__:
+        skill_class = SnowBreathSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -50,10 +63,16 @@ SHAMAN_SKILL_LIST: List[Type[BaseSkill]] = [
     VineCrosierSkill,
     WildCarnationCloakSkill,
     CrystalSapRingSkill,
+
+    # SKILL2
     FighterPandinusSkill,
     ProtectorTurtleSkill,
     ClairvoyantWolfSkill,
     LookouterYetiSkill,
+    RockPandinusSkill,
+    MaelstromSkill,
+    LaserClawSkill,
+    SnowBreathSkill,
 ]
 SHAMAN_SKILL_WAYS: List[dict] = [
     skill_way1,

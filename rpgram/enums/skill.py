@@ -83,6 +83,12 @@ class BarbarianSkillEnum(Enum):
     WILD_POISON = 'Veneno Selvagem'
 
 
+class BerserkirSkillEnum(Enum):
+    INDOMITABLE_ATTACK = 'Ataque Indomável'
+    IMPETUOUS_STRIKE = 'Golpe Impetuoso'
+    DEVASTATING_RUSH = 'Rajada Devastadora'
+
+
 class BountyHunterSkillEnum(Enum):
     STAB = 'Apunhalar'
     QUICK_DRAW = 'Saque Rápido'
@@ -296,6 +302,10 @@ class ShamanSkillEnum(Enum):
     FELLOW_WOLF = 'Lobo Companheiro'
     LOOKOUTER_YETI = 'Yeti Olhador'
     FELLOW_YETI = 'Yeti Companheiro'
+    ROCK_PANDINUS = 'Pandinus de Rocha'
+    MAELSTROM = 'Voragem'
+    LASER_CLAW = 'Garra Laser'
+    SNOW_BREATH = 'Sopro de Neve'
 
 
 class SummonerSkillEnum(Enum):
