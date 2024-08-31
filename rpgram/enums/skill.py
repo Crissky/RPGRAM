@@ -83,6 +83,12 @@ class BarbarianSkillEnum(Enum):
     WILD_POISON = 'Veneno Selvagem'
 
 
+class BerserkirSkillEnum(Enum):
+    INDOMITABLE_ATTACK = 'Ataque Indomável'
+    IMPETUOUS_STRIKE = 'Golpe Impetuoso'
+    DEVASTATING_RUSH = 'Rajada Devastadora'
+
+
 class BountyHunterSkillEnum(Enum):
     STAB = 'Apunhalar'
     QUICK_DRAW = 'Saque Rápido'
