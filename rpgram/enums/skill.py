@@ -338,6 +338,12 @@ class WarriorSkillEnum(Enum):
     WAR_CRY = 'Grito de Guerra'
 
 
+class WeaponMasterSkillEnum(Enum):
+    SLASHING_ATTACK = 'Ataque Talhante'
+    BRUISING_ATTACK = 'Ataque Contudente'
+    TERREBRANT_ATTACK = 'Ataque Terebrante'
+
+
 class MultiClasseSkillEnum(Enum):
     QUICK_ATTACK = 'Ataque Rápido'
     ROBUST_BLOCK = 'Bloqueio Robusto'
