@@ -1,7 +1,4 @@
 from typing import TYPE_CHECKING, List, Type
-from rpgram.skills.classes.multiclasse.precision_attack import (
-    QuickAttackSkill
-)
 from rpgram.skills.classes.weapon_master.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     BruisingAttackSkill,
