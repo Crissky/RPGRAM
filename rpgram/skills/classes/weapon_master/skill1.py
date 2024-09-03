@@ -61,6 +61,52 @@ class SlashingAttackSkill(BaseSkill):
         return 1.25
 
 
+class SonicBladeSkill(BaseSkill):
+    NAME = WeaponMasterSkillEnum.SONIC_BLADE.value
+    DESCRIPTION = (
+        f'Canaliza energia através de sua arma, criando uma *Onda de Choque* '
+        f'poderosas que corta o ar e dilacera a carne do oponente, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.SONIC)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.WEAPON_MASTER.value,
+        'skill_list': [SlashingAttackSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.00,
+        }
+        damage_types = [DamageEnum.SLASHING, DamageEnum.SONIC]
+
+        super().__init__(
+            name=SonicBladeSkill.NAME,
+            description=SonicBladeSkill.DESCRIPTION,
+            rank=SonicBladeSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=SonicBladeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.50
+
+
 class BruisingAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.BRUISING_ATTACK.value
     DESCRIPTION = (
@@ -103,6 +149,52 @@ class BruisingAttackSkill(BaseSkill):
         return 0.75
 
 
+class CrystallineClashSkill(BaseSkill):
+    NAME = WeaponMasterSkillEnum.CRYSTALLINE_CLASH.value
+    DESCRIPTION = (
+        f'Canaliza *Energia Cristalina* e desfere um golpe que, '
+        f'ao impactar o inimigo, libera uma explosão de cristais, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.WEAPON_MASTER.value,
+        'skill_list': [BruisingAttackSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 3.00,
+        }
+        damage_types = [DamageEnum.BLUDGEONING, DamageEnum.CRYSTAL]
+
+        super().__init__(
+            name=CrystallineClashSkill.NAME,
+            description=CrystallineClashSkill.DESCRIPTION,
+            rank=CrystallineClashSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=CrystallineClashSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
 class TerrebrantAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.TERREBRANT_ATTACK.value
     DESCRIPTION = (
@@ -137,6 +229,47 @@ class TerrebrantAttackSkill(BaseSkill):
             char=char,
             use_equips_damage_types=True,
             requirements=TerrebrantAttackSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class ThunderpassSkill(BaseSkill):
+    NAME = WeaponMasterSkillEnum.THUNDERPASS.value
+    DESCRIPTION = (
+        f'Canaliza *Energia do Trovão* através de sua arma e '
+        f'desfecha um golpe que libera uma descarga elétrica, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.WEAPON_MASTER.value,
+        'skill_list': [TerrebrantAttackSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 1.50,
+        }
+        damage_types = [DamageEnum.PIERCING, DamageEnum.LIGHTNING]
+
+        super().__init__(
+            name=ThunderpassSkill.NAME,
+            description=ThunderpassSkill.DESCRIPTION,
+            rank=ThunderpassSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=ThunderpassSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -191,3 +324,32 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     WEAPON_MASTER_CHARACTER.skill_tree.learn_skill(TerrebrantAttackSkill)
+
+    skill = SonicBladeSkill(WEAPON_MASTER_CHARACTER)
+    print(skill)
+    print(WEAPON_MASTER_CHARACTER.cs.physical_attack)
+    print(WEAPON_MASTER_CHARACTER.to_attack(
+        defender_char=WEAPON_MASTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+
+    skill = CrystallineClashSkill(WEAPON_MASTER_CHARACTER)
+    print(skill)
+    print(WEAPON_MASTER_CHARACTER.cs.physical_attack)
+    print(WEAPON_MASTER_CHARACTER.to_attack(
+        defender_char=WEAPON_MASTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    WEAPON_MASTER_CHARACTER.skill_tree.learn_skill(CrystallineClashSkill)
+
+    skill = ThunderpassSkill(WEAPON_MASTER_CHARACTER)
+    print(skill)
+    print(WEAPON_MASTER_CHARACTER.cs.physical_attack)
+    print(WEAPON_MASTER_CHARACTER.to_attack(
+        defender_char=WEAPON_MASTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    WEAPON_MASTER_CHARACTER.skill_tree.learn_skill(ThunderpassSkill)
