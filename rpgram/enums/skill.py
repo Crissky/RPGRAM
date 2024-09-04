@@ -341,10 +341,13 @@ class WarriorSkillEnum(Enum):
 class WeaponMasterSkillEnum(Enum):
     SLASHING_ATTACK = 'Ataque Talhante'
     SONIC_BLADE = 'Lâmina Sônica'
+    VORPAL_BLADE_ATTACK = 'Ataque da Lâmina Vorpal'
     BRUISING_ATTACK = 'Ataque Contudente'
     CRYSTALLINE_CLASH = 'Choque Cristalino'
+    GEOCRUSHER_ATTACK = 'Ataque Geoesmagador'
     TERREBRANT_ATTACK = 'Ataque Terebrante'
     THUNDERPASS = 'Trovanspassar'
+    STORM_DANCE = 'Dança da Tempestade'
 
 
 class MultiClasseSkillEnum(Enum):
