@@ -184,7 +184,7 @@ class SurpriseAttackSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        if target.is_alive:
+        if target.is_alive and self.dice.is_critical:
             damage_report = target.cs.damage_hit_points(value=total_damage)
             report['text'] = damage_report['text']
 
