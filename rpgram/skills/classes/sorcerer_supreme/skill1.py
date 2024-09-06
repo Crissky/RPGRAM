@@ -237,11 +237,20 @@ class MagicShotSkill(BaseSkill):
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': '',
+    'name': 'Magia Bruta',
     'description': (
-        ''
+        'Abraça a Magia e não se limita a regras ou doutrinas, '
+        'mas mergulha nas profundezas do Mágico. '
+        'Dominado pelo ímpeto e ambição, '
+        'explora os limites do que é possível, '
+        'manipulando das Energias Mágicas em seu estado Bruto.'
     ),
-    'skill_list': []
+    'skill_list': [
+        MagicOrbSkill,
+        MagicalImprisonmentSkill,
+        MagicShieldSkill,
+        MagicShotSkill,
+    ]
 }
 
 
