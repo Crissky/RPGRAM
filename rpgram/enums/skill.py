@@ -328,6 +328,9 @@ class SorcererSkillEnum(Enum):
 
 class SorcererSupremeSkillEnum(Enum):
     MAGIC_ORB = 'Orbe Mágico'
+    MAGICAL_IMPRISONMENT = 'Aprisionamento Mágico'
+    MAGIC_SHIELD = 'Escudo Mágico'
+    MAGIC_SHOT = 'Disparo Mágico'
 
 
 class WarriorSkillEnum(Enum):
