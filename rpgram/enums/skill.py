@@ -326,6 +326,10 @@ class SorcererSkillEnum(Enum):
     CHAOS_WEAVER = 'Tecelão do Caos'
 
 
+class SorcererSupremeSkillEnum(Enum):
+    MAGIC_ORB = 'Orbe Mágico'
+
+
 class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'

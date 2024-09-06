@@ -106,6 +106,11 @@ from rpgram.skills.classes.sorcerer.factory import (
     SORCERER_SKILL_WAYS,
     sorcerer_skill_factory
 )
+from rpgram.skills.classes.sorcerer_supreme.factory import (
+    SORCERER_SUPREME_SKILL_LIST,
+    SORCERER_SUPREME_SKILL_WAYS,
+    sorcerer_supreme_skill_factory
+)
 from rpgram.skills.classes.summoner.factory import (
     SUMMONER_SKILL_LIST,
     SUMMONER_SKILL_WAYS,
@@ -153,6 +158,7 @@ ALL_SKILL_DICT = {
     ClasseEnum.SHAMAN.value: SHAMAN_SKILL_LIST,
     ClasseEnum.BERSERKIR.value: BERSERKIR_SKILL_LIST,
     ClasseEnum.WEAPON_MASTER.value: WEAPON_MASTER_SKILL_LIST,
+    ClasseEnum.SORCERER_SUPREME.value: SORCERER_SUPREME_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
@@ -179,6 +185,7 @@ ALL_SKILL_WAY_DICT = {
     ClasseEnum.SHAMAN.value: SHAMAN_SKILL_WAYS,
     ClasseEnum.BERSERKIR.value: BERSERKIR_SKILL_WAYS,
     ClasseEnum.WEAPON_MASTER.value: WEAPON_MASTER_SKILL_WAYS,
+    ClasseEnum.SORCERER_SUPREME.value: SORCERER_SUPREME_SKILL_WAYS,
 }
 
 
@@ -243,7 +250,7 @@ def skill_factory(
     elif ClasseEnum.WEAPON_MASTER.value == classe_name:
         class_skill_factory = weapon_master_skill_factory
     elif ClasseEnum.SORCERER_SUPREME.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = sorcerer_supreme_skill_factory
     elif ClasseEnum.LORD_OF_THE_ROGUES.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     elif ClasseEnum.SAMURAI.value == classe_name:
@@ -316,7 +323,7 @@ def skill_list_factory(
     elif ClasseEnum.WEAPON_MASTER.value == classe_name:
         return WEAPON_MASTER_SKILL_LIST
     elif ClasseEnum.SORCERER_SUPREME.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return SORCERER_SUPREME_SKILL_LIST
     elif ClasseEnum.LORD_OF_THE_ROGUES.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     elif ClasseEnum.SAMURAI.value == classe_name:
