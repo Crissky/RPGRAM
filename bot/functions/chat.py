@@ -203,7 +203,7 @@ async def forward_message(
     if not message and not context:
         raise ValueError('message ou context deve ser passado.')
 
-    message_chat_id = message.chat_id if message else None
+    message_chat_id = message.chat_id if hasattr(message, 'chat_id') else None
     if isinstance(user_ids, int):
         user_ids = [user_ids]
     user_ids = list(set(user_ids))
@@ -216,7 +216,7 @@ async def forward_message(
         if message_chat_id == user_id:
             continue  # Evita encaminhamento para o próprio chat privado
         try:
-            if message:
+            if hasattr(message, 'forward'):
                 call_telegram_kwargs = dict(
                     chat_id=user_id,
                     disable_notification=user_silent
@@ -243,6 +243,14 @@ async def forward_message(
                     context=context,
                     need_response=False,
                     **call_telegram_kwargs
+                )
+            else:
+                print(
+                    f'FORWARD_MESSAGE(): Não foi possível encaminhar a '
+                    f'mensagem de {message_chat_id} para {user_id}.\n'
+                    f'Function Caller: {function_caller}\n'
+                    f'message: {type(message)}\n'
+                    f'context: {type(context)}\n'
                 )
         except Exception as error:
             print(f'{function_caller}: {error}')
