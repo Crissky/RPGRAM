@@ -66,6 +66,11 @@ from rpgram.skills.classes.knight.factory import (
     KNIGHT_SKILL_WAYS,
     knight_skill_factory
 )
+from rpgram.skills.classes.lord_of_the_rogues.factory import (
+    LORD_OF_THE_ROGUES_SKILL_LIST,
+    LORD_OF_THE_ROGUES_SKILL_WAYS,
+    lord_of_the_rogues_skill_factory
+    )
 from rpgram.skills.classes.mage.factory import (
     MAGE_SKILL_LIST,
     MAGE_SKILL_WAYS,
@@ -159,6 +164,7 @@ ALL_SKILL_DICT = {
     ClasseEnum.BERSERKIR.value: BERSERKIR_SKILL_LIST,
     ClasseEnum.WEAPON_MASTER.value: WEAPON_MASTER_SKILL_LIST,
     ClasseEnum.SORCERER_SUPREME.value: SORCERER_SUPREME_SKILL_LIST,
+    ClasseEnum.LORD_OF_THE_ROGUES.value: LORD_OF_THE_ROGUES_SKILL_LIST,
 }
 ALL_SKILL_WAY_DICT = {
     ClasseEnum.BARBARIAN.value: BARBARIAN_SKILL_WAYS,
@@ -186,6 +192,7 @@ ALL_SKILL_WAY_DICT = {
     ClasseEnum.BERSERKIR.value: BERSERKIR_SKILL_WAYS,
     ClasseEnum.WEAPON_MASTER.value: WEAPON_MASTER_SKILL_WAYS,
     ClasseEnum.SORCERER_SUPREME.value: SORCERER_SUPREME_SKILL_WAYS,
+    ClasseEnum.LORD_OF_THE_ROGUES.value: LORD_OF_THE_ROGUES_SKILL_WAYS,
 }
 
 
@@ -252,7 +259,7 @@ def skill_factory(
     elif ClasseEnum.SORCERER_SUPREME.value == classe_name:
         class_skill_factory = sorcerer_supreme_skill_factory
     elif ClasseEnum.LORD_OF_THE_ROGUES.value == classe_name:
-        raise ValueError(f'skills factory pra {classe_name} não implementada!')
+        class_skill_factory = lord_of_the_rogues_skill_factory
     elif ClasseEnum.SAMURAI.value == classe_name:
         raise ValueError(f'skills factory pra {classe_name} não implementada!')
     else:
@@ -325,7 +332,7 @@ def skill_list_factory(
     elif ClasseEnum.SORCERER_SUPREME.value == classe_name:
         return SORCERER_SUPREME_SKILL_LIST
     elif ClasseEnum.LORD_OF_THE_ROGUES.value == classe_name:
-        raise ValueError(f'skills para {classe_name} ainda não implementada!')
+        return LORD_OF_THE_ROGUES_SKILL_LIST
     elif ClasseEnum.SAMURAI.value == classe_name:
         raise ValueError(f'skills para {classe_name} ainda não implementada!')
     else:

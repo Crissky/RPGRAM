@@ -32,6 +32,7 @@ class QuickAttackSkill(BaseSkill):
             ClasseEnum.DUELIST.value,
             ClasseEnum.ROGUE.value,
             ClasseEnum.WARRIOR.value,
+            ClasseEnum.LORD_OF_THE_ROGUES.value,
         ],
     })
 
