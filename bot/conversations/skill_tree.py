@@ -750,7 +750,6 @@ async def check_way_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
             break
 
-
     back_button = get_back_button(user_id=user_id, to_list_classe=True)
     reply_markup = InlineKeyboardMarkup([back_button])
 
@@ -1177,14 +1176,17 @@ def get_classe_buttons(
     items_buttons = []
     # Criando texto e botões das Classes
     for classe_name in classe_name_list:
+        callback_data = callback_data_to_string({
+            'list_way_skill': 1,
+            'classe_name': classe_name,
+            'user_id': user_id,
+        })
+
         items_buttons.append(InlineKeyboardButton(
             text=classe_name,
-            callback_data=callback_data_to_string({
-                'list_way_skill': 1,
-                'classe_name': classe_name,
-                'user_id': user_id,
-            })
+            callback_data=callback_data
         ))
+        print(classe_name, len(callback_data), callback_data)
 
     items_buttons.append(InlineKeyboardButton(
         text=f'TODES',
@@ -1211,15 +1213,18 @@ def get_way_buttons(
     items_buttons = []
     # Criando texto e botões das Classes
     for way_name in way_name_list:
+        callback_data = callback_data_to_string({
+            'check_way_skill': 1,
+            'way_name': way_name,
+            'classe_name': classe_name,
+            'user_id': user_id,
+        })
+
         items_buttons.append(InlineKeyboardButton(
             text=way_name,
-            callback_data=callback_data_to_string({
-                'check_way_skill': 1,
-                'way_name': way_name,
-                'classe_name': classe_name,
-                'user_id': user_id,
-            })
+            callback_data=callback_data
         ))
+        print(classe_name, len(callback_data), callback_data)
 
     reshaped_items_buttons = reshape_row_buttons(
         buttons=items_buttons,
