@@ -12,6 +12,7 @@ from rpgram.enums.skill import (
     HealerSkillEnum,
     MultiClasseSkillEnum,
     SorcererSkillEnum,
+    SorcererSupremeSkillEnum,
     SummonerSkillEnum,
     WarriorSkillEnum
 )
@@ -348,6 +349,36 @@ class PiskieWindbagCondition(BarrierCondition):
         )
 
 
+class MagicShieldCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=SorcererSupremeSkillEnum.MAGIC_SHIELD,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Manto Mágico* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -357,6 +388,7 @@ class BarrierBuffs:
         ProtectiveAuraCondition,
         AjaxShieldCondition,
         PiskieWindbagCondition,
+        MagicShieldCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:

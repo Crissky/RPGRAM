@@ -110,7 +110,9 @@ from repository.mongo.models.character import CharacterModel
 from rpgram.characters.char_base import BaseCharacter
 from rpgram.characters.char_non_player import NPCharacter
 from rpgram.characters.char_player import PlayerCharacter
+from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.emojis import FaceEmojiEnum
+from rpgram.enums.function import get_enum_by_index, get_enum_index
 from rpgram.enums.skill import TARGET_ENUM_NOT_SELF, SkillTypeEnum, TargetEnum
 from rpgram.errors import RequirementError
 from rpgram.skills.factory import ALL_SKILL_DICT, ALL_SKILL_WAY_DICT
@@ -463,7 +465,8 @@ async def list_ways(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_id = update.effective_message.id
     query = update.callback_query
     data = callback_data_to_dict(query.data)
-    classe_name = data['classe_name']
+    classe_index = data['classe_index']
+    classe_name = get_enum_by_index(ClasseEnum, classe_index).value
     classe_skill_way_list = ALL_SKILL_WAY_DICT[classe_name]
     way_name_list = [
         classe_skill_way['name']
@@ -735,7 +738,8 @@ async def check_way_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_id = update.effective_message.id
     query = update.callback_query
     data = callback_data_to_dict(query.data)
-    classe_name = data['classe_name']
+    classe_index = data['classe_index']
+    classe_name = get_enum_by_index(ClasseEnum, classe_index).value
     way_name = data['way_name']
     classe_skill_way_list = ALL_SKILL_WAY_DICT[classe_name]
 
@@ -749,7 +753,6 @@ async def check_way_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f'*Descrição*: {skill.DESCRIPTION}\n\n'
                 )
             break
-
 
     back_button = get_back_button(user_id=user_id, to_list_classe=True)
     reply_markup = InlineKeyboardMarkup([back_button])
@@ -1177,13 +1180,17 @@ def get_classe_buttons(
     items_buttons = []
     # Criando texto e botões das Classes
     for classe_name in classe_name_list:
+        class_enum = ClasseEnum(classe_name)
+        classe_index = get_enum_index(class_enum)
+        callback_data = callback_data_to_string({
+            'list_way_skill': 1,
+            'classe_index': classe_index,
+            'user_id': user_id,
+        })
+
         items_buttons.append(InlineKeyboardButton(
             text=classe_name,
-            callback_data=callback_data_to_string({
-                'list_way_skill': 1,
-                'classe_name': classe_name,
-                'user_id': user_id,
-            })
+            callback_data=callback_data
         ))
 
     items_buttons.append(InlineKeyboardButton(
@@ -1209,16 +1216,20 @@ def get_way_buttons(
 ) -> List[List[InlineKeyboardButton]]:
 
     items_buttons = []
+    class_enum = ClasseEnum(classe_name)
+    classe_index = get_enum_index(class_enum)
     # Criando texto e botões das Classes
     for way_name in way_name_list:
+        callback_data = callback_data_to_string({
+            'check_way_skill': 1,
+            'way_name': way_name,
+            'classe_index': classe_index,
+            'user_id': user_id,
+        })
+
         items_buttons.append(InlineKeyboardButton(
             text=way_name,
-            callback_data=callback_data_to_string({
-                'check_way_skill': 1,
-                'way_name': way_name,
-                'classe_name': classe_name,
-                'user_id': user_id,
-            })
+            callback_data=callback_data
         ))
 
     reshaped_items_buttons = reshape_row_buttons(

@@ -4,6 +4,7 @@ from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
     GuardianShieldCondition,
+    MagicShieldCondition,
     PiskieWindbagCondition,
     PrismaticShieldCondition,
     ChaosWeaverCondition,
@@ -169,6 +170,7 @@ from rpgram.enums.skill import (
     RogueSkillEnum,
     ShamanSkillEnum,
     SorcererSkillEnum,
+    SorcererSupremeSkillEnum,
     SummonerSkillEnum,
     WarriorSkillEnum
 )
@@ -496,6 +498,9 @@ def condition_factory(
         condition_class = SDFellowWolfCondition
     elif compare_condition(name, ShamanSkillEnum.FELLOW_YETI):
         condition_class = SDFellowYetiCondition
+    # SORCERER SUPREME BUFFS
+    elif compare_condition(name, SorcererSupremeSkillEnum.MAGIC_SHIELD):
+        condition_class = MagicShieldCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

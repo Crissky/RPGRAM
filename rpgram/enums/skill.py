@@ -212,6 +212,11 @@ class KnightSkillEnum(Enum):
     LEADERSHIP = 'Liderança'
 
 
+class LordOfTheRoguesSkillEnum(Enum):
+    SILENT_ASSASSIN = 'Assassino Silencioso'
+    DEADLY_BLADE = 'Lâmina Mortal'
+
+
 class MageSkillEnum(Enum):
     MAGIC_BLAST = 'Explosão Mágica'
     ICE_SHARD = 'Fragmento de Gelo'
@@ -326,6 +331,13 @@ class SorcererSkillEnum(Enum):
     CHAOS_WEAVER = 'Tecelão do Caos'
 
 
+class SorcererSupremeSkillEnum(Enum):
+    MAGIC_ORB = 'Orbe Mágico'
+    MAGICAL_IMPRISONMENT = 'Aprisionamento Mágico'
+    MAGIC_SHIELD = 'Escudo Mágico'
+    MAGIC_SHOT = 'Disparo Mágico'
+
+
 class WarriorSkillEnum(Enum):
     POWERFUL_ATTACK = 'Ataque Poderoso'
     MORE_THAN_POWERFUL_ATTACK = 'Ataque Mais Que Poderoso'
@@ -336,6 +348,18 @@ class WarriorSkillEnum(Enum):
     WAR_BANNER = 'Flâmula de Guerra'
     HEROIC_INSPIRATION = 'Inspiração Heroíca'
     WAR_CRY = 'Grito de Guerra'
+
+
+class WeaponMasterSkillEnum(Enum):
+    SLASHING_ATTACK = 'Ataque Talhante'
+    SONIC_BLADE = 'Lâmina Sônica'
+    VORPAL_BLADE_ATTACK = 'Ataque da Lâmina Vorpal'
+    BRUISING_ATTACK = 'Ataque Contudente'
+    CRYSTALLINE_CLASH = 'Choque Cristalino'
+    GEOCRUSHER_ATTACK = 'Ataque Geoesmagador'
+    TERREBRANT_ATTACK = 'Ataque Terebrante'
+    THUNDERPASS = 'Trovanspassar'
+    STORM_DANCE = 'Dança da Tempestade'
 
 
 class MultiClasseSkillEnum(Enum):
