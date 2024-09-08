@@ -212,6 +212,11 @@ class KnightSkillEnum(Enum):
     LEADERSHIP = 'Liderança'
 
 
+class LordOfTheRoguesSkillEnum(Enum):
+    SILENT_ASSASSIN = 'Assassino Silencioso'
+    DEADLY_BLADE = 'Lâmina Mortal'
+
+
 class MageSkillEnum(Enum):
     MAGIC_BLAST = 'Explosão Mágica'
     ICE_SHARD = 'Fragmento de Gelo'
