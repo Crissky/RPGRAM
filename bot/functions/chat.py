@@ -55,6 +55,7 @@ CALLBACK_KEY_LIST = [
     'item_quest_job_name',
     '_all',
     'classe_name',
+    'classe_index',
     'race_name',
     'row',
     'col',

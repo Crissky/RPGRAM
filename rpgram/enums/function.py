@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-def get_enum_index(enum_instance: Enum):
+def get_enum_index(enum_instance: Enum) -> int:
     ''' Retorna o índice de um elemento de qualquer classe Enum considerando
     a ordem de instância.
     '''
@@ -15,7 +15,7 @@ def get_enum_index(enum_instance: Enum):
     return index
 
 
-def get_enum_by_index(enum_class: Enum, index: int):
+def get_enum_by_index(enum_class: Enum, index: int) -> Enum:
     ''' Retorna o elemento de uma classe Enum a partir de um índice.
     '''
 
