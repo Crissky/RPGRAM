@@ -295,6 +295,12 @@ class RogueSkillEnum(Enum):
     CHAOTIC_STRIKE = 'Golpe Caótico'
 
 
+class SamuraiSkillEnum(Enum):
+    KOTE_UCHI = 'Kote-Uchi'
+    DO_UCHI = 'Dô-Uchi'
+    MEN_UCHI = 'Men-Uchi'
+
+
 class ShamanSkillEnum(Enum):
     VINE_CROSIER = 'Báculo de Vinha'
     WILD_CARNATION_CLOAK = 'Manto de Cravo Selvagem'
@@ -311,12 +317,6 @@ class ShamanSkillEnum(Enum):
     MAELSTROM = 'Voragem'
     LASER_CLAW = 'Garra Laser'
     SNOW_BREATH = 'Sopro de Neve'
-
-
-class SummonerSkillEnum(Enum):
-    FLAMING_SPECTER = 'Espectro Flamejante'
-    KAPPA_FOUNTAIN = 'Fonte do Kappa'
-    PISKIE_WINDBAG = 'Sacovento do Piskie'
 
 
 class SorcererSkillEnum(Enum):
@@ -336,6 +336,12 @@ class SorcererSupremeSkillEnum(Enum):
     MAGICAL_IMPRISONMENT = 'Aprisionamento Mágico'
     MAGIC_SHIELD = 'Escudo Mágico'
     MAGIC_SHOT = 'Disparo Mágico'
+
+
+class SummonerSkillEnum(Enum):
+    FLAMING_SPECTER = 'Espectro Flamejante'
+    KAPPA_FOUNTAIN = 'Fonte do Kappa'
+    PISKIE_WINDBAG = 'Sacovento do Piskie'
 
 
 class WarriorSkillEnum(Enum):

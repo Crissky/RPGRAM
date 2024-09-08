@@ -142,6 +142,8 @@ from rpgram.conditions.target_skill_buff import (
 from rpgram.conditions.target_skill_debuff import (
     AchillesHeelCondition,
     DisarmorCondition,
+    DoUchiCondition,
+    KoteUchiCondition,
     MuddyCondition,
     ShatterCondition
 )
@@ -168,6 +170,7 @@ from rpgram.enums.skill import (
     PaladinSkillEnum,
     RangerSkillEnum,
     RogueSkillEnum,
+    SamuraiSkillEnum,
     ShamanSkillEnum,
     SorcererSkillEnum,
     SorcererSupremeSkillEnum,
@@ -501,6 +504,11 @@ def condition_factory(
     # SORCERER SUPREME BUFFS
     elif compare_condition(name, SorcererSupremeSkillEnum.MAGIC_SHIELD):
         condition_class = MagicShieldCondition
+    # SAMURAI BUFFS
+    elif compare_condition(name, SamuraiSkillEnum.KOTE_UCHI):
+        condition_class = KoteUchiCondition
+    elif compare_condition(name, SamuraiSkillEnum.DO_UCHI):
+        condition_class = DoUchiCondition
     # MULTICLASSE BUFFS
     elif compare_condition(name, MultiClasseSkillEnum.ROBUST_BLOCK):
         condition_class = RobustBlockCondition

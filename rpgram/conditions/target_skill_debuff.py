@@ -12,13 +12,16 @@ from rpgram.conditions.debuff import DebuffCondition
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
-    PHYSICAL_DEFENSE_EMOJI_TEXT
+    PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     DuelistSkillEnum,
     GuardianSkillEnum,
-    MageSkillEnum
+    MageSkillEnum,
+    SamuraiSkillEnum
 )
 from rpgram.enums.turn import TurnEnum
 
@@ -257,12 +260,105 @@ class DisarmorCondition(TargetSkillDebuffCondition):
         return f'permanece com as *Proteções Fragilizadas*.'
 
 
+class KoteUchiCondition(TargetSkillDebuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 1,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=SamuraiSkillEnum.KOTE_UCHI,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Braços Desestabilizados* que diminuem o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos e o '
+            f'*{PRECISION_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.10 + (self.level / 100)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return -(self.power)
+
+    @property
+    def bonus_precision_attack(self) -> int:
+        return -(self.power)
+
+    @property
+    def emoji(self) -> str:
+        return EmojiEnum.ATTACK.value + '📉'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com os *Braços Desestabilizados*.'
+
+
+class DoUchiCondition(TargetSkillDebuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 1,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=SamuraiSkillEnum.DO_UCHI,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Tronco Desestabilizado* que diminue a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.10 + (self.level / 100)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        return -(self.power)
+
+    @property
+    def emoji(self) -> str:
+        return '🩻📉'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece com o *Tronco Desestabilizado*.'
+
+
 class TargetDebuffs:
     __list = [
         ShatterCondition,
         MuddyCondition,
         AchillesHeelCondition,
         DisarmorCondition,
+        KoteUchiCondition,
+        DoUchiCondition,
     ]
 
     def __init__(self, default_power: int = 100):
