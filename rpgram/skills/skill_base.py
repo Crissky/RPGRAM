@@ -74,6 +74,31 @@ class BaseSkill:
         damage_types: List[Union[str, DamageEnum]] = None,
         condition_list: List[Condition] = [],
     ):
+        '''
+        Args:
+            name: Nome da habilidade
+            description: Descrição da habilidade
+            rank: Rank da habilidade
+            level: Nível da habilidade
+            base_stats_multiplier: Dicionário com os multiplicadores de
+                atributos base
+            combat_stats_multiplier: Dicionário com os multiplicadores de
+                atributos de combate
+            target_type: Tipo de alvo da habilidade
+            skill_type: Tipo da habilidade (ataque, cura, etc)
+            skill_defense: Tipo de defesa usada para defender a habilidade
+            char: Personagem que possui a habilidade
+            cost: Custo para usar da habilidade
+            dice: Dado usado para rolar a habilidade
+            is_elusive: Se False, a habilidade pode ser esquivado, 
+                ineludível caso contrário.
+            use_equips_damage_types: Se True, a habilidade usa os tipos de dano
+                dos equipamentos do personagem
+            requirements: Requisitos para usar a habilidade
+            damage_types: Lista com os Tipos de Dano que a habilidade causa.
+            condition_list: Não usado.
+        '''
+
         self.base_stats_multiplier = {}
         for attribute, value in base_stats_multiplier.items():
             if isinstance(attribute, str):
