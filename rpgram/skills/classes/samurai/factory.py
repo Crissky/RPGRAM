@@ -3,6 +3,7 @@ from rpgram.skills.classes.samurai.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     DoUchiSkill,
     KoteUchiSkill,
+    MenUchiSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -21,6 +22,8 @@ def samurai_skill_factory(
         skill_class = KoteUchiSkill
     elif skill_class_name == DoUchiSkill.__name__:
         skill_class = DoUchiSkill
+    elif skill_class_name == MenUchiSkill.__name__:
+        skill_class = MenUchiSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -31,6 +34,7 @@ SAMURAI_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL1
     KoteUchiSkill,
     DoUchiSkill,
+    MenUchiSkill,
 ]
 SAMURAI_SKILL_WAYS: List[dict] = [
     skill_way1,
