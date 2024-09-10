@@ -218,11 +218,20 @@ class MenUchiSkill(BaseSkill):
 
 
 SKILL_WAY_DESCRIPTION = {
-    'name': '',
+    'name': 'Bushido (武士道)',
     'description': (
-        ''
+        'O Bushido (Caminho do Guerreiro) é uma filosofia de vida que molda o '
+        'Samurai em um guerreiro exemplar. '
+        'Aqueles que seguem o Bushido dedicam suas vidas à perfeição marcial, '
+        'à lealdade e à honra. '
+        'É um código que transcende a mera habilidade com a espada, '
+        'transformando o Samurai em um guardião da justiça e da ordem.'
     ),
-    'skill_list': []
+    'skill_list': [
+        KoteUchiSkill,
+        DoUchiSkill,
+        MenUchiSkill,
+    ]
 }
 
 
