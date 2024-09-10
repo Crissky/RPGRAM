@@ -299,6 +299,12 @@ class SamuraiSkillEnum(Enum):
     KOTE_UCHI = 'Kote-Uchi'
     DO_UCHI = 'Dô-Uchi'
     MEN_UCHI = 'Men-Uchi'
+    ZANTETSUSEN = 'Zantetsusen'  # Slashing Steel Flash
+    MIZU_KOGEKI = 'Mizu Kōgeki'  # Água
+    HONO_KOGEKI = 'Honō Kōgeki'  # Chamas
+    KOSEN_KOGEKI = 'Kōsen Kōgeki'  # Raio
+    KAZE_KOGEKI = 'Kaze Kōgeki'  # Vento
+    IWA_KOGEKI = 'Iwa Kōgeki'  # Rocha
 
 
 class ShamanSkillEnum(Enum):
