@@ -361,7 +361,8 @@ class SharpFaroSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se concentra em usa o seu *Olfato Apurado*, '
                 f'aumentando o '
-                f'*{HIT_EMOJI_TEXT}*.\n\n'
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -420,7 +421,10 @@ class InvestigationSkill(BaseSkill):
             'text': (
                 f'*{player_name}* analisa o *Campo de Batalha*, '
                 f'aumentando o '
-                f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}*.\n\n'
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos e a '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
