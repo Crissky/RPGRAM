@@ -100,7 +100,12 @@ class RangerFalconSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para vigiar e batalhar ao seu lado.\n\n'
+                f'para vigiar e batalhar ao seu lado. '
+                f'*{self.name}* aumenta o '
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos e a '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -167,7 +172,12 @@ class GuardianBearSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para o proteger e batalhar ao seu lado.\n\n'
+                f'para o proteger e batalhar ao seu lado. '
+                f'*{self.name}* aumenta o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos e a '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -234,7 +244,12 @@ class HunterTigerSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para caçar e batalhar ao seu lado.\n\n'
+                f'para caçar e batalhar ao seu lado. '
+                f'*{self.name}* aumenta o '
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos e o '
+                f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_precision_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -301,7 +316,12 @@ class WatcherOwlSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para observar o plano místico e batalhar ao seu lado.\n\n'
+                f'para observar o plano místico e batalhar ao seu lado. '
+                f'*{self.name}* aumenta o '
+                f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_attack} pontos e a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
