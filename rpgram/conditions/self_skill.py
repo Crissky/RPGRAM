@@ -1159,7 +1159,7 @@ class ArenaDomainCondition(SelfSkillCondition):
         ])
         power = round(power, 2)
 
-        return power
+        return int(power)
 
     @property
     def bonus_hit_points(self) -> int:
