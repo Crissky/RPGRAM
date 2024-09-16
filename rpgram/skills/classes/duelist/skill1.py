@@ -181,7 +181,9 @@ class AgileFeetSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se torna um borrão de movimento, '
-                f'aumentando a *{EVASION_EMOJI_TEXT}*.\n\n'
+                f'aumentando a '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -240,7 +242,9 @@ class EagleEyeSkill(BaseSkill):
             'text': (
                 f'*{player_name}* amplifica a sua capacidade de analisar '
                 f'o combate, '
-                f'aumentando o *{HIT_EMOJI_TEXT}*.\n\n'
+                f'aumentando o '
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
