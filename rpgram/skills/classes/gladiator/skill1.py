@@ -295,7 +295,8 @@ class TurtleStanceSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se curva sobre si mesmo '
                 f'assumindo uma postura preventiva que aumenta a sua '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -354,7 +355,8 @@ class UnicornStanceSkill(BaseSkill):
             'text': (
                 f'*{player_name}* assume a *{self.name}* '
                 f'assumindo uma postura agressiva quee aumenta o seu '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -423,11 +425,16 @@ class ArenaDomainSkill(BaseSkill):
             'text': (
                 f'*{player_name}* entra em um *Estado de Fluxo* '
                 f'que aumenta o seu '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
-                f'*{HIT_EMOJI_TEXT}* e '
-                f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos, '
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos, '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos, '
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos e '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
