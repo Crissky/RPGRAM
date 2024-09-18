@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 class CrystalArmorSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTAL_ARMOR.value
     DESCRIPTION = (
-        f'Forja uma armadura de *Cristais Místicos* que aumenta a '
+        f'Forja uma armadura composta por *Cristais Místicos* que aumenta a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na redução de 25% da '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT} BASE* '
         f'mais um bônus de (10% x Rank x Nível) do valor reduzido.'
@@ -73,8 +73,10 @@ class CrystalArmorSkill(BaseSkill):
                 f'*{player_name}* forja uma armadura de *Cristais Místicos*, '
                 f'reduzindo a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos, '
                 f'em favor de aumentar a sua '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
