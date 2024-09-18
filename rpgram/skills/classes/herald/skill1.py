@@ -80,7 +80,8 @@ class MysticBlockSkill(BaseSkill):
                 f'*{player_name}* se concentra para criar uma '
                 f'*Aura Protetora*, '
                 f'aumentando a sua '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
