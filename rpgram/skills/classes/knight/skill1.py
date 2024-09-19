@@ -173,8 +173,8 @@ class SuperChargeSkill(BaseSkill):
         report = {'text': ''}
         if target.is_alive:
             level = self.level_rank
-            bleeding_condition = StunnedCondition(level=level)
-            status_report = target.status.add_condition(bleeding_condition)
+            stunned_condition = StunnedCondition(level=level)
+            status_report = target.status.add_condition(stunned_condition)
             report['status_text'] = status_report['text']
 
         return report
@@ -187,8 +187,8 @@ class SuperChargeSkill(BaseSkill):
 class ChampionInspirationSkill(BaseSkill):
     NAME = KnightSkillEnum.CHAMPION_INSPIRATION.value
     DESCRIPTION = (
-        f'Libera uma explosão de energia inspiradora, '
-        f'fortalecendo o seu espírito e '
+        f'Libera uma *Explosão de Energia Inspiradora* que '
+        f'fortalece o seu espírito, '
         f'aumentando o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
         f'*{HIT_EMOJI_TEXT}* com base no '
@@ -231,10 +231,13 @@ class ChampionInspirationSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* liberou uma explosão de energia inspiradora '
+                f'*{player_name}* liberou uma '
+                f'*Explosão de Energia Inspiradora*, '
                 f'aumentando o seu '
-                f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
-                f'*{HIT_EMOJI_TEXT}*.\n\n'
+                f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_precision_attack} pontos e '
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -246,7 +249,7 @@ class ChampionInspirationSkill(BaseSkill):
 class LeadershipSkill(BaseSkill):
     NAME = KnightSkillEnum.LEADERSHIP.value
     DESCRIPTION = (
-        f'Usa a própria força e determinação para despertar o seu '
+        f'Usa a própria *Força* e *Determinação* para despertar o seu '
         f'*Espírito de Liderança* e conceder à equipe '
         f'uma inspiração de combate que aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
