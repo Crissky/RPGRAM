@@ -112,8 +112,8 @@ class VengefulSpiritSkill(BaseSkill):
         report = {'text': ''}
         if target.is_alive:
             level = self.level_rank
-            blindness_condition = DeathSentenceCondition(level=level)
-            status_report = target.status.add_condition(blindness_condition)
+            death_stc_condition = DeathSentenceCondition(level=level)
+            status_report = target.status.add_condition(death_stc_condition)
             report['status_text'] = status_report['text']
 
         return report
