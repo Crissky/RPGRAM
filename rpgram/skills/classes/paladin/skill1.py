@@ -379,8 +379,10 @@ class SquireAnointingSkill(BaseSkill):
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
                     f'que aumenta a '
-                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_defense} pontos e o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -443,9 +445,12 @@ class WarriorAnointingSkill(BaseSkill):
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
                     f'que aumenta o '
-                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, o '
-                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* e o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_attack} pontos, o '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_precision_attack} pontos e o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -507,8 +512,10 @@ class MaidenAnointingSkill(BaseSkill):
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
                     f'que aumenta a '
-                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_defense} pontos e o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -574,10 +581,14 @@ class KnightAnointingSkill(BaseSkill):
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
                     f'que aumenta o '
-                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, o '
-                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, a '
-                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_attack} pontos, o '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_precision_attack} pontos, a '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_defense} pontos e o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -642,9 +653,12 @@ class CourtesanAnointingSkill(BaseSkill):
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
                     f'que aumenta a '
-                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, a '
-                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_defense} pontos, a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_defense} pontos e o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -710,10 +724,14 @@ class LordAnointingSkill(BaseSkill):
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
                     f'que aumenta o '
-                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, o '
-                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, a '
-                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_attack} pontos, o '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_precision_attack} pontos, a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_defense} pontos e o '
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -776,31 +794,37 @@ if __name__ == '__main__':
 
     skill = SquireAnointingSkill(PALADIN_CHARACTER)
     print(skill)
+    print(PALADIN_CHARACTER.cs.wisdom)
     print(skill.function(PALADIN_CHARACTER))
     PALADIN_CHARACTER.skill_tree.learn_skill(SquireAnointingSkill)
 
     skill = WarriorAnointingSkill(PALADIN_CHARACTER)
     print(skill)
+    print(PALADIN_CHARACTER.cs.wisdom)
     print(skill.function(PALADIN_CHARACTER))
     PALADIN_CHARACTER.skill_tree.learn_skill(WarriorAnointingSkill)
 
     skill = MaidenAnointingSkill(PALADIN_CHARACTER)
     print(skill)
+    print(PALADIN_CHARACTER.cs.wisdom)
     print(skill.function(PALADIN_CHARACTER))
     PALADIN_CHARACTER.skill_tree.learn_skill(MaidenAnointingSkill)
 
     skill = KnightAnointingSkill(PALADIN_CHARACTER)
     print(skill)
+    print(PALADIN_CHARACTER.cs.wisdom)
     print(skill.function(PALADIN_CHARACTER))
     PALADIN_CHARACTER.skill_tree.learn_skill(KnightAnointingSkill)
 
     skill = CourtesanAnointingSkill(PALADIN_CHARACTER)
     print(skill)
+    print(PALADIN_CHARACTER.cs.wisdom)
     print(skill.function(PALADIN_CHARACTER))
     PALADIN_CHARACTER.skill_tree.learn_skill(CourtesanAnointingSkill)
 
     skill = LordAnointingSkill(PALADIN_CHARACTER)
     print(skill)
+    print(PALADIN_CHARACTER.cs.wisdom)
     print(skill.function(PALADIN_CHARACTER))
     PALADIN_CHARACTER.skill_tree.learn_skill(LordAnointingSkill)
 
