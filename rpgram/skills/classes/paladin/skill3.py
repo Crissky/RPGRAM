@@ -327,9 +327,12 @@ class PenitenceSkill(BaseSkill):
                 f'*{player_name}* Constringe o seu *Cilício*, '
                 f'reduzindo o seu '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos '
                 f'em favor de aumentar a seu '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos e a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -343,7 +346,7 @@ class ConfiscationSkill(BaseSkill):
     DESCRIPTION = (
         f'Usa o poder da fé para desferir um raio de *Energia Sagrada*, '
         f'causando dano '
-        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
+        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
         f'*Confiscando* um *Buff* aleatótio do alvo.'
     )
@@ -394,7 +397,8 @@ class ConfiscationSkill(BaseSkill):
             )
             status_report = target.status.remove_condition(buff_condition)
             set_report_list = self.char.status.set_conditions(
-                buff_condition_copy)
+                buff_condition_copy
+            )
             status_report_text = status_report['text']
             set_report_text = '\n'.join(
                 [report['text'] for report in set_report_list]
@@ -414,7 +418,7 @@ class ExcommunicateSkill(BaseSkill):
         f'Usa o poder do seu dogma para desferir uma rajada '
         f'de *Energia Sagrada*, '
         f'causando dano '
-        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
+        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
         f'*Eliminando* todos os *Buff* do alvo.'
     )
@@ -471,7 +475,7 @@ class ExileSkill(BaseSkill):
         f'Usa uma manifestação poderosa da fé e da justiça para invocar '
         f'um torrencial de *Energia Sagrada*, '
         f'causando dano '
-        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
+        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (175% + 5% x Rank x Nível), '
         f'*Eliminando* todos os *Buff* do alvo e '
         f'adicionando as condições '
