@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, List, Tuple, Type, Union
 
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.enums.emojis import EmojiEnum
+from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
 from rpgram.skills.factory import skill_factory, skill_list_factory
 from rpgram.skills.skill_base import BaseSkill
 
@@ -52,6 +53,22 @@ class SkillTree:
     def get_skill(self, skill_name: str) -> BaseSkill:
         index = self.skill_list.index(skill_name)
         return self.skill_list[index]
+
+    def get_filtred_skill_list(
+        self,
+        target_type: TargetEnum = None,
+        skill_type: SkillTypeEnum = None,
+        skill_defense: SkillDefenseEnum = None,
+    ) -> List[BaseSkill]:
+        
+        return [
+            skill for skill in self.skill_list
+            if any((
+                target_type is None or skill.target_type == target_type,
+                skill_type is None or skill.skill_type == skill_type,
+                skill_defense is None or skill.skill_defense == skill_defense,
+            ))
+        ]
 
     def learn_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
         if issubclass(skill_class_name, BaseSkill):
