@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 class MysticalProtectionSkill(BaseSkill):
     NAME = SorcererSkillEnum.MYSTICAL_PROTECTION.value
     DESCRIPTION = (
-        f'Tece uma trama de energia *Mística* que concede '
+        f'Tece uma *Trama de Energia Mística* que concede '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -70,9 +70,11 @@ class MysticalProtectionSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* com movimentos simples, você tece uma '
-                f'trama de energia *Mística* aumentando a sua '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{player_name}* com movimentos simples, tece uma '
+                f'*Trama de Energia Mística*, '
+                f'aumentando a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -85,7 +87,7 @@ class MysticalConfluenceSkill(BaseSkill):
     NAME = SorcererSkillEnum.MYSTICAL_CONFLUENCE.value
     DESCRIPTION = (
         f'Manipulando os fluxos da magia, entrelaça diferentes tipos de '
-        f'energias *Místicas* para amplificar seu '
+        f'*Energias Místicas* para amplificar seu '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -126,9 +128,12 @@ class MysticalConfluenceSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* com movimentos precisos canaliza '
-                f'energias *Místicas* aumentando o seu '
-                f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                f'*{player_name}* com movimentos precisos, '
+                f'entrelaça diferentes tipos de '
+                f'*Energias Místicas*, '
+                f'aumentando o '
+                f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -140,9 +145,9 @@ class MysticalConfluenceSkill(BaseSkill):
 class MysticalVigorSkill(BaseSkill):
     NAME = SorcererSkillEnum.MYSTICAL_VIGOR.value
     DESCRIPTION = (
-        f'Evoca energias *Místicas* para fortalecer o seu espírito '
-        f'aumentando os *{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
-        f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 20% x Rank x Nível)'
+        f'Evoca *Energias Místicas* para fortalecer o seu espírito '
+        f'aumentando o *{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
+        f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 20% x Rank x Nível) '
         f'e na *{WISDOM_EMOJI_TEXT}* (200% + 20% x Rank x Nível).'
     )
     RANK = 2
@@ -184,10 +189,11 @@ class MysticalVigorSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* controlando a respiração, evoca energias '
-                f'*Místicas* para fortalecer o seu espírito, '
-                f'aumentando os seus '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                f'*{player_name}* controlando a respiração, '
+                f'evoca *Energias Místicas* para fortalecer o seu espírito, '
+                f'aumentando o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )

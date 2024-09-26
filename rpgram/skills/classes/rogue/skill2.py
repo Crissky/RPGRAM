@@ -74,7 +74,8 @@ class ShadowStepsSkill(BaseSkill):
             'text': (
                 f'*{player_name}* move-se pelas *Sombras*, '
                 f' aumentando o '
-                f'*{HIT_EMOJI_TEXT}*.\n\n'
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -132,7 +133,8 @@ class ChaoticStepsSkill(BaseSkill):
                 f'*{player_name}* começa a mover-se de maneira '
                 f'errática e imprevisível, '
                 f'aumentando a '
-                f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )

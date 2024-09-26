@@ -214,7 +214,12 @@ class VineBucklerSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* cria e equipa um *{self.name}*.\n\n'
+                f'*{player_name}* cria e equipa um *{self.name}*, '
+                f'aumentando a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos e a '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -283,7 +288,12 @@ class SilkFlossSpaulderSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* cria e equipa uma *{self.name}*.\n\n'
+                f'*{player_name}* cria e equipa uma *{self.name}*, '
+                f'aumentando o '
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos e a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -342,7 +352,12 @@ class OakArmorSkill(BaseSkill):
         )
         report = {
             'text': (
-                f'*{player_name}* cria e equipa uma *{self.name}*.\n\n'
+                f'*{player_name}* cria e equipa uma *{self.name}*, '
+                f'aumentando a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos e a '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )

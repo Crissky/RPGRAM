@@ -192,7 +192,8 @@ class VitalityAuraSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é envolvido pela *{self.name}* '
                     f'que aumenta o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )

@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 class WarSongSkill(BaseSkill):
     NAME = BardSkillEnum.WAR_SONG.value
     DESCRIPTION = (
-        f'Entoa uma *Antiga Canção* de batalha para inspirar um companheiro, '
+        f'Entoa uma *Antiga Canção de Batalha* para inspirar um companheiro, '
         f'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
@@ -83,10 +83,14 @@ class WarSongSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se inspira pela *{self.name}*, '
                 f'que aumenta o '
-                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
-                f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_physical_attack} pontos, '
+                f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_precision_attack} pontos, '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_physical_defense} pontos e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -99,8 +103,16 @@ class WarSongSkill(BaseSkill):
             )
             report['text'] += (
                 f'\n\n'
-                f'*{target_name}* também é inspirado pela '
-                f'*{self.name}*.\n\n'
+                f'*{target_name}* também é inspirado pela *{self.name}*, '
+                f'que aumenta o '
+                f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_attack} pontos, '
+                f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_precision_attack} pontos, '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -160,9 +172,12 @@ class CrescentMoonBalladSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se inspira pela *{self.name}*, '
                 f'que aumenta o '
-                f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
-                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_magical_attack} pontos, '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_magical_defense} pontos e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -175,8 +190,14 @@ class CrescentMoonBalladSkill(BaseSkill):
             )
             report['text'] += (
                 f'\n\n'
-                f'*{target_name}* também é inspirado pela '
-                f'*{self.name}*.\n\n'
+                f'*{target_name}* também é inspirado pela *{self.name}*, '
+                f'que aumenta o '
+                f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_attack} pontos, '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -237,9 +258,12 @@ class TricksterTrovaSkill(BaseSkill):
             'text': (
                 f'*{player_name}* se inspira pela *{self.name}*, '
                 f'que aumenta o '
-                f'*{HIT_EMOJI_TEXT}*, '
-                f'*{EVASION_EMOJI_TEXT}* e o '
-                f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_hit} pontos, '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_evasion} pontos e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -252,8 +276,14 @@ class TricksterTrovaSkill(BaseSkill):
             )
             report['text'] += (
                 f'\n\n'
-                f'*{target_name}* também é inspirado pela '
-                f'*{self.name}*.\n\n'
+                f'*{target_name}* também é inspirado pela *{self.name}*, '
+                f'que aumenta o '
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_hit} pontos, '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_evasion} pontos e o '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {self_condition.bonus_hit_points} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )

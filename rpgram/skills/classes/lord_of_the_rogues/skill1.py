@@ -148,8 +148,8 @@ class DeadlyBladeSkill(BaseSkill):
             report['text'] = damage_report['text']
         elif target.is_alive:
             level = self.level_rank
-            silence_condition = DeathSentenceCondition(level=level)
-            status_report = target.status.add_condition(silence_condition)
+            death_stc_condition = DeathSentenceCondition(level=level)
+            status_report = target.status.add_condition(death_stc_condition)
             report['status_text'] = status_report['text']
 
         return report

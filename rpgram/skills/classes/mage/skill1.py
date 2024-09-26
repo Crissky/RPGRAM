@@ -215,8 +215,11 @@ class RockArmorSkill(BaseSkill):
             'text': (
                 f'*{player_name}* conjura uma *Armadura de Rocha*, '
                 f'reduzindo a sua '
-                f'*{EVASION_EMOJI_TEXT}* em favor de aumentar a sua '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos '
+                f'em favor de aumentar a sua '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -392,7 +395,9 @@ class LavaSkinSkill(BaseSkill):
                 f'*{player_name}* transmuta a *Pele* em uma camada de '
                 f'*Lava Endurecida*, aumentando a sua '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'em {condition.bonus_magical_defense} pontos '
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_STATUS}'
                 f'{status_report_text}'
             )
@@ -453,7 +458,8 @@ class MistFormSkill(BaseSkill):
             'text': (
                 f'*{player_name}* transfigura o seu corpo em uma '
                 f'*Forma Etérea*, aumentando a sua '
-                f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_STATUS}'
                 f'{status_report_text}'
             )
@@ -728,7 +734,6 @@ if __name__ == '__main__':
     print(MAGE_CHARACTER.bs.wisdom)
     print(MAGE_CHARACTER.cs.physical_defense)
     print(MAGE_CHARACTER.cs.magical_defense)
-    print(skill.function())
     print(skill.function())
     print(MAGE_CHARACTER.bs.wisdom)
     print(MAGE_CHARACTER.cs.physical_defense)

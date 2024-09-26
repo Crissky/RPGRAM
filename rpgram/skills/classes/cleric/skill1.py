@@ -89,7 +89,8 @@ class IdunnsAppleSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é agraciado com uma *Maçã Mágica* '
                     f'que aumenta o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -149,7 +150,8 @@ class KratossWrathSkill(BaseSkill):
                     f'*{target_name}* é agraciado com a '
                     f'*Ira do Deus Grego da Guerra* '
                     f'que aumenta o '
-                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_attack} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -209,7 +211,8 @@ class UllrsFocusSkill(BaseSkill):
                     f'*{target_name}* é agraciado com o '
                     f'*Foco de Ullr* '
                     f'que aumenta o '
-                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_precision_attack} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -266,10 +269,11 @@ class HecatesFlamesSkill(BaseSkill):
             )
             report = {
                 'text': (
-                    f'*{target_name}* é agraciado com o '
+                    f'*{target_name}* é agraciado com as '
                     f'*Chamas Mágicas* '
                     f'que aumentam o '
-                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}*.\n\n'
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_attack} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -329,7 +333,8 @@ class OgunsCloakSkill(BaseSkill):
                     f'*{target_name}* é agraciado com os '
                     f'*Fragmentos de Metal dos Deuses* '
                     f'que aumentam a '
-                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_defense} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -389,7 +394,8 @@ class IsissVeilSkill(BaseSkill):
                     f'*{target_name}* é agraciado com a '
                     f'*Névoa Resplandecente de Energia Divina* '
                     f'que aumenta a '
-                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_defense} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -403,7 +409,7 @@ class IsissVeilSkill(BaseSkill):
 class AnansisTrickerySkill(BaseSkill):
     NAME = ClericSkillEnum.ANANSIÇÇÇS_TRICKERY.value
     DESCRIPTION = (
-        f'Invoca a *Astúcia e Engenhosidade* de Anansi e '
+        f'Invoca a *Astúcia e Engenhosidade de Anansi* e '
         f'tece uma *Teia de Ilusões*, '
         f'aumentando o '
         f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* com base na '
@@ -447,10 +453,13 @@ class AnansisTrickerySkill(BaseSkill):
             )
             report = {
                 'text': (
-                    f'*{target_name}* é agraciado com a '
+                    f'*{target_name}* recebe a '
                     f'*Teia de Ilusões* '
                     f'que aumenta o '
-                    f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit} pontos e a '
+                    f'*{EVASION_EMOJI_TEXT}* '
+                    f'em {condition.bonus_evasion} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -464,7 +473,7 @@ class AnansisTrickerySkill(BaseSkill):
 class VidarsBraverySkill(BaseSkill):
     NAME = ClericSkillEnum.VIDARÇÇÇS_BRAVERY.value
     DESCRIPTION = (
-        f'Unge um aliado com a *Bravura Indomita* de Vigar, '
+        f'Unge um aliado com a *Bravura Indomita de Vigar*, '
         f'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
@@ -517,9 +526,12 @@ class VidarsBraverySkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a *Bravura Indomita* '
                     f'que aumenta o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
-                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos, '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_attack} pontos e a '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_defense} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -588,10 +600,14 @@ class ArtemissArrowSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é atingido pela *Flecha Lunar* '
                     f'que aumenta o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
-                    f'*{HIT_EMOJI_TEXT}* e a '
-                    f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos, '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_precision_attack} pontos, '
+                    f'*{HIT_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit} pontos e a '
+                    f'*{EVASION_EMOJI_TEXT}* '
+                    f'em {condition.bonus_evasion} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -660,9 +676,12 @@ class CeridwensMagicPotionSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é banhado pela *Poção Mágica* '
                     f'que aumenta o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
-                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos, '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_attack} pontos e a '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_defense} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )
@@ -743,14 +762,22 @@ class GraceOfThePantheonSkill(BaseSkill):
                     f'*{target_name}* é agraciado por um fragmentos da '
                     f'*{self.name}* '
                     f'que aumenta o '
-                    f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
-                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
-                    f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
-                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
-                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
-                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*, '
-                    f'*{HIT_EMOJI_TEXT}* e a '
-                    f'*{EVASION_EMOJI_TEXT}*.\n\n'
+                    f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit_points} pontos, '
+                    f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_attack} pontos, '
+                    f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_precision_attack} pontos, '
+                    f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_attack} pontos, '
+                    f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_physical_defense} pontos, '
+                    f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                    f'em {condition.bonus_magical_defense} pontos, '
+                    f'*{HIT_EMOJI_TEXT}* '
+                    f'em {condition.bonus_hit} pontos e a '
+                    f'*{EVASION_EMOJI_TEXT}* '
+                    f'em {condition.bonus_evasion} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
                 )

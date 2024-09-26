@@ -267,9 +267,9 @@ class CrystallineClashSkill(BaseSkill):
 class GeocrusherAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.GEOCRUSHER_ATTACK.value
     DESCRIPTION = (
-        f'Concentra sua força ao canalizar a energia do solo, '
-        f'imbuindo sua(s) arma(s) com o poder dos minerais, '
-        f'atingindo seu alvo com força esmagadora, '
+        f'Concentra sua força para canalizar a energia do solo, '
+        f'imbuindo sua(s) arma(s) com o poder dos minerais para '
+        f'atingir o alvo com força esmagadora, '
         f'destruindo qualquer barreira antes de '
         f'causar dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}*, de '
@@ -407,7 +407,7 @@ class ThunderpassSkill(BaseSkill):
 class StormDanceSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.STORM_DANCE.value
     DESCRIPTION = (
-        f'Percorrer rapidamente todos os inimigos como um ricochete, '
+        f'Percorre rapidamente todos os inimigos como um ricochete, '
         f'transfixando-os '
         f'com o *Poder da Tempestade*, eletroerosando as suas armaduras - '
         f'ignorando as defesas dos oponentes e '

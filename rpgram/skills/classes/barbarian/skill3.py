@@ -344,7 +344,10 @@ class RaijusFootstepsSkill(BaseSkill):
             'text': (
                 f'*{player_name}* desperta um *Transe Sobrenatural* '
                 f'que aumenta '
-                f'*{HIT_EMOJI_TEXT}* e *{EVASION_EMOJI_TEXT}*.\n\n'
+                f'*{HIT_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit} pontos e '
+                f'*{EVASION_EMOJI_TEXT}* '
+                f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -406,7 +409,8 @@ class FafnirsScalesSkill(BaseSkill):
                 f'*{player_name}* Tenciona os músculos, '
                 f'transformando-os em pedra, '
                 f'aumentando a '
-                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n\n'
+                f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
