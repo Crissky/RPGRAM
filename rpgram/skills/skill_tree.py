@@ -70,6 +70,7 @@ class SkillTree:
             ))
         ]
 
+    # GET SKILL_TYPE
     def get_attack_skill_list(self) -> List[BaseSkill]:
         return self.get_filtred_skill_list(skill_type=SkillTypeEnum.ATTACK)
 
@@ -84,6 +85,27 @@ class SkillTree:
 
     def get_healing_skill_list(self) -> List[BaseSkill]:
         return self.get_filtred_skill_list(skill_type=SkillTypeEnum.HEALING)
+
+    # GET SKILL_DEFENSE
+    def get_physical_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.PHYSICAL
+        )
+
+    def get_magical_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.MAGICAL
+        )
+
+    def get_true_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.TRUE
+        )
+
+    def get_na_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.NA
+        )
 
     def learn_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
         if issubclass(skill_class_name, BaseSkill):
