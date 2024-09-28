@@ -70,6 +70,19 @@ class SkillTree:
             ))
         ]
 
+    # GET TARGET_TYPE
+    def get_self_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.SELF)
+
+    def get_single_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.SINGLE)
+
+    def get_team_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.TEAM)
+
+    def get_all_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.ALL)
+
     # GET SKILL_TYPE
     def get_attack_skill_list(self) -> List[BaseSkill]:
         return self.get_filtred_skill_list(skill_type=SkillTypeEnum.ATTACK)
