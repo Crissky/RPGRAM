@@ -183,16 +183,27 @@ class BaseCharacter:
         return basic_attack
 
     def weighted_choice_attack(self) -> BaseSkill:
-        basic_attack_dict = {
+        attack_dict = {
             basic_attack: basic_attack.power
             for basic_attack in (
                 self.basic_attacks + self.skill_tree.get_attack_skill_list()
             )
         }
-        population = list(basic_attack_dict.keys())
-        weights = basic_attack_dict.values()
+        population = list(attack_dict.keys())
+        weights = attack_dict.values()
 
         return choices(population, weights=weights)[0]
+
+    def get_best_attack(self) -> BaseSkill:
+        attack_dict = {
+            basic_attack: basic_attack.power
+            for basic_attack in (
+                self.basic_attacks + self.skill_tree.get_attack_skill_list()
+            )
+        }
+        basic_attack = max(attack_dict, key=attack_dict.get)
+
+        return basic_attack
 
     def activate_status(self) -> List[dict]:
         reports = self.__status.activate(self)
