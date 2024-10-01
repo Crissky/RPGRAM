@@ -934,3 +934,5 @@ if __name__ == '__main__':
     print(base_character.to_dict())
     print(base_character.weighted_choice_basic_attack())
     print(base_character.get_best_basic_attack())
+    print(base_character.weighted_choice_attack())
+    print(base_character.get_best_attack())
