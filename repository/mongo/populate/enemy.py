@@ -213,6 +213,14 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
     return enemy_char
 
 
+def learn_skills(enemy_char: NPCharacter) -> NPCharacter:
+    skill_list = enemy_char.skill_tree.learnable_skill_list
+    for skill_class in skill_list:
+        enemy_char.skill_tree.learn_skill(skill_class)
+
+    return enemy_char
+
+
 def create_random_enemies(
     group_level: int,
     no_boss: bool = False,
@@ -237,6 +245,7 @@ def create_random_enemies(
             enemy_race_name=enemy_race_name,
         )
         enemy_char = distribute_stats(enemy_char)
+        enemy_char = learn_skills(enemy_char)
         enemy_list.append(enemy_char)
 
         if enemy_char.is_any_boss:
