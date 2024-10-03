@@ -16,6 +16,7 @@ from rpgram import Equips
 from rpgram.boosters import Classe, Race
 from rpgram.characters import NPCharacter
 from rpgram.enums import AlignmentEnum, EnemyStarsEnum, EquipmentEnum
+from rpgram.errors import RequirementError
 
 
 def get_total_enemy(
@@ -216,7 +217,29 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
 def learn_skills(enemy_char: NPCharacter) -> NPCharacter:
     skill_list = enemy_char.skill_tree.learnable_skill_list
     for skill_class in skill_list:
-        enemy_char.skill_tree.learn_skill(skill_class)
+        try:
+            enemy_char.skill_tree.learn_skill(skill_class)
+        except RequirementError as error:
+            print(
+                f'O inimigo [{enemy_char.full_name}] '
+                f'não pode aprender a habilidade '
+                f'{skill_class.NAME}(RANK{skill_class.RANK}) '
+                'porque:',
+                error
+            )
+
+    return enemy_char
+
+
+def distribute_skill_points(enemy_char: NPCharacter) -> NPCharacter:
+    skill_points = enemy_char.skill_tree.current_skill_points
+    skill_list = enemy_char.skill_tree.skill_list
+    total_skills = len(skill_list)
+
+    if enemy_char.skill_tree.have_skill_points and skill_list:
+        for index in range(skill_points):
+            skill = skill_list[index % total_skills]
+            enemy_char.skill_tree.upgrade_skill(skill)
 
     return enemy_char
 
@@ -246,6 +269,7 @@ def create_random_enemies(
         )
         enemy_char = distribute_stats(enemy_char)
         enemy_char = learn_skills(enemy_char)
+        enemy_char = distribute_skill_points(enemy_char)
         enemy_list.append(enemy_char)
 
         if enemy_char.is_any_boss:
@@ -264,10 +288,11 @@ if __name__ == '__main__':
         print(f'{item[0]}: {item[1]},', end=' ')
     print()
     enemy_list = create_random_enemies(
-        group_level=1000,
-        num_min_enemies=900,
-        num_max_enemies=1000,
+        group_level=10,
+        num_min_enemies=90,
+        num_max_enemies=100,
     )
     for enemy in enemy_list:
         print(enemy.get_all_sheets(verbose=False))
         print(enemy.to_dict())
+        print(enemy.skill_tree)
