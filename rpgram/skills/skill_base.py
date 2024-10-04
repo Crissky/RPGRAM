@@ -426,9 +426,60 @@ class BaseSkill:
             f'{special_damage_texts}'
         )
 
+    # IS DAMAGE TYPE
+    @property
+    def is_physical_damage(self) -> bool:
+        return self.skill_defense == SkillDefenseEnum.PHYSICAL
+
+    @property
+    def is_magical_damage(self) -> bool:
+        return self.skill_defense == SkillDefenseEnum.MAGICAL
+
     @property
     def is_true_damage(self) -> bool:
         return self.skill_defense == SkillDefenseEnum.TRUE
+
+    @property
+    def is_na_damage(self) -> bool:
+        return self.skill_defense == SkillDefenseEnum.NA
+
+    # IS TARGET TYPE
+    @property
+    def is_self_target_skill(self) -> bool:
+        return self.target_type == TargetEnum.SELF
+
+    @property
+    def is_single_target_skill(self) -> bool:
+        return self.target_type == TargetEnum.SINGLE
+
+    @property
+    def is_team_target_skill(self) -> bool:
+        return self.target_type == TargetEnum.TEAM
+
+    @property
+    def is_all_target_skill(self) -> bool:
+        return self.target_type == TargetEnum.ALL
+
+    # IS SKILL TYPE
+    @property
+    def is_attack_type_skill(self) -> bool:
+        return self.skill_type == SkillTypeEnum.ATTACK
+
+    @property
+    def is_barrier_type_skill(self) -> bool:
+        return self.skill_type == SkillTypeEnum.BARRIER
+
+    @property
+    def is_buff_type_skill(self) -> bool:
+        return self.skill_type == SkillTypeEnum.BUFF
+
+    @property
+    def is_defense_type_skill(self) -> bool:
+        return self.skill_type == SkillTypeEnum.DEFENSE
+
+    @property
+    def is_healing_type_skill(self) -> bool:
+        return self.skill_type == SkillTypeEnum.HEALING
 
     @property
     def special_damage_text(self):
