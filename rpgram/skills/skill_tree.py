@@ -63,7 +63,7 @@ class SkillTree:
 
         return [
             skill for skill in self.skill_list
-            if any((
+            if all((
                 target_type is None or skill.target_type == target_type,
                 skill_type is None or skill.skill_type == skill_type,
                 skill_defense is None or skill.skill_defense == skill_defense,
