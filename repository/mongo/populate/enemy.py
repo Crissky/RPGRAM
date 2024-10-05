@@ -1,5 +1,5 @@
 from typing import List
-from random import choice, randint
+from random import choice, randint, random
 
 from bson import ObjectId
 
@@ -244,6 +244,21 @@ def distribute_skill_points(enemy_char: NPCharacter) -> NPCharacter:
     return enemy_char
 
 
+def add_buffs(enemy_list: List[NPCharacter]) -> List[NPCharacter]:
+    for enemy in enemy_list:
+        skill_list = enemy.skill_tree.get_buff_skill_list()
+        for skill in skill_list:
+            # print(f'SKILL NAME: {skill.name}[{skill.skill_type}]')
+            if skill.is_self_target_skill:
+                skill.function()
+            else:
+                for e in enemy_list:
+                    if random() >= 0.50:
+                        skill.function(e)
+
+    return enemy_list
+
+
 def create_random_enemies(
     group_level: int,
     no_boss: bool = False,
@@ -275,6 +290,8 @@ def create_random_enemies(
         if enemy_char.is_any_boss:
             no_boss = True
 
+    enemy_list = add_buffs(enemy_list)
+
     return enemy_list
 
 
@@ -288,7 +305,7 @@ if __name__ == '__main__':
         print(f'{item[0]}: {item[1]},', end=' ')
     print()
     enemy_list = create_random_enemies(
-        group_level=10,
+        group_level=100,
         num_min_enemies=90,
         num_max_enemies=100,
     )
