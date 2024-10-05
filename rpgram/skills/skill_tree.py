@@ -60,15 +60,65 @@ class SkillTree:
         skill_type: SkillTypeEnum = None,
         skill_defense: SkillDefenseEnum = None,
     ) -> List[BaseSkill]:
-        
+
         return [
             skill for skill in self.skill_list
-            if any((
+            if all((
                 target_type is None or skill.target_type == target_type,
                 skill_type is None or skill.skill_type == skill_type,
                 skill_defense is None or skill.skill_defense == skill_defense,
             ))
         ]
+
+    # GET TARGET_TYPE
+    def get_self_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.SELF)
+
+    def get_single_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.SINGLE)
+
+    def get_team_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.TEAM)
+
+    def get_all_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(target_type=TargetEnum.ALL)
+
+    # GET SKILL_TYPE
+    def get_attack_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(skill_type=SkillTypeEnum.ATTACK)
+
+    def get_barrier_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(skill_type=SkillTypeEnum.BARRIER)
+
+    def get_buff_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(skill_type=SkillTypeEnum.BUFF)
+
+    def get_defense_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(skill_type=SkillTypeEnum.DEFENSE)
+
+    def get_healing_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(skill_type=SkillTypeEnum.HEALING)
+
+    # GET SKILL_DEFENSE
+    def get_physical_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.PHYSICAL
+        )
+
+    def get_magical_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.MAGICAL
+        )
+
+    def get_true_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.TRUE
+        )
+
+    def get_na_skill_list(self) -> List[BaseSkill]:
+        return self.get_filtred_skill_list(
+            skill_defense=SkillDefenseEnum.NA
+        )
 
     def learn_skill(self, skill_class_name: Union[BaseSkill, str]) -> dict:
         if issubclass(skill_class_name, BaseSkill):

@@ -1,5 +1,5 @@
 from typing import List
-from random import choice, randint
+from random import choice, randint, random
 
 from bson import ObjectId
 
@@ -16,6 +16,7 @@ from rpgram import Equips
 from rpgram.boosters import Classe, Race
 from rpgram.characters import NPCharacter
 from rpgram.enums import AlignmentEnum, EnemyStarsEnum, EquipmentEnum
+from rpgram.errors import RequirementError
 
 
 def get_total_enemy(
@@ -213,6 +214,51 @@ def distribute_stats(enemy_char: NPCharacter) -> NPCharacter:
     return enemy_char
 
 
+def learn_skills(enemy_char: NPCharacter) -> NPCharacter:
+    skill_list = enemy_char.skill_tree.learnable_skill_list
+    for skill_class in skill_list:
+        try:
+            enemy_char.skill_tree.learn_skill(skill_class)
+        except RequirementError as error:
+            print(
+                f'O inimigo [{enemy_char.full_name}] '
+                f'não pode aprender a habilidade '
+                f'{skill_class.NAME}(RANK{skill_class.RANK}) '
+                'porque:',
+                error
+            )
+
+    return enemy_char
+
+
+def distribute_skill_points(enemy_char: NPCharacter) -> NPCharacter:
+    skill_points = enemy_char.skill_tree.current_skill_points
+    skill_list = enemy_char.skill_tree.skill_list
+    total_skills = len(skill_list)
+
+    if enemy_char.skill_tree.have_skill_points and skill_list:
+        for index in range(skill_points):
+            skill = skill_list[index % total_skills]
+            enemy_char.skill_tree.upgrade_skill(skill)
+
+    return enemy_char
+
+
+def add_buffs(enemy_list: List[NPCharacter]) -> List[NPCharacter]:
+    for enemy in enemy_list:
+        skill_list = enemy.skill_tree.get_buff_skill_list()
+        for skill in skill_list:
+            # print(f'SKILL NAME: {skill.name}[{skill.skill_type}]')
+            if skill.is_self_target_skill:
+                skill.function()
+            else:
+                for e in enemy_list:
+                    if random() >= 0.50:
+                        skill.function(e)
+
+    return enemy_list
+
+
 def create_random_enemies(
     group_level: int,
     no_boss: bool = False,
@@ -237,10 +283,14 @@ def create_random_enemies(
             enemy_race_name=enemy_race_name,
         )
         enemy_char = distribute_stats(enemy_char)
+        enemy_char = learn_skills(enemy_char)
+        enemy_char = distribute_skill_points(enemy_char)
         enemy_list.append(enemy_char)
 
         if enemy_char.is_any_boss:
             no_boss = True
+
+    enemy_list = add_buffs(enemy_list)
 
     return enemy_list
 
@@ -255,10 +305,11 @@ if __name__ == '__main__':
         print(f'{item[0]}: {item[1]},', end=' ')
     print()
     enemy_list = create_random_enemies(
-        group_level=1000,
-        num_min_enemies=900,
-        num_max_enemies=1000,
+        group_level=100,
+        num_min_enemies=90,
+        num_max_enemies=100,
     )
     for enemy in enemy_list:
         print(enemy.get_all_sheets(verbose=False))
         print(enemy.to_dict())
+        print(enemy.skill_tree)
