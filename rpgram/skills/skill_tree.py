@@ -1,6 +1,7 @@
 from operator import attrgetter
 from typing import TYPE_CHECKING, List, Tuple, Type, Union
 
+from constant.text import TEXT_DELIMITER
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import SkillDefenseEnum, SkillTypeEnum, TargetEnum
@@ -305,3 +306,17 @@ class SkillTree:
             'current_action_points': self.current_action_points,
             'max_action_points': self.max_action_points,
         }
+
+    def __repr__(self) -> str:
+        text = '\n'.join([
+            f'{index+1:02}: {skill.name} (NV:{skill.level}, RK:{skill.rank})'
+            for index, skill in enumerate(self.skill_list)
+        ])
+
+        return (
+            f'{TEXT_DELIMITER}\n'
+            f'{self.character.full_name_with_level}\n'
+            f'SKILLS:\n\n'
+            f'{text}'
+            f'\n{TEXT_DELIMITER}\n'
+        )
