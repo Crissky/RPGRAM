@@ -103,6 +103,7 @@ class EmojiEnum(Enum):
     REVIVE_CONSUMABLE = '👼'
     OTHER_CONSUMABLE = '🧧'
     IDENTIFY_CONSUMABLE = '🔎'
+    TENT_CONSUMABLE = '⛺'
     ALIGNMENT = '🗣️'
     UNDER_ZERO = '🈴'
     TROCADO = '🪙'

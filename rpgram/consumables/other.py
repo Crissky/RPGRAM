@@ -70,6 +70,58 @@ class IdentifyingConsumable(Consumable):
         return int(price)
 
 
+class TentConsumable(Consumable):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        weight: float,
+        rarity: Union[str, RarityEnum] = RarityEnum.RARE,
+        _id: Union[str, ObjectId] = None,
+        created_at: datetime = None,
+        updated_at: datetime = None,
+    ):
+        super().__init__(
+            name=name,
+            description=description,
+            weight=weight,
+            rarity=rarity,
+            usable=False,
+            _id=_id,
+            created_at=created_at,
+            updated_at=updated_at,
+        )
+
+    def function(self, target) -> dict:
+        report = {'text': f'{target.name} começou a desansar na barraca.'}
+
+        return report
+
+    def to_dict(self):
+        super_dict = super().to_dict()
+        return dict(
+            name=super_dict['name'],
+            description=super_dict['description'],
+            weight=super_dict['weight'],
+            rarity=super_dict['rarity'],
+            _id=super_dict['_id'],
+            created_at=super_dict['created_at'],
+            updated_at=super_dict['updated_at'],
+        )
+
+    @property
+    def emoji_type(self) -> str:
+        return EmojiEnum.TENT_CONSUMABLE.value
+
+    @property
+    def price(self) -> int:
+        base_value = 5000
+        rarity_multiplier = get_enum_index(self.rarity) + 1
+        price = base_value * rarity_multiplier
+
+        return int(price)
+
+
 class XPConsumable(Consumable):
     def __init__(
         self,
