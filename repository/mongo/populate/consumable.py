@@ -1,3 +1,4 @@
+from bot.constants.rest import COMMANDS
 from repository.mongo import ItemModel
 from rpgram.conditions import (
     Heal1Condition,
@@ -15,6 +16,7 @@ from rpgram.consumables import (
     GemstoneConsumable,
     HealingConsumable,
     IdentifyingConsumable,
+    TentConsumable,
     ReviveConsumable,
     TrocadoPouchConsumable,
     XPConsumable,
@@ -857,6 +859,17 @@ CONSUMABLES = [
         'weight': 0.30,
         'rarity': RarityEnum.RARE.name,
         'class': IdentifyingConsumable
+    },
+    {
+        'name': 'Tent',
+        'description': (
+            f'Barraca pessoal efêmera usada para um aliado descansar. '
+            f'Use "/{COMMANDS[0]} @nome_aliado" para ajudar um aliado '
+            f'a começar o descanso.'
+        ),
+        'weight': 1.23,
+        'rarity': RarityEnum.RARE.name,
+        'class': TentConsumable
     },
     {
         'name': 'Proficiency Elixir',
