@@ -864,8 +864,8 @@ CONSUMABLES = [
         'name': 'Tent',
         'description': (
             f'Barraca pessoal efêmera usada para um aliado descansar. '
-            f'Use "/{COMMANDS[0]} @nome_aliado" para ajudar um aliado '
-            f'a começar o descanso.'
+            f'Use "/{COMMANDS[0]} @nome_aliado" para utilizar a barraca '
+            f'e ajudar um aliado a começar o descanso.'
         ),
         'weight': 1.23,
         'rarity': RarityEnum.RARE.name,
