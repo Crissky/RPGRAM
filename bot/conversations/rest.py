@@ -29,6 +29,7 @@ from bot.decorators import (
     skip_if_no_have_char,
     skip_if_no_singup_player,
 )
+from bot.functions.bag import TENT, have_tent, sub_tent_from_bag
 from bot.functions.char import save_char
 from bot.functions.chat import (
     call_telegram_message_function,
@@ -69,13 +70,51 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     em "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.'''
 
     char_model = CharacterModel()
+    player_model = PlayerModel()
     chat_id = update.effective_chat.id
-    user_id = update.effective_user.id
+    caller_user_id = user_id = update.effective_user.id
+    silent = get_attribute_group_or_player(chat_id, 'silent')
+    caller_have_tent = have_tent(caller_user_id)
+    args = context.args
+
+    if args and args[0].startswith('@') and caller_have_tent:
+        player_name = args[0]
+        m_query = {'name': player_name}
+        player: Player = player_model.get(query=m_query)
+        user_id = player._id
+        sub_tent_from_bag(user_id=caller_user_id)
+    elif args and args[0].startswith('@') and not caller_have_tent:
+        player_name = args[0]
+        text = (
+            f'Você não tem um "{TENT}" para ajudar o descanso de '
+            f'{player_name}.'
+        )
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_REST,
+            section_start=SECTION_HEAD_REST_START,
+            section_end=SECTION_HEAD_REST_END,
+            clean_func=None,
+        )
+        reply_text_kwargs = dict(
+            text=text,
+            disable_notification=silent,
+            allow_sending_without_reply=True,
+            reply_markup=get_close_keyboard(user_id=caller_user_id)
+        )
+
+        return await call_telegram_message_function(
+            function_caller='REST.REST()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
+        )
+
     job_name = get_rest_jobname(user_id=user_id)
     current_jobs = context.job_queue.get_jobs_by_name(job_name)
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     player_character: BaseCharacter = char_model.get(user_id)
-    character_id = player_character._id
     current_hp = player_character.cs.show_hit_points
     debuffs_text = player_character.status.debuffs_text
 
@@ -104,7 +143,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{reply_text_starting_rest}\n\n'
             f'HP: {current_hp}\n'
             f'Status: {debuffs_text}\n\n'
-            f'Seu personagem irá recuperar HP e Status a cada '
+            f'{player_character.player_name} irá recuperar HP e Status a cada '
             f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
     create_job_rest_action_point(

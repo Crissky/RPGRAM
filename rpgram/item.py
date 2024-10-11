@@ -11,6 +11,7 @@ from rpgram.consumables.heal import HealingConsumable, ReviveConsumable
 from rpgram.consumables.other import (
     GemstoneConsumable,
     IdentifyingConsumable,
+    TentConsumable,
     TrocadoPouchConsumable,
     XPConsumable
 )
@@ -128,14 +129,16 @@ class Item:
                 order += 3
             elif isinstance(self.item, XPConsumable):
                 order += 4
-            elif isinstance(self.item, CureConsumable):
+            elif isinstance(self.item, TentConsumable):
                 order += 5
-            elif isinstance(self.item, PanaceaConsumable):
+            elif isinstance(self.item, CureConsumable):
                 order += 6
-            elif isinstance(self.item, ReviveConsumable):
+            elif isinstance(self.item, PanaceaConsumable):
                 order += 7
-            elif isinstance(self.item, HealingConsumable):
+            elif isinstance(self.item, ReviveConsumable):
                 order += 8
+            elif isinstance(self.item, HealingConsumable):
+                order += 9
         elif isinstance(self.item, Equipment):
             order = EquipmentEnumOrder[self.item.equip_type.name].value
 

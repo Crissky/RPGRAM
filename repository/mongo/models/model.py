@@ -52,6 +52,7 @@ from rpgram.consumables import (
     HealingConsumable,
     ReviveConsumable,
     IdentifyingConsumable,
+    TentConsumable,
     XPConsumable,
     TrocadoPouchConsumable,
     GemstoneConsumable,

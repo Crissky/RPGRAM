@@ -11,6 +11,7 @@ from rpgram.boosters import Equipment
 
 
 IDENTIFYING_LENS = 'Identifying Lens'
+TENT = 'Tent'
 LIMIT_ITEM_IN_BAG = 100
 
 
@@ -121,6 +122,13 @@ def get_identifying_lens() -> IdentifyingConsumable:
     return get_item_by_name(IDENTIFYING_LENS)
 
 
+def get_tent() -> IdentifyingConsumable:
+    '''Retorna "Tent".
+    '''
+
+    return get_item_by_name(TENT)
+
+
 def get_id_item_by_name(item_name: str) -> dict:
     '''Retorna um dicionário com o _id e o name do item.
     '''
@@ -179,6 +187,14 @@ def have_identifying_lens(user_id: int) -> bool:
     return exists_in_bag(user_id, item_name=IDENTIFYING_LENS)
 
 
+def have_tent(user_id: int) -> bool:
+    '''Verifica se o jogador possui um "Tent" na bolsa.
+    Retorna True caso tenha e False caso contrário.
+    '''
+
+    return exists_in_bag(user_id, item_name=TENT)
+
+
 def sub_item_from_bag_by_name(item_name: str, user_id: int):
     '''Subtrai um item da bag pelo nome.
     '''
@@ -202,6 +218,13 @@ def sub_identifying_lens_from_bag(user_id: int) -> bool:
     '''
 
     return sub_item_from_bag_by_name(IDENTIFYING_LENS, user_id)
+
+
+def sub_tent_from_bag(user_id: int) -> bool:
+    '''Subtrai um "Tent" da bag.
+    '''
+
+    return sub_item_from_bag_by_name(TENT, user_id)
 
 
 def drop_random_items_from_bag(user_id: int) -> List[Item]:
