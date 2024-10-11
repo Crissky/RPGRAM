@@ -86,7 +86,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif args and args[0].startswith('@') and not caller_have_tent:
         player_name = args[0]
         text = (
-            f'Você não tem {TENT} suficiente para ajudar o descanso de '
+            f'Você não tem um "{TENT}" para ajudar o descanso de '
             f'{player_name}.'
         )
         text = create_text_in_box(
