@@ -6,65 +6,67 @@ SECTION_TEXT_ACTION_PONTOS = 'PONTOS DE AÇÃO'
 MINUTES_TO_RECOVERY_HIT_POINTS = 20
 MINUTES_TO_RECOVERY_ACTION_POINTS = 10
 REPLY_TEXTS_ALREADY_RESTING = [
-    'Seu personagem já está descansando.',
-    'Seu personagem já está aproveitando uma merecida pausa.',
-    'Seu personagem já está descansando. Aguarde um pouco mais.',
-    'Descanso é importante, mas seu personagem já está fazendo isso.',
-    'Hmm, acho que seu personagem já está fazendo isso.',
-    'Acalme-se! Seu personagem já está aproveitando um merecido descanso.',
-    'Relaxe! Seu personagem já está descansando neste momento.',
-    'Descanse um pouco você também! Seu personagem já está descansando.',
-    'Seu personagem já está descansando e recuperando suas energias.',
-    'Acalme-se! Seu personagem já está descansando, então aproveite o momento de tranquilidade.',
-    'Descansar é importante para o bem-estar do seu personagem, mas ele já está descansando agora.',
-    'Seu personagem já está relaxando e recarregando as energias.',
+    '{char_name}, já está descansando.',
+    '{char_name}, já está aproveitando uma merecida pausa.',
+    '{char_name}, já está descansando. Aguarde um pouco mais.',
+    'Descanso é importante, mas {char_name}, já está fazendo isso.',
+    'Hmm, acho que {char_name}, já está fazendo isso.',
+    'Acalme-se! {char_name}, já está aproveitando um merecido descanso.',
+    'Relaxe! {char_name}, já está descansando neste momento.',
+    'Descanse um pouco você também! {char_name}, já está descansando.',
+    '{char_name}, já está descansando e recuperando suas energias.',
+    'Acalme-se! {char_name}, já está descansando, então aproveite '
+    'o momento de tranquilidade.',
+    'Descansar é importante para o bem-estar de {char_name}, '
+    'mas ele já está descansando agora.',
+    '{char_name}, já está relaxando e recarregando as energias.',
 ]
 REPLY_TEXTS_NO_NEED_REST = [
-    'Seu personagem já está totalmente recuperado. '
+    '{char_name}, já está totalmente recuperado. '
     'Não precisa descansar agora.',
-    'Seu personagem está cheio de energia! Descansar seria um desperdício.',
-    'Não há necessidade de descansar no momento. Seu personagem está pronto '
+    '{char_name}, está cheio de energia! Descansar seria um desperdício.',
+    'Não há necessidade de descansar no momento. {char_name}, está pronto '
     'para qualquer desafio.',
-    'Seu personagem sente uma energia renovada pulsando em suas veias. '
+    '{char_name}, sente uma energia renovada pulsando em suas veias. '
     'Descansar agora seria redundante.',
-    'Seu personagem está com a saúde perfeita. '
+    '{char_name}, está com a saúde perfeita. '
     'Descansar seria apenas um capricho.',
     'Descansar agora seria como descansar eternamente. '
-    'Seu personagem está pronto para enfrentar qualquer obstáculo.',
-    'Seu personagem se sente revigorado e pronto para prosseguir. '
+    '{char_name}, está pronto para enfrentar qualquer obstáculo.',
+    '{char_name}, se sente revigorado e pronto para prosseguir. '
     'Não há motivo para descansar.',
-    'A energia em seu corpo é palpável. '
+    'A energia no corpo de {char_name}, é palpável. '
     'Descansar seria um desperdício de tempo precioso.',
-    'Seu personagem está radiante de vitalidade. '
+    '{char_name}, está radiante de vitalidade. '
     'Descansar não é necessário neste momento.',
-    'Seu personagem já está completamente revigorado e '
+    '{char_name}, já está completamente revigorado e '
     'pronto para a próxima aventura!',
-    'O poder flui através de suas veias. '
+    'O poder flui através das veias de {char_name}. '
     'Descansar agora seria como sufocar uma chama ardente.',
-    'Seu personagem respira fundo e sente uma energia vibrante percorrer '
+    '{char_name}, respira fundo e sente uma energia vibrante percorrer '
     'todo o seu ser. Não há necessidade de descansar.',
 ]
 REPLY_TEXTS_STARTING_REST = [
-    'Seu personagem senta e começa a descansar.',
-    'Seu personagem encontra um local confortável para descansar.',
-    'Seu personagem se acomoda e começa a relaxar.',
-    'Seu personagem decide parar por um momento e recarregar suas energias.',
-    'Seu personagem deita no chão e começa a descansar.',
-    'Seu personagem se recosta em uma parede e relaxa.',
-    'Seu personagem encontra uma sombra agradável para descansar.',
-    'Seu personagem decide fazer uma pausa e recuperar suas forças.',
-    'Seu personagem se senta em uma rocha e começa a descansar.',
-    'Seu personagem encontra um local tranquilo e decide descansar um pouco.',
-    'Seu personagem encontra um tronco caído e se senta para descansar.',
-    'Seu personagem se deita em um leito de grama e relaxa.',
-    'Seu personagem se ajoelha e começa a descansar.',
-    'Seu personagem senta em uma pedra e decide descansar por um tempo.',
-    'Seu personagem encontra uma fonte e se senta para descansar.',
-    'Seu personagem decide parar um momento e recuperar o fôlego.',
-    'Seu personagem se deita em uma cama improvisada e começa a descansar.',
-    'Seu personagem se senta em uma árvore caída e relaxa.',
-    'Seu personagem encontra um banco vazio e se senta para descansar.',
-    'Seu personagem se recolhe em um canto e decide descansar um pouco.',
+    '{char_name}, senta e começa a descansar.',
+    '{char_name}, encontra um local confortável para descansar.',
+    '{char_name}, se acomoda e começa a relaxar.',
+    '{char_name}, decide parar por um momento e recarregar suas energias.',
+    '{char_name}, deita no chão e começa a descansar.',
+    '{char_name}, se recosta em uma parede e relaxa.',
+    '{char_name}, encontra uma sombra agradável para descansar.',
+    '{char_name}, decide fazer uma pausa e recuperar suas forças.',
+    '{char_name}, se senta em uma rocha e começa a descansar.',
+    '{char_name}, encontra um local tranquilo e decide descansar um pouco.',
+    '{char_name}, encontra um tronco caído e se senta para descansar.',
+    '{char_name}, se deita em um leito de grama e relaxa.',
+    '{char_name}, se ajoelha e começa a descansar.',
+    '{char_name}, senta em uma pedra e decide descansar por um tempo.',
+    '{char_name}, encontra uma fonte e se senta para descansar.',
+    '{char_name}, decide parar um momento e recuperar o fôlego.',
+    '{char_name}, se deita em uma cama improvisada e começa a descansar.',
+    '{char_name}, se senta em uma árvore caída e relaxa.',
+    '{char_name}, encontra um banco vazio e se senta para descansar.',
+    '{char_name}, se recolhe em um canto e decide descansar um pouco.',
 ]
 
 REPLY_TEXT_REST_MIDNIGHT = [
