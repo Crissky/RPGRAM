@@ -81,7 +81,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         player_name = args[0]
         m_query = {'name': player_name}
         player: Player = player_model.get(query=m_query)
-        user_id = player._id
+        user_id = player.player_id
         sub_tent_from_bag(user_id=caller_user_id)
     elif args and args[0].startswith('@') and not caller_have_tent:
         player_name = args[0]
@@ -117,9 +117,16 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_character: BaseCharacter = char_model.get(user_id)
     current_hp = player_character.cs.show_hit_points
     debuffs_text = player_character.status.debuffs_text
+    char_name = (
+        f'{player_character.name}, '
+        f'O {player_character.race_name} {player_character.classe_name}'
+    )
 
     if current_jobs:
         reply_text_already_resting = choice(REPLY_TEXTS_ALREADY_RESTING)
+        reply_text_already_resting = reply_text_already_resting.format(
+            char_name=char_name
+        )
         text = (
             f'{reply_text_already_resting}\n\n'
             f'HP: {current_hp}\n'
@@ -127,6 +134,9 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     elif player_character.is_healed and not player_character.is_debuffed:
         reply_text_no_need_rest = choice(REPLY_TEXTS_NO_NEED_REST)
+        reply_text_no_need_rest = reply_text_no_need_rest.format(
+            char_name=char_name
+        )
         text = (
             f'{reply_text_no_need_rest}\n\n'
             f'HP: {current_hp}\n'
@@ -139,6 +149,9 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_id=user_id,
         )
         reply_text_starting_rest = choice(REPLY_TEXTS_STARTING_REST)
+        reply_text_starting_rest = reply_text_starting_rest.format(
+            char_name=char_name
+        )
         text = (
             f'{reply_text_starting_rest}\n\n'
             f'HP: {current_hp}\n'
@@ -146,12 +159,12 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'{player_character.player_name} irá recuperar HP e Status a cada '
             f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
+
     create_job_rest_action_point(
         context=context,
         chat_id=chat_id,
         user_id=user_id,
     )
-
     text = create_text_in_box(
         text=text,
         section_name=SECTION_TEXT_REST,
@@ -159,13 +172,13 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_REST_END,
         clean_func=None,
     )
-
     reply_text_kwargs = dict(
         text=text,
         disable_notification=silent,
         allow_sending_without_reply=True,
-        reply_markup=get_close_keyboard(user_id=user_id)
+        reply_markup=get_close_keyboard(user_id=caller_user_id)
     )
+
     await call_telegram_message_function(
         function_caller='REST.REST()',
         function=update.effective_message.reply_text,
