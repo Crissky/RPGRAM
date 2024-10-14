@@ -253,7 +253,7 @@ def add_buffs(enemy_list: List[NPCharacter]) -> List[NPCharacter]:
                 skill.function()
             else:
                 for e in enemy_list:
-                    if random() >= 0.50:
+                    if random() >= 0.60:
                         skill.function(e)
 
     return enemy_list
