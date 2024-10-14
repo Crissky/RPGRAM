@@ -81,8 +81,32 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         player_name = args[0]
         m_query = {'name': player_name}
         player: Player = player_model.get(query=m_query)
-        user_id = player.player_id
-        sub_tent_from_bag(user_id=caller_user_id)
+        if player:
+            user_id = player.player_id
+            sub_tent_from_bag(user_id=caller_user_id)
+        else:
+            text = create_text_in_box(
+                text=f'{player_name} não foi encontrado.',
+                section_name=SECTION_TEXT_REST,
+                section_start=SECTION_HEAD_REST_START,
+                section_end=SECTION_HEAD_REST_END,
+                clean_func=None,
+            )
+            reply_text_kwargs = dict(
+                text=text,
+                disable_notification=silent,
+                allow_sending_without_reply=True,
+                reply_markup=get_close_keyboard(user_id=caller_user_id)
+            )
+
+            return await call_telegram_message_function(
+                function_caller='REST.REST()',
+                function=update.effective_message.reply_text,
+                context=context,
+                need_response=False,
+                skip_retry=False,
+                **reply_text_kwargs,
+            )
     elif args and args[0].startswith('@') and not caller_have_tent:
         player_name = args[0]
         text = (
