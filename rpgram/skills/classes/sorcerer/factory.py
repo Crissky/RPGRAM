@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, List, Type
+from rpgram.skills.classes.multiclasse.magical_attack import PrismaticShotSkill
 from rpgram.skills.classes.sorcerer.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     MysticalConfluenceSkill,
@@ -8,8 +9,7 @@ from rpgram.skills.classes.sorcerer.skill1 import (
 from rpgram.skills.classes.sorcerer.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
     PrismaticScintillationSkill,
-    PrismaticShieldSkill,
-    PrismaticShotSkill
+    PrismaticShieldSkill
 )
 from rpgram.skills.classes.sorcerer.skill3 import (
     SKILL_WAY_DESCRIPTION as skill_way3,

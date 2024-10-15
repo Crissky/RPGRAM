@@ -6,6 +6,7 @@ from rpgram.enums.skill import (
     MultiClasseSkillEnum,
     SkillDefenseEnum,
     SkillTypeEnum,
+    SorcererSkillEnum,
     TargetEnum
 )
 from rpgram.enums.stats_combat import CombatStatsEnum
@@ -173,5 +174,45 @@ class EarthBreakSkill(BaseSkill):
             char=char,
             use_equips_damage_types=False,
             requirements=EarthBreakSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class PrismaticShotSkill(BaseSkill):
+    NAME = SorcererSkillEnum.PRISMATIC_SHOT.value
+    DESCRIPTION = (
+        f'Canaliza a *Energia Mágica*, dispara um feixe prismático '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name_list': [
+            ClasseEnum.ARCANIST.value,
+            ClasseEnum.SORCERER.value
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 1.25,
+        }
+        damage_types = [DamageEnum.LIGHT]
+
+        super().__init__(
+            name=PrismaticShotSkill.NAME,
+            description=PrismaticShotSkill.DESCRIPTION,
+            rank=PrismaticShotSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=PrismaticShotSkill.REQUIREMENTS,
             damage_types=damage_types
         )
