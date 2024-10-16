@@ -124,6 +124,14 @@ async def send_private_message(
             **call_telegram_kwargs
         )
     except Forbidden as error:
+        print(
+            f'SEND_PRIVATE_MESSAGE(): Usuário {user_id} não pode '
+            f'receber mensagens privadas. '
+            f'Enviando mensagem para o grupo de ID {chat_id}.\n'
+            f'Function Caller: {function_caller}\n'
+            f'Message: {text}\n'
+            f'(ERROR: {error})'
+        )
         if isinstance(chat_id, int):
             silent = get_attribute_group_or_player(chat_id, 'silent')
             member = await context.bot.get_chat_member(

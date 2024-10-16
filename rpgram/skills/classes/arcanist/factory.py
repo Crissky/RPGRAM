@@ -12,6 +12,7 @@ from rpgram.skills.classes.arcanist.skill1 import (
 from rpgram.skills.classes.multiclasse.magical_attack import (
     EarthBreakSkill,
     FireBallSkill,
+    PrismaticShotSkill,
     WaterBubbleSkill,
     WindGustSkill
 )
@@ -50,6 +51,9 @@ def arcanist_skill_factory(
         skill_class = MudTrapSkill
     elif skill_class_name == TetragramShotSkill.__name__:
         skill_class = TetragramShotSkill
+    # SKILL2
+    elif skill_class_name == PrismaticShotSkill.__name__:
+        skill_class = PrismaticShotSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -69,6 +73,9 @@ ARCANIST_SKILL_LIST: List[Type[BaseSkill]] = [
     SandGustSkill,
     MudTrapSkill,
     TetragramShotSkill,
+
+    # SKILL2
+    PrismaticShotSkill,
 ]
 ARCANIST_SKILL_WAYS: List[dict] = [
     skill_way1
