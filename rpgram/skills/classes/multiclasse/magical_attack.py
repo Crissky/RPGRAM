@@ -179,9 +179,9 @@ class EarthBreakSkill(BaseSkill):
 
 
 class PrismaticShotSkill(BaseSkill):
-    NAME = SorcererSkillEnum.PRISMATIC_SHOT.value
+    NAME = MultiClasseSkillEnum.PRISMATIC_SHOT.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica*, dispara um feixe prismático '
+        f'Canaliza a *Energia Mágica* e dispara um *Feixe Prismático*, '
         f'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'

@@ -55,6 +55,7 @@ class ArcanistSkillEnum(Enum):
     SAND_GUST = 'Rajada de Areia'
     MUD_TRAP = 'Armadilha de Lama'
     TETRAGRAM_SHOT = 'Disparo Tetragrama'
+    DARK_SHOT = 'Disparo das Trevas'
 
 
 class BarbarianSkillEnum(Enum):
@@ -329,7 +330,6 @@ class SorcererSkillEnum(Enum):
     MYSTICAL_PROTECTION = 'Proteção Mística'
     MYSTICAL_CONFLUENCE = 'Confluência Mística'
     MYSTICAL_VIGOR = 'Vigor Místico'
-    PRISMATIC_SHOT = 'Disparo Prismático'
     PRISMATIC_SCINTILLATION = 'Cintilação Prismática'
     PRISMATIC_SHIELD = 'Escudo Prismático'
     CHAOS_ORB = 'Orbe do Caos'
@@ -383,6 +383,7 @@ class MultiClasseSkillEnum(Enum):
     WATER_BUBBLE = 'Bolha de Água'
     WIND_GUST = 'Rajada de Vento'
     EARTH_BREAK = 'Quebra-Terra'
+    PRISMATIC_SHOT = 'Disparo Prismático'
 
 
 TARGET_ENUM_NOT_SELF = [TargetEnum.SINGLE, TargetEnum.TEAM, TargetEnum.ALL]
