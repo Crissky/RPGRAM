@@ -41,7 +41,7 @@ class DebuffCondition(Condition):
         report = {'text': '', 'action': self.name}
         if self.turn != 1:
             report['text'] = (
-                f'*{self.full_name}*: Personagem está {self.trans_name}.'
+                f'*{self.full_name}*: o personagem está {self.trans_name}.'
             )
 
         return report
@@ -239,11 +239,11 @@ class DeathSentenceCondition(DebuffCondition):
     def function(self, target: 'BaseCharacter') -> dict:
         report = {'text': '', 'action': self.name}
         if self.turn != 1:
-            turn = self.turn-1
+            turn = self.turn - 1
             turn_name = 'Turnos' if turn > 1 else 'Turno'
             report['text'] = (
                 f'*{self.full_name}*: '
-                f'*{target.player_name}* morrerá em *{turn} {turn_name}*.'
+                f'O personagem morrerá em *{turn} {turn_name}*.'
             )
         else:
             damage = target.cs.current_hit_points
