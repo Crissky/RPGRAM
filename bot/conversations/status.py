@@ -1,3 +1,4 @@
+from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 from bot.decorators.job import skip_if_spawn_timeout
 
@@ -57,15 +58,29 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                 section_start=SECTION_HEAD_STATUS_START,
                 section_end=SECTION_HEAD_STATUS_END,
             )
-            await send_private_message(
-                function_caller='JOB_ACTIVATE_CONDITIONS()',
-                context=context,
-                text=text,
-                user_id=player_id,
-                chat_id=chat_id,
-                markdown=True,
-                close_by_owner=False,
-            )
+            try:
+                await send_private_message(
+                    function_caller='JOB_ACTIVATE_CONDITIONS()',
+                    context=context,
+                    text=text,
+                    user_id=player_id,
+                    chat_id=chat_id,
+                    markdown=True,
+                    close_by_owner=False,
+                )
+            except BadRequest as e:
+                if  str(e).startswith("Can't parse entities"):
+                    await send_private_message(
+                        function_caller='JOB_ACTIVATE_CONDITIONS()',
+                        context=context,
+                        text=text,
+                        user_id=player_id,
+                        chat_id=chat_id,
+                        markdown=False,
+                        close_by_owner=False,
+                    )
+                else:
+                    raise
         else:
             print(
                 f'REPORT DE JOB_ACTIVATE_CONDITIONS SKIPPADO PARA '
