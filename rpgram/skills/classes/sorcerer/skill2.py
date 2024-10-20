@@ -24,8 +24,8 @@ if TYPE_CHECKING:
 class PrismaticScintillationSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SCINTILLATION.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica*, criando e lançando um artefato '
-        f'prismático que causa dano de '
+        f'Canaliza a *Energia Mágica*, criando e lançando um *Artefato '
+        f'Prismático* que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
         f'a *TODES os inimigos* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'

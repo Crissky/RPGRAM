@@ -10,6 +10,7 @@ from rpgram.skills.classes.arcanist.skill1 import (
     TetragramShotSkill,
 )
 from rpgram.skills.classes.arcanist.skill2 import (
+    PrismaticAbrumationSkill,
     DarkShotSkill
 )
 from rpgram.skills.classes.multiclasse.magical_attack import (
@@ -59,6 +60,8 @@ def arcanist_skill_factory(
         skill_class = PrismaticShotSkill
     elif skill_class_name == DarkShotSkill.__name__:
         skill_class = DarkShotSkill
+    elif skill_class_name == PrismaticAbrumationSkill.__name__:
+        skill_class = PrismaticAbrumationSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -82,6 +85,7 @@ ARCANIST_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     PrismaticShotSkill,
     DarkShotSkill,
+    PrismaticAbrumationSkill,
 ]
 ARCANIST_SKILL_WAYS: List[dict] = [
     skill_way1
