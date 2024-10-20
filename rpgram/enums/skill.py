@@ -56,6 +56,7 @@ class ArcanistSkillEnum(Enum):
     MUD_TRAP = 'Armadilha de Lama'
     TETRAGRAM_SHOT = 'Disparo Tetragrama'
     DARK_SHOT = 'Disparo das Trevas'
+    PRISMATIC_ABRUMATION = 'Abrumação Prismática'
 
 
 class BarbarianSkillEnum(Enum):
