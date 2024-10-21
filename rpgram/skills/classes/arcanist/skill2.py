@@ -1,6 +1,9 @@
 from typing import TYPE_CHECKING
 from rpgram.conditions.debuff import BlindnessCondition
-from rpgram.constants.text import MAGICAL_ATTACK_EMOJI_TEXT
+from rpgram.constants.text import (
+    HIT_EMOJI_TEXT,
+    MAGICAL_ATTACK_EMOJI_TEXT
+)
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
@@ -136,6 +139,53 @@ class PrismaticAbrumationSkill(BaseSkill):
         return report
 
 
+class ConcentratedPrismaticShotSkill(BaseSkill):
+    NAME = ArcanistSkillEnum.CONCENTRATED_PRISMATIC_SHOT.value
+    DESCRIPTION = (
+        f'Canaliza a *Energia Mágica*, criando um *Artefato Prismático* '
+        f'e orientando o foco do aparato para disparar um '
+        f'*{ArcanistSkillEnum.CONCENTRATED_PRISMATIC_SHOT.value}* '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
+        f'com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.ARCANIST.value,
+        'skill_list': [PrismaticShotSkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 3.00,
+        }
+        damage_types = [DamageEnum.LIGHT]
+
+        super().__init__(
+            name=ConcentratedPrismaticShotSkill.NAME,
+            description=ConcentratedPrismaticShotSkill.DESCRIPTION,
+            rank=ConcentratedPrismaticShotSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ConcentratedPrismaticShotSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Arcano Crepúscular',
     'description': (
@@ -148,6 +198,9 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         PrismaticShotSkill,
+        DarkShotSkill,
+        PrismaticAbrumationSkill,
+        ConcentratedPrismaticShotSkill,
     ]
 }
 
@@ -184,3 +237,13 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     ARCANIST_CHARACTER.skill_tree.learn_skill(PrismaticAbrumationSkill)
+
+    skill = ConcentratedPrismaticShotSkill(ARCANIST_CHARACTER)
+    print(skill)
+    print(ARCANIST_CHARACTER.cs.magical_attack)
+    print(ARCANIST_CHARACTER.to_attack(
+        defender_char=ARCANIST_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    ARCANIST_CHARACTER.skill_tree.learn_skill(ConcentratedPrismaticShotSkill)

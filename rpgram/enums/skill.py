@@ -57,6 +57,7 @@ class ArcanistSkillEnum(Enum):
     TETRAGRAM_SHOT = 'Disparo Tetragrama'
     DARK_SHOT = 'Disparo das Trevas'
     PRISMATIC_ABRUMATION = 'Abrumação Prismática'
+    CONCENTRATED_PRISMATIC_SHOT = 'Disparo Prismático Concentrado'
 
 
 class BarbarianSkillEnum(Enum):
