@@ -115,7 +115,7 @@ class TentConsumable(Consumable):
 
     @property
     def price(self) -> int:
-        base_value = 5000
+        base_value = 3000
         rarity_multiplier = get_enum_index(self.rarity) + 1
         price = base_value * rarity_multiplier
 
