@@ -186,6 +186,75 @@ class ConcentratedPrismaticShotSkill(BaseSkill):
         return 0.75
 
 
+class ConcentratedBichromaticAbrumationSkill(BaseSkill):
+    NAME = ArcanistSkillEnum.CONCENTRATED_BICHROMATIC_ABRUMATION.value
+    DESCRIPTION = (
+        f'Canaliza a *Energia Mágica*, criando um *Artefato Bicromático* '
+        f'e orientando o foco do aparato para disparar uma '
+        f'*{ArcanistSkillEnum.CONCENTRATED_BICHROMATIC_ABRUMATION.value}* '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.DARK)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
+        f'com base no '
+        f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 2.5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}. Além disso, '
+        f'adiciona a condição '
+        f'*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}* com nível igual ao '
+        f'(Rank x Nível) se tirar 10{EmojiEnum.DICE.value} ou mais.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.ARCANIST.value,
+        'skill_list': [
+            PrismaticAbrumationSkill.NAME,
+            ConcentratedPrismaticShotSkill.NAME
+        ],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_ATTACK: 1.75,
+        }
+        damage_types = [DamageEnum.DARK, DamageEnum.LIGHT]
+
+        super().__init__(
+            name=ConcentratedBichromaticAbrumationSkill.NAME,
+            description=ConcentratedBichromaticAbrumationSkill.DESCRIPTION,
+            rank=ConcentratedBichromaticAbrumationSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ConcentratedBichromaticAbrumationSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        if target.is_alive and self.dice.value >= 10:
+            level = self.level_rank
+            blindness_condition = BlindnessCondition(level=level)
+            status_report = target.status.add_condition(blindness_condition)
+            report['status_text'] = status_report['text']
+
+        return report
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Arcano Crepúscular',
     'description': (
@@ -247,3 +316,15 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     ARCANIST_CHARACTER.skill_tree.learn_skill(ConcentratedPrismaticShotSkill)
+
+    skill = ConcentratedBichromaticAbrumationSkill(ARCANIST_CHARACTER)
+    print(skill)
+    print(ARCANIST_CHARACTER.cs.magical_attack)
+    print(ARCANIST_CHARACTER.to_attack(
+        defender_char=ARCANIST_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    ARCANIST_CHARACTER.skill_tree.learn_skill(
+        ConcentratedBichromaticAbrumationSkill
+    )
