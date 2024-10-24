@@ -27,6 +27,7 @@ from rpgram.enums.damage import DamageEmojiEnum
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
+    BerserkirSkillEnum,
     BountyHunterSkillEnum,
     GladiatorSkillEnum,
     GuardianSkillEnum,
@@ -1314,7 +1315,7 @@ class AlertCondition(SelfSkillCondition):
         bonus_precision_attack = self.character.bs.dexterity * power
 
         return int(bonus_precision_attack)
-    
+
     @property
     def bonus_hit(self) -> int:
         power = 2 + (self.level / 10)
@@ -1330,6 +1331,49 @@ class AlertCondition(SelfSkillCondition):
     @property
     def function_text(self) -> str:
         return f'permanece em *Estado de Alerta*.'
+
+
+class HrungnirsSovereigntyCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BerserkirSkillEnum.HRUNGNIRÇÇÇS_SOVEREIGNTY,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria Desenfreada* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_attack = self.character.bs.strength * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '👺🔨'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto por *{self.trans_name}*.'
 
 
 class FakeCharacter:
@@ -1424,6 +1468,7 @@ class SelfBuffs:
         ImproviseCondition,
         SniffCondition,
         AlertCondition,
+        HrungnirsSovereigntyCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

@@ -50,6 +50,7 @@ from rpgram.conditions.self_skill import (
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
+    HrungnirsSovereigntyCondition,
     ImproviseCondition,
     InvestigationCondition,
     LavaSkinCondition,
@@ -154,6 +155,7 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     BardSkillEnum,
+    BerserkirSkillEnum,
     BountyHunterSkillEnum,
     ClericSkillEnum,
     DruidSkillEnum,
@@ -501,6 +503,9 @@ def condition_factory(
         condition_class = SDFellowWolfCondition
     elif compare_condition(name, ShamanSkillEnum.FELLOW_YETI):
         condition_class = SDFellowYetiCondition
+    # BERSERKIR BUFFS
+    elif compare_condition(name, BerserkirSkillEnum.HRUNGNIRÇÇÇS_SOVEREIGNTY):
+        condition_class = HrungnirsSovereigntyCondition
     # SORCERER SUPREME BUFFS
     elif compare_condition(name, SorcererSupremeSkillEnum.MAGIC_SHIELD):
         condition_class = MagicShieldCondition

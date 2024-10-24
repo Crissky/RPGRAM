@@ -5,6 +5,10 @@ from rpgram.skills.classes.berserkir.skill1 import (
     ImpetuousStrikeSkill,
     IndomitableAttackSkill
 )
+from rpgram.skills.classes.berserkir.skill2 import (
+    SKILL_WAY_DESCRIPTION as skill_way2,
+    HrungnirsSovereigntySkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -24,6 +28,9 @@ def berserkir_skill_factory(
         skill_class = ImpetuousStrikeSkill
     elif skill_class_name == DevastatingRushSkill.__name__:
         skill_class = DevastatingRushSkill
+    # SKILL2
+    elif skill_class_name == HrungnirsSovereigntySkill.__name__:
+        skill_class = HrungnirsSovereigntySkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -35,7 +42,11 @@ BERSERKIR_SKILL_LIST: List[Type[BaseSkill]] = [
     IndomitableAttackSkill,
     ImpetuousStrikeSkill,
     DevastatingRushSkill,
+
+    # SKILL2
+    HrungnirsSovereigntySkill,
 ]
 BERSERKIR_SKILL_WAYS: List[dict] = [
     skill_way1,
+    skill_way2,
 ]
