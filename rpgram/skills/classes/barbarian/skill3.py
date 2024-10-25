@@ -422,7 +422,7 @@ class FafnirsScalesSkill(BaseSkill):
 SKILL_WAY_DESCRIPTION = {
     'name': 'Espírito Selvagem',
     'description': (
-        'O caminho da Espírito Selvagem transforma o Bárbaro em um canal vivo '
+        'O caminho do Espírito Selvagem transforma o Bárbaro em um canal vivo '
         'das forças da natureza, utilizando habilidades ancestrais para '
         'manipular os elementos selvagens e liberar a '
         'fúria indomável da fera interior. '
