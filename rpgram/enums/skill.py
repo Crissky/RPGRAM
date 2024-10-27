@@ -92,6 +92,7 @@ class BerserkirSkillEnum(Enum):
     IMPETUOUS_STRIKE = 'Golpe Impetuoso'
     DEVASTATING_RUSH = 'Rajada Devastadora'
     HRUNGNIRÇÇÇS_SOVEREIGNTY = 'Soberania de Hrungnir'
+    FENRIRÇÇÇS_INSTINCT = 'Instinto de Fenrir'
 
 
 class BountyHunterSkillEnum(Enum):

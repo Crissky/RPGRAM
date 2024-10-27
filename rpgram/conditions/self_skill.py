@@ -1353,11 +1353,23 @@ class HrungnirsSovereigntyCondition(SelfSkillCondition):
     def description(self) -> str:
         return (
             f'Estado de *Fúria Desenfreada* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'e aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
             f'por {self.turn} turno(s).'
         )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit_points = self.character.bs.strength * power
+
+        return int(bonus_hit_points)
 
     @property
     def bonus_physical_attack(self) -> int:
@@ -1370,6 +1382,73 @@ class HrungnirsSovereigntyCondition(SelfSkillCondition):
     @property
     def emoji(self) -> str:
         return '👺🔨'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto por *{self.trans_name}*.'
+
+
+class FenrirsInstinctCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BerserkirSkillEnum.FENRIRÇÇÇS_INSTINCT,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria Desenfreada* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
+            f'aumenta o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'e aumenta a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.bonus_evasion} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit_points = self.character.bs.strength * power
+
+        return int(bonus_hit_points)
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.strength * power
+
+        return int(bonus_hit)
+
+    @property
+    def bonus_evasion(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_evasion = self.character.bs.strength * power
+
+        return int(bonus_evasion)
+
+    @property
+    def emoji(self) -> str:
+        return '👺🐺'
 
     @property
     def function_text(self) -> str:
@@ -1469,6 +1548,7 @@ class SelfBuffs:
         SniffCondition,
         AlertCondition,
         HrungnirsSovereigntyCondition,
+        FenrirsInstinctCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

@@ -47,6 +47,7 @@ from rpgram.conditions.self_skill import (
     ChaoticStepsCondition,
     CrystalArmorCondition,
     FafnirsScalesCondition,
+    FenrirsInstinctCondition,
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
@@ -506,6 +507,8 @@ def condition_factory(
     # BERSERKIR BUFFS
     elif compare_condition(name, BerserkirSkillEnum.HRUNGNIRÇÇÇS_SOVEREIGNTY):
         condition_class = HrungnirsSovereigntyCondition
+    elif compare_condition(name, BerserkirSkillEnum.FENRIRÇÇÇS_INSTINCT):
+        condition_class = FenrirsInstinctCondition
     # SORCERER SUPREME BUFFS
     elif compare_condition(name, SorcererSupremeSkillEnum.MAGIC_SHIELD):
         condition_class = MagicShieldCondition
