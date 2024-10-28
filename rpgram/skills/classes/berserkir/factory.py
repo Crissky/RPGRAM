@@ -8,7 +8,8 @@ from rpgram.skills.classes.berserkir.skill1 import (
 from rpgram.skills.classes.berserkir.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
     FenrirsInstinctSkill,
-    HrungnirsSovereigntySkill
+    HrungnirsSovereigntySkill,
+    YmirsResilienceSkill
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -34,6 +35,8 @@ def berserkir_skill_factory(
         skill_class = HrungnirsSovereigntySkill
     elif skill_class_name == FenrirsInstinctSkill.__name__:
         skill_class = FenrirsInstinctSkill
+    elif skill_class_name == YmirsResilienceSkill.__name__:
+        skill_class = YmirsResilienceSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -49,6 +52,7 @@ BERSERKIR_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     HrungnirsSovereigntySkill,
     FenrirsInstinctSkill,
+    YmirsResilienceSkill,
 ]
 BERSERKIR_SKILL_WAYS: List[dict] = [
     skill_way1,

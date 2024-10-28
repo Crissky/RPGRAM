@@ -2,12 +2,14 @@ from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.debuff import BerserkerCondition
-from rpgram.conditions.self_skill import FenrirsInstinctCondition, HrungnirsSovereigntyCondition
+from rpgram.conditions.self_skill import FenrirsInstinctCondition, HrungnirsSovereigntyCondition, YmirsResilienceCondition
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
     STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
@@ -170,6 +172,79 @@ class FenrirsInstinctSkill(BaseSkill):
         return report
 
 
+class YmirsResilienceSkill(BaseSkill):
+    NAME = BerserkirSkillEnum.YMIRÇÇÇS_RESILIENCE.value
+    DESCRIPTION = (
+        f'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
+        f'espírito do gigante de gelo, *Ymir*, '
+        f'recebendo a condição '
+        f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
+        f'com nível igual ao (Rank x Nível) e '
+        f'aumentando o *{HIT_POINT_FULL_EMOJI_TEXT}*, '
+        f'a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
+        f'*{STRENGTH_EMOJI_TEXT}* (200% + 10% x Rank x Nível), '
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.BERSERKIR.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=YmirsResilienceSkill.NAME,
+            description=YmirsResilienceSkill.DESCRIPTION,
+            rank=YmirsResilienceSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=YmirsResilienceSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        player_name = self.char.player_name
+        char = self.char
+        level = self.level_rank
+
+        condition = YmirsResilienceCondition(character=char, level=level)
+        report_list = self.char.status.set_conditions(condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+
+        berserker_condition = BerserkerCondition(level=level)
+        status_report = char.status.add_condition(berserker_condition)
+
+        report = {
+            'text': (
+                f'*{player_name}* é envolto pelo espírito de '
+                f'*Ymir*, o gigante de gelo, entrando em um estado '
+                f'de *Fúria Desenfreada* que aumenta o seu '
+                f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+                f'em {condition.bonus_hit_points} pontos, '
+                f'o *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_physical_defense} pontos e a '
+                f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+                f'em {condition.bonus_magical_defense} pontos.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}\n'
+                f'{status_report["text"]}'
+            )
+        }
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Espírito Bestial',
     'description': (
@@ -211,3 +286,16 @@ if __name__ == '__main__':
           BERSERKIR_CHARACTER.cs.hit,
           BERSERKIR_CHARACTER.cs.evasion)
     BERSERKIR_CHARACTER.skill_tree.learn_skill(FenrirsInstinctSkill)
+
+    skill = YmirsResilienceSkill(BERSERKIR_CHARACTER)
+    print(skill)
+    print(BERSERKIR_CHARACTER.bs.strength,
+          BERSERKIR_CHARACTER.cs.hit_points,
+          BERSERKIR_CHARACTER.cs.physical_defense,
+          BERSERKIR_CHARACTER.cs.magical_defense)
+    print(skill.function())
+    print(BERSERKIR_CHARACTER.bs.strength,
+          BERSERKIR_CHARACTER.cs.hit_points,
+          BERSERKIR_CHARACTER.cs.physical_defense,
+          BERSERKIR_CHARACTER.cs.magical_defense)
+    BERSERKIR_CHARACTER.skill_tree.learn_skill(YmirsResilienceSkill)

@@ -93,6 +93,7 @@ class BerserkirSkillEnum(Enum):
     DEVASTATING_RUSH = 'Rajada Devastadora'
     HRUNGNIRÇÇÇS_SOVEREIGNTY = 'Soberania de Hrungnir'
     FENRIRÇÇÇS_INSTINCT = 'Instinto de Fenrir'
+    YMIRÇÇÇS_RESILIENCE = 'Resiliência de Ymir'
 
 
 class BountyHunterSkillEnum(Enum):

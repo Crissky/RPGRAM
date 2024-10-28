@@ -68,7 +68,8 @@ from rpgram.conditions.self_skill import (
     SharpFaroCondition,
     SniffCondition,
     TurtleStanceCondition,
-    UnicornStanceCondition
+    UnicornStanceCondition,
+    YmirsResilienceCondition
 )
 from rpgram.conditions.special_damage_skill import (
     SDAresBladeCondition,
@@ -509,6 +510,8 @@ def condition_factory(
         condition_class = HrungnirsSovereigntyCondition
     elif compare_condition(name, BerserkirSkillEnum.FENRIRÇÇÇS_INSTINCT):
         condition_class = FenrirsInstinctCondition
+    elif compare_condition(name, BerserkirSkillEnum.YMIRÇÇÇS_RESILIENCE):
+        condition_class = YmirsResilienceCondition
     # SORCERER SUPREME BUFFS
     elif compare_condition(name, SorcererSupremeSkillEnum.MAGIC_SHIELD):
         condition_class = MagicShieldCondition
