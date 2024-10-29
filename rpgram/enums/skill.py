@@ -94,6 +94,7 @@ class BerserkirSkillEnum(Enum):
     HRUNGNIRÇÇÇS_SOVEREIGNTY = 'Soberania de Hrungnir'
     FENRIRÇÇÇS_INSTINCT = 'Instinto de Fenrir'
     YMIRÇÇÇS_RESILIENCE = 'Resiliência de Ymir'
+    STONE_STRIKE = 'Golpe de Pedra'
 
 
 class BountyHunterSkillEnum(Enum):

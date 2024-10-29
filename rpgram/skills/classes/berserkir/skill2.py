@@ -2,7 +2,11 @@ from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.debuff import BerserkerCondition
-from rpgram.conditions.self_skill import FenrirsInstinctCondition, HrungnirsSovereigntyCondition, YmirsResilienceCondition
+from rpgram.conditions.self_skill import (
+    FenrirsInstinctCondition,
+    HrungnirsSovereigntyCondition,
+    YmirsResilienceCondition
+)
 from rpgram.constants.text import (
     EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
@@ -13,6 +17,7 @@ from rpgram.constants.text import (
     STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
+from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
 from rpgram.enums.skill import (
     BerserkirSkillEnum,
@@ -245,6 +250,61 @@ class YmirsResilienceSkill(BaseSkill):
         return report
 
 
+class StoneStrikeSkill(BaseSkill):
+    NAME = BerserkirSkillEnum.STONE_STRIKE.value
+    DESCRIPTION = (
+        f'Entra em um estado de *Fúria Incontrolável*, '
+        f'contraindo os músculos dos braços até transformá-los em pedra, '
+        f'recebendo a condição '
+        f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
+        f'com nível igual ao (Rank x Nível) '
+        f'e desferindo um ataque com força bruta, '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.ROCK)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (250% + 5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BERSERKIR.value,
+        'skill_list': [HrungnirsSovereigntySkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 2.50,
+        }
+        damage_types = [DamageEnum.ROCK]
+
+        super().__init__(
+            name=StoneStrikeSkill.NAME,
+            description=StoneStrikeSkill.DESCRIPTION,
+            rank=StoneStrikeSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=StoneStrikeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def pre_hit_function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': ''}
+        char = self.char
+        level = self.level_rank
+        berserker_condition = BerserkerCondition(level=level)
+        status_report = char.status.add_condition(berserker_condition)
+        if status_report['text']:
+            report['text'] = status_report["text"]
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Espírito Bestial',
     'description': (
@@ -299,3 +359,13 @@ if __name__ == '__main__':
           BERSERKIR_CHARACTER.cs.physical_defense,
           BERSERKIR_CHARACTER.cs.magical_defense)
     BERSERKIR_CHARACTER.skill_tree.learn_skill(YmirsResilienceSkill)
+
+    skill = StoneStrikeSkill(BERSERKIR_CHARACTER)
+    print(skill)
+    print(BERSERKIR_CHARACTER.cs.magical_attack)
+    print(BERSERKIR_CHARACTER.to_attack(
+        defender_char=BERSERKIR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BERSERKIR_CHARACTER.skill_tree.learn_skill(StoneStrikeSkill)
