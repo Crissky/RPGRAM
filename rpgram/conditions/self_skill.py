@@ -1381,11 +1381,11 @@ class HrungnirsSovereigntyCondition(SelfSkillCondition):
 
     @property
     def emoji(self) -> str:
-        return '🦌🔨'
+        return '🦌🪨'
 
     @property
     def function_text(self) -> str:
-        return f'permanece envolto por *{self.trans_name}*.'
+        return f'permanece envolto pela *{self.trans_name}*.'
 
 
 class FenrirsInstinctCondition(SelfSkillCondition):
@@ -1452,7 +1452,7 @@ class FenrirsInstinctCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece envolto por *{self.trans_name}*.'
+        return f'permanece envolto pelo *{self.trans_name}*.'
 
 
 class YmirsResilienceCondition(SelfSkillCondition):
@@ -1519,7 +1519,7 @@ class YmirsResilienceCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece envolto por *{self.trans_name}*.'
+        return f'permanece envolto pela *{self.trans_name}*.'
 
 
 class FakeCharacter:
