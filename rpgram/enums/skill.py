@@ -95,6 +95,7 @@ class BerserkirSkillEnum(Enum):
     FENRIRÇÇÇS_INSTINCT = 'Instinto de Fenrir'
     YMIRÇÇÇS_RESILIENCE = 'Resiliência de Ymir'
     STONE_STRIKE = 'Golpe de Pedra'
+    FROST_BITE = 'Mordida de Gelo'
 
 
 class BountyHunterSkillEnum(Enum):

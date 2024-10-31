@@ -8,6 +8,7 @@ from rpgram.skills.classes.berserkir.skill1 import (
 from rpgram.skills.classes.berserkir.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
     FenrirsInstinctSkill,
+    FrostBiteSkill,
     HrungnirsSovereigntySkill,
     StoneStrikeSkill,
     YmirsResilienceSkill
@@ -40,6 +41,8 @@ def berserkir_skill_factory(
         skill_class = YmirsResilienceSkill
     elif skill_class_name == StoneStrikeSkill.__name__:
         skill_class = StoneStrikeSkill
+    elif skill_class_name == FrostBiteSkill.__name__:
+        skill_class = FrostBiteSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -57,6 +60,7 @@ BERSERKIR_SKILL_LIST: List[Type[BaseSkill]] = [
     FenrirsInstinctSkill,
     YmirsResilienceSkill,
     StoneStrikeSkill,
+    FrostBiteSkill,
 ]
 BERSERKIR_SKILL_WAYS: List[dict] = [
     skill_way1,
