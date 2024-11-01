@@ -326,7 +326,7 @@ class FrostBiteSkill(BaseSkill):
     REQUIREMENTS = Requirement(**{
         'level': 40,
         'classe_name': ClasseEnum.BERSERKIR.value,
-        'skill_list': [HrungnirsSovereigntySkill.NAME]
+        'skill_list': [FenrirsInstinctSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -366,6 +366,72 @@ class FrostBiteSkill(BaseSkill):
     @property
     def hit_multiplier(self) -> float:
         return 1.25
+
+
+class AncientFurySkill(BaseSkill):
+    NAME = BerserkirSkillEnum.ANCIENT_FURY.value
+    DESCRIPTION = (
+        f'Entra em um estado de *Fúria Incontrolável*, '
+        f'fervendo o sangue, transformando seus braços em brasas ardentes, '
+        f'recebendo a condição '
+        f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
+        f'com nível igual ao (Rank x Nível) '
+        f'e desferindo uma saraivada de golpes imprecisos, '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}*, de '
+        f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (400% + 5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BERSERKIR.value,
+        'skill_list': [YmirsResilienceSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 4.00,
+        }
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.BLAST,
+            DamageEnum.FIRE
+        ]
+
+        super().__init__(
+            name=AncientFurySkill.NAME,
+            description=AncientFurySkill.DESCRIPTION,
+            rank=AncientFurySkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=AncientFurySkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def pre_hit_function(self, target: 'BaseCharacter') -> dict:
+        report = {'text': ''}
+        char = self.char
+        level = self.level_rank
+        berserker_condition = BerserkerCondition(level=level)
+        status_report = char.status.add_condition(berserker_condition)
+        if status_report['text']:
+            report['text'] = status_report["text"]
+
+        return report
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
 
 
 SKILL_WAY_DESCRIPTION = {
@@ -442,3 +508,13 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     BERSERKIR_CHARACTER.skill_tree.learn_skill(FrostBiteSkill)
+
+    skill = AncientFurySkill(BERSERKIR_CHARACTER)
+    print(skill)
+    print(BERSERKIR_CHARACTER.cs.physical_attack)
+    print(BERSERKIR_CHARACTER.to_attack(
+        defender_char=BERSERKIR_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BERSERKIR_CHARACTER.skill_tree.learn_skill(AncientFurySkill)
