@@ -107,6 +107,7 @@ class BountyHunterSkillEnum(Enum):
     CHOMP_TRAP = 'Armadilha Chomp'
     SHARP_FARO = 'Faro Aguçado'
     INVESTIGATION = 'Investigação'
+    GLOW_BURST = 'Brilhestouro'
 
 
 class BardSkillEnum(Enum):
