@@ -11,7 +11,8 @@ from rpgram.skills.classes.bounty_hunter.skill1 import (
 )
 from rpgram.skills.classes.bounty_hunter.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
-    GlowBurstSkill
+    GlowBurstSkill,
+    GlowBurstVolleySkill
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -43,6 +44,8 @@ def bounty_hunter_skill_factory(
     # SKILL2
     elif skill_class_name == GlowBurstSkill.__name__:
         skill_class = GlowBurstSkill
+    elif skill_class_name == GlowBurstVolleySkill.__name__:
+        skill_class = GlowBurstVolleySkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -61,6 +64,7 @@ BOUNTY_HUNTER_SKILL_LIST: List[Type[BaseSkill]] = [
 
     # SKILL2
     GlowBurstSkill,
+    GlowBurstVolleySkill,
 ]
 BOUNTY_HUNTER_SKILL_WAYS: List[dict] = [
     skill_way1,

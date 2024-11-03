@@ -108,6 +108,7 @@ class BountyHunterSkillEnum(Enum):
     SHARP_FARO = 'Faro Aguçado'
     INVESTIGATION = 'Investigação'
     GLOW_BURST = 'Brilhestouro'
+    GLOW_BURST_VOLLEY = 'Saraivada de Brilhestouros'
 
 
 class BardSkillEnum(Enum):

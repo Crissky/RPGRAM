@@ -73,6 +73,47 @@ class GlowBurstSkill(BaseSkill):
         )
 
 
+class GlowBurstVolleySkill(BaseSkill):
+    NAME = BountyHunterSkillEnum.GLOW_BURST_VOLLEY.value
+    DESCRIPTION = (
+        f'Lança uma enxurrada de *Estouros Brilhantes* '
+        f'que irrompem em várias *Explosões Fúlgidas*, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.BOUNTY_HUNTER.value,
+        'skill_list': [GlowBurstSkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 0.75,
+        }
+        damage_types = [DamageEnum.BLAST, DamageEnum.LIGHT]
+
+        super().__init__(
+            name=GlowBurstVolleySkill.NAME,
+            description=GlowBurstVolleySkill.DESCRIPTION,
+            rank=GlowBurstVolleySkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=GlowBurstVolleySkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Senhor Bélico',
     'description': (
@@ -105,3 +146,13 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(GlowBurstSkill)
+
+    skill = GlowBurstVolleySkill(BOUNTY_HUNTER_CHARACTER)
+    print(skill)
+    print(BOUNTY_HUNTER_CHARACTER.cs.physical_attack)
+    print(BOUNTY_HUNTER_CHARACTER.to_attack(
+        defender_char=BOUNTY_HUNTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(GlowBurstVolleySkill)
