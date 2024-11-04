@@ -114,6 +114,52 @@ class GlowBurstVolleySkill(BaseSkill):
         )
 
 
+class GigaGlowBurstSkill(BaseSkill):
+    NAME = BountyHunterSkillEnum.GIGA_GLOW_BURST.value
+    DESCRIPTION = (
+        f'Lança um *Estouro Brilhante Gigante* '
+        f'que irrompe em uma imensa *Explosão Fúlgida*, '
+        f'causando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (400% + 5% x Rank x Nível), '
+        f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.BOUNTY_HUNTER.value,
+        'skill_list': [GlowBurstSkill.NAME, GlowBurstVolleySkill.NAME],
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PHYSICAL_ATTACK: 4.00,
+        }
+        damage_types = [DamageEnum.BLAST, DamageEnum.LIGHT]
+
+        super().__init__(
+            name=GigaGlowBurstSkill.NAME,
+            description=GigaGlowBurstSkill.DESCRIPTION,
+            rank=GigaGlowBurstSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=GigaGlowBurstSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 0.75
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Senhor Bélico',
     'description': (
@@ -130,6 +176,8 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         GlowBurstSkill,
+        GlowBurstVolleySkill,
+        GigaGlowBurstSkill,
     ]
 }
 
@@ -156,3 +204,13 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(GlowBurstVolleySkill)
+
+    skill = GigaGlowBurstSkill(BOUNTY_HUNTER_CHARACTER)
+    print(skill)
+    print(BOUNTY_HUNTER_CHARACTER.cs.physical_attack)
+    print(BOUNTY_HUNTER_CHARACTER.to_attack(
+        defender_char=BOUNTY_HUNTER_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    BOUNTY_HUNTER_CHARACTER.skill_tree.learn_skill(GigaGlowBurstSkill)

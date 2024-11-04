@@ -109,6 +109,7 @@ class BountyHunterSkillEnum(Enum):
     INVESTIGATION = 'Investigação'
     GLOW_BURST = 'Brilhestouro'
     GLOW_BURST_VOLLEY = 'Saraivada de Brilhestouros'
+    GIGA_GLOW_BURST = 'Giga Brilhestouro'
 
 
 class BardSkillEnum(Enum):
