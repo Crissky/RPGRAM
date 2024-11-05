@@ -270,6 +270,7 @@ SKILL_WAY_DESCRIPTION = {
         DarkShotSkill,
         PrismaticAbrumationSkill,
         ConcentratedPrismaticShotSkill,
+        ConcentratedBichromaticAbrumationSkill,
     ]
 }
 
