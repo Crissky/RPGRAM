@@ -445,6 +445,12 @@ SKILL_WAY_DESCRIPTION = {
         'o Berserkir se torna um agente da destruição da ancianidade.'
     ),
     'skill_list': [
+        HrungnirsSovereigntySkill,
+        FenrirsInstinctSkill,
+        YmirsResilienceSkill,
+        StoneStrikeSkill,
+        FrostBiteSkill,
+        AncientFurySkill,
     ]
 }
 
