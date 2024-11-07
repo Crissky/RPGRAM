@@ -124,6 +124,7 @@ from rpgram.conditions.target_skill_buff import (
     LookouterYetiCondition,
     LordAnointingCondition,
     MaidenAnointingCondition,
+    MartialBannerCondition,
     OgunsCloakCondition,
     ProtectorTurtleCondition,
     RangerFalconCondition,
@@ -465,6 +466,8 @@ def condition_factory(
         condition_class = SDAresBladeCondition
     elif compare_condition(name, GladiatorSkillEnum.AJAX_SHIELD):
         condition_class = AjaxShieldCondition
+    elif compare_condition(name, GladiatorSkillEnum.MARTIAL_BANNER):
+        condition_class = MartialBannerCondition
     # SUMMONER BUFFS
     elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
         condition_class = PiskieWindbagCondition

@@ -192,6 +192,7 @@ class GladiatorSkillEnum(Enum):
     TURTLE_STANCE = 'Postura de Tartaruga'
     UNICORN_STANCE = 'Postura de Unicórnio'
     ARENA_DOMAIN = 'Domínio da Arena'
+    MARTIAL_BANNER = 'Estandarte Marcial'
 
 
 class GuardianSkillEnum(Enum):

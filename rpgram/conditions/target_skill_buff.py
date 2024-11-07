@@ -25,6 +25,7 @@ from rpgram.enums.skill import (
     ClericSkillEnum,
     DruidSkillEnum,
     DuelistSkillEnum,
+    GladiatorSkillEnum,
     HealerSkillEnum,
     KnightSkillEnum,
     NecromancerSkillEnum,
@@ -2014,6 +2015,42 @@ class LookouterYetiCondition(TargetSkillBuffCondition):
         return f'permanece observando *{self.enum_name.value}*.'
 
 
+class MartialBannerCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.MARTIAL_BANNER,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Sinal do Senhor da Guerra* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '🏛️🚩'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com o *Sinal do Senhor da Guerra*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -2058,6 +2095,7 @@ class TargetBuffs:
         ProtectorTurtleCondition,
         ClairvoyantWolfCondition,
         LookouterYetiCondition,
+        MartialBannerCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:
