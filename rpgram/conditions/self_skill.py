@@ -1522,6 +1522,49 @@ class YmirsResilienceCondition(SelfSkillCondition):
         return f'permanece envolto pela *{self.trans_name}*.'
 
 
+class FlamingFuryCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.FLAMING_FURY,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria do Senhor da Guerra* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(300%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 3 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_attack = self.character.bs.strength * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '🔥😤'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece em estado de *{self.trans_name}*.'
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -1617,6 +1660,7 @@ class SelfBuffs:
         HrungnirsSovereigntyCondition,
         FenrirsInstinctCondition,
         YmirsResilienceCondition,
+        FlamingFuryCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

@@ -958,6 +958,39 @@ class SDFellowYetiCondition(SpecialDamageSkillCondition):
         return f'permanece lutando ao lado da *{self.trans_name}*.'
 
 
+class SDFlamingFuryCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.FLAMING_FURY_BLADE,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.FIRE, DamageEnum.CHAOS],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*{self.trans_name}* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🗡🔥'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece banhado pela *{self.trans_name}*.'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -985,6 +1018,7 @@ class SpecialDamageBuffs:
         SDFellowTurtleCondition,
         SDFellowWolfCondition,
         SDFellowYetiCondition,
+        SDFlamingFuryCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:

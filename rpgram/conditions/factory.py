@@ -48,6 +48,7 @@ from rpgram.conditions.self_skill import (
     CrystalArmorCondition,
     FafnirsScalesCondition,
     FenrirsInstinctCondition,
+    FlamingFuryCondition,
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
@@ -78,6 +79,7 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowTurtleCondition,
     SDFellowWolfCondition,
     SDFellowYetiCondition,
+    SDFlamingFuryCondition,
     SDGreenDragonBalmCondition,
     SDCrystallineInfusionCondition,
     SDEscarchaSapCondition,
@@ -468,6 +470,10 @@ def condition_factory(
         condition_class = AjaxShieldCondition
     elif compare_condition(name, GladiatorSkillEnum.MARTIAL_BANNER):
         condition_class = MartialBannerCondition
+    elif compare_condition(name, GladiatorSkillEnum.FLAMING_FURY):
+        condition_class = FlamingFuryCondition
+    elif compare_condition(name, GladiatorSkillEnum.FLAMING_FURY_BLADE):
+        condition_class = SDFlamingFuryCondition
     # SUMMONER BUFFS
     elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
         condition_class = PiskieWindbagCondition

@@ -193,6 +193,8 @@ class GladiatorSkillEnum(Enum):
     UNICORN_STANCE = 'Postura de Unicórnio'
     ARENA_DOMAIN = 'Domínio da Arena'
     MARTIAL_BANNER = 'Estandarte Marcial'
+    FLAMING_FURY = 'Fúria Flamejante'
+    FLAMING_FURY_BLADE = 'Lâmina de Fúria Flamejante'
 
 
 class GuardianSkillEnum(Enum):
