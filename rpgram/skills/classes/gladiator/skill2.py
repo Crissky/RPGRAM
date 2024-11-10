@@ -4,10 +4,11 @@ from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import AjaxShieldCondition
 from rpgram.conditions.self_skill import (
     ArenaDomainCondition,
+    FlamingFuryCondition,
     TurtleStanceCondition,
     UnicornStanceCondition
 )
-from rpgram.conditions.special_damage_skill import SDAresBladeCondition
+from rpgram.conditions.special_damage_skill import SDAresBladeCondition, SDFlamingFuryCondition
 from rpgram.conditions.target_skill_buff import (
     MartialBannerCondition,
     WarBannerCondition
@@ -101,6 +102,78 @@ class MartialBannerSkill(BaseSkill):
         return report
 
 
+class FlamingFurySkill(BaseSkill):
+    NAME = GladiatorSkillEnum.FLAMING_FURY.value
+    DESCRIPTION = (
+        f'Por meio de uma conexão baseada no mais puro desejo de guerrear, '
+        f'é banhado pela *Fúria do Senhor da Guerra*, '
+        f'aumentando o '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
+        f'*{STRENGTH_EMOJI_TEXT}* (300% + 10% x Rank x Nível) e '
+        f'adicionando dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* '
+        f'baseado no '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.GLADIATOR.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=FlamingFurySkill.NAME,
+            description=FlamingFurySkill.DESCRIPTION,
+            rank=FlamingFurySkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FlamingFurySkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = self.char.player_name
+        if char.is_alive:
+            level = self.level_rank
+            condition = FlamingFuryCondition(character=char, level=level)
+            report_list = char.status.set_conditions(condition)
+
+            sd_power = self.char.cs.physical_attack
+            sd_condition = SDFlamingFuryCondition(power=sd_power, level=level)
+            sd_report_list = char.status.set_conditions(sd_condition)
+
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list + sd_report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* é banhado pela '
+                    f'*Fúria do Senhor da Guerra*, '
+                    f'aumentando o '
+                    f'{PHYSICAL_ATTACK_EMOJI_TEXT} em '
+                    f'*{condition.bonus_physical_attack}* pontos.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{player_name}* está morto.'}
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Filho da Guerra',
     'description': (
@@ -127,3 +200,11 @@ if __name__ == '__main__':
     print(skill.function(GLADIATOR_CHARACTER))
     print(GLADIATOR_CHARACTER.cs.physical_attack)
     GLADIATOR_CHARACTER.skill_tree.learn_skill(MartialBannerSkill)
+
+    skill = FlamingFurySkill(GLADIATOR_CHARACTER)
+    print(skill)
+    print(GLADIATOR_CHARACTER.cs.strength,
+          GLADIATOR_CHARACTER.cs.physical_attack)
+    print(skill.function(GLADIATOR_CHARACTER))
+    print(GLADIATOR_CHARACTER.cs.physical_attack)
+    GLADIATOR_CHARACTER.skill_tree.learn_skill(FlamingFurySkill)
