@@ -8,7 +8,10 @@ from rpgram.conditions.self_skill import (
     TurtleStanceCondition,
     UnicornStanceCondition
 )
-from rpgram.conditions.special_damage_skill import SDAresBladeCondition, SDFlamingFuryCondition
+from rpgram.conditions.special_damage_skill import (
+    SDAresBladeCondition,
+    SDFlamingFuryCondition
+)
 from rpgram.conditions.target_skill_buff import (
     MartialBannerCondition,
     WarBannerCondition
@@ -116,9 +119,11 @@ class FlamingFurySkill(BaseSkill):
         f'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
-    RANK = 1
+    RANK = 2
     REQUIREMENTS = Requirement(**{
+        'level': 40,
         'classe_name': ClasseEnum.GLADIATOR.value,
+        'skill_list': [MartialBannerSkill.NAME]
     })
 
     def __init__(self, char: 'BaseCharacter', level: int = 1):
@@ -186,6 +191,7 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         MartialBannerSkill,
+        FlamingFurySkill,
     ]
 }
 
