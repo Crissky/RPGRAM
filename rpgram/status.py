@@ -380,8 +380,8 @@ class Status:
                     if report['text']:
                         report['text'] += '\n'
                     report['text'] += (
-                        f'Condição "{condition.emoji_name}" '
-                        f'foi removida do Status.'
+                        f'Condição *{condition.emoji_name}* '
+                        f'foi removida.'
                     )
                 reports.append(report)
 
