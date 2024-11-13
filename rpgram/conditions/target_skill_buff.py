@@ -2051,6 +2051,49 @@ class MartialBannerCondition(TargetSkillBuffCondition):
         return 'permanece com o *Sinal do Senhor da Guerra*.'
 
 
+class WarCornuCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.WAR_CORNU,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Bravura do Senhor da Guerra* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 3 + (self.level / 10)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '⚔️📯'
+
+    @property
+    def function_text(self) -> str:
+        return 'permanece com a *Bravura do Senhor da Guerra*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -2096,6 +2139,7 @@ class TargetBuffs:
         ClairvoyantWolfCondition,
         LookouterYetiCondition,
         MartialBannerCondition,
+        WarCornuCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

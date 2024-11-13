@@ -140,6 +140,7 @@ from rpgram.conditions.target_skill_buff import (
     VineCrosierCondition,
     VitalityAuraCondition,
     WarBannerCondition,
+    WarCornuCondition,
     WarSongCondition,
     WarriorAnointingCondition,
     WatcherOwlCondition,
@@ -474,6 +475,8 @@ def condition_factory(
         condition_class = FlamingFuryCondition
     elif compare_condition(name, GladiatorSkillEnum.FLAMING_FURY_BLADE):
         condition_class = SDFlamingFuryCondition
+    elif compare_condition(name, GladiatorSkillEnum.WAR_CORNU):
+        condition_class = WarCornuCondition
     # SUMMONER BUFFS
     elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
         condition_class = PiskieWindbagCondition

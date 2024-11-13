@@ -195,6 +195,7 @@ class GladiatorSkillEnum(Enum):
     MARTIAL_BANNER = 'Estandarte Marcial'
     FLAMING_FURY = 'Fúria Flamejante'
     FLAMING_FURY_BLADE = 'Lâmina de Fúria Flamejante'
+    WAR_CORNU = 'Cornu de Guerra'
 
 
 class GuardianSkillEnum(Enum):
