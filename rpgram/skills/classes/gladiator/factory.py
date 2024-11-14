@@ -13,6 +13,7 @@ from rpgram.skills.classes.gladiator.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
     FlamingFurySkill,
     MartialBannerSkill,
+    WarCornuSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -46,6 +47,8 @@ def gladiator_skill_factory(
         skill_class = MartialBannerSkill
     elif skill_class_name == FlamingFurySkill.__name__:
         skill_class = FlamingFurySkill
+    elif skill_class_name == WarCornuSkill.__name__:
+        skill_class = WarCornuSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -65,6 +68,7 @@ GLADIATOR_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     MartialBannerSkill,
     FlamingFurySkill,
+    WarCornuSkill,
 ]
 GLADIATOR_SKILL_WAYS: List[dict] = [
     skill_way1,

@@ -14,7 +14,8 @@ from rpgram.conditions.special_damage_skill import (
 )
 from rpgram.conditions.target_skill_buff import (
     MartialBannerCondition,
-    WarBannerCondition
+    WarBannerCondition,
+    WarCornuCondition
 )
 from rpgram.constants.text import (
     CHARISMA_EMOJI_TEXT,
@@ -179,6 +180,72 @@ class FlamingFurySkill(BaseSkill):
         return report
 
 
+class WarCornuSkill(BaseSkill):
+    NAME = GladiatorSkillEnum.WAR_CORNU.value
+    DESCRIPTION = (
+        f'Ergue seu imponente *Cornu de Guerra* '
+        f'e o toca com uma força que ressoa nos corações dos aliados, '
+        f'invocando a antiga *Bravura do Senhor da Guerra*, '
+        f'que concede uma aura de coragem e ferocidade '
+        f'àqueles que lutam ao seu lado, '
+        f'aumentando o '
+        f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
+        f'*{STRENGTH_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.GLADIATOR.value,
+        'skill_list': [MartialBannerSkill.NAME, FlamingFurySkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=WarCornuSkill.NAME,
+            description=WarCornuSkill.DESCRIPTION,
+            rank=WarCornuSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.TEAM,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=WarCornuSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        target_name = char.player_name
+        if char.is_alive:
+            power = self.char.bs.strength
+            level = self.level_rank
+            condition = WarCornuCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{target_name}* recebe a *Bravura do Senhor da Guerra*, '
+                    f'aumentando o '
+                    f'{PHYSICAL_ATTACK_EMOJI_TEXT} em '
+                    f'*{condition.power}* pontos.\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Filho da Guerra',
     'description': (
@@ -192,6 +259,7 @@ SKILL_WAY_DESCRIPTION = {
     'skill_list': [
         MartialBannerSkill,
         FlamingFurySkill,
+        WarCornuSkill,
     ]
 }
 
@@ -214,3 +282,11 @@ if __name__ == '__main__':
     print(skill.function(GLADIATOR_CHARACTER))
     print(GLADIATOR_CHARACTER.cs.physical_attack)
     GLADIATOR_CHARACTER.skill_tree.learn_skill(FlamingFurySkill)
+
+    skill = WarCornuSkill(GLADIATOR_CHARACTER)
+    print(skill)
+    print(GLADIATOR_CHARACTER.cs.strength,
+          GLADIATOR_CHARACTER.cs.physical_attack)
+    print(skill.function(GLADIATOR_CHARACTER))
+    print(GLADIATOR_CHARACTER.cs.physical_attack)
+    GLADIATOR_CHARACTER.skill_tree.learn_skill(WarCornuSkill)
