@@ -20,6 +20,7 @@ from bot.conversations import (
 from bot.conversations import (
     HELP_HANDLERS,
     VIEW_GROUP_HANDLERS,
+    VIEW_LEVEL_HANDLERS,
     VIEW_PLAYER_HANDLERS,
     VIEW_CHAR_HANDLERS,
     ADD_STATS_HANDLERS,
@@ -67,6 +68,7 @@ def main() -> None:
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
     application.add_handlers(VIEW_GROUP_HANDLERS)
+    application.add_handlers(VIEW_LEVEL_HANDLERS)
     application.add_handlers(VIEW_PLAYER_HANDLERS)
     application.add_handlers(VIEW_CHAR_HANDLERS)
     application.add_handlers(ADD_STATS_HANDLERS)

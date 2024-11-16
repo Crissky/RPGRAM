@@ -55,6 +55,7 @@ from bot.constants.sign_up_group import COMMANDS as sign_up_group_commands
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
 from bot.constants.view_char import COMMANDS as view_char_commands
 from bot.constants.view_group import COMMANDS as view_group_commands
+from bot.constants.view_level import COMMANDS as view_level_commands
 from bot.constants.view_player import COMMANDS as view_player_commands
 from bot.constants.seller import COMMANDS as seller_commands, SELLER_NAME
 from bot.constants.reset_char import COMMANDS as reset_char_commands
@@ -199,6 +200,7 @@ def get_details_text(option: str) -> str:
         sign_up_player_cmd = command_to_string(sign_up_player_commands)
         view_char_cmd = command_to_string(view_char_commands)
         view_group_cmd = command_to_string(view_group_commands)
+        view_level_cmd = command_to_string(view_level_commands)
         view_player_cmd = command_to_string(view_player_commands)
         seller_cmd = command_to_string(seller_commands)
         reset_char_cmd = command_to_string(reset_char_commands)
@@ -281,7 +283,12 @@ def get_details_text(option: str) -> str:
             f'{EmojiEnum.SKILL_POINTS.value}*HABILIDADES*: '
             f'/{skill_commands[0]}\n'
             f'INFO: Abre o menu de gerenciamento de Habilidades.\n'
-            f'Atalhos: {skill_cmd}'
+            f'Atalhos: {skill_cmd}\n\n'
+            
+            f'{EmojiEnum.SKILL_POINTS.value}*CHARS LEVELS*: '
+            f'/{view_level_commands[0]}\n'
+            f'INFO: Exibe níveis dos personagens do grupo.\n'
+            f'Atalhos: {view_level_cmd}'
         )
     elif option == CALLBACK_STATS:
         add_stats_cmd = command_to_string(add_stats_commands)

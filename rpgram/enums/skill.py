@@ -57,6 +57,8 @@ class ArcanistSkillEnum(Enum):
     TETRAGRAM_SHOT = 'Disparo Tetragrama'
     DARK_SHOT = 'Disparo das Trevas'
     PRISMATIC_ABRUMATION = 'Abrumação Prismática'
+    CONCENTRATED_PRISMATIC_SHOT = 'Disparo Prismático Concentrado'
+    CONCENTRATED_BICHROMATIC_ABRUMATION = 'Abrumação Bicromática Concentrada'
 
 
 class BarbarianSkillEnum(Enum):
@@ -89,6 +91,12 @@ class BerserkirSkillEnum(Enum):
     INDOMITABLE_ATTACK = 'Ataque Indomável'
     IMPETUOUS_STRIKE = 'Golpe Impetuoso'
     DEVASTATING_RUSH = 'Rajada Devastadora'
+    HRUNGNIRÇÇÇS_SOVEREIGNTY = 'Soberania de Hrungnir'
+    FENRIRÇÇÇS_INSTINCT = 'Instinto de Fenrir'
+    YMIRÇÇÇS_RESILIENCE = 'Resiliência de Ymir'
+    STONE_STRIKE = 'Golpe de Pedra'
+    FROST_BITE = 'Mordida de Gelo'
+    ANCIENT_FURY = 'Fúria Anciã'
 
 
 class BountyHunterSkillEnum(Enum):
@@ -99,6 +107,9 @@ class BountyHunterSkillEnum(Enum):
     CHOMP_TRAP = 'Armadilha Chomp'
     SHARP_FARO = 'Faro Aguçado'
     INVESTIGATION = 'Investigação'
+    GLOW_BURST = 'Brilhestouro'
+    GLOW_BURST_VOLLEY = 'Saraivada de Brilhestouros'
+    GIGA_GLOW_BURST = 'Giga Brilhestouro'
 
 
 class BardSkillEnum(Enum):
@@ -181,6 +192,10 @@ class GladiatorSkillEnum(Enum):
     TURTLE_STANCE = 'Postura de Tartaruga'
     UNICORN_STANCE = 'Postura de Unicórnio'
     ARENA_DOMAIN = 'Domínio da Arena'
+    MARTIAL_BANNER = 'Estandarte Marcial'
+    FLAMING_FURY = 'Fúria Flamejante'
+    FLAMING_FURY_BLADE = 'Lâmina de Fúria Flamejante'
+    WAR_CORNU = 'Cornu de Guerra'
 
 
 class GuardianSkillEnum(Enum):

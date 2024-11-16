@@ -47,9 +47,12 @@ from rpgram.conditions.self_skill import (
     ChaoticStepsCondition,
     CrystalArmorCondition,
     FafnirsScalesCondition,
+    FenrirsInstinctCondition,
+    FlamingFuryCondition,
     FrenzyCondition,
     FuriousFuryCondition,
     FuriousInstinctCondition,
+    HrungnirsSovereigntyCondition,
     ImproviseCondition,
     InvestigationCondition,
     LavaSkinCondition,
@@ -66,7 +69,8 @@ from rpgram.conditions.self_skill import (
     SharpFaroCondition,
     SniffCondition,
     TurtleStanceCondition,
-    UnicornStanceCondition
+    UnicornStanceCondition,
+    YmirsResilienceCondition
 )
 from rpgram.conditions.special_damage_skill import (
     SDAresBladeCondition,
@@ -75,6 +79,7 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowTurtleCondition,
     SDFellowWolfCondition,
     SDFellowYetiCondition,
+    SDFlamingFuryCondition,
     SDGreenDragonBalmCondition,
     SDCrystallineInfusionCondition,
     SDEscarchaSapCondition,
@@ -121,6 +126,7 @@ from rpgram.conditions.target_skill_buff import (
     LookouterYetiCondition,
     LordAnointingCondition,
     MaidenAnointingCondition,
+    MartialBannerCondition,
     OgunsCloakCondition,
     ProtectorTurtleCondition,
     RangerFalconCondition,
@@ -134,6 +140,7 @@ from rpgram.conditions.target_skill_buff import (
     VineCrosierCondition,
     VitalityAuraCondition,
     WarBannerCondition,
+    WarCornuCondition,
     WarSongCondition,
     WarriorAnointingCondition,
     WatcherOwlCondition,
@@ -154,6 +161,7 @@ from rpgram.enums.consumable import HealingConsumableEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
     BardSkillEnum,
+    BerserkirSkillEnum,
     BountyHunterSkillEnum,
     ClericSkillEnum,
     DruidSkillEnum,
@@ -461,6 +469,14 @@ def condition_factory(
         condition_class = SDAresBladeCondition
     elif compare_condition(name, GladiatorSkillEnum.AJAX_SHIELD):
         condition_class = AjaxShieldCondition
+    elif compare_condition(name, GladiatorSkillEnum.MARTIAL_BANNER):
+        condition_class = MartialBannerCondition
+    elif compare_condition(name, GladiatorSkillEnum.FLAMING_FURY):
+        condition_class = FlamingFuryCondition
+    elif compare_condition(name, GladiatorSkillEnum.FLAMING_FURY_BLADE):
+        condition_class = SDFlamingFuryCondition
+    elif compare_condition(name, GladiatorSkillEnum.WAR_CORNU):
+        condition_class = WarCornuCondition
     # SUMMONER BUFFS
     elif compare_condition(name, SummonerSkillEnum.PISKIE_WINDBAG):
         condition_class = PiskieWindbagCondition
@@ -501,6 +517,13 @@ def condition_factory(
         condition_class = SDFellowWolfCondition
     elif compare_condition(name, ShamanSkillEnum.FELLOW_YETI):
         condition_class = SDFellowYetiCondition
+    # BERSERKIR BUFFS
+    elif compare_condition(name, BerserkirSkillEnum.HRUNGNIRÇÇÇS_SOVEREIGNTY):
+        condition_class = HrungnirsSovereigntyCondition
+    elif compare_condition(name, BerserkirSkillEnum.FENRIRÇÇÇS_INSTINCT):
+        condition_class = FenrirsInstinctCondition
+    elif compare_condition(name, BerserkirSkillEnum.YMIRÇÇÇS_RESILIENCE):
+        condition_class = YmirsResilienceCondition
     # SORCERER SUPREME BUFFS
     elif compare_condition(name, SorcererSupremeSkillEnum.MAGIC_SHIELD):
         condition_class = MagicShieldCondition

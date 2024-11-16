@@ -7,6 +7,7 @@ from bot.conversations.help import HELP_HANDLERS
 from bot.conversations.sign_up_group import SIGNUP_GROUP_HANDLER
 from bot.conversations.sign_up_player import SIGNUP_PLAYER_HANDLER
 from bot.conversations.view_group import VIEW_GROUP_HANDLERS
+from bot.conversations.view_level import VIEW_LEVEL_HANDLERS
 from bot.conversations.view_player import VIEW_PLAYER_HANDLERS
 from bot.conversations.view_char import VIEW_CHAR_HANDLERS
 from bot.conversations.rest import REST_HANDLERS

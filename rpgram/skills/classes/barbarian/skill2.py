@@ -270,6 +270,7 @@ SKILL_WAY_DESCRIPTION = {
 
 if __name__ == '__main__':
     from rpgram.constants.test import BARBARIAN_CHARACTER
+
     skill = FuriousFurySkill(BARBARIAN_CHARACTER)
     print(skill)
     print(BARBARIAN_CHARACTER.bs.strength)

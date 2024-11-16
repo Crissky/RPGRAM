@@ -27,6 +27,7 @@ from rpgram.enums.damage import DamageEmojiEnum
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BarbarianSkillEnum,
+    BerserkirSkillEnum,
     BountyHunterSkillEnum,
     GladiatorSkillEnum,
     GuardianSkillEnum,
@@ -1314,7 +1315,7 @@ class AlertCondition(SelfSkillCondition):
         bonus_precision_attack = self.character.bs.dexterity * power
 
         return int(bonus_precision_attack)
-    
+
     @property
     def bonus_hit(self) -> int:
         power = 2 + (self.level / 10)
@@ -1330,6 +1331,238 @@ class AlertCondition(SelfSkillCondition):
     @property
     def function_text(self) -> str:
         return f'permanece em *Estado de Alerta*.'
+
+
+class HrungnirsSovereigntyCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BerserkirSkillEnum.HRUNGNIRÇÇÇS_SOVEREIGNTY,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria Desenfreada* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'e aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit_points = self.character.bs.strength * power
+
+        return int(bonus_hit_points)
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_attack = self.character.bs.strength * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '🦌🪨'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto pela *{self.trans_name}*.'
+
+
+class FenrirsInstinctCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BerserkirSkillEnum.FENRIRÇÇÇS_INSTINCT,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria Desenfreada* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
+            f'aumenta o '
+            f'*{HIT_EMOJI_TEXT}* '
+            f'em {self.bonus_hit} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'e aumenta a '
+            f'*{EVASION_EMOJI_TEXT}* '
+            f'em {self.bonus_evasion} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit_points = self.character.bs.strength * power
+
+        return int(bonus_hit_points)
+
+    @property
+    def bonus_hit(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit = self.character.bs.strength * power
+
+        return int(bonus_hit)
+
+    @property
+    def bonus_evasion(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_evasion = self.character.bs.strength * power
+
+        return int(bonus_evasion)
+
+    @property
+    def emoji(self) -> str:
+        return '🦌🐺'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto pelo *{self.trans_name}*.'
+
+
+class YmirsResilienceCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=BerserkirSkillEnum.YMIRÇÇÇS_RESILIENCE,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria Desenfreada* que aumenta o '
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
+            f'em {self.bonus_hit_points} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
+            f'aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'e aumenta a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos '
+            f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_hit_points(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_hit_points = self.character.bs.strength * power
+
+        return int(bonus_hit_points)
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_defense = self.character.bs.strength * power
+
+        return int(bonus_physical_defense)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_magical_defense = self.character.bs.strength * power
+
+        return int(bonus_magical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🦌🧊'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece envolto pela *{self.trans_name}*.'
+
+
+class FlamingFuryCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=GladiatorSkillEnum.FLAMING_FURY,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Estado de *Fúria do Senhor da Guerra* que aumenta o '
+            f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_attack} pontos '
+            f'(300%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_attack(self) -> int:
+        power = 3 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_attack = self.character.bs.strength * power
+
+        return int(bonus_physical_attack)
+
+    @property
+    def emoji(self) -> str:
+        return '🔥😤'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece em estado de *{self.trans_name}*.'
 
 
 class FakeCharacter:
@@ -1424,6 +1657,10 @@ class SelfBuffs:
         ImproviseCondition,
         SniffCondition,
         AlertCondition,
+        HrungnirsSovereigntyCondition,
+        FenrirsInstinctCondition,
+        YmirsResilienceCondition,
+        FlamingFuryCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

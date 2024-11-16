@@ -139,7 +139,7 @@ async def create_ambush_event(
 
     times = randint(1, 3) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1 + (i*10), 10 + (i*10))
+        minutes = randint(1 + (i*20), 10 + (i*20))
         print(
             f'CREATE_AMBUSH_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
