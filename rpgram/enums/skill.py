@@ -214,6 +214,7 @@ class HealerSkillEnum(Enum):
     VITALITY_AURA = 'Aura de Vitalidade'
     PROTECTIVE_AURA = 'Aura Protetiva'
     REVIVE_RITUAL = 'Ritual de Reviver'
+    HEALING_REFUGE = 'Refúgio Curativo'
 
 
 class HeraldSkillEnum(Enum):

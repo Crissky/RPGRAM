@@ -5,7 +5,10 @@ from typing import TYPE_CHECKING, Iterable, Union
 from bson import ObjectId
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.condition import Condition
-from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT
+from rpgram.constants.text import (
+    BARRIER_POINT_FULL_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT
+)
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     GladiatorSkillEnum,
@@ -379,6 +382,50 @@ class MagicShieldCondition(BarrierCondition):
         return 2.00
 
 
+class HealingRefugeCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.HEALING_REFUGE,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Refúgio Curativo* que salvaguarda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
+            f'e cura *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
+            f'a cada turno.'
+        )
+
+    @property
+    def healing_points(self) -> str:
+        return int(self.barrier_points / 10)
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = super().function(target)
+        healing_report = target.combat_stats.cure_hit_points(
+            value=self.healing_points,
+            markdown=True,
+        )
+        healing_text = healing_report['text']
+        text = f'\n*{self.full_name}*: {healing_text}'
+        report['text'] += text
+
+        return report
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -389,6 +436,7 @@ class BarrierBuffs:
         AjaxShieldCondition,
         PiskieWindbagCondition,
         MagicShieldCondition,
+        HealingRefugeCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:

@@ -4,6 +4,7 @@ from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
     GuardianShieldCondition,
+    HealingRefugeCondition,
     MagicShieldCondition,
     PiskieWindbagCondition,
     PrismaticShieldCondition,
@@ -458,6 +459,8 @@ def condition_factory(
         condition_class = VitalityAuraCondition
     elif compare_condition(name, HealerSkillEnum.PROTECTIVE_AURA):
         condition_class = ProtectiveAuraCondition
+    elif compare_condition(name, HealerSkillEnum.HEALING_REFUGE):
+        condition_class = HealingRefugeCondition
     # GLADIATOR BUFFS
     elif compare_condition(name, GladiatorSkillEnum.TURTLE_STANCE):
         condition_class = TurtleStanceCondition
