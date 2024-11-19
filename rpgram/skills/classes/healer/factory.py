@@ -8,6 +8,7 @@ from rpgram.skills.classes.healer.skill1 import (
 )
 from rpgram.skills.classes.healer.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
+    HealingRefugeSkill,
     ProtectiveAuraSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
@@ -34,6 +35,8 @@ def healer_skill_factory(
     # SKILL2'
     elif skill_class_name == ProtectiveAuraSkill.__name__:
         skill_class = ProtectiveAuraSkill
+    elif skill_class_name == HealingRefugeSkill.__name__:
+        skill_class = HealingRefugeSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -49,6 +52,7 @@ HEALER_SKILL_LIST: List[Type[BaseSkill]] = [
 
     # SKILL2
     ProtectiveAuraSkill,
+    HealingRefugeSkill,
 ]
 HEALER_SKILL_WAYS: List[dict] = [
     skill_way1,

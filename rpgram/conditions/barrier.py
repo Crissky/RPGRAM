@@ -410,6 +410,10 @@ class HealingRefugeCondition(BarrierCondition):
         )
 
     @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+    @property
     def healing_points(self) -> str:
         return int(self.barrier_points / 10)
 
@@ -420,7 +424,7 @@ class HealingRefugeCondition(BarrierCondition):
             markdown=True,
         )
         healing_text = healing_report['text']
-        text = f'\n*{self.full_name}*: {healing_text}'
+        text = f'\n*{self.full_name}*: {healing_text[:-2]}'
         report['text'] += text
 
         return report
