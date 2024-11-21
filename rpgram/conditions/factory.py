@@ -9,7 +9,8 @@ from rpgram.conditions.barrier import (
     PiskieWindbagCondition,
     PrismaticShieldCondition,
     ChaosWeaverCondition,
-    ProtectiveAuraCondition
+    ProtectiveAuraCondition,
+    ProtectiveInfusionCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -461,6 +462,8 @@ def condition_factory(
         condition_class = ProtectiveAuraCondition
     elif compare_condition(name, HealerSkillEnum.HEALING_REFUGE):
         condition_class = HealingRefugeCondition
+    elif compare_condition(name, HealerSkillEnum.PROTECTIVE_INFUSION):
+        condition_class = ProtectiveInfusionCondition
     # GLADIATOR BUFFS
     elif compare_condition(name, GladiatorSkillEnum.TURTLE_STANCE):
         condition_class = TurtleStanceCondition

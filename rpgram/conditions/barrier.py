@@ -403,7 +403,7 @@ class HealingRefugeCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Refúgio Curativo* que salvaguarda com uma barreira '
+            f'*Refúgio Curativo* que engendrar com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
             f'e cura *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
             f'a cada turno.'
@@ -430,6 +430,50 @@ class HealingRefugeCondition(BarrierCondition):
         return report
 
 
+class ProtectiveInfusionCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.PROTECTIVE_INFUSION,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Protetiva* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
+            f'e cura até (Nível) níveis de condições aleatórias '
+            f'a cada turno.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = super().function(target)
+        quantity = self.level
+        status_report = target.status.remove_random_debuff_conditions(
+            quantity=quantity
+        )
+        status_text = status_report["text"]
+        text = f'\n*{self.full_name}*: {status_text}'
+        report['text'] += text
+
+        return report
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -441,6 +485,7 @@ class BarrierBuffs:
         PiskieWindbagCondition,
         MagicShieldCondition,
         HealingRefugeCondition,
+        ProtectiveInfusionCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:
