@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import (
     HealingRefugeCondition,
-    ProtectiveAuraCondition
+    ProtectiveAuraCondition,
+    ProtectiveInfusionCondition
 )
 from rpgram.constants.text import (
     MAGICAL_DEFENSE_EMOJI_TEXT
@@ -163,6 +164,77 @@ class HealingRefugeSkill(BaseSkill):
         return report
 
 
+class ProtectiveInfusionSkill(BaseSkill):
+    NAME = HealerSkillEnum.PROTECTIVE_INFUSION.value
+    DESCRIPTION = (
+        f'Usando ervas, cria uma *Infusão Protetiva* que protege um aliado '
+        f'com uma nevoa de incenso purificativo, '
+        f'gerando uma barreira baseada na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e '
+        f'cura até (Nível) níveis de condições aleatórias a cada turno.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.HEALER.value,
+        'skill_list': [
+            ProtectiveAuraSkill.NAME
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=ProtectiveInfusionSkill.NAME,
+            description=ProtectiveInfusionSkill.DESCRIPTION,
+            rank=ProtectiveInfusionSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BARRIER,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=ProtectiveInfusionSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        if char.is_alive:
+            target_name = (
+                'a si mesmo'
+                if target_name == player_name
+                else target_name
+            )
+            dice = self.dice
+            power = dice.boosted_magical_defense
+            level = self.level_rank
+            condition = ProtectiveInfusionCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* cria uma *Infusão Protetiva* e protege '
+                    f'*{target_name}* com uma barreira '
+                    f'*{condition.barrier_points_text}*({dice.text}).\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Guardiões da Vida',
     'description': (
@@ -202,6 +274,14 @@ if __name__ == '__main__':
     print(skill.function(HEALER_CHARACTER))
     print(HEALER_CHARACTER.cs.show_barrier_points)
     HEALER_CHARACTER.skill_tree.learn_skill(HealingRefugeSkill)
+    HEALER_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
+
+    skill = ProtectiveInfusionSkill(HEALER_CHARACTER)
+    print(skill)
+    print(HEALER_CHARACTER.cs.show_barrier_points)
+    print(skill.function(HEALER_CHARACTER))
+    print(HEALER_CHARACTER.cs.show_barrier_points)
+    HEALER_CHARACTER.skill_tree.learn_skill(ProtectiveInfusionSkill)
     HEALER_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
 
     print(

@@ -468,8 +468,9 @@ class ProtectiveInfusionCondition(BarrierCondition):
             quantity=quantity
         )
         status_text = status_report["text"]
-        text = f'\n*{self.full_name}*: {status_text}'
-        report['text'] += text
+        if status_text:
+            text = f'\n*{self.full_name}*: {status_text}'
+            report['text'] += text
 
         return report
 
