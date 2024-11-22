@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Union
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
+    BeatifyingAegisCondition,
     GuardianShieldCondition,
     HealingRefugeCondition,
     MagicShieldCondition,
@@ -464,6 +465,8 @@ def condition_factory(
         condition_class = HealingRefugeCondition
     elif compare_condition(name, HealerSkillEnum.PROTECTIVE_INFUSION):
         condition_class = ProtectiveInfusionCondition
+    elif compare_condition(name, HealerSkillEnum.BEATIFYING_AEGIS):
+        condition_class = BeatifyingAegisCondition
     # GLADIATOR BUFFS
     elif compare_condition(name, GladiatorSkillEnum.TURTLE_STANCE):
         condition_class = TurtleStanceCondition

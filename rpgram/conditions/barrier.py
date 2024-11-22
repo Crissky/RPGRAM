@@ -462,8 +462,71 @@ class ProtectiveInfusionCondition(BarrierCondition):
         return 2.00
 
     def function(self, target: 'BaseCharacter') -> dict:
+        # MAIN
         report = super().function(target)
+
+        # HEAL
+        healing_report = target.combat_stats.cure_hit_points(
+            value=self.healing_points,
+            markdown=True,
+        )
+        healing_text = healing_report['text']
+        text = f'\n*{self.full_name}*: {healing_text[:-2]}'
+        report['text'] += text
+
+        # CURE
         quantity = self.level
+        status_report = target.status.remove_random_debuff_conditions(
+            quantity=quantity
+        )
+        status_text = status_report["text"]
+        if status_text:
+            text = f'\n*{self.full_name}*: {status_text}'
+            report['text'] += text
+
+        return report
+
+
+class BeatifyingAegisCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.BEATIFYING_AEGIS,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Proteção Sacra* que escuda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}, '
+            f'recupera *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
+            f'a cada turno '
+            f'e cura até (5 * Nível) níveis de condições aleatórias '
+            f'a cada turno.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+    @property
+    def healing_points(self) -> str:
+        return int(self.barrier_points / 5)
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = super().function(target)
+        quantity = self.level * 5
         status_report = target.status.remove_random_debuff_conditions(
             quantity=quantity
         )
@@ -487,6 +550,7 @@ class BarrierBuffs:
         MagicShieldCondition,
         HealingRefugeCondition,
         ProtectiveInfusionCondition,
+        BeatifyingAegisCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:

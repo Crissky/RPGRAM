@@ -216,6 +216,7 @@ class HealerSkillEnum(Enum):
     REVIVE_RITUAL = 'Ritual de Reviver'
     HEALING_REFUGE = 'Refúgio Curativo'
     PROTECTIVE_INFUSION = 'Infusão Protetiva'
+    BEATIFYING_AEGIS = 'Aegís Beatificante'
 
 
 class HeraldSkillEnum(Enum):
