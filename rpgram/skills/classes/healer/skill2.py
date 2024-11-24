@@ -2,11 +2,13 @@ from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import (
+    BeatifyingAegisCondition,
     HealingRefugeCondition,
     ProtectiveAuraCondition,
     ProtectiveInfusionCondition
 )
 from rpgram.constants.text import (
+    HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
@@ -98,8 +100,9 @@ class HealingRefugeSkill(BaseSkill):
         f'um campo de energia benéfica '
         f'ao redor de um aliado, resguardando-o '
         f'com uma barreira baseada na '
-        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e '
-        f'curando-o a cada turno com uma fração desse valor.'
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) que, '
+        f'também, cura {HIT_POINT_FULL_EMOJI_TEXT} a cada turno '
+        f'com uma fração desse valor.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -235,8 +238,84 @@ class ProtectiveInfusionSkill(BaseSkill):
         return report
 
 
+class BeatifyingAegisSkill(BaseSkill):
+    NAME = HealerSkillEnum.BEATIFYING_AEGIS.value
+    DESCRIPTION = (
+        f'Convoca a *{HealerSkillEnum.BEATIFYING_AEGIS.value}* para '
+        f'criar uma *Proteção Sacra* que escuda um aliado '
+        f'com esse *Artefato Lendário*, '
+        f'concedendo-lhe uma barreira baseada na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) que, '
+        f'também, recupera {HIT_POINT_FULL_EMOJI_TEXT} a cada turno '
+        f'com uma fração desse valor e '
+        f'cura até (Nível) níveis de condições aleatórias a cada turno.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.HEALER.value,
+        'skill_list': [
+            ProtectiveAuraSkill.NAME,
+            HealingRefugeSkill.NAME,
+            ProtectiveInfusionSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=BeatifyingAegisSkill.NAME,
+            description=BeatifyingAegisSkill.DESCRIPTION,
+            rank=BeatifyingAegisSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.BARRIER,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=BeatifyingAegisSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        if char.is_alive:
+            target_name = (
+                'a si mesmo'
+                if target_name == player_name
+                else target_name
+            )
+            dice = self.dice
+            power = dice.boosted_magical_defense
+            level = self.level_rank
+            condition = BeatifyingAegisCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* cria uma *Proteção Sacra* e escuda '
+                    f'*{target_name}* com uma barreira '
+                    f'*{condition.barrier_points_text}*({dice.text}).\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
-    'name': 'Guardiões da Vida',
+    'name': 'Guardião da Vida',
     'description': (
         'São mestres na arte de proteger e preservar a existência. '
         'Eles concentram-se na união entre cura e defesa, '
@@ -253,6 +332,8 @@ SKILL_WAY_DESCRIPTION = {
     'skill_list': [
         ProtectiveAuraSkill,
         HealingRefugeSkill,
+        ProtectiveInfusionSkill,
+        BeatifyingAegisSkill
     ]
 }
 
@@ -274,7 +355,6 @@ if __name__ == '__main__':
     print(skill.function(HEALER_CHARACTER))
     print(HEALER_CHARACTER.cs.show_barrier_points)
     HEALER_CHARACTER.skill_tree.learn_skill(HealingRefugeSkill)
-    HEALER_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
 
     skill = ProtectiveInfusionSkill(HEALER_CHARACTER)
     print(skill)
@@ -282,8 +362,16 @@ if __name__ == '__main__':
     print(skill.function(HEALER_CHARACTER))
     print(HEALER_CHARACTER.cs.show_barrier_points)
     HEALER_CHARACTER.skill_tree.learn_skill(ProtectiveInfusionSkill)
-    HEALER_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
 
+    skill = BeatifyingAegisSkill(HEALER_CHARACTER)
+    print(skill)
+    print(HEALER_CHARACTER.cs.show_barrier_points)
+    print(skill.function(HEALER_CHARACTER))
+    print(HEALER_CHARACTER.cs.show_barrier_points)
+    HEALER_CHARACTER.skill_tree.learn_skill(BeatifyingAegisSkill)
+
+    HEALER_CHARACTER.status.add_condition(CurseCondition(level=20))
+    HEALER_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
     print(
         '\n'.join(
             report['text']
