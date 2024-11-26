@@ -73,6 +73,7 @@ from rpgram.conditions.self_skill import (
     SniffCondition,
     TurtleStanceCondition,
     UnicornStanceCondition,
+    VigilFlameCondition,
     YmirsResilienceCondition
 )
 from rpgram.conditions.special_damage_skill import (
@@ -439,6 +440,8 @@ def condition_factory(
     # HERALD BUFFS
     elif compare_condition(name, HeraldSkillEnum.MYSTIC_BLOCK):
         condition_class = MysticBlockCondition
+    elif compare_condition(name, HeraldSkillEnum.VIGIL_FLAME):
+        condition_class = VigilFlameCondition
     # BARD BUFFS
     elif compare_condition(name, BardSkillEnum.WAR_SONG):
         condition_class = WarSongCondition
