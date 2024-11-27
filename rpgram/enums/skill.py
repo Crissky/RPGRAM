@@ -224,6 +224,9 @@ class HeraldSkillEnum(Enum):
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
     VIGIL_FLAME = 'Chama Vigílica'
 
+    # Special Damage
+    VIGIL_ARMS = 'Braços Vigílicos'
+
 
 class KnightSkillEnum(Enum):
     CHARGE = 'Carga'

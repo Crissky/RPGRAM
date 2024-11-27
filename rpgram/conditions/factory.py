@@ -96,6 +96,7 @@ from rpgram.conditions.special_damage_skill import (
     SDRedPhoenixBalmCondition,
     SDThornySpaulderCondition,
     SDSacredBalmCondition,
+    SDVigilArmsCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -442,6 +443,8 @@ def condition_factory(
         condition_class = MysticBlockCondition
     elif compare_condition(name, HeraldSkillEnum.VIGIL_FLAME):
         condition_class = VigilFlameCondition
+    elif compare_condition(name, HeraldSkillEnum.VIGIL_ARMS):
+        condition_class = SDVigilArmsCondition
     # BARD BUFFS
     elif compare_condition(name, BardSkillEnum.WAR_SONG):
         condition_class = WarSongCondition
