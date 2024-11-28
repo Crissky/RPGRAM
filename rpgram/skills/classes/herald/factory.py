@@ -4,6 +4,7 @@ from rpgram.skills.classes.herald.skill1 import (
     ColossalOnslaughtSkill,
     MysticBlockSkill,
 )
+from rpgram.skills.classes.herald.skill2 import VigilFlameSkill
 from rpgram.skills.classes.multiclasse.physical_defense import (
     GuardianShieldSkill,
     HeavyChargeSkill,
@@ -32,6 +33,9 @@ def herald_skill_factory(
         skill_class = HeavyChargeSkill
     elif skill_class_name == ColossalOnslaughtSkill.__name__:
         skill_class = ColossalOnslaughtSkill
+    # SKILL2
+    elif skill_class_name == VigilFlameSkill.__name__:
+        skill_class = VigilFlameSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -45,6 +49,9 @@ HERALD_SKILL_LIST: List[Type[BaseSkill]] = [
     GuardianShieldSkill,
     HeavyChargeSkill,
     ColossalOnslaughtSkill,
+
+    # SKILL2
+    VigilFlameSkill,
 ]
 HERALD_SKILL_WAYS: List[dict] = [
     skill_way1
