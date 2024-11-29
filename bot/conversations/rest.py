@@ -1,5 +1,6 @@
 from datetime import timedelta
 from random import choice, randint
+from typing import List
 
 from telegram import Update
 from telegram.ext import (
@@ -75,39 +76,43 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     caller_user_id = user_id = update.effective_user.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     caller_have_tent = have_tent(caller_user_id)
-    args = context.args
+    args = context.args or []
+    user_id_list = [user_id]
+    player_name_list = [name for name in args if name.startswith('@')]
 
-    if args and args[0].startswith('@') and caller_have_tent:
+    if player_name_list and caller_have_tent:
         player_name = args[0]
-        m_query = {'name': player_name}
-        player: Player = player_model.get(query=m_query)
-        if player:
-            user_id = player.player_id
-            sub_tent_from_bag(user_id=caller_user_id)
-        else:
-            text = create_text_in_box(
-                text=f'{player_name} não foi encontrado.',
-                section_name=SECTION_TEXT_REST,
-                section_start=SECTION_HEAD_REST_START,
-                section_end=SECTION_HEAD_REST_END,
-                clean_func=None,
-            )
-            reply_text_kwargs = dict(
-                text=text,
-                disable_notification=silent,
-                allow_sending_without_reply=True,
-                reply_markup=get_close_keyboard(user_id=caller_user_id)
-            )
+        user_id_list = []
+        m_query = {'name': {'$in': player_name_list}}
+        player_list: List[Player] = player_model.get_all(query=m_query)
+        for player in player_list:
+            if player:
+                user_id_list.append(player.player_id)
+                sub_tent_from_bag(user_id=caller_user_id)
+            else:
+                text = create_text_in_box(
+                    text=f'{player_name} não foi encontrado.',
+                    section_name=SECTION_TEXT_REST,
+                    section_start=SECTION_HEAD_REST_START,
+                    section_end=SECTION_HEAD_REST_END,
+                    clean_func=None,
+                )
+                reply_text_kwargs = dict(
+                    text=text,
+                    disable_notification=silent,
+                    allow_sending_without_reply=True,
+                    reply_markup=get_close_keyboard(user_id=caller_user_id)
+                )
 
-            return await call_telegram_message_function(
-                function_caller='REST.REST()',
-                function=update.effective_message.reply_text,
-                context=context,
-                need_response=False,
-                skip_retry=False,
-                **reply_text_kwargs,
-            )
-    elif args and args[0].startswith('@') and not caller_have_tent:
+                return await call_telegram_message_function(
+                    function_caller='REST.REST()',
+                    function=update.effective_message.reply_text,
+                    context=context,
+                    need_response=False,
+                    skip_retry=False,
+                    **reply_text_kwargs,
+                )
+    elif player_name_list and not caller_have_tent:
         player_name = args[0]
         text = (
             f'Você não tem um "{TENT}" para ajudar o descanso de '
