@@ -86,6 +86,9 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
         m_query = {'name': {'$in': player_name_list}}
         player_list: List[Player] = player_model.get_all(query=m_query)
         for player in player_list:
+            caller_have_tent = have_tent(caller_user_id)
+            if not caller_have_tent:
+                break
             if player:
                 user_id_list.append(player.player_id)
                 sub_tent_from_bag(user_id=caller_user_id)
@@ -104,7 +107,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     reply_markup=get_close_keyboard(user_id=caller_user_id)
                 )
 
-                return await call_telegram_message_function(
+                await call_telegram_message_function(
                     function_caller='REST.REST()',
                     function=update.effective_message.reply_text,
                     context=context,
