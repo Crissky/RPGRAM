@@ -475,7 +475,7 @@ def get_rest_jobname(user_id):
 
 
 def get_rest_action_points_jobname(user_id):
-    return f'REST-ACTION-POINTS{user_id}'
+    return f'REST-ACTIONPOINTS-{user_id}'
 
 
 REST_HANDLERS = [
