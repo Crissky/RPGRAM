@@ -102,7 +102,7 @@ async def create_item_quest_event(
 
     chat_id = update.effective_chat.id
     now = get_brazil_time_now()
-    times = randint(1, 3) if is_boosted_day(now) else 1
+    times = randint(1, 2) if is_boosted_day(now) else 1
     for i in range(times):
         minutes = randint(1 + (i*20), 10 + (i*20))
         print(
