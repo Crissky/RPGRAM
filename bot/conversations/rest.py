@@ -73,11 +73,11 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     char_model = CharacterModel()
     player_model = PlayerModel()
     chat_id = update.effective_chat.id
-    caller_user_id = user_id = update.effective_user.id
+    caller_user_id = update.effective_user.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     caller_have_tent = have_tent(caller_user_id)
     args = context.args or []
-    user_id_list = [user_id]
+    user_id_list = [caller_user_id]
     player_name_list = [name for name in args if name.startswith('@')]
 
     if player_name_list and caller_have_tent:
@@ -144,81 +144,83 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             **reply_text_kwargs,
         )
 
-    job_name = get_rest_jobname(user_id=user_id)
-    current_jobs = context.job_queue.get_jobs_by_name(job_name)
-    player_character: BaseCharacter = char_model.get(user_id)
-    current_hp = player_character.cs.show_hit_points
-    debuffs_text = player_character.status.debuffs_text
-    char_name = (
-        f'{player_character.name}, '
-        f'O {player_character.race_name} {player_character.classe_name}'
-    )
+    for user_id in user_id_list:
+        job_name = get_rest_jobname(user_id=user_id)
+        current_jobs = context.job_queue.get_jobs_by_name(job_name)
+        player_character: BaseCharacter = char_model.get(user_id)
+        current_hp = player_character.cs.show_hit_points
+        debuffs_text = player_character.status.debuffs_text
+        char_name = (
+            f'{player_character.name}, '
+            f'O {player_character.race_name} {player_character.classe_name}'
+        )
 
-    if current_jobs:
-        reply_text_already_resting = choice(REPLY_TEXTS_ALREADY_RESTING)
-        reply_text_already_resting = reply_text_already_resting.format(
-            char_name=char_name
-        )
-        text = (
-            f'{reply_text_already_resting}\n\n'
-            f'HP: {current_hp}\n'
-            f'Status: {debuffs_text}.'
-        )
-    elif player_character.is_healed and not player_character.is_debuffed:
-        reply_text_no_need_rest = choice(REPLY_TEXTS_NO_NEED_REST)
-        reply_text_no_need_rest = reply_text_no_need_rest.format(
-            char_name=char_name
-        )
-        text = (
-            f'{reply_text_no_need_rest}\n\n'
-            f'HP: {current_hp}\n'
-            f'Status: {debuffs_text}.'
-        )
-    else:
-        create_job_rest_cure(
+        if current_jobs:
+            reply_text_already_resting = choice(REPLY_TEXTS_ALREADY_RESTING)
+            reply_text_already_resting = reply_text_already_resting.format(
+                char_name=char_name
+            )
+            text = (
+                f'{reply_text_already_resting}\n\n'
+                f'HP: {current_hp}\n'
+                f'Status: {debuffs_text}.'
+            )
+        elif player_character.is_healed and not player_character.is_debuffed:
+            reply_text_no_need_rest = choice(REPLY_TEXTS_NO_NEED_REST)
+            reply_text_no_need_rest = reply_text_no_need_rest.format(
+                char_name=char_name
+            )
+            text = (
+                f'{reply_text_no_need_rest}\n\n'
+                f'HP: {current_hp}\n'
+                f'Status: {debuffs_text}.'
+            )
+        else:
+            create_job_rest_cure(
+                context=context,
+                chat_id=chat_id,
+                user_id=user_id,
+            )
+            reply_text_starting_rest = choice(REPLY_TEXTS_STARTING_REST)
+            reply_text_starting_rest = reply_text_starting_rest.format(
+                char_name=char_name
+            )
+            text = (
+                f'{reply_text_starting_rest}\n\n'
+                f'HP: {current_hp}\n'
+                f'Status: {debuffs_text}\n\n'
+                f'{player_character.player_name} '
+                f'irá recuperar HP e Status a cada '
+                f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
+            )
+
+        create_job_rest_action_point(
             context=context,
             chat_id=chat_id,
             user_id=user_id,
         )
-        reply_text_starting_rest = choice(REPLY_TEXTS_STARTING_REST)
-        reply_text_starting_rest = reply_text_starting_rest.format(
-            char_name=char_name
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_REST,
+            section_start=SECTION_HEAD_REST_START,
+            section_end=SECTION_HEAD_REST_END,
+            clean_func=None,
         )
-        text = (
-            f'{reply_text_starting_rest}\n\n'
-            f'HP: {current_hp}\n'
-            f'Status: {debuffs_text}\n\n'
-            f'{player_character.player_name} irá recuperar HP e Status a cada '
-            f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
+        reply_text_kwargs = dict(
+            text=text,
+            disable_notification=silent,
+            allow_sending_without_reply=True,
+            reply_markup=get_close_keyboard(user_id=caller_user_id)
         )
 
-    create_job_rest_action_point(
-        context=context,
-        chat_id=chat_id,
-        user_id=user_id,
-    )
-    text = create_text_in_box(
-        text=text,
-        section_name=SECTION_TEXT_REST,
-        section_start=SECTION_HEAD_REST_START,
-        section_end=SECTION_HEAD_REST_END,
-        clean_func=None,
-    )
-    reply_text_kwargs = dict(
-        text=text,
-        disable_notification=silent,
-        allow_sending_without_reply=True,
-        reply_markup=get_close_keyboard(user_id=caller_user_id)
-    )
-
-    await call_telegram_message_function(
-        function_caller='REST.REST()',
-        function=update.effective_message.reply_text,
-        context=context,
-        need_response=False,
-        skip_retry=False,
-        **reply_text_kwargs,
-    )
+        await call_telegram_message_function(
+            function_caller='REST.REST()',
+            function=update.effective_message.reply_text,
+            context=context,
+            need_response=False,
+            skip_retry=False,
+            **reply_text_kwargs,
+        )
 
 
 def create_job_rest_cure(
