@@ -11,7 +11,8 @@ from rpgram.conditions.barrier import (
     PrismaticShieldCondition,
     ChaosWeaverCondition,
     ProtectiveAuraCondition,
-    ProtectiveInfusionCondition
+    ProtectiveInfusionCondition,
+    RobysticShieldCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -441,6 +442,8 @@ def condition_factory(
     # HERALD BUFFS
     elif compare_condition(name, HeraldSkillEnum.MYSTIC_BLOCK):
         condition_class = MysticBlockCondition
+    elif compare_condition(name, HeraldSkillEnum.ROBYSTIC_SHIELD):
+        condition_class = RobysticShieldCondition
     elif compare_condition(name, HeraldSkillEnum.VIGIL_FLAME):
         condition_class = VigilFlameCondition
     elif compare_condition(name, HeraldSkillEnum.VIGIL_ARMS):

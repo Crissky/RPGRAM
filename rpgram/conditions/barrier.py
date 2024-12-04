@@ -13,6 +13,7 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     GladiatorSkillEnum,
     HealerSkillEnum,
+    HeraldSkillEnum,
     MultiClasseSkillEnum,
     SorcererSkillEnum,
     SorcererSupremeSkillEnum,
@@ -541,6 +542,37 @@ class BeatifyingAegisCondition(BarrierCondition):
         return report
 
 
+class RobysticShieldCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.ROBYSTIC_SHIELD,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Robusto Escudo Familiar Protetivo* '
+            f'carreagado de *Forças Místicas* que resguarda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -554,6 +586,7 @@ class BarrierBuffs:
         HealingRefugeCondition,
         ProtectiveInfusionCondition,
         BeatifyingAegisCondition,
+        RobysticShieldCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:
