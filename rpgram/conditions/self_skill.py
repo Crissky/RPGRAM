@@ -113,7 +113,8 @@ class RobustBlockCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'*Postura Defensiva* '
+            f'que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
             f'por {self.turn} turno(s).'
@@ -1049,7 +1050,7 @@ class TurtleStanceCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Postura defensiva que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'*Postura Defensiva* que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
             f'por {self.turn} turno(s).'
@@ -1618,6 +1619,62 @@ class VigilFlameCondition(SelfSkillCondition):
         return f'permanece envolto em uma *Aura de Fogo*.'
 
 
+class RobysticBlockCondition(SelfSkillCondition):
+
+    def __init__(
+        self,
+        character: 'BaseCharacter',
+        turn: int = 10,
+        level: int = 1
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.ROBYSTIC_BLOCK,
+            character=character,
+            frequency=TurnEnum.START,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Postura Defensiva* carregada por *Forças Místicas* '
+            f'que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_physical_defense} pontos e '
+            f'a *{MAGICAL_DEFENSE_EMOJI_TEXT}* '
+            f'em {self.bonus_magical_defense} pontos '
+            f'(200%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
+            f'por {self.turn} turno(s).'
+        )
+
+    @property
+    def bonus_physical_defense(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_physical_defense = self.character.bs.constitution * power
+
+        return int(bonus_physical_defense)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        power = 2 + (self.level / 10)
+        power = round(power, 2)
+        bonus_magical_defense = self.character.bs.constitution * power
+
+        return int(bonus_magical_defense)
+
+    @property
+    def emoji(self) -> str:
+        return '🧖🏽‍♀️'
+
+    @property
+    def function_text(self) -> str:
+        return (
+            f'permanece na *Postura Defensiva* e '
+            f'envolto pelas *Forças Místicas*.'
+        )
+
+
 class FakeCharacter:
     # BASE STATS
     class FakeBaseStats:
@@ -1715,6 +1772,7 @@ class SelfBuffs:
         YmirsResilienceCondition,
         FlamingFuryCondition,
         VigilFlameCondition,
+        RobysticBlockCondition,
     ]
 
     def __iter__(self) -> Iterable[SelfSkillCondition]:

@@ -222,6 +222,7 @@ class HealerSkillEnum(Enum):
 class HeraldSkillEnum(Enum):
     MYSTIC_BLOCK = 'Bloqueio Místico'
     ROBYSTIC_SHIELD = 'Escudo Robístico'
+    ROBYSTIC_BLOCK = 'Bloqueio Robístico'
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
     VIGIL_FLAME = 'Chama Vigílica'
 

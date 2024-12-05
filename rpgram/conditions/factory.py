@@ -68,6 +68,7 @@ from rpgram.conditions.self_skill import (
     PenitenceCondition,
     RaijusFootstepsCondition,
     RobustBlockCondition,
+    RobysticBlockCondition,
     RockArmorCondition,
     ShadowStepsCondition,
     SharpFaroCondition,
@@ -444,6 +445,8 @@ def condition_factory(
         condition_class = MysticBlockCondition
     elif compare_condition(name, HeraldSkillEnum.ROBYSTIC_SHIELD):
         condition_class = RobysticShieldCondition
+    elif compare_condition(name, HeraldSkillEnum.ROBYSTIC_BLOCK):
+        condition_class = RobysticBlockCondition
     elif compare_condition(name, HeraldSkillEnum.VIGIL_FLAME):
         condition_class = VigilFlameCondition
     elif compare_condition(name, HeraldSkillEnum.VIGIL_ARMS):
