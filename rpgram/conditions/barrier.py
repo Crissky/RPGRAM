@@ -564,7 +564,7 @@ class RobysticShieldCondition(BarrierCondition):
     def description(self) -> str:
         return (
             f'*Robusto Escudo Familiar Protetivo* '
-            f'carreagado de *Forças Místicas* que resguarda com uma barreira '
+            f'carregado de *Forças Místicas* que resguarda com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
