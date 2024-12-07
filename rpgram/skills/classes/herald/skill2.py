@@ -16,6 +16,9 @@ from rpgram.enums.skill import (
     TargetEnum
 )
 from rpgram.requirement import Requirement
+from rpgram.skills.classes.multiclasse.physical_defense import (
+    GuardianShieldSkill
+)
 from rpgram.skills.skill_base import BaseSkill
 
 
@@ -103,6 +106,8 @@ SKILL_WAY_DESCRIPTION = {
         'o coração dos justos.'
     ),
     'skill_list': [
+        VigilFlameSkill,
+        GuardianShieldSkill,
     ]
 }
 

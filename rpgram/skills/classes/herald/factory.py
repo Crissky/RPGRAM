@@ -3,6 +3,7 @@ from rpgram.skills.classes.herald.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     ColossalOnslaughtSkill,
     MysticBlockSkill,
+    RobysticShieldSkill,
 )
 from rpgram.skills.classes.herald.skill2 import VigilFlameSkill
 from rpgram.skills.classes.multiclasse.physical_defense import (
@@ -29,6 +30,8 @@ def herald_skill_factory(
         skill_class = MysticBlockSkill
     elif skill_class_name == GuardianShieldSkill.__name__:
         skill_class = GuardianShieldSkill
+    elif skill_class_name == RobysticShieldSkill.__name__:
+        skill_class = RobysticShieldSkill
     elif skill_class_name == HeavyChargeSkill.__name__:
         skill_class = HeavyChargeSkill
     elif skill_class_name == ColossalOnslaughtSkill.__name__:
@@ -47,6 +50,7 @@ HERALD_SKILL_LIST: List[Type[BaseSkill]] = [
     RobustBlockSkill,
     MysticBlockSkill,
     GuardianShieldSkill,
+    RobysticShieldSkill,
     HeavyChargeSkill,
     ColossalOnslaughtSkill,
 
