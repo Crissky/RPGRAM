@@ -225,6 +225,7 @@ class HeraldSkillEnum(Enum):
     ROBYSTIC_BLOCK = 'Bloqueio Robístico'
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
     VIGIL_FLAME = 'Chama Vigílica'
+    FLAME_MANTILLA = 'Mantilha de Chamas'
 
     # Special Damage
     VIGIL_ARMS = 'Braços Vigílicos'

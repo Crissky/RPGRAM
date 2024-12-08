@@ -4,6 +4,7 @@ from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
     BeatifyingAegisCondition,
+    FlameMantillaCondition,
     GuardianShieldCondition,
     HealingRefugeCondition,
     MagicShieldCondition,
@@ -451,6 +452,8 @@ def condition_factory(
         condition_class = VigilFlameCondition
     elif compare_condition(name, HeraldSkillEnum.VIGIL_ARMS):
         condition_class = SDVigilArmsCondition
+    elif compare_condition(name, HeraldSkillEnum.FLAME_MANTILLA):
+        condition_class = FlameMantillaCondition
     # BARD BUFFS
     elif compare_condition(name, BardSkillEnum.WAR_SONG):
         condition_class = WarSongCondition
