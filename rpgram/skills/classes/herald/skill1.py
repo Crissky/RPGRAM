@@ -114,9 +114,9 @@ class RobysticShieldSkill(BaseSkill):
         'level': 80,
         'classe_name': ClasseEnum.HERALD.value,
         'skill_list': [
+            GuardianShieldSkill.NAME,
             RobustBlockSkill.NAME,
             MysticBlockSkill.NAME,
-            GuardianShieldSkill.NAME,
         ]
     })
 
@@ -245,9 +245,9 @@ SKILL_WAY_DESCRIPTION = {
         'com força brutal.'
     ),
     'skill_list': [
+        GuardianShieldSkill,
         RobustBlockSkill,
         MysticBlockSkill,
-        GuardianShieldSkill,
         RobysticShieldSkill,
         HeavyChargeSkill,
         ColossalOnslaughtSkill,

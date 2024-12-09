@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 class VigilFlameSkill(BaseSkill):
     NAME = HeraldSkillEnum.VIGIL_FLAME.value
     DESCRIPTION = (
-        f'Canaliza uma aura de fogo que o envolve, '
+        f'Canaliza uma *Aura de Fogo* que o envolve, '
         f'inflamando o seu espírito para aumentar a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
