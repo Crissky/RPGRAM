@@ -229,6 +229,7 @@ class HeraldSkillEnum(Enum):
 
     # Special Damage
     VIGIL_ARMS = 'Braços Vigílicos'
+    MANTILLED_ARMS = 'Braços Mantilhados'
 
 
 class KnightSkillEnum(Enum):

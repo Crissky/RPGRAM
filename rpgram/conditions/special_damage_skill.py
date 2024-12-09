@@ -1021,6 +1021,35 @@ class SDVigilArmsCondition(SpecialDamageSkillCondition):
         return '🔥💪'
 
 
+class SDMantilledArmsCondition(SpecialDamageSkillCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.MANTILLED_ARMS,
+            frequency=TurnEnum.START,
+            power=power,
+            damage_types=[DamageEnum.FIRE],
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Mantilha de Fogo* que '
+            f'concede dano de {self.damage_help_emoji_text}.'
+        )
+
+    @property
+    def emoji(self) -> str:
+        return '🔥🧥'
+
+
 class SpecialDamageBuffs:
     __list = [
         SDCrystallineInfusionCondition,
@@ -1050,6 +1079,7 @@ class SpecialDamageBuffs:
         SDFellowYetiCondition,
         SDFlamingFuryCondition,
         SDVigilArmsCondition,
+        SDMantilledArmsCondition,
     ]
 
     def __iter__(self) -> Iterable[SpecialDamageSkillCondition]:
