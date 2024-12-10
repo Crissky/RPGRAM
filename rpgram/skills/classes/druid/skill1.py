@@ -92,10 +92,9 @@ class RangerFalconSkill(BaseSkill):
         sd_power = char.cs.physical_attack
         condition = RangerFalconCondition(power=power, level=level)
         sd_condition = SDFellowFalconCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -164,10 +163,9 @@ class GuardianBearSkill(BaseSkill):
         sd_power = char.cs.physical_attack
         condition = BodyguardBearCondition(power=power, level=level)
         sd_condition = SDFellowBearCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -236,10 +234,9 @@ class HunterTigerSkill(BaseSkill):
         sd_power = char.cs.physical_attack
         condition = HunterTigerCondition(power=power, level=level)
         sd_condition = SDFellowTigerCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -308,10 +305,9 @@ class WatcherOwlSkill(BaseSkill):
         sd_power = char.cs.physical_attack
         condition = WatcherOwlCondition(power=power, level=level)
         sd_condition = SDFellowOwlCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (

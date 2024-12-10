@@ -154,14 +154,13 @@ class FlamingFurySkill(BaseSkill):
         if char.is_alive:
             level = self.level_rank
             condition = FlamingFuryCondition(character=char, level=level)
-            report_list = char.status.set_conditions(condition)
-
             sd_power = self.char.cs.physical_attack
             sd_condition = SDFlamingFuryCondition(power=sd_power, level=level)
-            sd_report_list = char.status.set_conditions(sd_condition)
+            report_list = char.status.set_conditions(condition, sd_condition)
+
 
             status_report_text = "\n".join(
-                [report["text"] for report in report_list + sd_report_list]
+                [report["text"] for report in report_list]
             )
             report = {
                 'text': (

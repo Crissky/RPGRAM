@@ -281,10 +281,9 @@ class SilkFlossSpaulderSkill(BaseSkill):
             power=sd_power,
             level=level
         )
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (

@@ -92,10 +92,9 @@ class FighterPandinusSkill(BaseSkill):
         sd_power = char.cs.magical_attack
         condition = FighterPandinusCondition(power=power, level=level)
         sd_condition = SDFellowPandinusCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -164,10 +163,9 @@ class ProtectorTurtleSkill(BaseSkill):
         sd_power = char.cs.magical_attack
         condition = ProtectorTurtleCondition(power=power, level=level)
         sd_condition = SDFellowTurtleCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -236,10 +234,9 @@ class ClairvoyantWolfSkill(BaseSkill):
         sd_power = char.cs.magical_attack
         condition = ClairvoyantWolfCondition(power=power, level=level)
         sd_condition = SDFellowWolfCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -308,10 +305,9 @@ class LookouterYetiSkill(BaseSkill):
         sd_power = char.cs.magical_attack
         condition = LookouterYetiCondition(power=power, level=level)
         sd_condition = SDFellowYetiCondition(power=sd_power, level=level)
-        report_list = char.status.set_conditions(condition)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
