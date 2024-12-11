@@ -1,7 +1,11 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from rpgram.conditions.barrier import FlameMantillaCondition
 from rpgram.conditions.self_skill import VigilFlameCondition
-from rpgram.conditions.special_damage_skill import SDVigilArmsCondition
+from rpgram.conditions.special_damage_skill import (
+    SDMantilledArmsCondition,
+    SDVigilArmsCondition
+)
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
@@ -70,12 +74,11 @@ class VigilFlameSkill(BaseSkill):
         player_name = char.player_name
         level = self.level_rank
         condition = VigilFlameCondition(character=char, level=level)
-        report_list = char.status.set_conditions(condition)
         sd_power = char.cs.magical_defense
         sd_condition = SDVigilArmsCondition(power=sd_power, level=level)
-        sd_report_list = char.status.set_conditions(sd_condition)
+        report_list = char.status.set_conditions(condition, sd_condition)
         status_report_text = "\n".join(
-            [report["text"] for report in report_list + sd_report_list]
+            [report["text"] for report in report_list]
         )
         report = {
             'text': (
@@ -86,6 +89,80 @@ class VigilFlameSkill(BaseSkill):
                 f'em {condition.bonus_physical_defense} e a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_defense} pontos.\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class FlameMantillaSkill(BaseSkill):
+    NAME = HeraldSkillEnum.FLAME_MANTILLA.value
+    DESCRIPTION = (
+        f'Libera *Energia Vigílica* que o envolve e '
+        f'usa o calor liberado para criar uma *Mantilha de Chamas*, '
+        f'se resguardando com uma barreira baseada na '
+        f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível). '
+        f'Além disso, adiciona dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
+        f'baseado no '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.HERALD.value,
+        'skill_list': [
+            GuardianShieldSkill.NAME,
+            VigilFlameSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=FlameMantillaSkill.NAME,
+            description=FlameMantillaSkill.DESCRIPTION,
+            rank=FlameMantillaSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BUFF,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FlameMantillaSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = char.player_name
+        level = self.level_rank
+        dice = self.dice
+        barrier_power = dice.boosted_physical_defense
+        barrier_condition = FlameMantillaCondition(
+            power=barrier_power,
+            level=level
+        )
+        sd_power = char.cs.magical_defense
+        sd_condition = SDMantilledArmsCondition(power=sd_power, level=level)
+        sd_report_list = char.status.set_conditions(
+            barrier_condition, sd_condition
+        )
+        status_report_text = "\n".join(
+            [report["text"] for report in sd_report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* se concentra para criar uma '
+                f'*Mantilha de Chamas*, que o protege com uma barreira '
+                f'*{barrier_condition.barrier_points_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
             )
@@ -106,8 +183,9 @@ SKILL_WAY_DESCRIPTION = {
         'o coração dos justos.'
     ),
     'skill_list': [
-        VigilFlameSkill,
         GuardianShieldSkill,
+        VigilFlameSkill,
+        FlameMantillaSkill,
     ]
 }
 
@@ -124,3 +202,13 @@ if __name__ == '__main__':
     print(HERALD_CHARACTER.cs.physical_defense,
           HERALD_CHARACTER.cs.magical_defense)
     HERALD_CHARACTER.skill_tree.learn_skill(VigilFlameSkill)
+
+    skill = GuardianShieldSkill(HERALD_CHARACTER)
+    print(skill)
+    print(skill.function(HERALD_CHARACTER))
+    HERALD_CHARACTER.skill_tree.learn_skill(GuardianShieldSkill)
+
+    skill = FlameMantillaSkill(HERALD_CHARACTER)
+    print(skill)
+    print(skill.function(HERALD_CHARACTER))
+    HERALD_CHARACTER.skill_tree.learn_skill(FlameMantillaSkill)
