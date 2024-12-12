@@ -7,6 +7,7 @@ from rpgram.skills.classes.herald.skill1 import (
 )
 from rpgram.skills.classes.herald.skill2 import (
     FlameMantillaSkill,
+    IgneousStrikeSkill,
     VigilFlameSkill
 )
 from rpgram.skills.classes.multiclasse.physical_defense import (
@@ -44,6 +45,8 @@ def herald_skill_factory(
         skill_class = VigilFlameSkill
     elif skill_class_name == FlameMantillaSkill.__name__:
         skill_class = FlameMantillaSkill
+    elif skill_class_name == IgneousStrikeSkill.__name__:
+        skill_class = IgneousStrikeSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -62,6 +65,7 @@ HERALD_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     VigilFlameSkill,
     FlameMantillaSkill,
+    IgneousStrikeSkill,
 ]
 HERALD_SKILL_WAYS: List[dict] = [
     skill_way1

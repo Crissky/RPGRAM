@@ -226,6 +226,7 @@ class HeraldSkillEnum(Enum):
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
     VIGIL_FLAME = 'Chama Vigílica'
     FLAME_MANTILLA = 'Mantilha de Chamas'
+    IGNEOUS_STRIKE = 'Golpe Ígneo'
 
     # Special Damage
     VIGIL_ARMS = 'Braços Vigílicos'
