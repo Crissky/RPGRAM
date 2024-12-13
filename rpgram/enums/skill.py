@@ -227,6 +227,7 @@ class HeraldSkillEnum(Enum):
     VIGIL_FLAME = 'Chama Vigílica'
     FLAME_MANTILLA = 'Mantilha de Chamas'
     IGNEOUS_STRIKE = 'Golpe Ígneo'
+    IGNEOUS_HEART = 'Coração Ígneo'
 
     # Special Damage
     VIGIL_ARMS = 'Braços Vigílicos'

@@ -94,6 +94,7 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowFalconCondition,
     SDFellowOwlCondition,
     SDFellowTigerCondition,
+    SDIgneousHeartCondition,
     SDIgneousSapCondition,
     SDMantilledArmsCondition,
     SDPoisonousSapCondition,
@@ -457,6 +458,8 @@ def condition_factory(
         condition_class = FlameMantillaCondition
     elif compare_condition(name, HeraldSkillEnum.MANTILLED_ARMS):
         condition_class = SDMantilledArmsCondition
+    elif compare_condition(name, HeraldSkillEnum.IGNEOUS_HEART):
+        condition_class = SDIgneousHeartCondition
     # BARD BUFFS
     elif compare_condition(name, BardSkillEnum.WAR_SONG):
         condition_class = WarSongCondition
