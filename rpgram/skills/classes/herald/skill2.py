@@ -3,11 +3,13 @@ from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import FlameMantillaCondition
 from rpgram.conditions.self_skill import VigilFlameCondition
 from rpgram.conditions.special_damage_skill import (
+    SDIgneousHeartCondition,
     SDMantilledArmsCondition,
     SDVigilArmsCondition
 )
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT,
     MAGICAL_DEFENSE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT
 )
@@ -41,7 +43,7 @@ class VigilFlameSkill(BaseSkill):
         f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado no '
+        f'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -107,7 +109,7 @@ class FlameMantillaSkill(BaseSkill):
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível). '
         f'Além disso, adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado no '
+        f'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -133,7 +135,7 @@ class FlameMantillaSkill(BaseSkill):
             base_stats_multiplier=base_stats_multiplier,
             combat_stats_multiplier=combat_stats_multiplier,
             target_type=TargetEnum.SELF,
-            skill_type=SkillTypeEnum.BUFF,
+            skill_type=SkillTypeEnum.BARRIER,
             skill_defense=SkillDefenseEnum.NA,
             char=char,
             use_equips_damage_types=False,
@@ -209,6 +211,75 @@ class IgneousStrikeSkill(BaseSkill):
         )
 
 
+class IgneousHeartSkill(BaseSkill):
+    NAME = HeraldSkillEnum.IGNEOUS_HEART.value
+    DESCRIPTION = (
+        f'Guiado por um Coração enfartado de *Ímpeto por Justiça*, '
+        f'libera uma *Explosão Vigorosa* que cura seu '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
+        f'Além disso, adiciona dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
+        f'baseado na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.HERALD.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=IgneousHeartSkill.NAME,
+            description=IgneousHeartSkill.DESCRIPTION,
+            rank=IgneousHeartSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.HEALING,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=IgneousHeartSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = char.player_name
+        dice = self.dice
+        level = self.level_rank
+        power_multiplier = 1 + (level / 10)
+        power = dice.boosted_physical_attack * power_multiplier
+        power = round(power)
+
+        cure_report = char.cs.cure_hit_points(power)
+        report_text = cure_report["text"]
+
+        sd_power = char.cs.magical_defense
+        sd_condition = SDIgneousHeartCondition(power=sd_power, level=level)
+        report_list = char.status.set_conditions(sd_condition)
+        status_report_text = "\n".join(
+            [report["text"] for report in report_list]
+        )
+        report = {
+            'text': (
+                f'*{player_name}* é envolvido por um *Ímpeto por Justiça* '
+                f'que cura suas feridas.\n'
+                f'*{report_text}*({dice.text}).\n\n'
+                f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     'name': 'Vigia das Chamas',
     'description': (
@@ -261,3 +332,10 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     HERALD_CHARACTER.skill_tree.learn_skill(IgneousStrikeSkill)
+
+    skill = IgneousHeartSkill(HERALD_CHARACTER)
+    print(skill)
+    HERALD_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
+    print(HERALD_CHARACTER.cs.magical_defense)
+    print(skill.function(HERALD_CHARACTER))
+    HERALD_CHARACTER.skill_tree.learn_skill(IgneousHeartSkill)
