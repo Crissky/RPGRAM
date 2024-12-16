@@ -1,3 +1,6 @@
+import re
+import unicodedata
+
 from random import choice, randint
 from typing import Union
 
@@ -17,18 +20,66 @@ class SecretWordGame:
         if isinstance(rarity, RarityEnum):
             self.rarity = rarity
             self.size = 5 + get_enum_index(self.rarity) + randint(0, 2)
+            self.secret_word = self.__get_secret_word()
         else:
             raise TypeError(
                 f'Rarity deve ser do tipo RarityEnum ou String. '
                 f'Tipo: {type(rarity)}.'
             )
 
-        self.secret_word = self.__get_secret_word()
+    def clean_word(self, word):
+        normalized_word = re.sub(r'\W|\d', '', word)
+        normalized_word = unicodedata.normalize('NFD', normalized_word)
+        normalized_word = normalized_word.encode('ascii', 'ignore')
+        normalized_word = normalized_word.decode('utf-8')
+        normalized_word = normalized_word.upper()
+        normalized_word = normalized_word.strip()
+
+        return normalized_word
+
+    def check_word(self, word: str) -> dict:
+        old_word = word
+        word = self.clean_word(word)
+        secret_word = self.clean_word(self.secret_word)
+        size = len(secret_word)
+
+        if len(word) != size:
+            raise ValueError(
+                f'Palavra ter {size} letras.'
+            )
+        elif old_word.lower() not in self.words:
+            raise ValueError(
+                f'"{word}" não é uma palavra válida.'
+            )
+
+        check = ['⬛'] * size
+        letters = list(secret_word)
+        for i in range(size):
+            if word[i] == secret_word[i]:
+                check[i] = '🟩'
+                letters[i] = None
+
+        for i in range(size):
+            if check[i] == '🟩':
+                continue
+            if word[i] in letters:
+                check[i] = '🟨'
+                letters[letters.index(word[i])] = None
+
+        result = {
+            'check': check,
+            'text': ''.join(check),
+            'is_correct': check == ['🟩'] * size,
+            'secret_word': self.secret_word,
+            'word': old_word
+        }
+
+        return result
 
     def __get_secret_word(self) -> str:
         options = self.options
         secret_word = choice([o for o in options if len(o) == self.size])
-        return secret_word.upper()
+        return secret_word
 
     @classmethod
     def __get_words(cls):
@@ -103,3 +154,5 @@ if __name__ == '__main__':
 
     print(game1)
     print(game2)
+    
+    print(game2.check_word('raios'))
