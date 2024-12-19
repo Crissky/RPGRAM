@@ -21,6 +21,7 @@ class SecretWordGame:
             self.rarity = rarity
             self.size = 5 + get_enum_index(self.rarity) + randint(0, 2)
             self.secret_word = self.__get_secret_word()
+            self.num_try = 0
         else:
             raise TypeError(
                 f'Rarity deve ser do tipo RarityEnum ou String. '
@@ -45,7 +46,7 @@ class SecretWordGame:
 
         if len(word) != size:
             raise ValueError(
-                f'Palavra ter {size} letras.'
+                f'Palavra deve ter {size} letras.'
             )
         elif old_word.lower() not in self.words:
             raise ValueError(
@@ -66,10 +67,14 @@ class SecretWordGame:
                 check[i] = '🟨'
                 letters[letters.index(word[i])] = None
 
+        is_correct = check == ['🟩'] * size
+        if not is_correct:
+            self.num_try += 1
+
         result = {
             'check': check,
             'text': ''.join(check),
-            'is_correct': check == ['🟩'] * size,
+            'is_correct': is_correct,
             'secret_word': self.secret_word,
             'word': old_word
         }
@@ -135,6 +140,7 @@ class SecretWordGame:
             f'SecretWordGame<'
             f'size={self.size}, '
             f'rarity={self.rarity}, '
+            f'num_try={self.num_try}, '
             f'word={self.secret_word}'
             '>'
         )
@@ -154,5 +160,5 @@ if __name__ == '__main__':
 
     print(game1)
     print(game2)
-    
+
     print(game2.check_word('raios'))
