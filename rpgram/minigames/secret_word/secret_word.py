@@ -6,6 +6,7 @@ from typing import Union
 
 from rpgram.enums.function import get_enum_by_index, get_enum_index
 from rpgram.enums.rarity import RarityEnum
+from rpgram.errors import InvalidWordError
 
 
 class SecretWordGame:
@@ -44,13 +45,9 @@ class SecretWordGame:
         size = len(clean_secret_word)
 
         if len(clean_word) != size:
-            raise ValueError(
-                f'Palavra deve ter {size} letras.'
-            )
+            raise InvalidWordError(f'Palavra deve ter {size} letras.')
         elif word.lower() not in self.words:
-            raise ValueError(
-                f'"{clean_word}" não é uma palavra válida.'
-            )
+            raise InvalidWordError(f'"{clean_word}" não é uma palavra válida.')
 
         check = ['⬛'] * size
         letters = list(clean_secret_word)
