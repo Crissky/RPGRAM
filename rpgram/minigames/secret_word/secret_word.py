@@ -39,33 +39,32 @@ class SecretWordGame:
         return normalized_word
 
     def check_word(self, word: str) -> dict:
-        old_word = word
-        word = self.clean_word(word)
-        secret_word = self.clean_word(self.secret_word)
-        size = len(secret_word)
+        clean_word = self.clean_word(word)
+        clean_secret_word = self.clean_word(self.secret_word)
+        size = len(clean_secret_word)
 
-        if len(word) != size:
+        if len(clean_word) != size:
             raise ValueError(
                 f'Palavra deve ter {size} letras.'
             )
-        elif old_word.lower() not in self.words:
+        elif word.lower() not in self.words:
             raise ValueError(
-                f'"{word}" não é uma palavra válida.'
+                f'"{clean_word}" não é uma palavra válida.'
             )
 
         check = ['⬛'] * size
-        letters = list(secret_word)
+        letters = list(clean_secret_word)
         for i in range(size):
-            if word[i] == secret_word[i]:
+            if clean_word[i] == clean_secret_word[i]:
                 check[i] = '🟩'
                 letters[i] = None
 
         for i in range(size):
             if check[i] == '🟩':
                 continue
-            if word[i] in letters:
+            if clean_word[i] in letters:
                 check[i] = '🟨'
-                letters[letters.index(word[i])] = None
+                letters[letters.index(clean_word[i])] = None
 
         is_correct = check == ['🟩'] * size
         if not is_correct:
@@ -76,7 +75,7 @@ class SecretWordGame:
             'text': ''.join(check),
             'is_correct': is_correct,
             'secret_word': self.secret_word,
-            'word': old_word
+            'word': word
         }
 
         return result
