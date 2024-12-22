@@ -27,3 +27,9 @@ ALLOW_GAIN_XP_FILTER = (
     ~filters.UpdateType.EDITED &
     ~filters.Regex(f'^[{"".join(PREFIX_COMMANDS)}]')
 )
+ALLOW_WORDGAME_FILTER = (
+    filters.TEXT &
+    filters.REPLY &
+    filters.Regex(r'^[a-zA-Zá-üÁ-Ü]{1,20}$') &
+    BASIC_COMMAND_IN_GROUP_FILTER
+)
