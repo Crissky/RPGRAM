@@ -18,12 +18,12 @@ ALLOW_WRITE_TEXT_ONLY_IN_GROUP_FILTER = (
     ~filters.COMMAND &
     ~filters.FORWARDED &
     ~filters.UpdateType.EDITED &
-    ~filters.Regex('^!')
+    ~filters.Regex(f'^[{"".join(PREFIX_COMMANDS)}]')
 )
 ALLOW_GAIN_XP_FILTER = (
     filters.ChatType.GROUPS &
     ~filters.COMMAND &
     ~filters.FORWARDED &
     ~filters.UpdateType.EDITED &
-    ~filters.Regex('^!')
+    ~filters.Regex(f'^[{"".join(PREFIX_COMMANDS)}]')
 )
