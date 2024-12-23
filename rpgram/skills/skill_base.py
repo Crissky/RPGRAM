@@ -615,8 +615,9 @@ class BaseSkill:
             special_damage_text = special_damage_text.strip()
             special_damage_text = f' + ({special_damage_text})'
         return (
-            f'<{self.__class__.__name__}{self.level}-Power: '
-            f'{self.power}{special_damage_text}>'
+            f'{self.__class__.__name__}{self.level}('
+            f'Power: {self.power}{special_damage_text}'
+            f')'
         )
 
     def __str__(self) -> str:

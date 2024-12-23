@@ -256,7 +256,7 @@ class Dice:
         if self.skill:
             skill_name = f'skill={self.skill.name}'
 
-        return f'Dice<value={self.value}, char={self.char.name}, {skill_name}>'
+        return f'Dice(value={self.value}, char={self.char.name}, {skill_name})'
 
 
 if __name__ == '__main__':

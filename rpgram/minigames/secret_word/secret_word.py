@@ -133,12 +133,12 @@ class SecretWordGame:
 
     def __repr__(self):
         return (
-            f'SecretWordGame<'
+            f'SecretWordGame('
             f'size={self.size}, '
             f'rarity={self.rarity}, '
             f'num_try={self.num_try}, '
             f'word={self.secret_word}'
-            '>'
+            f')'
         )
 
 
