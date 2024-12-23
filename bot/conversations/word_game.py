@@ -2,9 +2,13 @@ from datetime import timedelta
 from random import choice, randint
 from bson import ObjectId
 from telegram import Update
-from telegram.ext import ContextTypes
+from telegram.ext import (
+    ContextTypes,
+    MessageHandler
+)
 from telegram.constants import ParseMode
 
+from bot.constants.filters import ALLOW_WORDGAME_FILTER
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.word_game import (
     SECTION_TEXT_WORDGAME,
@@ -49,7 +53,7 @@ async def create_wordgame_event(
         minutes = randint(1 + (i*20), 10 + (i*20))
         print(
             f'CREATE_WORDGAME_EVENT() - {now}: '
-            f'Evento de item inicia em {minutes} minutos.'
+            f'Evento de Palavra Secreta inicia em {minutes} minutos.'
         )
         context.job_queue.run_once(
             callback=job_start_wordgame,
@@ -178,7 +182,7 @@ async def wordgame_punishment(
     desafio.
     '''
 
-    ...
+    print('WORDGAME_PUNISHMENT()')
 
 
 def get_wordgame_job_name(message_id):
@@ -223,3 +227,9 @@ def remove_wordgame_from_dict(
     grids = context.chat_data.get('games', {})
     grids.pop(message_id, None)
     context.chat_data['games'] = grids
+
+
+WORDGAME_HANDLER = MessageHandler(
+    filters=ALLOW_WORDGAME_FILTER,
+    callback=answer_wordgame
+)

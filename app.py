@@ -16,6 +16,7 @@ from bot.conversations import (
     CLOSE_MSG_HANDLER,
     SELLER_HANDLER,
     ITEM_QUEST_HANDLER,
+    WORDGAME_HANDLER,
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -48,6 +49,11 @@ from function.date_time import get_last_hour, get_midnight_hour
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 MY_GROUP_ID = config('MY_GROUP_ID', cast=int)
+(
+    DEFAULT_GROUP,
+    CHAT_XP_GROUP,
+    WORDGAME_GROUP,
+) = range(3)
 
 
 def main() -> None:
@@ -59,11 +65,12 @@ def main() -> None:
     application.add_handler(CREATE_CHAR_HANDLER)
     application.add_handler(SIGNUP_GROUP_HANDLER)
     application.add_handler(SIGNUP_PLAYER_HANDLER)
-    application.add_handler(CHAT_XP_HANDLER)
+    application.add_handler(CHAT_XP_HANDLER, group=CHAT_XP_GROUP)
     application.add_handler(BAG_HANDLER)
     application.add_handler(CLOSE_MSG_HANDLER)
     application.add_handler(SELLER_HANDLER)
     application.add_handler(ITEM_QUEST_HANDLER)
+    application.add_handler(WORDGAME_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
