@@ -46,7 +46,7 @@ class SecretWordGame:
 
         if len(clean_word) != size:
             raise InvalidWordError(f'Palavra deve ter {size} letras.')
-        elif word.lower() not in self.words:
+        elif clean_word.lower() not in self.words:
             raise InvalidWordError(f'"{clean_word}" não é uma palavra válida.')
 
         check = ['⬛'] * size
@@ -71,8 +71,8 @@ class SecretWordGame:
             'check': check,
             'text': ''.join(check),
             'is_correct': is_correct,
-            'secret_word': self.secret_word,
-            'word': word
+            'secret_word': self.secret_word.upper(),
+            'word': word.upper()
         }
 
         return result
