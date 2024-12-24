@@ -25,6 +25,7 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
+from bot.functions.job import remove_job_by_name
 from constant.text import (
     SECTION_HEAD_PUZZLE_END,
     SECTION_HEAD_PUZZLE_START,
@@ -36,6 +37,7 @@ from constant.text import (
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 from repository.mongo.populate.tools import choice_rarity
+from rpgram.errors import InvalidWordError
 from rpgram.minigames.secret_word.secret_word import SecretWordGame
 
 
@@ -81,7 +83,8 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
     text = (
         f'{start_text}\n\n'
         f'{god_greetings}\n\n'
-        f'Qual a *Palavra Secreta* de {game.size} letras.'
+        f'Qual a *Palavra Secreta* de {game.size} letras?'
+        f'\n\n{game}'  # TEMP
     )
     minutes = randint(120, 180)
 
@@ -135,10 +138,16 @@ async def job_timeout_wordgame(context: ContextTypes.DEFAULT_TYPE):
 
     if not is_spawn_time:
         text = (
-            'Pois, é chegada a hora tardia em que necessitamos nos retirar '
-            'para os nossos augustos domínios, e por isso, em nossa '
-            'magnanimidade, concedemos-lhes o perdão. Assim, '
-            'não lhes lançaremos nossa maldição.'
+            'Ah, mortais, o crepúsculo já dança no horizonte, '
+            'e mesmo o deus da luz deve ceder ao ciclo eterno. '
+            'O tempo, meu eterno aliado, me chama para repousar '
+            'atrás das montanhas douradas. '
+            'Embora seus corações tenham vacilado, '
+            'deixo para trás não a ira, mas o perdão. '
+            'Que minha ausência seja uma nova chance, '
+            'e que a aurora os encontre mais sábios. '
+            'Sigam, livres da maldição, pois até mesmo o sol, '
+            'em sua glória infinita, sabe quando é hora de partir.'
         )
         section_start = SECTION_HEAD_TIMEOUT_PUZZLE_START
         section_end = SECTION_HEAD_TIMEOUT_PUZZLE_END
@@ -171,6 +180,73 @@ async def job_timeout_wordgame(context: ContextTypes.DEFAULT_TYPE):
         markdown=True
     )
     remove_wordgame_from_dict(context=context, message_id=message_id)
+
+
+async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    '''Responde ao Desafio de Palavra de Hermes.
+    '''
+
+    print('ANSWER_WORDGAME()')
+    reply_message = update.effective_message.reply_to_message
+    reply_message_id = reply_message.message_id
+    message_text = update.effective_message.text
+    game = get_wordgame_from_dict(context=context, message_id=reply_message_id)
+    if not game:
+        print(f'Jogo da mensagem "{reply_message_id}" não foi encontrado.')
+        return
+
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    silent = get_attribute_group(chat_id, 'silent')
+
+    try:
+        game_response = game.check_word(message_text)
+        text = (
+            f'`{game_response["word"]}`\n'
+            f'`{game_response["text"]}`\n'
+        )
+        if game_response['is_correct']:
+            text += 'Palavra correta!'
+            remove_timeout_wordgame_job(
+                context=context,
+                message_id=reply_message_id
+            )
+            remove_wordgame_from_dict(
+                context=context,
+                message_id=reply_message_id
+            )
+            await reply_message.delete()
+        else:
+            text += 'Palavra incorreta!'
+    except InvalidWordError as error:
+        text = str(error)
+        print(f'ERROR: "{error}"')
+
+    text += (
+        f'\n\n'
+        f'Message: {message_text}\n'
+        f'Game: {game}\n\n'
+    )
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_WORDGAME,
+        section_start=SECTION_HEAD_PUZZLE_START,
+        section_end=SECTION_HEAD_PUZZLE_END,
+        clean_func=escape_for_citation_markdown_v2,
+    )
+    reply_text_kwargs = dict(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        disable_notification=silent,
+        allow_sending_without_reply=True,
+    )
+    await call_telegram_message_function(
+        function_caller='ANSWER_WORDGAME()',
+        function=context.bot.send_message,
+        context=context,
+        **reply_text_kwargs
+    )
 
 
 async def wordgame_punishment(
@@ -216,6 +292,17 @@ def get_wordgame_from_dict(
     grid = grid_dict.get('game', None)
 
     return grid
+
+
+def remove_timeout_wordgame_job(
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+) -> bool:
+    '''Remove o job de Timeout do WordGame.
+    '''
+
+    job_name = get_wordgame_job_name(message_id=message_id)
+    return remove_job_by_name(context=context, job_name=job_name)
 
 
 def remove_wordgame_from_dict(
