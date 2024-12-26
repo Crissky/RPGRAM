@@ -37,7 +37,9 @@ from constant.text import (
 )
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
+from repository.mongo.models.character import CharacterModel
 from repository.mongo.populate.tools import choice_rarity
+from rpgram.characters.char_base import BaseCharacter
 from rpgram.errors import InvalidWordError
 from rpgram.minigames.secret_word.secret_word import SecretWordGame
 
@@ -204,10 +206,10 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
         game_response = game.check_word(message_text)
         text = (
             f'`{game_response["word"]}`\n'
-            f'`{game_response["text"]}`\n'
+            f'`{game_response["text"]}`\n\n'
         )
         if game_response['is_correct']:
-            text += 'Palavra correta!'
+            text += 'PALAVRA CORRETA!'
             remove_timeout_wordgame_job(
                 context=context,
                 message_id=reply_message_id
@@ -218,7 +220,8 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             await reply_message.delete()
         else:
-            text += 'Palavra incorreta!'
+            damage_text = wordgame_punishment()
+            text += f'Palavra incorreta!\n{damage_text}'
     except InvalidWordError as error:
         text = str(error)
         print(f'ERROR: "{error}"')
@@ -250,16 +253,25 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def wordgame_punishment(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    message_id: int,
-):
-    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
-    desafio.
+def wordgame_punishment(
+    user_id: int,
+    multiplier: float,
+) -> str:
+    '''Punição: adiciona dano ao jogador por falhar no desafio.
     '''
 
     print('WORDGAME_PUNISHMENT()')
+    char_model = CharacterModel()
+    char: BaseCharacter = char_model.get(user_id)
+    max_hp = char.cs.hp
+    multiplier = multiplier * 0.05
+    damage = int(max_hp * multiplier)
+    report = add_damage(damage=damage, char=char)
+
+    return (
+        f"{char.full_name}"
+        f"{report['text']}"
+    )
 
 
 def get_wordgame_job_name(message_id):
