@@ -118,6 +118,7 @@ def add_damage(
     user_id: int = None,
     char: BaseCharacter = None,
     type_damage: DamageEnum = None,
+    ignore_barrier: bool = False,
 ) -> dict:
     '''Função que adiciona dano ao personagem.
     '''
@@ -137,7 +138,10 @@ def add_damage(
     elif type_damage in MAGICAL_DAMAGE_TYPES:
         damage_report = char.combat_stats.magical_damage_hit_points(damage)
     else:
-        damage_report = char.combat_stats.damage_hit_points(damage)
+        damage_report = char.combat_stats.damage_hit_points(
+            value=damage,
+            ignore_barrier=ignore_barrier
+        )
 
     save_char(char=char)
 
