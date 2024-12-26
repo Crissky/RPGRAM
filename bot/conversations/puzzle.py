@@ -29,34 +29,28 @@ from bot.constants.puzzle import (
     GODS_TIMEOUT_FEEDBACK_TEXTS,
     PATTERN_PUZZLE,
     SECTION_TEXT_PUZZLE,
-    SECTION_TEXT_PUZZLE_PUNISHMENT,
     SECTION_TEXT_PUZZLE_XP
 )
 from bot.conversations.bag import send_drop_message
 from bot.decorators import (
-    confusion,
-    skip_if_dead_char,
-    skip_if_immobilized,
     skip_if_spawn_timeout,
     skip_if_no_singup_player,
     print_basic_infos,
     retry_after
 )
 from bot.functions.char import (
-    add_conditions,
-    add_trap_damage,
     add_xp,
     get_chars_level_from_group,
     get_player_chars_from_group
 )
+from bot.functions.char import punishment
 from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     edit_message_text,
-    get_close_keyboard,
-    reply_text_and_forward
+    get_close_keyboard
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
@@ -64,10 +58,8 @@ from bot.functions.job import remove_job_by_name
 from bot.functions.keyboard import reshape_row_buttons
 
 from constant.text import (
-    SECTION_HEAD_FAIL_PUNISHMENT_END,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START,
-    SECTION_HEAD_FAIL_PUNISHMENT_START,
     SECTION_HEAD_PUZZLE_BADMOVE_END,
     SECTION_HEAD_PUZZLE_BADMOVE_START,
     SECTION_HEAD_PUZZLE_COMPLETE_END,
@@ -81,8 +73,7 @@ from constant.text import (
     SECTION_HEAD_TIMEOUT_PUZZLE_END,
     SECTION_HEAD_TIMEOUT_PUZZLE_START,
     SECTION_HEAD_XP_END,
-    SECTION_HEAD_XP_START,
-    TEXT_SEPARATOR_2
+    SECTION_HEAD_XP_START
 )
 
 from function.date_time import get_brazil_time_now
@@ -95,10 +86,7 @@ from repository.mongo.populate.item import (
 from repository.mongo.populate.tools import choice_rarity
 
 from rpgram import GridGame
-from rpgram.conditions.factory import condition_factory
-from rpgram.enums.debuff import DEBUFF_FULL_NAMES
 from rpgram.enums.rarity import RarityEnum
-from random import sample
 
 
 # ROUTES
@@ -623,97 +611,6 @@ async def puzzle_drop_random_prize(
         chat_id=chat_id,
         silent=silent,
     )
-
-
-async def punishment(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    message_id: int,
-):
-    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
-    desafio.
-    '''
-
-    group_level = get_attribute_group(chat_id, 'group_level')
-    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
-    sorted_char_list = sorted(
-        char_list,
-        key=attrgetter('level', 'xp'),
-        reverse=True
-    )
-    debuff_list = [
-        debuff_name.title()
-        for debuff_name in DEBUFF_FULL_NAMES.keys()
-    ]
-    min_debuff_quantity = 0
-    max_debuff_quantity = len(debuff_list)
-    min_condition_level = int(group_level // 10) + 1
-    max_condition_level = min_condition_level * 2
-    for char in sorted_char_list:
-        if char.is_dead:
-            text = (
-                f'{char.player_name} está morto, por isso não vai receber '
-                f'a punição.'
-            )
-            text = create_text_in_box(
-                text=text,
-                section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
-                section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
-                section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
-            )
-            await reply_text_and_forward(
-                function_caller='PUNISHMENT()',
-                text=text,
-                context=context,
-                user_ids=char.player_id,
-                chat_id=chat_id,
-                message_id=message_id,
-                need_response=False,
-                markdown=True,
-                silent_forward=False,
-            )
-            continue
-
-        quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
-        debuff_sample = sample(debuff_list, quantity_sample)
-        debuff_sample = [
-            condition_factory(
-                name=debuff_name,
-                level=randint(min_condition_level, max_condition_level)
-            )
-            for debuff_name in debuff_sample
-        ]
-        report_condition = add_conditions(
-            *debuff_sample,
-            char=char,
-        )
-        report_damage = add_trap_damage(
-            min_ratio_damage=0.35,
-            char=char,
-        )
-        text = (
-            f'{report_condition["text"]}\n'
-            f'{char.player_name} - {report_damage["text"]}\n'
-        )
-
-        text = create_text_in_box(
-            text=text,
-            section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
-            section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
-            section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
-        )
-
-        await reply_text_and_forward(
-            function_caller='PUNISHMENT()',
-            text=text,
-            context=context,
-            user_ids=char.player_id,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=True,
-            silent_forward=False,
-        )
 
 
 PUZZLE_HANDLERS = [

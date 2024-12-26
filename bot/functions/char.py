@@ -1,6 +1,16 @@
-from random import choice, randint, random, triangular
+from operator import attrgetter
+from random import choice, randint, random, sample, triangular
 from typing import Any, List
 
+from telegram.ext import ContextTypes
+
+from bot.functions.chat import reply_text_and_forward
+from bot.functions.config import get_attribute_group
+from constant.text import (
+    SECTION_HEAD_FAIL_PUNISHMENT_END,
+    SECTION_HEAD_FAIL_PUNISHMENT_START
+)
+from function.text import create_text_in_box
 from repository.mongo import (
     CharacterModel,
     EquipsModel,
@@ -16,6 +26,10 @@ from rpgram.enums.damage import (
     MAGICAL_DAMAGE_TYPES,
     PHYSICAL_DAMAGE_TYPES
 )
+from rpgram.enums.debuff import DEBUFF_FULL_NAMES
+
+
+SECTION_TEXT_PUZZLE_PUNISHMENT = 'PUNIÇÃO'
 
 
 def add_xp(
@@ -438,6 +452,97 @@ def save_char(
     if equips and char.equips:
         equips_model = EquipsModel()
         equips_model.save(char.equips)
+
+
+async def punishment(
+    chat_id: int,
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+):
+    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
+    desafio.
+    '''
+
+    group_level = get_attribute_group(chat_id, 'group_level')
+    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
+    sorted_char_list = sorted(
+        char_list,
+        key=attrgetter('level', 'xp'),
+        reverse=True
+    )
+    debuff_list = [
+        debuff_name.title()
+        for debuff_name in DEBUFF_FULL_NAMES.keys()
+    ]
+    min_debuff_quantity = 0
+    max_debuff_quantity = len(debuff_list)
+    min_condition_level = int(group_level // 10) + 1
+    max_condition_level = min_condition_level * 2
+    for char in sorted_char_list:
+        if char.is_dead:
+            text = (
+                f'{char.player_name} está morto, por isso não vai receber '
+                f'a punição.'
+            )
+            text = create_text_in_box(
+                text=text,
+                section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+                section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+                section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
+            )
+            await reply_text_and_forward(
+                function_caller='PUNISHMENT()',
+                text=text,
+                context=context,
+                user_ids=char.player_id,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=True,
+                silent_forward=False,
+            )
+            continue
+
+        quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
+        debuff_sample = sample(debuff_list, quantity_sample)
+        debuff_sample = [
+            condition_factory(
+                name=debuff_name,
+                level=randint(min_condition_level, max_condition_level)
+            )
+            for debuff_name in debuff_sample
+        ]
+        report_condition = add_conditions(
+            *debuff_sample,
+            char=char,
+        )
+        report_damage = add_trap_damage(
+            min_ratio_damage=0.35,
+            char=char,
+        )
+        text = (
+            f'{report_condition["text"]}\n'
+            f'{char.player_name} - {report_damage["text"]}\n'
+        )
+
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+            section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+            section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
+        )
+
+        await reply_text_and_forward(
+            function_caller='PUNISHMENT()',
+            text=text,
+            context=context,
+            user_ids=char.player_id,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
+            silent_forward=False,
+        )
 
 
 if __name__ == '__main__':

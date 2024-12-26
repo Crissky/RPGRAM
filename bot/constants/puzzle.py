@@ -4,9 +4,6 @@ from bot.functions.chat import CALLBACK_KEY_LIST
 GODS_NAME = 'Thoth & Seshat'
 SECTION_TEXT_PUZZLE = 'DESAFIO'
 SECTION_TEXT_PUZZLE_XP = 'XP DESAFIO'
-SECTION_TEXT_PUZZLE_PUNISHMENT = 'PUNIÇÃO'
-
-
 PATTERN_PUZZLE = (
     f'{{{CALLBACK_KEY_LIST.index("row")}:\d'
 )
