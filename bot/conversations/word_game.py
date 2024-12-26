@@ -19,6 +19,7 @@ from bot.constants.word_game import (
     WORD_START_NARRATION_TEXTS
 )
 from bot.decorators.job import skip_if_spawn_timeout
+from bot.functions.char import add_damage, punishment
 from bot.functions.chat import (
     call_telegram_message_function,
     edit_message_text
@@ -157,7 +158,7 @@ async def job_timeout_wordgame(context: ContextTypes.DEFAULT_TYPE):
         text += choice(WORD_GOD_LOSES_FEEDBACK_TEXTS)
         section_start = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START
         section_end = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END
-        await wordgame_punishment(
+        await punishment(
             chat_id=chat_id,
             context=context,
             message_id=message_id,
