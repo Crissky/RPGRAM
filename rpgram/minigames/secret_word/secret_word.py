@@ -11,6 +11,7 @@ from rpgram.errors import InvalidWordError
 
 class SecretWordGame:
     _words = None
+    _clean_words = None
     _verbs = None
     _conjugations = None
 
@@ -29,25 +30,17 @@ class SecretWordGame:
                 f'Tipo: {type(rarity)}.'
             )
 
-    def clean_word(self, word):
-        normalized_word = re.sub(r'\W|\d', '', word)
-        normalized_word = unicodedata.normalize('NFD', normalized_word)
-        normalized_word = normalized_word.encode('ascii', 'ignore')
-        normalized_word = normalized_word.decode('utf-8')
-        normalized_word = normalized_word.upper()
-        normalized_word = normalized_word.strip()
-
-        return normalized_word
-
     def check_word(self, word: str) -> dict:
-        clean_word = self.clean_word(word)
-        clean_secret_word = self.clean_word(self.secret_word)
+        clean_word = SecretWordGame.clear_word(word)
+        clean_secret_word = SecretWordGame.clear_word(self.secret_word)
         size = len(clean_secret_word)
 
         if len(clean_word) != size:
             raise InvalidWordError(f'Palavra deve ter {size} letras.')
-        elif clean_word.lower() not in self.words:
-            raise InvalidWordError(f'"{clean_word}" não é uma palavra válida.')
+        elif clean_word not in self.clean_words:
+            raise InvalidWordError(
+                f'"{word.upper()}" não é uma palavra válida.'
+            )
 
         check = ['⬛'] * size
         letters = list(clean_secret_word)
@@ -83,7 +76,18 @@ class SecretWordGame:
         return secret_word
 
     @classmethod
-    def __get_words(cls):
+    def clear_word(cls, word):
+        normalized_word = re.sub(r'\W|\d', '', word)
+        normalized_word = unicodedata.normalize('NFD', normalized_word)
+        normalized_word = normalized_word.encode('ascii', 'ignore')
+        normalized_word = normalized_word.decode('utf-8')
+        normalized_word = normalized_word.upper()
+        normalized_word = normalized_word.strip()
+
+        return normalized_word
+
+    @classmethod
+    def __get_words(cls) -> set:
         if cls._words is None:
             print('loading words')
             with open('rpgram/minigames/secret_word/dicio', 'r') as file:
@@ -94,7 +98,18 @@ class SecretWordGame:
         return cls._words.copy()
 
     @classmethod
-    def __get_verbs(cls):
+    def __get_clean_words(cls) -> set:
+        if cls._clean_words is None:
+            print('loading clean words')
+            cls._clean_words = set(map(
+                SecretWordGame.clear_word,
+                SecretWordGame.__get_words()
+            ))
+
+        return cls._clean_words.copy()
+
+    @classmethod
+    def __get_verbs(cls) -> set:
         if cls._verbs is None:
             print('loading verbs')
             with open('rpgram/minigames/secret_word/verbos', 'r') as file:
@@ -105,7 +120,7 @@ class SecretWordGame:
         return cls._verbs.copy()
 
     @classmethod
-    def __get_conjugations(cls):
+    def __get_conjugations(cls) -> set:
         if cls._conjugations is None:
             print('loading conjugations')
             with open('rpgram/minigames/secret_word/conjugações', 'r') as file:
@@ -118,6 +133,10 @@ class SecretWordGame:
     @property
     def words(self) -> set:
         return SecretWordGame.__get_words()
+
+    @property
+    def clean_words(self) -> set:
+        return SecretWordGame.__get_clean_words()
 
     @property
     def verbs(self) -> set:
@@ -157,4 +176,8 @@ if __name__ == '__main__':
     print(game1)
     print(game2)
 
+    game2.size = 5
+    game2.secret_word = 'risão'
     print(game2.check_word('raios'))
+    print(game2.check_word('risao'))
+    print(game2.check_word('risão'))
