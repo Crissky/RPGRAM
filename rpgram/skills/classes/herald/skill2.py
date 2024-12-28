@@ -179,7 +179,7 @@ class IgneousStrikeSkill(BaseSkill):
     DESCRIPTION = (
         f'Envolve a própria arma em chamas e desfere um poderoso ataque '
         f'que causa dano de '
-        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -207,6 +207,49 @@ class IgneousStrikeSkill(BaseSkill):
             char=char,
             use_equips_damage_types=False,
             requirements=IgneousStrikeSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+
+class PurifyingFlameSkill(BaseSkill):
+    NAME = HeraldSkillEnum.IGNEOUS_STRIKE.value
+    DESCRIPTION = (
+        f'Envolve a própria arma em *Chamas Brancas* e '
+        f'desfere ataque impetuoso '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.HERALD.value,
+        'skill_list': [
+            IgneousStrikeSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_DEFENSE: 1.25,
+        }
+        damage_types = [DamageEnum.FIRE, DamageEnum.BLESSING]
+
+        super().__init__(
+            name=PurifyingFlameSkill.NAME,
+            description=PurifyingFlameSkill.DESCRIPTION,
+            rank=PurifyingFlameSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=PurifyingFlameSkill.REQUIREMENTS,
             damage_types=damage_types
         )
 
@@ -296,6 +339,8 @@ SKILL_WAY_DESCRIPTION = {
         VigilFlameSkill,
         FlameMantillaSkill,
         IgneousStrikeSkill,
+        PurifyingFlameSkill,
+        IgneousHeartSkill,
     ]
 }
 
@@ -332,6 +377,16 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     HERALD_CHARACTER.skill_tree.learn_skill(IgneousStrikeSkill)
+
+    skill = PurifyingFlameSkill(HERALD_CHARACTER)
+    print(skill)
+    print(HERALD_CHARACTER.cs.magical_attack)
+    print(HERALD_CHARACTER.to_attack(
+        defender_char=HERALD_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    HERALD_CHARACTER.skill_tree.learn_skill(PurifyingFlameSkill)
 
     skill = IgneousHeartSkill(HERALD_CHARACTER)
     print(skill)
