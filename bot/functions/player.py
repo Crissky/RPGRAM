@@ -71,3 +71,15 @@ def player_is_in_chat(chat_id: int, player_id: int) -> bool:
     player: dict = player_model.get(query=query, fields=['_id'])
 
     return bool(player)
+
+
+def get_player_ids_from_group(chat_id: int) -> List[int]:
+    '''Retorna os player_ids de todos os jogadores do grupo.
+    '''
+
+    player_model = PlayerModel()
+    query = {'chat_ids': chat_id}
+    fields = ['player_id']
+    player_ids = player_model.get_all(query=query, fields=fields)
+
+    return player_ids

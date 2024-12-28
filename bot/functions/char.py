@@ -6,6 +6,7 @@ from telegram.ext import ContextTypes
 
 from bot.functions.chat import reply_text_and_forward
 from bot.functions.config import get_attribute_group
+from bot.functions.player import get_player_ids_from_group
 from constant.text import (
     SECTION_HEAD_FAIL_PUNISHMENT_END,
     SECTION_HEAD_FAIL_PUNISHMENT_START
@@ -15,7 +16,6 @@ from repository.mongo import (
     CharacterModel,
     EquipsModel,
     GroupModel,
-    PlayerModel,
 )
 from rpgram import Group
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
@@ -344,18 +344,6 @@ def activate_conditions(
     save_char(char=char)
 
     return activate_report
-
-
-def get_player_ids_from_group(chat_id: int) -> List[int]:
-    '''Retorna os player_ids de todos os jogadores do grupo.
-    '''
-
-    player_model = PlayerModel()
-    query = {'chat_ids': chat_id}
-    fields = ['player_id']
-    player_ids = player_model.get_all(query=query, fields=fields)
-
-    return player_ids
 
 
 def get_player_chars_from_group(
