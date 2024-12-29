@@ -205,10 +205,17 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         game_response = game.check_word(message_text)
-        text = (
-            f'`{game_response["word"]}`\n'
-            f'`{game_response["text"]}`\n\n'
+        zip_game_response = zip(
+            game_response['check_list'],
+            game_response['word_list']
         )
+        text = ''
+        for check, word in zip_game_response:
+            text += (
+                f'`{" ".join(word)}`\n'
+                f'`{check}`\n'
+            )
+        text += '\n'
         if game_response['is_correct']:
             text += 'PALAVRA CORRETA!'
             remove_timeout_wordgame_job(
