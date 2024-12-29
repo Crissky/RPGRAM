@@ -28,6 +28,7 @@ from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
 from bot.functions.job import remove_job_by_name
 from constant.text import (
+    ALERT_SECTION_HEAD,
     SECTION_HEAD_PUZZLE_END,
     SECTION_HEAD_PUZZLE_START,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END,
@@ -93,7 +94,7 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
 
     text = create_text_in_box(
         text=text,
-        section_name=SECTION_TEXT_WORDGAME,
+        section_name=f'{SECTION_TEXT_WORDGAME} {game.rarity.value}'.upper(),
         section_start=SECTION_HEAD_PUZZLE_START,
         section_end=SECTION_HEAD_PUZZLE_END,
         clean_func=escape_for_citation_markdown_v2,
@@ -137,7 +138,7 @@ async def job_timeout_wordgame(context: ContextTypes.DEFAULT_TYPE):
     message_id = data['message_id']
     is_spawn_time = is_group_spawn_time(chat_id)
     game = get_wordgame_from_dict(context=context, message_id=message_id)
-    section_name = f'{SECTION_TEXT_WORDGAME} {game.rarity.value.upper()}'
+    section_name = f'{SECTION_TEXT_WORDGAME} {game.rarity.value}'.upper()
 
     if not is_spawn_time:
         text = (
@@ -233,7 +234,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     text = create_text_in_box(
         text=text,
-        section_name=SECTION_TEXT_WORDGAME,
+        section_name=f'{SECTION_TEXT_WORDGAME} {game.rarity.value}'.upper(),
         section_start=SECTION_HEAD_PUZZLE_START,
         section_end=SECTION_HEAD_PUZZLE_END,
         clean_func=escape_for_citation_markdown_v2,
@@ -265,12 +266,14 @@ def wordgame_punishment(
     char: BaseCharacter = char_model.get(user_id)
     max_hp = char.cs.hp
     multiplier = multiplier * 0.05
+    percent = round(multiplier*100, 2)
     damage = int(max_hp * multiplier)
     report = add_damage(damage=damage, char=char)
 
     return (
-        f"{char.full_name}"
-        f"{report['text']}"
+        f"{ALERT_SECTION_HEAD.format('*DAMAGE REPORT*')}\n"
+        f"{char.full_name}\n"
+        f"{report['text']}[{percent}%]"
     )
 
 
