@@ -221,7 +221,10 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             await reply_message.delete()
         else:
-            damage_text = wordgame_punishment()
+            damage_text = wordgame_punishment(
+                user_id=user_id,
+                multiplier=game.num_try
+            )
             text += f'Palavra incorreta!\n{damage_text}'
     except InvalidWordError as error:
         text = str(error)
