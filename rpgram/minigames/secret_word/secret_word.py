@@ -24,6 +24,8 @@ class SecretWordGame:
             self.size = 5 + get_enum_index(self.rarity) + randint(0, 2)
             self.secret_word = self.__get_secret_word()
             self.num_try = 0
+            self.word_list = []
+            self.check_list = []
         else:
             raise TypeError(
                 f'Rarity deve ser do tipo RarityEnum ou String. '
@@ -56,16 +58,23 @@ class SecretWordGame:
                 check[i] = '🟨'
                 letters[letters.index(clean_word[i])] = None
 
+        check_text = ''.join(check)
+        result_secret_word = self.secret_word.upper()
+        result_word = word.upper()
+        self.check_list.append(check_text)
+        self.word_list.append(result_word)
         is_correct = check == ['🟩'] * size
         if not is_correct:
             self.num_try += 1
 
         result = {
             'check': check,
-            'text': ''.join(check),
+            'check_list': self.check_list.copy(),
             'is_correct': is_correct,
-            'secret_word': self.secret_word.upper(),
-            'word': word.upper()
+            'secret_word': result_secret_word,
+            'text': check_text,
+            'word': result_word,
+            'word_list': self.word_list.copy(),
         }
 
         return result
