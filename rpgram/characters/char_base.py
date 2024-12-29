@@ -3,7 +3,11 @@ from datetime import datetime
 from random import choices, random, uniform
 from typing import List, TypeVar, Union
 
-from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS, TEXT_DELIMITER
+from constant.text import (
+    ALERT_SECTION_HEAD,
+    ALERT_SECTION_HEAD_ADD_STATUS,
+    TEXT_DELIMITER
+)
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.factory import condition_factory
