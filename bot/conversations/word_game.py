@@ -217,7 +217,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         text += '\n'
         if game_response['is_correct']:
-            text += 'PALAVRA CORRETA!'
+            text += '✅PALAVRA CORRETA!'
             remove_timeout_wordgame_job(
                 context=context,
                 message_id=reply_message_id
@@ -232,16 +232,11 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 user_id=user_id,
                 multiplier=game.num_try
             )
-            text += f'Palavra incorreta!\n{damage_text}'
+            text += f'❌Palavra incorreta!\n\n{damage_text}'
     except InvalidWordError as error:
         text = str(error)
         print(f'ERROR: "{error}"')
 
-    text += (
-        f'\n\n'
-        f'Message: {message_text}\n'
-        f'Game: {game}\n\n'
-    )
     text = create_text_in_box(
         text=text,
         section_name=f'{SECTION_TEXT_WORDGAME} {game.rarity.value}'.upper(),
