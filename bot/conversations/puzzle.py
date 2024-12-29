@@ -1,6 +1,5 @@
 from datetime import timedelta
-from operator import attrgetter
-from random import choice, randint, shuffle
+from random import choice, randint
 from typing import List
 
 from bson import ObjectId
@@ -28,22 +27,16 @@ from bot.constants.puzzle import (
     GODS_NAME,
     GODS_TIMEOUT_FEEDBACK_TEXTS,
     PATTERN_PUZZLE,
-    SECTION_TEXT_PUZZLE,
-    SECTION_TEXT_PUZZLE_XP
+    SECTION_TEXT_PUZZLE
 )
-from bot.conversations.bag import send_drop_message
 from bot.decorators import (
     skip_if_spawn_timeout,
     skip_if_no_singup_player,
     print_basic_infos,
     retry_after
 )
-from bot.functions.char import (
-    add_xp,
-    get_chars_level_from_group,
-    get_player_chars_from_group
-)
 from bot.functions.char import punishment
+from bot.functions.char import add_xp_group
 from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
@@ -54,6 +47,7 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
+from bot.functions.item import drop_random_prize
 from bot.functions.job import remove_job_by_name
 from bot.functions.keyboard import reshape_row_buttons
 
@@ -71,22 +65,15 @@ from constant.text import (
     SECTION_HEAD_PUZZLE_GOODMOVE_START,
     SECTION_HEAD_PUZZLE_START,
     SECTION_HEAD_TIMEOUT_PUZZLE_END,
-    SECTION_HEAD_TIMEOUT_PUZZLE_START,
-    SECTION_HEAD_XP_END,
-    SECTION_HEAD_XP_START
+    SECTION_HEAD_TIMEOUT_PUZZLE_START
 )
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 
-from repository.mongo.populate.item import (
-    create_random_consumable,
-    create_random_equipment
-)
 from repository.mongo.populate.tools import choice_rarity
 
 from rpgram import GridGame
-from rpgram.enums.rarity import RarityEnum
 
 
 # ROUTES
@@ -287,6 +274,7 @@ async def solved(
     player_name = query.from_user.name
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GOD_WINS_FEEDBACK_TEXTS)
+    prize_text = f'{GODS_NAME} deixaram como recompensa'
     remove_timeout_puzzle_job(context=context, message_id=message_id)
     remove_grid_from_dict(context=context, message_id=message_id)
     reply_markup = get_close_keyboard(None)
@@ -307,11 +295,12 @@ async def solved(
         silent=silent,
         message_id=message_id,
     )
-    await puzzle_drop_random_prize(
+    await drop_random_prize(
         chat_id=chat_id,
         context=context,
         silent=silent,
         rarity=grid.rarity,
+        text=prize_text,
     )
 
 
@@ -511,106 +500,6 @@ def remove_grid_from_dict(
     grids = context.chat_data.get('grids', {})
     grids.pop(message_id, None)
     context.chat_data['grids'] = grids
-
-
-async def add_xp_group(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    silent: bool,
-    message_id: int = None,
-):
-    '''Adiciona XP aos jogadores vivos durante a emboscada.
-    '''
-
-    full_text = ''
-    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
-    sorted_char_list = sorted(
-        char_list,
-        key=attrgetter('level', 'xp'),
-        reverse=True
-    )
-    for char in sorted_char_list:
-        level = (char.level * 2)
-        base_xp = int(max(level, 10))
-        report_xp = add_xp(
-            chat_id=chat_id,
-            char=char,
-            base_xp=base_xp,
-        )
-        full_text += f'{report_xp["text"]}\n'
-
-    full_text = create_text_in_box(
-        text=full_text,
-        section_name=SECTION_TEXT_PUZZLE_XP,
-        section_start=SECTION_HEAD_XP_START,
-        section_end=SECTION_HEAD_XP_END
-    )
-    send_message_kwargs = dict(
-        chat_id=chat_id,
-        text=full_text,
-        disable_notification=silent,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_to_message_id=message_id,
-        allow_sending_without_reply=True,
-        reply_markup=get_close_keyboard(None),
-    )
-
-    await call_telegram_message_function(
-        function_caller='ADD_XP_GROUP()',
-        function=context.bot.send_message,
-        context=context,
-        need_response=False,
-        **send_message_kwargs
-    )
-
-
-async def puzzle_drop_random_prize(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    silent: bool,
-    rarity: RarityEnum,
-):
-    '''Envia uma mensagens de drops de itens quando um aliado defende outro.
-    '''
-
-    group_level = get_attribute_group(chat_id, 'group_level')
-    char_level_list = get_chars_level_from_group(chat_id=chat_id)
-    total_chars = len(char_level_list)
-    min_quantity = max(1, total_chars)
-    max_quantity = max(2, int(total_chars * 2))
-    total_consumables = randint(min_quantity, max_quantity)
-    total_equipments = randint(min_quantity, max_quantity)
-
-    consumable_list = list(create_random_consumable(
-        group_level=group_level,
-        random_level=True,
-        total_items=total_consumables
-    ))
-    all_equipment_list = [
-        create_random_equipment(
-            equip_type=None,
-            group_level=choice(char_level_list),
-            rarity=rarity.name,
-            random_level=True,
-            save_in_database=True,
-        )
-        for _ in range(total_equipments)
-    ]
-    drops = [
-        item
-        for item in (consumable_list + all_equipment_list)
-        if item is not None
-    ]
-
-    shuffle(drops)
-    text = f'{GODS_NAME} deixaram como recompensa'
-    await send_drop_message(
-        context=context,
-        items=drops,
-        text=text,
-        chat_id=chat_id,
-        silent=silent,
-    )
 
 
 PUZZLE_HANDLERS = [

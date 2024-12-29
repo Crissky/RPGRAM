@@ -2,14 +2,22 @@ from operator import attrgetter
 from random import choice, randint, random, sample, triangular
 from typing import Any, List
 
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
-from bot.functions.chat import reply_text_and_forward
+from bot.constants.puzzle import SECTION_TEXT_PUZZLE_XP
+from bot.functions.chat import (
+    call_telegram_message_function,
+    get_close_keyboard,
+    reply_text_and_forward
+)
 from bot.functions.config import get_attribute_group
 from bot.functions.player import get_player_ids_from_group
 from constant.text import (
     SECTION_HEAD_FAIL_PUNISHMENT_END,
-    SECTION_HEAD_FAIL_PUNISHMENT_START
+    SECTION_HEAD_FAIL_PUNISHMENT_START,
+    SECTION_HEAD_XP_END,
+    SECTION_HEAD_XP_START
 )
 from function.text import create_text_in_box
 from repository.mongo import (
@@ -111,6 +119,58 @@ def add_xp(
     report_xp['group'] = group
 
     return report_xp
+
+
+async def add_xp_group(
+    chat_id: int,
+    context: ContextTypes.DEFAULT_TYPE,
+    silent: bool,
+    message_id: int = None,
+    section_name: str = SECTION_TEXT_PUZZLE_XP,
+):
+    '''Adiciona XP aos jogadores vivos de um grupo.
+    '''
+
+    full_text = ''
+    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
+    sorted_char_list = sorted(
+        char_list,
+        key=attrgetter('level', 'xp'),
+        reverse=True
+    )
+    for char in sorted_char_list:
+        level = (char.level * 2)
+        base_xp = int(max(level, 10))
+        report_xp = add_xp(
+            chat_id=chat_id,
+            char=char,
+            base_xp=base_xp,
+        )
+        full_text += f'{report_xp["text"]}\n'
+
+    full_text = create_text_in_box(
+        text=full_text,
+        section_name=section_name,
+        section_start=SECTION_HEAD_XP_START,
+        section_end=SECTION_HEAD_XP_END
+    )
+    send_message_kwargs = dict(
+        chat_id=chat_id,
+        text=full_text,
+        disable_notification=silent,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_to_message_id=message_id,
+        allow_sending_without_reply=True,
+        reply_markup=get_close_keyboard(None),
+    )
+
+    await call_telegram_message_function(
+        function_caller='ADD_XP_GROUP()',
+        function=context.bot.send_message,
+        context=context,
+        need_response=False,
+        **send_message_kwargs
+    )
 
 
 def add_damage(
