@@ -19,13 +19,14 @@ from bot.constants.word_game import (
     WORD_START_NARRATION_TEXTS
 )
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import add_damage, punishment
+from bot.functions.char import add_damage, add_xp_group, punishment
 from bot.functions.chat import (
     call_telegram_message_function,
     edit_message_text
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
+from bot.functions.item import drop_random_prize
 from bot.functions.job import remove_job_by_name
 from constant.text import (
     ALERT_SECTION_HEAD,
@@ -193,7 +194,6 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('ANSWER_WORDGAME()')
     reply_message = update.effective_message.reply_to_message
     reply_message_id = reply_message.message_id
-    message_text = update.effective_message.text
     game = get_wordgame_from_dict(context=context, message_id=reply_message_id)
     if not game:
         print(f'Jogo da mensagem "{reply_message_id}" não foi encontrado.')
@@ -201,6 +201,8 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
+    message_id = update.effective_message.message_id
+    message_text = update.effective_message.text
     silent = get_attribute_group(chat_id, 'silent')
 
     try:
@@ -217,6 +219,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         text += '\n'
         if game_response['is_correct']:
+            prize_text = f'{WORD_GOD_NAME} deixou como recompensa'
             text += '✅PALAVRA CORRETA!'
             remove_timeout_wordgame_job(
                 context=context,
@@ -231,6 +234,19 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 function=reply_message.delete,
                 context=context,
                 need_response=False,
+            )
+            await add_xp_group(
+                chat_id=chat_id,
+                context=context,
+                silent=silent,
+                message_id=message_id,
+            )
+            await drop_random_prize(
+                chat_id=chat_id,
+                context=context,
+                silent=silent,
+                rarity=game.rarity,
+                text=prize_text,
             )
         else:
             damage_text = wordgame_punishment(
