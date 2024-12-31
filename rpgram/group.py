@@ -161,11 +161,13 @@ class Group:
         self.__total_players = total_players
 
     def add_event_points(self, points: int) -> bool:
-        self.current_event_points += abs(int(points))
+        points = abs(int(points))
+        self.current_event_points += points
         self.current_event_points = min(
             self.current_event_points,
             self.max_event_points
         )
+        print(f'Pontos de Eventos Adicionados: {points}.')
 
         return self.current_event_points >= self.max_event_points
 
