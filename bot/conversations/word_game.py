@@ -226,7 +226,12 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 context=context,
                 message_id=reply_message_id
             )
-            await reply_message.delete()
+            await call_telegram_message_function(
+                function_caller='ANSWER_WORDGAME()',
+                function=reply_message.delete,
+                context=context,
+                need_response=False,
+            )
         else:
             damage_text = wordgame_punishment(
                 user_id=user_id,
