@@ -3,7 +3,11 @@ from datetime import datetime
 from random import choices, random, uniform
 from typing import List, TypeVar, Union
 
-from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS, TEXT_DELIMITER
+from constant.text import (
+    ALERT_SECTION_HEAD,
+    ALERT_SECTION_HEAD_ADD_STATUS,
+    TEXT_DELIMITER
+)
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 
 from rpgram.conditions.factory import condition_factory
@@ -777,10 +781,12 @@ class BaseCharacter:
 
     def __repr__(self) -> str:
         return (
-            f'<Personagem: "{self.name} '
-            f'({self.classe.name}/{self.race.name})", '
+            f'Personagem('
+            f'Nome: {self.name} '
+            f'({self.classe.name}/{self.race.name}), '
             f'LV: {self.bs.level}, '
-            f'HP: {self.cs.show_hp}>'
+            f'HP: {self.cs.show_hp}'
+            f')'
         )
 
     def to_dict(self):
@@ -936,3 +942,4 @@ if __name__ == '__main__':
     print(base_character.get_best_basic_attack())
     print(base_character.weighted_choice_attack())
     print(base_character.get_best_attack())
+    print(base_character.__repr__())

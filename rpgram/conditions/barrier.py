@@ -5,11 +5,15 @@ from typing import TYPE_CHECKING, Iterable, Union
 from bson import ObjectId
 from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.condition import Condition
-from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT
+from rpgram.constants.text import (
+    BARRIER_POINT_FULL_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT
+)
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     GladiatorSkillEnum,
     HealerSkillEnum,
+    HeraldSkillEnum,
     MultiClasseSkillEnum,
     SorcererSkillEnum,
     SorcererSupremeSkillEnum,
@@ -59,7 +63,7 @@ class BarrierCondition(Condition):
         remaining_damage = value - self.current_barrier_points
         self.__damage += value
         self.__damage = min(self.__damage, self.barrier_points)
-        print(f'BP: {self.show_bp}')
+        print(f'{self.show_bp}')
 
         return max(0, remaining_damage)
 
@@ -123,7 +127,10 @@ class BarrierCondition(Condition):
         alert_text = ''
         if self.current_barrier_points < 0:
             alert_text = EmojiEnum.UNDER_ZERO.value
-        return f'{current_barrier_points}/{self.barrier_points}{alert_text}'
+        return (
+            f'*{BARRIER_POINT_FULL_EMOJI_TEXT}*: '
+            f'{current_barrier_points}/{self.barrier_points}{alert_text}'
+        )
     show_bp = show_barrier_points
 
     @property
@@ -379,6 +386,225 @@ class MagicShieldCondition(BarrierCondition):
         return 2.00
 
 
+class HealingRefugeCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.HEALING_REFUGE,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Refúgio Curativo* que engendrar com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
+            f'e cura *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
+            f'a cada turno.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+    @property
+    def healing_points(self) -> str:
+        return int(self.barrier_points / 10)
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = super().function(target)
+        healing_report = target.combat_stats.cure_hit_points(
+            value=self.healing_points,
+            markdown=True,
+        )
+        healing_text = healing_report['text']
+        text = f'\n*{self.full_name}*: {healing_text[:-2]}'
+        report['text'] += text
+
+        return report
+
+
+class ProtectiveInfusionCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.PROTECTIVE_INFUSION,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Infusão Protetiva* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
+            f'e cura até (Nível) níveis de condições aleatórias '
+            f'a cada turno.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        report = super().function(target)
+        quantity = self.level
+        status_report = target.status.remove_random_debuff_conditions(
+            quantity=quantity
+        )
+        status_text = status_report["text"]
+        if status_text:
+            text = f'\n*{self.full_name}*: {status_text}'
+            report['text'] += text
+
+        return report
+
+
+class BeatifyingAegisCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HealerSkillEnum.BEATIFYING_AEGIS,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Proteção Sacra* que escuda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}, '
+            f'recupera *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
+            f'a cada turno '
+            f'e cura até (5 * Nível) níveis de condições aleatórias '
+            f'a cada turno.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+    @property
+    def healing_points(self) -> str:
+        return int(self.barrier_points / 5)
+
+    def function(self, target: 'BaseCharacter') -> dict:
+        # MAIN
+        report = super().function(target)
+
+        # HEAL
+        healing_report = target.combat_stats.cure_hit_points(
+            value=self.healing_points,
+            markdown=True,
+        )
+        healing_text = healing_report['text']
+        text = f'\n*{self.full_name}*: {healing_text[:-2]}'
+        report['text'] += text
+
+        # CURE
+        quantity = self.level * 5
+        status_report = target.status.remove_random_debuff_conditions(
+            quantity=quantity
+        )
+        status_text = status_report["text"]
+        if status_text:
+            text = f'\n*{self.full_name}*: {status_text}'
+            report['text'] += text
+
+        return report
+
+
+class RobysticShieldCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.ROBYSTIC_SHIELD,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Robusto Escudo Familiar Protetivo* '
+            f'carregado de *Forças Místicas* que resguarda com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+
+class FlameMantillaCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.FLAME_MANTILLA,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Escudo gerado pelo calor da liberação da '
+            f'*Energia Vigílica* atritando com o ar, '
+            f'criando uma *Mantilha de Chamas* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 2.00
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -389,6 +615,11 @@ class BarrierBuffs:
         AjaxShieldCondition,
         PiskieWindbagCondition,
         MagicShieldCondition,
+        HealingRefugeCondition,
+        ProtectiveInfusionCondition,
+        BeatifyingAegisCondition,
+        RobysticShieldCondition,
+        FlameMantillaCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:

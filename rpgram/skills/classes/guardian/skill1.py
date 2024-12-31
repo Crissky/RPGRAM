@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 class ShieldWallSkill(BaseSkill):
     NAME = GuardianSkillEnum.SHIELD_WALL.value
     DESCRIPTION = (
-        f'Erguendo o escudo com determinação e fé inabalável, '
+        f'Erguendo o escudo com *Determinação* e *Fé Inabalável*, '
         f'evoca uma miríade de *Escudo Familiar Protetivo* '
         f'que resguardam os aliados com barreiras baseada na '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'

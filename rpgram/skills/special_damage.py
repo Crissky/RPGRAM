@@ -411,7 +411,7 @@ class SpecialDamage:
         return self.damage_help_text
 
     def __repr__(self):
-        return f'<{self.damage_help_text}>'
+        return f'{self.__class__.__name__}({self.damage_help_text})'
 
 
 if __name__ == '__main__':

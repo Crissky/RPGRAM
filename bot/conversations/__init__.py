@@ -4,6 +4,7 @@ from bot.conversations.config_group import CONFIG_GROUP_HANDLERS
 from bot.conversations.config_player import CONFIG_PLAYER_HANDLERS
 from bot.conversations.create_char import CREATE_CHAR_HANDLER
 from bot.conversations.help import HELP_HANDLERS
+from bot.conversations.season_msg import SEASON_JOBS_DEFINITIONS
 from bot.conversations.sign_up_group import SIGNUP_GROUP_HANDLER
 from bot.conversations.sign_up_player import SIGNUP_PLAYER_HANDLER
 from bot.conversations.view_group import VIEW_GROUP_HANDLERS
@@ -24,3 +25,4 @@ from bot.conversations.quest_item import ITEM_QUEST_HANDLER
 from bot.conversations.puzzle import PUZZLE_HANDLERS
 from bot.conversations.reset_char import RESET_CHAR_HANDLERS
 from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
+from bot.conversations.word_game import WORDGAME_HANDLER

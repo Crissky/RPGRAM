@@ -1,6 +1,6 @@
 from typing import Any
 
-from bot.functions.char import get_player_ids_from_group
+from bot.functions.player import get_player_ids_from_group
 from function.date_time import get_brazil_time_now
 from repository.mongo import GroupModel
 from rpgram.group import Group

@@ -1,6 +1,5 @@
 from datetime import timedelta
-from operator import attrgetter
-from random import choice, randint, shuffle
+from random import choice, randint
 from typing import List
 
 from bson import ObjectId
@@ -28,46 +27,33 @@ from bot.constants.puzzle import (
     GODS_NAME,
     GODS_TIMEOUT_FEEDBACK_TEXTS,
     PATTERN_PUZZLE,
-    SECTION_TEXT_PUZZLE,
-    SECTION_TEXT_PUZZLE_PUNISHMENT,
-    SECTION_TEXT_PUZZLE_XP
+    SECTION_TEXT_PUZZLE
 )
-from bot.conversations.bag import send_drop_message
 from bot.decorators import (
-    confusion,
-    skip_if_dead_char,
-    skip_if_immobilized,
     skip_if_spawn_timeout,
     skip_if_no_singup_player,
     print_basic_infos,
     retry_after
 )
-from bot.functions.char import (
-    add_conditions,
-    add_trap_damage,
-    add_xp,
-    get_chars_level_from_group,
-    get_player_chars_from_group
-)
+from bot.functions.char import punishment
+from bot.functions.char import add_xp_group
 from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     edit_message_text,
-    get_close_keyboard,
-    reply_text_and_forward
+    get_close_keyboard
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
+from bot.functions.item import drop_random_prize
 from bot.functions.job import remove_job_by_name
 from bot.functions.keyboard import reshape_row_buttons
 
 from constant.text import (
-    SECTION_HEAD_FAIL_PUNISHMENT_END,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START,
-    SECTION_HEAD_FAIL_PUNISHMENT_START,
     SECTION_HEAD_PUZZLE_BADMOVE_END,
     SECTION_HEAD_PUZZLE_BADMOVE_START,
     SECTION_HEAD_PUZZLE_COMPLETE_END,
@@ -79,26 +65,15 @@ from constant.text import (
     SECTION_HEAD_PUZZLE_GOODMOVE_START,
     SECTION_HEAD_PUZZLE_START,
     SECTION_HEAD_TIMEOUT_PUZZLE_END,
-    SECTION_HEAD_TIMEOUT_PUZZLE_START,
-    SECTION_HEAD_XP_END,
-    SECTION_HEAD_XP_START,
-    TEXT_SEPARATOR_2
+    SECTION_HEAD_TIMEOUT_PUZZLE_START
 )
 
 from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 
-from repository.mongo.populate.item import (
-    create_random_consumable,
-    create_random_equipment
-)
 from repository.mongo.populate.tools import choice_rarity
 
 from rpgram import GridGame
-from rpgram.conditions.factory import condition_factory
-from rpgram.enums.debuff import DEBUFF_FULL_NAMES
-from rpgram.enums.rarity import RarityEnum
-from random import sample
 
 
 # ROUTES
@@ -299,6 +274,7 @@ async def solved(
     player_name = query.from_user.name
     silent = get_attribute_group(chat_id, 'silent')
     text = choice(GOD_WINS_FEEDBACK_TEXTS)
+    prize_text = f'{GODS_NAME} deixaram como recompensa'
     remove_timeout_puzzle_job(context=context, message_id=message_id)
     remove_grid_from_dict(context=context, message_id=message_id)
     reply_markup = get_close_keyboard(None)
@@ -319,11 +295,12 @@ async def solved(
         silent=silent,
         message_id=message_id,
     )
-    await puzzle_drop_random_prize(
+    await drop_random_prize(
         chat_id=chat_id,
         context=context,
         silent=silent,
         rarity=grid.rarity,
+        text=prize_text,
     )
 
 
@@ -523,197 +500,6 @@ def remove_grid_from_dict(
     grids = context.chat_data.get('grids', {})
     grids.pop(message_id, None)
     context.chat_data['grids'] = grids
-
-
-async def add_xp_group(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    silent: bool,
-    message_id: int = None,
-):
-    '''Adiciona XP aos jogadores vivos durante a emboscada.
-    '''
-
-    full_text = ''
-    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
-    sorted_char_list = sorted(
-        char_list,
-        key=attrgetter('level', 'xp'),
-        reverse=True
-    )
-    for char in sorted_char_list:
-        level = (char.level * 2)
-        base_xp = int(max(level, 10))
-        report_xp = add_xp(
-            chat_id=chat_id,
-            char=char,
-            base_xp=base_xp,
-        )
-        full_text += f'{report_xp["text"]}\n'
-
-    full_text = create_text_in_box(
-        text=full_text,
-        section_name=SECTION_TEXT_PUZZLE_XP,
-        section_start=SECTION_HEAD_XP_START,
-        section_end=SECTION_HEAD_XP_END
-    )
-    send_message_kwargs = dict(
-        chat_id=chat_id,
-        text=full_text,
-        disable_notification=silent,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        reply_to_message_id=message_id,
-        allow_sending_without_reply=True,
-        reply_markup=get_close_keyboard(None),
-    )
-
-    await call_telegram_message_function(
-        function_caller='ADD_XP_GROUP()',
-        function=context.bot.send_message,
-        context=context,
-        need_response=False,
-        **send_message_kwargs
-    )
-
-
-async def puzzle_drop_random_prize(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    silent: bool,
-    rarity: RarityEnum,
-):
-    '''Envia uma mensagens de drops de itens quando um aliado defende outro.
-    '''
-
-    group_level = get_attribute_group(chat_id, 'group_level')
-    char_level_list = get_chars_level_from_group(chat_id=chat_id)
-    total_chars = len(char_level_list)
-    min_quantity = max(1, total_chars)
-    max_quantity = max(2, int(total_chars * 2))
-    total_consumables = randint(min_quantity, max_quantity)
-    total_equipments = randint(min_quantity, max_quantity)
-
-    consumable_list = list(create_random_consumable(
-        group_level=group_level,
-        random_level=True,
-        total_items=total_consumables
-    ))
-    all_equipment_list = [
-        create_random_equipment(
-            equip_type=None,
-            group_level=choice(char_level_list),
-            rarity=rarity.name,
-            random_level=True,
-            save_in_database=True,
-        )
-        for _ in range(total_equipments)
-    ]
-    drops = [
-        item
-        for item in (consumable_list + all_equipment_list)
-        if item is not None
-    ]
-
-    shuffle(drops)
-    text = f'{GODS_NAME} deixaram como recompensa'
-    await send_drop_message(
-        context=context,
-        items=drops,
-        text=text,
-        chat_id=chat_id,
-        silent=silent,
-    )
-
-
-async def punishment(
-    chat_id: int,
-    context: ContextTypes.DEFAULT_TYPE,
-    message_id: int,
-):
-    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
-    desafio.
-    '''
-
-    group_level = get_attribute_group(chat_id, 'group_level')
-    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
-    sorted_char_list = sorted(
-        char_list,
-        key=attrgetter('level', 'xp'),
-        reverse=True
-    )
-    debuff_list = [
-        debuff_name.title()
-        for debuff_name in DEBUFF_FULL_NAMES.keys()
-    ]
-    min_debuff_quantity = 0
-    max_debuff_quantity = len(debuff_list)
-    min_condition_level = int(group_level // 10) + 1
-    max_condition_level = min_condition_level * 2
-    for char in sorted_char_list:
-        if char.is_dead:
-            text = (
-                f'{char.player_name} está morto, por isso não vai receber '
-                f'a punição.'
-            )
-            text = create_text_in_box(
-                text=text,
-                section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
-                section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
-                section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
-            )
-            await reply_text_and_forward(
-                function_caller='PUNISHMENT()',
-                text=text,
-                context=context,
-                user_ids=char.player_id,
-                chat_id=chat_id,
-                message_id=message_id,
-                need_response=False,
-                markdown=True,
-                silent_forward=False,
-            )
-            continue
-
-        quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
-        debuff_sample = sample(debuff_list, quantity_sample)
-        debuff_sample = [
-            condition_factory(
-                name=debuff_name,
-                level=randint(min_condition_level, max_condition_level)
-            )
-            for debuff_name in debuff_sample
-        ]
-        report_condition = add_conditions(
-            *debuff_sample,
-            char=char,
-        )
-        report_damage = add_trap_damage(
-            min_ratio_damage=0.35,
-            char=char,
-        )
-        text = (
-            f'{report_condition["text"]}\n'
-            f'{char.player_name} - {report_damage["text"]}\n'
-        )
-
-        text = create_text_in_box(
-            text=text,
-            section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
-            section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
-            section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
-        )
-
-        await reply_text_and_forward(
-            function_caller='PUNISHMENT()',
-            text=text,
-            context=context,
-            user_ids=char.player_id,
-            chat_id=chat_id,
-            message_id=message_id,
-            need_response=False,
-            markdown=True,
-            silent_forward=False,
-        )
 
 
 PUZZLE_HANDLERS = [

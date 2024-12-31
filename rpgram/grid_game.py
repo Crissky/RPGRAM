@@ -23,7 +23,7 @@ class Coordinates(NamedTuple):
         return f'{self.text}: {self.row}, {self.col}'
 
     def __repr__(self):
-        return f'Coor<{self}>'
+        return f'Coor({self})'
 
 
 class GridGame:

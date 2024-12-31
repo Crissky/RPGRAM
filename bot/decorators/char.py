@@ -2,7 +2,6 @@ from random import choice
 
 from bot.functions.char import (
     choice_char,
-    get_player_ids_from_group,
     save_char
 )
 from bot.functions.chat import (
@@ -11,6 +10,7 @@ from bot.functions.chat import (
     reply_text_and_forward
 )
 from bot.functions.config import get_attribute_group
+from bot.functions.player import get_player_ids_from_group
 from bot.functions.status import activated_condition, silenced_status
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler

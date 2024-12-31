@@ -61,7 +61,31 @@ def get_midnight_hour(get_yesterday: bool = False) -> datetime:
     return midnight_hour
 
 
+def adjust_season_datetime(input_datetime: datetime) -> datetime:
+    '''Adiciona 1 ano ao datetime fornecido se a data já passou em relação ao 
+    momento atual. 
+    Caso contrário, retorna o mesmo datetime sem alterações.
+    '''
+
+    # print('START ADJUST_DATETIME:', input_datetime)
+    now = datetime.now()
+    if input_datetime <= now:
+        try:
+            input_datetime = input_datetime.replace(year=now.year + 1)
+        except ValueError:
+            # Trata datas como 29 de fevereiro em anos não bissextos
+            input_datetime = adjust_season_datetime(
+                input_datetime + timedelta(days=366)
+            )
+    # print('END ADJUST_DATETIME:', input_datetime)
+
+    return input_datetime
+
+
 if __name__ == '__main__':
     print(get_brazil_time_now())
     print(get_midnight_hour())
     print(get_midnight_hour(True))
+
+    data_teste = datetime(2020, 2, 29, 15, 30)
+    print(adjust_season_datetime(data_teste))

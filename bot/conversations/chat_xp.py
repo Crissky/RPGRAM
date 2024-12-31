@@ -60,7 +60,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if (xp_cooldown := player.xp_cooldown):
         xp_cooldown = replace_tzinfo(xp_cooldown)
         if message_date < xp_cooldown:
-            print('XP em cooldown.')
+            print(f'XP em cooldown até "{xp_cooldown}".')
             return None
 
     player.xp_cooldown = add_random_minutes_now(message_date)

@@ -3,6 +3,14 @@ from rpgram.skills.classes.herald.skill1 import (
     SKILL_WAY_DESCRIPTION as skill_way1,
     ColossalOnslaughtSkill,
     MysticBlockSkill,
+    RobysticShieldSkill,
+)
+from rpgram.skills.classes.herald.skill2 import (
+    FlameMantillaSkill,
+    IgneousHeartSkill,
+    IgneousStrikeSkill,
+    PurifyingFlameSkill,
+    VigilFlameSkill
 )
 from rpgram.skills.classes.multiclasse.physical_defense import (
     GuardianShieldSkill,
@@ -28,10 +36,23 @@ def herald_skill_factory(
         skill_class = MysticBlockSkill
     elif skill_class_name == GuardianShieldSkill.__name__:
         skill_class = GuardianShieldSkill
+    elif skill_class_name == RobysticShieldSkill.__name__:
+        skill_class = RobysticShieldSkill
     elif skill_class_name == HeavyChargeSkill.__name__:
         skill_class = HeavyChargeSkill
     elif skill_class_name == ColossalOnslaughtSkill.__name__:
         skill_class = ColossalOnslaughtSkill
+    # SKILL2
+    elif skill_class_name == VigilFlameSkill.__name__:
+        skill_class = VigilFlameSkill
+    elif skill_class_name == FlameMantillaSkill.__name__:
+        skill_class = FlameMantillaSkill
+    elif skill_class_name == IgneousStrikeSkill.__name__:
+        skill_class = IgneousStrikeSkill
+    elif skill_class_name == PurifyingFlameSkill.__name__:
+        skill_class = PurifyingFlameSkill
+    elif skill_class_name == IgneousHeartSkill.__name__:
+        skill_class = IgneousHeartSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -43,8 +64,16 @@ HERALD_SKILL_LIST: List[Type[BaseSkill]] = [
     RobustBlockSkill,
     MysticBlockSkill,
     GuardianShieldSkill,
+    RobysticShieldSkill,
     HeavyChargeSkill,
     ColossalOnslaughtSkill,
+
+    # SKILL2
+    VigilFlameSkill,
+    FlameMantillaSkill,
+    IgneousStrikeSkill,
+    PurifyingFlameSkill,
+    IgneousHeartSkill,
 ]
 HERALD_SKILL_WAYS: List[dict] = [
     skill_way1

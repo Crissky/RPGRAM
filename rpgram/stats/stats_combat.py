@@ -249,7 +249,10 @@ class CombatStats:
         new_hp = self.current_hit_points
         new_show_hp = self.show_hit_points
         true_cure = (new_hp - old_hp)
-        text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{true_cure}*).'
+        text = (
+            f'*{HIT_POINT_FULL_EMOJI_TEXT}*: '
+            f'{old_show_hp} ››› {new_show_hp} (*{true_cure}*).'
+        )
 
         if not markdown:
             text = remove_bold(text)

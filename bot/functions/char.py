@@ -1,11 +1,29 @@
-from random import choice, randint, random, triangular
+from operator import attrgetter
+from random import choice, randint, random, sample, triangular
 from typing import Any, List
 
+from telegram.constants import ParseMode
+from telegram.ext import ContextTypes
+
+from bot.constants.puzzle import SECTION_TEXT_PUZZLE_XP
+from bot.functions.chat import (
+    call_telegram_message_function,
+    get_close_keyboard,
+    reply_text_and_forward
+)
+from bot.functions.config import get_attribute_group
+from bot.functions.player import get_player_ids_from_group
+from constant.text import (
+    SECTION_HEAD_FAIL_PUNISHMENT_END,
+    SECTION_HEAD_FAIL_PUNISHMENT_START,
+    SECTION_HEAD_XP_END,
+    SECTION_HEAD_XP_START
+)
+from function.text import create_text_in_box
 from repository.mongo import (
     CharacterModel,
     EquipsModel,
     GroupModel,
-    PlayerModel,
 )
 from rpgram import Group
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
@@ -16,6 +34,10 @@ from rpgram.enums.damage import (
     MAGICAL_DAMAGE_TYPES,
     PHYSICAL_DAMAGE_TYPES
 )
+from rpgram.enums.debuff import DEBUFF_FULL_NAMES
+
+
+SECTION_TEXT_PUZZLE_PUNISHMENT = 'PUNIÇÃO'
 
 
 def add_xp(
@@ -99,11 +121,64 @@ def add_xp(
     return report_xp
 
 
+async def add_xp_group(
+    chat_id: int,
+    context: ContextTypes.DEFAULT_TYPE,
+    silent: bool,
+    message_id: int = None,
+    section_name: str = SECTION_TEXT_PUZZLE_XP,
+):
+    '''Adiciona XP aos jogadores vivos de um grupo.
+    '''
+
+    full_text = ''
+    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
+    sorted_char_list = sorted(
+        char_list,
+        key=attrgetter('level', 'xp'),
+        reverse=True
+    )
+    for char in sorted_char_list:
+        level = (char.level * 2)
+        base_xp = int(max(level, 10))
+        report_xp = add_xp(
+            chat_id=chat_id,
+            char=char,
+            base_xp=base_xp,
+        )
+        full_text += f'{report_xp["text"]}\n'
+
+    full_text = create_text_in_box(
+        text=full_text,
+        section_name=section_name,
+        section_start=SECTION_HEAD_XP_START,
+        section_end=SECTION_HEAD_XP_END
+    )
+    send_message_kwargs = dict(
+        chat_id=chat_id,
+        text=full_text,
+        disable_notification=silent,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        reply_to_message_id=message_id,
+        allow_sending_without_reply=True,
+        reply_markup=get_close_keyboard(None),
+    )
+
+    await call_telegram_message_function(
+        function_caller='ADD_XP_GROUP()',
+        function=context.bot.send_message,
+        context=context,
+        need_response=False,
+        **send_message_kwargs
+    )
+
+
 def add_damage(
     damage: int,
     user_id: int = None,
     char: BaseCharacter = None,
     type_damage: DamageEnum = None,
+    ignore_barrier: bool = False,
 ) -> dict:
     '''Função que adiciona dano ao personagem.
     '''
@@ -123,7 +198,10 @@ def add_damage(
     elif type_damage in MAGICAL_DAMAGE_TYPES:
         damage_report = char.combat_stats.magical_damage_hit_points(damage)
     else:
-        damage_report = char.combat_stats.damage_hit_points(damage)
+        damage_report = char.combat_stats.damage_hit_points(
+            value=damage,
+            ignore_barrier=ignore_barrier
+        )
 
     save_char(char=char)
 
@@ -328,18 +406,6 @@ def activate_conditions(
     return activate_report
 
 
-def get_player_ids_from_group(chat_id: int) -> List[int]:
-    '''Retorna os player_ids de todos os jogadores do grupo.
-    '''
-
-    player_model = PlayerModel()
-    query = {'chat_ids': chat_id}
-    fields = ['player_id']
-    player_ids = player_model.get_all(query=query, fields=fields)
-
-    return player_ids
-
-
 def get_player_chars_from_group(
     chat_id: int,
     is_alive: bool = False
@@ -438,6 +504,97 @@ def save_char(
     if equips and char.equips:
         equips_model = EquipsModel()
         equips_model.save(char.equips)
+
+
+async def punishment(
+    chat_id: int,
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+):
+    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
+    desafio.
+    '''
+
+    group_level = get_attribute_group(chat_id, 'group_level')
+    char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
+    sorted_char_list = sorted(
+        char_list,
+        key=attrgetter('level', 'xp'),
+        reverse=True
+    )
+    debuff_list = [
+        debuff_name.title()
+        for debuff_name in DEBUFF_FULL_NAMES.keys()
+    ]
+    min_debuff_quantity = 0
+    max_debuff_quantity = len(debuff_list)
+    min_condition_level = int(group_level // 10) + 1
+    max_condition_level = min_condition_level * 2
+    for char in sorted_char_list:
+        if char.is_dead:
+            text = (
+                f'{char.player_name} está morto, por isso não vai receber '
+                f'a punição.'
+            )
+            text = create_text_in_box(
+                text=text,
+                section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+                section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+                section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
+            )
+            await reply_text_and_forward(
+                function_caller='PUNISHMENT()',
+                text=text,
+                context=context,
+                user_ids=char.player_id,
+                chat_id=chat_id,
+                message_id=message_id,
+                need_response=False,
+                markdown=True,
+                silent_forward=False,
+            )
+            continue
+
+        quantity_sample = randint(min_debuff_quantity, max_debuff_quantity)
+        debuff_sample = sample(debuff_list, quantity_sample)
+        debuff_sample = [
+            condition_factory(
+                name=debuff_name,
+                level=randint(min_condition_level, max_condition_level)
+            )
+            for debuff_name in debuff_sample
+        ]
+        report_condition = add_conditions(
+            *debuff_sample,
+            char=char,
+        )
+        report_damage = add_trap_damage(
+            min_ratio_damage=0.35,
+            char=char,
+        )
+        text = (
+            f'{report_condition["text"]}\n'
+            f'{char.player_name} - {report_damage["text"]}\n'
+        )
+
+        text = create_text_in_box(
+            text=text,
+            section_name=SECTION_TEXT_PUZZLE_PUNISHMENT,
+            section_start=SECTION_HEAD_FAIL_PUNISHMENT_START,
+            section_end=SECTION_HEAD_FAIL_PUNISHMENT_END
+        )
+
+        await reply_text_and_forward(
+            function_caller='PUNISHMENT()',
+            text=text,
+            context=context,
+            user_ids=char.player_id,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=True,
+            silent_forward=False,
+        )
 
 
 if __name__ == '__main__':

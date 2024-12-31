@@ -3,12 +3,17 @@ from typing import TYPE_CHECKING, Union
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
+    BeatifyingAegisCondition,
+    FlameMantillaCondition,
     GuardianShieldCondition,
+    HealingRefugeCondition,
     MagicShieldCondition,
     PiskieWindbagCondition,
     PrismaticShieldCondition,
     ChaosWeaverCondition,
-    ProtectiveAuraCondition
+    ProtectiveAuraCondition,
+    ProtectiveInfusionCondition,
+    RobysticShieldCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -64,12 +69,14 @@ from rpgram.conditions.self_skill import (
     PenitenceCondition,
     RaijusFootstepsCondition,
     RobustBlockCondition,
+    RobysticBlockCondition,
     RockArmorCondition,
     ShadowStepsCondition,
     SharpFaroCondition,
     SniffCondition,
     TurtleStanceCondition,
     UnicornStanceCondition,
+    VigilFlameCondition,
     YmirsResilienceCondition
 )
 from rpgram.conditions.special_damage_skill import (
@@ -87,11 +94,14 @@ from rpgram.conditions.special_damage_skill import (
     SDFellowFalconCondition,
     SDFellowOwlCondition,
     SDFellowTigerCondition,
+    SDIgneousHeartCondition,
     SDIgneousSapCondition,
+    SDMantilledArmsCondition,
     SDPoisonousSapCondition,
     SDRedPhoenixBalmCondition,
     SDThornySpaulderCondition,
     SDSacredBalmCondition,
+    SDVigilArmsCondition,
     SDWildAcidCondition,
     SDWildFireCondition,
     SDWildGroundCondition,
@@ -436,6 +446,20 @@ def condition_factory(
     # HERALD BUFFS
     elif compare_condition(name, HeraldSkillEnum.MYSTIC_BLOCK):
         condition_class = MysticBlockCondition
+    elif compare_condition(name, HeraldSkillEnum.ROBYSTIC_SHIELD):
+        condition_class = RobysticShieldCondition
+    elif compare_condition(name, HeraldSkillEnum.ROBYSTIC_BLOCK):
+        condition_class = RobysticBlockCondition
+    elif compare_condition(name, HeraldSkillEnum.VIGIL_FLAME):
+        condition_class = VigilFlameCondition
+    elif compare_condition(name, HeraldSkillEnum.VIGIL_ARMS):
+        condition_class = SDVigilArmsCondition
+    elif compare_condition(name, HeraldSkillEnum.FLAME_MANTILLA):
+        condition_class = FlameMantillaCondition
+    elif compare_condition(name, HeraldSkillEnum.MANTILLED_ARMS):
+        condition_class = SDMantilledArmsCondition
+    elif compare_condition(name, HeraldSkillEnum.IGNEOUS_HEART):
+        condition_class = SDIgneousHeartCondition
     # BARD BUFFS
     elif compare_condition(name, BardSkillEnum.WAR_SONG):
         condition_class = WarSongCondition
@@ -458,6 +482,12 @@ def condition_factory(
         condition_class = VitalityAuraCondition
     elif compare_condition(name, HealerSkillEnum.PROTECTIVE_AURA):
         condition_class = ProtectiveAuraCondition
+    elif compare_condition(name, HealerSkillEnum.HEALING_REFUGE):
+        condition_class = HealingRefugeCondition
+    elif compare_condition(name, HealerSkillEnum.PROTECTIVE_INFUSION):
+        condition_class = ProtectiveInfusionCondition
+    elif compare_condition(name, HealerSkillEnum.BEATIFYING_AEGIS):
+        condition_class = BeatifyingAegisCondition
     # GLADIATOR BUFFS
     elif compare_condition(name, GladiatorSkillEnum.TURTLE_STANCE):
         condition_class = TurtleStanceCondition

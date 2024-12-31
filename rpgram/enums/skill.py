@@ -214,11 +214,25 @@ class HealerSkillEnum(Enum):
     VITALITY_AURA = 'Aura de Vitalidade'
     PROTECTIVE_AURA = 'Aura Protetiva'
     REVIVE_RITUAL = 'Ritual de Reviver'
+    HEALING_REFUGE = 'Refúgio Curativo'
+    PROTECTIVE_INFUSION = 'Infusão Protetiva'
+    BEATIFYING_AEGIS = 'Aegís Beatificante'
 
 
 class HeraldSkillEnum(Enum):
     MYSTIC_BLOCK = 'Bloqueio Místico'
+    ROBYSTIC_SHIELD = 'Escudo Robístico'
+    ROBYSTIC_BLOCK = 'Bloqueio Robístico'
     COLOSSAL_ONSLAUGHT = 'Investida Colossal'
+    VIGIL_FLAME = 'Chama Vigílica'
+    FLAME_MANTILLA = 'Mantilha de Chamas'
+    IGNEOUS_STRIKE = 'Golpe Ígneo'
+    PURIFYING_FLAME = 'Chama Purificadora'
+    IGNEOUS_HEART = 'Coração Ígneo'
+
+    # Special Damage
+    VIGIL_ARMS = 'Braços Vigílicos'
+    MANTILLED_ARMS = 'Braços Mantilhados'
 
 
 class KnightSkillEnum(Enum):

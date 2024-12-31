@@ -88,7 +88,7 @@ class RobustBlockSkill(BaseSkill):
 class GuardianShieldSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.GUARDIAN_SHIELD.value
     DESCRIPTION = (
-        f'Erguendo o escudo com fé inabalável, evoca um *Escudo Familiar '
+        f'Erguendo o escudo com *Fé Inabalável*, evoca um *Escudo Familiar '
         f'Protetivo* que resguarda um aliado com uma barreira baseada na '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
