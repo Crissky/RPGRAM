@@ -270,6 +270,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text=text,
         parse_mode=ParseMode.MARKDOWN_V2,
         disable_notification=silent,
+        reply_to_message_id=message_id,
         allow_sending_without_reply=True,
     )
     await call_telegram_message_function(
