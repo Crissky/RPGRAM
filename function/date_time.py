@@ -67,7 +67,7 @@ def adjust_season_datetime(input_datetime: datetime) -> datetime:
     Caso contrário, retorna o mesmo datetime sem alterações.
     '''
 
-    print('START ADJUST_DATETIME:', input_datetime)
+    # print('START ADJUST_DATETIME:', input_datetime)
     now = datetime.now()
     if input_datetime <= now:
         try:
@@ -77,7 +77,7 @@ def adjust_season_datetime(input_datetime: datetime) -> datetime:
             input_datetime = adjust_season_datetime(
                 input_datetime + timedelta(days=366)
             )
-    print('END ADJUST_DATETIME:', input_datetime)
+    # print('END ADJUST_DATETIME:', input_datetime)
 
     return input_datetime
 

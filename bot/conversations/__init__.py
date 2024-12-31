@@ -4,6 +4,7 @@ from bot.conversations.config_group import CONFIG_GROUP_HANDLERS
 from bot.conversations.config_player import CONFIG_PLAYER_HANDLERS
 from bot.conversations.create_char import CREATE_CHAR_HANDLER
 from bot.conversations.help import HELP_HANDLERS
+from bot.conversations.season_msg import SEASON_JOBS_DEFINITIONS
 from bot.conversations.sign_up_group import SIGNUP_GROUP_HANDLER
 from bot.conversations.sign_up_player import SIGNUP_PLAYER_HANDLER
 from bot.conversations.view_group import VIEW_GROUP_HANDLERS

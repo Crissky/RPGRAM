@@ -38,13 +38,18 @@ from bot.conversations import (
     PUZZLE_HANDLERS,
     RESET_CHAR_HANDLERS,
 )
+from bot.conversations import SEASON_JOBS_DEFINITIONS
 from bot.conversations.event import job_add_event_points
 from bot.conversations.help import job_info_deploy_bot
 from bot.conversations.rest import autorest_midnight
 from bot.conversations.seller import job_create_new_items
 from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
 from bot.conversations.status import job_activate_conditions
-from function.date_time import get_last_hour, get_midnight_hour
+from function.date_time import (
+    adjust_season_datetime,
+    get_last_hour,
+    get_midnight_hour
+)
 
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
@@ -147,6 +152,17 @@ def main() -> None:
         name='JOB_ADD_EVENT_POINTS_ON_START',
         job_kwargs=BASE_JOB_KWARGS,
     )
+    for job_definition in SEASON_JOBS_DEFINITIONS:
+        job_name = job_definition['callback'].__name__.upper()
+        when = adjust_season_datetime(job_definition['when'])
+        print(f'SEASON JOB: {job_name} - {when}')
+        application.job_queue.run_once(
+            callback=job_definition['callback'],
+            when=when,
+            chat_id=MY_GROUP_ID,
+            name=job_name,
+            job_kwargs=BASE_JOB_KWARGS
+        )
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
