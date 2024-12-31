@@ -89,7 +89,6 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
         f'{start_text}\n\n'
         f'{god_greetings}\n\n'
         f'Qual a *Palavra Secreta* de {game.size} letras?'
-        f'\n\n{game}'  # TEMP
     )
     minutes = randint(120, 180)
 
