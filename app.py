@@ -48,7 +48,8 @@ from bot.conversations.status import job_activate_conditions
 from function.date_time import (
     adjust_season_datetime,
     get_last_hour,
-    get_midnight_hour
+    get_midnight_hour,
+    utc_to_brazil_datetime
 )
 
 
@@ -154,7 +155,8 @@ def main() -> None:
     )
     for job_definition in SEASON_JOBS_DEFINITIONS:
         job_name = job_definition['callback'].__name__.upper()
-        when = adjust_season_datetime(job_definition['when'])
+        when = utc_to_brazil_datetime(job_definition['when'])
+        when = adjust_season_datetime(when)
         print(f'SEASON JOB: {job_name} - {when}')
         application.job_queue.run_once(
             callback=job_definition['callback'],

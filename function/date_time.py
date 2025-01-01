@@ -10,10 +10,8 @@ MAX_ADD_MINUTES = 10
 
 
 def get_brazil_time_now() -> datetime:
-    delta = timedelta(hours=3)
     dt = datetime.utcnow()
-    dt = replace_tzinfo(dt)
-    dt = dt - delta
+    dt = utc_to_brazil_datetime(dt)
 
     return dt
 
@@ -21,12 +19,14 @@ def get_brazil_time_now() -> datetime:
 def datetime_to_string(dt: datetime) -> str:
     if isinstance(dt, datetime):
         dt = dt.strftime("%d/%m/%Y %H:%M:%S")
+
     return dt
 
 
 def utc_to_brazil_datetime(dt: datetime) -> datetime:
     dt = replace_tzinfo(dt)
     delta = timedelta(hours=3)
+
     return dt - delta
 
 
@@ -68,7 +68,7 @@ def adjust_season_datetime(input_datetime: datetime) -> datetime:
     '''
 
     # print('START ADJUST_DATETIME:', input_datetime)
-    now = datetime.now()
+    now = get_brazil_time_now()
     if input_datetime <= now:
         try:
             input_datetime = input_datetime.replace(year=now.year + 1)
@@ -88,4 +88,6 @@ if __name__ == '__main__':
     print(get_midnight_hour(True))
 
     data_teste = datetime(2020, 2, 29, 15, 30)
+    data_teste = utc_to_brazil_datetime(data_teste)
+    print('data_teste:', data_teste)
     print(adjust_season_datetime(data_teste))
