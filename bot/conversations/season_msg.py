@@ -9,6 +9,7 @@ from constant.text import (
     SECTION_HEAD_NEW_YEAR_END,
     SECTION_HEAD_NEW_YEAR_START
 )
+from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box
 
 
@@ -126,7 +127,7 @@ async def job_christmas(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-NOW = datetime.now()
+NOW = get_brazil_time_now()
 SEASON_JOBS_DEFINITIONS = [
     {
         'callback': job_new_year,
