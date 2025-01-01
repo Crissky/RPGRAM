@@ -71,12 +71,15 @@ def adjust_season_datetime(input_datetime: datetime) -> datetime:
     now = get_brazil_time_now()
     if input_datetime <= now:
         try:
-            input_datetime = input_datetime.replace(year=now.year + 1)
+            new_year = input_datetime.year + 1
+            if new_year < now.year:
+                new_year = now.year
+            input_datetime = input_datetime.replace(year=new_year)
+            input_datetime = adjust_season_datetime(input_datetime)
         except ValueError:
             # Trata datas como 29 de fevereiro em anos não bissextos
-            input_datetime = adjust_season_datetime(
-                input_datetime + timedelta(days=366)
-            )
+            input_datetime = input_datetime + timedelta(days=366)
+            input_datetime = adjust_season_datetime(input_datetime)
     # print('END ADJUST_DATETIME:', input_datetime)
 
     return input_datetime
