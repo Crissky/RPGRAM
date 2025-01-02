@@ -16,6 +16,7 @@ ALL_RESTORE_CONSUMABLES_TUPLE = (
     ReviveConsumable
 )
 
+
 # COMMANDS
 COMMANDS = ['bolsa', 'bag', 'inventario']
 CANCEL_COMMANDS = ['cancel', 'close']

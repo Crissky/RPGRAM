@@ -1,7 +1,16 @@
 from bot.functions.chat import CALLBACK_KEY_LIST
-from rpgram.constants.text import BARRIER_POINT_FULL_EMOJI_TEXT, HIT_POINT_FULL_EMOJI_TEXT, MAGICAL_DEFENSE_EMOJI_TEXT, PHYSICAL_DEFENSE_EMOJI_TEXT
+from rpgram.constants.text import (
+    BARRIER_POINT_FULL_EMOJI_TEXT,
+    HIT_POINT_FULL_EMOJI_TEXT,
+    MAGICAL_DEFENSE_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT
+)
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.enums.skill import SkillDefenseEmojiEnum, SkillTypeEmojiEnum, TargetEmojiEnum
+from rpgram.enums.skill import (
+    SkillDefenseEmojiEnum,
+    SkillTypeEmojiEnum,
+    TargetEmojiEnum
+)
 
 
 COMMANDS = ['habilidade', 'skill', 'habilidades', 'skills']

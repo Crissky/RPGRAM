@@ -131,10 +131,15 @@ NOW = get_brazil_time_now()
 SEASON_JOBS_DEFINITIONS = [
     {
         'callback': job_new_year,
-        'when': datetime(NOW.year, 1, 1, 12, 0, 0),
+        'when': datetime(NOW.year, 1, 1, 0, 0, 0),
     },
     {
         'callback': job_christmas,
         'when': datetime(NOW.year, 12, 24, 23, 0, 0),
+    },
+    # TEST
+    {
+        'callback': job_new_year,
+        'when': datetime(NOW.year, 1, 2, 16, 0, 0),
     },
 ]

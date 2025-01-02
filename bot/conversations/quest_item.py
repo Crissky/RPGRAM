@@ -56,7 +56,11 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group
 from bot.functions.date_time import is_boosted_day
-from bot.functions.general import get_attribute_group_or_player
+from bot.constants.event import MAX_EVENT_TIMES
+from bot.functions.general import (
+    get_attribute_group_or_player,
+    get_event_random_minutes
+)
 
 from constant.text import (
     SECTION_HEAD_QUEST_COMPLETE_END,
@@ -102,9 +106,9 @@ async def create_item_quest_event(
 
     chat_id = update.effective_chat.id
     now = get_brazil_time_now()
-    times = randint(1, 2) if is_boosted_day(now) else 1
+    times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1 + (i*20), 10 + (i*20))
+        minutes = get_event_random_minutes(multiplier=i)
         print(
             f'CREATE_ITEM_QUEST_EVENT() - {now}: '
             f'Evento de item inicia em {minutes} minutos.'
