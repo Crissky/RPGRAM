@@ -30,6 +30,13 @@ def utc_to_brazil_datetime(dt: datetime) -> datetime:
     return dt - delta
 
 
+def brazil_to_utc_datetime(dt: datetime) -> datetime:
+    dt = replace_tzinfo(dt)
+    delta = timedelta(hours=3)
+
+    return dt + delta
+
+
 def add_random_minutes_now(dt: datetime = None) -> datetime:
     if not dt:
         dt = get_brazil_time_now()
@@ -41,6 +48,7 @@ def add_random_minutes_now(dt: datetime = None) -> datetime:
 
 
 def replace_tzinfo(dt: datetime) -> datetime:
+
     return dt.replace(tzinfo=UTC)
 
 
@@ -69,7 +77,7 @@ def adjust_season_datetime(input_datetime: datetime) -> datetime:
 
     # print('START ADJUST_DATETIME:', input_datetime)
     now = get_brazil_time_now()
-    if input_datetime <= now:
+    if replace_tzinfo(input_datetime) <= now:
         try:
             new_year = input_datetime.year + 1
             if new_year < now.year:
