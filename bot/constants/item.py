@@ -6,8 +6,10 @@ from rpgram.enums.debuff import (
     DebuffEnum
 )
 
+
 # Número máximo de itens que podem ser dropados por baú.
 MAX_DROP_ITEMS = 10
+
 
 # SECTIONS TEXTs
 SECTION_TEXT_DROP_TREASURE = 'TESOURO'

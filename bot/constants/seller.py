@@ -3,7 +3,6 @@ from rpgram.enums import EmojiEnum
 
 
 SELLER_NAME = 'Chrysus'
-
 TOTAL_MEAN_LEVELS = 5
 TOTAL_EQUIPMENTS = 35
 TOTAL_CONSUMABLES = 100

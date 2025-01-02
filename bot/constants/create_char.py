@@ -3,6 +3,7 @@ from repository.mongo import ClasseModel, RaceModel
 
 COMMANDS = ['criarpersonagem', 'createchar']
 
+
 # CALLBACK DATA
 CALLBACK_TEXT_YES = 'yes'
 CALLBACK_TEXT_NO = 'no'
