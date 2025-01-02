@@ -1,8 +1,7 @@
-'''
-Arquivo principal que executa o telegram-bot.
+'''Arquivo principal que executa o telegram-bot.
 '''
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 from decouple import config
 
 from telegram.ext import Application
@@ -153,11 +152,18 @@ def main() -> None:
         name='JOB_ADD_EVENT_POINTS_ON_START',
         job_kwargs=BASE_JOB_KWARGS,
     )
+
+    print('APP().DATETIME.NOW()', datetime.now())
     for job_definition in SEASON_JOBS_DEFINITIONS:
         job_name = job_definition['callback'].__name__.upper()
-        when = utc_to_brazil_datetime(job_definition['when'])
+        raw_when = job_definition['when']
+        print(f'SEASON JOB RAW TIME: {job_name} - "{raw_when}"')
+        when = utc_to_brazil_datetime(raw_when)
+        print(f'SEASON JOB BRAZIL TIME: {job_name} - "{when}"')
         when = adjust_season_datetime(when)
-        print(f'SEASON JOB: {job_name} - {when}')
+        print(f'SEASON JOB ADJUST TIME: {job_name} - "{when}"')
+        print(f'SEASON JOB: {job_name} - "{raw_when}" -> "{when}"')
+        print()
         application.job_queue.run_once(
             callback=job_definition['callback'],
             when=when,
