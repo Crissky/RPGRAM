@@ -26,6 +26,8 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.date_time import is_boosted_day
+from bot.constants.event import MAX_EVENT_TIMES
+from bot.functions.general import get_event_random_minutes
 from bot.functions.item import drop_random_prize
 from bot.functions.job import remove_job_by_name
 from constant.text import (
@@ -55,9 +57,9 @@ async def create_wordgame_event(
 
     chat_id = update.effective_chat.id
     now = get_brazil_time_now()
-    times = randint(1, 2) if is_boosted_day(now) else 1
+    times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
     for i in range(times):
-        minutes = randint(1 + (i*20), 10 + (i*20))
+        minutes = get_event_random_minutes(multiplier=i)
         print(
             f'CREATE_WORDGAME_EVENT() - {now}: '
             f'Evento de Palavra Secreta inicia em {minutes} minutos.'
