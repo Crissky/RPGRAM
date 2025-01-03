@@ -9,6 +9,10 @@ from rpgram.enums.rarity import RarityEnum
 from rpgram.errors import InvalidWordError
 
 
+WORD_FILEPATH = Path('rpgram/minigames/secret_word/files')
+MIN_WORD_SIZE = 5
+
+
 class SecretWordGame:
     _words = None
     _clean_words = None
@@ -21,7 +25,7 @@ class SecretWordGame:
 
         if isinstance(rarity, RarityEnum):
             self.rarity = rarity
-            self.size = 5 + get_enum_index(self.rarity) + randint(0, 2)
+            self.size = MIN_WORD_SIZE + get_enum_index(self.rarity)
             self.secret_word = self.__get_secret_word()
             self.num_try = 0
             self.word_list = []
@@ -98,8 +102,8 @@ class SecretWordGame:
     @classmethod
     def __get_words(cls) -> set:
         if cls._words is None:
-            print('loading words')
-            with open('rpgram/minigames/secret_word/dicio', 'r') as file:
+            print('loading words...')
+            with open(WORD_FILEPATH / 'dicio', 'r') as file:
                 words = file.read()
                 words = words.splitlines()
                 cls._words = set(words)
@@ -109,7 +113,7 @@ class SecretWordGame:
     @classmethod
     def __get_clean_words(cls) -> set:
         if cls._clean_words is None:
-            print('loading clean words')
+            print('loading clean words...')
             cls._clean_words = set(map(
                 SecretWordGame.clear_word,
                 SecretWordGame.__get_words()
@@ -120,8 +124,8 @@ class SecretWordGame:
     @classmethod
     def __get_verbs(cls) -> set:
         if cls._verbs is None:
-            print('loading verbs')
-            with open('rpgram/minigames/secret_word/verbos', 'r') as file:
+            print('loading verbs...')
+            with open(WORD_FILEPATH / 'verbos', 'r') as file:
                 verbs = file.read()
                 verbs = verbs.splitlines()
                 cls._verbs = set(verbs)
@@ -131,8 +135,8 @@ class SecretWordGame:
     @classmethod
     def __get_conjugations(cls) -> set:
         if cls._conjugations is None:
-            print('loading conjugations')
-            with open('rpgram/minigames/secret_word/conjugações', 'r') as file:
+            print('loading conjugations...')
+            with open(WORD_FILEPATH / 'conjugações', 'r') as file:
                 conjugations = file.read()
                 conjugations = conjugations.splitlines()
                 cls._conjugations = set(conjugations)
