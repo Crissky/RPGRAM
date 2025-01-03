@@ -8,7 +8,10 @@ from telegram.ext import (
 )
 from telegram.constants import ParseMode
 
-from bot.constants.filters import ALLOW_WORDGAME_FILTER
+from bot.constants.filters import (
+    ALLOW_WORDGAME_BUTTON_FILTER,
+    ALLOW_WORDGAME_FILTER
+)
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.word_game import (
     SECTION_TEXT_WORDGAME,
@@ -18,6 +21,7 @@ from bot.constants.word_game import (
     WORD_GOD_TIMEOUT_FEEDBACK_TEXTS,
     WORD_START_NARRATION_TEXTS
 )
+from bot.constants.word_game import WORDGAME_COMMAND
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import add_damage, add_xp_group, punishment
 from bot.functions.chat import (
@@ -90,7 +94,7 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
     text = (
         f'{start_text}\n\n'
         f'{god_greetings}\n\n'
-        f'Qual a *Palavra Secreta* de {game.size} letras?'
+        f'Responda com a *Palavra Secreta* de {game.size} letras!!!'
     )
     minutes = randint(120, 180)
 
@@ -360,7 +364,13 @@ def remove_wordgame_from_dict(
     context.chat_data['games'] = grids
 
 
-WORDGAME_HANDLER = MessageHandler(
-    filters=ALLOW_WORDGAME_FILTER,
-    callback=answer_wordgame
-)
+WORDGAME_HANDLERS = [
+    MessageHandler(
+        filters=ALLOW_WORDGAME_FILTER,
+        callback=answer_wordgame
+    ),
+    MessageHandler(
+        filters=ALLOW_WORDGAME_BUTTON_FILTER,
+        callback=answer_wordgame
+    ),
+]
