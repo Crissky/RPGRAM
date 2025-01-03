@@ -13,7 +13,7 @@ from random import randint
 
 MAX_NUM_PLAYERS = 3
 MAX_EVENT_POINTS_MULTIPLIER = 100
-MAX_EXTRA_EVENT_POINTS = 3.0
+MAX_EXTRA_EVENT_POINTS = 1.0
 
 
 class Group:
