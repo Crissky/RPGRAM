@@ -1,24 +1,28 @@
+import pandas as pd
 import re
 import unicodedata
 
 from pathlib import Path
-from random import choice, randint
+from random import choices
 from typing import Union
 
-from rpgram.enums.function import get_enum_by_index, get_enum_index
+from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
 from rpgram.errors import InvalidWordError
 
 
 WORD_FILEPATH = Path('rpgram/minigames/secret_word/files')
 MIN_WORD_SIZE = 5
+MAX_GAME_WORD_LIST_LENGTH = 100
 
 
 class SecretWordGame:
+    _df = None
     _words = None
     _clean_words = None
     _verbs = None
     _conjugations = None
+    _last_words = {}
 
     def __init__(self, rarity: Union[str, RarityEnum] = RarityEnum.COMMON):
         if isinstance(rarity, str):
@@ -84,9 +88,20 @@ class SecretWordGame:
 
         return result
 
+    def add_last_game_word(self, word: str):
+        word_list = self.last_game_word_list
+        if word not in word_list:
+            word_list.append(word)
+        SecretWordGame._last_words[self.size] = (
+            word_list[-MAX_GAME_WORD_LIST_LENGTH:]
+        )
+
     def __get_secret_word(self) -> str:
-        options = self.options
-        secret_word = choice([o for o in options if len(o) == self.size])
+        options = self.data.palavra.to_list()
+        weights = self.data.tf.to_list()
+        secret_word = choices(options, weights=weights)[0]
+        self.add_last_game_word(secret_word)
+
         return secret_word
 
     @classmethod
@@ -101,13 +116,23 @@ class SecretWordGame:
         return normalized_word
 
     @classmethod
+    def __get_data(cls) -> pd.DataFrame:
+        if cls._df is None:
+            print('loading data...')
+            conjugations = SecretWordGame.__get_conjugations()
+            verbs = SecretWordGame.__get_verbs()
+            cls._df = pd.read_csv(WORD_FILEPATH / 'data')
+            cls._df = cls._df[cls._df.palavra.str.len() >= MIN_WORD_SIZE]
+            cls._df = cls._df[~cls._df.isin((conjugations - verbs))]
+
+        return cls._df.copy()
+
+    @classmethod
     def __get_words(cls) -> set:
         if cls._words is None:
             print('loading words...')
-            with open(WORD_FILEPATH / 'dicio', 'r') as file:
-                words = file.read()
-                words = words.splitlines()
-                cls._words = set(words)
+            df = pd.read_csv(WORD_FILEPATH / 'dicio', names=['palavra'])
+            cls._words = set(df.palavra)
 
         return cls._words.copy()
 
@@ -115,10 +140,11 @@ class SecretWordGame:
     def __get_clean_words(cls) -> set:
         if cls._clean_words is None:
             print('loading clean words...')
-            cls._clean_words = set(map(
+            cls._clean_words = map(
                 SecretWordGame.clear_word,
                 SecretWordGame.__get_words()
-            ))
+            )
+            cls._clean_words = set(cls._clean_words)
 
         return cls._clean_words.copy()
 
@@ -126,10 +152,8 @@ class SecretWordGame:
     def __get_verbs(cls) -> set:
         if cls._verbs is None:
             print('loading verbs...')
-            with open(WORD_FILEPATH / 'verbos', 'r') as file:
-                verbs = file.read()
-                verbs = verbs.splitlines()
-                cls._verbs = set(verbs)
+            df = pd.read_csv(WORD_FILEPATH / 'verbos', names=['palavra'])
+            cls._verbs = set(df.palavra)
 
         return cls._verbs.copy()
 
@@ -137,12 +161,19 @@ class SecretWordGame:
     def __get_conjugations(cls) -> set:
         if cls._conjugations is None:
             print('loading conjugations...')
-            with open(WORD_FILEPATH / 'conjugações', 'r') as file:
-                conjugations = file.read()
-                conjugations = conjugations.splitlines()
-                cls._conjugations = set(conjugations)
+            df = pd.read_csv(WORD_FILEPATH / 'conjugações', names=['palavra'])
+            cls._conjugations = set(df.palavra)
 
         return cls._conjugations.copy()
+
+    @property
+    def data(self) -> pd.DataFrame:
+        df = SecretWordGame.__get_data()
+        df = df[df.palavra.str.len() == self.size]
+        df = df[~df.palavra.isin(self.last_game_word_list)]
+
+        return df
+    df = data
 
     @property
     def words(self) -> set:
@@ -161,8 +192,8 @@ class SecretWordGame:
         return SecretWordGame.__get_conjugations()
 
     @property
-    def options(self) -> set:
-        return self.words - (self.conjugations - self.verbs)
+    def last_game_word_list(self) -> list:
+        return SecretWordGame._last_words.get(self.size, [])
 
     def __repr__(self):
         return (
@@ -170,12 +201,14 @@ class SecretWordGame:
             f'size={self.size}, '
             f'rarity={self.rarity}, '
             f'num_try={self.num_try}, '
-            f'word={self.secret_word}'
+            f'word={self.secret_word}, '
+            f'last_game_word_list={self.last_game_word_list}'
             f')'
         )
 
 
 if __name__ == '__main__':
+    [SecretWordGame() for _ in range(10)]
     game1 = SecretWordGame(rarity='legendary')
     game2 = SecretWordGame()
 
@@ -195,3 +228,5 @@ if __name__ == '__main__':
     print(game2.check_word('raios'))
     print(game2.check_word('risao'))
     print(game2.check_word('risão'))
+
+    print('CAIDO' in game2.clean_words, 'caído' in game2.words)
