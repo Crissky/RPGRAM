@@ -131,7 +131,7 @@ class SecretWordGame:
     def __get_words(cls) -> set:
         if cls._words is None:
             print('loading words...')
-            df = pd.read_csv(WORD_FILEPATH / 'dicio', names=['palavra'])
+            df = pd.read_csv(WORD_FILEPATH / 'data')
             cls._words = set(df.palavra)
 
         return cls._words.copy()
@@ -228,5 +228,10 @@ if __name__ == '__main__':
     print(game2.check_word('raios'))
     print(game2.check_word('risao'))
     print(game2.check_word('risão'))
+
+    game2.size = 5
+    game2.secret_word = 'false'
+    print('MUDA PALAVRA PARA "FALSE"')
+    print(game2.check_word('false'))
 
     print('CAIDO' in game2.clean_words, 'caído' in game2.words)
