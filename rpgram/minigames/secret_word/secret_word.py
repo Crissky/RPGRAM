@@ -72,18 +72,26 @@ class SecretWordGame:
         result_word = word.upper()
         self.check_list.append(check_text)
         self.word_list.append(result_word)
+        check_list = self.check_list.copy()
+        word_list = self.word_list.copy()
         is_correct = check == ['🟩'] * size
         if not is_correct:
             self.num_try += 1
 
+        text = ''
+        for check, word in zip(check_list, word_list):
+            text += (
+                f'`{" ".join(word)}`\n'
+                f'`{check}`\n'
+            )
         result = {
             'check': check,
-            'check_list': self.check_list.copy(),
+            'check_list': check_list,
             'is_correct': is_correct,
             'secret_word': result_secret_word,
-            'text': check_text,
+            'text': text,
             'word': result_word,
-            'word_list': self.word_list.copy(),
+            'word_list': word_list,
         }
 
         return result
