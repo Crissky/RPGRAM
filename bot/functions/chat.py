@@ -700,6 +700,11 @@ def get_close_button(
     text: str = None,
     right_icon: bool = False,
 ) -> InlineKeyboardButton:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     if text is None:
         text = LEFT_CLOSE_BUTTON_TEXT
         if right_icon:
@@ -719,6 +724,11 @@ def get_refresh_close_button(
     refresh_data: str = 'refresh',
     to_detail: bool = False,
 ) -> List[InlineKeyboardButton]:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     button_list = []
     button_list.append(
         InlineKeyboardButton(
@@ -750,6 +760,11 @@ def get_random_refresh_text() -> str:
 
 
 def get_close_keyboard(user_id: int) -> InlineKeyboardMarkup:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     return InlineKeyboardMarkup([[
         get_close_button(user_id=user_id)
     ]])
@@ -760,6 +775,11 @@ def get_refresh_close_keyboard(
     refresh_data: str = 'refresh',
     to_detail: bool = False,
 ) -> InlineKeyboardMarkup:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     return InlineKeyboardMarkup([
         get_refresh_close_button(
             user_id=user_id,
