@@ -25,4 +25,4 @@ from bot.conversations.quest_item import ITEM_QUEST_HANDLER
 from bot.conversations.puzzle import PUZZLE_HANDLERS
 from bot.conversations.reset_char import RESET_CHAR_HANDLERS
 from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
-from bot.conversations.word_game import WORDGAME_HANDLER
+from bot.conversations.word_game import WORDGAME_HANDLERS

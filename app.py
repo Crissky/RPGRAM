@@ -15,7 +15,6 @@ from bot.conversations import (
     CLOSE_MSG_HANDLER,
     SELLER_HANDLER,
     ITEM_QUEST_HANDLER,
-    WORDGAME_HANDLER,
 )
 from bot.conversations import (
     HELP_HANDLERS,
@@ -36,6 +35,7 @@ from bot.conversations import (
     AMBUSH_HANDLERS,
     PUZZLE_HANDLERS,
     RESET_CHAR_HANDLERS,
+    WORDGAME_HANDLERS,
 )
 from bot.conversations import SEASON_JOBS_DEFINITIONS
 from bot.conversations.event import job_add_event_points
@@ -75,7 +75,6 @@ def main() -> None:
     application.add_handler(CLOSE_MSG_HANDLER)
     application.add_handler(SELLER_HANDLER)
     application.add_handler(ITEM_QUEST_HANDLER)
-    application.add_handler(WORDGAME_HANDLER)
 
     # Add Multiple Handlers
     application.add_handlers(HELP_HANDLERS)
@@ -97,6 +96,7 @@ def main() -> None:
     application.add_handlers(PUZZLE_HANDLERS)
     application.add_handlers(RESET_CHAR_HANDLERS)
     application.add_handlers(SKILL_TREE_HANDLERS)
+    application.add_handlers(WORDGAME_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(

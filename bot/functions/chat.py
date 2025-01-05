@@ -475,6 +475,40 @@ async def reply_text_and_forward(
     return response
 
 
+# QUERY FUNCTIONS
+async def delete_message_from_context(
+    function_caller: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+):
+    '''Deleta a mensagem usando context, 
+    caso ocorra um erro BadRequest (Mensagem não encontrada), ignora ação.
+    '''
+
+    chat_id = context._chat_id
+    try:
+        print('CONTEXT_DELETE_MESSAGE() TRYING DELETE_MESSAGE')
+        delete_message_kwargs = dict(
+            chat_id=chat_id,
+            message_id=message_id
+        )
+        await call_telegram_message_function(
+            function_caller=function_caller,
+            function=context.bot.delete_message,
+            context=context,
+            need_response=False,
+            **delete_message_kwargs
+        )
+    except BadRequest as e:
+        print('CONTEXT_DELETE_MESSAGE() BADREQUEST EXCEPT')
+        if 'Message to delete not found' in e.message:
+            print(f'\tError Message: "{e.message}"')
+        elif "Message can't be deleted" in e.message:
+            print(f'\tError Message: "{e.message}" (Sem Permissão)')
+        else:
+            raise e
+
+
 async def call_telegram_message_function(
     function_caller: str,
     function: Callable,
@@ -576,8 +610,7 @@ async def delete_message(
     query: CallbackQuery,
 ):
     '''Deleta a mensagem usando query, 
-    caso ocorra um erro RetryAfter, TimedOut e BadRequest 
-    tenta deletar a mensagem usando o context
+    caso ocorra um erro BadRequest tenta deletar a mensagem usando o context.
     '''
 
     chat_id = query.message.chat_id
@@ -604,6 +637,8 @@ async def delete_message(
                 need_response=False,
                 **delete_message_kwargs
             )
+        elif 'Message to delete not found' in e.message:
+            print(f'\tError Message: "{e.message}"')
         else:
             raise e
 
@@ -700,6 +735,11 @@ def get_close_button(
     text: str = None,
     right_icon: bool = False,
 ) -> InlineKeyboardButton:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     if text is None:
         text = LEFT_CLOSE_BUTTON_TEXT
         if right_icon:
@@ -719,6 +759,11 @@ def get_refresh_close_button(
     refresh_data: str = 'refresh',
     to_detail: bool = False,
 ) -> List[InlineKeyboardButton]:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     button_list = []
     button_list.append(
         InlineKeyboardButton(
@@ -750,6 +795,11 @@ def get_random_refresh_text() -> str:
 
 
 def get_close_keyboard(user_id: int) -> InlineKeyboardMarkup:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     return InlineKeyboardMarkup([[
         get_close_button(user_id=user_id)
     ]])
@@ -760,6 +810,11 @@ def get_refresh_close_keyboard(
     refresh_data: str = 'refresh',
     to_detail: bool = False,
 ) -> InlineKeyboardMarkup:
+    '''Se user_id for None, qualquer um pode fechar a mensagem, 
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    a mensagem.
+    '''
+
     return InlineKeyboardMarkup([
         get_refresh_close_button(
             user_id=user_id,

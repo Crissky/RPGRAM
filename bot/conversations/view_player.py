@@ -13,6 +13,7 @@ from telegram.ext import (
 )
 
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
+from bot.constants.view_group import CHAT_TYPE_GROUPS
 from bot.constants.view_player import (
     COMMANDS,
     REFRESH_VIEW_PLAYER_PATTERN,
@@ -40,6 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     player_model = PlayerModel()
     user_id = update.effective_user.id
     chat_id = update.effective_chat.id
+    chat_type = update.effective_chat.type
     message_id = update.effective_message.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     query = update.callback_query
@@ -50,6 +52,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     player: Player = player_model.get(user_id)
     if player:
+        add_chat_id_in_player(
+            chat_id=chat_id,
+            chat_type=chat_type,
+            player=player,
+            player_model=player_model
+        )
         text = f'{player}'
         reply_markup = get_refresh_close_keyboard(
             user_id=user_id,
@@ -123,6 +131,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             skip_retry=False,
             **reply_text_kwargs,
         )
+
+
+def add_chat_id_in_player(
+    chat_id: int,
+    chat_type: str,
+    player: Player,
+    player_model: PlayerModel,
+):
+    if not player.check_chat_id(chat_id) and chat_type in CHAT_TYPE_GROUPS:
+        print(f'Adicionando o chat_id "{chat_id}" ao jogador: {player}')
+        player.add_chat_id(chat_id=chat_id)
+        player_model.save(player)
+
 
 VIEW_PLAYER_HANDLERS = [
     PrefixHandler(
