@@ -56,11 +56,20 @@ class Player:
         self.created_at = created_at
         self.updated_at = updated_at
 
-    def add_chat_id(self, chat_id):
+    def add_chat_id(self, chat_id: int):
+        '''Adiciona o chat_id ao lista de chat_ids do jogador.
+        '''
+
         if chat_id not in self.__chat_ids:
             self.__chat_ids.append(chat_id)
         else:
             raise ValueError(f'O chat ID {chat_id} já está na lista.')
+
+    def check_chat_id(self, chat_id: int) -> bool:
+        '''Checa se o jogador já possui o chat_id em sua lista.
+        '''
+
+        return chat_id in self.__chat_ids
 
     def add_trocado(self, value: int) -> dict:
         value = int(abs(value))
@@ -163,6 +172,7 @@ class Player:
             f'Player ID: {self.player_id}\n'
             f'Verbose: {self.verbose}\n'
             f'Silencioso: {self.silent}\n'
+            f'Chat IDs: {self.__chat_ids}\n'
             f'Criado em: {datetime_to_string(self.created_at)}\n'
             f'Atualizado em: {datetime_to_string(self.updated_at)}'
         )
