@@ -188,7 +188,7 @@ class Group:
         return self.add_event_points(points)
 
     def add_event_points_from_group(self) -> bool:
-        points = int(self.max_event_points * 0.17)
+        points = int(self.max_event_points * 0.06)
         if self.can_trigger_event:
             self.add_extra_event_points(0.50)
 
