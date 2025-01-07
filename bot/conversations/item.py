@@ -82,6 +82,9 @@ from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum
 
 
+TREASURES_KEY = 'treasures'
+
+
 async def create_find_treasure_event(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -113,6 +116,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR 
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
     '''
+
     job = context.job
     chat_id = job.chat_id
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -151,11 +155,11 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         **call_telegram_kwargs,
     )
     message_id = response.message_id
-    treasures = context.chat_data.get('treasures', None)
+    treasures = context.chat_data.get(TREASURES_KEY, None)
     if isinstance(treasures, dict):
         treasures[message_id] = True
     else:
-        context.chat_data['treasures'] = {message_id: True}
+        context.chat_data[TREASURES_KEY] = {message_id: True}
 
 
 @need_singup_group
@@ -175,8 +179,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Checa se o baú pode ser aberto, se não, cancela a ação e apaga a mensagem
     # Só pode ser aberto se no dicionário drop contiver o message_id como chave
     # e True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if context.chat_data is not None and 'treasures' in context.chat_data:
-        treasures = context.chat_data['treasures']
+    if context.chat_data is not None and TREASURES_KEY in context.chat_data:
+        treasures = context.chat_data[TREASURES_KEY]
     if treasures.get(message_id, None) is not True:
         treasures.pop(message_id, None)
         query_text = f'Este tesouro já foi descoberto.'
@@ -371,7 +375,7 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
-    treasures = context.chat_data.get('treasures', {})
+    treasures = context.chat_data.get(TREASURES_KEY, {})
     treasures.pop(message_id, None)
 
     if query:
