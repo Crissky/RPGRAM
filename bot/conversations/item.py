@@ -52,6 +52,7 @@ from bot.functions.chat import (
     answer,
     call_telegram_message_function,
     delete_message,
+    delete_message_from_context,
     edit_message_text,
     edit_message_text_and_forward,
     reply_typing
@@ -160,6 +161,25 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         treasures[message_id] = True
     else:
         context.chat_data[TREASURES_KEY] = {message_id: True}
+
+
+async def job_timeout_find_treasure(context: ContextTypes.DEFAULT_TYPE):
+    '''Job que exclui a mensagem do Baú do Tesouro e retira no dicionário o 
+    ID do mesmo após um tempo pré determinado.
+    '''
+
+    print('JOB_TIMEOUT_FIND_TREASURE()')
+    job = context.job
+    data = job.data
+    message_id = data['message_id']
+    treasures = context.chat_data.get(TREASURES_KEY, {})
+    treasures.pop(message_id, None)
+
+    await delete_message_from_context(
+        function_caller='JOB_TIMEOUT_FIND_TREASURE()',
+        context=context,
+        message_id=message_id
+    )
 
 
 @need_singup_group
