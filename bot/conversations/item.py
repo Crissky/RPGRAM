@@ -94,6 +94,8 @@ async def create_find_treasure_event(
     '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
     Está função é chamada em cada 00 e 30 minutos de cada hora.
     '''
+
+    print('CREATE_FIND_TREASURE_EVENT()')
     chat_id = update.effective_chat.id
     now = get_brazil_time_now()
 
@@ -119,6 +121,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
     '''
 
+    print('JOB_FIND_TREASURE()')
     job = context.job
     chat_id = job.chat_id
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -202,6 +205,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     que clicou no botão de investigar e salva o item em sua bolsa.
     '''
 
+    print('INSPECT_TREASURE()')
     query = update.callback_query
     message_id = update.effective_message.message_id
     treasures = {}
@@ -317,6 +321,11 @@ async def activated_trap(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
 ):
+    '''Ativa armadilha que causa dano e debuffs ao jogador que 
+    tentou abrir o baú.
+    '''
+
+    print('ACTIVATED_TRAP()')
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
     (
@@ -402,6 +411,7 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     clica em IGNORAR.
     '''
 
+    print('IGNORE_TREASURE()')
     query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
