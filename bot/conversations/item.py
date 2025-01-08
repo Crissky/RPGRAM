@@ -84,6 +84,7 @@ from rpgram.enums import EmojiEnum
 
 
 TREASURES_KEY = 'treasures'
+MINUTES_TO_TIMEOUT_FIND_TREASURE = 60
 
 
 async def create_find_treasure_event(
@@ -161,6 +162,15 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         treasures[message_id] = True
     else:
         context.chat_data[TREASURES_KEY] = {message_id: True}
+
+    context.job_queue.run_once(
+        callback=job_timeout_find_treasure,
+        when=timedelta(minutes=MINUTES_TO_TIMEOUT_FIND_TREASURE),
+        data={'message_id': message_id},
+        name=f'JOB_TIMEOUT_FIND_TREASURE_{ObjectId()}',
+        chat_id=chat_id,
+        job_kwargs=BASE_JOB_KWARGS,
+    )
 
 
 async def job_timeout_find_treasure(context: ContextTypes.DEFAULT_TYPE):
