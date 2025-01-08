@@ -52,6 +52,7 @@ from bot.functions.chat import (
     answer,
     call_telegram_message_function,
     delete_message,
+    delete_message_from_context,
     edit_message_text,
     edit_message_text_and_forward,
     reply_typing
@@ -82,6 +83,10 @@ from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum
 
 
+TREASURES_KEY = 'treasures'
+MINUTES_TO_TIMEOUT_FIND_TREASURE = 60
+
+
 async def create_find_treasure_event(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -89,6 +94,8 @@ async def create_find_treasure_event(
     '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
     Está função é chamada em cada 00 e 30 minutos de cada hora.
     '''
+
+    print('CREATE_FIND_TREASURE_EVENT()')
     chat_id = update.effective_chat.id
     now = get_brazil_time_now()
 
@@ -113,6 +120,8 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR 
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
     '''
+
+    print('JOB_FIND_TREASURE()')
     job = context.job
     chat_id = job.chat_id
     silent = get_attribute_group_or_player(chat_id, 'silent')
@@ -151,11 +160,39 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         **call_telegram_kwargs,
     )
     message_id = response.message_id
-    treasures = context.chat_data.get('treasures', None)
+    treasures = context.chat_data.get(TREASURES_KEY, None)
     if isinstance(treasures, dict):
         treasures[message_id] = True
     else:
-        context.chat_data['treasures'] = {message_id: True}
+        context.chat_data[TREASURES_KEY] = {message_id: True}
+
+    context.job_queue.run_once(
+        callback=job_timeout_find_treasure,
+        when=timedelta(minutes=MINUTES_TO_TIMEOUT_FIND_TREASURE),
+        data={'message_id': message_id},
+        name=f'JOB_TIMEOUT_FIND_TREASURE_{ObjectId()}',
+        chat_id=chat_id,
+        job_kwargs=BASE_JOB_KWARGS,
+    )
+
+
+async def job_timeout_find_treasure(context: ContextTypes.DEFAULT_TYPE):
+    '''Job que exclui a mensagem do Baú do Tesouro e retira no dicionário o 
+    ID do mesmo após um tempo pré determinado.
+    '''
+
+    print('JOB_TIMEOUT_FIND_TREASURE()')
+    job = context.job
+    data = job.data
+    message_id = data['message_id']
+    treasures = context.chat_data.get(TREASURES_KEY, {})
+    treasures.pop(message_id, None)
+
+    await delete_message_from_context(
+        function_caller='JOB_TIMEOUT_FIND_TREASURE()',
+        context=context,
+        message_id=message_id
+    )
 
 
 @need_singup_group
@@ -168,6 +205,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     que clicou no botão de investigar e salva o item em sua bolsa.
     '''
 
+    print('INSPECT_TREASURE()')
     query = update.callback_query
     message_id = update.effective_message.message_id
     treasures = {}
@@ -175,8 +213,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Checa se o baú pode ser aberto, se não, cancela a ação e apaga a mensagem
     # Só pode ser aberto se no dicionário drop contiver o message_id como chave
     # e True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if context.chat_data is not None and 'treasures' in context.chat_data:
-        treasures = context.chat_data['treasures']
+    if context.chat_data is not None and TREASURES_KEY in context.chat_data:
+        treasures = context.chat_data[TREASURES_KEY]
     if treasures.get(message_id, None) is not True:
         treasures.pop(message_id, None)
         query_text = f'Este tesouro já foi descoberto.'
@@ -283,6 +321,11 @@ async def activated_trap(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
 ):
+    '''Ativa armadilha que causa dano e debuffs ao jogador que 
+    tentou abrir o baú.
+    '''
+
+    print('ACTIVATED_TRAP()')
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
     (
@@ -368,10 +411,11 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     clica em IGNORAR.
     '''
 
+    print('IGNORE_TREASURE()')
     query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
-    treasures = context.chat_data.get('treasures', {})
+    treasures = context.chat_data.get(TREASURES_KEY, {})
     treasures.pop(message_id, None)
 
     if query:
