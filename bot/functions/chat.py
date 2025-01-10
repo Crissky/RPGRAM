@@ -17,10 +17,14 @@ from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.close import CALLBACK_CLOSE
 from bot.constants.job import BASE_JOB_KWARGS
+from bot.constants.view_group import CHAT_TYPE_GROUPS
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.player import get_player_attribute_by_id
 from function.text import escape_basic_markdown_v2
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
+
+
+HOURS_DELETE_MESSAGE_FROM_CONTEXT = 5
 
 
 # TEXTS
@@ -529,6 +533,7 @@ async def call_telegram_message_function(
     nova tentativa.
     '''
 
+    print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
     job_call_telegram_kwargs = dict(
         function_caller=function_caller,
         function=function,
@@ -585,6 +590,33 @@ async def call_telegram_message_function(
         if catched_error:
             raise catched_error
         raise Exception(f'Error in {function_caller}')
+
+    if (
+        isinstance(response, Message)
+        and response.chat.type in CHAT_TYPE_GROUPS
+    ):
+        chat_id = response.chat_id
+        message_id = response.message_id
+        complete_function_caller = (
+            f'{function_caller}->'
+            f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
+        )
+        data = {
+            'message_id': message_id,
+            'function_caller': complete_function_caller,
+        }
+        print(
+            f'Mensagem de ID {message_id} do chat de ID {chat_id} '
+            f'será excluida em {HOURS_DELETE_MESSAGE_FROM_CONTEXT} horas.'
+        )
+        context.job_queue.run_once(
+            callback=job_delete_message_from_context,
+            when=timedelta(hours=HOURS_DELETE_MESSAGE_FROM_CONTEXT),
+            data=data,
+            name=f'{complete_function_caller}_{ObjectId()}',
+            chat_id=chat_id,
+            job_kwargs=BASE_JOB_KWARGS,
+        )
 
     return response
 
