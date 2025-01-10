@@ -603,6 +603,26 @@ async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
     await call_telegram_message_function(**call_telegram_kwargs)
 
 
+async def job_delete_message_from_context(
+    function_caller: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+):
+    '''Job que exclui a mensagem após um tempo pré determinado.
+    '''
+
+    print('JOB_DELETE_MESSAGE_FROM_CONTEXT()')
+    job = context.job
+    data = job.data
+    message_id = data['message_id']
+
+    await delete_message_from_context(
+        function_caller=function_caller,
+        context=context,
+        message_id=message_id
+    )
+
+
 # QUERY FUNCTIONS
 async def delete_message(
     function_caller: str,
