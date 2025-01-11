@@ -24,7 +24,7 @@ from function.text import escape_basic_markdown_v2
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 
-HOURS_DELETE_MESSAGE_FROM_CONTEXT = 5
+HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
 
 
 # TEXTS

@@ -1,6 +1,5 @@
 from datetime import timedelta
 from random import choice, randint
-from bson import ObjectId
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     ContextTypes,
@@ -32,9 +31,6 @@ from bot.functions.chat import (
     get_close_button
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
-from bot.functions.date_time import is_boosted_day
-from bot.constants.event import MAX_EVENT_TIMES
-from bot.functions.general import get_event_random_minutes
 from bot.functions.item import drop_random_prize
 from bot.functions.job import remove_job_by_name
 from constant.text import (
@@ -46,7 +42,6 @@ from constant.text import (
     SECTION_HEAD_TIMEOUT_PUZZLE_END,
     SECTION_HEAD_TIMEOUT_PUZZLE_START
 )
-from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 from repository.mongo.models.character import CharacterModel
 from repository.mongo.populate.tools import choice_rarity
@@ -58,32 +53,6 @@ from rpgram.minigames.secret_word.secret_word import SecretWordGame
 DICT_GAMES_KEY = 'games'
 GAME_OBJECT_KEY = 'game'
 DELETE_MESSAGE_ID_KEY = 'delete_message_id_list'
-
-
-
-async def create_wordgame_event(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
-    '''Cria job do Desafio de Palavra de Hermes.
-    '''
-
-    chat_id = update.effective_chat.id
-    now = get_brazil_time_now()
-    times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
-    for i in range(times):
-        minutes = get_event_random_minutes(multiplier=i)
-        print(
-            f'CREATE_WORDGAME_EVENT() - {now}: '
-            f'Evento de Palavra Secreta inicia em {minutes} minutos.'
-        )
-        context.job_queue.run_once(
-            callback=job_start_wordgame,
-            when=timedelta(minutes=minutes),
-            chat_id=chat_id,
-            name=f'JOB_CREATE_WORDGAME_{ObjectId()}',
-            job_kwargs=BASE_JOB_KWARGS,
-        )
 
 
 @skip_if_spawn_timeout

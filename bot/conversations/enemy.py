@@ -5,7 +5,6 @@ from random import choice, randint, shuffle
 from time import sleep
 from typing import List, Union
 
-from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -80,7 +79,6 @@ from bot.functions.chat import (
     reply_typing
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
-from bot.constants.event import MAX_EVENT_TIMES
 from bot.functions.job import remove_job_by_name
 from constant.text import (
     ALERT_SECTION_HEAD,
@@ -108,14 +106,11 @@ from bot.functions.char import (
     get_player_chars_from_group,
     save_char
 )
-from bot.functions.date_time import is_boosted_day
 from bot.functions.general import (
     get_attribute_group_or_player,
-    get_event_random_minutes,
     luck_test
 )
 
-from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 
 from repository.mongo import CharacterModel, ItemModel, PlayerModel
@@ -129,33 +124,6 @@ from rpgram import Item, Player
 from rpgram.boosters import Equipment
 from rpgram.characters import BaseCharacter, NPCharacter, PlayerCharacter
 from rpgram.skills.skill_base import BaseSkill
-
-
-async def create_ambush_event(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
-    '''Cria um evento de ataque de inimigo que ocorrerá entre 1 e 299 minutos.
-    Está função é chamada em cada 3 horas.
-    '''
-
-    chat_id = update.effective_chat.id
-    now = get_brazil_time_now()
-
-    times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
-    for i in range(times):
-        minutes = get_event_random_minutes(multiplier=i)
-        print(
-            f'CREATE_AMBUSH_EVENT() - {now}: '
-            f'Evento de item inicia em {minutes} minutos.'
-        )
-        context.job_queue.run_once(
-            callback=job_start_ambush,
-            when=timedelta(minutes=minutes),
-            chat_id=chat_id,
-            name=f'JOB_CREATE_AMBUSH_{ObjectId()}',
-            job_kwargs=BASE_JOB_KWARGS,
-        )
 
 
 @skip_if_spawn_timeout
