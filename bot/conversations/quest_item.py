@@ -1,7 +1,6 @@
 from datetime import timedelta
 from random import choice, randint
 
-from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -55,11 +54,8 @@ from bot.functions.chat import (
     get_close_keyboard
 )
 from bot.functions.config import get_attribute_group
-from bot.functions.date_time import is_boosted_day
-from bot.constants.event import MAX_EVENT_TIMES
 from bot.functions.general import (
-    get_attribute_group_or_player,
-    get_event_random_minutes
+    get_attribute_group_or_player
 )
 
 from constant.text import (
@@ -71,7 +67,6 @@ from constant.text import (
     SECTION_HEAD_QUEST_START
 )
 
-from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 from repository.mongo import BagModel, PlayerModel
 from repository.mongo.populate.enemy import (
@@ -95,31 +90,6 @@ from rpgram.consumables import (
 )
 from rpgram import Item, Player
 from rpgram.enums import EmojiEnum, TrocadoEnum
-
-
-async def create_item_quest_event(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
-    '''Cria job da quest de pedido de items
-    '''
-
-    chat_id = update.effective_chat.id
-    now = get_brazil_time_now()
-    times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
-    for i in range(times):
-        minutes = get_event_random_minutes(multiplier=i)
-        print(
-            f'CREATE_ITEM_QUEST_EVENT() - {now}: '
-            f'Evento de item inicia em {minutes} minutos.'
-        )
-        context.job_queue.run_once(
-            callback=job_start_item_quest,
-            when=timedelta(minutes=minutes),
-            chat_id=chat_id,
-            name=f'JOB_CREATE_ITEM_QUEST_{ObjectId()}',
-            job_kwargs=BASE_JOB_KWARGS,
-        )
 
 
 @skip_if_spawn_timeout

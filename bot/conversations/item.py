@@ -1,5 +1,5 @@
 from datetime import timedelta
-from random import choice, randint
+from random import choice
 from typing import Iterable
 
 from bson import ObjectId
@@ -58,11 +58,8 @@ from bot.functions.chat import (
     reply_typing
 )
 from bot.functions.config import get_attribute_group
-from bot.functions.date_time import is_boosted_day
-from bot.constants.event import MAX_EVENT_TIMES
 from bot.functions.general import (
-    get_attribute_group_or_player,
-    get_event_random_minutes
+    get_attribute_group_or_player
 )
 from constant.text import (
     SECTION_HEAD_OPEN_TREASURE_END,
@@ -72,7 +69,6 @@ from constant.text import (
     SECTION_HEAD_TREASURE_END,
     SECTION_HEAD_TREASURE_START
 )
-from function.date_time import get_brazil_time_now
 from function.text import create_text_in_box, escape_markdown_v2
 
 from repository.mongo import BagModel
@@ -85,34 +81,6 @@ from rpgram.enums import EmojiEnum
 
 TREASURES_KEY = 'treasures'
 MINUTES_TO_TIMEOUT_FIND_TREASURE = 60
-
-
-async def create_find_treasure_event(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
-    '''Cria um evento de busca de tesouro que ocorrerá entre 1 e 29 minutos.
-    Está função é chamada em cada 00 e 30 minutos de cada hora.
-    '''
-
-    print('CREATE_FIND_TREASURE_EVENT()')
-    chat_id = update.effective_chat.id
-    now = get_brazil_time_now()
-
-    times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
-    for i in range(times):
-        minutes = get_event_random_minutes(multiplier=i)
-        print(
-            f'CREATE_FIND_TREASURE_EVENT() - {now}: '
-            f'Evento de item inicia em {minutes} minutos.'
-        )
-        context.job_queue.run_once(
-            callback=job_find_treasure,
-            when=timedelta(minutes=minutes),
-            chat_id=chat_id,
-            name=f'JOB_CREATE_EVENT_TREASURE_{ObjectId()}',
-            job_kwargs=BASE_JOB_KWARGS,
-        )
 
 
 @skip_if_spawn_timeout
