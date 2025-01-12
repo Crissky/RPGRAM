@@ -79,7 +79,7 @@ from rpgram.consumables import Consumable
 from rpgram.enums import EmojiEnum
 
 
-TREASURES_KEY = 'treasures'
+TREASURES_CHAT_DATA_KEY = 'treasures'
 MINUTES_TO_TIMEOUT_FIND_TREASURE = 60
 
 
@@ -128,11 +128,11 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         **call_telegram_kwargs,
     )
     message_id = response.message_id
-    treasures = context.chat_data.get(TREASURES_KEY, None)
+    treasures = context.chat_data.get(TREASURES_CHAT_DATA_KEY, None)
     if isinstance(treasures, dict):
         treasures[message_id] = True
     else:
-        context.chat_data[TREASURES_KEY] = {message_id: True}
+        context.chat_data[TREASURES_CHAT_DATA_KEY] = {message_id: True}
 
     context.job_queue.run_once(
         callback=job_timeout_find_treasure,
@@ -153,7 +153,7 @@ async def job_timeout_find_treasure(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     data = job.data
     message_id = data['message_id']
-    treasures = context.chat_data.get(TREASURES_KEY, {})
+    treasures = context.chat_data.get(TREASURES_CHAT_DATA_KEY, {})
     treasures.pop(message_id, None)
 
     await delete_message_from_context(
@@ -181,8 +181,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Checa se o baú pode ser aberto, se não, cancela a ação e apaga a mensagem
     # Só pode ser aberto se no dicionário drop contiver o message_id como chave
     # e True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if context.chat_data is not None and TREASURES_KEY in context.chat_data:
-        treasures = context.chat_data[TREASURES_KEY]
+    if context.chat_data and TREASURES_CHAT_DATA_KEY in context.chat_data:
+        treasures = context.chat_data[TREASURES_CHAT_DATA_KEY]
     if treasures.get(message_id, None) is not True:
         treasures.pop(message_id, None)
         query_text = f'Este tesouro já foi descoberto.'
@@ -383,7 +383,7 @@ async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
-    treasures = context.chat_data.get(TREASURES_KEY, {})
+    treasures = context.chat_data.get(TREASURES_CHAT_DATA_KEY, {})
     treasures.pop(message_id, None)
 
     if query:
