@@ -13,7 +13,7 @@ from telegram.ext import (
 )
 
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
-from bot.constants.view_group import CHAT_TYPE_GROUPS
+from bot.functions.chat import is_chat_group
 from bot.constants.view_player import (
     COMMANDS,
     REFRESH_VIEW_PLAYER_PATTERN,
@@ -139,7 +139,7 @@ def add_chat_id_in_player(
     player: Player,
     player_model: PlayerModel,
 ):
-    if not player.check_chat_id(chat_id) and chat_type in CHAT_TYPE_GROUPS:
+    if not player.in_chat(chat_id) and is_chat_group(chat_type=chat_type):
         print(f'Adicionando o chat_id "{chat_id}" ao jogador: {player}')
         player.add_chat_id(chat_id=chat_id)
         player_model.save(player)

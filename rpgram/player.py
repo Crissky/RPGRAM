@@ -65,8 +65,10 @@ class Player:
         else:
             raise ValueError(f'O chat ID {chat_id} já está na lista.')
 
-    def check_chat_id(self, chat_id: int) -> bool:
+    def in_chat(self, chat_id: int) -> bool:
         '''Checa se o jogador já possui o chat_id em sua lista.
+        Retorna True se o chat_id esta na lista de chat_ids do jogador e, 
+        caso contrário, retorna False.
         '''
 
         return chat_id in self.__chat_ids

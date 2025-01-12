@@ -11,13 +11,12 @@ from telegram import (
     Update
 )
 
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction, ChatType, ParseMode
 from telegram.error import BadRequest, Forbidden, RetryAfter, TimedOut
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.close import CALLBACK_CLOSE
 from bot.constants.job import BASE_JOB_KWARGS
-from bot.constants.view_group import CHAT_TYPE_GROUPS
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.job import job_exists
 from bot.functions.player import get_player_attribute_by_id
@@ -26,6 +25,7 @@ from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
+CHAT_TYPE_GROUPS = (ChatType.GROUP, ChatType.SUPERGROUP)
 
 
 # TEXTS
@@ -594,10 +594,7 @@ async def call_telegram_message_function(
             raise catched_error
         raise Exception(f'Error in {function_caller}')
 
-    if (
-        isinstance(response, Message)
-        and response.chat.type in CHAT_TYPE_GROUPS
-    ):
+    if isinstance(response, Message) and is_chat_group(message=response):
         complete_function_caller = (
             f'{function_caller}->'
             f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
@@ -905,6 +902,18 @@ def is_verbose(args: list) -> bool:
     return result
 
 
+def is_chat_group(message: Message = None, chat_type: str = None) -> bool:
+    if isinstance(message, Message):
+        chat_type = message.chat.type
+    elif not isinstance(chat_type, str):
+        raise TypeError(
+            f'message precisa ser do tipo "Message" ({type(message)}) ou '
+            f'chat_type precisa ser do tipo "str" ({type(chat_type)})'
+        )
+
+    return chat_type in CHAT_TYPE_GROUPS
+
+
 if __name__ == '__main__':
     d = {
         'drop': 10,
@@ -915,3 +924,5 @@ if __name__ == '__main__':
     }
     print(d1 := callback_data_to_string(d))
     print(d2 := callback_data_to_dict(d1))
+
+    print(is_chat_group(chat_type='group'))
