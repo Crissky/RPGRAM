@@ -524,9 +524,11 @@ async def call_telegram_message_function(
 ) -> Union[Any, Message]:
     '''Função que chama qualquer função de mensagem do telegram. 
     Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
-    alguns segundos tentará novamente com um número máximo de 3 tentativas.
+    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
+    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
 
-    Se need_response for True, função aguardará para realizar uma nova 
+    Se need_response for True, a função aguardará para realizar uma nova 
     tentativa, caso contrário, a função será agendada em um job para ser 
     executada posteriormente.
 
