@@ -520,6 +520,7 @@ async def call_telegram_message_function(
     context: ContextTypes.DEFAULT_TYPE,
     need_response: bool = True,
     skip_retry: bool = False,
+    auto_delete_message: Union[bool, int] = True,
     **kwargs
 ) -> Union[Any, Message]:
     '''Função que chama qualquer função de mensagem do telegram. 
@@ -534,6 +535,12 @@ async def call_telegram_message_function(
 
     Se skip_retry for True, a função não tentará novamente e nem agendará uma 
     nova tentativa.
+
+    Se auto_delete_message for igual a False, a exclusão automática da 
+    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
+    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
+    quantidade de horas igual ao valor passado.
     '''
 
     print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
@@ -594,15 +601,21 @@ async def call_telegram_message_function(
             raise catched_error
         raise Exception(f'Error in {function_caller}')
 
-    if isinstance(response, Message) and is_chat_group(message=response):
+    if (
+        isinstance(response, Message)
+        and is_chat_group(message=response)
+        and auto_delete_message
+    ):
         complete_function_caller = (
             f'{function_caller}->'
             f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
         )
+        hours = get_hours_delete_message_from_context(auto_delete_message)
         create_job_delete_message_from_context(
             function_caller=complete_function_caller,
             context=context,
-            response=response
+            response=response,
+            hours=hours
         )
 
     return response
@@ -888,6 +901,24 @@ def get_refresh_close_keyboard(
             to_detail=to_detail
         )
     ])
+
+
+def get_hours_delete_message_from_context(value: Union[bool, int]) -> int:
+    '''Retorna o tempo em horas para deletar uma mensagem após um tempo
+    pré determinado.
+    '''
+
+    if value is True:
+        hours = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+    elif isinstance(value, int) and value > 0:
+        hours = value
+    else:
+        raise TypeError(
+            f'value precisa ser do tipo "bool" ou "int" ({type(value)}). '
+            f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
+        )
+
+    return hours
 
 
 def is_verbose(args: list) -> bool:
