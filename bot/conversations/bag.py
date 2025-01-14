@@ -1,8 +1,10 @@
+from datetime import timedelta
 from math import sqrt
 from random import choice
 from time import sleep
 from typing import List, Union
 
+from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -87,6 +89,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.seller import SELLER_NAME
 from bot.constants.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
@@ -168,6 +171,8 @@ from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 
 DROPS_CHAT_DATA_KEY = 'drops'
+MINUTES_TO_TIMEOUT_DROP = 60
+
 
 
 # ROUTES
@@ -1656,6 +1661,14 @@ async def send_drop_message(
         else:
             create_and_put_drop_dict(context, drops_message_id)
 
+        context.job_queue.run_once(
+            callback=job_timeout_drop,
+            when=timedelta(minutes=MINUTES_TO_TIMEOUT_DROP),
+            data={'message_id': drops_message_id},
+            name=f'JOB_TIMEOUT_DROP_{ObjectId()}',
+            chat_id=context._chat_id,
+            job_kwargs=BASE_JOB_KWARGS,
+        )
         sleep(1)
 
 
