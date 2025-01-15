@@ -1651,6 +1651,7 @@ async def send_drop_message(
         response = await call_telegram_message_function(
             function_caller=f'SEND_DROP_MESSAGE(remaining={remaining})',
             context=context,
+            auto_delete_message=False,
             **call_telegram_kwargs
         )
 

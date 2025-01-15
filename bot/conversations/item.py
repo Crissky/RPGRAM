@@ -125,6 +125,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
         function_caller='JOB_FIND_TREASURE()',
         function=context.bot.send_message,
         context=context,
+        auto_delete_message=False,
         **call_telegram_kwargs,
     )
     message_id = response.message_id
