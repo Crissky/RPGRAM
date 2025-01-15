@@ -11,20 +11,21 @@ from telegram import (
     Update
 )
 
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction, ChatType, ParseMode
 from telegram.error import BadRequest, Forbidden, RetryAfter, TimedOut
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.close import CALLBACK_CLOSE
 from bot.constants.job import BASE_JOB_KWARGS
-from bot.constants.view_group import CHAT_TYPE_GROUPS
 from bot.functions.general import get_attribute_group_or_player
+from bot.functions.job import job_exists
 from bot.functions.player import get_player_attribute_by_id
 from function.text import escape_basic_markdown_v2
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
+CHAT_TYPE_GROUPS = (ChatType.GROUP, ChatType.SUPERGROUP)
 
 
 # TEXTS
@@ -519,18 +520,27 @@ async def call_telegram_message_function(
     context: ContextTypes.DEFAULT_TYPE,
     need_response: bool = True,
     skip_retry: bool = False,
+    auto_delete_message: Union[bool, int] = True,
     **kwargs
 ) -> Union[Any, Message]:
     '''Função que chama qualquer função de mensagem do telegram. 
     Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
-    alguns segundos tentará novamente com um número máximo de 3 tentativas.
+    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
+    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
 
-    Se need_response for True, função aguardará para realizar uma nova 
+    Se need_response for True, a função aguardará para realizar uma nova 
     tentativa, caso contrário, a função será agendada em um job para ser 
     executada posteriormente.
 
     Se skip_retry for True, a função não tentará novamente e nem agendará uma 
     nova tentativa.
+
+    Se auto_delete_message for igual a False, a exclusão automática da 
+    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
+    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
+    quantidade de horas igual ao valor passado.
     '''
 
     print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
@@ -593,32 +603,52 @@ async def call_telegram_message_function(
 
     if (
         isinstance(response, Message)
-        and response.chat.type in CHAT_TYPE_GROUPS
+        and is_chat_group(message=response)
+        and auto_delete_message
     ):
-        chat_id = response.chat_id
-        message_id = response.message_id
         complete_function_caller = (
             f'{function_caller}->'
             f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
         )
-        data = {
-            'message_id': message_id,
-            'function_caller': complete_function_caller,
-        }
-        print(
-            f'Mensagem de ID {message_id} do chat de ID {chat_id} '
-            f'será excluida em {HOURS_DELETE_MESSAGE_FROM_CONTEXT} horas.'
-        )
-        context.job_queue.run_once(
-            callback=job_delete_message_from_context,
-            when=timedelta(hours=HOURS_DELETE_MESSAGE_FROM_CONTEXT),
-            data=data,
-            name=f'{complete_function_caller}_{ObjectId()}',
-            chat_id=chat_id,
-            job_kwargs=BASE_JOB_KWARGS,
+        hours = get_hours_delete_message_from_context(auto_delete_message)
+        create_job_delete_message_from_context(
+            function_caller=complete_function_caller,
+            context=context,
+            response=response,
+            hours=hours
         )
 
     return response
+
+
+def create_job_delete_message_from_context(
+    function_caller: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    response: Message,
+    hours: int = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+):
+    chat_id = response.chat_id
+    message_id = response.message_id
+    job_name = f'DELETE_MESSAGE_FROM_CONTEXT_{chat_id}_{message_id}'
+    data = {
+        'message_id': message_id,
+        'function_caller': function_caller,
+    }
+    print(
+        f'Mensagem de ID {message_id} do chat de ID {chat_id} '
+        f'será excluida em {hours} horas.'
+    )
+    if not job_exists(context=context, job_name=job_name):
+        context.job_queue.run_once(
+            callback=job_delete_message_from_context,
+            when=timedelta(hours=hours),
+            data=data,
+            name=job_name,
+            chat_id=chat_id,
+            job_kwargs=BASE_JOB_KWARGS,
+        )
+    else:
+        print(f'Job "{job_name}" já existe.')
 
 
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
@@ -873,6 +903,24 @@ def get_refresh_close_keyboard(
     ])
 
 
+def get_hours_delete_message_from_context(value: Union[bool, int]) -> int:
+    '''Retorna o tempo em horas para deletar uma mensagem após um tempo
+    pré determinado.
+    '''
+
+    if value is True:
+        hours = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+    elif isinstance(value, int) and value > 0:
+        hours = value
+    else:
+        raise TypeError(
+            f'value precisa ser do tipo "bool" ou "int" ({type(value)}). '
+            f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
+        )
+
+    return hours
+
+
 def is_verbose(args: list) -> bool:
     if args is None:
         return False
@@ -885,6 +933,18 @@ def is_verbose(args: list) -> bool:
     return result
 
 
+def is_chat_group(message: Message = None, chat_type: str = None) -> bool:
+    if isinstance(message, Message):
+        chat_type = message.chat.type
+    elif not isinstance(chat_type, str):
+        raise TypeError(
+            f'message precisa ser do tipo "Message" ({type(message)}) ou '
+            f'chat_type precisa ser do tipo "str" ({type(chat_type)})'
+        )
+
+    return chat_type in CHAT_TYPE_GROUPS
+
+
 if __name__ == '__main__':
     d = {
         'drop': 10,
@@ -895,3 +955,5 @@ if __name__ == '__main__':
     }
     print(d1 := callback_data_to_string(d))
     print(d2 := callback_data_to_dict(d1))
+
+    print(is_chat_group(chat_type='group'))

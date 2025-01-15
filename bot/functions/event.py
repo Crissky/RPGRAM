@@ -17,7 +17,7 @@ from repository.mongo.models.config import GroupModel
 from rpgram.group import Group
 
 
-MAX_EVENT_TIMES = 2
+MAX_BOOST_EVENTS = 2
 
 
 def add_event_points_from_player(
@@ -54,8 +54,8 @@ def create_event(
 ):
     chat_id = context._chat_id
     now = get_brazil_time_now()
-    mult_times = randint(1, MAX_EVENT_TIMES) if is_boosted_day(now) else 1
-    total_events = num_events * mult_times
+    boost_events = randint(0, MAX_BOOST_EVENTS) if is_boosted_day(now) else 0
+    total_events = num_events + boost_events
     events = {
         'treasure': 100,
         'ambush': 15,

@@ -1,8 +1,10 @@
+from datetime import timedelta
 from math import sqrt
 from random import choice
 from time import sleep
 from typing import List, Union
 
+from bson import ObjectId
 from telegram import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -87,6 +89,7 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
+from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.seller import SELLER_NAME
 from bot.constants.chat_xp import SECTION_TEXT_XP
 from bot.decorators import (
@@ -115,6 +118,7 @@ from bot.functions.chat import (
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,
+    delete_message_from_context,
     edit_message_text,
     message_edit_reply_markup,
     reply_typing,
@@ -164,6 +168,11 @@ from rpgram.consumables import (
     TrocadoPouchConsumable
 )
 from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
+
+
+DROPS_CHAT_DATA_KEY = 'drops'
+MINUTES_TO_TIMEOUT_DROP = 60
+
 
 
 # ROUTES
@@ -1247,8 +1256,8 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Checa se o item pode ser pego, se não, cancela a ação e apaga a mensagem
     # Só pode ser pego se no dicionário drop contiver o message_id como chave e
     # True como valor. Caso contrário, cancela a ação e apaga a mensagem.
-    if 'drops' in context.chat_data:
-        drops = context.chat_data['drops']
+    if DROPS_CHAT_DATA_KEY in context.chat_data:
+        drops = context.chat_data[DROPS_CHAT_DATA_KEY]
         if drops.get(message_id, None) is not True:
             drops.pop(message_id, None)
             query_text = f'Este item não existe mais.'
@@ -1327,7 +1336,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     query = update.callback_query
     message_id = update.effective_message.message_id
-    drops = context.chat_data.get('drops', {})
+    drops = context.chat_data.get(DROPS_CHAT_DATA_KEY, {})
     answer_text = 'Quebrando o item...'
 
     if drops.get(message_id, None) is True:
@@ -1642,16 +1651,25 @@ async def send_drop_message(
         response = await call_telegram_message_function(
             function_caller=f'SEND_DROP_MESSAGE(remaining={remaining})',
             context=context,
+            auto_delete_message=False,
             **call_telegram_kwargs
         )
 
         drops_message_id = response.message_id
-        drops = context.chat_data.get('drops', None)
+        drops = context.chat_data.get(DROPS_CHAT_DATA_KEY, None)
         if isinstance(drops, dict):
             drops[drops_message_id] = True
         else:
             create_and_put_drop_dict(context, drops_message_id)
 
+        context.job_queue.run_once(
+            callback=job_timeout_drop,
+            when=timedelta(minutes=MINUTES_TO_TIMEOUT_DROP),
+            data={'message_id': drops_message_id},
+            name=f'JOB_TIMEOUT_DROP_{ObjectId()}',
+            chat_id=context._chat_id,
+            job_kwargs=BASE_JOB_KWARGS,
+        )
         sleep(1)
 
 
@@ -1662,7 +1680,26 @@ def create_and_put_drop_dict(
     '''Cria o dicionário de DROPS que indica quais items dropados ainda podem 
     ser pegos'''
     drop_dict = {drops_message_id: True} if drops_message_id else {}
-    context.chat_data['drops'] = drop_dict
+    context.chat_data[DROPS_CHAT_DATA_KEY] = drop_dict
+
+
+async def job_timeout_drop(context: ContextTypes.DEFAULT_TYPE):
+    '''Job que exclui a mensagem do Drop e retira no dicionário o 
+    ID do mesmo após um tempo pré determinado.
+    '''
+
+    print('JOB_TIMEOUT_DROP()')
+    job = context.job
+    data = job.data
+    message_id = data['message_id']
+    drops = context.chat_data.get(DROPS_CHAT_DATA_KEY)
+    drops.pop(message_id, None)
+
+    await delete_message_from_context(
+        function_caller='JOB_TIMEOUT_DROP()',
+        context=context,
+        message_id=message_id
+    )
 
 
 def get_trocado_and_target_text(user_id: int, target_id: int) -> str:
