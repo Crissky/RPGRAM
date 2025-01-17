@@ -18,7 +18,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from bot.constants.close import CALLBACK_CLOSE
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.functions.general import get_attribute_group_or_player
-from bot.functions.job import job_exists
+from bot.functions.job import job_exists, remove_job_by_name
 from bot.functions.player import get_player_attribute_by_id
 from function.text import escape_basic_markdown_v2
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
@@ -629,7 +629,10 @@ def create_job_delete_message_from_context(
 ):
     chat_id = response.chat_id
     message_id = response.message_id
-    job_name = f'DELETE_MESSAGE_FROM_CONTEXT_{chat_id}_{message_id}'
+    job_name = get_job_delete_message_from_context_name(
+        chat_id=chat_id,
+        message_id=message_id
+    )
     data = {
         'message_id': message_id,
         'function_caller': function_caller,
@@ -649,6 +652,18 @@ def create_job_delete_message_from_context(
         )
     else:
         print(f'Job "{job_name}" já existe.')
+
+
+def remove_job_delete_message_from_context(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: int,
+    message_id: int
+):
+    job_name = get_job_delete_message_from_context_name(
+        chat_id=chat_id,
+        message_id=message_id
+    )
+    remove_job_by_name(context=context, job_name=job_name)
 
 
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
@@ -919,6 +934,10 @@ def get_hours_delete_message_from_context(value: Union[bool, int]) -> int:
         )
 
     return hours
+
+
+def get_job_delete_message_from_context_name(chat_id, message_id):
+    return f'DELETE_MESSAGE_FROM_CONTEXT_{chat_id}_{message_id}'
 
 
 def is_verbose(args: list) -> bool:
