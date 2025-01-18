@@ -127,6 +127,8 @@ async def add_xp_group(
     silent: bool,
     message_id: int = None,
     section_name: str = SECTION_TEXT_PUZZLE_XP,
+    section_start=SECTION_HEAD_XP_START,
+    section_end=SECTION_HEAD_XP_END,
 ):
     '''Adiciona XP aos jogadores vivos de um grupo.
     '''
@@ -151,8 +153,8 @@ async def add_xp_group(
     full_text = create_text_in_box(
         text=full_text,
         section_name=section_name,
-        section_start=SECTION_HEAD_XP_START,
-        section_end=SECTION_HEAD_XP_END
+        section_start=section_start,
+        section_end=section_end
     )
     send_message_kwargs = dict(
         chat_id=chat_id,
