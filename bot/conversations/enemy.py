@@ -228,6 +228,7 @@ async def create_job_enemy_attack(
             function=context.bot.send_message,
             context=context,
             need_response=False,
+            auto_delete_message=1,
             **reply_text_kwargs
         )
 
@@ -275,6 +276,7 @@ async def create_job_enemy_attack(
         function_caller='JOB_START_AMBUSH()',
         function=context.bot.send_message,
         context=context,
+        auto_delete_message=3,
         **send_message_kwargs
     )
     sleep(2)
@@ -1445,6 +1447,7 @@ async def send_ambush_message(
         function_caller='SEND_AMBUSH_MESSAGE()',
         function=context.bot.send_message,
         context=context,
+        auto_delete_message=1,
         **send_message_kwargs
     )
     message_id = response.message_id
@@ -1464,14 +1467,11 @@ async def add_xp_group(
 
     print('ADD_XP_GROUP()')
     char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
-
     total_allies = len(char_list)
 
     sum_level = sum([enemy.level for enemy in enemy_list])
     sum_multiplier = sum([enemy.points_multiplier for enemy in enemy_list])
-
     avg_level = sum_level // len(enemy_list)
-
     multiplied_level = (avg_level * sum_multiplier)
 
     full_text = ''
@@ -1511,6 +1511,7 @@ async def add_xp_group(
         function=context.bot.send_message,
         context=context,
         need_response=False,
+        auto_delete_message=1,
         **send_message_kwargs
     )
 
