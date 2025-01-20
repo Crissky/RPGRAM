@@ -279,6 +279,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=1,
             **reply_text_kwargs,
         )
         return ConversationHandler.END
@@ -343,6 +344,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=1,
             **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
@@ -1375,6 +1377,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     context=context,
                     need_response=False,
                     skip_retry=False,
+                    auto_delete_message=1,
                     **reply_text_kwargs,
                 )
             elif player.verbose:
