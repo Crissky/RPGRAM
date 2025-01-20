@@ -1,0 +1,1 @@
+from rpgram.minigames.secret_word.secret_word import SecretWordGame

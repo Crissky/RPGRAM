@@ -1,6 +1,4 @@
-from telegram.ext import (
-    ContextTypes
-)
+from telegram.ext import ContextTypes
 
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.event import add_event_points_from_group

@@ -1,7 +1,7 @@
 '''Arquivo principal que executa o telegram-bot.
 '''
 
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from decouple import config
 
 from telegram.ext import Application
@@ -40,6 +40,7 @@ from bot.conversations import (
 from bot.conversations import SEASON_JOBS_DEFINITIONS
 from bot.conversations.event import job_add_event_points
 from bot.conversations.help import job_info_deploy_bot
+from bot.conversations.progress_year import show_percent_today
 from bot.conversations.rest import autorest_midnight
 from bot.conversations.seller import job_create_new_items
 from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
@@ -150,6 +151,13 @@ def main() -> None:
         when=timedelta(minutes=1),
         chat_id=MY_GROUP_ID,
         name='JOB_ADD_EVENT_POINTS_ON_START',
+        job_kwargs=BASE_JOB_KWARGS,
+    )
+    application.job_queue.run_daily(
+        callback=show_percent_today,
+        time=time(8+3),
+        name='SHOW_PERCENT_TODAY',
+        chat_id=MY_GROUP_ID,
         job_kwargs=BASE_JOB_KWARGS,
     )
 

@@ -81,6 +81,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=1,
             **reply_text_kwargs,
         )
 
