@@ -26,6 +26,8 @@ from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
 CHAT_TYPE_GROUPS = (ChatType.GROUP, ChatType.SUPERGROUP)
+MIN_AUTODELETE_TIME = timedelta(minutes=15)
+MIDDLE_AUTODELETE_TIME = timedelta(minutes=30)
 
 
 # TEXTS
@@ -520,7 +522,7 @@ async def call_telegram_message_function(
     context: ContextTypes.DEFAULT_TYPE,
     need_response: bool = True,
     skip_retry: bool = False,
-    auto_delete_message: Union[bool, int] = True,
+    auto_delete_message: Union[bool, int, timedelta] = True,
     **kwargs
 ) -> Union[Any, Message]:
     '''Função que chama qualquer função de mensagem do telegram. 
@@ -541,6 +543,8 @@ async def call_telegram_message_function(
     em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
     Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
     quantidade de horas igual ao valor passado.
+    E se for um timedelta, a mensagem será excluída de acordo com o tempo 
+    passado no timedelta.
     '''
 
     print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
@@ -610,12 +614,11 @@ async def call_telegram_message_function(
             f'{function_caller}->'
             f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
         )
-        hours = get_hours_delete_message_from_context(auto_delete_message)
         create_job_delete_message_from_context(
             function_caller=complete_function_caller,
             context=context,
-            response=response,
-            hours=hours
+            message=response,
+            when=auto_delete_message
         )
 
     return response
@@ -624,11 +627,14 @@ async def call_telegram_message_function(
 def create_job_delete_message_from_context(
     function_caller: str,
     context: ContextTypes.DEFAULT_TYPE,
-    response: Message,
-    hours: int = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+    message: Message,
+    when: Union[bool, int, timedelta] = True,
 ):
-    chat_id = response.chat_id
-    message_id = response.message_id
+    '''Cria o job que excluirá a mensagem após o tempo passado em `when`.
+    '''
+
+    chat_id = message.chat_id
+    message_id = message.message_id
     job_name = get_job_delete_message_from_context_name(
         chat_id=chat_id,
         message_id=message_id
@@ -637,14 +643,15 @@ def create_job_delete_message_from_context(
         'message_id': message_id,
         'function_caller': function_caller,
     }
+    when = get_hours_delete_message_from_context(when)
     print(
         f'Mensagem de ID {message_id} do chat de ID {chat_id} '
-        f'será excluida em {hours} horas.'
+        f'será excluida em {when} horas.'
     )
     if not job_exists(context=context, job_name=job_name):
         context.job_queue.run_once(
             callback=job_delete_message_from_context,
-            when=timedelta(hours=hours),
+            when=when,
             data=data,
             name=job_name,
             chat_id=chat_id,
@@ -918,22 +925,25 @@ def get_refresh_close_keyboard(
     ])
 
 
-def get_hours_delete_message_from_context(value: Union[bool, int]) -> int:
-    '''Retorna o tempo em horas para deletar uma mensagem após um tempo
+def get_hours_delete_message_from_context(
+    value: Union[bool, int, timedelta]
+) -> timedelta:
+    '''Retorna o tempo para deletar uma mensagem após um tempo
     pré determinado.
     '''
 
     if value is True:
         hours = HOURS_DELETE_MESSAGE_FROM_CONTEXT
-    elif isinstance(value, int) and value > 0:
-        hours = value
+    if isinstance(value, int) and value > 0:
+        hours = timedelta(hours=value)
+    if isinstance(hours, timedelta):
+        return hours
     else:
         raise TypeError(
-            f'value precisa ser do tipo "bool" ou "int" ({type(value)}). '
+            f'value precisa ser do tipo '
+            f'"bool", "int" ou "timedelta" ({type(value)}). '
             f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
         )
-
-    return hours
 
 
 def get_job_delete_message_from_context_name(chat_id, message_id):

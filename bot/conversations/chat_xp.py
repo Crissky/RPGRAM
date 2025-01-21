@@ -21,6 +21,7 @@ from bot.decorators.char import skip_if_dead_char_silent
 from bot.decorators.job import skip_command_if_spawn_timeout
 from bot.functions.char import add_xp
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     send_private_message
 )
@@ -88,7 +89,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
-            auto_delete_message=1,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     elif player.verbose:

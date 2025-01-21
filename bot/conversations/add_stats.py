@@ -26,6 +26,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS,
 )
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     answer,
     call_telegram_message_function,
     edit_message_text,
@@ -208,7 +209,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
-            auto_delete_message=1,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
