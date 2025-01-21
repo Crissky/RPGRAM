@@ -26,6 +26,8 @@ from rpgram.enums import EmojiEnum, FaceEmojiEnum
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
 CHAT_TYPE_GROUPS = (ChatType.GROUP, ChatType.SUPERGROUP)
+MIN_AUTODELETE_TIME = timedelta(minutes=15)
+MIDDLE_AUTODELETE_TIME = timedelta(minutes=30)
 
 
 # TEXTS
