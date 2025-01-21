@@ -113,6 +113,7 @@ from bot.functions.bag import (
 )
 from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     answer,
     call_telegram_message_function,
     callback_data_to_dict,
@@ -279,7 +280,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
-            auto_delete_message=1,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
         return ConversationHandler.END
@@ -344,7 +345,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
-            auto_delete_message=1,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
@@ -1377,7 +1378,7 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     context=context,
                     need_response=False,
                     skip_retry=False,
-                    auto_delete_message=1,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                     **reply_text_kwargs,
                 )
             elif player.verbose:

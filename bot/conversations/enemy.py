@@ -65,6 +65,7 @@ from bot.decorators.player import skip_if_no_singup_player
 from bot.decorators.print import print_basic_infos
 from bot.functions.bag import drop_random_items_from_bag
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     REPLY_MARKUP_DEFAULT,
     answer,
     callback_data_to_dict,
@@ -228,7 +229,7 @@ async def create_job_enemy_attack(
             function=context.bot.send_message,
             context=context,
             need_response=False,
-            auto_delete_message=1,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs
         )
 
@@ -1447,7 +1448,7 @@ async def send_ambush_message(
         function_caller='SEND_AMBUSH_MESSAGE()',
         function=context.bot.send_message,
         context=context,
-        auto_delete_message=1,
+        auto_delete_message=MIN_AUTODELETE_TIME,
         **send_message_kwargs
     )
     message_id = response.message_id
@@ -1511,7 +1512,7 @@ async def add_xp_group(
         function=context.bot.send_message,
         context=context,
         need_response=False,
-        auto_delete_message=1,
+        auto_delete_message=MIN_AUTODELETE_TIME,
         **send_message_kwargs
     )
 
