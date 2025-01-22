@@ -34,6 +34,7 @@ from bot.constants.filters import (
 from bot.constants.sign_up_player import COMMANDS as COMMANDS_SIGN_UP_PLAYER
 from bot.decorators import print_basic_infos
 from bot.functions.chat import (
+    HALF_AUTODELETE_TIME,
     call_telegram_message_function,
     edit_message_text,
     reply_typing
@@ -96,6 +97,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             context=context,
             need_response=True,
             skip_retry=False,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
@@ -128,6 +130,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             context=context,
             need_response=True,
             skip_retry=False,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
         context.user_data['response'] = response
@@ -155,6 +158,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context=context,
         need_response=True,
         skip_retry=False,
+        auto_delete_message=HALF_AUTODELETE_TIME,
         **reply_text_kwargs,
     )
     context.user_data['response'] = response
@@ -369,6 +373,7 @@ async def create_char(
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
@@ -410,6 +415,7 @@ async def create_char(
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     else:
@@ -435,6 +441,7 @@ async def create_char(
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
@@ -456,6 +463,7 @@ async def create_char(
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **delete_message_kwargs,
         )
 

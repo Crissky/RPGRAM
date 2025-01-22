@@ -13,6 +13,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS
 )
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     get_close_keyboard,
     reply_typing
@@ -63,6 +64,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 context=context,
                 need_response=False,
                 skip_retry=False,
+                auto_delete_message=MIN_AUTODELETE_TIME,
                 **reply_text_kwargs,
             )
         except (KeyError, ValueError) as error:
@@ -78,6 +80,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 context=context,
                 need_response=False,
                 skip_retry=False,
+                auto_delete_message=MIN_AUTODELETE_TIME,
                 **reply_text_kwargs,
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
@@ -103,6 +106,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
@@ -124,6 +128,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     elif len(args) != 2:
@@ -146,6 +151,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
