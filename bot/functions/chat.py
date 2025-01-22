@@ -933,11 +933,11 @@ def get_hours_delete_message_from_context(
     '''
 
     if value is True:
-        hours = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+        value = HOURS_DELETE_MESSAGE_FROM_CONTEXT
     if isinstance(value, int) and value > 0:
-        hours = timedelta(hours=value)
-    if isinstance(hours, timedelta):
-        return hours
+        value = timedelta(hours=value)
+    if isinstance(value, timedelta):
+        return value
     else:
         raise TypeError(
             f'value precisa ser do tipo '
