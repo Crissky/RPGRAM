@@ -942,6 +942,7 @@ def get_hours_delete_message_from_context(
         raise TypeError(
             f'value precisa ser do tipo '
             f'"bool", "int" ou "timedelta" ({type(value)}). '
+            f'Caso seja do tipo "bool", deve ser True. '
             f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
         )
 
@@ -986,3 +987,8 @@ if __name__ == '__main__':
     print(d2 := callback_data_to_dict(d1))
 
     print(is_chat_group(chat_type='group'))
+
+    print('GET_HOURS_DELETE_MESSAGE_FROM_CONTEXT()')
+    print(get_hours_delete_message_from_context(True))
+    print(get_hours_delete_message_from_context(5))
+    print(get_hours_delete_message_from_context(timedelta(minutes=12)))
