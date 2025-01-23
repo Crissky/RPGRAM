@@ -113,6 +113,7 @@ from bot.functions.bag import (
 )
 from bot.functions.char import add_xp, save_char
 from bot.functions.chat import (
+    HALF_AUTODELETE_TIME,
     MIN_AUTODELETE_TIME,
     answer,
     call_telegram_message_function,
@@ -345,7 +346,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
-            auto_delete_message=MIN_AUTODELETE_TIME,
+            auto_delete_message=HALF_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
