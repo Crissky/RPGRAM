@@ -64,7 +64,11 @@ from bot.constants.filters import (
     BASIC_COMMAND_FILTER,
     PREFIX_COMMANDS
 )
-from bot.functions.chat import call_telegram_message_function, get_close_button
+from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
+    call_telegram_message_function,
+    get_close_button
+)
 from bot.decorators import print_basic_infos
 from bot.decorators.player import alert_if_not_chat_owner
 from bot.functions.general import get_attribute_group_or_player
@@ -180,6 +184,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         function_caller='HELP_START()',
         context=context,
         need_response=False,
+        auto_delete_message=MIN_AUTODELETE_TIME,
         **call_telegram_kwsargs
     )
 
