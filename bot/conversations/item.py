@@ -1,3 +1,8 @@
+'''
+Módulo responsável por gerenciar o evento de Baú do Tesouro.
+'''
+
+
 from datetime import timedelta
 from random import choice
 from typing import Iterable
