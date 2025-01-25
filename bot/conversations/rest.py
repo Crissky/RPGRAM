@@ -33,6 +33,7 @@ from bot.decorators import (
 from bot.functions.bag import TENT, have_tent, sub_tent_from_bag
 from bot.functions.char import save_char
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     get_close_keyboard,
     send_private_message
@@ -113,6 +114,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     context=context,
                     need_response=False,
                     skip_retry=False,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                     **reply_text_kwargs,
                 )
     elif player_name_list and not caller_have_tent:
@@ -141,6 +143,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
@@ -219,6 +222,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 

@@ -8,6 +8,7 @@ from telegram.ext import (
     PrefixHandler,
 )
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     edit_message_text,
     get_close_button
@@ -79,6 +80,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
