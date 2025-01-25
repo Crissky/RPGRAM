@@ -1,3 +1,9 @@
+'''
+Módulo responsável por exibir diariamente a porcentagem do dia atual em 
+relação ao total de dias do ano vigente.
+'''
+
+
 from datetime import datetime
 
 from telegram.ext import ContextTypes
@@ -24,6 +30,12 @@ async def show_percent_today(context: ContextTypes.DEFAULT_TYPE):
     percentage = percent_today()
     text = beautiful_percentage_bar(percentage)
     today = get_brazil_time_now()
+    current_yday = today.timetuple().tm_yday
+    year = today.year
+    text = (
+        f'Hoje é o *{current_yday}º dia de {year}*.\n'
+        f'{text}'
+    )
 
     text = create_text_in_box(
         text=text,

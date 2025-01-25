@@ -21,13 +21,18 @@ from bot.functions.general import get_attribute_group_or_player
 from bot.functions.job import job_exists, remove_job_by_name
 from bot.functions.player import get_player_attribute_by_id
 from function.text import escape_basic_markdown_v2
+from rpgram.boosters.equipment import Equipment
+from rpgram.consumables.consumable import Consumable
+from rpgram.consumables.other import GemstoneConsumable, TrocadoPouchConsumable
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
+from rpgram.item import Item
+from random import randint
 
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
 CHAT_TYPE_GROUPS = (ChatType.GROUP, ChatType.SUPERGROUP)
 MIN_AUTODELETE_TIME = timedelta(minutes=15)
-MIDDLE_AUTODELETE_TIME = timedelta(minutes=30)
+HALF_AUTODELETE_TIME = timedelta(minutes=30)
 
 
 # TEXTS
@@ -942,6 +947,7 @@ def get_hours_delete_message_from_context(
         raise TypeError(
             f'value precisa ser do tipo '
             f'"bool", "int" ou "timedelta" ({type(value)}). '
+            f'Caso seja do tipo "bool", deve ser True. '
             f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
         )
 
@@ -960,6 +966,24 @@ def is_verbose(args: list) -> bool:
             result = True
 
     return result
+
+
+def get_autodelete_time_for_drop(item: Item = None) -> timedelta:
+    min_minutes = 15
+    max_minutes = 20
+
+    if item and isinstance(item.item, GemstoneConsumable):
+        max_minutes = 40
+    elif item and isinstance(item.item, TrocadoPouchConsumable):
+        max_minutes = 30
+    elif item and isinstance(item.item, Consumable):
+        max_minutes = 20
+    elif item and isinstance(item.item, Equipment):
+        max_minutes = 60
+
+    minutes = randint(min_minutes, max_minutes)
+
+    return timedelta(minutes=minutes)
 
 
 def is_chat_group(message: Message = None, chat_type: str = None) -> bool:
@@ -986,3 +1010,10 @@ if __name__ == '__main__':
     print(d2 := callback_data_to_dict(d1))
 
     print(is_chat_group(chat_type='group'))
+
+    print('GET_HOURS_DELETE_MESSAGE_FROM_CONTEXT()')
+    print(get_hours_delete_message_from_context(True))
+    print(get_hours_delete_message_from_context(5))
+    print(get_hours_delete_message_from_context(timedelta(minutes=12)))
+
+    print('GET_AUTODELETE_TIME_FOR_DROP()', get_autodelete_time_for_drop())

@@ -25,6 +25,7 @@ from bot.constants.filters import (
     PREFIX_COMMANDS,
 )
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     get_close_keyboard
 )
@@ -118,6 +119,7 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context=context,
         need_response=False,
         skip_retry=False,
+        auto_delete_message=MIN_AUTODELETE_TIME,
         **reply_text_kwargs,
     )
 
@@ -171,6 +173,7 @@ async def get_random_debuff(
                 context=context,
                 need_response=False,
                 skip_retry=False,
+                auto_delete_message=MIN_AUTODELETE_TIME,
                 **reply_text_kwargs,
             )
             return ConversationHandler.END
@@ -194,6 +197,7 @@ async def get_random_debuff(
         context=context,
         need_response=False,
         skip_retry=False,
+        auto_delete_message=MIN_AUTODELETE_TIME,
         **reply_text_kwargs,
     )
 
