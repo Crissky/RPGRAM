@@ -33,7 +33,7 @@ async def show_percent_today(context: ContextTypes.DEFAULT_TYPE):
     current_yday = today.timetuple().tm_yday
     year = today.year
     text = (
-        f'Hoje é o dia *{current_yday}º de {year}*.\n'
+        f'Hoje é o *{current_yday}º dia de {year}*.\n'
         f'{text}'
     )
 
