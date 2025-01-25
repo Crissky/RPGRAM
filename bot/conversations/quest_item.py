@@ -148,6 +148,7 @@ async def job_start_item_quest(context: ContextTypes.DEFAULT_TYPE):
         function_caller='JOB_START_ITEM_QUEST()',
         function=context.bot.send_message,
         context=context,
+        auto_delete_message=3,
         **call_telegram_kwargs
     )
     job_data['response'] = response
