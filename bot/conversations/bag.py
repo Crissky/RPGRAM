@@ -122,6 +122,7 @@ from bot.functions.chat import (
     delete_message,
     delete_message_from_context,
     edit_message_text,
+    get_autodelete_time_for_drop,
     message_edit_reply_markup,
     reply_typing,
     send_alert_or_message,
@@ -173,8 +174,6 @@ from rpgram.enums import EmojiEnum, EquipmentEnum, TrocadoEnum
 
 
 DROPS_CHAT_DATA_KEY = 'drops'
-MINUTES_TO_TIMEOUT_DROP = 60
-
 
 
 # ROUTES
@@ -1667,9 +1666,10 @@ async def send_drop_message(
         else:
             create_and_put_drop_dict(context, drops_message_id)
 
+        when = get_autodelete_time_for_drop(item=item)
         context.job_queue.run_once(
             callback=job_timeout_drop,
-            when=timedelta(minutes=MINUTES_TO_TIMEOUT_DROP),
+            when=when,
             data={'message_id': drops_message_id},
             name=f'JOB_TIMEOUT_DROP_{ObjectId()}',
             chat_id=context._chat_id,
