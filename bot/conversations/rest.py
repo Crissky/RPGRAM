@@ -15,6 +15,7 @@ from bot.constants.rest import (
     COMMANDS,
     MINUTES_TO_RECOVERY_ACTION_POINTS,
     MINUTES_TO_RECOVERY_HIT_POINTS,
+    REPLY_TEXT_REST_INDAY,
     REPLY_TEXT_REST_MIDDAY,
     REPLY_TEXT_REST_MIDNIGHT,
     REPLY_TEXTS_ALREADY_RESTING,
@@ -33,6 +34,7 @@ from bot.decorators import (
 from bot.functions.bag import TENT, have_tent, sub_tent_from_bag
 from bot.functions.char import save_char
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     get_close_keyboard,
     send_private_message
@@ -44,6 +46,8 @@ from constant.text import (
     SECTION_HEAD_ACTION_POINTS_END,
     SECTION_HEAD_ACTION_POINTS_START,
     SECTION_HEAD_REST_END,
+    SECTION_HEAD_REST_INDAY_END,
+    SECTION_HEAD_REST_INDAY_START,
     SECTION_HEAD_REST_MIDDAY_END,
     SECTION_HEAD_REST_MIDDAY_START,
     SECTION_HEAD_REST_MIDNIGHT_END,
@@ -113,6 +117,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     context=context,
                     need_response=False,
                     skip_retry=False,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                     **reply_text_kwargs,
                 )
     elif player_name_list and not caller_have_tent:
@@ -141,6 +146,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
@@ -219,6 +225,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
@@ -429,6 +436,10 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
             reply_text_rest = choice(REPLY_TEXT_REST_MIDDAY)
             section_start = SECTION_HEAD_REST_MIDDAY_START
             section_end = SECTION_HEAD_REST_MIDDAY_END
+        elif now.hour in range(6, 18):
+            reply_text_rest = choice(REPLY_TEXT_REST_INDAY)
+            section_start = SECTION_HEAD_REST_INDAY_START
+            section_end = SECTION_HEAD_REST_INDAY_END
         else:
             reply_text_rest = choice(REPLY_TEXT_REST_MIDNIGHT)
             section_start = SECTION_HEAD_REST_MIDNIGHT_START

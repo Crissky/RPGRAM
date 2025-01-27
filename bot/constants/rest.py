@@ -199,3 +199,183 @@ REPLY_TEXT_REST_MIDDAY = [
     'sentem a necessidade de um breve descanso. Considerem encontrar um '
     'refúgio para recarregar as energias antes da próxima jornada.',
 ]
+
+
+REPLY_TEXT_REST_INDAY = [
+    'Sob o cálido abraço do astro-rei, vossos corpos repousarão '
+    'em breve alívio.',
+    'Eis que a jornada cessa por ora, e o cansaço encontra sua cura no '
+    'silêncio do dia.',
+    'Sob o céu diáfano, permiti que a exaustão seja lavada pelo '
+    'sopro manso da tarde.',
+    'Aqui, onde a brisa é leve e o solo acolhedor, o descanso vos espera.',
+    'Pousai vossas armas e armaduras, pois a paz do momento clama por vós.',
+    'O tempo aquieta sua marcha e convida-vos a '
+    'partilhar do banquete do repouso.',
+    'No véu dourado da aurora tardia, vossas almas encontrarão refrigério.',
+    'Deixai que o calor suave do dia afaste a exaustão que '
+    'vos pesa o espírito.',
+    'O sol vos guia à sombra benigna onde o descanso é promessa e renovo.',
+    'Sob a canção do vento, aqui fareis vossa pausa '
+    'entre os rigores do destino.',
+    'Deixai que o murmúrio das folhas vos embale ao '
+    'refúgio do breve descanso.',
+    'Eis um instante sagrado, onde a paz e o alívio vos '
+    'aguardam como velhos amigos.',
+    'No âmago do dia, a trégua vos saúda; deixai o fardo '
+    'cair e a calma reinar.',
+    'A lida cessará, ainda que por momentos, e o alento '
+    'vos restaurará o vigor.',
+    'Nos braços generosos do dia, repousai, pois a jornada ainda é longa.',
+    'O fulgor da tarde anuncia a hora de abrandar vossos corpos e mentes.',
+    'No fulcro do dia, até mesmo os guerreiros mais bravos hão de '
+    'sucumbir ao descanso.',
+    'Sob o firmamento diáfano, que a quietude vos abrace como um '
+    'manto de seda.',
+    'O crepitar do fogo e o sussurro do vento anunciam o momento de pausa.',
+    'Deixai que o canto dos pássaros vos acompanhe ao breve reino do repouso.',
+    'No éden efêmero do descanso, o sol é o guardião de '
+    'vossos sonhos diurnos.',
+    'O calor do solo e a sombra das árvores vos convidam a '
+    'repousar sem temor.',
+    'Aqui o mundo se aquieta; aqui a luta cede lugar à serenidade.',
+    'Entre os sussurros da brisa e os raios do sol, vosso '
+    'cansaço será dissipado.',
+    'Sob os céus benevolentes, o descanso é vosso direito conquistado.',
+    'As forças do dia vos protegem; repousai sem pressa, pois o '
+    'perigo dorme também.',
+    'No coração do mundo desperto, vós também podereis vos render à calma.',
+    'O sol altivo vos contempla, mas não vos pressiona; a pausa é bem-vinda.',
+    'Nos minutos de trégua, que o calor do dia vos console e revigore.',
+    'Cessai vossos passos, pois a terra oferece seu abraço para '
+    'vossa recuperação.',
+    'Sob a abóbada celeste, que o tempo vos conceda o dom do '
+    'alívio passageiro.',
+    'A jornada silencia, e o horizonte vos concede uma pausa abençoada.',
+    'Entre o crepitar da fogueira e o canto do vento, o '
+    'descanso vos confortará.',
+    'O sol caminha devagar no firmamento, tal como vós '
+    'deveis abrandar vosso ritmo.',
+    'Sob os olhares do dia eterno, fazei morada breve no refúgio do repouso.',
+    'Permiti que o tempo vos toque suavemente, levando convosco as '
+    'dores da jornada.',
+    'No altar do descanso, deitai vosso cansaço e elevai vossas '
+    'forças novamente.',
+    'No fulgor do meio-dia, mesmo os mais destemidos encontram '
+    'alívio na pausa.',
+    'O mundo respira ao vosso redor; uni-vos ao seu ritmo e repousai.',
+    'Deixai que a vida, por um breve instante, cesse seu tumulto em '
+    'vossos corações.',
+    'Os deuses vos oferecem a sombra amiga; aceitai-a como bênção.',
+    'Sob o olhar plácido do firmamento, vossas almas podem descansar em paz.',
+    'Deixai o cansaço dissipar-se como a névoa que o sol dispersa.',
+    'Neste momento sagrado, a paz reina; não há inimigo que vos perturbe.',
+    'Os campos vos acolhem, e o sussurro do vento vos embala ao '
+    'sono reparador.',
+    'O sol generoso vos aquece, enquanto o espírito se renova na pausa.',
+    'Sob a árvore frondosa, o tempo se estica para vos ofertar serenidade.',
+    'No breve intervalo do dia, deixai que vossos corpos comunguem com a '
+    'terra.',
+    'O tempo concede uma trégua; aceitai-a, pois ela é rara e preciosa.',
+    'No teatro da vida, esta é a cena onde o descanso é o protagonista.',
+    'Sob o manto dourado do sol, o tempo se curva, e vós, heróis, tendes o '
+    'direito de repousar.',
+    'A luz do meio-dia acaricia os vossos corpos fatigados, '
+    'que a sombra do descanso vos abrace.',
+    'A jornada, embora árdua, faz-se breve diante do descanso que '
+    'o céu vos oferece.',
+    'Que a calma do dia alcance vossos corações, '
+    'e que a paz vos envolva como um manto.',
+    'Em meio à alvorada, é tempo de repouso, onde o '
+    'vento sussurra histórias antigas aos vossos ouvidos.',
+    'Que o brilho do sol a vossos olhos traga a serenidade, '
+    'e a quietude envolva vossas almas.',
+    'Agora, os pés que pisaram os caminhos árduos encontram alívio, '
+    'e os corpos cansados se estendem à sombra acolhedora.',
+    'O dia, em sua plenitude, oferece-vos uma pausa, como um '
+    'suspiro profundo no tempo que passa.',
+    'Aqui, neste instante, o fardo cessa, e os guerreiros de '
+    'grande coragem se entregam à breve paz do descanso.',
+    'À sombra das árvores e sob o olhar atento do céu, vós descansais, '
+    'como merecem os filhos da batalha.',
+    'O sol está alto, e a terra se oferece a vós, como um leito macio para '
+    'vossos corpos fatigados.',
+    'Que o silêncio do meio-dia vos acalme, '
+    'e que as horas passadas se dissipem como névoa ao vento.',
+    'O tempo, agora, repousa como vós, e o ritmo da '
+    'jornada desacelera neste breve refúgio.',
+    'Em meio à vastidão do dia, a calma chegou, como um '
+    'bálsamo para vossos espíritos cansados.',
+    'A luz dourada do sol se derrama sobre vós, como um '
+    'véu de tranquilidade que se estende sobre a terra.',
+    'Agora, vós repousais sob o abraço caloroso do sol, '
+    'como guerreiros que merecem a graça do descanso.',
+    'As folhas sussurram com a brisa, e vossos corpos, por fim, '
+    'encontram a paz sob o manto do dia.',
+    'O calor do sol aquece, e o peso da jornada se dissipa, '
+    'tal qual as sombras da noite ao amanhecer.',
+    'Vós descansais, como heróis que retornam ao lar, '
+    'temporariamente afastados das guerras da existência.',
+    'Que os vossos corpos, exaustos pela luta, encontrem alívio na '
+    'quietude do dia que se estende à vossa frente.',
+    'O sol, guardião da luz, vela por vós enquanto repousais, '
+    'e o mundo à vossa volta sussurra serenidade.',
+    'Vós, aventureiros incansáveis, agora sois acariciados pelo descanso, '
+    'como a brisa suave que beija o rosto.',
+    'A fatiga de mil passos se dissolve enquanto o dia, '
+    'em sua magnificência, vos oferece um breve descanso.',
+    'Na calma deste momento, o sol se põe como um guardião que '
+    'vigia vossos sonhos.',
+    'É hora de repouso, de alívio, quando o tempo, como um rio, '
+    'flui tranquilo e sereno.',
+    'A batalha, embora distante, faz-se nublada enquanto o '
+    'dia vos concede sua quietude.',
+    'O calor do dia é um convite a vós, viajantes, para pausardes e '
+    'renovardes vossas forças.',
+    'Que o vento suave e o brilho solar restaurarem vossos corpos e '
+    'mentes fatigadas.',
+    'Agora, como reis e rainhas em seus palácios, vós repousais sob a '
+    'misericórdia do sol.',
+    'Em pleno dia, onde as sombras se fazem suaves, vós encontrais um '
+    'refúgio para vossos corações.',
+    'Que o sol, generoso em seu domínio, vos conceda a calma merecida após '
+    'tanta dureza.',
+    'Os campos ao redor, serenos e vastos, convidam-vos a descansar, '
+    'como flores que se abrem ao sol.',
+    'Agora, neste compasso tranquilo, vossas armas repousam ao lado, '
+    'e vossos espíritos se acalmam.',
+    'Em meio ao campo, onde o sol dança entre as folhas, vós encontrais o '
+    'alívio desejado.',
+    'Que o som das folhas sussurrantes e o calor da luz tragam descanso aos '
+    'guerreiros que merecem paz.',
+    'Vós descansais, entre o céu e a terra, enquanto o sol observa com seus '
+    'olhos dourados.',
+    'A jornada continua, mas neste breve intervalo, o sol se torna vosso '
+    'companheiro de descanso.',
+    'Que a quietude do momento acalme o furor do dia e traga a serenidade '
+    'que vossos corpos buscam.',
+    'Assim, entre o brilho dourado e a sombra acolhedora, vós repousais, '
+    'longe da luta que tanto vos consome.',
+    'O céu, em sua plenitude, sorri para vós enquanto encontrais descanso na '
+    'glória do meio-dia.',
+    'Em cada respiração, o dia se torna um véu que vos protege do peso do '
+    'mundo exterior.',
+    'As horas do sol passam lentas e brandas, e vós, guerreiros, '
+    'encontrais serenidade nos braços do descanso.',
+    'Por um breve momento, os corações batem em paz, '
+    'enquanto a terra oferece descanso aos vossos corpos fatigados.',
+    'O calor suave do dia, como um abraço acolhedor, '
+    'acalma as almas inquietas de vós, filhos da guerra.',
+    'Os ecos das batalhas se apagam, e o silêncio acolhedor do '
+    'descanso se faz presente.',
+    'Na vastidão do dia, a paz reina, e vossos corpos podem se '
+    'entregar ao alívio do repouso.',
+    'O sol, em sua majestade, vos convida a pausar, como um pai que '
+    'acalma os filhos cansados.',
+    'Vós sois abençoados por este descanso, como o campo que se '
+    'acalma sob a carícia do vento.',
+    'Que o mundo que vos rodeia seja um campo tranquilo onde vossos '
+    'corpos encontrem alívio.',
+    'Agora, heróis, sob o brilho dourado, vós repousais, como estrelas que '
+    'piscam brevemente antes de uma nova jornada.',
+]

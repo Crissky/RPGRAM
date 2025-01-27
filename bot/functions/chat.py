@@ -930,28 +930,6 @@ def get_refresh_close_keyboard(
     ])
 
 
-def get_hours_delete_message_from_context(
-    value: Union[bool, int, timedelta]
-) -> timedelta:
-    '''Retorna o tempo para deletar uma mensagem após um tempo
-    pré determinado.
-    '''
-
-    if value is True:
-        value = HOURS_DELETE_MESSAGE_FROM_CONTEXT
-    if isinstance(value, int) and value > 0:
-        value = timedelta(hours=value)
-    if isinstance(value, timedelta):
-        return value
-    else:
-        raise TypeError(
-            f'value precisa ser do tipo '
-            f'"bool", "int" ou "timedelta" ({type(value)}). '
-            f'Caso seja do tipo "bool", deve ser True. '
-            f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
-        )
-
-
 def get_job_delete_message_from_context_name(chat_id, message_id):
     return f'DELETE_MESSAGE_FROM_CONTEXT_{chat_id}_{message_id}'
 
@@ -968,7 +946,38 @@ def is_verbose(args: list) -> bool:
     return result
 
 
-def get_autodelete_time_for_drop(item: Item = None) -> timedelta:
+def get_autodelete_time(
+    chat_id: int = None,
+    minutes: int = 0,
+    hours: int = 0
+) -> timedelta:
+    if minutes < 0 or hours < 0:
+        raise ValueError(
+            'Os valores de tempo (minutes e hours) '
+            'não podem ser menores que zero.'
+        )
+    elif minutes == hours == 0:
+        raise ValueError(
+            'minutes e hours não podem ser igual zero simultâneamente. '
+        )
+
+    time_multiplier = 1
+    if isinstance(chat_id, int):
+        # TODO alterar `time_multiplier` para o valor do grupo
+        ...
+
+    kwargs = dict(
+        minutes=minutes * time_multiplier,
+        hours=hours * time_multiplier,
+    )
+
+    return timedelta(**kwargs)
+
+
+def get_autodelete_time_for_drop(
+    chat_id: int = None,
+    item: Item = None
+) -> timedelta:
     min_minutes = 15
     max_minutes = 20
 
@@ -983,7 +992,30 @@ def get_autodelete_time_for_drop(item: Item = None) -> timedelta:
 
     minutes = randint(min_minutes, max_minutes)
 
-    return timedelta(minutes=minutes)
+    return get_autodelete_time(chat_id=chat_id, minutes=minutes)
+
+
+def get_hours_delete_message_from_context(
+    chat_id: int = None,
+    value: Union[bool, int, timedelta] = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+) -> timedelta:
+    '''Retorna o tempo para deletar uma mensagem após um tempo
+    pré determinado.
+    '''
+
+    if value is True:
+        value = HOURS_DELETE_MESSAGE_FROM_CONTEXT
+    if isinstance(value, int) and value > 0:
+        value = get_autodelete_time(chat_id=chat_id, hours=value)
+    if isinstance(value, timedelta):
+        return value
+    else:
+        raise TypeError(
+            f'value precisa ser do tipo '
+            f'"bool", "int" ou "timedelta" ({type(value)}). '
+            f'Caso seja do tipo "bool", deve ser True. '
+            f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
+        )
 
 
 def is_chat_group(message: Message = None, chat_type: str = None) -> bool:
@@ -1012,8 +1044,8 @@ if __name__ == '__main__':
     print(is_chat_group(chat_type='group'))
 
     print('GET_HOURS_DELETE_MESSAGE_FROM_CONTEXT()')
-    print(get_hours_delete_message_from_context(True))
-    print(get_hours_delete_message_from_context(5))
-    print(get_hours_delete_message_from_context(timedelta(minutes=12)))
+    print(get_hours_delete_message_from_context(value=True))
+    print(get_hours_delete_message_from_context(value=5))
+    print(get_hours_delete_message_from_context(value=timedelta(minutes=12)))
 
     print('GET_AUTODELETE_TIME_FOR_DROP()', get_autodelete_time_for_drop())
