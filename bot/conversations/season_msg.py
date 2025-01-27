@@ -65,6 +65,7 @@ async def job_new_year(context: ContextTypes.DEFAULT_TYPE):
         function_caller='JOB_NEW_YEAR()',
         function=context.bot.send_message,
         context=context,
+        auto_delete_message=False,
         **send_message_kwargs
     )
 
@@ -123,6 +124,7 @@ async def job_christmas(context: ContextTypes.DEFAULT_TYPE):
         function_caller='JOB_CHRISTMAS()',
         function=context.bot.send_message,
         context=context,
+        auto_delete_message=False,
         **send_message_kwargs
     )
 
