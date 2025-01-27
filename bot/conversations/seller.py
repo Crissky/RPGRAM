@@ -56,6 +56,7 @@ from bot.decorators import (
 from bot.functions.bag import get_item_from_bag_by_position
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     answer,
     call_telegram_message_function,
     callback_data_to_dict,
@@ -183,6 +184,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
         return ConversationHandler.END
@@ -236,6 +238,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
@@ -589,6 +592,7 @@ async def job_create_new_items(context: ContextTypes.DEFAULT_TYPE):
         function=context.bot.send_message,
         context=context,
         need_response=False,
+        auto_delete_message=1,
         **call_telegram_kwargs
     )
 

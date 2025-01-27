@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes
 from bot.decorators.job import skip_if_spawn_timeout
 
 from bot.functions.char import activate_conditions
-from bot.functions.chat import send_private_message
+from bot.functions.chat import MIN_AUTODELETE_TIME, send_private_message
 from bot.functions.player import get_player_verbose, get_players_id_by_chat_id
 from constant.text import (
     SECTION_HEAD_STATUS_END,
@@ -67,6 +67,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                     chat_id=chat_id,
                     markdown=True,
                     close_by_owner=False,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                 )
             except BadRequest as e:
                 if  str(e).startswith("Can't parse entities"):
@@ -78,6 +79,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                         chat_id=chat_id,
                         markdown=False,
                         close_by_owner=False,
+                        auto_delete_message=MIN_AUTODELETE_TIME,
                     )
                 else:
                     raise

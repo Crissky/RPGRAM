@@ -24,6 +24,7 @@ from bot.decorators import print_basic_infos
 
 from bot.decorators.group import need_singup_group
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     answer,
     call_telegram_message_function,
     edit_message_text
@@ -63,6 +64,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
         return ConversationHandler.END
@@ -88,6 +90,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context=context,
         need_response=True,
         skip_retry=False,
+        auto_delete_message=MIN_AUTODELETE_TIME,
         **reply_text_kwargs,
     )
     context.user_data['response'] = response

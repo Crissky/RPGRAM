@@ -80,6 +80,7 @@ from bot.functions.char import (
     save_char
 )
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     callback_data_to_dict,
     callback_data_to_string,
     edit_message_text,
@@ -201,7 +202,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             need_response=False,
             markdown=True,
             reply_markup=reply_markup,
-            silent=silent
+            silent=silent,
+            auto_delete_message=MIN_AUTODELETE_TIME,
         )
 
 
@@ -964,6 +966,7 @@ async def action_use_skill(
             markdown=True,
             silent=silent,
             close_by_owner=False,
+            auto_delete_message=MIN_AUTODELETE_TIME
         )
         sleep(1)
 
