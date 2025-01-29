@@ -13,7 +13,7 @@ from telegram.ext import (
 )
 
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
-from bot.functions.chat import is_chat_group
+from bot.functions.chat import MIN_AUTODELETE_TIME, is_chat_group
 from bot.constants.view_player import (
     COMMANDS,
     REFRESH_VIEW_PLAYER_PATTERN,
@@ -112,6 +112,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 context=context,
                 need_response=False,
                 skip_retry=False,
+                auto_delete_message=MIN_AUTODELETE_TIME,
                 **reply_text_kwargs,
             )
     else:
@@ -129,6 +130,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             context=context,
             need_response=False,
             skip_retry=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
             **reply_text_kwargs,
         )
 
