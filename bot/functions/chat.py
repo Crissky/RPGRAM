@@ -106,6 +106,7 @@ async def send_private_message(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = True,
+    auto_delete_message: Union[bool, int, timedelta] = True,
 ):
     ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
     envia mensagem para o grupo marcando o nome do jogador.
@@ -134,6 +135,7 @@ async def send_private_message(
             function=context.bot.send_message,
             context=context,
             need_response=False,
+            auto_delete_message=auto_delete_message,
             **call_telegram_kwargs
         )
     except Forbidden as error:
@@ -165,6 +167,7 @@ async def send_private_message(
                 function=context.bot.send_message,
                 context=context,
                 need_response=False,
+                auto_delete_message=auto_delete_message,
                 **send_text_kwargs
             )
         else:
@@ -377,6 +380,7 @@ async def reply_text(
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     silent: bool = None,
     close_by_owner: bool = True,
+    auto_delete_message: Union[bool, int, timedelta] = True,
 ) -> Message:
     '''Responde uma mensagem.
 
@@ -431,6 +435,7 @@ async def reply_text(
         function_caller=function_caller,
         context=context,
         need_response=need_response,
+        auto_delete_message=auto_delete_message,
         **reply_text_kwargs
     )
 
