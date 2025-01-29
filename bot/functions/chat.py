@@ -653,7 +653,7 @@ def create_job_delete_message_from_context(
         'message_id': message_id,
         'function_caller': function_caller,
     }
-    when = get_hours_delete_message_from_context(when)
+    when = get_hours_delete_message_from_context(value=when)
     print(
         f'Mensagem de ID {message_id} do chat de ID {chat_id} '
         f'será excluida em {when} horas.'
