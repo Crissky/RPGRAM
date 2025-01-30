@@ -214,6 +214,8 @@ async def send_private_message(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = True,
+    need_response: bool = False,
+    skip_retry: bool = False,
     auto_delete_message: Union[bool, int, timedelta] = True,
 ):
     ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
@@ -242,8 +244,8 @@ async def send_private_message(
             function_caller='SEND_PRIVATE_MESSAGE()',
             function=context.bot.send_message,
             context=context,
-            need_response=False,
-            auto_delete_message=auto_delete_message,
+            need_response=need_response,
+            skip_retry=skip_retry,
             **call_telegram_kwargs
         )
     except Forbidden as error:
@@ -274,7 +276,8 @@ async def send_private_message(
                 function_caller='SEND_PRIVATE_MESSAGE()',
                 function=context.bot.send_message,
                 context=context,
-                need_response=False,
+                need_response=need_response,
+                skip_retry=skip_retry,
                 auto_delete_message=auto_delete_message,
                 **send_text_kwargs
             )
@@ -298,6 +301,9 @@ async def send_alert_or_message(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     show_alert: bool = False,
+    need_response: bool = False,
+    skip_retry: bool = False,
+    auto_delete_message: Union[bool, int, timedelta] = True,
 ):
     '''Envia um alert se uma query for passado, caso contrário, enviará 
     uma mensagem privada.
@@ -315,6 +321,9 @@ async def send_alert_or_message(
             markdown=markdown,
             reply_markup=reply_markup,
             close_by_owner=False,
+            need_response=need_response,
+            skip_retry=skip_retry,
+            auto_delete_message=auto_delete_message,
         )
 
 
