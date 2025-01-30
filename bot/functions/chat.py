@@ -97,6 +97,114 @@ VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)
 
 
+async def call_telegram_message_function(
+    function_caller: str,
+    function: Callable,
+    context: ContextTypes.DEFAULT_TYPE,
+    need_response: bool = True,
+    skip_retry: bool = False,
+    auto_delete_message: Union[bool, int, timedelta] = True,
+    **kwargs
+) -> Union[Any, Message]:
+    '''Função que chama qualquer função de mensagem do telegram. 
+    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
+    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
+    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
+
+    Se need_response for True, a função aguardará para realizar uma nova 
+    tentativa, caso contrário, a função será agendada em um job para ser 
+    executada posteriormente.
+
+    Se skip_retry for True, a função não tentará novamente e nem agendará uma 
+    nova tentativa.
+
+    Se auto_delete_message for igual a False, a exclusão automática da 
+    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
+    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
+    quantidade de horas igual ao valor passado.
+    E se for um timedelta, a mensagem será excluída de acordo com o tempo 
+    passado no timedelta.
+    '''
+
+    print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
+    job_call_telegram_kwargs = dict(
+        function_caller=function_caller,
+        function=function,
+        context=context,
+        **kwargs
+    )
+    response = None
+    is_error = True
+    catched_error = None
+    for i in range(3):
+        try:
+            response = await function(**kwargs)
+            is_error = False
+            break
+        except (RetryAfter, TimedOut) as error:
+            catched_error = error
+            if skip_retry is True:
+                break
+
+            if isinstance(error, RetryAfter):
+                sleep_time = error.retry_after + randint(1, 3)
+            elif isinstance(error, TimedOut):
+                sleep_time = 5
+
+            error_name = error.__class__.__name__
+            if need_response is False:
+                print(
+                    f'{error_name}{i}({sleep_time}): '
+                    f'creating JOB "{function.__name__}" '
+                )
+                job_name = (
+                    f'{function_caller}->'
+                    f'CALL_TELEGRAM_MESSAGE_FUNCTION->'
+                    f'JOB_CALL_TELEGRAM-{ObjectId()}'
+                )
+                context.job_queue.run_once(
+                    callback=job_call_telegram,
+                    when=timedelta(seconds=sleep_time),
+                    data=job_call_telegram_kwargs,
+                    name=job_name,
+                    job_kwargs=BASE_JOB_KWARGS,
+                )
+                return ConversationHandler.END
+
+            print(
+                f'{error_name}{i}: RETRYING activate "{function.__name__}" '
+                f'from {function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
+
+    if is_error is True:
+        print(f'ERROR: {function_caller}')
+        if catched_error:
+            raise catched_error
+        raise Exception(f'Error in {function_caller}')
+
+    if (
+        isinstance(response, Message)
+        and is_chat_group(message=response)
+        and auto_delete_message
+    ):
+        complete_function_caller = (
+            f'{function_caller}->'
+            f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
+        )
+        create_job_delete_message_from_context(
+            function_caller=complete_function_caller,
+            context=context,
+            message=response,
+            when=auto_delete_message
+        )
+
+    return response
+
+
 async def send_private_message(
     function_caller: str,
     context: ContextTypes.DEFAULT_TYPE,
@@ -524,114 +632,6 @@ async def delete_message_from_context(
             print(f'\tError Message: "{e.message}" (Sem Permissão)')
         else:
             raise e
-
-
-async def call_telegram_message_function(
-    function_caller: str,
-    function: Callable,
-    context: ContextTypes.DEFAULT_TYPE,
-    need_response: bool = True,
-    skip_retry: bool = False,
-    auto_delete_message: Union[bool, int, timedelta] = True,
-    **kwargs
-) -> Union[Any, Message]:
-    '''Função que chama qualquer função de mensagem do telegram. 
-    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
-    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
-    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
-    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
-
-    Se need_response for True, a função aguardará para realizar uma nova 
-    tentativa, caso contrário, a função será agendada em um job para ser 
-    executada posteriormente.
-
-    Se skip_retry for True, a função não tentará novamente e nem agendará uma 
-    nova tentativa.
-
-    Se auto_delete_message for igual a False, a exclusão automática da 
-    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
-    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
-    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
-    quantidade de horas igual ao valor passado.
-    E se for um timedelta, a mensagem será excluída de acordo com o tempo 
-    passado no timedelta.
-    '''
-
-    print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
-    job_call_telegram_kwargs = dict(
-        function_caller=function_caller,
-        function=function,
-        context=context,
-        **kwargs
-    )
-    response = None
-    is_error = True
-    catched_error = None
-    for i in range(3):
-        try:
-            response = await function(**kwargs)
-            is_error = False
-            break
-        except (RetryAfter, TimedOut) as error:
-            catched_error = error
-            if skip_retry is True:
-                break
-
-            if isinstance(error, RetryAfter):
-                sleep_time = error.retry_after + randint(1, 3)
-            elif isinstance(error, TimedOut):
-                sleep_time = 5
-
-            error_name = error.__class__.__name__
-            if need_response is False:
-                print(
-                    f'{error_name}{i}({sleep_time}): '
-                    f'creating JOB "{function.__name__}" '
-                )
-                job_name = (
-                    f'{function_caller}->'
-                    f'CALL_TELEGRAM_MESSAGE_FUNCTION->'
-                    f'JOB_CALL_TELEGRAM-{ObjectId()}'
-                )
-                context.job_queue.run_once(
-                    callback=job_call_telegram,
-                    when=timedelta(seconds=sleep_time),
-                    data=job_call_telegram_kwargs,
-                    name=job_name,
-                    job_kwargs=BASE_JOB_KWARGS,
-                )
-                return ConversationHandler.END
-
-            print(
-                f'{error_name}{i}: RETRYING activate "{function.__name__}" '
-                f'from {function_caller} in {sleep_time} seconds.'
-            )
-            sleep(sleep_time)
-            continue
-
-    if is_error is True:
-        print(f'ERROR: {function_caller}')
-        if catched_error:
-            raise catched_error
-        raise Exception(f'Error in {function_caller}')
-
-    if (
-        isinstance(response, Message)
-        and is_chat_group(message=response)
-        and auto_delete_message
-    ):
-        complete_function_caller = (
-            f'{function_caller}->'
-            f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
-        )
-        create_job_delete_message_from_context(
-            function_caller=complete_function_caller,
-            context=context,
-            message=response,
-            when=auto_delete_message
-        )
-
-    return response
 
 
 def create_job_delete_message_from_context(
