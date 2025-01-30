@@ -520,7 +520,7 @@ async def reply_text(
     '''
 
     if update is None and message_id is None:
-            raise ValueError('Você deve passar update ou message_id')
+        raise ValueError('Você deve passar update ou message_id')
 
     chat_id = chat_id if chat_id else context._chat_id
     user_id = user_id if user_id else context._user_id
