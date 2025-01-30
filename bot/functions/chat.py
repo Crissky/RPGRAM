@@ -8,6 +8,7 @@ from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
+    ReplyParameters,
     Update
 )
 
@@ -487,38 +488,54 @@ async def reply_text(
     function_caller: str,
     text: str,
     context: ContextTypes.DEFAULT_TYPE,
-    user_id: int = None,
     update: Update = None,
     chat_id: int = None,
+    user_id: int = None,
     message_id: int = None,
-    need_response: bool = True,
-    allow_sending_without_reply=True,
     markdown: bool = False,
-    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     silent: bool = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    allow_sending_without_reply: bool = True,
     close_by_owner: bool = True,
+    need_response: bool = True,
+    skip_retry: bool = False,
     auto_delete_message: Union[bool, int, timedelta] = True,
 ) -> Message:
     '''Responde uma mensagem.
 
-    Se update e context forem passados simultaneamente, a mensagem será 
-    respondida usando update.effective_message.reply_text
+    É obrigatório passar update ou message_id.
+
+    markdown for True, o parse_mode será igual a 
+    ParseMode.MARKDOWN_V2, caso contrário, parse_mode será igual a None
+
+    silent for None, usará a configuração de notificação do chat em 
+    disable_notification.
+
+    reply_markup não for passado, a mensagem terá um botão de fechar.
+
+    close_by_owner for True e não for passado reply_markup, a mensagem terá 
+    um botão de fechar que somente o usuário responsável pelo envio da 
+    mensagem que poderá fechá-la. Caso contrário, 
+    qualquer jogador poderá fechar.
     '''
 
-    if update is None:
-        if context is None:
-            raise ValueError('update ou context deve ser passado.')
-        if not isinstance(chat_id, int):
-            raise ValueError(
-                'Quando usar context, chat_id deve ser um inteiro.'
-            )
-        if not isinstance(message_id, int):
-            raise ValueError(
-                'Quando usar context, message_id deve ser um inteiro.'
-            )
+    if update is None and message_id is None:
+            raise ValueError('Você deve passar update ou message_id')
 
-    if update and user_id is None:
-        user_id = update.effective_user.id
+    chat_id = chat_id if chat_id else context._chat_id
+    user_id = user_id if user_id else context._user_id
+    message_id = message_id if message_id else update.effective_message.id
+    markdown = ParseMode.MARKDOWN_V2 if markdown is True else None
+    reply_parameters = ReplyParameters(
+        message_id=message_id,
+        allow_sending_without_reply=allow_sending_without_reply
+    )
+    owner_id = user_id if close_by_owner is True else None
+    reply_markup = (
+        reply_markup
+        if reply_markup != REPLY_MARKUP_DEFAULT
+        else get_close_keyboard(user_id=owner_id)
+    )
 
     if silent is None:
         if isinstance(chat_id, int):
@@ -526,32 +543,21 @@ async def reply_text(
         elif isinstance(user_id, int):
             silent = get_player_attribute_by_id(user_id, 'silent')
 
-    markdown = ParseMode.MARKDOWN_V2 if markdown else None
-    owner_id = user_id if close_by_owner is True else None
-    reply_markup = (
-        reply_markup
-        if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=owner_id)
-    )
     reply_text_kwargs = dict(
+        chat_id=chat_id,
         text=text,
         parse_mode=markdown,
         disable_notification=silent,
         reply_markup=reply_markup,
-        allow_sending_without_reply=allow_sending_without_reply,
+        reply_parameters=reply_parameters,
     )
-
-    if update:
-        reply_text_kwargs['function'] = update.effective_message.reply_text
-    elif context:
-        reply_text_kwargs['function'] = context.bot.send_message
-        reply_text_kwargs['chat_id'] = chat_id
-        reply_text_kwargs['reply_to_message_id'] = message_id
 
     response = await call_telegram_message_function(
         function_caller=function_caller,
+        function=context.bot.send_message,
         context=context,
         need_response=need_response,
+        skip_retry=skip_retry,
         auto_delete_message=auto_delete_message,
         **reply_text_kwargs
     )
@@ -567,13 +573,15 @@ async def reply_text_and_forward(
     update: Update = None,
     chat_id: int = None,
     message_id: int = None,
-    need_response: bool = True,
-    allow_sending_without_reply=True,
     markdown: bool = False,
-    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
-    close_by_owner: bool = False,
     silent_reply: bool = None,
     silent_forward: bool = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    allow_sending_without_reply=True,
+    close_by_owner: bool = False,
+    need_response: bool = True,
+    skip_retry: bool = False,
+    auto_delete_message: Union[bool, int, timedelta] = True,
 ) -> Message:
     '''Responde uma mensagem e a encaminha para o usuário.
     '''
@@ -587,16 +595,18 @@ async def reply_text_and_forward(
     response = await reply_text(
         function_caller=both_function_caller,
         text=text,
-        user_id=owner_id,
-        update=update,
         context=context,
+        update=update,
         chat_id=chat_id,
+        user_id=owner_id,
         message_id=message_id,
-        need_response=need_response,
-        allow_sending_without_reply=allow_sending_without_reply,
         markdown=markdown,
-        reply_markup=reply_markup,
         silent=silent_reply,
+        reply_markup=reply_markup,
+        allow_sending_without_reply=allow_sending_without_reply,
+        need_response=need_response,
+        skip_retry=skip_retry,
+        auto_delete_message=auto_delete_message,
     )
 
     await forward_message(
