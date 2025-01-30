@@ -5,7 +5,6 @@ Módulo responsável por exibir e adicionar pontos de stats dos personagens.
 
 from typing import List
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -28,11 +27,11 @@ from bot.constants.filters import (
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
     answer,
-    call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button,
     is_verbose,
+    reply_text,
     reply_typing
 )
 from bot.decorators import (
@@ -103,33 +102,30 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if query:
                 await answer(query=query, text=text, show_alert=True)
             else:
-                reply_text_kwargs = dict(
-                    text=text,
-                    disable_notification=silent,
-                    allow_sending_without_reply=True
-                )
-                await call_telegram_message_function(
+                await reply_text(
                     function_caller='ADD_STATS.START()',
-                    function=update.effective_message.reply_text,
+                    text=text,
                     context=context,
+                    update=update,
+                    silent=silent,
+                    allow_sending_without_reply=True,
                     need_response=False,
                     skip_retry=False,
-                    **reply_text_kwargs,
+                    auto_delete_message=MIN_AUTODELETE_TIME
                 )
             return None
     elif len(args) > 2:
-        reply_text_kwargs = dict(
-            text='Envie somente o ATRIBUTO e o VALOR que deseja adicionar.',
-            disable_notification=silent,
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        text = 'Envie somente o ATRIBUTO e o VALOR que deseja adicionar.'
+        await reply_text(
             function_caller='ADD_STATS.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
-            **reply_text_kwargs,
+            auto_delete_message=MIN_AUTODELETE_TIME
         )
         return None
     elif len(args) == 1:
@@ -196,21 +192,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_STATS_END
         )
 
-        reply_text_kwargs = dict(
+        await reply_text(
+            function_caller='ADD_STATS.START()',
             text=text,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            disable_notification=silent,
+            context=context,
+            update=update,
+            markdown=True,
+            silent=silent,
             reply_markup=reply_markup,
             allow_sending_without_reply=True,
-        )
-        await call_telegram_message_function(
-            function_caller='ADD_STATS.START()',
-            function=update.effective_message.reply_text,
-            context=context,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 

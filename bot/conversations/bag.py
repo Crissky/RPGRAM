@@ -124,6 +124,7 @@ from bot.functions.chat import (
     edit_message_text,
     get_autodelete_time_for_drop,
     message_edit_reply_markup,
+    reply_text,
     reply_typing,
     send_alert_or_message,
     send_private_message
@@ -269,19 +270,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         items = player_bag[:-1]
         have_next_page = True
     elif all((len(items) == 0, not query)):
-        reply_text_kwargs = dict(
-            text='Você não tem itens na sua bolsa.',
-            disable_notification=silent,
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        text = 'Você não tem itens na sua bolsa.'
+        await reply_text(
             function_caller='BAG.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
         return ConversationHandler.END
 
@@ -332,21 +331,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     markdown_text = TITLE_HEAD.format(markdown_text)
     markdown_text = escape_basic_markdown_v2(markdown_text)
     if not query:  # Envia Resposta com o texto da tabela de itens e botões
-        reply_text_kwargs = dict(
-            text=markdown_text,
-            disable_notification=silent,
-            reply_markup=reply_markup,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='BAG.START()',
-            function=update.effective_message.reply_text,
+            text=markdown_text,
             context=context,
+            update=update,
+            markdown=True,
+            silent=silent,
+            reply_markup=reply_markup,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=HALF_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     else:  # Edita Resposta com o texto da tabela de itens e botões
         await edit_message_text(
@@ -1367,19 +1363,16 @@ async def destroy_drop(update: Update, context: ContextTypes.DEFAULT_TYPE):
             player: Player = player_model.get(user_id)
             if report_xp['level_up']:
                 silent = get_attribute_group_or_player(chat_id, 'silent')
-                reply_text_kwargs = dict(
-                    text=text,
-                    disable_notification=silent,
-                    allow_sending_without_reply=True
-                )
-                await call_telegram_message_function(
+                await reply_text(
                     function_caller='BAG.START()',
-                    function=update.effective_message.reply_text,
+                    text=text,
                     context=context,
+                    update=update,
+                    silent=silent,
+                    allow_sending_without_reply=True,
                     need_response=False,
                     skip_retry=False,
                     auto_delete_message=MIN_AUTODELETE_TIME,
-                    **reply_text_kwargs,
                 )
             elif player.verbose:
                 await send_private_message(
@@ -1635,28 +1628,19 @@ async def send_drop_message(
             )
 
         remaining = len(items) - i
-        if isinstance(update, Update):
-            call_telegram_kwargs = dict(
-                function=update.effective_message.reply_text,
-            )
-        else:
-            call_telegram_kwargs = dict(
-                function=context.bot.send_message,
-                chat_id=chat_id,
-                reply_to_message_id=message_id,
-            )
-
-        call_telegram_kwargs['text'] = markdown_item_sheet
-        call_telegram_kwargs['parse_mode'] = ParseMode.MARKDOWN_V2
-        call_telegram_kwargs['disable_notification'] = silent
-        call_telegram_kwargs['allow_sending_without_reply'] = True
-        call_telegram_kwargs['reply_markup'] = reply_markup_drop
-
-        response = await call_telegram_message_function(
+        response = await reply_text(
             function_caller=f'SEND_DROP_MESSAGE(remaining={remaining})',
+            text=markdown_item_sheet,
             context=context,
-            auto_delete_message=False,
-            **call_telegram_kwargs
+            update=update,
+            message_id=message_id,
+            markdown=True,
+            silent=silent,
+            reply_markup=reply_markup_drop,
+            allow_sending_without_reply=True,
+            need_response=True,
+            skip_retry=False,
+            auto_delete_message=False
         )
 
         drops_message_id = response.message_id
