@@ -22,7 +22,7 @@ from bot.decorators.job import skip_command_if_spawn_timeout
 from bot.functions.char import add_xp
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
-    call_telegram_message_function,
+    reply_text,
     send_private_message
 )
 from bot.functions.event import add_event_points_from_player
@@ -78,19 +78,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if report_xp['level_up']:
-        reply_text_kwargs = dict(
-            text=text,
-            disable_notification=silent,
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CHAT_XP.START()',
-            function=update.effective_message.reply_text,
             context=context,
+            text=text,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     elif player.verbose:
         await send_private_message(
