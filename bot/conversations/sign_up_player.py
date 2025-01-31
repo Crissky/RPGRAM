@@ -26,8 +26,8 @@ from bot.decorators.group import need_singup_group
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
     answer,
-    call_telegram_message_function,
-    edit_message_text
+    edit_message_text,
+    reply_text
 )
 from bot.functions.config import update_total_players
 from constant.time import TEN_MINUTES_IN_SECONDS
@@ -50,48 +50,42 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     player: Player = player_model.get(player_id)
     if player:
-        reply_text_kwargs = dict(
-            text=(
-                f'Olá {user_name}, Bem-vindo(a) de volta!\n'
-                f'Vocé já possui uma conta.\n\n'
-                f'{player}'
-            ),
-            allow_sending_without_reply=True
+        text = (
+            f'Olá {user_name}, Bem-vindo(a) de volta!\n'
+            f'Vocé já possui uma conta.\n\n'
+            f'{player}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='SIGN_UP_PLAYER.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
         return ConversationHandler.END
 
-    inline_keyboard = [
-        [
-            InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
-            InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
-        ]
-    ]
-    reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    reply_text_kwargs = dict(
-        text=(
-            'Seja Bem-vindo, Aventureiro(a).\n'
-            'Gostaria de Criar uma Conta?'
-        ),
-        reply_markup=reply_markup,
-        allow_sending_without_reply=True
+    text = (
+        'Seja Bem-vindo, Aventureiro(a).\n'
+        'Gostaria de Criar uma Conta?'
     )
-    response = await call_telegram_message_function(
+    inline_keyboard = [[
+        InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
+        InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
+    ]]
+    reply_markup = InlineKeyboardMarkup(inline_keyboard)
+    response = await reply_text(
         function_caller='SIGN_UP_PLAYER.START()',
-        function=update.effective_message.reply_text,
+        text=text,
         context=context,
+        update=update,
+        reply_markup=reply_markup,
+        allow_sending_without_reply=True,
         need_response=True,
         skip_retry=False,
         auto_delete_message=MIN_AUTODELETE_TIME,
-        **reply_text_kwargs,
     )
     context.user_data['response'] = response
 
