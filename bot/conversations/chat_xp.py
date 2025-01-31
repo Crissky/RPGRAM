@@ -4,7 +4,9 @@ mensagens nos grupos.
 '''
 
 
+from random import choice
 from telegram import Update
+from telegram.constants import ReactionEmoji
 from telegram.ext import (
     ContextTypes,
     MessageHandler
@@ -68,6 +70,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     player_model.save(player)
 
     report_xp = add_xp(chat_id, user_id)
+    emoji = choice(list(ReactionEmoji)).value
+    await update.effective_message.set_reaction(reaction=emoji, is_big=True)
     text = report_xp['text']
     text = create_text_in_box(
         text=text,
