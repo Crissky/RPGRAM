@@ -5,8 +5,9 @@ from bot.functions.char import (
     save_char
 )
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     answer,
-    call_telegram_message_function,
+    reply_text,
     reply_text_and_forward
 )
 from bot.functions.config import get_attribute_group
@@ -172,20 +173,19 @@ def need_have_char(callback):
             print('\tAUTORIZADO - USUÁRIO POSSUI PERSONAGEM.')
             return await callback(update, context)
         else:
-            reply_text_kwargs = dict(
-                text=(
-                    f'Você ainda não criou um personagem!\n'
-                    f'Crie o seu personagem com o comando /{COMMANDS[0]}.'
-                ),
-                allow_sending_without_reply=True
+            text = (
+                f'Você ainda não criou um personagem!\n'
+                f'Crie o seu personagem com o comando /{COMMANDS[0]}.'
             )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='CHAR.NEED_HAVE_CHAR()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                allow_sending_without_reply=True,
                 need_response=False,
                 skip_retry=False,
-                **reply_text_kwargs,
+                auto_delete_message=MIN_AUTODELETE_TIME,
             )
             return ConversationHandler.END
     return wrapper
@@ -239,18 +239,16 @@ def skip_if_dead_char(callback):
                 await answer(query=query, text=text, show_alert=True)
             else:
                 silent = get_attribute_group(chat_id, 'silent')
-                reply_text_kwargs = dict(
-                    text=text,
-                    disable_notification=silent,
-                    allow_sending_without_reply=True
-                )
-                await call_telegram_message_function(
+                await reply_text(
                     function_caller='CHAR.SKIP_IF_DEAD_CHAR()',
-                    function=update.effective_message.reply_text,
+                    text=text,
                     context=context,
+                    update=update,
+                    silent=silent,
+                    allow_sending_without_reply=True,
                     need_response=False,
                     skip_retry=False,
-                    **reply_text_kwargs,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                 )
 
             return ConversationHandler.END
@@ -322,17 +320,15 @@ def skip_if_immobilized(callback):
             if query:
                 await answer(query=query, text=text, show_alert=True)
             else:
-                reply_text_kwargs = dict(
-                    text=text,
-                    allow_sending_without_reply=True
-                )
-                await call_telegram_message_function(
+                await reply_text(
                     function_caller='CHAR.SKIP_IF_IMMOBILIZED()',
-                    function=update.effective_message.reply_text,
+                    text=text,
                     context=context,
+                    update=update,
+                    allow_sending_without_reply=True,
                     need_response=False,
                     skip_retry=False,
-                    **reply_text_kwargs,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                 )
             return ConversationHandler.END
     return wrapper
@@ -370,17 +366,15 @@ def skip_if_silenced(callback):
             if query:
                 await answer(query=query, text=text, show_alert=True)
             else:
-                reply_text_kwargs = dict(
-                    text=text,
-                    allow_sending_without_reply=True
-                )
-                await call_telegram_message_function(
+                await reply_text(
                     function_caller='CHAR.SKIP_IF_SILENCED()',
-                    function=update.effective_message.reply_text,
+                    text=text,
                     context=context,
+                    update=update,
+                    allow_sending_without_reply=True,
                     need_response=False,
                     skip_retry=False,
-                    **reply_text_kwargs,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                 )
             return ConversationHandler.END
     return wrapper
