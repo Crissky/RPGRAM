@@ -4,7 +4,6 @@ Módulo responsável por gerenciar o comando de configuração de grupo.
 
 
 from telegram import Update
-from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_group import COMMANDS
@@ -14,8 +13,7 @@ from bot.constants.filters import (
 )
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
-    call_telegram_message_function,
-    get_close_keyboard,
+    reply_text,
     reply_typing
 )
 from bot.decorators import print_basic_infos, need_are_admin, need_singup_group
@@ -49,39 +47,35 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         try:
             group[attribute] = value
             group_model.save(group)
-            reply_text_kwargs = dict(
-                text=(
-                    f'Configurado "{attribute}" para "{value}".\n\n'
-                    f'{group}'
-                ),
-                disable_notification=silent,
-                reply_markup=get_close_keyboard(None),
-                allow_sending_without_reply=True
+            text = (
+                f'Configurado "{attribute}" para "{value}".\n\n'
+                f'{group}'
             )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='CONFIG_GROUP.START()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                silent=silent,
+                allow_sending_without_reply=True,
+                close_by_owner=False,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
         except (KeyError, ValueError) as error:
-            reply_text_kwargs = dict(
-                text=str(error),
-                disable_notification=silent,
-                reply_markup=get_close_keyboard(None),
-                allow_sending_without_reply=True
-            )
-            await call_telegram_message_function(
+            text = str(error)
+            await reply_text(
                 function_caller='CONFIG_GROUP.START()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                silent=silent,
+                allow_sending_without_reply=True,
+                close_by_owner=False,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         group['VERBOSE'] = 'false'
@@ -91,45 +85,41 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         group['MULTIPLIER_XP'] = '1'
         group['CHAR_MULTIPLIER_XP'] = '1'
         group_model.save(group)
-        reply_text_kwargs = dict(
-            text=(
-                f'Configurado para os valores padrões.\n\n'
-                f'{group}'
-            ),
-            disable_notification=silent,
-            reply_markup=get_close_keyboard(None),
-            allow_sending_without_reply=True
+        text = (
+            f'Configurado para os valores padrões.\n\n'
+            f'{group}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CONFIG_GROUP.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
+            close_by_owner=False,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         chat_name = update.effective_chat.effective_name
         group.name = chat_name
         group_model.save(group)
-        reply_text_kwargs = dict(
-            text=(
-                f'Informações do grupo "{chat_name}" foram atualizadas.\n\n'
-                f'{group}'
-            ),
-            disable_notification=silent,
-            reply_markup=get_close_keyboard(None),
-            allow_sending_without_reply=True
+        text = (
+            f'Informações do grupo "{chat_name}" foram atualizadas.\n\n'
+            f'{group}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CONFIG_GROUP.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
+            close_by_owner=False,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     elif len(args) != 2:
         text = escape_basic_markdown_v2(
@@ -138,21 +128,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             '`MULTIPLIER_XP`\n`CHAR_MULTIPLIER_XP`'
         )
 
-        reply_text_kwargs = dict(
-            text=text,
-            disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            reply_markup=get_close_keyboard(None),
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CONFIG_GROUP.START()',
-            function=update.effective_message.reply_text,
             context=context,
+            text=text,
+            update=update,
+            markdown=True,
+            silent=silent,
+            allow_sending_without_reply=True,
+            close_by_owner=False,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 

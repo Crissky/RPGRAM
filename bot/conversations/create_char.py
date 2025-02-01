@@ -37,6 +37,7 @@ from bot.functions.chat import (
     HALF_AUTODELETE_TIME,
     call_telegram_message_function,
     edit_message_text,
+    reply_text,
     reply_typing
 )
 from bot.functions.general import get_attribute_group_or_player
@@ -83,83 +84,75 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     silent = get_attribute_group_or_player(chat_id, 'silent')
 
     if not player_model.get(player_id):
-        reply_text_kwargs = dict(
-            text=(
-                f'Você precisa criar um perfil para criar um personagem.\n'
-                f'Para isso, utilize o comando /{COMMANDS_SIGN_UP_PLAYER[0]}.'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            f'Você precisa criar um perfil para criar um personagem.\n'
+            f'Para isso, utilize o comando /{COMMANDS_SIGN_UP_PLAYER[0]}.'
         )
-        response = await call_telegram_message_function(
+        await reply_text(
             function_caller='CREATE_CHAR.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
-            need_response=True,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
+            need_response=False,
             skip_retry=False,
             auto_delete_message=HALF_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
         return ConversationHandler.END
 
     player_character: BaseCharacter = char_model.get(player_id)
     if player_character:
-        inline_keyboard = [
-            [
-                InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
-                InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
-            ]
-        ]
-        reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        reply_text_kwargs = dict(
-            text=(
-                f'Olá {user_name}, vocé já possui uma personagem criado.\n'
-                f'Gostaria de apagá-lo?\n'
-                f'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
-                f'Personagem:\n'
-                f'{player_character}'
-            ),
-            reply_markup=reply_markup,
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            f'Olá {user_name}, vocé já possui uma personagem criado.\n'
+            f'Gostaria de apagá-lo?\n'
+            f'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
+            f'Personagem:\n'
+            f'{player_character}'
         )
-        response = await call_telegram_message_function(
+        inline_keyboard = [[
+            InlineKeyboardButton("Sim", callback_data=CALLBACK_TEXT_YES),
+            InlineKeyboardButton("Não", callback_data=CALLBACK_TEXT_NO),
+        ]]
+        reply_markup = InlineKeyboardMarkup(inline_keyboard)
+        response = await reply_text(
             function_caller='CREATE_CHAR.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            reply_markup=reply_markup,
+            allow_sending_without_reply=True,
             need_response=True,
             skip_retry=False,
             auto_delete_message=HALF_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
         context.user_data['response'] = response
         return DELETE_ROUTES
 
+    text = (
+        'Vamos começar a criar o seu personagem.\n'
+        'Você pode cancelar a criação a qualquer momento '
+        'usando o comando /cancel.\n\n'
+        'Escolha uma das raças abaixo:'
+    )
     inline_keyboard = [
         [InlineKeyboardButton(race, callback_data=race)]
         for race in race_model.get_all(query={'enemy': False}, fields=['name'])
     ]
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
-    reply_text_kwargs = dict(
-        text=(
-            'Vamos começar a criar o seu personagem.\n'
-            'Você pode cancelar a criação a qualquer momento '
-            'usando o comando /cancel.\n\n'
-            'Escolha uma das raças abaixo:'
-        ),
-        reply_markup=reply_markup,
-        disable_notification=silent,
-        allow_sending_without_reply=True
-    )
-    response = await call_telegram_message_function(
+    response = await reply_text(
         function_caller='CREATE_CHAR.START()',
-        function=update.effective_message.reply_text,
+        text=text,
         context=context,
+        update=update,
+        silent=silent,
+        reply_markup=reply_markup,
+        allow_sending_without_reply=True,
         need_response=True,
         skip_retry=False,
         auto_delete_message=HALF_AUTODELETE_TIME,
-        **reply_text_kwargs,
     )
     context.user_data['response'] = response
 
@@ -358,23 +351,21 @@ async def create_char(
     chat_id = update.effective_chat.id
     silent = get_attribute_group_or_player(chat_id, 'silent')
     if not is_valid_char_name(character_name):
-        reply_text_kwargs = dict(
-            text=(
-                f'"{character_name}" não é um nome de personagem válido.\n\n'
-                f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-                f'apenas letras, números, espaços, e traço "-".'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            f'"{character_name}" não é um nome de personagem válido.\n\n'
+            f'O nome de personagem deve conter entre 3 e 50 caracteres, '
+            f'apenas letras, números, espaços, e traço "-".'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CREATE_CHAR.CREATE_CHAR()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=HALF_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
         return CREATE_CHAR_ROUTES
@@ -401,48 +392,44 @@ async def create_char(
     player_character: BaseCharacter = char_model.get(player_id)
 
     if player_character:
-        reply_text_kwargs = dict(
-            text=(
-                f'Personagem Criado com sucesso!!!\n\n'
-                f'{player_character}'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            f'Personagem Criado com sucesso!!!\n\n'
+            f'{player_character}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CREATE_CHAR.CREATE_CHAR()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=HALF_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     else:
-        reply_text_kwargs = dict(
-            text=(
-                'Algo deu errado ao criar o personagem. '
-                'Tente novamente mais tarde.\n\n'
-                'Se o problema persistir, contacte o meu desenvolvedor.\n\n'
-                f'user_name: {user_name}\n'
-                f'player_id: {player_id}\n'
-                f'race_name: {race_name}\n'
-                f'classe_name: {classe_name}\n'
-                f'character_name: {character_name}\n'
-                f'race:\n{race}\n'
-                f'classe:\n{classe}\n'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            'Algo deu errado ao criar o personagem. '
+            'Tente novamente mais tarde.\n\n'
+            'Se o problema persistir, contacte o meu desenvolvedor.\n\n'
+            f'user_name: {user_name}\n'
+            f'player_id: {player_id}\n'
+            f'race_name: {race_name}\n'
+            f'classe_name: {classe_name}\n'
+            f'character_name: {character_name}\n'
+            f'race:\n{race}\n'
+            f'classe:\n{classe}\n'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CREATE_CHAR.CREATE_CHAR()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=HALF_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
     if 'response' in context.user_data:

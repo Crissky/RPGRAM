@@ -3,9 +3,10 @@ from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.sign_up_player import COMMANDS
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     answer,
-    call_telegram_message_function,
-    callback_data_to_dict
+    callback_data_to_dict,
+    reply_text
 )
 from repository.mongo import PlayerModel
 
@@ -20,21 +21,20 @@ def need_singup_player(callback):
             print('\tAUTORIZADO - USUÁRIO POSSUI CONTA.')
             return await callback(update, context)
         else:
-            reply_text_kwargs = dict(
-                text=(
-                    f'Você precisa criar sua conta '
-                    f'para utilizar esse comando.\n'
-                    f'Crie a conta com o comando /{COMMANDS[0]}.'
-                ),
-                allow_sending_without_reply=True
+            text = (
+                f'Você precisa criar sua conta '
+                f'para utilizar esse comando.\n'
+                f'Crie a conta com o comando /{COMMANDS[0]}.'
             )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='PLAYER.NEED_SINGUP_PLAYER()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                allow_sending_without_reply=True,
                 need_response=False,
                 skip_retry=False,
-                **reply_text_kwargs,
+                auto_delete_message=MIN_AUTODELETE_TIME,
             )
             return ConversationHandler.END
     return wrapper

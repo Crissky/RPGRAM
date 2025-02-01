@@ -36,7 +36,7 @@ from bot.functions.char import save_char
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
     call_telegram_message_function,
-    get_close_keyboard,
+    reply_text,
     send_private_message
 )
 from bot.functions.config import get_attribute_group
@@ -104,21 +104,17 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     section_end=SECTION_HEAD_REST_END,
                     clean_func=None,
                 )
-                reply_text_kwargs = dict(
-                    text=text,
-                    disable_notification=silent,
-                    allow_sending_without_reply=True,
-                    reply_markup=get_close_keyboard(user_id=caller_user_id)
-                )
-
-                await call_telegram_message_function(
+                await reply_text(
                     function_caller='REST.REST()',
-                    function=update.effective_message.reply_text,
+                    text=text,
                     context=context,
+                    update=update,
+                    user_id=caller_user_id,
+                    silent=silent,
+                    allow_sending_without_reply=True,
                     need_response=False,
                     skip_retry=False,
                     auto_delete_message=MIN_AUTODELETE_TIME,
-                    **reply_text_kwargs,
                 )
     elif player_name_list and not caller_have_tent:
         player_name = args[0]
@@ -133,21 +129,17 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_REST_END,
             clean_func=None,
         )
-        reply_text_kwargs = dict(
-            text=text,
-            disable_notification=silent,
-            allow_sending_without_reply=True,
-            reply_markup=get_close_keyboard(user_id=caller_user_id)
-        )
-
-        return await call_telegram_message_function(
+        return await reply_text(
             function_caller='REST.REST()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            user_id=caller_user_id,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
     for user_id in user_id_list:
@@ -212,21 +204,17 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_REST_END,
             clean_func=None,
         )
-        reply_text_kwargs = dict(
-            text=text,
-            disable_notification=silent,
-            allow_sending_without_reply=True,
-            reply_markup=get_close_keyboard(user_id=caller_user_id)
-        )
-
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='REST.REST()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            user_id=caller_user_id,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 

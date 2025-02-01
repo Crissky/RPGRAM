@@ -8,6 +8,7 @@ from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
+    ReplyParameters,
     Update
 )
 
@@ -97,6 +98,114 @@ VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)
 
 
+async def call_telegram_message_function(
+    function_caller: str,
+    function: Callable,
+    context: ContextTypes.DEFAULT_TYPE,
+    need_response: bool = True,
+    skip_retry: bool = False,
+    auto_delete_message: Union[bool, int, timedelta] = True,
+    **kwargs
+) -> Union[Any, Message]:
+    '''Função que chama qualquer função de mensagem do telegram. 
+    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
+    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
+    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
+
+    Se need_response for True, a função aguardará para realizar uma nova 
+    tentativa, caso contrário, a função será agendada em um job para ser 
+    executada posteriormente.
+
+    Se skip_retry for True, a função não tentará novamente e nem agendará uma 
+    nova tentativa.
+
+    Se auto_delete_message for igual a False, a exclusão automática da 
+    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
+    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
+    quantidade de horas igual ao valor passado.
+    E se for um timedelta, a mensagem será excluída de acordo com o tempo 
+    passado no timedelta.
+    '''
+
+    print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
+    job_call_telegram_kwargs = dict(
+        function_caller=function_caller,
+        function=function,
+        context=context,
+        **kwargs
+    )
+    response = None
+    is_error = True
+    catched_error = None
+    for i in range(3):
+        try:
+            response = await function(**kwargs)
+            is_error = False
+            break
+        except (RetryAfter, TimedOut) as error:
+            catched_error = error
+            if skip_retry is True:
+                break
+
+            if isinstance(error, RetryAfter):
+                sleep_time = error.retry_after + randint(1, 3)
+            elif isinstance(error, TimedOut):
+                sleep_time = 5
+
+            error_name = error.__class__.__name__
+            if need_response is False:
+                print(
+                    f'{error_name}{i}({sleep_time}): '
+                    f'creating JOB "{function.__name__}" '
+                )
+                job_name = (
+                    f'{function_caller}->'
+                    f'CALL_TELEGRAM_MESSAGE_FUNCTION->'
+                    f'JOB_CALL_TELEGRAM-{ObjectId()}'
+                )
+                context.job_queue.run_once(
+                    callback=job_call_telegram,
+                    when=timedelta(seconds=sleep_time),
+                    data=job_call_telegram_kwargs,
+                    name=job_name,
+                    job_kwargs=BASE_JOB_KWARGS,
+                )
+                return ConversationHandler.END
+
+            print(
+                f'{error_name}{i}: RETRYING activate "{function.__name__}" '
+                f'from {function_caller} in {sleep_time} seconds.'
+            )
+            sleep(sleep_time)
+            continue
+
+    if is_error is True:
+        print(f'ERROR: {function_caller}')
+        if catched_error:
+            raise catched_error
+        raise Exception(f'Error in {function_caller}')
+
+    if (
+        isinstance(response, Message)
+        and is_chat_group(message=response)
+        and auto_delete_message
+    ):
+        complete_function_caller = (
+            f'{function_caller}->'
+            f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
+        )
+        create_job_delete_message_from_context(
+            function_caller=complete_function_caller,
+            context=context,
+            message=response,
+            when=auto_delete_message
+        )
+
+    return response
+
+
 async def send_private_message(
     function_caller: str,
     context: ContextTypes.DEFAULT_TYPE,
@@ -106,6 +215,8 @@ async def send_private_message(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = True,
+    need_response: bool = False,
+    skip_retry: bool = False,
     auto_delete_message: Union[bool, int, timedelta] = True,
 ):
     ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
@@ -134,8 +245,8 @@ async def send_private_message(
             function_caller='SEND_PRIVATE_MESSAGE()',
             function=context.bot.send_message,
             context=context,
-            need_response=False,
-            auto_delete_message=auto_delete_message,
+            need_response=need_response,
+            skip_retry=skip_retry,
             **call_telegram_kwargs
         )
     except Forbidden as error:
@@ -166,7 +277,8 @@ async def send_private_message(
                 function_caller='SEND_PRIVATE_MESSAGE()',
                 function=context.bot.send_message,
                 context=context,
-                need_response=False,
+                need_response=need_response,
+                skip_retry=skip_retry,
                 auto_delete_message=auto_delete_message,
                 **send_text_kwargs
             )
@@ -190,6 +302,9 @@ async def send_alert_or_message(
     markdown: bool = False,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     show_alert: bool = False,
+    need_response: bool = False,
+    skip_retry: bool = False,
+    auto_delete_message: Union[bool, int, timedelta] = True,
 ):
     '''Envia um alert se uma query for passado, caso contrário, enviará 
     uma mensagem privada.
@@ -207,6 +322,9 @@ async def send_alert_or_message(
             markdown=markdown,
             reply_markup=reply_markup,
             close_by_owner=False,
+            need_response=need_response,
+            skip_retry=skip_retry,
+            auto_delete_message=auto_delete_message,
         )
 
 
@@ -370,38 +488,54 @@ async def reply_text(
     function_caller: str,
     text: str,
     context: ContextTypes.DEFAULT_TYPE,
-    user_id: int = None,
     update: Update = None,
     chat_id: int = None,
+    user_id: int = None,
     message_id: int = None,
-    need_response: bool = True,
-    allow_sending_without_reply=True,
     markdown: bool = False,
-    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     silent: bool = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    allow_sending_without_reply: bool = True,
     close_by_owner: bool = True,
+    need_response: bool = True,
+    skip_retry: bool = False,
     auto_delete_message: Union[bool, int, timedelta] = True,
 ) -> Message:
     '''Responde uma mensagem.
 
-    Se update e context forem passados simultaneamente, a mensagem será 
-    respondida usando update.effective_message.reply_text
+    É obrigatório passar update ou message_id.
+
+    markdown for True, o parse_mode será igual a 
+    ParseMode.MARKDOWN_V2, caso contrário, parse_mode será igual a None
+
+    silent for None, usará a configuração de notificação do chat em 
+    disable_notification.
+
+    reply_markup não for passado, a mensagem terá um botão de fechar.
+
+    close_by_owner for True e não for passado reply_markup, a mensagem terá 
+    um botão de fechar que somente o usuário responsável pelo envio da 
+    mensagem que poderá fechá-la. Caso contrário, 
+    qualquer jogador poderá fechar.
     '''
 
-    if update is None:
-        if context is None:
-            raise ValueError('update ou context deve ser passado.')
-        if not isinstance(chat_id, int):
-            raise ValueError(
-                'Quando usar context, chat_id deve ser um inteiro.'
-            )
-        if not isinstance(message_id, int):
-            raise ValueError(
-                'Quando usar context, message_id deve ser um inteiro.'
-            )
+    if update is None and message_id is None:
+        raise ValueError('Você deve passar update ou message_id')
 
-    if update and user_id is None:
-        user_id = update.effective_user.id
+    chat_id = chat_id if chat_id else context._chat_id
+    user_id = user_id if user_id else context._user_id
+    message_id = message_id if message_id else update.effective_message.id
+    markdown = ParseMode.MARKDOWN_V2 if markdown is True else None
+    reply_parameters = ReplyParameters(
+        message_id=message_id,
+        allow_sending_without_reply=allow_sending_without_reply
+    )
+    owner_id = user_id if close_by_owner is True else None
+    reply_markup = (
+        reply_markup
+        if reply_markup != REPLY_MARKUP_DEFAULT
+        else get_close_keyboard(user_id=owner_id)
+    )
 
     if silent is None:
         if isinstance(chat_id, int):
@@ -409,32 +543,21 @@ async def reply_text(
         elif isinstance(user_id, int):
             silent = get_player_attribute_by_id(user_id, 'silent')
 
-    markdown = ParseMode.MARKDOWN_V2 if markdown else None
-    owner_id = user_id if close_by_owner is True else None
-    reply_markup = (
-        reply_markup
-        if reply_markup != REPLY_MARKUP_DEFAULT
-        else get_close_keyboard(user_id=owner_id)
-    )
     reply_text_kwargs = dict(
+        chat_id=chat_id,
         text=text,
         parse_mode=markdown,
         disable_notification=silent,
         reply_markup=reply_markup,
-        allow_sending_without_reply=allow_sending_without_reply,
+        reply_parameters=reply_parameters,
     )
-
-    if update:
-        reply_text_kwargs['function'] = update.effective_message.reply_text
-    elif context:
-        reply_text_kwargs['function'] = context.bot.send_message
-        reply_text_kwargs['chat_id'] = chat_id
-        reply_text_kwargs['reply_to_message_id'] = message_id
 
     response = await call_telegram_message_function(
         function_caller=function_caller,
+        function=context.bot.send_message,
         context=context,
         need_response=need_response,
+        skip_retry=skip_retry,
         auto_delete_message=auto_delete_message,
         **reply_text_kwargs
     )
@@ -450,13 +573,15 @@ async def reply_text_and_forward(
     update: Update = None,
     chat_id: int = None,
     message_id: int = None,
-    need_response: bool = True,
-    allow_sending_without_reply=True,
     markdown: bool = False,
-    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
-    close_by_owner: bool = False,
     silent_reply: bool = None,
     silent_forward: bool = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+    allow_sending_without_reply=True,
+    close_by_owner: bool = False,
+    need_response: bool = True,
+    skip_retry: bool = False,
+    auto_delete_message: Union[bool, int, timedelta] = True,
 ) -> Message:
     '''Responde uma mensagem e a encaminha para o usuário.
     '''
@@ -470,16 +595,18 @@ async def reply_text_and_forward(
     response = await reply_text(
         function_caller=both_function_caller,
         text=text,
-        user_id=owner_id,
-        update=update,
         context=context,
+        update=update,
         chat_id=chat_id,
+        user_id=owner_id,
         message_id=message_id,
-        need_response=need_response,
-        allow_sending_without_reply=allow_sending_without_reply,
         markdown=markdown,
-        reply_markup=reply_markup,
         silent=silent_reply,
+        reply_markup=reply_markup,
+        allow_sending_without_reply=allow_sending_without_reply,
+        need_response=need_response,
+        skip_retry=skip_retry,
+        auto_delete_message=auto_delete_message,
     )
 
     await forward_message(
@@ -524,114 +651,6 @@ async def delete_message_from_context(
             print(f'\tError Message: "{e.message}" (Sem Permissão)')
         else:
             raise e
-
-
-async def call_telegram_message_function(
-    function_caller: str,
-    function: Callable,
-    context: ContextTypes.DEFAULT_TYPE,
-    need_response: bool = True,
-    skip_retry: bool = False,
-    auto_delete_message: Union[bool, int, timedelta] = True,
-    **kwargs
-) -> Union[Any, Message]:
-    '''Função que chama qualquer função de mensagem do telegram. 
-    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
-    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
-    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
-    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
-
-    Se need_response for True, a função aguardará para realizar uma nova 
-    tentativa, caso contrário, a função será agendada em um job para ser 
-    executada posteriormente.
-
-    Se skip_retry for True, a função não tentará novamente e nem agendará uma 
-    nova tentativa.
-
-    Se auto_delete_message for igual a False, a exclusão automática da 
-    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
-    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
-    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
-    quantidade de horas igual ao valor passado.
-    E se for um timedelta, a mensagem será excluída de acordo com o tempo 
-    passado no timedelta.
-    '''
-
-    print(f'{function_caller}->CALL_TELEGRAM_MESSAGE_FUNCTION()')
-    job_call_telegram_kwargs = dict(
-        function_caller=function_caller,
-        function=function,
-        context=context,
-        **kwargs
-    )
-    response = None
-    is_error = True
-    catched_error = None
-    for i in range(3):
-        try:
-            response = await function(**kwargs)
-            is_error = False
-            break
-        except (RetryAfter, TimedOut) as error:
-            catched_error = error
-            if skip_retry is True:
-                break
-
-            if isinstance(error, RetryAfter):
-                sleep_time = error.retry_after + randint(1, 3)
-            elif isinstance(error, TimedOut):
-                sleep_time = 5
-
-            error_name = error.__class__.__name__
-            if need_response is False:
-                print(
-                    f'{error_name}{i}({sleep_time}): '
-                    f'creating JOB "{function.__name__}" '
-                )
-                job_name = (
-                    f'{function_caller}->'
-                    f'CALL_TELEGRAM_MESSAGE_FUNCTION->'
-                    f'JOB_CALL_TELEGRAM-{ObjectId()}'
-                )
-                context.job_queue.run_once(
-                    callback=job_call_telegram,
-                    when=timedelta(seconds=sleep_time),
-                    data=job_call_telegram_kwargs,
-                    name=job_name,
-                    job_kwargs=BASE_JOB_KWARGS,
-                )
-                return ConversationHandler.END
-
-            print(
-                f'{error_name}{i}: RETRYING activate "{function.__name__}" '
-                f'from {function_caller} in {sleep_time} seconds.'
-            )
-            sleep(sleep_time)
-            continue
-
-    if is_error is True:
-        print(f'ERROR: {function_caller}')
-        if catched_error:
-            raise catched_error
-        raise Exception(f'Error in {function_caller}')
-
-    if (
-        isinstance(response, Message)
-        and is_chat_group(message=response)
-        and auto_delete_message
-    ):
-        complete_function_caller = (
-            f'{function_caller}->'
-            f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
-        )
-        create_job_delete_message_from_context(
-            function_caller=complete_function_caller,
-            context=context,
-            message=response,
-            when=auto_delete_message
-        )
-
-    return response
 
 
 def create_job_delete_message_from_context(

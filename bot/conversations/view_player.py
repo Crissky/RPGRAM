@@ -13,7 +13,7 @@ from telegram.ext import (
 )
 
 from bot.constants.sign_up_player import COMMANDS as sign_up_player_commands
-from bot.functions.chat import MIN_AUTODELETE_TIME, is_chat_group
+from bot.functions.chat import MIN_AUTODELETE_TIME, is_chat_group, reply_text
 from bot.constants.view_player import (
     COMMANDS,
     REFRESH_VIEW_PLAYER_PATTERN,
@@ -21,7 +21,6 @@ from bot.constants.view_player import (
 )
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
-    call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_keyboard
@@ -100,38 +99,33 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_end=SECTION_HEAD_PLAYER_END,
                 clean_func=None
             )
-            reply_text_kwargs = dict(
-                text=text,
-                disable_notification=silent,
-                reply_markup=reply_markup,
-                allow_sending_without_reply=True
-            )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='VIEW_PLAYER.START()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                silent=silent,
+                reply_markup=reply_markup,
+                allow_sending_without_reply=True,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
     else:
-        reply_text_kwargs = dict(
-            text=(
-                f'Você ainda não está cadastrado!\n'
-                f'Cadastre-se com o comando /{sign_up_player_commands[0]}.'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True
+        text = (
+            f'Você ainda não está cadastrado!\n'
+            f'Cadastre-se com o comando /{sign_up_player_commands[0]}.'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='VIEW_PLAYER.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 

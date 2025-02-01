@@ -5,7 +5,6 @@ informações dos jogadores.
 
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -24,11 +23,11 @@ from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
     answer,
-    call_telegram_message_function,
     edit_message_text,
     get_random_refresh_text,
     get_refresh_close_button,
     is_verbose,
+    reply_text,
     reply_typing
 )
 from bot.decorators import (
@@ -143,39 +142,34 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 section_start=SECTION_HEAD_EQUIPS_START,
                 section_end=SECTION_HEAD_EQUIPS_END
             )
-
-            reply_text_kwargs = dict(
-                text=markdown_equips_sheet,
-                parse_mode=ParseMode.MARKDOWN_V2,
-                reply_markup=reply_markup,
-                disable_notification=silent
-            )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='EQUIPS.START()',
-                function=update.effective_message.reply_text,
+                text=markdown_equips_sheet,
                 context=context,
+                update=update,
+                markdown=True,
+                silent=silent,
+                reply_markup=reply_markup,
+                allow_sending_without_reply=True,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
     else:
-        reply_text_kwargs = dict(
-            text=(
-                f'Seu personagem ainda não possui equipamentos.\n'
-                f'Equips: {equips}'
-            ),
-            disable_notification=silent,
-            allow_sending_without_reply=True,
+        text = (
+            f'Seu personagem ainda não possui equipamentos.\n'
+            f'Equips: {equips}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='EQUIPS.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 
