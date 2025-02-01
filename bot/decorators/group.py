@@ -3,7 +3,10 @@ from telegram.constants import ChatType
 from telegram.ext import ContextTypes, ConversationHandler
 
 from bot.constants.sign_up_group import COMMANDS
-from bot.functions.chat import call_telegram_message_function
+from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
+    reply_text
+)
 from repository.mongo import GroupModel
 
 
@@ -17,21 +20,20 @@ def need_singup_group(callback):
             print('\tAUTORIZADO - GRUPO POSSUI CADASTRO.')
             return await callback(update, context)
         else:
-            reply_text_kwargs = dict(
-                text=(
-                    f'É necessário cadastrar o grupo '
-                    f'para utilizar esse comando.\n'
-                    f'Cadastre o grupo com o comando /{COMMANDS[0]}.'
-                ),
-                allow_sending_without_reply=True
+            text = (
+                f'É necessário cadastrar o grupo '
+                f'para utilizar esse comando.\n'
+                f'Cadastre o grupo com o comando /{COMMANDS[0]}.'
             )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='GROUP.NEED_SIGNUP_GROUP()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                allow_sending_without_reply=True,
                 need_response=False,
                 skip_retry=False,
-                **reply_text_kwargs,
+                auto_delete_message=MIN_AUTODELETE_TIME,
             )
             return ConversationHandler.END
     return wrapper
@@ -41,17 +43,16 @@ def allow_only_in_group(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@NEED_USE_IN_GROUP')
         if update.effective_chat.type == ChatType.PRIVATE:
-            reply_text_kwargs = dict(
-                text=f'Esse comando só pode ser usado em um grupo.',
-                allow_sending_without_reply=True
-            )
-            await call_telegram_message_function(
+            text = f'Esse comando só pode ser usado em um grupo.'
+            await reply_text(
                 function_caller='GROUP.ALLOW_ONLY_IN_GROUP()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                allow_sending_without_reply=True,
                 need_response=False,
                 skip_retry=False,
-                **reply_text_kwargs,
+                auto_delete_message=MIN_AUTODELETE_TIME,
             )
             return ConversationHandler.END
         else:

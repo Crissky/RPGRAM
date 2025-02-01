@@ -9,14 +9,18 @@ from telegram.ext import (
 )
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
-    call_telegram_message_function,
     edit_message_text,
-    get_close_button
+    get_close_button,
+    reply_text
 )
 from bot.decorators.player import (
     alert_if_not_chat_owner_to_callback_data_to_dict
 )
-from bot.functions.chat import CALLBACK_KEY_LIST, callback_data_to_dict, callback_data_to_string
+from bot.functions.chat import (
+    CALLBACK_KEY_LIST,
+    callback_data_to_dict,
+    callback_data_to_string
+)
 from bot.functions.general import get_attribute_group_or_player
 from bot.functions.keyboard import reshape_row_buttons
 
@@ -68,20 +72,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
     else:
-        reply_text_kwargs = dict(
-            text=text,
-            reply_markup=reply_markup,
-            disable_notification=silent,
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='RACE.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            reply_markup=reply_markup,
+            allow_sending_without_reply=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 

@@ -4,15 +4,13 @@ Módulo responsável por gerenciar o comando de configuração de grupo.
 
 
 from telegram import Update
-from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes, PrefixHandler
 
 from bot.constants.config_player import COMMANDS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
-    call_telegram_message_function,
-    get_close_keyboard,
+    reply_text,
     reply_typing
 )
 from bot.decorators import print_basic_infos, need_singup_player
@@ -46,61 +44,55 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         try:
             player[attribute] = value
             player_model.save(player)
-            reply_text_kwargs = dict(
-                text=(
-                    f'Configurado "{attribute}" para "{value}".\n\n'
-                    f'{player}'
-                ),
-                disable_notification=silent,
-                reply_markup=get_close_keyboard(user_id=user_id),
-                allow_sending_without_reply=True
+            text = (
+                f'Configurado "{attribute}" para "{value}".\n\n'
+                f'{player}'
             )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='CONFIG_PLAYER.START()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                silent=silent,
+                allow_sending_without_reply=True,
+                close_by_owner=True,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
         except (KeyError, ValueError) as error:
-            reply_text_kwargs = dict(
-                text=str(error),
-                disable_notification=silent,
-                reply_markup=get_close_keyboard(user_id=user_id),
-                allow_sending_without_reply=True
-            )
-            await call_telegram_message_function(
+            text = str(error)
+            await reply_text(
                 function_caller='CONFIG_PLAYER.START()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                silent=silent,
+                allow_sending_without_reply=True,
+                close_by_owner=True,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
     elif 'default' in args or 'padrao' in args or 'padrão' in args:
         player['VERBOSE'] = 'false'
         player['SILENT'] = 'false'
         player_model.save(player)
-        reply_text_kwargs = dict(
-            text=(
-                f'Configurado para os valores padrões.\n\n'
-                f'{player}'
-            ),
-            disable_notification=silent,
-            reply_markup=get_close_keyboard(user_id=user_id),
-            allow_sending_without_reply=True
+        text = (
+            f'Configurado para os valores padrões.\n\n'
+            f'{player}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CONFIG_PLAYER.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
+            close_by_owner=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     elif len(args) == 1 and ('update' in args or 'atualizar' in args):
         user_name = update.effective_user.name
@@ -112,45 +104,39 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             player_char.update_player_name(new_name=user_name)
             char_model.save(player_char)
 
-        reply_text_kwargs = dict(
-            text=(
-                f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
-                f'{player}'
-            ),
-            disable_notification=silent,
-            reply_markup=get_close_keyboard(user_id=user_id),
-            allow_sending_without_reply=True
+        text = (
+            f'Informações do jogador "{user_name}" foram atualizadas.\n\n'
+            f'{player}'
         )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CONFIG_PLAYER.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            silent=silent,
+            allow_sending_without_reply=True,
+            close_by_owner=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
     elif len(args) != 2:
         text = escape_basic_markdown_v2(
             'Envie o ATRIBUTO e o VALOR que deseja configurar.\n'
             'Atributos:\n`VERBOSE`\n`SILENT`'
         )
-
-        reply_text_kwargs = dict(
-            text=text,
-            disable_notification=silent,
-            parse_mode=ParseMode.MARKDOWN_V2,
-            reply_markup=get_close_keyboard(user_id=user_id),
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='CONFIG_PLAYER.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            markdown=True,
+            silent=silent,
+            allow_sending_without_reply=True,
+            close_by_owner=True,
             need_response=False,
             skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 

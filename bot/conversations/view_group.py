@@ -18,12 +18,10 @@ from bot.constants.filters import (
 )
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
-    call_telegram_message_function,
-    get_close_keyboard
+    reply_text
 )
 from bot.decorators import print_basic_infos, need_singup_group
 from bot.functions.config import update_total_players
-from bot.functions.general import get_attribute_group_or_player
 from constant.text import SECTION_HEAD_GROUP_END, SECTION_HEAD_GROUP_START
 from function.text import create_text_in_box
 
@@ -36,7 +34,6 @@ from rpgram import Group
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     group_model = GroupModel()
     chat_id = update.effective_chat.id
-    silent = get_attribute_group_or_player(chat_id, 'silent')
 
     group: Group = group_model.get(chat_id)
     update_total_players(group=group)
@@ -48,20 +45,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             section_end=SECTION_HEAD_GROUP_END,
             clean_func=None
         )
-        reply_text_kwargs = dict(
-            text=text,
-            disable_notification=silent,
-            reply_markup=get_close_keyboard(None),
-            allow_sending_without_reply=True
-        )
-        await call_telegram_message_function(
+        await reply_text(
             function_caller='VIEW_GROUP.START()',
-            function=update.effective_message.reply_text,
+            text=text,
             context=context,
+            update=update,
+            close_by_owner=False,
             need_response=False,
-            skip_retry=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
-            **reply_text_kwargs,
         )
 
 
