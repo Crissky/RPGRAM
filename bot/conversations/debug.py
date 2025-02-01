@@ -6,7 +6,6 @@ Módulo responsável por exibir algumas variáveis de contexto
 from operator import attrgetter
 from random import sample
 from telegram import Update
-from telegram.constants import ParseMode
 from telegram.ext import (
     CommandHandler,
     ContextTypes,
@@ -26,8 +25,7 @@ from bot.constants.filters import (
 )
 from bot.functions.chat import (
     MIN_AUTODELETE_TIME,
-    call_telegram_message_function,
-    get_close_keyboard
+    reply_text
 )
 from bot.decorators import (
     skip_if_no_have_char,
@@ -106,21 +104,18 @@ async def start_debug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_start=SECTION_HEAD_DEBUG_START,
         section_end=SECTION_HEAD_DEBUG_END,
     )
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        disable_notification=silent,
-        reply_markup=get_close_keyboard(None),
-        allow_sending_without_reply=True
-    )
-    await call_telegram_message_function(
+    await reply_text(
         function_caller='DEBUG.START_DEBUG()',
-        function=update.effective_message.reply_text,
+        text=text,
         context=context,
+        update=update,
+        markdown=True,
+        silent=silent,
+        allow_sending_without_reply=True,
+        close_by_owner=False,
         need_response=False,
         skip_retry=False,
         auto_delete_message=MIN_AUTODELETE_TIME,
-        **reply_text_kwargs,
     )
 
 
@@ -160,21 +155,18 @@ async def get_random_debuff(
                 section_start=SECTION_HEAD_DEBUFF_START,
                 section_end=SECTION_HEAD_DEBUFF_END,
             )
-            reply_text_kwargs = dict(
-                text=text,
-                parse_mode=ParseMode.MARKDOWN_V2,
-                disable_notification=silent,
-                reply_markup=get_close_keyboard(user_id=user_id),
-                allow_sending_without_reply=True
-            )
-            await call_telegram_message_function(
+            await reply_text(
                 function_caller='DEBUG.GET_RANDOM_DEBUFF()',
-                function=update.effective_message.reply_text,
+                text=text,
                 context=context,
+                update=update,
+                markdown=True,
+                silent=silent,
+                allow_sending_without_reply=True,
+                close_by_owner=True,
                 need_response=False,
                 skip_retry=False,
                 auto_delete_message=MIN_AUTODELETE_TIME,
-                **reply_text_kwargs,
             )
             return ConversationHandler.END
         report = add_conditions(condition, user_id=user_id)
@@ -184,21 +176,18 @@ async def get_random_debuff(
     text = report['text']
     text += char.get_all_sheets(verbose=False, markdown=True)
     text = escape_basic_markdown_v2(text)
-    reply_text_kwargs = dict(
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-        disable_notification=silent,
-        reply_markup=get_close_keyboard(user_id=user_id),
-        allow_sending_without_reply=True
-    )
-    await call_telegram_message_function(
+    await reply_text(
         function_caller='DEBUG.GET_RANDOM_DEBUFF()',
-        function=update.effective_message.reply_text,
+        text=text,
         context=context,
+        update=update,
+        markdown=True,
+        silent=silent,
+        allow_sending_without_reply=True,
+        close_by_owner=True,
         need_response=False,
         skip_retry=False,
         auto_delete_message=MIN_AUTODELETE_TIME,
-        **reply_text_kwargs,
     )
 
 
