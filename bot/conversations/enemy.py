@@ -135,6 +135,7 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     print('JOB_START_AMBUSH()')
     job = context.job
     chat_id = job.chat_id
+    message_id = None
     group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group_or_player(chat_id, 'silent')
     enemy_list = create_random_enemies(
@@ -142,7 +143,6 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
         num_min_enemies=2,
         num_max_enemies=4,
     )
-    message_id = None
 
     send_chat_action_kwargs = dict(
         chat_id=chat_id,
@@ -160,7 +160,6 @@ async def job_start_ambush(context: ContextTypes.DEFAULT_TYPE):
     for enemy_char in enemy_list:
         if not message_id:
             message_id = await send_ambush_message(
-                chat_id=chat_id,
                 context=context,
                 silent=silent,
             )
@@ -273,11 +272,14 @@ async def create_job_enemy_attack(
         allow_sending_without_reply=True,
         reply_markup=reply_markup,
     )
+    min_minutes = MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    max_minutes = MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
+    minutes_to_attack = randint(min_minutes, max_minutes)
     response = await call_telegram_message_function(
         function_caller='JOB_START_AMBUSH()',
         function=context.bot.send_message,
         context=context,
-        auto_delete_message=3,
+        auto_delete_message=timedelta(minutes=(minutes_to_attack + 30)),
         **send_message_kwargs
     )
     sleep(2)
@@ -288,9 +290,6 @@ async def create_job_enemy_attack(
     )
 
     # CRIA JOB DE ATAQUE DO INIMIGO
-    min_minutes = MIN_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
-    max_minutes = MAX_MINUTES_TO_ATTACK_FROM_RANK_DICT[enemy_stars_name]
-    minutes_to_attack = randint(min_minutes, max_minutes)
     job_data = {
         'enemy_id': str(enemy_char.player_id),
         'message_id': response.message_id
@@ -1422,13 +1421,13 @@ async def add_enemy_counter(
 
 
 async def send_ambush_message(
-    chat_id: int,
     context: ContextTypes.DEFAULT_TYPE,
     silent: bool = None,
 ) -> int:
     '''Envia a primeira mensagem da Emboscada
     '''
 
+    chat_id = context._chat_id
     ambush_text = choice(AMBUSH_TEXTS)
     ambush_text = create_text_in_box(
         text=ambush_text,
