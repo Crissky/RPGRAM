@@ -841,7 +841,6 @@ async def enemy_attack(
             context=context,
             items=drop_items,
             text=f'{player_name} morreu e dropou o item',
-            chat_id=chat_id,
             message_id=message_id,
             silent=True,
         )
@@ -1052,7 +1051,6 @@ async def player_attack(
             context=context,
             items=drop_items,
             text=f'{player_name} morreu e dropou o item',
-            chat_id=chat_id,
             message_id=message_id,
             silent=True,
         )
@@ -1602,7 +1600,6 @@ async def enemy_drop_random_loot(
         context=context,
         items=drops,
         text=text,
-        chat_id=chat_id,
         message_id=message_id,
         silent=silent,
     )

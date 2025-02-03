@@ -240,10 +240,10 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 message_id=message_id,
             )
             await drop_random_prize(
-                chat_id=chat_id,
                 context=context,
                 silent=silent,
                 rarity=game.rarity,
+                update=update,
                 text=prize_text,
             )
         else:

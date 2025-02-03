@@ -1583,12 +1583,12 @@ async def send_drop_message(
     items: List[Item],
     text: str,
     update: Update = None,
-    chat_id: int = None,
     message_id: int = None,
     silent: bool = False,
 ):
-    if update is None and chat_id is None:
-        raise ValueError('update ou chat_id são requeridos')
+    '''Envia mensagens com os itens dropados
+    '''
+
     if isinstance(items, Item):
         items = [items]
     for i, item in enumerate(items):
