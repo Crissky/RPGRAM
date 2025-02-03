@@ -268,10 +268,10 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     f'Item: {item.item}'
                 )
             await send_drop_message(
-                update=update,
                 context=context,
                 items=item,
                 text='O baú dropou o item',
+                update=update,
                 silent=silent,
             )
     else:
@@ -340,10 +340,10 @@ async def activated_trap(
     if damage_report['dead']:
         drop_items = drop_random_items_from_bag(user_id=user_id)
         await send_drop_message(
-            update=update,
             context=context,
             items=drop_items,
             text=f'{user_name} morreu e dropou o item',
+            update=update,
             silent=True,
         )
         text += 'Seus pontos de vida chegaram a zero.\n'

@@ -62,7 +62,6 @@ async def drop_random_prize(
         items=drops,
         text=text,
         update=update,
-        chat_id=chat_id,
         message_id=message_id,
         silent=silent,
     )
