@@ -268,10 +268,10 @@ async def solved(
         message_id=message_id,
     )
     await drop_random_prize(
-        chat_id=chat_id,
         context=context,
         silent=silent,
         rarity=grid.rarity,
+        message_id=message_id,
         text=prize_text,
     )
 

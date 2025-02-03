@@ -1,3 +1,4 @@
+from telegram import Update
 from bot.conversations.bag import send_drop_message
 from bot.functions.char import get_chars_level_from_group
 from bot.functions.config import get_attribute_group
@@ -15,15 +16,17 @@ from random import choice, randint, shuffle
 
 
 async def drop_random_prize(
-    chat_id: int,
     context: ContextTypes.DEFAULT_TYPE,
     silent: bool,
     rarity: RarityEnum,
+    update: Update = None,
+    message_id: int = None,
     text: str = 'deixou cair como recompensa',
 ):
     '''Envia mensagens de drops de itens em um chat.
     '''
 
+    chat_id = context._chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
     char_level_list = get_chars_level_from_group(chat_id=chat_id)
     total_chars = len(char_level_list)
@@ -58,6 +61,8 @@ async def drop_random_prize(
         context=context,
         items=drops,
         text=text,
+        update=update,
         chat_id=chat_id,
+        message_id=message_id,
         silent=silent,
     )
