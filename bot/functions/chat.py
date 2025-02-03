@@ -519,12 +519,11 @@ async def reply_text(
     qualquer jogador poderá fechar.
     '''
 
-    if update is None and message_id is None:
-        raise ValueError('Você deve passar update ou message_id')
+    if update and not message_id:
+        message_id = update.effective_message.id
 
     chat_id = chat_id if chat_id else context._chat_id
     user_id = user_id if user_id else context._user_id
-    message_id = message_id if message_id else update.effective_message.id
     markdown = ParseMode.MARKDOWN_V2 if markdown is True else None
     reply_parameters = ReplyParameters(
         message_id=message_id,
