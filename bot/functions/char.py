@@ -7,6 +7,7 @@ from telegram.ext import ContextTypes
 
 from bot.constants.puzzle import SECTION_TEXT_PUZZLE_XP
 from bot.functions.chat import (
+    MIN_AUTODELETE_TIME,
     call_telegram_message_function,
     get_close_keyboard,
     reply_text_and_forward
@@ -509,7 +510,6 @@ def save_char(
 
 
 async def punishment(
-    chat_id: int,
     context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
 ):
@@ -517,6 +517,7 @@ async def punishment(
     desafio.
     '''
 
+    chat_id = context._chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
     char_list = get_player_chars_from_group(chat_id=chat_id, is_alive=True)
     sorted_char_list = sorted(
@@ -551,9 +552,10 @@ async def punishment(
                 user_ids=char.player_id,
                 chat_id=chat_id,
                 message_id=message_id,
-                need_response=False,
                 markdown=True,
                 silent_forward=False,
+                need_response=False,
+                auto_delete_message=MIN_AUTODELETE_TIME,
             )
             continue
 
@@ -593,9 +595,10 @@ async def punishment(
             user_ids=char.player_id,
             chat_id=chat_id,
             message_id=message_id,
-            need_response=False,
             markdown=True,
             silent_forward=False,
+            need_response=False,
+            auto_delete_message=MIN_AUTODELETE_TIME,
         )
 
 
