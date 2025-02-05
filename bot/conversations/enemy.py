@@ -449,12 +449,13 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
                     function_caller='JOB_ENEMY_ATTACK()',
                     text=bad_request_text,
                     context=context,
-                    user_id=user_id,
                     chat_id=chat_id,
+                    user_id=user_id,
                     message_id=message_id,
-                    need_response=False,
-                    allow_sending_without_reply=True,
                     markdown=True,
+                    allow_sending_without_reply=True,
+                    need_response=False,
+                    auto_delete_message=MIN_AUTODELETE_TIME,
                 )
     elif enemy_char.is_immobilized:
         is_first_attack = True
@@ -1029,11 +1030,12 @@ async def player_attack(
                 function_caller='PLAYER_ATTACK()',
                 text=bad_request_text,
                 context=context,
-                user_id=target_id,
                 update=update,
-                need_response=False,
-                allow_sending_without_reply=True,
+                user_id=target_id,
                 markdown=True,
+                allow_sending_without_reply=True,
+                need_response=False,
+                auto_delete_message=MIN_AUTODELETE_TIME,
             )
 
     set_message_text_from_ambush_dict(
@@ -1130,9 +1132,10 @@ async def player_attack_player(
         text=report_text,
         context=context,
         update=update,
-        need_response=False,
-        allow_sending_without_reply=True,
         markdown=True,
+        allow_sending_without_reply=True,
+        need_response=False,
+        auto_delete_message=MIN_AUTODELETE_TIME,
     )
 
     return {'text': report_text}

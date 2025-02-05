@@ -169,7 +169,6 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
         section_start = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START
         section_end = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END
         await punishment(
-            chat_id=chat_id,
             context=context,
             message_id=message_id,
         )
@@ -301,7 +300,6 @@ async def failed(
     remove_timeout_puzzle_job(context=context, message_id=message_id)
     remove_grid_from_dict(context=context, message_id=message_id)
     await punishment(
-        chat_id=chat_id,
         context=context,
         message_id=message_id,
     )
