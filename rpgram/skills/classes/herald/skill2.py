@@ -221,7 +221,7 @@ class PurifyingFlameSkill(BaseSkill):
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
-    RANK = 1
+    RANK = 2
     REQUIREMENTS = Requirement(**{
         'level': 40,
         'classe_name': ClasseEnum.HERALD.value,
@@ -233,7 +233,7 @@ class PurifyingFlameSkill(BaseSkill):
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.MAGICAL_DEFENSE: 1.25,
+            CombatStatsEnum.MAGICAL_DEFENSE: 1.50,
         }
         damage_types = [DamageEnum.FIRE, DamageEnum.BLESSING]
 
