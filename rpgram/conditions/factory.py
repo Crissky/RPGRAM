@@ -163,6 +163,7 @@ from rpgram.conditions.target_skill_debuff import (
     DoUchiCondition,
     KoteUchiCondition,
     MuddyCondition,
+    RedEquilibriumCondition,
     ShatterCondition
 )
 from rpgram.enums.debuff import (
@@ -461,6 +462,8 @@ def condition_factory(
         condition_class = SDMantilledArmsCondition
     elif compare_condition(name, HeraldSkillEnum.BLUE_EQUILIBRIUM):
         condition_class = BlueEquilibriumCondition
+    elif compare_condition(name, HeraldSkillEnum.RED_EQUILIBRIUM):
+        condition_class = RedEquilibriumCondition
     elif compare_condition(name, HeraldSkillEnum.IGNEOUS_HEART):
         condition_class = SDIgneousHeartCondition
     # BARD BUFFS
