@@ -27,6 +27,7 @@ from rpgram.enums.skill import (
     DuelistSkillEnum,
     GladiatorSkillEnum,
     HealerSkillEnum,
+    HeraldSkillEnum,
     KnightSkillEnum,
     NecromancerSkillEnum,
     PaladinSkillEnum,
@@ -2094,6 +2095,49 @@ class WarCornuCondition(TargetSkillBuffCondition):
         return 'permanece com a *Bravura do Senhor da Guerra*.'
 
 
+class BlueEquilibriumCondition(TargetSkillBuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.BLUE_EQUILIBRIUM,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Chamas Azuis* que aumentam a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.025 + (self.level / 100)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return self.power
+
+    @property
+    def emoji(self) -> str:
+        return '💙🔥'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece *Fervoroso*.'
+
+
 class TargetBuffs:
     __list = [
         WarBannerCondition,
@@ -2140,6 +2184,7 @@ class TargetBuffs:
         LookouterYetiCondition,
         MartialBannerCondition,
         WarCornuCondition,
+        BlueEquilibriumCondition,
     ]
 
     def __iter__(self) -> Iterable[TargetSkillBuffCondition]:

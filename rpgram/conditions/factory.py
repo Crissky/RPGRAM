@@ -114,6 +114,7 @@ from rpgram.conditions.target_skill_buff import (
     AgileFeetCondition,
     AnansisTrickeryCondition,
     ArtemissArrowCondition,
+    BlueEquilibriumCondition,
     BodyguardBearCondition,
     BoneArmorCondition,
     BoneBucklerCondition,
@@ -458,6 +459,8 @@ def condition_factory(
         condition_class = FlameMantillaCondition
     elif compare_condition(name, HeraldSkillEnum.MANTILLED_ARMS):
         condition_class = SDMantilledArmsCondition
+    elif compare_condition(name, HeraldSkillEnum.BLUE_EQUILIBRIUM):
+        condition_class = BlueEquilibriumCondition
     elif compare_condition(name, HeraldSkillEnum.IGNEOUS_HEART):
         condition_class = SDIgneousHeartCondition
     # BARD BUFFS
