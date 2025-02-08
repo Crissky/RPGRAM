@@ -215,7 +215,7 @@ class PurifyingFlameSkill(BaseSkill):
     NAME = HeraldSkillEnum.IGNEOUS_STRIKE.value
     DESCRIPTION = (
         f'Envolve a própria arma em *Chamas Brancas* e '
-        f'desfere ataque impetuoso '
+        f'desfere um ataque impetuoso '
         f'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
