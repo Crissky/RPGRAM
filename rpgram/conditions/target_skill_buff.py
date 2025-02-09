@@ -2120,7 +2120,7 @@ class BlueEquilibriumCondition(TargetSkillBuffCondition):
 
     @property
     def power(self) -> int:
-        power_multiplier = 0.025 + (self.level / 100)
+        power_multiplier = 0.02 + (self.level / 100)
         power_multiplier = round(power_multiplier, 2)
 
         return int(self._power * power_multiplier)
