@@ -56,6 +56,7 @@ async def show_percent_today(context: ContextTypes.DEFAULT_TYPE):
         function=context.bot.send_message,
         context=context,
         need_response=False,
+        auto_delete_message=False,
         **call_telegram_kwargs
     )
 
