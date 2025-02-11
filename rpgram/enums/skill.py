@@ -227,6 +227,7 @@ class HeraldSkillEnum(Enum):
     VIGIL_FLAME = 'Chama Vigílica'
     FLAME_MANTILLA = 'Mantilha de Chamas'
     IGNEOUS_STRIKE = 'Golpe Ígneo'
+    FLAMES_OF_EQUILIBRIUM = 'Chamas do Equilíbrio'
     BLUE_EQUILIBRIUM = 'Equilíbrio Azul'
     RED_EQUILIBRIUM = 'Equilíbrio Vermelho'
     PURIFYING_FLAME = 'Chama Purificadora'

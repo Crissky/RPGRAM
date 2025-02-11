@@ -7,6 +7,8 @@ from rpgram.conditions.special_damage_skill import (
     SDMantilledArmsCondition,
     SDVigilArmsCondition
 )
+from rpgram.conditions.target_skill_buff import BlueEquilibriumCondition
+from rpgram.conditions.target_skill_debuff import RedEquilibriumCondition
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
@@ -254,6 +256,85 @@ class PurifyingFlameSkill(BaseSkill):
         )
 
 
+class FlamesOfEquilibriumSkill(BaseSkill):
+    NAME = HeraldSkillEnum.FLAMES_OF_EQUILIBRIUM.value
+    DESCRIPTION = (
+        f'Envolve a própria arma em *Chamas Azuis e Vermelhas* e '
+        f'desfere um ataque fervoroso '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível). '
+        f'Além disso, aumenta a *{MAGICAL_DEFENSE_EMOJI_TEXT}* com base '
+        f'no dano causado (2% + 1% x Rank x Nível) e '
+        f'diminui a *{MAGICAL_DEFENSE_EMOJI_TEXT}* do alvo também '
+        f'com base no dano causado (2% + 1% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.HERALD.value,
+        'skill_list': [
+            IgneousStrikeSkill.NAME,
+            PurifyingFlameSkill.NAME
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_DEFENSE: 1.50,
+        }
+        damage_types = [DamageEnum.FIRE, DamageEnum.MAGIC]
+
+        super().__init__(
+            name=FlamesOfEquilibriumSkill.NAME,
+            description=FlamesOfEquilibriumSkill.DESCRIPTION,
+            rank=FlamesOfEquilibriumSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FlamesOfEquilibriumSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        char = self.char
+        power = int(damage)
+        level = self.level_rank
+        blue_condition = BlueEquilibriumCondition(power=power, level=level)
+        status_report_list = char.status.set_powerful_conditions(
+            blue_condition
+        )
+        status_report_text = "\n".join(
+            [report["text"] for report in status_report_list]
+        )
+        report['text'] = f'{char.name}:\n{status_report_text}\n'
+
+        if target.is_alive:
+            red_condition = RedEquilibriumCondition(power=power, level=level)
+            status_report_list = target.status.set_powerful_conditions(
+                red_condition
+            )
+            status_report_text = "\n".join(
+                [report["text"] for report in status_report_list]
+            )
+            report['status_text'] = status_report_text
+
+        return report
+
+
 class IgneousHeartSkill(BaseSkill):
     NAME = HeraldSkillEnum.IGNEOUS_HEART.value
     DESCRIPTION = (
@@ -340,6 +421,7 @@ SKILL_WAY_DESCRIPTION = {
         FlameMantillaSkill,
         IgneousStrikeSkill,
         PurifyingFlameSkill,
+        FlamesOfEquilibriumSkill,
         IgneousHeartSkill,
     ]
 }
@@ -387,6 +469,16 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     HERALD_CHARACTER.skill_tree.learn_skill(PurifyingFlameSkill)
+
+    skill = FlamesOfEquilibriumSkill(HERALD_CHARACTER)
+    print(skill)
+    print(HERALD_CHARACTER.cs.magical_attack)
+    print(HERALD_CHARACTER.to_attack(
+        defender_char=HERALD_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    HERALD_CHARACTER.skill_tree.learn_skill(FlamesOfEquilibriumSkill)
 
     skill = IgneousHeartSkill(HERALD_CHARACTER)
     print(skill)
