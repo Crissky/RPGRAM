@@ -12,6 +12,7 @@ from rpgram.skills.classes.herald.skill2 import (
     IgneousHeartSkill,
     IgneousStrikeSkill,
     PurifyingFlameSkill,
+    PurifyingHeartSkill,
     VigilFlameSkill
 )
 from rpgram.skills.classes.multiclasse.physical_defense import (
@@ -57,6 +58,8 @@ def herald_skill_factory(
         skill_class = FlamesOfEquilibriumSkill
     elif skill_class_name == IgneousHeartSkill.__name__:
         skill_class = IgneousHeartSkill
+    elif skill_class_name == PurifyingHeartSkill.__name__:
+        skill_class = PurifyingHeartSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -79,6 +82,7 @@ HERALD_SKILL_LIST: List[Type[BaseSkill]] = [
     PurifyingFlameSkill,
     FlamesOfEquilibriumSkill,
     IgneousHeartSkill,
+    PurifyingHeartSkill,
 ]
 HERALD_SKILL_WAYS: List[dict] = [
     skill_way1,
