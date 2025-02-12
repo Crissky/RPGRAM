@@ -232,6 +232,7 @@ class HeraldSkillEnum(Enum):
     RED_EQUILIBRIUM = 'Equilíbrio Vermelho'
     PURIFYING_FLAME = 'Chama Purificadora'
     IGNEOUS_HEART = 'Coração Ígneo'
+    PURIFYING_HEART = 'Coração Purificador'
 
     # Special Damage
     VIGIL_ARMS = 'Braços Vigílicos'

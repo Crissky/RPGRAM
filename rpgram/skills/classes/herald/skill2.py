@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import FlameMantillaCondition
 from rpgram.conditions.self_skill import VigilFlameCondition
 from rpgram.conditions.special_damage_skill import (
@@ -383,7 +383,7 @@ class IgneousHeartSkill(BaseSkill):
         power = round(power)
 
         cure_report = char.cs.cure_hit_points(power)
-        report_text = cure_report["text"]
+        cure_report_text = cure_report["text"]
 
         sd_power = char.cs.magical_defense
         sd_condition = SDIgneousHeartCondition(power=sd_power, level=level)
@@ -395,8 +395,85 @@ class IgneousHeartSkill(BaseSkill):
             'text': (
                 f'*{player_name}* é envolvido por um *Ímpeto por Justiça* '
                 f'que cura suas feridas.\n'
-                f'*{report_text}*({dice.text}).\n\n'
+                f'*{cure_report_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class PurifyingHeartSkill(BaseSkill):
+    NAME = HeraldSkillEnum.PURIFYING_HEART.value
+    DESCRIPTION = (
+        f'Guiado por um *Coração Puro*, '
+        f'libera uma *Energia Purificadora* que cura seu '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
+        f'Além disso, cura até (5 x Rank x Nível) níveis de '
+        f'condições aleatórias.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.HERALD.value,
+        'skill_list': [
+            IgneousHeartSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=PurifyingHeartSkill.NAME,
+            description=PurifyingHeartSkill.DESCRIPTION,
+            rank=PurifyingHeartSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.HEALING,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=PurifyingHeartSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = char.player_name
+        dice = self.dice
+        level = self.level_rank
+        power_multiplier = 1 + (level / 10)
+        power = dice.boosted_physical_attack * power_multiplier
+        power = round(power)
+
+        cure_report = char.cs.cure_hit_points(power)
+        cure_report_text = cure_report["text"]
+
+        quantity = int(5 * level)
+        status_report = char.status.remove_random_debuff_conditions(
+            quantity=quantity
+        )
+        status_report_text = status_report["text"]
+        if status_report_text:
+            alert_section_head_status = ALERT_SECTION_HEAD.format(
+                f'*STATUS ({quantity})*'
+            )
+            status_report_text = (
+                f'\n\n{alert_section_head_status}{status_report_text}'
+            )
+
+        report = {
+            'text': (
+                f'*{player_name}* é guiado pelo seu *Coração Puro* '
+                f'que cura suas feridas.\n'
+                f'*{cure_report_text}*({dice.text}).'
                 f'{status_report_text}'
             )
         }
@@ -486,3 +563,10 @@ if __name__ == '__main__':
     print(HERALD_CHARACTER.cs.magical_defense)
     print(skill.function(HERALD_CHARACTER))
     HERALD_CHARACTER.skill_tree.learn_skill(IgneousHeartSkill)
+
+    skill = PurifyingHeartSkill(HERALD_CHARACTER)
+    print(skill)
+    HERALD_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
+    print(HERALD_CHARACTER.cs.magical_defense)
+    print(skill.function(HERALD_CHARACTER))
+    HERALD_CHARACTER.skill_tree.learn_skill(PurifyingHeartSkill)
