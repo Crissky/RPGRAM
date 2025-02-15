@@ -192,11 +192,12 @@ class Status:
             ignore_not_find = True
 
         for condition_name in unique_conditions:
-            condition_level = conditions.count(condition_name)
-            condition = condition_factory(
-                name=condition_name,
-                level=condition_level
-            )
+            factory_kwargs = {}
+            factory_kwargs['name'] = condition_name
+            factory_kwargs['level'] = conditions.count(condition_name)
+            factory_kwargs['set_default_power'] = True
+
+            condition = condition_factory(**factory_kwargs)
             report = self.remove_condition(
                 condition=condition,
                 ignore_not_find=ignore_not_find,

@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Union
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
+    BarrierCondition,
     BeatifyingAegisCondition,
     FlameMantillaCondition,
     GuardianShieldCondition,
@@ -44,6 +45,7 @@ from rpgram.conditions.heal import (
     Heal6Condition,
     Heal7Condition,
     Heal8Condition,
+    HealingCondition,
 )
 from rpgram.conditions.self_skill import (
     AlertCondition,
@@ -108,7 +110,8 @@ from rpgram.conditions.special_damage_skill import (
     SDWildLightningCondition,
     SDWildPoisonCondition,
     SDWildRockCondition,
-    SDWildWindCondition
+    SDWildWindCondition,
+    SpecialDamageSkillCondition
 )
 from rpgram.conditions.target_skill_buff import (
     AgileFeetCondition,
@@ -142,6 +145,7 @@ from rpgram.conditions.target_skill_buff import (
     ProtectorTurtleCondition,
     RangerFalconCondition,
     SquireAnointingCondition,
+    TargetSkillBuffCondition,
     TricksterTrovaCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
@@ -164,7 +168,8 @@ from rpgram.conditions.target_skill_debuff import (
     KoteUchiCondition,
     MuddyCondition,
     RedEquilibriumCondition,
-    ShatterCondition
+    ShatterCondition,
+    TargetSkillDebuffCondition
 )
 from rpgram.enums.debuff import (
     DebuffEnum,
@@ -204,6 +209,13 @@ if TYPE_CHECKING:
 
 
 CONDITION_TYPES = Union[Condition, Enum, str]
+HAVE_POWER_CONDITIONS = (
+    BarrierCondition,
+    HealingCondition,
+    SpecialDamageSkillCondition,
+    TargetSkillBuffCondition,
+    TargetSkillDebuffCondition
+)
 
 
 def condition_factory(
@@ -214,6 +226,7 @@ def condition_factory(
     power: int = None,
     damage: int = None,
     character: 'BaseCharacter' = None,
+    set_default_power: bool = False
 ) -> Condition:
     from rpgram.characters.char_base import BaseCharacter
     if isinstance(condition_name, str) and name is None:
@@ -575,6 +588,22 @@ def condition_factory(
         condition_class = GuardianShieldCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
+
+    # SET_DEFAULT_POWER
+    if (
+        set_default_power is True and
+        power is None and
+        issubclass(condition_class, HAVE_POWER_CONDITIONS)
+    ):
+        kwargs['power'] = 1
+    elif (
+        set_default_power is True and
+        not issubclass(condition_class, HAVE_POWER_CONDITIONS)
+    ):
+        print(
+            f'{condition_name} ({condition_class.__name__}) '
+            f'não está na lista de condições que têm o atributo power.'
+        )
 
     return condition_class(**kwargs)
 
