@@ -500,6 +500,7 @@ SKILL_WAY_DESCRIPTION = {
         PurifyingFlameSkill,
         FlamesOfEquilibriumSkill,
         IgneousHeartSkill,
+        PurifyingHeartSkill,
     ]
 }
 
