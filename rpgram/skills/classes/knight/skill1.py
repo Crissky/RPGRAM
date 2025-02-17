@@ -328,7 +328,11 @@ SKILL_WAY_DESCRIPTION = {
         'capaz de inspirar seus aliados e derrotar seus inimigos.'
     ),
     'skill_list': [
-        ChargeSkill
+        ChargeSkill,
+        HeavyChargeSkill,
+        SuperChargeSkill,
+        ChampionInspirationSkill,
+        LeadershipSkill,
     ]
 }
 
