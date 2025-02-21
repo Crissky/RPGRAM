@@ -10,7 +10,7 @@ SKILL_WAY_DESCRIPTION = {
     # Sentinela da Planície, Lâmina dos Reis, Lança Celeste, 
     # Arauto da Tempestade, Juramento de Aço, Guardião da Honra, 
     # Marechal de Guerra, Vanguarda da Justiça
-    'name': '',
+    'name': 'Lâmina dos Reis',
     'description': (
         ''
     ),
