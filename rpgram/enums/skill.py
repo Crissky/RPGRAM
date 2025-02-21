@@ -245,6 +245,7 @@ class KnightSkillEnum(Enum):
     SUPER_CHARGE = 'Super Carga'
     CHAMPION_INSPIRATION = 'Inspiração Campeã'
     LEADERSHIP = 'Liderança'
+    ROYAL_FURY = 'Fúria Régia'
 
 
 class LordOfTheRoguesSkillEnum(Enum):
