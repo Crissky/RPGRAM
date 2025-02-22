@@ -17,8 +17,8 @@ if TYPE_CHECKING:
 class RoyalFurySkill(BaseSkill):
     NAME = KnightSkillEnum.ROYAL_FURY.value
     DESCRIPTION = (
-        f'Em nome do Rei, desfere uma série de golpes rápidos e devastadores, '
-        f'causando dano '
+        f'*Em nome do Rei*, desfere uma série de golpes rápidos e '
+        f'devastadores, causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -33,7 +33,9 @@ class RoyalFurySkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 1.00,
         }
-        damage_types = None
+        damage_types = [
+            DamageEnum.BLESSING,
+        ]
 
         super().__init__(
             name=RoyalFurySkill.NAME,
