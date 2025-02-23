@@ -29,3 +29,18 @@ MALEGNE_RACES = [
     RaceEnum.FOMORI.value,
     RaceEnum.NEPHILIM.value,
 ]
+TRANSGRESSOR_RACES = [
+    RaceEnum.ORC.value,
+    RaceEnum.DROW.value,
+    RaceEnum.GOBLIN.value,
+    RaceEnum.TROLL.value,
+    RaceEnum.KOBOLD.value,
+    RaceEnum.SPECTRUM.value,
+    RaceEnum.OGRE.value,
+    RaceEnum.LYCANTHROPE.value,
+    RaceEnum.HARPY.value,
+    RaceEnum.LAMIA.value,
+    RaceEnum.GNOLL.value,
+    RaceEnum.FOMORI.value,
+    RaceEnum.NEPHILIM.value,
+]
