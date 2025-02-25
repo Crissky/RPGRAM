@@ -13,7 +13,6 @@ if TYPE_CHECKING:
     from rpgram.characters.char_base import BaseCharacter
 
 
-
 class RoyalFurySkill(BaseSkill):
     NAME = KnightSkillEnum.ROYAL_FURY.value
     DESCRIPTION = (
@@ -147,6 +146,7 @@ SKILL_WAY_DESCRIPTION = {
     ),
     'skill_list': [
         RoyalFurySkill,
+        JusticeBladeSkill,
     ]
 }
 
