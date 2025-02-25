@@ -246,6 +246,7 @@ class KnightSkillEnum(Enum):
     CHAMPION_INSPIRATION = 'Inspiração Campeã'
     LEADERSHIP = 'Liderança'
     ROYAL_FURY = 'Fúria Régia'
+    JUSTICE_BLADE = 'Lâmina da Justiça'
 
 
 class LordOfTheRoguesSkillEnum(Enum):
