@@ -11,6 +11,7 @@ from rpgram.skills.classes.knight.skill2 import (
     SKILL_WAY_DESCRIPTION as skill_way2,
     JusticeBladeSkill,
     RoyalFurySkill,
+    SovereignCutSkill,
 )
 from rpgram.skills.skill_base import BaseSkill
 
@@ -40,6 +41,8 @@ def knight_skill_factory(
         skill_class = RoyalFurySkill
     elif skill_class_name == JusticeBladeSkill.__name__:
         skill_class = JusticeBladeSkill
+    elif skill_class_name == SovereignCutSkill.__name__:
+        skill_class = SovereignCutSkill
     else:
         raise ValueError(f'Skill {skill_class_name} não encontrada!')
 
@@ -57,6 +60,7 @@ KNIGHT_SKILL_LIST: List[Type[BaseSkill]] = [
     # SKILL2
     RoyalFurySkill,
     JusticeBladeSkill,
+    SovereignCutSkill,
 ]
 KNIGHT_SKILL_WAYS: List[dict] = [
     skill_way1,

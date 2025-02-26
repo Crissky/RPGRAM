@@ -124,6 +124,74 @@ class JusticeBladeSkill(BaseSkill):
         return report
 
 
+class SovereignCutSkill(BaseSkill):
+    NAME = KnightSkillEnum.SOVEREIGN_CUT.value
+    DESCRIPTION = (
+        f'*Em nome do Rei*, desfere um golpe amplo, que varre o '
+        f'campo de batalha e inflige o '
+        f'dobro de dano em todos os alvos *Transgressores*. '
+        f'Causa dano '
+        f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* e de '
+        f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
+        f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.KNIGHT.value,
+        'skill_list': [RoyalFurySkill.NAME, JusticeBladeSkill.NAME]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.PRECISION_ATTACK: 1.25,
+        }
+        damage_types = [
+            DamageEnum.BLESSING,
+            DamageEnum.SLASHING,
+        ]
+
+        super().__init__(
+            name=SovereignCutSkill.NAME,
+            description=SovereignCutSkill.DESCRIPTION,
+            rank=SovereignCutSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.ALL,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.PHYSICAL,
+            char=char,
+            use_equips_damage_types=True,
+            requirements=SovereignCutSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    @property
+    def hit_multiplier(self) -> float:
+        return 1.25
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+
+        if target.is_alive and target.is_transgressor:
+            justice_damage = int(total_damage)
+            damage_report = target.cs.damage_hit_points(
+                value=justice_damage,
+                markdown=True,
+            )
+            report['text'] = '\(*TRANSGRESSOR*\) ' + damage_report['text']
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     # Sugestão para nomes do caminho:
     # Sentinela da Planície, Lâmina dos Reis, Lança Celeste, 
@@ -147,6 +215,7 @@ SKILL_WAY_DESCRIPTION = {
     'skill_list': [
         RoyalFurySkill,
         JusticeBladeSkill,
+        SovereignCutSkill,
     ]
 }
 
@@ -173,3 +242,13 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     KNIGHT_CHARACTER.skill_tree.learn_skill(JusticeBladeSkill)
+
+    skill = SovereignCutSkill(KNIGHT_CHARACTER)
+    print(skill)
+    print(KNIGHT_CHARACTER.cs.precision_attack)
+    print(KNIGHT_CHARACTER.to_attack(
+        defender_char=ORC_BARBARIAN_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    KNIGHT_CHARACTER.skill_tree.learn_skill(SovereignCutSkill)
