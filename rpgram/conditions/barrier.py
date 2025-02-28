@@ -14,6 +14,7 @@ from rpgram.enums.skill import (
     GladiatorSkillEnum,
     HealerSkillEnum,
     HeraldSkillEnum,
+    KnightSkillEnum,
     MultiClasseSkillEnum,
     SorcererSkillEnum,
     SorcererSupremeSkillEnum,
@@ -605,6 +606,37 @@ class FlameMantillaCondition(BarrierCondition):
         return 2.00
 
 
+class RoyalShieldCondition(BarrierCondition):
+
+    def __init__(
+        self,
+        power: int,
+        damage: int = 0,
+        turn: int = 5,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=KnightSkillEnum.ROYAL_SHIELD,
+            frequency=TurnEnum.START,
+            power=power,
+            damage=damage,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'Quebra o *Selo Real* para convocar um escudo gerado '
+            f'pela liberação do *Poder Régio* que protege com uma barreira '
+            f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
+        )
+
+    @property
+    def base_power_multiplier(self) -> float:
+        return 1.00
+
+
 class BarrierBuffs:
     __list = [
         GuardianShieldCondition,
@@ -620,6 +652,7 @@ class BarrierBuffs:
         BeatifyingAegisCondition,
         RobysticShieldCondition,
         FlameMantillaCondition,
+        RoyalShieldCondition,
     ]
 
     def __iter__(self) -> Iterable[BarrierCondition]:

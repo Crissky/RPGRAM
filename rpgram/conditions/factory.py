@@ -14,7 +14,8 @@ from rpgram.conditions.barrier import (
     ChaosWeaverCondition,
     ProtectiveAuraCondition,
     ProtectiveInfusionCondition,
-    RobysticShieldCondition
+    RobysticShieldCondition,
+    RoyalShieldCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -496,6 +497,8 @@ def condition_factory(
         condition_class = ChampionInspirationCondition
     elif compare_condition(name, KnightSkillEnum.LEADERSHIP):
         condition_class = LeadershipCondition
+    elif compare_condition(name, KnightSkillEnum.ROYAL_SHIELD):
+        condition_class = RoyalShieldCondition
     # HEALER BUFFS
     elif compare_condition(name, HealerSkillEnum.VITALITY_AURA):
         condition_class = VitalityAuraCondition
