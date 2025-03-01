@@ -248,6 +248,7 @@ class KnightSkillEnum(Enum):
     ROYAL_FURY = 'Fúria Régia'
     JUSTICE_BLADE = 'Lâmina da Justiça'
     SOVEREIGN_CUT = 'Corte Soberano'
+    ROYAL_SHIELD = 'Escudo Real'
 
 
 class LordOfTheRoguesSkillEnum(Enum):

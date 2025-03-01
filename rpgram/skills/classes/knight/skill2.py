@@ -202,6 +202,73 @@ class SovereignCutSkill(BaseSkill):
         return report
 
 
+class RoyalShieldSkill(BaseSkill):
+    NAME = KnightSkillEnum.ROYAL_SHIELD.value
+    DESCRIPTION = (
+        f'Quebra o *Selo Real* para convocar um escudo gerado '
+        f'pela liberação do *Poder Régio*, protegendo com uma barreira '
+        f'baseada no '
+        f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
+    )
+    RANK = 1
+    REQUIREMENTS = Requirement(**{
+        'classe_name': ClasseEnum.KNIGHT.value,
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=RoyalShieldSkill.NAME,
+            description=RoyalShieldSkill.DESCRIPTION,
+            rank=RoyalShieldSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.BARRIER,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=RoyalShieldSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter') -> dict:
+        player_name = self.char.player_name
+        target_name = char.player_name
+        if char.is_alive:
+            target_name = (
+                'a si mesmo'
+                if target_name == player_name
+                else target_name
+            )
+            dice = self.dice
+            power = dice.boosted_precision_attack
+            level = self.level_rank
+            condition = RoyalShieldCondition(power=power, level=level)
+            report_list = char.status.set_conditions(condition)
+            status_report_text = "\n".join(
+                [report["text"] for report in report_list]
+            )
+            report = {
+                'text': (
+                    f'*{player_name}* Quebra o *Selo Real*, convocando uma '
+                    f'proteção com o *Poder Régio* para proteger '
+                    f'*{target_name}* com uma barreira '
+                    f'*{condition.barrier_points_text}*({dice.text}).\n\n'
+                    f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                    f'{status_report_text}'
+                )
+            }
+        else:
+            report = {'text': f'*{target_name}* está morto.'}
+
+        return report
+
+
 SKILL_WAY_DESCRIPTION = {
     # Sugestão para nomes do caminho:
     # Sentinela da Planície, Lâmina dos Reis, Lança Celeste, 
@@ -226,6 +293,7 @@ SKILL_WAY_DESCRIPTION = {
         RoyalFurySkill,
         JusticeBladeSkill,
         SovereignCutSkill,
+        RoyalShieldSkill,
     ]
 }
 
@@ -262,3 +330,9 @@ if __name__ == '__main__':
         verbose=True,
     )['text'])
     KNIGHT_CHARACTER.skill_tree.learn_skill(SovereignCutSkill)
+
+    skill = RoyalShieldSkill(KNIGHT_CHARACTER)
+    print(skill)
+    print(KNIGHT_CHARACTER.cs.physical_defense)
+    print(skill.function(KNIGHT_CHARACTER))
+    KNIGHT_CHARACTER.skill_tree.learn_skill(RoyalShieldSkill)
