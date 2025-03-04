@@ -13,7 +13,7 @@ from function.text import escape_basic_markdown_v2, remove_bold, remove_code
 from rpgram.conditions.factory import condition_factory
 from rpgram.dice import Dice
 from rpgram.enums.emojis import EmojiEnum
-from rpgram.enums.race import MALEGNE_RACES
+from rpgram.enums.race import MALEGNE_RACES, TRANSGRESSOR_RACES
 from rpgram.enums.skill import (
     MAGICAL_DEFENSE_ENUM_LIST,
     PHYSICAL_DEFENSE_ENUM_LIST
@@ -636,6 +636,11 @@ class BaseCharacter:
             race_name in MALEGNE_RACES,
             self.is_cursed
         ))
+
+    @property
+    def is_transgressor(self) -> bool:
+        race_name = self.race_name
+        return race_name in TRANSGRESSOR_RACES
 
     @property
     def is_debuffed(self) -> bool:

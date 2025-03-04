@@ -20,6 +20,7 @@ from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     DuelistSkillEnum,
     GuardianSkillEnum,
+    HeraldSkillEnum,
     MageSkillEnum,
     SamuraiSkillEnum
 )
@@ -351,6 +352,49 @@ class DoUchiCondition(TargetSkillDebuffCondition):
         return f'permanece com o *Tronco Desestabilizado*.'
 
 
+class RedEquilibriumCondition(TargetSkillDebuffCondition):
+
+    def __init__(
+        self,
+        power: int,
+        turn: int = 10,
+        level: int = 1,
+    ):
+        super().__init__(
+            name=HeraldSkillEnum.RED_EQUILIBRIUM,
+            frequency=TurnEnum.START,
+            power=power,
+            turn=turn,
+            level=level,
+        )
+
+    @property
+    def description(self) -> str:
+        return (
+            f'*Chamas Vermelhas* que diminuem a '
+            f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
+        )
+
+    @property
+    def power(self) -> int:
+        power_multiplier = 0.02 + (self.level / 100)
+        power_multiplier = round(power_multiplier, 2)
+
+        return int(self._power * power_multiplier)
+
+    @property
+    def bonus_magical_defense(self) -> int:
+        return -(self.power)
+
+    @property
+    def emoji(self) -> str:
+        return '❤️🔥'
+
+    @property
+    def function_text(self) -> str:
+        return f'permanece *Afogueado*.'
+
+
 class TargetDebuffs:
     __list = [
         ShatterCondition,
@@ -359,6 +403,7 @@ class TargetDebuffs:
         DisarmorCondition,
         KoteUchiCondition,
         DoUchiCondition,
+        RedEquilibriumCondition,
     ]
 
     def __init__(self, default_power: int = 100):

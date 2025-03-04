@@ -8,6 +8,7 @@ from rpgram.dice import Dice
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum
 from rpgram.enums.equipment import EquipmentEnum
+from rpgram.enums.race import RaceEnum
 from rpgram.enums.turn import TurnEnum
 from rpgram.equips import Equips
 
@@ -68,6 +69,54 @@ EQUIPS = Equips(
     boots=LEATHER_BOOTS,
     ring=ANY_RING,
     amulet=BRIGHT_AMULET,
+)
+HUMAN_RACE = Race(
+    name=RaceEnum.HUMAN.value,
+    description='HUMANO TESTE',
+    bonus_strength=15,
+    bonus_dexterity=10,
+    bonus_constitution=10,
+    bonus_intelligence=10,
+    bonus_wisdom=10,
+    bonus_charisma=10,
+    multiplier_strength=1.5,
+    multiplier_dexterity=1.0,
+    multiplier_constitution=1.0,
+    multiplier_intelligence=1.0,
+    multiplier_wisdom=1.0,
+    multiplier_charisma=1.0,
+)
+ORC_RACE = Race(
+    name=RaceEnum.ORC.value,
+    description=f'{RaceEnum.ORC.value} TESTE'.upper(),
+    bonus_strength=15,
+    bonus_dexterity=10,
+    bonus_constitution=15,
+    bonus_intelligence=10,
+    bonus_wisdom=10,
+    bonus_charisma=10,
+    multiplier_strength=1.5,
+    multiplier_dexterity=1.0,
+    multiplier_constitution=1.5,
+    multiplier_intelligence=1.0,
+    multiplier_wisdom=1.0,
+    multiplier_charisma=1.0,
+)
+SPECTRUM_RACE = Race(
+    name=RaceEnum.SPECTRUM.value,
+    description=f'{RaceEnum.SPECTRUM.value} TESTE'.upper(),
+    bonus_strength=10,
+    bonus_dexterity=20,
+    bonus_constitution=10,
+    bonus_intelligence=10,
+    bonus_wisdom=10,
+    bonus_charisma=10,
+    multiplier_strength=1.0,
+    multiplier_dexterity=1.5,
+    multiplier_constitution=1.0,
+    multiplier_intelligence=1.0,
+    multiplier_wisdom=1.0,
+    multiplier_charisma=1.0,
 )
 ARCANIST_CLASSE = Classe(
     name=ClasseEnum.ARCANIST.value,
@@ -500,22 +549,6 @@ WEAPON_MASTER_CLASSE = Classe(
     multiplier_intelligence=1.00,
     multiplier_wisdom=1.00,
     multiplier_charisma=1.00,
-)
-HUMAN_RACE = Race(
-    name='HUMANO',
-    description='HUMANO TESTE',
-    bonus_strength=15,
-    bonus_dexterity=10,
-    bonus_constitution=10,
-    bonus_intelligence=10,
-    bonus_wisdom=10,
-    bonus_charisma=10,
-    multiplier_strength=1.5,
-    multiplier_dexterity=1.0,
-    multiplier_constitution=1.0,
-    multiplier_intelligence=1.0,
-    multiplier_wisdom=1.0,
-    multiplier_charisma=1.0,
 )
 BASE_CHARACTER = BaseCharacter(
     char_name='PERSONAGEM TESTE',
@@ -957,6 +990,38 @@ WEAPON_MASTER_CHARACTER = BaseCharacter(
     equips=EQUIPS,
     _id='ffffffffffffffffffffffff',
     level=101,
+    xp=0,
+    base_strength=10,
+    base_dexterity=10,
+    base_constitution=10,
+    base_intelligence=10,
+    base_wisdom=10,
+    base_charisma=10,
+    combat_damage=0,
+)
+ORC_BARBARIAN_CHARACTER = BaseCharacter(
+    char_name='ORQUE BÁRBARO TESTE',
+    classe=BARBARIAN_CLASSE,
+    race=ORC_RACE,
+    equips=EQUIPS,
+    _id='ffffffffffffffffffffffff',
+    level=101,
+    xp=0,
+    base_strength=10,
+    base_dexterity=10,
+    base_constitution=10,
+    base_intelligence=10,
+    base_wisdom=10,
+    base_charisma=10,
+    combat_damage=0,
+)
+SPECTRUM_ROGUE_CHARACTER = BaseCharacter(
+    char_name='SPECTRUM ROGUE TESTE',
+    classe=ROGUE_CLASSE,
+    race=SPECTRUM_RACE,
+    equips=EQUIPS,
+    _id='ffffffffffffffffffffffff',
+    level=151,
     xp=0,
     base_strength=10,
     base_dexterity=10,

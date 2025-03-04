@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Union
 from rpgram.conditions.barrier import (
     AegisShadowCondition,
     AjaxShieldCondition,
+    BarrierCondition,
     BeatifyingAegisCondition,
     FlameMantillaCondition,
     GuardianShieldCondition,
@@ -13,7 +14,8 @@ from rpgram.conditions.barrier import (
     ChaosWeaverCondition,
     ProtectiveAuraCondition,
     ProtectiveInfusionCondition,
-    RobysticShieldCondition
+    RobysticShieldCondition,
+    RoyalShieldCondition
 )
 from rpgram.conditions.condition import Condition
 from rpgram.conditions.debuff import (
@@ -44,6 +46,7 @@ from rpgram.conditions.heal import (
     Heal6Condition,
     Heal7Condition,
     Heal8Condition,
+    HealingCondition,
 )
 from rpgram.conditions.self_skill import (
     AlertCondition,
@@ -108,12 +111,14 @@ from rpgram.conditions.special_damage_skill import (
     SDWildLightningCondition,
     SDWildPoisonCondition,
     SDWildRockCondition,
-    SDWildWindCondition
+    SDWildWindCondition,
+    SpecialDamageSkillCondition
 )
 from rpgram.conditions.target_skill_buff import (
     AgileFeetCondition,
     AnansisTrickeryCondition,
     ArtemissArrowCondition,
+    BlueEquilibriumCondition,
     BodyguardBearCondition,
     BoneArmorCondition,
     BoneBucklerCondition,
@@ -141,6 +146,7 @@ from rpgram.conditions.target_skill_buff import (
     ProtectorTurtleCondition,
     RangerFalconCondition,
     SquireAnointingCondition,
+    TargetSkillBuffCondition,
     TricksterTrovaCondition,
     UllrsFocusCondition,
     VidarsBraveryCondition,
@@ -162,7 +168,9 @@ from rpgram.conditions.target_skill_debuff import (
     DoUchiCondition,
     KoteUchiCondition,
     MuddyCondition,
-    ShatterCondition
+    RedEquilibriumCondition,
+    ShatterCondition,
+    TargetSkillDebuffCondition
 )
 from rpgram.enums.debuff import (
     DebuffEnum,
@@ -202,6 +210,13 @@ if TYPE_CHECKING:
 
 
 CONDITION_TYPES = Union[Condition, Enum, str]
+HAVE_POWER_CONDITIONS = (
+    BarrierCondition,
+    HealingCondition,
+    SpecialDamageSkillCondition,
+    TargetSkillBuffCondition,
+    TargetSkillDebuffCondition
+)
 
 
 def condition_factory(
@@ -212,6 +227,7 @@ def condition_factory(
     power: int = None,
     damage: int = None,
     character: 'BaseCharacter' = None,
+    set_default_power: bool = False
 ) -> Condition:
     from rpgram.characters.char_base import BaseCharacter
     if isinstance(condition_name, str) and name is None:
@@ -458,6 +474,10 @@ def condition_factory(
         condition_class = FlameMantillaCondition
     elif compare_condition(name, HeraldSkillEnum.MANTILLED_ARMS):
         condition_class = SDMantilledArmsCondition
+    elif compare_condition(name, HeraldSkillEnum.BLUE_EQUILIBRIUM):
+        condition_class = BlueEquilibriumCondition
+    elif compare_condition(name, HeraldSkillEnum.RED_EQUILIBRIUM):
+        condition_class = RedEquilibriumCondition
     elif compare_condition(name, HeraldSkillEnum.IGNEOUS_HEART):
         condition_class = SDIgneousHeartCondition
     # BARD BUFFS
@@ -477,6 +497,8 @@ def condition_factory(
         condition_class = ChampionInspirationCondition
     elif compare_condition(name, KnightSkillEnum.LEADERSHIP):
         condition_class = LeadershipCondition
+    elif compare_condition(name, KnightSkillEnum.ROYAL_SHIELD):
+        condition_class = RoyalShieldCondition
     # HEALER BUFFS
     elif compare_condition(name, HealerSkillEnum.VITALITY_AURA):
         condition_class = VitalityAuraCondition
@@ -569,6 +591,22 @@ def condition_factory(
         condition_class = GuardianShieldCondition
     else:
         raise ValueError(f'Condição {name} não encontrada!')
+
+    # SET_DEFAULT_POWER
+    if (
+        set_default_power is True and
+        power is None and
+        issubclass(condition_class, HAVE_POWER_CONDITIONS)
+    ):
+        kwargs['power'] = 1
+    elif (
+        set_default_power is True and
+        not issubclass(condition_class, HAVE_POWER_CONDITIONS)
+    ):
+        print(
+            f'{condition_name} ({condition_class.__name__}) '
+            f'não está na lista de condições que têm o atributo power.'
+        )
 
     return condition_class(**kwargs)
 

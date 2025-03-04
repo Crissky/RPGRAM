@@ -227,8 +227,12 @@ class HeraldSkillEnum(Enum):
     VIGIL_FLAME = 'Chama Vigílica'
     FLAME_MANTILLA = 'Mantilha de Chamas'
     IGNEOUS_STRIKE = 'Golpe Ígneo'
+    FLAMES_OF_EQUILIBRIUM = 'Chamas do Equilíbrio'
+    BLUE_EQUILIBRIUM = 'Equilíbrio Azul'
+    RED_EQUILIBRIUM = 'Equilíbrio Vermelho'
     PURIFYING_FLAME = 'Chama Purificadora'
     IGNEOUS_HEART = 'Coração Ígneo'
+    PURIFYING_HEART = 'Coração Purificador'
 
     # Special Damage
     VIGIL_ARMS = 'Braços Vigílicos'
@@ -241,6 +245,10 @@ class KnightSkillEnum(Enum):
     SUPER_CHARGE = 'Super Carga'
     CHAMPION_INSPIRATION = 'Inspiração Campeã'
     LEADERSHIP = 'Liderança'
+    ROYAL_FURY = 'Fúria Régia'
+    JUSTICE_BLADE = 'Lâmina da Justiça'
+    SOVEREIGN_CUT = 'Corte Soberano'
+    ROYAL_SHIELD = 'Escudo Real'
 
 
 class LordOfTheRoguesSkillEnum(Enum):

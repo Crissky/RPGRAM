@@ -51,7 +51,10 @@ class ChargeSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 2.00,
         }
-        damage_types = None
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.PIERCING,
+        ]
 
         super().__init__(
             name=ChargeSkill.NAME,
@@ -97,7 +100,10 @@ class HeavyChargeSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 3.00,
         }
-        damage_types = None
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.PIERCING,
+        ]
 
         super().__init__(
             name=HeavyChargeSkill.NAME,
@@ -146,7 +152,10 @@ class SuperChargeSkill(BaseSkill):
         combat_stats_multiplier = {
             CombatStatsEnum.PRECISION_ATTACK: 4.00,
         }
-        damage_types = None
+        damage_types = [
+            DamageEnum.BLUDGEONING,
+            DamageEnum.PIERCING,
+        ]
 
         super().__init__(
             name=SuperChargeSkill.NAME,
@@ -328,7 +337,11 @@ SKILL_WAY_DESCRIPTION = {
         'capaz de inspirar seus aliados e derrotar seus inimigos.'
     ),
     'skill_list': [
-        ChargeSkill
+        ChargeSkill,
+        HeavyChargeSkill,
+        SuperChargeSkill,
+        ChampionInspirationSkill,
+        LeadershipSkill,
     ]
 }
 

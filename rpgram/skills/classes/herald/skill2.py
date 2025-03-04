@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
+from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.barrier import FlameMantillaCondition
 from rpgram.conditions.self_skill import VigilFlameCondition
 from rpgram.conditions.special_damage_skill import (
@@ -7,6 +7,8 @@ from rpgram.conditions.special_damage_skill import (
     SDMantilledArmsCondition,
     SDVigilArmsCondition
 )
+from rpgram.conditions.target_skill_buff import BlueEquilibriumCondition
+from rpgram.conditions.target_skill_debuff import RedEquilibriumCondition
 from rpgram.constants.text import (
     CONSTITUTION_EMOJI_TEXT,
     HIT_POINT_FULL_EMOJI_TEXT,
@@ -215,13 +217,13 @@ class PurifyingFlameSkill(BaseSkill):
     NAME = HeraldSkillEnum.IGNEOUS_STRIKE.value
     DESCRIPTION = (
         f'Envolve a própria arma em *Chamas Brancas* e '
-        f'desfere ataque impetuoso '
+        f'desfere um ataque impetuoso '
         f'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
-    RANK = 1
+    RANK = 2
     REQUIREMENTS = Requirement(**{
         'level': 40,
         'classe_name': ClasseEnum.HERALD.value,
@@ -233,7 +235,7 @@ class PurifyingFlameSkill(BaseSkill):
     def __init__(self, char: 'BaseCharacter', level: int = 1):
         base_stats_multiplier = {}
         combat_stats_multiplier = {
-            CombatStatsEnum.MAGICAL_DEFENSE: 1.25,
+            CombatStatsEnum.MAGICAL_DEFENSE: 1.50,
         }
         damage_types = [DamageEnum.FIRE, DamageEnum.BLESSING]
 
@@ -252,6 +254,85 @@ class PurifyingFlameSkill(BaseSkill):
             requirements=PurifyingFlameSkill.REQUIREMENTS,
             damage_types=damage_types
         )
+
+
+class FlamesOfEquilibriumSkill(BaseSkill):
+    NAME = HeraldSkillEnum.FLAMES_OF_EQUILIBRIUM.value
+    DESCRIPTION = (
+        f'Envolve a própria arma em *Chamas Azuis e Vermelhas* e '
+        f'desfere um ataque fervoroso '
+        f'que causa dano de '
+        f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
+        f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base na '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível). '
+        f'Além disso, aumenta a *{MAGICAL_DEFENSE_EMOJI_TEXT}* com base '
+        f'no dano causado (2% + 1% x Rank x Nível) e '
+        f'diminui a *{MAGICAL_DEFENSE_EMOJI_TEXT}* do alvo também '
+        f'com base no dano causado (2% + 1% x Rank x Nível).'
+    )
+    RANK = 3
+    REQUIREMENTS = Requirement(**{
+        'level': 80,
+        'classe_name': ClasseEnum.HERALD.value,
+        'skill_list': [
+            IgneousStrikeSkill.NAME,
+            PurifyingFlameSkill.NAME
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {
+            CombatStatsEnum.MAGICAL_DEFENSE: 1.50,
+        }
+        damage_types = [DamageEnum.FIRE, DamageEnum.MAGIC]
+
+        super().__init__(
+            name=FlamesOfEquilibriumSkill.NAME,
+            description=FlamesOfEquilibriumSkill.DESCRIPTION,
+            rank=FlamesOfEquilibriumSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SINGLE,
+            skill_type=SkillTypeEnum.ATTACK,
+            skill_defense=SkillDefenseEnum.MAGICAL,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=FlamesOfEquilibriumSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def hit_function(
+        self,
+        target: 'BaseCharacter',
+        damage: int,
+        total_damage: int,
+    ) -> dict:
+        report = {'text': ''}
+        char = self.char
+        power = int(damage)
+        level = self.level_rank
+        blue_condition = BlueEquilibriumCondition(power=power, level=level)
+        status_report_list = char.status.set_powerful_conditions(
+            blue_condition
+        )
+        status_report_text = "\n".join(
+            [report["text"] for report in status_report_list]
+        )
+        report['text'] = f'{char.name}:\n{status_report_text}\n'
+
+        if target.is_alive:
+            red_condition = RedEquilibriumCondition(power=power, level=level)
+            status_report_list = target.status.set_powerful_conditions(
+                red_condition
+            )
+            status_report_text = "\n".join(
+                [report["text"] for report in status_report_list]
+            )
+            report['status_text'] = status_report_text
+
+        return report
 
 
 class IgneousHeartSkill(BaseSkill):
@@ -302,7 +383,7 @@ class IgneousHeartSkill(BaseSkill):
         power = round(power)
 
         cure_report = char.cs.cure_hit_points(power)
-        report_text = cure_report["text"]
+        cure_report_text = cure_report["text"]
 
         sd_power = char.cs.magical_defense
         sd_condition = SDIgneousHeartCondition(power=sd_power, level=level)
@@ -314,8 +395,85 @@ class IgneousHeartSkill(BaseSkill):
             'text': (
                 f'*{player_name}* é envolvido por um *Ímpeto por Justiça* '
                 f'que cura suas feridas.\n'
-                f'*{report_text}*({dice.text}).\n\n'
+                f'*{cure_report_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
+                f'{status_report_text}'
+            )
+        }
+
+        return report
+
+
+class PurifyingHeartSkill(BaseSkill):
+    NAME = HeraldSkillEnum.PURIFYING_HEART.value
+    DESCRIPTION = (
+        f'Guiado por um *Coração Puro*, '
+        f'libera uma *Energia Purificadora* que cura seu '
+        f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
+        f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
+        f'Além disso, cura até (5 x Rank x Nível) níveis de '
+        f'condições aleatórias.'
+    )
+    RANK = 2
+    REQUIREMENTS = Requirement(**{
+        'level': 40,
+        'classe_name': ClasseEnum.HERALD.value,
+        'skill_list': [
+            IgneousHeartSkill.NAME,
+        ]
+    })
+
+    def __init__(self, char: 'BaseCharacter', level: int = 1):
+        base_stats_multiplier = {}
+        combat_stats_multiplier = {}
+        damage_types = None
+
+        super().__init__(
+            name=PurifyingHeartSkill.NAME,
+            description=PurifyingHeartSkill.DESCRIPTION,
+            rank=PurifyingHeartSkill.RANK,
+            level=level,
+            base_stats_multiplier=base_stats_multiplier,
+            combat_stats_multiplier=combat_stats_multiplier,
+            target_type=TargetEnum.SELF,
+            skill_type=SkillTypeEnum.HEALING,
+            skill_defense=SkillDefenseEnum.NA,
+            char=char,
+            use_equips_damage_types=False,
+            requirements=PurifyingHeartSkill.REQUIREMENTS,
+            damage_types=damage_types
+        )
+
+    def function(self, char: 'BaseCharacter' = None) -> dict:
+        char = self.char
+        player_name = char.player_name
+        dice = self.dice
+        level = self.level_rank
+        power_multiplier = 1 + (level / 10)
+        power = dice.boosted_physical_attack * power_multiplier
+        power = round(power)
+
+        cure_report = char.cs.cure_hit_points(power)
+        cure_report_text = cure_report["text"]
+
+        quantity = int(5 * level)
+        status_report = char.status.remove_random_debuff_conditions(
+            quantity=quantity
+        )
+        status_report_text = status_report["text"]
+        if status_report_text:
+            alert_section_head_status = ALERT_SECTION_HEAD.format(
+                f'*STATUS ({quantity})*'
+            )
+            status_report_text = (
+                f'\n\n{alert_section_head_status}{status_report_text}'
+            )
+
+        report = {
+            'text': (
+                f'*{player_name}* é guiado pelo seu *Coração Puro* '
+                f'que cura suas feridas.\n'
+                f'*{cure_report_text}*({dice.text}).'
                 f'{status_report_text}'
             )
         }
@@ -340,7 +498,9 @@ SKILL_WAY_DESCRIPTION = {
         FlameMantillaSkill,
         IgneousStrikeSkill,
         PurifyingFlameSkill,
+        FlamesOfEquilibriumSkill,
         IgneousHeartSkill,
+        PurifyingHeartSkill,
     ]
 }
 
@@ -388,9 +548,26 @@ if __name__ == '__main__':
     )['text'])
     HERALD_CHARACTER.skill_tree.learn_skill(PurifyingFlameSkill)
 
+    skill = FlamesOfEquilibriumSkill(HERALD_CHARACTER)
+    print(skill)
+    print(HERALD_CHARACTER.cs.magical_attack)
+    print(HERALD_CHARACTER.to_attack(
+        defender_char=HERALD_CHARACTER,
+        attacker_skill=skill,
+        verbose=True,
+    )['text'])
+    HERALD_CHARACTER.skill_tree.learn_skill(FlamesOfEquilibriumSkill)
+
     skill = IgneousHeartSkill(HERALD_CHARACTER)
     print(skill)
     HERALD_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
     print(HERALD_CHARACTER.cs.magical_defense)
     print(skill.function(HERALD_CHARACTER))
     HERALD_CHARACTER.skill_tree.learn_skill(IgneousHeartSkill)
+
+    skill = PurifyingHeartSkill(HERALD_CHARACTER)
+    print(skill)
+    HERALD_CHARACTER.cs.damage_hit_points(5000, ignore_barrier=True)
+    print(HERALD_CHARACTER.cs.magical_defense)
+    print(skill.function(HERALD_CHARACTER))
+    HERALD_CHARACTER.skill_tree.learn_skill(PurifyingHeartSkill)
