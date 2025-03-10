@@ -72,7 +72,7 @@ class BaseSkill:
         use_equips_damage_types: bool = False,
         requirements: Union[Requirement, Dict[str, Any]] = {},
         damage_types: List[Union[str, DamageEnum]] = None,
-        condition_list: List[Condition] = [],
+        condition_list: List[Condition] = None,
     ):
         '''
         Args:
@@ -190,6 +190,9 @@ class BaseSkill:
                         f'uma lista de strings ou DamageEnums. '
                         f'"{type(damage_type)}" não é válido.'
                     )
+
+        if condition_list is None:
+            condition_list = []
 
         for condition in condition_list:
             if not isinstance(condition, Condition):
