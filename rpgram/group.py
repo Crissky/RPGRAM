@@ -30,7 +30,7 @@ class Group:
         # multiplicador do bônus de xp pelo nível do Personagem
         character_multiplier_xp: float = 1.0,
         group_level: int = 1,
-        tier: dict = {},
+        tier: dict = None,
         total_players: int = 1,
         current_event_points: int = 0,
         current_extra_event_points: float = 0.0,
@@ -39,6 +39,8 @@ class Group:
     ):
         if isinstance(_id, str):
             _id = ObjectId(_id)
+        if tier is None:
+            tier = {}
 
         self.name = name
         self.chat_id = chat_id

@@ -70,7 +70,7 @@ class BaseSkill:
         dice: Union[int, Tuple[int, float]] = 20,
         is_elusive: bool = False,
         use_equips_damage_types: bool = False,
-        requirements: Union[Requirement, Dict[str, Any]] = {},
+        requirements: Union[Requirement, Dict[str, Any]] = None,
         damage_types: List[Union[str, DamageEnum]] = None,
         condition_list: List[Condition] = None,
     ):
@@ -168,6 +168,8 @@ class BaseSkill:
             base_multiplier=dice[1]
         )
 
+        if requirements is None:
+            requirements = {}
         if not isinstance(requirements, (dict, Requirement)):
             raise TypeError(
                 f'requirements precisa ser um dicionário.'

@@ -111,7 +111,7 @@ class Equipment(StatsBooster):
         equip_type: Union[str, EquipmentEnum],
         damage_types: List[Union[str, DamageEnum]] = None,
         weight: float = 10,
-        requirements: Dict[str, Any] = {},
+        requirements: Dict[str, Any] = None,
         rarity: Union[RarityEnum, str] = 'COMMON',
         material_level: int = None,
         _id: Union[str, ObjectId] = None,
@@ -231,6 +231,8 @@ class Equipment(StatsBooster):
                         f'"{type(damage_type)}" não é válido.'
                     )
 
+        if requirements is None:
+            requirements = {}
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
         if not isinstance(rarity, RarityEnum):

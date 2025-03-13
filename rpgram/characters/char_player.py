@@ -19,7 +19,7 @@ class PlayerCharacter(BaseCharacter):
         classe: Classe,
         race: Race,
         equips: Equips = None,
-        status: Status = {},
+        status: Status = None,
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -31,7 +31,7 @@ class PlayerCharacter(BaseCharacter):
         points_multiplier: int = 3,
         combat_damage: int = 0,
         combat_death_counter: int = 0,
-        skill_tree: dict = {},
+        skill_tree: dict = None,
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None
