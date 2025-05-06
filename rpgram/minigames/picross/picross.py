@@ -52,10 +52,16 @@ class Picross:
                 hints = [0]
             self.col_hints.append(hints)
 
-    def make_move(self, row: int, col: int) -> bool:
-        # Toggle cell between filled (1) and empty (0)
+    def make_move(self, row: int, col: int, value: int) -> bool:
+        # Toggle cell between filled/xmark (1 or -1) and empty (0)
+        if value not in [0, 1, -1]:
+            raise ValueError('Value precisa ser 0, 1, ou -1')
+
         if 0 <= row < self.height and 0 <= col < self.width:
-            self.board[row][col] = 1 - self.board[row][col]
+            if self.board[row][col] == value:
+                self.board[row][col] = 0
+            else:
+                self.board[row][col] = value
             return True
         return False
 
@@ -63,38 +69,46 @@ class Picross:
         return self.board == self.solution
 
     def print_board(self):
-        # Print column hints
         max_col_hints = max(len(hints) for hints in self.col_hints)
         max_row_hints = max(len(hints) for hints in self.row_hints)
-        col_span = (max_row_hints * 2) + 2
+        col_span = (max_row_hints * 2) + 3
+        # Print column hints
         for i in range(max_col_hints-1, -1, -1):
-            print(" " * col_span, end="")
+            print(' ' * col_span, end='')
             for j in range(self.width):
                 if i < len(self.col_hints[j]):
-                    print(f"{self.col_hints[j][-(i+1)]:2}", end=" ")
+                    print(f'{self.col_hints[j][-(i+1)]:2}', end=' ')
                 else:
-                    print("  ", end=" ")
+                    print('  ', end=' ')
             print()
 
         # Print horizontal line
-        print("   " + "-" * (self.width * 3))
+        print((' ' * col_span) + '-' * (self.width * 3))
 
         # Print board with row hints
         for i in range(self.height):
             # Print row hints
-            hints_str = " ".join(str(x) for x in self.row_hints[i])
-            print(f"{hints_str:>{max_row_hints*2}}", end=" |")
+            hints_str = ' '.join(str(x) for x in self.row_hints[i])
+            print(f'{hints_str:>{max_row_hints*2}}', end=' |')
 
             # Print board row
             for j in range(self.width):
-                symbol = "■" if self.board[i][j] == 1 else "□"
-                print(f" {symbol}", end=" ")
+                if self.board[i][j] == 1:
+                    symbol = '⬛'
+                elif self.board[i][j] == 0:
+                    symbol = '⬜'
+                elif self.board[i][j] == -1:
+                    symbol = '❌'
+
+                print(f' {symbol}', end='')
             print()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     game = Picross()
     game.generate_random_puzzle()
+    game.make_move(0, 0, 1)
+    game.make_move(4, 4, -1)
     game.print_board()
     for i in game.solution:
         print(i)
