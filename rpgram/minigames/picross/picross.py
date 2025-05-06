@@ -2,7 +2,7 @@ import random
 
 
 class Picross:
-    def __init__(self, width=5, height=5):
+    def __init__(self, width: int = 5, height: int = 5):
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
@@ -52,14 +52,14 @@ class Picross:
                 hints = [0]
             self.col_hints.append(hints)
 
-    def make_move(self, row, col):
+    def make_move(self, row: int, col: int) -> bool:
         # Toggle cell between filled (1) and empty (0)
         if 0 <= row < self.height and 0 <= col < self.width:
             self.board[row][col] = 1 - self.board[row][col]
             return True
         return False
 
-    def check_win(self):
+    def check_win(self) -> bool:
         return self.board == self.solution
 
     def print_board(self):
