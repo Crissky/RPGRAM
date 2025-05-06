@@ -3,7 +3,6 @@ import random
 
 class Picross:
     def __init__(self, width=5, height=5):
-        # Initialize empty board
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
@@ -12,12 +11,10 @@ class Picross:
         self.col_hints = []
 
     def generate_random_puzzle(self):
-        # Generate random solution
         for i in range(self.height):
             for j in range(self.width):
                 self.solution[i][j] = random.choice([0, 1])
 
-        # Generate hints based on solution
         self.generate_hints()
 
     def generate_hints(self):
@@ -63,7 +60,6 @@ class Picross:
         return False
 
     def check_win(self):
-        # Check if current board matches solution
         return self.board == self.solution
 
     def print_board(self):
