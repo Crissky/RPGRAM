@@ -1,8 +1,35 @@
 import random
+from typing import Union
+
+from rpgram.enums.function import get_enum_index
+from rpgram.enums.rarity import RarityEnum
 
 
-class Picross:
-    def __init__(self, width: int = 5, height: int = 5):
+class PicrossGame:
+    def __init__(
+        self,
+        width: int = 5,
+        height: int = 5,
+        rarity: Union[str, RarityEnum] = None
+    ):
+        if isinstance(rarity, str):
+            rarity = RarityEnum[rarity]
+        if isinstance(rarity, RarityEnum):
+            width = 3
+            height = 3
+            self.rarity = rarity
+            rarity_level = get_enum_index(self.rarity)
+            for i in range(rarity_level):
+                if i % 2 == 0:
+                    height += 1
+                else:
+                    width += 1
+        elif rarity is not None:
+            raise TypeError(
+                f'Rarity deve ser do tipo RarityEnum ou None. '
+                f'Tipo: {type(rarity)}.'
+            )
+
         self.width = width
         self.height = height
         self.board = [[0] * width for _ in range(height)]
@@ -105,10 +132,19 @@ class Picross:
 
 
 if __name__ == '__main__':
-    game = Picross()
+    game = PicrossGame()
     game.generate_random_puzzle()
     game.make_move(0, 0, 1)
     game.make_move(4, 4, -1)
+    game.print_board()
+    for i in game.solution:
+        print(i)
+
+    print('\nGame 2')
+    game = PicrossGame(rarity=RarityEnum.UNCOMMON)
+    game.generate_random_puzzle()
+    game.make_move(0, 0, 1)
+    game.make_move(1, 1, -1)
     game.print_board()
     for i in game.solution:
         print(i)

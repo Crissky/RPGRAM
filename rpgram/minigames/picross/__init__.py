@@ -1,1 +1,1 @@
-from rpgram.minigames.picross.picross import Picross
+from rpgram.minigames.picross.picross import PicrossGame
