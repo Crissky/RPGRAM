@@ -64,11 +64,11 @@ class PicrossGame:
 
         # Generate column hints
         self.col_hints = []
-        for j in range(self.width):
+        for n_col in range(self.width):
             count = 0
             hints = []
-            for i in range(self.height):
-                if self.solution[i][j] == 1:
+            for n_row in range(self.height):
+                if self.solution[n_row][n_col] == 1:
                     count += 1
                 elif count > 0:
                     hints.append(count)
@@ -79,32 +79,46 @@ class PicrossGame:
                 hints = [0]
             self.col_hints.append(hints)
 
-    def make_move(self, row: int, col: int, value: int) -> bool:
+    def make_move(self, n_row: int, n_col: int, value: int) -> bool:
         # Toggle cell between filled/xmark (1 or -1) and empty (0)
         if value not in [0, 1, -1]:
             raise ValueError('Value precisa ser 0, 1, ou -1')
 
-        if 0 <= row < self.height and 0 <= col < self.width:
-            if self.board[row][col] == value:
-                self.board[row][col] = 0
+        if 0 <= n_row < self.height and 0 <= n_col < self.width:
+            if self.board[n_row][n_col] == value:
+                self.board[n_row][n_col] = 0
             else:
-                self.board[row][col] = value
+                self.board[n_row][n_col] = value
             return True
         return False
 
     def check_win(self) -> bool:
         return self.board == self.solution
 
+    def number_to_symbol(self, number: int) -> str:
+        if number == 1:
+            symbol = '⬛'
+        elif number == 0:
+            symbol = '⬜'
+        elif number == -1:
+            symbol = '❌'
+
+        return symbol
+
+    def coor_to_symbol(self, n_row: int, n_col: int) -> str:
+        return self.number_to_symbol(self.board[n_row][n_col])
+
     def print_board(self):
         max_col_hints = max(len(hints) for hints in self.col_hints)
         max_row_hints = max(len(hints) for hints in self.row_hints)
         col_span = (max_row_hints * 2) + 3
+
         # Print column hints
         for i in range(max_col_hints-1, -1, -1):
             print(' ' * col_span, end='')
-            for j in range(self.width):
-                if i < len(self.col_hints[j]):
-                    print(f'{self.col_hints[j][-(i+1)]:2}', end=' ')
+            for n_col in range(self.width):
+                if i < len(self.col_hints[n_col]):
+                    print(f'{self.col_hints[n_col][-(i+1)]:2}', end=' ')
                 else:
                     print('  ', end=' ')
             print()
@@ -113,22 +127,32 @@ class PicrossGame:
         print((' ' * col_span) + '-' * (self.width * 3))
 
         # Print board with row hints
-        for i in range(self.height):
+        for n_row in range(self.height):
             # Print row hints
-            hints_str = ' '.join(str(x) for x in self.row_hints[i])
+            hints_str = ' '.join(str(x) for x in self.row_hints[n_row])
             print(f'{hints_str:>{max_row_hints*2}}', end=' |')
 
             # Print board row
-            for j in range(self.width):
-                if self.board[i][j] == 1:
-                    symbol = '⬛'
-                elif self.board[i][j] == 0:
-                    symbol = '⬜'
-                elif self.board[i][j] == -1:
-                    symbol = '❌'
-
+            for n_col in range(self.width):
+                symbol = self.coor_to_symbol(n_row, n_col)
                 print(f' {symbol}', end='')
             print()
+
+    def __str__(self) -> str:
+        return '\n'.join(
+            ''.join(self.number_to_symbol(n) for n in row)
+            for row in self.board
+        )
+
+    def __iter__(self):
+        for n_row in range(self.height):
+            for n_col in range(self.width):
+                text = self.coor_to_symbol(n_row, n_col)
+                yield {
+                    'text': text,
+                    'row': n_row,
+                    'col': n_col,
+                }
 
 
 if __name__ == '__main__':
@@ -147,4 +171,8 @@ if __name__ == '__main__':
     game.make_move(1, 1, -1)
     game.print_board()
     for i in game.solution:
+        print(i)
+    print(f'\n{game}')
+
+    for i in game:
         print(i)
