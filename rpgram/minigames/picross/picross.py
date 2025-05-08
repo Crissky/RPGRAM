@@ -1,5 +1,5 @@
 import random
-from typing import Union
+from typing import Iterable, Union
 
 from rpgram.enums.function import get_enum_index
 from rpgram.enums.rarity import RarityEnum
@@ -144,7 +144,7 @@ class PicrossGame:
             for row in self.board
         )
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[dict]:
         for n_row in range(self.height):
             for n_col in range(self.width):
                 text = self.coor_to_symbol(n_row, n_col)
