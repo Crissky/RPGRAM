@@ -1,4 +1,6 @@
 import random
+
+from io import StringIO
 from typing import Iterable, Union
 
 from rpgram.enums.function import get_enum_index
@@ -108,35 +110,48 @@ class PicrossGame:
     def coor_to_symbol(self, n_row: int, n_col: int) -> str:
         return self.number_to_symbol(self.board[n_row][n_col])
 
-    def print_board(self):
+    @property
+    def text(self) -> str:
+        text_io = StringIO()
         max_col_hints = max(len(hints) for hints in self.col_hints)
         max_row_hints = max(len(hints) for hints in self.row_hints)
-        col_span = (max_row_hints * 2) + 3
+        col_span = (max_row_hints * 2) + 1
 
         # Print column hints
         for i in range(max_col_hints-1, -1, -1):
-            print(' ' * col_span, end='')
+            print(' ' * col_span, end='', file=text_io)
             for n_col in range(self.width):
                 if i < len(self.col_hints[n_col]):
-                    print(f'{self.col_hints[n_col][-(i+1)]:2}', end=' ')
+                    print(
+                        f'{self.col_hints[n_col][-(i+1)]:2}',
+                        end='',
+                        file=text_io
+                    )
                 else:
-                    print('  ', end=' ')
-            print()
+                    print(' ', end=' ', file=text_io)
+            print(file=text_io)
 
         # Print horizontal line
-        print((' ' * col_span) + '-' * (self.width * 3))
+        print((' ' * col_span) + '-' * (self.width * 2), file=text_io)
 
         # Print board with row hints
         for n_row in range(self.height):
             # Print row hints
             hints_str = ' '.join(str(x) for x in self.row_hints[n_row])
-            print(f'{hints_str:>{max_row_hints*2}}', end=' |')
+            print(f'{hints_str:>{max_row_hints*2}}', end='|', file=text_io)
 
             # Print board row
             for n_col in range(self.width):
                 symbol = self.coor_to_symbol(n_row, n_col)
-                print(f' {symbol}', end='')
-            print()
+                print(f'{symbol}', end='', file=text_io)
+            print(file=text_io)
+
+        text_io.seek(0)
+        text = text_io.read()
+        text_io.close()
+
+        return text
+
 
     def __str__(self) -> str:
         return '\n'.join(
@@ -160,7 +175,9 @@ if __name__ == '__main__':
     game.generate_random_puzzle()
     game.make_move(0, 0, 1)
     game.make_move(4, 4, -1)
-    game.print_board()
+    print('=' * 79)
+    print(game.text)
+    print('=' * 79)
     for i in game.solution:
         print(i)
 
@@ -169,7 +186,9 @@ if __name__ == '__main__':
     game.generate_random_puzzle()
     game.make_move(0, 0, 1)
     game.make_move(1, 1, -1)
-    game.print_board()
+    print('=' * 79)
+    print(game.text)
+    print('=' * 79)
     for i in game.solution:
         print(i)
     print(f'\n{game}')
