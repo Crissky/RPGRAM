@@ -1,7 +1,7 @@
 from bot.functions.chat import CALLBACK_KEY_LIST
 
 
-GODS_NAME = 'Pictara'
+GODS_NAME = 'Xochipilli'
 SECTION_TEXT_PICROSS = 'DESAFIO'
 SECTION_TEXT_PUZZLE_XP = 'XP DESAFIO'
 PATTERN_PICROSS = (
