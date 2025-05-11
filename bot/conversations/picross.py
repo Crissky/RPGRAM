@@ -41,3 +41,60 @@ from rpgram.minigames.picross.picross import PicrossGame
 
 @skip_if_spawn_timeout
 async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
+    '''Envia a mensagem com o Picross de Xochipilli.
+
+    Xochipilli: Deus Asteca das flores, arte, música e dança.
+    '''
+
+    print('JOB_START_PICROSS()')
+    job = context.job
+    chat_id = job.chat_id
+    group_level = get_attribute_group(chat_id, 'group_level')
+    silent = get_attribute_group(chat_id, 'silent')
+    rarity = choice_rarity(group_level)
+    picross = PicrossGame(rarity=rarity)
+    start_text = choice(GOD_START_NARRATION_TEXTS)
+    god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
+    text = f'{start_text}\n\n{god_greetings}\n\n{picross}'
+    picross_buttons = get_picross_buttons(picross)
+    minutes = randint(120, 180)
+    reply_markup = InlineKeyboardMarkup(picross_buttons)
+
+    text = create_text_in_box(
+        text=text,
+        section_name=SECTION_TEXT_PICROSS,
+        section_start=SECTION_HEAD_PUZZLE_START,
+        section_end=SECTION_HEAD_PUZZLE_END,
+        clean_func=escape_for_citation_markdown_v2,
+    )
+    reply_text_kwargs = dict(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=ParseMode.MARKDOWN_V2,
+        disable_notification=silent,
+        allow_sending_without_reply=True,
+        reply_markup=reply_markup,
+    )
+    response = await call_telegram_message_function(
+        function_caller='JOB_START_PICROSS()',
+        function=context.bot.send_message,
+        context=context,
+        **reply_text_kwargs
+    )
+    message_id = response.message_id
+    job_name = get_picross_job_name(message_id)
+    put_picross_in_dict(
+        context=context,
+        message_id=message_id,
+        picross=picross
+    )
+    context.job_queue.run_once(
+        callback=job_timeout_puzzle,
+        when=timedelta(minutes=minutes),
+        data=dict(message_id=message_id),
+        chat_id=chat_id,
+        name=job_name,
+        job_kwargs=BASE_JOB_KWARGS,
+    )
+
+
