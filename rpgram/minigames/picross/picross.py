@@ -38,6 +38,7 @@ class PicrossGame:
         self.solution = [[0] * width for _ in range(height)]
         self.row_hints = []
         self.col_hints = []
+        self.mark = 1
 
     def generate_random_puzzle(self):
         for i in range(self.height):
@@ -81,16 +82,19 @@ class PicrossGame:
                 hints = [0]
             self.col_hints.append(hints)
 
-    def make_move(self, n_row: int, n_col: int, value: int) -> bool:
+    def toggle_mark(self):
+        self.mark = -self.mark
+
+    def make_move(self, n_row: int, n_col: int) -> bool:
         # Toggle cell between filled/xmark (1 or -1) and empty (0)
-        if value not in [0, 1, -1]:
+        if self.mark not in [0, 1, -1]:
             raise ValueError('Value precisa ser 0, 1, ou -1')
 
         if 0 <= n_row < self.height and 0 <= n_col < self.width:
-            if self.board[n_row][n_col] == value:
+            if self.board[n_row][n_col] == self.mark:
                 self.board[n_row][n_col] = 0
             else:
-                self.board[n_row][n_col] = value
+                self.board[n_row][n_col] = self.mark
             return True
         return False
 
