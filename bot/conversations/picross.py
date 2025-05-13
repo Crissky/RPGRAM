@@ -53,9 +53,11 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     silent = get_attribute_group(chat_id, 'silent')
     rarity = choice_rarity(group_level)
     picross = PicrossGame(rarity=rarity)
+    picross.generate_random_puzzle()
     start_text = choice(GOD_START_NARRATION_TEXTS)
-    god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
-    text = f'{start_text}\n\n{god_greetings}\n\n{picross}'
+    # god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
+    god_greetings = f'>{choice(GOD_GREETINGS_TEXTS)}'
+    text = f'{start_text}\n\n{god_greetings}\n\n```{picross.text}```'
     picross_buttons = get_picross_buttons(picross)
     minutes = randint(120, 180)
     reply_markup = InlineKeyboardMarkup(picross_buttons)
