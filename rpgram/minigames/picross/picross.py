@@ -156,7 +156,10 @@ class PicrossGame:
 
         return text
 
-
+    @property
+    def current_mark_text(self) -> str:
+        return self.number_to_symbol(self.mark)
+    
     def __str__(self) -> str:
         return '\n'.join(
             ''.join(self.number_to_symbol(n) for n in row)
