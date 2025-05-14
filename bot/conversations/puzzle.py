@@ -398,7 +398,7 @@ async def puzzle_edit_message_text(
     )
 
 
-def get_grid_buttons(grid: GridGame) -> List[InlineKeyboardButton]:
+def get_grid_buttons(grid: GridGame) -> List[List[InlineKeyboardButton]]:
     n_cols = grid.n_cols
     buttons = []
     for coor in grid:
