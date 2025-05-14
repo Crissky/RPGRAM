@@ -5,7 +5,7 @@ GODS_NAME = 'Xochipilli'
 SECTION_TEXT_PICROSS = 'DESAFIO'
 SECTION_TEXT_PUZZLE_XP = 'XP DESAFIO'
 PATTERN_PICROSS = (
-    f'{{{CALLBACK_KEY_LIST.index("row")}:\d'
+    f'{{{CALLBACK_KEY_LIST.index("picross_row")}:\d'
 )
 
 
