@@ -2,10 +2,17 @@ from datetime import timedelta
 from random import choice, randint
 from typing import List
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from bson import ObjectId
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
-from telegram.ext import CallbackQueryHandler, ContextTypes
+from telegram.ext import (
+    CallbackQueryHandler,
+    CommandHandler,
+    ContextTypes,
+    PrefixHandler
+)
 
+from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.picross import (
     GOD_GREETINGS_TEXTS,
@@ -37,7 +44,9 @@ from constant.text import (
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 from repository.mongo.populate.tools import choice_rarity
 
+from rpgram.enums.rarity import RarityEnum
 from rpgram.minigames.picross.picross import PicrossGame
+
 
 @skip_if_spawn_timeout
 async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
@@ -51,7 +60,8 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     chat_id = job.chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group(chat_id, 'silent')
-    rarity = choice_rarity(group_level)
+    # rarity = choice_rarity(group_level)
+    rarity = RarityEnum.MYTHIC
     picross = PicrossGame(rarity=rarity)
     picross.generate_random_puzzle()
     start_text = choice(GOD_START_NARRATION_TEXTS)
