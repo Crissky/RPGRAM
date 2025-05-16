@@ -110,3 +110,73 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+def get_picross_buttons(picross: PicrossGame) -> List[List[InlineKeyboardButton]]:
+    n_cols = picross.width
+    buttons = []
+    for coor in picross:
+        button = InlineKeyboardButton(
+            text=f'{coor["text"]}',
+            callback_data=callback_data_to_string({
+                'picross_row': coor["row"],
+                'picross_col': coor["col"],
+            }),
+        )
+        buttons.append(button)
+
+    toggle_button = InlineKeyboardButton(
+        text=f'ALTERNAR ({picross.current_mark_text})',
+        callback_data=callback_data_to_string({
+            'action_picross_toggle': True,
+        }),
+    )
+    buttons = reshape_row_buttons(
+        buttons=buttons,
+        buttons_per_row=n_cols,
+    )
+    buttons.append([toggle_button])
+
+    return buttons
+
+
+def get_picross_job_name(message_id):
+    return f'JOB_TIMEOUT_PICROSS_{message_id}'
+
+
+def put_picross_in_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+    picross: PicrossGame,
+):
+    '''Adiciona o picross ao dicionário de Picrosses, em que a chave é a 
+    message_id.
+    '''
+
+    print('PICROSS.PUT_PICROSS_IN_DICT()')
+    picrosses = context.chat_data.get('picrosses', {})
+    picrosses[message_id] = {'picross': picross}
+    if not 'picrosses' in context.chat_data:
+        context.chat_data['picrosses'] = picrosses
+
+
+def get_picross_from_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+) -> PicrossGame:
+
+    print('PICROSS.GET_PICROSS_FROM_DICT()')
+    picrosses = context.chat_data.get('picrosses', {})
+    picross_dict = picrosses.get(message_id, {})
+    picross = picross_dict.get('picross', None)
+
+    return picross
+
+
+def remove_picross_from_dict(
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+):
+
+    print('PUZZLE.REMOVE_PICROSS_FROM_DICT()')
+    picrosses = context.chat_data.get('picrosses', {})
+    picrosses.pop(message_id, None)
+    context.chat_data['picrosses'] = picrosses
