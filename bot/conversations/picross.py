@@ -110,6 +110,60 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
+    ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
+    picross encerre. Mas se já estiver fora do horário de spawn, o 
+    deus irá embora.
+    '''
+
+    print('JOB_TIMEOUT_PICROSS()')
+    job = context.job
+    chat_id = job.chat_id
+    data = job.data
+    message_id = data['message_id']
+    is_spawn_time = is_group_spawn_time(chat_id)
+    grid = get_picross_from_dict(context=context, message_id=message_id)
+    section_name = f'{SECTION_TEXT_PICROSS} {grid.rarity.value.upper()}'
+
+    if not is_spawn_time:
+        text = (
+            'Pois, é chegada a hora tardia em que necessito me retirar '
+            'para o meu augusto domínio, e por isso, em minha '
+            'magnanimidade, concedo-lhes o perdão. Assim, '
+            'não lhes lançarei minha maldição.'
+        )
+        section_start = SECTION_HEAD_TIMEOUT_PUZZLE_START
+        section_end = SECTION_HEAD_TIMEOUT_PUZZLE_END
+    else:
+        text = choice(GODS_TIMEOUT_FEEDBACK_TEXTS)
+        text += ' '
+        text += choice(GODS_LOSES_FEEDBACK_TEXTS)
+        section_start = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_START
+        section_end = SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END
+        await punishment(
+            context=context,
+            message_id=message_id,
+        )
+
+    text = create_text_in_box(
+        text=f'>{GODS_NAME}: {text}\n\n{grid.text}',
+        section_name=section_name,
+        section_start=section_start,
+        section_end=section_end,
+        clean_func=escape_for_citation_markdown_v2,
+    )
+    await edit_message_text(
+        function_caller='JOB_TIMEOUT_PUZZLE()',
+        new_text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=False,
+        markdown=True
+    )
+    remove_picross_from_dict(context=context, message_id=message_id)
+
+
 def get_picross_buttons(picross: PicrossGame) -> List[List[InlineKeyboardButton]]:
     n_cols = picross.width
     buttons = []
