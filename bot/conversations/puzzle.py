@@ -254,7 +254,6 @@ async def solved(
         text=text,
         player_name=player_name,
         context=context,
-        chat_id=chat_id,
         message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_COMPLETE_START,
         section_end=SECTION_HEAD_PUZZLE_COMPLETE_END,
@@ -291,7 +290,6 @@ async def failed(
         text=text,
         player_name=player_name,
         context=context,
-        chat_id=chat_id,
         message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_FAIL_START,
         section_end=SECTION_HEAD_PUZZLE_FAIL_END,
@@ -322,7 +320,6 @@ async def good_move(
         text=text,
         player_name=player_name,
         context=context,
-        chat_id=chat_id,
         message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_GOODMOVE_START,
         section_end=SECTION_HEAD_PUZZLE_GOODMOVE_END,
@@ -347,7 +344,6 @@ async def bad_move(
         text=text,
         player_name=player_name,
         context=context,
-        chat_id=chat_id,
         message_id=message_id,
         section_start=SECTION_HEAD_PUZZLE_BADMOVE_START,
         section_end=SECTION_HEAD_PUZZLE_BADMOVE_END,
@@ -360,13 +356,13 @@ async def puzzle_edit_message_text(
     text: str,
     player_name: str,
     context: ContextTypes.DEFAULT_TYPE,
-    chat_id: int,
     message_id: int,
     section_name: str = None,
     section_start: str = None,
     section_end: str = None,
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
 ):
+    chat_id = context._chat_id
     if not isinstance(section_name, str):
         section_name = f'{SECTION_TEXT_PUZZLE} {grid.rarity.value.upper()}'
     if not isinstance(section_start, str):
