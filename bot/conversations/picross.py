@@ -9,6 +9,7 @@ from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
     ContextTypes,
+    ConversationHandler,
     PrefixHandler
 )
 
@@ -21,12 +22,15 @@ from bot.constants.picross import (
     GODS_NAME,
     GODS_TIMEOUT_FEEDBACK_TEXTS,
     PATTERN_PICROSS,
+    PATTERN_TOGGLE_PICROSS,
     SECTION_TEXT_PICROSS
 )
 from bot.decorators.job import skip_if_spawn_timeout
 from bot.functions.char import punishment
 from bot.functions.chat import (
+    REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
+    callback_data_to_dict,
     callback_data_to_string,
     edit_message_text
 )
