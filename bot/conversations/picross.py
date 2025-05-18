@@ -234,3 +234,31 @@ def remove_picross_from_dict(
     picrosses = context.chat_data.get('picrosses', {})
     picrosses.pop(message_id, None)
     context.chat_data['picrosses'] = picrosses
+async def create_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = context._chat_id
+    job_callback = job_start_picross
+    job_callback_name = job_callback.__name__.upper()
+    job_name = f'{job_callback_name}_{ObjectId()}'
+    context.job_queue.run_once(
+        callback=job_callback,
+        when=timedelta(seconds=5),
+        chat_id=chat_id,
+        name=job_name,
+        job_kwargs=BASE_JOB_KWARGS,
+    )
+
+    text = 'UM PICROSS FOI CRIADO! 5 SEGUNDOS PARA COMEÇAR'
+    silent = get_attribute_group(chat_id, 'silent')
+    reply_text_kwargs = dict(
+        chat_id=chat_id,
+        text=text,
+        disable_notification=silent,
+        allow_sending_without_reply=True,
+    )
+    response = await call_telegram_message_function(
+        function_caller='JOB_START_PICROSS()',
+        function=context.bot.send_message,
+        context=context,
+        **reply_text_kwargs
+    )
+
