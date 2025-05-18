@@ -7,6 +7,9 @@ SECTION_TEXT_PUZZLE_XP = 'XP DESAFIO'
 PATTERN_PICROSS = (
     f'{{{CALLBACK_KEY_LIST.index("picross_row")}:\d'
 )
+PATTERN_TOGGLE_PICROSS = (
+    f'{{{CALLBACK_KEY_LIST.index("action_picross_toggle")}:1'
+)
 
 
 GOD_START_NARRATION_TEXTS = [
