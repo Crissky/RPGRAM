@@ -67,13 +67,13 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     # rarity = choice_rarity(group_level)
     rarity = RarityEnum.MYTHIC
     picross = PicrossGame(rarity=rarity)
-    picross.generate_random_puzzle()
+    picross.generate_random_picross()
     start_text = choice(GOD_START_NARRATION_TEXTS)
     # god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
     god_greetings = f'>{choice(GOD_GREETINGS_TEXTS)}'
     text = f'{start_text}\n\n{god_greetings}\n\n```{picross.text}```'
-    picross_buttons = get_picross_buttons(picross)
     minutes = randint(120, 180)
+    picross_buttons = get_picross_buttons(picross)
     reply_markup = InlineKeyboardMarkup(picross_buttons)
 
     text = create_text_in_box(
@@ -105,7 +105,7 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
         picross=picross
     )
     context.job_queue.run_once(
-        callback=job_timeout_puzzle,
+        callback=job_timeout_picross,
         when=timedelta(minutes=minutes),
         data=dict(message_id=message_id),
         chat_id=chat_id,
@@ -114,7 +114,7 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
+async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
     ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
     picross encerre. Mas se já estiver fora do horário de spawn, o 
     deus irá embora.
@@ -157,7 +157,7 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
         clean_func=escape_for_citation_markdown_v2,
     )
     await edit_message_text(
-        function_caller='JOB_TIMEOUT_PUZZLE()',
+        function_caller='JOB_TIMEOUT_PICROSS()',
         new_text=text,
         context=context,
         chat_id=chat_id,
@@ -168,7 +168,9 @@ async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
     remove_picross_from_dict(context=context, message_id=message_id)
 
 
-def get_picross_buttons(picross: PicrossGame) -> List[List[InlineKeyboardButton]]:
+def get_picross_buttons(
+    picross: PicrossGame
+) -> List[List[InlineKeyboardButton]]:
     n_cols = picross.width
     buttons = []
     for coor in picross:
@@ -184,7 +186,7 @@ def get_picross_buttons(picross: PicrossGame) -> List[List[InlineKeyboardButton]
     toggle_button = InlineKeyboardButton(
         text=f'ALTERNAR ({picross.current_mark_text})',
         callback_data=callback_data_to_string({
-            'action_picross_toggle': True,
+            'action_picross_toggle': 1,
         }),
     )
     buttons = reshape_row_buttons(
@@ -234,7 +236,7 @@ def remove_picross_from_dict(
     message_id: int,
 ):
 
-    print('PUZZLE.REMOVE_PICROSS_FROM_DICT()')
+    print('PICROSS.REMOVE_PICROSS_FROM_DICT()')
     picrosses = context.chat_data.get('picrosses', {})
     picrosses.pop(message_id, None)
     context.chat_data['picrosses'] = picrosses
