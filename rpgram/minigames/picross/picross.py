@@ -40,7 +40,7 @@ class PicrossGame:
         self.col_hints = []
         self.mark = 1
 
-    def generate_random_puzzle(self):
+    def generate_random_picross(self):
         for i in range(self.height):
             for j in range(self.width):
                 self.solution[i][j] = random.choice([0, 1])
@@ -179,7 +179,7 @@ class PicrossGame:
 
 if __name__ == '__main__':
     game = PicrossGame()
-    game.generate_random_puzzle()
+    game.generate_random_picross()
     game.make_move(0, 0)
     game.toggle_mark()
     game.make_move(4, 4)
@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
     print('\nGame 2')
     game = PicrossGame(rarity=RarityEnum.UNCOMMON)
-    game.generate_random_puzzle()
+    game.generate_random_picross()
     game.make_move(0, 0)
     game.toggle_mark()
     game.make_move(1, 1)
