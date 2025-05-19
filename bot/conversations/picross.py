@@ -167,6 +167,49 @@ async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
     )
     remove_picross_from_dict(context=context, message_id=message_id)
 
+async def picross_edit_message_text(
+    picross: PicrossGame,
+    text: str,
+    player_name: str,
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+    section_name: str = None,
+    section_start: str = None,
+    section_end: str = None,
+    reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
+):
+    chat_id = context._chat_id
+    if not isinstance(section_name, str):
+        section_name = f'{SECTION_TEXT_PICROSS} {picross.rarity.value.upper()}'
+    if not isinstance(section_start, str):
+        section_start = SECTION_HEAD_PUZZLE_START
+    if not isinstance(section_end, str):
+        section_end = SECTION_HEAD_PUZZLE_END
+
+    text = (
+        f'>{GODS_NAME}: {text}\n\n'
+        f'Jogada: {player_name}\n\n'
+        f'```{picross.text}```\n'
+    )
+    text = create_text_in_box(
+        text=text,
+        section_name=section_name,
+        section_start=section_start,
+        section_end=section_end,
+        clean_func=escape_for_citation_markdown_v2,
+    )
+    await edit_message_text(
+        function_caller='PICROSS_EDIT_MESSAGE_TEXT()',
+        new_text=text,
+        context=context,
+        chat_id=chat_id,
+        message_id=message_id,
+        need_response=True,
+        markdown=True,
+        reply_markup=reply_markup
+    )
+
+
 
 def get_picross_buttons(
     picross: PicrossGame
