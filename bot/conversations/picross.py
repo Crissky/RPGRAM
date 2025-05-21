@@ -167,6 +167,44 @@ async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
     )
     remove_picross_from_dict(context=context, message_id=message_id)
 
+
+async def toggle_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('TOGGLE_PICROSS()')
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    message_id = query.message.message_id
+    player_name = query.from_user.name
+    picross = get_picross_from_dict(context=context, message_id=message_id)
+    data = callback_data_to_dict(query.data)
+    action_picross_toggle = data['action_picross_toggle']
+
+    if picross is None:
+        new_text = 'Esse desafio não existe mais.'
+        await edit_message_text(
+            function_caller='PICROSS.TOGGLE_PICROSS()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+        )
+
+        return ConversationHandler.END
+
+    picross.toggle_mark()
+    picross_buttons = get_picross_buttons(picross)
+    reply_markup = InlineKeyboardMarkup(picross_buttons)
+    await picross_edit_message_text(
+        picross=picross,
+        text=f'A marca foi mudada para {picross.current_mark_text}',
+        player_name=player_name,
+        context=context,
+        message_id=message_id,
+        reply_markup=reply_markup
+    )
+
+
 async def picross_edit_message_text(
     picross: PicrossGame,
     text: str,
