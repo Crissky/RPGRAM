@@ -321,6 +321,14 @@ def remove_picross_from_dict(
     picrosses = context.chat_data.get('picrosses', {})
     picrosses.pop(message_id, None)
     context.chat_data['picrosses'] = picrosses
+
+
+PICROSS_HANDLERS = [
+    # CallbackQueryHandler(switch_puzzle, pattern=PATTERN_PICROSS),
+    CallbackQueryHandler(toggle_picross, pattern=PATTERN_TOGGLE_PICROSS),
+]
+
+
 async def create_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = context._chat_id
     job_callback = job_start_picross
