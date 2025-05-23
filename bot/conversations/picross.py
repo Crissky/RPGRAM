@@ -38,6 +38,8 @@ from bot.functions.config import get_attribute_group, is_group_spawn_time
 
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
+    SECTION_HEAD_PUZZLE_COMPLETE_END,
+    SECTION_HEAD_PUZZLE_COMPLETE_START,
     SECTION_HEAD_PUZZLE_END,
     SECTION_HEAD_PUZZLE_START,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END,
