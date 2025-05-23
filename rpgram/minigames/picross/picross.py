@@ -39,13 +39,20 @@ class PicrossGame:
         self.row_hints = []
         self.col_hints = []
         self.mark = 1
+        self.generated = False
 
     def generate_random_picross(self):
         for i in range(self.height):
             for j in range(self.width):
                 self.solution[i][j] = random.choice([0, 1])
+                if self.total_solution_marks >= (self.total_squares * 0.60):
+                    self.generated = True
+                    break
 
-        self.generate_hints()
+        if self.generated is True:
+            self.generate_hints()
+        else:
+            self.generate_random_picross()
 
     def generate_hints(self):
         # Generate row hints
@@ -201,6 +208,7 @@ if __name__ == '__main__':
     game.make_move(4, 4)
     print('=' * 79)
     print(game.text)
+    print(f'Marcas: {game.total_solution_marks}/{game.total_squares}')
     print('=' * 79)
     for i in game.solution:
         print(i)
@@ -213,6 +221,7 @@ if __name__ == '__main__':
     game.make_move(1, 1)
     print('=' * 79)
     print(game.text)
+    print(f'Marcas: {game.total_solution_marks}/{game.total_squares}')
     print('=' * 79)
     for i in game.solution:
         print(i)
