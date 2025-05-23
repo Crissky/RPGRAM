@@ -95,8 +95,10 @@ class PicrossGame:
                 self.board[n_row][n_col] = 0
             else:
                 self.board[n_row][n_col] = self.mark
+                if self.mark == 1 and self.solution[n_row][n_col] == 0:
+                    return False
             return True
-        return False
+        return None
 
     def check_win(self) -> bool:
         for row in range(self.height):
