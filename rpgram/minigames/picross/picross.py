@@ -167,12 +167,20 @@ class PicrossGame:
     @property
     def current_mark_text(self) -> str:
         return self.number_to_symbol(self.mark)
-    
+
     def __str__(self) -> str:
         return '\n'.join(
             ''.join(self.number_to_symbol(n) for n in row)
             for row in self.board
         )
+
+    @property
+    def total_squares(self) -> int:
+        return self.width * self.height
+
+    @property
+    def total_solution_marks(self) -> int:
+        return sum(sum(row) for row in self.solution)
 
     def __iter__(self) -> Iterable[dict]:
         for n_row in range(self.height):
