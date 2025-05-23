@@ -99,7 +99,13 @@ class PicrossGame:
         return False
 
     def check_win(self) -> bool:
-        return self.board == self.solution
+        for row in range(self.height):
+            for col in range(self.width):
+                if self.solution[row][col] == 1 and self.board[row][col] != 1:
+                    return False
+                if self.solution[row][col] == 0 and self.board[row][col] == 1:
+                    return False
+        return True
 
     def number_to_symbol(self, number: int) -> str:
         if number == 1:
