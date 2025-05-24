@@ -15,6 +15,7 @@ from bot.functions.chat import (
 from bot.functions.config import get_attribute_group
 from bot.functions.player import get_player_ids_from_group
 from constant.text import (
+    ALERT_SECTION_HEAD,
     SECTION_HEAD_FAIL_PUNISHMENT_END,
     SECTION_HEAD_FAIL_PUNISHMENT_START,
     SECTION_HEAD_XP_END,
@@ -600,6 +601,30 @@ async def punishment(
             need_response=False,
             auto_delete_message=MIN_AUTODELETE_TIME,
         )
+
+
+def bad_move_damage(
+    user_id: int,
+    multiplier: float = 1,
+) -> str:
+    '''Causa dano ao jogador que fez uma jogada ruim.
+    O dano é (5% * multiplier) * max_hp do jogador.
+    '''
+
+    print('WORDGAME_PUNISHMENT()')
+    char_model = CharacterModel()
+    char: BaseCharacter = char_model.get(user_id)
+    max_hp = char.cs.hp
+    multiplier = multiplier * 0.05
+    percent = round(multiplier*100, 2)
+    damage = int(max_hp * multiplier)
+    report = add_damage(damage=damage, char=char)
+
+    return (
+        f"{ALERT_SECTION_HEAD.format('*DAMAGE REPORT*')}\n"
+        f"{char.full_name}\n"
+        f"{report['text']}[{percent}%]"
+    )
 
 
 if __name__ == '__main__':
