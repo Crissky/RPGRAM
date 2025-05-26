@@ -16,8 +16,10 @@ from telegram.ext import (
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.picross import (
+    GOD_BAD_MOVE_FEEDBACK_TEXTS,
     GOD_GREETINGS_TEXTS,
     GOD_START_NARRATION_TEXTS,
+    GOD_WINS_FEEDBACK_TEXTS,
     GODS_LOSES_FEEDBACK_TEXTS,
     GODS_NAME,
     GODS_TIMEOUT_FEEDBACK_TEXTS,
@@ -26,7 +28,7 @@ from bot.constants.picross import (
     SECTION_TEXT_PICROSS
 )
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import punishment
+from bot.functions.char import bad_move_damage, punishment
 from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
@@ -38,6 +40,8 @@ from bot.functions.config import get_attribute_group, is_group_spawn_time
 
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
+    SECTION_HEAD_PUZZLE_BADMOVE_END,
+    SECTION_HEAD_PUZZLE_BADMOVE_START,
     SECTION_HEAD_PUZZLE_COMPLETE_END,
     SECTION_HEAD_PUZZLE_COMPLETE_START,
     SECTION_HEAD_PUZZLE_END,
@@ -72,15 +76,18 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     picross.generate_random_picross()
     start_text = choice(GOD_START_NARRATION_TEXTS)
     # god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
-    god_greetings = f'>{choice(GOD_GREETINGS_TEXTS)}'
+    god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
     text = f'{start_text}\n\n{god_greetings}\n\n```{picross.text}```'
-    minutes = randint(120, 180)
+    section_name = (
+        f'{SECTION_TEXT_PICROSS} {picross.rarity.value.upper()} '
+        f'{picross.width}✖{picross.height}'
+    )
     picross_buttons = get_picross_buttons(picross)
     reply_markup = InlineKeyboardMarkup(picross_buttons)
-
+    minutes = randint(120, 180)
     text = create_text_in_box(
         text=text,
-        section_name=SECTION_TEXT_PICROSS,
+        section_name=section_name,
         section_start=SECTION_HEAD_PUZZLE_START,
         section_end=SECTION_HEAD_PUZZLE_END,
         clean_func=escape_for_citation_markdown_v2,
@@ -220,7 +227,10 @@ async def picross_edit_message_text(
 ):
     chat_id = context._chat_id
     if not isinstance(section_name, str):
-        section_name = f'{SECTION_TEXT_PICROSS} {picross.rarity.value.upper()}'
+        section_name = (
+            f'{SECTION_TEXT_PICROSS} {picross.rarity.value.upper()} '
+            f'{picross.width}✖{picross.height}'
+        )
     if not isinstance(section_start, str):
         section_start = SECTION_HEAD_PUZZLE_START
     if not isinstance(section_end, str):
@@ -326,7 +336,7 @@ def remove_picross_from_dict(
 
 
 PICROSS_HANDLERS = [
-    # CallbackQueryHandler(switch_puzzle, pattern=PATTERN_PICROSS),
+    CallbackQueryHandler(switch_picross, pattern=PATTERN_PICROSS),
     CallbackQueryHandler(toggle_picross, pattern=PATTERN_TOGGLE_PICROSS),
 ]
 
