@@ -177,6 +177,75 @@ async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
     remove_picross_from_dict(context=context, message_id=message_id)
 
 
+async def switch_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print('SWITCH_PICROSS()')
+    query = update.callback_query
+    chat_id = query.message.chat_id
+    user_id = query.from_user.id
+    message_id = query.message.message_id
+    player_name = query.from_user.name
+    picross = get_picross_from_dict(context=context, message_id=message_id)
+    data = callback_data_to_dict(query.data)
+    picross_row = data['picross_row']
+    picross_col = data['picross_col']
+
+    if picross is None:
+        new_text = 'Esse desafio não existe mais.'
+        await edit_message_text(
+            function_caller='PICROSS.TOGGLE_PICROSS()',
+            new_text=new_text,
+            context=context,
+            chat_id=chat_id,
+            message_id=message_id,
+            need_response=False,
+            markdown=False,
+        )
+
+        return ConversationHandler.END
+
+    move = picross.make_move(n_row=picross_row, n_col=picross_col)
+    picross_buttons = get_picross_buttons(picross)
+    reply_markup = InlineKeyboardMarkup(picross_buttons)
+    if picross.check_win():
+        text = choice(GOD_WINS_FEEDBACK_TEXTS)
+        await picross_edit_message_text(
+            picross=picross,
+            text=text,
+            player_name=player_name,
+            context=context,
+            message_id=message_id,
+            section_start=SECTION_HEAD_PUZZLE_COMPLETE_START,
+            section_end=SECTION_HEAD_PUZZLE_COMPLETE_END,
+        )
+    elif move is False:
+        text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)
+        damage_text = bad_move_damage(
+            user_id=user_id,
+            multiplier=2.0
+        )
+        text += f'\n\n{damage_text}'
+        await picross_edit_message_text(
+            picross=picross,
+            text=text,
+            player_name=player_name,
+            context=context,
+            message_id=message_id,
+            section_start=SECTION_HEAD_PUZZLE_BADMOVE_START,
+            section_end=SECTION_HEAD_PUZZLE_BADMOVE_END,
+            reply_markup=reply_markup
+        )
+    else:
+        text = f'Ação na Linha **{picross_row}** e Coluna: **{picross_col}**'
+        await picross_edit_message_text(
+            picross=picross,
+            text=text,
+            player_name=player_name,
+            context=context,
+            message_id=message_id,
+            reply_markup=reply_markup
+        )
+
+
 async def toggle_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print('TOGGLE_PICROSS()')
     query = update.callback_query
