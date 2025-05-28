@@ -36,6 +36,7 @@ from bot.conversations import (
     PUZZLE_HANDLERS,
     RESET_CHAR_HANDLERS,
     WORDGAME_HANDLERS,
+    PICROSS_HANDLERS,
 )
 from bot.conversations import SEASON_JOBS_DEFINITIONS
 from bot.conversations.event import job_add_event_points
@@ -98,6 +99,7 @@ def main() -> None:
     application.add_handlers(RESET_CHAR_HANDLERS)
     application.add_handlers(SKILL_TREE_HANDLERS)
     application.add_handlers(WORDGAME_HANDLERS)
+    application.add_handlers(PICROSS_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(
