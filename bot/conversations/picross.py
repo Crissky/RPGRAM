@@ -135,8 +135,8 @@ async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
     data = job.data
     message_id = data['message_id']
     is_spawn_time = is_group_spawn_time(chat_id)
-    grid = get_picross_from_dict(context=context, message_id=message_id)
-    section_name = f'{SECTION_TEXT_PICROSS} {grid.rarity.value.upper()}'
+    picross = get_picross_from_dict(context=context, message_id=message_id)
+    section_name = f'{SECTION_TEXT_PICROSS} {picross.rarity.value.upper()}'
 
     if not is_spawn_time:
         text = (
@@ -159,7 +159,7 @@ async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
         )
 
     text = create_text_in_box(
-        text=f'>{GODS_NAME}: {text}\n\n{grid.text}',
+        text=f'>{GODS_NAME}: {text}\n\n{picross.text}',
         section_name=section_name,
         section_start=section_start,
         section_end=section_end,
