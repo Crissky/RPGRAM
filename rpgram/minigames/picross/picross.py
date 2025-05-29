@@ -17,8 +17,8 @@ class PicrossGame:
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
         if isinstance(rarity, RarityEnum):
-            width = 3
-            height = 3
+            width = 5
+            height = 4
             self.rarity = rarity
             rarity_level = get_enum_index(self.rarity)
             for i in range(rarity_level):
