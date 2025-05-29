@@ -28,7 +28,7 @@ from bot.constants.picross import (
     SECTION_TEXT_PICROSS
 )
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import bad_move_damage, punishment
+from bot.functions.char import add_xp_group, bad_move_damage, punishment
 from bot.functions.chat import (
     REPLY_MARKUP_DEFAULT,
     call_telegram_message_function,
@@ -38,6 +38,7 @@ from bot.functions.chat import (
 )
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 
+from bot.functions.item import drop_random_prize
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
     SECTION_HEAD_PUZZLE_BADMOVE_END,
@@ -184,6 +185,7 @@ async def switch_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = query.from_user.id
     message_id = query.message.message_id
     player_name = query.from_user.name
+    silent = get_attribute_group(chat_id, 'silent')
     picross = get_picross_from_dict(context=context, message_id=message_id)
     data = callback_data_to_dict(query.data)
     picross_row = data['picross_row']
@@ -206,8 +208,9 @@ async def switch_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
     move = picross.make_move(n_row=picross_row, n_col=picross_col)
     picross_buttons = get_picross_buttons(picross)
     reply_markup = InlineKeyboardMarkup(picross_buttons)
-    if picross.check_win():
+    if picross.check_win():  # Ganhou
         text = choice(GOD_WINS_FEEDBACK_TEXTS)
+        prize_text = f'{GODS_NAME} deixou como recompensa'
         await picross_edit_message_text(
             picross=picross,
             text=text,
@@ -217,7 +220,20 @@ async def switch_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_start=SECTION_HEAD_PUZZLE_COMPLETE_START,
             section_end=SECTION_HEAD_PUZZLE_COMPLETE_END,
         )
-    elif move is False:
+        await add_xp_group(
+            chat_id=chat_id,
+            context=context,
+            silent=silent,
+            message_id=message_id,
+        )
+        await drop_random_prize(
+            context=context,
+            silent=silent,
+            rarity=picross.rarity,
+            message_id=message_id,
+            text=prize_text,
+        )
+    elif move is False:  # Movimento errado
         text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)
         damage_text = bad_move_damage(
             user_id=user_id,
