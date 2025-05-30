@@ -250,8 +250,12 @@ async def switch_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
             section_end=SECTION_HEAD_PUZZLE_BADMOVE_END,
             reply_markup=reply_markup
         )
-    else:
-        text = f'Ação na Linha **{picross_row}** e Coluna: **{picross_col}**'
+    else:  # Ação válida
+        mark_text = picross.current_mark_text
+        text = (
+            f'Ação {mark_text} na '
+            f'Linha **{picross_row+1}** e Coluna: **{picross_col+1}**'
+        )
         await picross_edit_message_text(
             picross=picross,
             text=text,
