@@ -7,6 +7,7 @@ from telegram.ext import ContextTypes
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.conversations.enemy import job_start_ambush
 from bot.conversations.item import job_find_treasure
+from bot.conversations.picross import job_start_picross
 from bot.conversations.puzzle import job_start_puzzle
 from bot.conversations.quest_item import job_start_item_quest
 from bot.conversations.word_game import job_start_wordgame
@@ -63,6 +64,7 @@ def create_event(
         'quest_item': 12,
         'puzzle': 8,
         'wordgame': 6,
+        'picross': 6,
     }
     population = list(events.keys())
     weights = events.values()
@@ -85,6 +87,8 @@ def create_event(
             job_callback = job_start_puzzle
         elif event_name == 'wordgame':
             job_callback = job_start_wordgame
+        elif event_name == 'picross':
+            job_callback = job_start_picross
         else:
             raise ValueError(f'"{event_name}" não é um evento válido.')
         
