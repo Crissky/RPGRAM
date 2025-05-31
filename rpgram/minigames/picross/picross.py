@@ -107,6 +107,22 @@ class PicrossGame:
             return True
         return None
 
+    def check_row(self, n_row: int) -> bool:
+        for col in range(self.width):
+            if self.solution[n_row][col] == 1 and self.board[n_row][col] != 1:
+                return False
+            if self.solution[n_row][col] == 0 and self.board[n_row][col] == 1:
+                return False
+        return True
+
+    def check_column(self, n_col: int) -> bool:
+        for row in range(self.height):
+            if self.solution[row][n_col] == 1 and self.board[row][n_col] != 1:
+                return False
+            if self.solution[row][n_col] == 0 and self.board[row][n_col] == 1:
+                return False
+        return True
+
     def check_win(self) -> bool:
         for row in range(self.height):
             for col in range(self.width):
