@@ -74,7 +74,7 @@ class CombatStats:
         base_charisma: int = 0,
         damage: int = 0,
         death_counter: int = 0,
-        stats_boosters: List[StatsBooster] = []
+        stats_boosters: List[StatsBooster] = None,
     ) -> None:
         if not isinstance(base_stats, BaseStats):
             base_stats = BaseStats(

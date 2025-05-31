@@ -93,6 +93,9 @@ CALLBACK_KEY_LIST = [
     'list_way_skill',
     'check_way_skill',
     'way_name',
+    'picross_row',
+    'picross_col',
+    'action_picross_toggle',
 ]
 VERBOSE_ARGS = ['verbose', 'v']
 REPLY_CHAT_ACTION_KWARGS = dict(action=ChatAction.TYPING)

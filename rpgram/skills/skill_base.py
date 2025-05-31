@@ -70,9 +70,9 @@ class BaseSkill:
         dice: Union[int, Tuple[int, float]] = 20,
         is_elusive: bool = False,
         use_equips_damage_types: bool = False,
-        requirements: Union[Requirement, Dict[str, Any]] = {},
+        requirements: Union[Requirement, Dict[str, Any]] = None,
         damage_types: List[Union[str, DamageEnum]] = None,
-        condition_list: List[Condition] = [],
+        condition_list: List[Condition] = None,
     ):
         '''
         Args:
@@ -168,6 +168,8 @@ class BaseSkill:
             base_multiplier=dice[1]
         )
 
+        if requirements is None:
+            requirements = {}
         if not isinstance(requirements, (dict, Requirement)):
             raise TypeError(
                 f'requirements precisa ser um dicionário.'
@@ -190,6 +192,9 @@ class BaseSkill:
                         f'uma lista de strings ou DamageEnums. '
                         f'"{type(damage_type)}" não é válido.'
                     )
+
+        if condition_list is None:
+            condition_list = []
 
         for condition in condition_list:
             if not isinstance(condition, Condition):

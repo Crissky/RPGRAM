@@ -23,7 +23,7 @@ from bot.constants.word_game import (
 )
 from bot.constants.word_game import WORDGAME_COMMAND
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import add_damage, add_xp_group, punishment
+from bot.functions.char import add_xp_group, punishment, bad_move_damage
 from bot.functions.chat import (
     call_telegram_message_function,
     delete_message_from_context,
@@ -34,7 +34,6 @@ from bot.functions.config import get_attribute_group, is_group_spawn_time
 from bot.functions.item import drop_random_prize
 from bot.functions.job import remove_job_by_name
 from constant.text import (
-    ALERT_SECTION_HEAD,
     SECTION_HEAD_PUZZLE_END,
     SECTION_HEAD_PUZZLE_START,
     SECTION_HEAD_TIMEOUT_PUNISHMENT_PUZZLE_END,
@@ -43,9 +42,7 @@ from constant.text import (
     SECTION_HEAD_TIMEOUT_PUZZLE_START
 )
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
-from repository.mongo.models.character import CharacterModel
 from repository.mongo.populate.tools import choice_rarity
-from rpgram.characters.char_base import BaseCharacter
 from rpgram.errors import InvalidWordError
 from rpgram.minigames.secret_word.secret_word import SecretWordGame
 
@@ -246,7 +243,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 text=prize_text,
             )
         else:
-            damage_text = wordgame_punishment(
+            damage_text = bad_move_damage(
                 user_id=user_id,
                 multiplier=game.num_try
             )
@@ -298,29 +295,6 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context=context,
             message_id=response_message_id,
         )
-
-
-def wordgame_punishment(
-    user_id: int,
-    multiplier: float,
-) -> str:
-    '''Punição: adiciona dano ao jogador por falhar no desafio.
-    '''
-
-    print('WORDGAME_PUNISHMENT()')
-    char_model = CharacterModel()
-    char: BaseCharacter = char_model.get(user_id)
-    max_hp = char.cs.hp
-    multiplier = multiplier * 0.05
-    percent = round(multiplier*100, 2)
-    damage = int(max_hp * multiplier)
-    report = add_damage(damage=damage, char=char)
-
-    return (
-        f"{ALERT_SECTION_HEAD.format('*DAMAGE REPORT*')}\n"
-        f"{char.full_name}\n"
-        f"{report['text']}[{percent}%]"
-    )
 
 
 def get_wordgame_job_name(message_id):

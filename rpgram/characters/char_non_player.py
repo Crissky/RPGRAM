@@ -31,7 +31,7 @@ class NPCharacter(BaseCharacter):
         alignment: Union[AlignmentEnum, str],
         enemy_id: ObjectId = None,
         equips: Equips = None,
-        status: Status = {},
+        status: Status = None,
         level: int = 1,
         xp: int = 0,
         base_strength: int = 0,
@@ -43,7 +43,7 @@ class NPCharacter(BaseCharacter):
         stars: Union[EnemyStarsEnum, str] = EnemyStarsEnum.THREE,
         combat_damage: int = 0,
         combat_death_counter: int = 0,
-        skill_tree: dict = {},
+        skill_tree: dict = None,
         _id: ObjectId = None,
         created_at: datetime = None,
         updated_at: datetime = None

@@ -26,7 +26,7 @@ class Player:
         self,
         name: str,
         player_id: int,
-        chat_ids: List[int] = [],
+        chat_ids: List[int] = None,
         _id: Union[str, ObjectId] = None,
         verbose: bool = False,
         silent: bool = False,
@@ -41,6 +41,8 @@ class Player:
             _id = ObjectId(_id)
         if isinstance(chat_ids, int):
             chat_ids = [int(chat_ids)]
+        elif chat_ids is None:
+            chat_ids = []
 
         for chat_id in chat_ids:
             self.add_chat_id(chat_id)

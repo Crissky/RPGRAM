@@ -903,7 +903,7 @@ def choice_consumable(
     min_consumable_quantity: int = MIN_CONSUMABLE_QUANTITY,
     max_consumable_quantity: int = MAX_CONSUMABLE_QUANTITY,
     random_level: bool = False,
-    items_dict: dict = {},
+    items_dict: dict = None,
 ) -> Item:
     '''Retorna um item consumível para a função create_random_consumable()
     Arg: items_dict é usando para evitar de baixar novamente a lista de itens 
@@ -913,6 +913,8 @@ def choice_consumable(
 
     if random_level:
         group_level = random_group_level(group_level)
+    if items_dict is None:
+        items_dict = {}
 
     rarity = choice_rarity(group_level)
     if rarity not in items_dict:

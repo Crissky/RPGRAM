@@ -30,7 +30,10 @@ from rpgram.skills.special_damage import SpecialDamage
 
 class Status:
 
-    def __init__(self, conditions: List[Condition] = []):
+    def __init__(self, conditions: List[Condition] = None):
+        if conditions is None:
+            conditions = []
+
         if isinstance(conditions, list):
             for index, condition in enumerate(conditions):
                 if not isinstance(condition, Condition):
@@ -716,9 +719,7 @@ class Status:
 if __name__ == '__main__':
     from rpgram.enums.debuff import DebuffEnum
 
-    status = Status(
-        conditions=[],
-    )
+    status = Status(conditions=[])
     print(status.get_sheet())
     print('#'*30)
     print(status.get_sheet(verbose=True))

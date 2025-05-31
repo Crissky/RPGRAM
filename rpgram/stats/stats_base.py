@@ -35,10 +35,14 @@ class BaseStats:
         base_wisdom: int = 0,
         base_charisma: int = 0,
         points_multiplier: int = 5,
-        stats_boosters: List[StatsBooster] = []
+        stats_boosters: List[StatsBooster] = None,
     ) -> None:
         if level < 1 and isinstance(level, int):
             raise ValueError('Nível deve ser um inteiro maior que zero.')
+
+        if stats_boosters is None:
+            stats_boosters = []
+
         self.__level = int(level)
         self.__current_xp = int(xp)
         self.__points_multiplier = int(points_multiplier)
