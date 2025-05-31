@@ -39,6 +39,7 @@ from bot.functions.chat import (
 from bot.functions.config import get_attribute_group, is_group_spawn_time
 
 from bot.functions.item import drop_random_prize
+from bot.functions.job import remove_job_by_name
 from bot.functions.keyboard import reshape_row_buttons
 from constant.text import (
     SECTION_HEAD_PUZZLE_BADMOVE_END,
@@ -209,6 +210,8 @@ async def switch_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if picross.check_win():  # Ganhou
         text = choice(GOD_WINS_FEEDBACK_TEXTS)
         prize_text = f'{GODS_NAME} deixou como recompensa'
+        remove_timeout_puzzle_job(context=context, message_id=message_id)
+        remove_picross_from_dict(context=context, message_id=message_id)
         await picross_edit_message_text(
             picross=picross,
             text=text,
@@ -379,6 +382,17 @@ def get_picross_buttons(
 
 def get_picross_job_name(message_id):
     return f'JOB_TIMEOUT_PICROSS_{message_id}'
+
+
+def remove_timeout_puzzle_job(
+    context: ContextTypes.DEFAULT_TYPE,
+    message_id: int,
+) -> bool:
+    '''Remove o job de Timeout do Puzzle.
+    '''
+
+    job_name = get_picross_job_name(message_id=message_id)
+    return remove_job_by_name(context=context, job_name=job_name)
 
 
 def put_picross_in_dict(
