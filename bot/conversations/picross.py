@@ -71,12 +71,10 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
     chat_id = job.chat_id
     group_level = get_attribute_group(chat_id, 'group_level')
     silent = get_attribute_group(chat_id, 'silent')
-    # rarity = choice_rarity(group_level)
-    rarity = RarityEnum.MYTHIC
+    rarity = choice_rarity(group_level)
     picross = PicrossGame(rarity=rarity)
     picross.generate_random_picross()
     start_text = choice(GOD_START_NARRATION_TEXTS)
-    # god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
     god_greetings = f'>{GODS_NAME}: {choice(GOD_GREETINGS_TEXTS)}'
     text = f'{start_text}\n\n{god_greetings}\n\n```{picross.text}```'
     section_name = (
@@ -349,7 +347,6 @@ async def picross_edit_message_text(
     )
 
 
-
 def get_picross_buttons(
     picross: PicrossGame
 ) -> List[List[InlineKeyboardButton]]:
@@ -457,4 +454,3 @@ async def create_event(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context=context,
         **reply_text_kwargs
     )
-
