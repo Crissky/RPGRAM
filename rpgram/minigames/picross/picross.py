@@ -143,7 +143,13 @@ class PicrossGame:
         return symbol
 
     def coor_to_symbol(self, n_row: int, n_col: int) -> str:
-        return self.number_to_symbol(self.board[n_row][n_col])
+        symbol = self.number_to_symbol(self.board[n_row][n_col])
+        if (
+            symbol == '⬛' and
+            (self.check_column(n_col) or self.check_row(n_row))
+        ):
+            symbol = '🟢'
+        return symbol
 
     @property
     def text(self) -> str:
