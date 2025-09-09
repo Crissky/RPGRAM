@@ -80,7 +80,7 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_PUZZLE_END,
         clean_func=escape_for_citation_markdown_v2,
     )
-    reply_text_kwargs = dict(
+    send_message_kwargs = dict(
         chat_id=chat_id,
         text=text,
         parse_mode=ParseMode.MARKDOWN_V2,
@@ -91,7 +91,7 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
         function_caller='JOB_START_WORDGAME()',
         function=context.bot.send_message,
         context=context,
-        **reply_text_kwargs
+        **send_message_kwargs
     )
     message_id = response.message_id
     job_name = get_wordgame_job_name(message_id)
