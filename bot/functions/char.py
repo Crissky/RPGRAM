@@ -465,7 +465,7 @@ def choice_char(
         raise ValueError('Forneça um "player_id_list" ou "chat_id". ')
     elif player_id_list and chat_id:
         raise ValueError(
-            'Forneça apenas um dos dois atributos. '
+            'Forneça apenas um dos atributos ("player_id_list" ou "chat_id"). '
             'Ao menos um dos dois não podem ser None.'
         )
 
