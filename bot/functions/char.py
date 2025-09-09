@@ -495,6 +495,13 @@ def choice_char(
     return char
 
 
+def char_is_alive(user_id: int) -> bool:
+    char_model = CharacterModel()
+    char: BaseCharacter = char_model.get(user_id)
+
+    return isinstance(char, BaseCharacter) and char.is_alive
+
+
 def save_char(
     char: BaseCharacter,
     equips: bool = False,
