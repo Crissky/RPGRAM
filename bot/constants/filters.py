@@ -39,6 +39,6 @@ ALLOW_WORDGAME_FILTER = (
 ALLOW_WORDGAME_BUTTON_FILTER = (
     filters.TEXT &
     ~filters.REPLY &
-    filters.Regex(f'^{WORDGAME_COMMAND}') &
+    filters.Regex(f'{WORDGAME_COMMAND}') &
     BASIC_COMMAND_IN_GROUP_FILTER
 )
