@@ -171,9 +171,15 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''
 
     print('ANSWER_WORDGAME()')
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    message_id = update.effective_message.message_id
     message_text = update.effective_message.text
     reply_message = update.effective_message.reply_to_message
     args = message_text.split()
+    is_correct = None
+    put_message_id_in_delete_list(context=context, message_id=message_id)
+
     if reply_message:
         reply_message_id = reply_message.message_id
     elif len(args) >= 4 and WORDGAME_COMMAND in args:
@@ -190,13 +196,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f'Jogo da mensagem "{reply_message_id}" não foi encontrado.')
         return
 
-    chat_id = update.effective_chat.id
-    user_id = update.effective_user.id
-    message_id = update.effective_message.message_id
     silent = get_attribute_group(chat_id, 'silent')
-    is_correct = None
-    put_message_id_in_delete_list(context=context, message_id=message_id)
-
     try:
         game_response = game.check_word(message_text)
         is_correct = game_response['is_correct']
@@ -260,9 +260,9 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
         section_end=SECTION_HEAD_PUZZLE_END,
         clean_func=escape_for_citation_markdown_v2,
     )
-    inline_query_text = f'{WORDGAME_COMMAND} {reply_message_id} '
     buttons = []
     if not is_correct:
+        inline_query_text = f'{WORDGAME_COMMAND} {reply_message_id} '
         reply_button = InlineKeyboardButton(
             text='Responder',
             switch_inline_query_current_chat=inline_query_text
