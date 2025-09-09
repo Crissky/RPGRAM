@@ -23,7 +23,12 @@ from bot.constants.word_game import (
 )
 from bot.constants.word_game import WORDGAME_COMMAND
 from bot.decorators.job import skip_if_spawn_timeout
-from bot.functions.char import add_xp_group, punishment, bad_move_damage
+from bot.functions.char import (
+    add_xp_group,
+    char_is_alive,
+    punishment,
+    bad_move_damage
+)
 from bot.functions.chat import (
     call_telegram_message_function,
     delete_message_from_context,
@@ -189,14 +194,57 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message_text = args[3]
     else:
         print(f'Sem reply_message e sem 4 args.')
-        return
+        return None
 
     game = get_wordgame_from_dict(context=context, message_id=reply_message_id)
     if not game:
         print(f'Jogo da mensagem "{reply_message_id}" não foi encontrado.')
-        return
+        return None
 
+    is_alive = char_is_alive(user_id=user_id)
     silent = get_attribute_group(chat_id, 'silent')
+    if not is_alive:
+        text = 'Você não pode jogar, pois não está morto.'
+        section_name = f'{SECTION_TEXT_WORDGAME} {game.rarity.value}'.upper()
+        text = create_text_in_box(
+            text=text,
+            section_name=section_name,
+            section_start=SECTION_HEAD_PUZZLE_START,
+            section_end=SECTION_HEAD_PUZZLE_END,
+            clean_func=escape_for_citation_markdown_v2,
+        )
+        inline_query_text = f'{WORDGAME_COMMAND} {reply_message_id} '
+        reply_button = InlineKeyboardButton(
+            text='Responder',
+            switch_inline_query_current_chat=inline_query_text
+        )
+        close_button = get_close_button(user_id=None, right_icon=True)
+        reply_markup = InlineKeyboardMarkup([[reply_button, close_button]])
+        reply_text_kwargs = dict(
+            chat_id=chat_id,
+            text=text,
+            parse_mode=ParseMode.MARKDOWN_V2,
+            disable_notification=silent,
+            reply_to_message_id=reply_message_id,
+            allow_sending_without_reply=True,
+            reply_markup=reply_markup,
+        )
+
+        response = await call_telegram_message_function(
+            function_caller='ANSWER_WORDGAME()',
+            function=context.bot.send_message,
+            context=context,
+            **reply_text_kwargs
+        )
+
+        response_message_id = response.message_id
+        put_message_id_in_delete_list(
+            context=context,
+            message_id=response_message_id,
+        )
+
+        return None
+
     try:
         game_response = game.check_word(message_text)
         is_correct = game_response['is_correct']
