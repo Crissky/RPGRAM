@@ -465,7 +465,7 @@ def choice_char(
         raise ValueError('Forneça um "player_id_list" ou "chat_id". ')
     elif player_id_list and chat_id:
         raise ValueError(
-            'Forneça apenas um dos dois atributos. '
+            'Forneça apenas um dos atributos ("player_id_list" ou "chat_id"). '
             'Ao menos um dos dois não podem ser None.'
         )
 
@@ -493,6 +493,13 @@ def choice_char(
         )
 
     return char
+
+
+def char_is_alive(user_id: int) -> bool:
+    char_model = CharacterModel()
+    char: BaseCharacter = char_model.get(user_id)
+
+    return isinstance(char, BaseCharacter) and char.is_alive
 
 
 def save_char(
