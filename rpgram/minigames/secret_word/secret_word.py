@@ -36,6 +36,7 @@ class SecretWordGame:
             self.word_list = []
             self.check_list = []
             self.correct_letter_set = set()
+            self.incorrect_letter_set = set()
         else:
             raise TypeError(
                 f'Rarity deve ser do tipo RarityEnum ou String. '
@@ -69,6 +70,8 @@ class SecretWordGame:
                 check[i] = '🟨'
                 letters[letters.index(clean_word[i])] = None
                 self.correct_letter_set.add(clean_word[i])
+            else:
+                self.incorrect_letter_set.add(clean_word[i])
 
         check_text = ''.join(check)
         result_secret_word = self.secret_word.upper()
@@ -78,6 +81,7 @@ class SecretWordGame:
         check_list = self.check_list.copy()
         word_list = self.word_list.copy()
         correct_letter_set = self.correct_letter_set.copy()
+        incorrect_letter_set = self.incorrect_letter_set.copy()
         is_correct = check == ['🟩'] * size
         if not is_correct:
             self.num_try += 1
@@ -90,7 +94,9 @@ class SecretWordGame:
             )
         text += 'Letras na palavra: '
         text += ', '.join(sorted(correct_letter_set)).upper()
-        text += ', '.join(sorted(letter_set)).upper()
+        text += '\n'
+        text += 'Letras que NÃO estão na palavra: '
+        text += ', '.join(sorted(incorrect_letter_set)).upper()
         text += '\n'
         result = {
             'check': check,
@@ -101,6 +107,7 @@ class SecretWordGame:
             'word': result_word,
             'word_list': word_list,
             'correct_letter_set': correct_letter_set,
+            'incorrect_letter_set': incorrect_letter_set,
         }
 
         return result
