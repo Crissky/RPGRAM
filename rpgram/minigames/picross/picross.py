@@ -227,6 +227,14 @@ class PicrossGame:
     def total_solution_marks(self) -> int:
         return sum(sum(row) for row in self.solution)
 
+    @property
+    def space_emoji(self) -> str:
+        return '🟦'
+
+    @property
+    def hyphen_emoji(self) -> str:
+        return '➖'
+
     def __iter__(self) -> Iterable[dict]:
         for n_row in range(self.height):
             for n_col in range(self.width):
