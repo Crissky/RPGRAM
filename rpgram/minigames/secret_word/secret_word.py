@@ -71,7 +71,8 @@ class SecretWordGame:
                 letters[letters.index(clean_word[i])] = None
                 self.correct_letter_set.add(clean_word[i])
             else:
-                self.incorrect_letter_set.add(clean_word[i])
+                if clean_word[i] not in self.correct_letter_set:
+                    self.incorrect_letter_set.add(clean_word[i])
 
         check_text = ''.join(check)
         result_secret_word = self.secret_word.upper()
