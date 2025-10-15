@@ -1,0 +1,2 @@
+# COMMANDS
+COMMANDS = ['jogo', 'game']
