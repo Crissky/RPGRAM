@@ -8,6 +8,22 @@ from rpgram.enums.rarity import RarityEnum
 
 
 class PicrossGame:
+
+    EMOJIS_DICT = {
+        0: '0️⃣',
+        1: '1️⃣',
+        2: '2️⃣',
+        3: '3️⃣',
+        4: '4️⃣',
+        5: '5️⃣',
+        6: '6️⃣',
+        7: '7️⃣',
+        8: '8️⃣',
+        9: '9️⃣',
+        '#': '#️⃣',
+        '@': '🔢',
+    }
+
     def __init__(
         self,
         width: int = 5,
@@ -156,35 +172,34 @@ class PicrossGame:
         text_io = StringIO()
         max_col_hints = max(len(hints) for hints in self.col_hints)
         max_row_hints = max(len(hints) for hints in self.row_hints)
-        col_span = (max_row_hints * 2) + 1
 
         # Print column hints
         for i in range(max_col_hints-1, -1, -1):
-            print(' ' * col_span, end='', file=text_io)
             for n_col in range(self.width):
                 if i < len(self.col_hints[n_col]):
-                    print(
-                        f'{self.col_hints[n_col][-(i+1)]:2}',
-                        end='',
-                        file=text_io
-                    )
+                    hint_number = self.col_hints[n_col][-(i+1)]
+                    hint_emoji = self.EMOJIS_DICT.get(hint_number, 'ERROR')
+                    print(hint_emoji, end='', file=text_io)
                 else:
-                    print(' ', end=' ', file=text_io)
+                    print(self.space_emoji, end='', file=text_io)
             print(file=text_io)
 
         # Print horizontal line
-        print((' ' * col_span) + '-' * (self.width * 2), file=text_io)
+        print(self.hyphen_emoji * self.width, file=text_io)
 
         # Print board with row hints
         for n_row in range(self.height):
             # Print row hints
-            hints_str = ' '.join(str(x) for x in self.row_hints[n_row])
-            print(f'{hints_str:>{max_row_hints*2}}', end='|', file=text_io)
+            hints_str = ''.join(
+                self.EMOJIS_DICT[x]
+                for x in self.row_hints[n_row]
+            )
 
             # Print board row
             for n_col in range(self.width):
                 symbol = self.coor_to_symbol(n_row, n_col)
                 print(f'{symbol}', end='', file=text_io)
+            print(f'|{hints_str}', end='', file=text_io)
             print(file=text_io)
 
         text_io.seek(0)
@@ -210,6 +225,14 @@ class PicrossGame:
     @property
     def total_solution_marks(self) -> int:
         return sum(sum(row) for row in self.solution)
+
+    @property
+    def space_emoji(self) -> str:
+        return '🟦'
+
+    @property
+    def hyphen_emoji(self) -> str:
+        return '➖'
 
     def __iter__(self) -> Iterable[dict]:
         for n_row in range(self.height):
@@ -251,3 +274,5 @@ if __name__ == '__main__':
 
     for i in game:
         print(i)
+
+    print(game.text)
