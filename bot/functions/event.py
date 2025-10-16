@@ -91,7 +91,7 @@ def create_event(
             job_callback = job_start_picross
         else:
             raise ValueError(f'"{event_name}" não é um evento válido.')
-        
+
         job_callback_name = job_callback.__name__.upper()
         job_name = f'{job_callback_name}_{ObjectId()}'
         context.job_queue.run_once(
