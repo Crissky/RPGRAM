@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import Callable, Optional
 from bson import ObjectId
 from telegram import Update
 from telegram.ext import ContextTypes, PrefixHandler, CommandHandler
@@ -7,6 +8,8 @@ from bot.constants.game_debug import COMMANDS
 from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.conversations.picross import job_start_picross
+from bot.conversations.puzzle import job_start_puzzle
+from bot.conversations.word_game import job_start_wordgame
 from bot.functions.chat import call_telegram_message_function
 from bot.functions.config import get_attribute_group
 
@@ -42,6 +45,20 @@ async def create_game_event(
         context=context,
         **reply_text_kwargs
     )
+
+
+def select_job_start_game(job_start_name: str) -> Optional[Callable]:
+    job_callback = None
+    event_name = job_start_name.lower()
+
+    if event_name == 'puzzle':
+        job_callback = job_start_puzzle
+    elif event_name == 'wordgame':
+        job_callback = job_start_wordgame
+    elif event_name == 'picross':
+        job_callback = job_start_picross
+
+    return job_callback
 
 
 GAME_DEBUG_HANDLERS = [
