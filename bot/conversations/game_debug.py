@@ -20,27 +20,33 @@ async def create_game_event(
 ):
     chat_id = context._chat_id
     args = context.args
-    job_callback = job_start_picross
-    job_callback_name = job_callback.__name__.upper()
-    job_name = f'{job_callback_name}_{ObjectId()}'
-    context.job_queue.run_once(
-        callback=job_callback,
-        when=timedelta(seconds=5),
-        chat_id=chat_id,
-        name=job_name,
-        job_kwargs=BASE_JOB_KWARGS,
-    )
-
-    text = 'UM PICROSS FOI CRIADO! 5 SEGUNDOS PARA COMEÇAR'
+    job_start_name = args[0] if args else None
+    job_callback = select_job_start_game(job_start_name)
     silent = get_attribute_group(chat_id, 'silent')
     reply_text_kwargs = dict(
         chat_id=chat_id,
-        text=text,
         disable_notification=silent,
         allow_sending_without_reply=True,
     )
+    
+    if job_callback:
+        job_callback_name = job_callback.__name__.upper()
+        job_name = f'{job_callback_name}_{ObjectId()}'
+        text = f'UM {job_callback_name} FOI CRIADO! 5 SEGUNDOS PARA COMEÇAR'
+        reply_text_kwargs['text'] = text.upper()
+        context.job_queue.run_once(
+            callback=job_callback,
+            when=timedelta(seconds=5),
+            chat_id=chat_id,
+            name=job_name,
+            job_kwargs=BASE_JOB_KWARGS,
+        )
+    else:
+        text = f'JOGO NÃO ENCONTRADO. USE UM ARG VÁLIDO ({args}).'
+        reply_text_kwargs['text'] = text
+
     response = await call_telegram_message_function(
-        function_caller='JOB_START_PICROSS()',
+        function_caller='CREATE_GAME_EVENT()',
         function=context.bot.send_message,
         context=context,
         **reply_text_kwargs
