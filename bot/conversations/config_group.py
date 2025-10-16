@@ -86,7 +86,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         group['CHAR_MULTIPLIER_XP'] = '1'
         group_model.save(group)
         text = (
-            f'Configurado para os valores padrões.\n\n'
+            'Configurado para os valores padrões.\n\n'
             f'{group}'
         )
         await reply_text(

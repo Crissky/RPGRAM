@@ -165,7 +165,7 @@ async def call_telegram_message_function(
                 )
                 job_name = (
                     f'{function_caller}->'
-                    f'CALL_TELEGRAM_MESSAGE_FUNCTION->'
+                    'CALL_TELEGRAM_MESSAGE_FUNCTION->'
                     f'JOB_CALL_TELEGRAM-{ObjectId()}'
                 )
                 context.job_queue.run_once(
@@ -197,7 +197,7 @@ async def call_telegram_message_function(
     ):
         complete_function_caller = (
             f'{function_caller}->'
-            f'CALL_TELEGRAM_MESSAGE_FUNCTION()'
+            'CALL_TELEGRAM_MESSAGE_FUNCTION()'
         )
         create_job_delete_message_from_context(
             function_caller=complete_function_caller,
@@ -256,7 +256,7 @@ async def send_private_message(
         if isinstance(chat_id, int):
             print(
                 f'SEND_PRIVATE_MESSAGE(): Usuário {user_id} não pode '
-                f'receber mensagens privadas. '
+                'receber mensagens privadas. '
                 f'Enviando mensagem para o grupo de ID {chat_id}.\n'
                 f'Function Caller: {function_caller}\n'
                 f'Message: {text}\n'
@@ -288,8 +288,8 @@ async def send_private_message(
         else:
             print(
                 f'SEND_PRIVATE_MESSAGE(): Usuário {user_id} não pode '
-                f'receber mensagens privadas e um "chat_id" não foi passado. '
-                f'Ele precisa iniciar uma conversa com o bot.\n'
+                'receber mensagens privadas e um "chat_id" não foi passado. '
+                'Ele precisa iniciar uma conversa com o bot.\n'
                 f'Function Caller: {function_caller}\n'
                 f'(ERROR: {error})'
             )
@@ -392,7 +392,7 @@ async def forward_message(
                 )
             else:
                 print(
-                    f'FORWARD_MESSAGE(): Não foi possível encaminhar a '
+                    'FORWARD_MESSAGE(): Não foi possível encaminhar a '
                     f'mensagem de {message_chat_id} para {user_id}.\n'
                     f'Function Caller: {function_caller}\n'
                     f'message: {type(message)}\n'
@@ -1037,9 +1037,9 @@ def get_hours_delete_message_from_context(
         return value
     else:
         raise TypeError(
-            f'value precisa ser do tipo '
+            'value precisa ser do tipo '
             f'"bool", "int" ou "timedelta" ({type(value)}). '
-            f'Caso seja do tipo "bool", deve ser True. '
+            'Caso seja do tipo "bool", deve ser True. '
             f'Caso seja do tipo "int", deve ser maior que zero ({value}).'
         )
 

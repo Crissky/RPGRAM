@@ -96,7 +96,7 @@ class Player:
             raise ValueError(
                 f'O valor para subtrair "{value}" é maior que o valor total '
                 f'({self.__trocado}) de trocados que o jogador {self.name} '
-                f'possui.'
+                'possui.'
             )
 
         sub_total = self.__trocado - value

@@ -85,7 +85,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                     raise
         else:
             print(
-                f'REPORT DE JOB_ACTIVATE_CONDITIONS SKIPPADO PARA '
+                'REPORT DE JOB_ACTIVATE_CONDITIONS SKIPPADO PARA '
                 f'{player_char.player_name}({player_id}), '
                 f'have_debuff: {have_debuff}, '
                 f'verbose: {verbose}, '

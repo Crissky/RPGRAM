@@ -155,8 +155,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
     else:
         text = (
-            f'Você ainda não criou um personagem!\n'
-            f'Crie o seu personagem com o comando '
+            'Você ainda não criou um personagem!\n'
+            'Crie o seu personagem com o comando '
             f'/{create_char_commands[0]}.'
         )
         await reply_text(

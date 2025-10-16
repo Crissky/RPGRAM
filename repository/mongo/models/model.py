@@ -279,8 +279,8 @@ class Model:
                         else:
                             raise KeyError(
                                 f'O valor da id_key "{mongo_field_name}" '
-                                f'no "dict_obj" é uma lista e um elemento '
-                                f'dessa lista não é um dict com o '
+                                'no "dict_obj" é uma lista e um elemento '
+                                'dessa lista não é um dict com o '
                                 f'campo "_id", str ou ObjectId. item: {item}.'
                             )
                 # esperado que dict_field seja um _id

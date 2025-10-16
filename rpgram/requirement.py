@@ -70,7 +70,7 @@ class Requirement:
 
         if self.classe_name and self.classe_name != char_classe_name:
             errors.append(
-                f'    Classe: '
+                '    Classe: '
                 f'"{self.classe_name.title()}" '
                 f'({char_classe_name.title()}).'
             )
@@ -84,7 +84,7 @@ class Requirement:
                 for classe_name in self.classe_name_list
             )
             errors.append(
-                f'    Classes: '
+                '    Classes: '
                 f'"{classe_names}" '
                 f'({char_classe_name.title()}).'
             )
@@ -98,7 +98,7 @@ class Requirement:
         if errors and to_raise_error is True:
             errors = '\n'.join(errors)
             raise RequirementError(
-                f'O personagem não possui os requisitos:\n'
+                'O personagem não possui os requisitos:\n'
                 f'{errors}'
             )
 
@@ -133,7 +133,7 @@ class Requirement:
         if self.classe_name:
             text += f'  CLASSE: {self.classe_name}\n'
         elif self.classe_name_list:
-            text += f'  CLASSES: ' + ' ou '.join(self.classe_name_list) + '\n'
+            text += '  CLASSES: ' + ' ou '.join(self.classe_name_list) + '\n'
 
         if self.skill_list:
             value = '\n'.join(

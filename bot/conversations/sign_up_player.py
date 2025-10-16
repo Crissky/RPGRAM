@@ -52,7 +52,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if player:
         text = (
             f'Olá {user_name}, Bem-vindo(a) de volta!\n'
-            f'Vocé já possui uma conta.\n\n'
+            'Vocé já possui uma conta.\n\n'
             f'{player}'
         )
         await reply_text(
@@ -110,7 +110,7 @@ async def create_account(
 
     await answer(query=query, text='Cadastrado com sucesso!')
     new_text = (
-        f'Conta criada com sucesso!\n\n'
+        'Conta criada com sucesso!\n\n'
         f'{player}'
     )
     await edit_message_text(

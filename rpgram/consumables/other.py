@@ -279,7 +279,7 @@ class GemstoneConsumable(Consumable):
         rarity = self.rarity.value.lower()
         return (
             f'{self.name} é uma pedra preciosa {rarity} que pode '
-            f'ser vendida para garantir uns '
+            'ser vendida para garantir uns '
             f'{TrocadoEnum.TROCADOS.value}{EmojiEnum.TROCADO.value}.'
         )
 

@@ -63,7 +63,7 @@ class BerserkerCondition(DebuffCondition):
             f'O personagem fica enlouquecido ({self.name}) por '
             f'{self.turn} turnos, aumentando o multiplicador de Força em '
             f'"{self.multiplier_strength:.2f}x" (5% x Nível), mas '
-            f'pode atacar aliados ou a si.'
+            'pode atacar aliados ou a si.'
         )
 
     @property
@@ -95,7 +95,7 @@ class BleedingCondition(DebuffCondition):
         return (
             f'Causa {(self.power * 100):.2f}% do HP '
             f'({self.__power_constant * 100:.2f}% x Nível) '
-            f'como dano a cada turno.'
+            'como dano a cada turno.'
         )
 
     def function(self, target: 'BaseCharacter') -> dict:
@@ -148,7 +148,7 @@ class BurnCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'Reduz o multiplicador de Constituição em '
+            'Reduz o multiplicador de Constituição em '
             f'"{self.multiplier_constitution - 1:.2f}x" (5% x Nível).'
         )
 
@@ -172,7 +172,7 @@ class ConfusionCondition(DebuffCondition):
     def description(self) -> str:
         return (
             f'O personagem fica confuso por {self.turn} turno(s), '
-            f'podendo atacar aliados ou a si.'
+            'podendo atacar aliados ou a si.'
         )
 
 
@@ -204,7 +204,7 @@ class CurseCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'Reduz os multiplicadores de Inteligência e Sabedoria em '
+            'Reduz os multiplicadores de Inteligência e Sabedoria em '
             f'"{self.multiplier_intelligence - 1:.2f}x" e '
             f'"{self.multiplier_wisdom - 1:.2f}x" (5% x Nível).'
         )
@@ -269,10 +269,10 @@ class ExhaustionCondition(DebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'Reduz os multiplicadores de Força e Destreza em '
+            'Reduz os multiplicadores de Força e Destreza em '
             f'"{self.multiplier_strength - 1:.2f}x" e '
             f'"{self.multiplier_dexterity - 1:.2f}x" '
-            f'(5% x Nível).'
+            '(5% x Nível).'
         )
 
     @property
@@ -300,7 +300,7 @@ class FearingCondition(DebuffCondition):
     def description(self) -> str:
         return (
             f'O personagem não pode realizar ações por {self.turn} turnos '
-            f'e tem seu multiplicador de Constituição reduzido em '
+            'e tem seu multiplicador de Constituição reduzido em '
             f'"{self.multiplier_constitution - 1:.2f}x" e de Sabedoria em '
             f'"{self.multiplier_wisdom - 1:.2f}x" (5% x Nível).'
         )

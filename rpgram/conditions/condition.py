@@ -41,7 +41,7 @@ class Condition(StatsBooster):
             frequency = TurnEnum[frequency]
         if not isinstance(frequency, TurnEnum):
             raise TypeError(
-                f'frequency deve ser do tipo TurnEnum. '
+                'frequency deve ser do tipo TurnEnum. '
                 f'Tipo: {type(frequency)}.'
             )
 

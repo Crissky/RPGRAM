@@ -545,7 +545,7 @@ async def punishment(
         if char.is_dead:
             text = (
                 f'{char.player_name} está morto, por isso não vai receber '
-                f'a punição.'
+                'a punição.'
             )
             text = create_text_in_box(
                 text=text,

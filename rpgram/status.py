@@ -38,12 +38,12 @@ class Status:
             for index, condition in enumerate(conditions):
                 if not isinstance(condition, Condition):
                     raise TypeError(
-                        f'Conditions deve ser uma lista de Conditions. '
+                        'Conditions deve ser uma lista de Conditions. '
                         f'Index: {index}, Tipo: {type(condition)}.'
                     )
         else:
             raise TypeError(
-                f'Conditions deve ser uma lista de Conditions. '
+                'Conditions deve ser uma lista de Conditions. '
                 f'Tipo: {type(conditions)}.'
             )
 
@@ -58,7 +58,7 @@ class Status:
     ) -> dict:
         if not isinstance(new_condition, Condition):
             raise TypeError(
-                f'O parâmetro deve ser do tipo Condition. '
+                'O parâmetro deve ser do tipo Condition. '
                 f'Tipo: {type(new_condition)}.'
             )
 
@@ -135,7 +135,7 @@ class Status:
     ) -> dict:
         if not isinstance(condition, (Condition, str, Enum)):
             raise TypeError(
-                f'O parâmetro deve ser do tipo Condition, String ou Enum. '
+                'O parâmetro deve ser do tipo Condition, String ou Enum. '
                 f'Tipo: {type(condition)}.'
             )
 
@@ -353,7 +353,7 @@ class Status:
 
         return {
             'text': (
-                f'Todas as condições foram removidas.\n'
+                'Todas as condições foram removidas.\n'
                 f'Condições: {condition_names}'
             )
         }
@@ -385,7 +385,7 @@ class Status:
                         report['text'] += '\n'
                     report['text'] += (
                         f'Condição *{condition.emoji_name}* '
-                        f'foi removida.'
+                        'foi removida.'
                     )
                 reports.append(report)
 
@@ -509,7 +509,7 @@ class Status:
             text += f'{TEXT_SEPARATOR_2}\n'.join(
                 f'*Nome*: {condition.emoji_name} (Nv: {condition.level})\n'
                 f'*Descrição*: {condition.description}\n'
-                f'*Turno*: '
+                '*Turno*: '
                 f'{condition.turn if condition.turn > -1 else "Eterno"}\n'
                 f'*Nível*: {condition.level}\n'
                 for condition in self.__conditions
@@ -532,7 +532,7 @@ class Status:
         self, verbose: bool = False, markdown: bool = False
     ) -> str:
         text = f'*{STATUS_EMOJI_TEXT}*:'
-        text += '\n' if verbose and self.__conditions else f' '
+        text += '\n' if verbose and self.__conditions else ' '
 
         if not markdown:
             text = remove_bold(text)

@@ -113,7 +113,7 @@ class RobustBlockCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Postura Defensiva* '
+            '*Postura Defensiva* '
             f'que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
@@ -134,7 +134,7 @@ class RobustBlockCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece na *Postura Defensiva*.'
+        return 'permanece na *Postura Defensiva*.'
 
 
 class CrystalArmorCondition(SelfSkillCondition):
@@ -156,7 +156,7 @@ class CrystalArmorCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Armadura forjada com *Cristais Místicos* que reduz a '
+            'Armadura forjada com *Cristais Místicos* que reduz a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em *{self.bonus_physical_defense}* pontos para aumentar a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
@@ -183,7 +183,7 @@ class CrystalArmorCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece envolto pelos *Cristais Místicos*.'
+        return 'permanece envolto pelos *Cristais Místicos*.'
 
 
 class RockArmorCondition(SelfSkillCondition):
@@ -205,7 +205,7 @@ class RockArmorCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Uma pesada *Armadura de Rocha* conjurada com magia que reduz a '
+            'Uma pesada *Armadura de Rocha* conjurada com magia que reduz a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em *{self.bonus_evasion}* pontos para aumentar a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em '
@@ -232,7 +232,7 @@ class RockArmorCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece protegido pela *Armadura de Rocha*.'
+        return 'permanece protegido pela *Armadura de Rocha*.'
 
 
 class LavaSkinCondition(SelfSkillCondition):
@@ -254,7 +254,7 @@ class LavaSkinCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Camada de *Lava Endurecida* que aumenta a '
+            'Camada de *Lava Endurecida* que aumenta a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
             f'*{self.bonus_magical_defense}* pontos e a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em '
@@ -284,7 +284,7 @@ class LavaSkinCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece encoberto pela *Lava Endurecida*.'
+        return 'permanece encoberto pela *Lava Endurecida*.'
 
 
 class MistFormCondition(SelfSkillCondition):
@@ -306,7 +306,7 @@ class MistFormCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Forma Etérea* que aumenta a '
+            '*Forma Etérea* que aumenta a '
             f'*{EVASION_EMOJI_TEXT}* em '
             f'*{self.bonus_evasion}* pontos '
             f'por {self.turn} turno(s).'
@@ -326,7 +326,7 @@ class MistFormCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece na *Forma Etérea*.'
+        return 'permanece na *Forma Etérea*.'
 
 
 class FuriousFuryCondition(SelfSkillCondition):
@@ -430,11 +430,11 @@ class FrenzyCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'O personagem fica em estado de *Frenesi*, aumentando a '
+            'O personagem fica em estado de *Frenesi*, aumentando a '
             f'*{STRENGTH_EMOJI_TEXT}* e a *{DEXTERITY_EMOJI_TEXT}* '
             f'base em {int((self.multiplier_dexterity-1)*100)}% '
             f'(50% + 5% x Nível) por {self.turn} turno(s), '
-            f'mas pode atacar aliados ou a si.'
+            'mas pode atacar aliados ou a si.'
         )
 
     @property
@@ -479,7 +479,7 @@ class RaijusFootstepsCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Estado de *Transe Sobrenatural* que aumenta o '
+            'Estado de *Transe Sobrenatural* que aumenta o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos e a '
             f'*{EVASION_EMOJI_TEXT}* '
@@ -510,7 +510,7 @@ class RaijusFootstepsCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece em *Transe Sobrenatural*.'
+        return 'permanece em *Transe Sobrenatural*.'
 
 
 class FafnirsScalesCondition(SelfSkillCondition):
@@ -532,11 +532,11 @@ class FafnirsScalesCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Pele e Músculos Petrificados* que aumenta a '
+            '*Pele e Músculos Petrificados* que aumenta a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
-            f'aumenta com base na vida perdida, '
+            'aumenta com base na vida perdida, '
             f'por {self.turn} turno(s).'
         )
 
@@ -554,7 +554,7 @@ class FafnirsScalesCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com *Pele e Músculos Petrificados*.'
+        return 'permanece com *Pele e Músculos Petrificados*.'
 
 
 class MysticalProtectionCondition(SelfSkillCondition):
@@ -576,7 +576,7 @@ class MysticalProtectionCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Trama de Energia Mística* que aumenta a '
+            '*Trama de Energia Mística* que aumenta a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_magical_defense} pontos '
             f'(100%{EmojiEnum.WISDOM.value} + 10% x Nível) '
@@ -619,7 +619,7 @@ class MysticalConfluenceCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Concetração de Energias Místicas* que aumenta o '
+            '*Concetração de Energias Místicas* que aumenta o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_magical_attack} pontos '
             f'(100%{EmojiEnum.INTELLIGENCE.value} + 10% x Nível) '
@@ -662,7 +662,7 @@ class MysticalVigorCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Conjunto de Energias Místicas* que aumenta o '
+            '*Conjunto de Energias Místicas* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
             f'(200%{EmojiEnum.INTELLIGENCE.value} + 20% x Nível) e '
@@ -709,7 +709,7 @@ class ShadowStepsCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Move-se pelas *Sombras*, como um *Fastasma*, aumentando o '
+            'Move-se pelas *Sombras*, como um *Fastasma*, aumentando o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos '
             f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
@@ -730,7 +730,7 @@ class ShadowStepsCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece andando pela *Sombras*.'
+        return 'permanece andando pela *Sombras*.'
 
 
 class ChaoticStepsCondition(SelfSkillCondition):
@@ -752,7 +752,7 @@ class ChaoticStepsCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Move-se de maneira errática e imprevisível, aumentando a '
+            'Move-se de maneira errática e imprevisível, aumentando a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em {self.bonus_evasion} pontos '
             f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
@@ -773,7 +773,7 @@ class ChaoticStepsCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com o *Andar Errático*.'
+        return 'permanece com o *Andar Errático*.'
 
 
 class PenitenceCondition(SelfSkillCondition):
@@ -795,11 +795,11 @@ class PenitenceCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Cilício Constringido* que fortalecer a fé, '
-            f'reduzindo o '
+            '*Cilício Constringido* que fortalecer a fé, '
+            'reduzindo o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* em '
             f'{self.bonus_hit_points} pontos '
-            f'e aumentando o '
+            'e aumentando o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em '
             f'{self.bonus_physical_attack} pontos e a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
@@ -833,7 +833,7 @@ class PenitenceCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com o *Cilício Constringido*.'
+        return 'permanece com o *Cilício Constringido*.'
 
 
 class MysticBlockCondition(SelfSkillCondition):
@@ -875,7 +875,7 @@ class MysticBlockCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece envolto em uma *Aura Protetora*.'
+        return 'permanece envolto em uma *Aura Protetora*.'
 
 
 class SharpFaroCondition(SelfSkillCondition):
@@ -897,8 +897,8 @@ class SharpFaroCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Olfato Apurado* que '
-            f'aumenta o '
+            '*Olfato Apurado* que '
+            'aumenta o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos '
             f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
@@ -919,7 +919,7 @@ class SharpFaroCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com o *Olfato Apurado*.'
+        return 'permanece com o *Olfato Apurado*.'
 
 
 class InvestigationCondition(SelfSkillCondition):
@@ -941,11 +941,11 @@ class InvestigationCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Analisa os oponentes para '
-            f'aumentar o '
+            'Analisa os oponentes para '
+            'aumentar o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos '
-            f'e a '
+            'e a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em {self.bonus_evasion} pontos '
             f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
@@ -974,7 +974,7 @@ class InvestigationCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece *Analisando* os oponentes.'
+        return 'permanece *Analisando* os oponentes.'
 
 
 class ChampionInspirationCondition(SelfSkillCondition):
@@ -997,7 +997,7 @@ class ChampionInspirationCondition(SelfSkillCondition):
     def description(self) -> str:
         return (
             f'*{self.trans_name}* que '
-            f'aumenta o '
+            'aumenta o '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_precision_attack} pontos e o '
             f'*{HIT_EMOJI_TEXT}* '
@@ -1134,8 +1134,8 @@ class ArenaDomainCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Estado de Fluxo* '
-            f'que aumenta o '
+            '*Estado de Fluxo* '
+            'que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
@@ -1146,7 +1146,7 @@ class ArenaDomainCondition(SelfSkillCondition):
             f'100%{EmojiEnum.CONSTITUTION.value} + '
             f'100%{EmojiEnum.WISDOM.value} + '
             f'100%{EmojiEnum.CHARACTER.value} '
-            f'+ 10% x Nível) '
+            '+ 10% x Nível) '
             f'por {self.turn} turno(s).'
         )
 
@@ -1211,8 +1211,8 @@ class ImproviseCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Aprimoramento Improvisado* '
-            f'que aumenta o '
+            '*Aprimoramento Improvisado* '
+            'que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
             f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
@@ -1233,7 +1233,7 @@ class ImproviseCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com o *Aprimoramento Improvisado*.'
+        return 'permanece com o *Aprimoramento Improvisado*.'
 
 
 class SniffCondition(SelfSkillCondition):
@@ -1255,8 +1255,8 @@ class SniffCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Fareja*, '
-            f'aumentando o '
+            '*Fareja*, '
+            'aumentando o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos '
             f'(100%{EmojiEnum.DEXTERITY.value} + 10% x Nível) '
@@ -1277,7 +1277,7 @@ class SniffCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece *Farejando*.'
+        return 'permanece *Farejando*.'
 
 
 class AlertCondition(SelfSkillCondition):
@@ -1299,8 +1299,8 @@ class AlertCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Estado de Alerta* que '
-            f'aumenta o '
+            '*Estado de Alerta* que '
+            'aumenta o '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_precision_attack} pontos e o '
             f'*{HIT_EMOJI_TEXT}* '
@@ -1331,7 +1331,7 @@ class AlertCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece em *Estado de Alerta*.'
+        return 'permanece em *Estado de Alerta*.'
 
 
 class HrungnirsSovereigntyCondition(SelfSkillCondition):
@@ -1353,11 +1353,11 @@ class HrungnirsSovereigntyCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Estado de *Fúria Desenfreada* que aumenta o '
+            'Estado de *Fúria Desenfreada* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
-            f'e aumenta o '
+            'e aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
@@ -1408,15 +1408,15 @@ class FenrirsInstinctCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Estado de *Fúria Desenfreada* que aumenta o '
+            'Estado de *Fúria Desenfreada* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
-            f'aumenta o '
+            'aumenta o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
-            f'e aumenta a '
+            'e aumenta a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em {self.bonus_evasion} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
@@ -1475,15 +1475,15 @@ class YmirsResilienceCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Estado de *Fúria Desenfreada* que aumenta o '
+            'Estado de *Fúria Desenfreada* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
             f'em {self.bonus_hit_points} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível), '
-            f'aumenta a '
+            'aumenta a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
-            f'e aumenta a '
+            'e aumenta a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_magical_defense} pontos '
             f'(200%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
@@ -1542,7 +1542,7 @@ class FlamingFuryCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Estado de *Fúria do Senhor da Guerra* que aumenta o '
+            'Estado de *Fúria do Senhor da Guerra* que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
             f'em {self.bonus_physical_attack} pontos '
             f'(300%{EmojiEnum.STRENGTH.value} + 10% x Nível) '
@@ -1585,7 +1585,7 @@ class VigilFlameCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Aura de Fogo* que aumenta a '
+            '*Aura de Fogo* que aumenta a '
             f'{PHYSICAL_DEFENSE_EMOJI_TEXT} '
             f'em {self.bonus_physical_defense} pontos e a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -1616,7 +1616,7 @@ class VigilFlameCondition(SelfSkillCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece envolto em uma *Aura de Fogo*.'
+        return 'permanece envolto em uma *Aura de Fogo*.'
 
 
 class RobysticBlockCondition(SelfSkillCondition):
@@ -1638,7 +1638,7 @@ class RobysticBlockCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Postura Defensiva* carregada por *Forças Místicas* '
+            '*Postura Defensiva* carregada por *Forças Místicas* '
             f'que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos e '
             f'a *{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -1670,8 +1670,8 @@ class RobysticBlockCondition(SelfSkillCondition):
     @property
     def function_text(self) -> str:
         return (
-            f'permanece na *Postura Defensiva* e '
-            f'envolto pelas *Forças Místicas*.'
+            'permanece na *Postura Defensiva* e '
+            'envolto pelas *Forças Místicas*.'
         )
 
 

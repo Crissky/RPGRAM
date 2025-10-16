@@ -99,6 +99,6 @@ if __name__ == '__main__':
             errors.append(damage)
     if errors:
         raise ValueError(
-            f'DamageEnum not in MAGICAL_DAMAGE_TYPES or PHYSICAL_DAMAGE_TYPES:'
+            'DamageEnum not in MAGICAL_DAMAGE_TYPES or PHYSICAL_DAMAGE_TYPES:'
             f'{errors}'
         )

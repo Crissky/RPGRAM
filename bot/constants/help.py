@@ -27,6 +27,6 @@ CALLBACK_SPECIAL_DAMAGE = 'callback_special_damage'
 # TEXTS
 SECTION_TEXT_HELP = 'AJUDA'
 ACCESS_DENIED = (
-    f'⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔\n\n'
+    '⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔\n\n'
     f'Use o comando !{COMMANDS[0]} para acessar 🆘AJUDA.'
 )

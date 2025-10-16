@@ -39,7 +39,7 @@ class SecretWordGame:
             self.incorrect_letter_set = set()
         else:
             raise TypeError(
-                f'Rarity deve ser do tipo RarityEnum ou String. '
+                'Rarity deve ser do tipo RarityEnum ou String. '
                 f'Tipo: {type(rarity)}.'
             )
 
@@ -222,13 +222,13 @@ class SecretWordGame:
 
     def __repr__(self):
         return (
-            f'SecretWordGame('
+            'SecretWordGame('
             f'size={self.size}, '
             f'rarity={self.rarity}, '
             f'num_try={self.num_try}, '
             f'word={self.secret_word}, '
             f'last_game_word_list={self.last_game_word_list}'
-            f')'
+            ')'
         )
 
 

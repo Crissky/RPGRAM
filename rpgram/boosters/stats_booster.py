@@ -217,15 +217,15 @@ class StatsBooster:
                     text += f'`FOR: {self.__secret_bonus_strength:+}'
                     if self.__secret_multiplier_strength:
                         text += (
-                            f'x('
+                            'x('
                             f'{self.__secret_multiplier_strength:+.2f})'
                         )
-                    text += f'`\n'
+                    text += '`\n'
                 if self.__secret_bonus_dexterity:
                     text += f'`DES: {self.__secret_bonus_dexterity:+}'
                     if self.__secret_multiplier_dexterity:
                         text += (
-                            f'x('
+                            'x('
                             f'{self.__secret_multiplier_dexterity:+.2f})'
                         )
                     text += '`\n'
@@ -233,7 +233,7 @@ class StatsBooster:
                     text += f'`CON: {self.__secret_bonus_constitution:+}'
                     if self.__secret_multiplier_constitution:
                         text += (
-                            f'x('
+                            'x('
                             f'{self.__secret_multiplier_constitution:+.2f})'
                         )
                     text += '`\n'
@@ -241,7 +241,7 @@ class StatsBooster:
                     text += f'`INT: {self.__secret_bonus_intelligence:+}'
                     if self.__secret_multiplier_intelligence:
                         text += (
-                            f'x('
+                            'x('
                             f'{self.__secret_multiplier_intelligence:+.2f})'
                         )
                     text += '`\n'
@@ -249,7 +249,7 @@ class StatsBooster:
                     text += f'`SAB: {self.__secret_bonus_wisdom:+}'
                     if self.__secret_multiplier_wisdom:
                         text += (
-                            f'x('
+                            'x('
                             f'{self.__secret_multiplier_wisdom:+.2f})'
                         )
                     text += '`\n'
@@ -257,7 +257,7 @@ class StatsBooster:
                     text += f'`CAR: {self.__secret_bonus_charisma:+}'
                     if self.__secret_multiplier_charisma:
                         text += (
-                            f'x('
+                            'x('
                             f'{self.__secret_multiplier_charisma:+.2f})'
                         )
                     text += '`\n\n'
@@ -273,27 +273,27 @@ class StatsBooster:
                     )
                 if self.__secret_bonus_physical_attack:
                     text += (
-                        f'`ATAQUE FÍSICO: '
+                        '`ATAQUE FÍSICO: '
                         f'{self.__secret_bonus_physical_attack:+}`\n'
                     )
                 if self.__secret_bonus_precision_attack:
                     text += (
-                        f'`ATAQUE DE PRECISÃO: '
+                        '`ATAQUE DE PRECISÃO: '
                         f'{self.__secret_bonus_precision_attack:+}`\n'
                     )
                 if self.__secret_bonus_magical_attack:
                     text += (
-                        f'`ATAQUE MÁGICO: '
+                        '`ATAQUE MÁGICO: '
                         f'{self.__secret_bonus_magical_attack:+}`\n'
                     )
                 if self.__secret_bonus_physical_defense:
                     text += (
-                        f'`DEFESA FÍSICA: '
+                        '`DEFESA FÍSICA: '
                         f'{self.__secret_bonus_physical_defense:+}`\n'
                     )
                 if self.__secret_bonus_magical_defense:
                     text += (
-                        f'`DEFESA MÁGICA: '
+                        '`DEFESA MÁGICA: '
                         f'{self.__secret_bonus_magical_defense:+}`\n'
                     )
                 if self.__secret_bonus_hit:

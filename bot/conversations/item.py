@@ -191,7 +191,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         treasures = context.chat_data[TREASURES_CHAT_DATA_KEY]
     if treasures.get(message_id, None) is not True:
         treasures.pop(message_id, None)
-        query_text = f'Este tesouro já foi descoberto.'
+        query_text = 'Este tesouro já foi descoberto.'
         await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='INSPECT_TREASURE()',
@@ -264,7 +264,7 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not isinstance(item.item, (Consumable, Equipment)):
                 raise TypeError(
                     f'Variável item é do tipo "{type(item.item)}", '
-                    f'mas precisa ser do tipo "Consumable" ou "Equipment".\n'
+                    'mas precisa ser do tipo "Consumable" ou "Equipment".\n'
                     f'Item: {item.item}'
                 )
             await send_drop_message(
@@ -277,8 +277,8 @@ async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         raise TypeError(
             f'Variável items é do tipo "{type(items)}", mas precisar ser '
-            f'do tipo "int" para dano de armadilhas ou do tipo "list" '
-            f'para uma lista de itens que o jogador encontrou no baú.\n'
+            'do tipo "int" para dano de armadilhas ou do tipo "list" '
+            'para uma lista de itens que o jogador encontrou no baú.\n'
             f'Items: {items}.'
         )
 
@@ -349,7 +349,7 @@ async def activated_trap(
         text += 'Seus pontos de vida chegaram a zero.\n'
         text += (
             f'Use o comando /{rest_commands[0]} '
-            f'para descansar e poder continuar a sua jornada.\n\n'
+            'para descansar e poder continuar a sua jornada.\n\n'
         )
     text += f'{damage_report["text"]}\n'
     text += f'{damage_report.get("guard_text")}'

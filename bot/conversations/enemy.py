@@ -359,8 +359,8 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
         remove_ambush_enemy(context=context, enemy_id=enemy_id)
         text = (
             f'Já está tarde e *{enemy_char.full_name_with_level}* precisa ir '
-            f'para casa.\n\n'
-            f'O inimigo fugiu!!!'
+            'para casa.\n\n'
+            'O inimigo fugiu!!!'
         )
         text = create_text_in_box(
             text=text,
@@ -436,8 +436,8 @@ async def job_enemy_attack(context: ContextTypes.DEFAULT_TYPE):
                 remove_ambush_enemy(context=context, enemy_id=enemy_id)
                 bad_request_text = (
                     f'A mensagem original da emboscada, de id *{message_id}*, '
-                    f'não existe mais e o inimigo não está mais no dicionário '
-                    f'de emboscada.'
+                    'não existe mais e o inimigo não está mais no dicionário '
+                    'de emboscada.'
                 )
                 bad_request_text = create_text_in_box(
                     text=bad_request_text,
@@ -585,7 +585,7 @@ async def defend_enemy_attack(
         )
     else:
         text = (
-            f'Defesa falhou, pois '
+            'Defesa falhou, pois '
             f'*{target_char.player_name}* está morto.'
         )
         print(text)
@@ -927,7 +927,7 @@ async def player_attack(
                 base_xp=base_xp,
             )
             new_report_text += f'{target_report_xp["text"]}\n\n'
-            new_report_text += f'O inimigo foi derrotado!!!\n\n'
+            new_report_text += 'O inimigo foi derrotado!!!\n\n'
         # CONTRA-ATAQUE SE O INIMIGO ESQUIVO E O ATACANTE ESTIVER VIVO
         elif is_miss and attacker_char.is_alive:
             section_head = SECTION_HEAD.format('CONTRA-ATAQUE')
@@ -946,9 +946,9 @@ async def player_attack(
 
         if enemy_char.is_alive and target_char and target_char.is_dead:
             new_report_text += (
-                f'\n\n'
+                '\n\n'
                 f'{target_char.full_name} ({target_char.player_name}) '
-                f'está morto, por isso a emboscada será encerrada.'
+                'está morto, por isso a emboscada será encerrada.'
             )
         if attack_report['dead'] or target_char.is_dead:
             reply_markup = REPLY_MARKUP_DEFAULT
@@ -976,7 +976,7 @@ async def player_attack(
     elif enemy_char.is_dead:
         reply_markup = REPLY_MARKUP_DEFAULT
         report_text = (
-            f'O ataque falhou, pois '
+            'O ataque falhou, pois '
             f'*{enemy_char.full_name_with_level}* está morto.'
         )
         print(report_text)
@@ -1016,9 +1016,9 @@ async def player_attack(
             remove_ambush_enemy(context=context, enemy_id=enemy_id)
             bad_request_text = (
                 f'A mensagem original da emboscada, de id *{message_id}*, '
-                f'não existe mais. Por isso, '
+                'não existe mais. Por isso, '
                 f'*{enemy_char.full_name_with_level}* foi retirado do '
-                f'dicionário de emboscada.'
+                'dicionário de emboscada.'
             )
             bad_request_text = create_text_in_box(
                 text=bad_request_text,
@@ -1116,7 +1116,7 @@ async def player_attack_player(
     # NÃO ATACA se o ALVO estiver morto
     elif defender_char.is_dead:
         report_text = (
-            f'O ataque falhou, pois '
+            'O ataque falhou, pois '
             f'*{defender_char.full_name_with_level}* está morto.'
         )
         print(report_text)

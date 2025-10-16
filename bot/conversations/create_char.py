@@ -85,7 +85,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     if not player_model.get(player_id):
         text = (
-            f'Você precisa criar um perfil para criar um personagem.\n'
+            'Você precisa criar um perfil para criar um personagem.\n'
             f'Para isso, utilize o comando /{COMMANDS_SIGN_UP_PLAYER[0]}.'
         )
         await reply_text(
@@ -106,9 +106,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if player_character:
         text = (
             f'Olá {user_name}, vocé já possui uma personagem criado.\n'
-            f'Gostaria de apagá-lo?\n'
-            f'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
-            f'Personagem:\n'
+            'Gostaria de apagá-lo?\n'
+            'APÓS APAGADO, O PERSONAGEM NÃO PODE SER RECUPERADO!!!\n\n'
+            'Personagem:\n'
             f'{player_character}'
         )
         inline_keyboard = [[
@@ -213,7 +213,7 @@ async def confirm_race(
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     new_text = (
         f'Gostaria de criar um personagem com a raça "{race_name}"?\n\n'
-        f'Descrição da Raça:\n'
+        'Descrição da Raça:\n'
         f'{description}\n'
         f'{race}'
     )
@@ -250,7 +250,7 @@ async def select_classe(
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     new_text = (
         f'Ótimo!!! O seu personagem será um "{race_name}".\n\n'
-        f'Agora escolha uma das classes abaixo:'
+        'Agora escolha uma das classes abaixo:'
     )
     await edit_message_text(
         function_caller='CREATE_CHAR.SELECT_CLASSE()',
@@ -293,7 +293,7 @@ async def confirm_classe(
     reply_markup = InlineKeyboardMarkup(inline_keyboard)
     new_text = (
         f'Gostaria de criar um personagem da classe "{classe_name}"?\n\n'
-        f'Descrição da Raça:\n'
+        'Descrição da Raça:\n'
         f'{description}\n'
         f'{classe}'
     )
@@ -324,9 +324,9 @@ async def select_name(
 
     new_text = (
         f'Ótimo!!! O seu personagem será um "{classe_name}".\n\n'
-        f'Agora escreva o nome do seu personagem.\n'
-        f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-        f'apenas letras, números, espaços, e traço "-".'
+        'Agora escreva o nome do seu personagem.\n'
+        'O nome de personagem deve conter entre 3 e 50 caracteres, '
+        'apenas letras, números, espaços, e traço "-".'
     )
     await edit_message_text(
         function_caller='CREATE_CHAR.SELECT_NAME()',
@@ -353,8 +353,8 @@ async def create_char(
     if not is_valid_char_name(character_name):
         text = (
             f'"{character_name}" não é um nome de personagem válido.\n\n'
-            f'O nome de personagem deve conter entre 3 e 50 caracteres, '
-            f'apenas letras, números, espaços, e traço "-".'
+            'O nome de personagem deve conter entre 3 e 50 caracteres, '
+            'apenas letras, números, espaços, e traço "-".'
         )
         await reply_text(
             function_caller='CREATE_CHAR.CREATE_CHAR()',
@@ -393,7 +393,7 @@ async def create_char(
 
     if player_character:
         text = (
-            f'Personagem Criado com sucesso!!!\n\n'
+            'Personagem Criado com sucesso!!!\n\n'
             f'{player_character}'
         )
         await reply_text(
