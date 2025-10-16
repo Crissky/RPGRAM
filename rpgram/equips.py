@@ -110,7 +110,7 @@ class Equips:
             errors = "\n".join(errors)
             raise EquipmentRequirementError(
                 f'Não foi possível equipar o item "{new_equipment.name}".\n'
-                f'O personagem não possui os requisitos:\n'
+                'O personagem não possui os requisitos:\n'
                 f'{errors}'
             )
 
@@ -121,8 +121,8 @@ class Equips:
         elif equip_type == EquipmentEnum.ONE_HAND:
             if not isinstance(hand, str):
                 raise ValueError(
-                    f'É necessário indicar em qual das mãos o '
-                    f'item será equipado usando "LEFT" ou "RIGHT".\n'
+                    'É necessário indicar em qual das mãos o '
+                    'item será equipado usando "LEFT" ou "RIGHT".\n'
                     f'Valor de hand, "{hand}", não é uma string.'
                 )
 
@@ -142,7 +142,7 @@ class Equips:
             else:
                 raise ValueError(
                     f'Valor de hand, "{hand}", não é uma string válida. '
-                    f'Use LEFT ou RIGHT para a mão ESQUERDA ou DIREITA.'
+                    'Use LEFT ou RIGHT para a mão ESQUERDA ou DIREITA.'
                 )
 
         elif equip_type == EquipmentEnum.TWO_HANDS:
@@ -318,7 +318,7 @@ class Equips:
         ))
         if special_damage_text:
             special_damage_text = f'*Dano Especial*:\n{special_damage_text}\n'
-        special_damage_text += f'\n'
+        special_damage_text += '\n'
 
         return special_damage_text
 
@@ -330,19 +330,19 @@ class Equips:
             f'*Peso*: {self.equipments_weight:.2f}{EmojiEnum.WEIGHT.value}\n'
             f'{special_damages}'
 
-            f'*Capacete*: '
+            '*Capacete*: '
             f'{self.helmet.name_power_level if self.helmet else ""}\n'
-            f'*Mão Esq.*: '
+            '*Mão Esq.*: '
             f'{self.left_hand.name_power_level if self.left_hand else ""}\n'
-            f'*Mão Dir.*: '
+            '*Mão Dir.*: '
             f'{self.right_hand.name_power_level if self.right_hand else ""}\n'
-            f'*Armadura*: '
+            '*Armadura*: '
             f'{self.armor.name_power_level if self.armor else ""}\n'
-            f'*Botas*: '
+            '*Botas*: '
             f'{self.boots.name_power_level if self.boots else ""}\n'
-            f'*Anel*: '
+            '*Anel*: '
             f'{self.ring.name_power_level if self.ring else ""}\n'
-            f'*Amuleto*: '
+            '*Amuleto*: '
             f'{self.amulet.name_power_level if self.amulet else ""}\n\n'
         )
 
@@ -706,7 +706,7 @@ if __name__ == '__main__':
         )
     else:
         raise Exception(
-            f'Deveria receber dois equipamentos (shield e dagger), '
+            'Deveria receber dois equipamentos (shield e dagger), '
             f'mas rebebeu {result}.'
         )
     result = equips.equip(sword)

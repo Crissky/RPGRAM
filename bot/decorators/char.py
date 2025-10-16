@@ -174,7 +174,7 @@ def need_have_char(callback):
             return await callback(update, context)
         else:
             text = (
-                f'Você ainda não criou um personagem!\n'
+                'Você ainda não criou um personagem!\n'
                 f'Crie o seu personagem com o comando /{COMMANDS[0]}.'
             )
             await reply_text(
@@ -230,8 +230,8 @@ def skip_if_dead_char(callback):
                 char_hit_points = f'HP: {char.combat_stats.show_hit_points}'
 
             text = (
-                f'Essa ação não pode ser realizada, pois seu personagem '
-                f'está morto.\n\n'
+                'Essa ação não pode ser realizada, pois seu personagem '
+                'está morto.\n\n'
                 f'{char_hit_points}'
             )
 
@@ -276,8 +276,8 @@ def skip_if_dead_char_silent(callback):
                 char_hit_points = f'HP: {char.combat_stats.show_hit_points}'
 
             text = (
-                f'Essa ação não pode ser realizada, pois seu personagem '
-                f'está morto.\n\n'
+                'Essa ação não pode ser realizada, pois seu personagem '
+                'está morto.\n\n'
                 f'{char_hit_points}'
             )
 
@@ -308,8 +308,8 @@ def skip_if_immobilized(callback):
             query = update.callback_query
             conditions = status['condition_args']
             text = (
-                f'Essa ação não pode ser realizada, pois seu personagem '
-                f'está '
+                'Essa ação não pode ser realizada, pois seu personagem '
+                'está '
             )
             conditions_names = [
                 DEBUFF_FULL_NAMES[condition['name'].upper()]
@@ -354,8 +354,8 @@ def skip_if_silenced(callback):
             query = update.callback_query
             conditions = status['condition_args']
             text = (
-                f'Essa ação não pode ser realizada, pois seu personagem '
-                f'está '
+                'Essa ação não pode ser realizada, pois seu personagem '
+                'está '
             )
             conditions_names = [
                 DEBUFF_FULL_NAMES[condition['name'].upper()]

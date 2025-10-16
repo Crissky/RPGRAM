@@ -59,8 +59,8 @@ class SpecialDamageSkillCondition(BuffCondition):
                 damage_types[index] = damage_type
             else:
                 raise ValueError(
-                    f'damage_types precisa ser uma string ou DamageEnum ou '
-                    f'uma lista de strings ou DamageEnums. '
+                    'damage_types precisa ser uma string ou DamageEnum ou '
+                    'uma lista de strings ou DamageEnums. '
                     f'"{type(damage_type)}" não é válido.'
                 )
 
@@ -164,7 +164,7 @@ class SDCrystallineInfusionCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'Infusão de *Cristais Místicos* que '
+            'Infusão de *Cristais Místicos* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -193,7 +193,7 @@ class SDWildFireCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -222,7 +222,7 @@ class SDWildLightningCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -251,7 +251,7 @@ class SDWildWindCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -280,7 +280,7 @@ class SDWildRockCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -309,7 +309,7 @@ class SDWildGroundCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -338,7 +338,7 @@ class SDWildAcidCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -367,7 +367,7 @@ class SDWildPoisonCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Selvagem* que '
+            '*Infusão Selvagem* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -1012,7 +1012,7 @@ class SDVigilArmsCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Aura de Fogo* que '
+            '*Aura de Fogo* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -1041,7 +1041,7 @@ class SDMantilledArmsCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Mantilha de Fogo* que '
+            '*Mantilha de Fogo* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 
@@ -1070,7 +1070,7 @@ class SDIgneousHeartCondition(SpecialDamageSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Vontade Flamejante* que '
+            '*Vontade Flamejante* que '
             f'concede dano de {self.damage_help_emoji_text}.'
         )
 

@@ -52,14 +52,14 @@ class NPCharacter(BaseCharacter):
             alignment = AlignmentEnum[alignment]
         elif not isinstance(alignment, AlignmentEnum):
             raise ValueError(
-                f'alignment precisa ser uma string ou AlignmentEnum.'
+                'alignment precisa ser uma string ou AlignmentEnum.'
             )
 
         if isinstance(stars, str):
             stars = EnemyStarsEnum[stars]
         elif not isinstance(stars, EnemyStarsEnum):
             raise ValueError(
-                f'stars precisa ser uma string ou EnemyStarsEnum.'
+                'stars precisa ser uma string ou EnemyStarsEnum.'
             )
 
         points_multiplier = POINTS_MULTIPLIER[stars.name]

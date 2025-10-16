@@ -113,7 +113,7 @@ class WarBannerCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Marca do Senhor da Guerra* que aumenta o '
+            '*Marca do Senhor da Guerra* que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
@@ -159,7 +159,7 @@ class IdunnsAppleCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Beção de Idunn* que aumenta o '
+            '*Beção de Idunn* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -202,7 +202,7 @@ class KratossWrathCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Ira do Deus Grego da Guerra* que aumenta o '
+            '*Ira do Deus Grego da Guerra* que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -238,7 +238,7 @@ class UllrsFocusCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Benção de Ullr* que aumenta o '
+            '*Benção de Ullr* que aumenta o '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -274,7 +274,7 @@ class HecatesFlamesCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Fagulhas da Tocha de Hécate* que aumentam o '
+            '*Fagulhas da Tocha de Hécate* que aumentam o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -310,7 +310,7 @@ class OgunsCloakCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Fragmentos de Metal dos Deuses* que aumentam a '
+            '*Fragmentos de Metal dos Deuses* que aumentam a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -346,7 +346,7 @@ class IsissVeilCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Névoa Resplandecente de Energia Divina* que aumenta a '
+            '*Névoa Resplandecente de Energia Divina* que aumenta a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -382,7 +382,7 @@ class AnansisTrickeryCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Teia de Ilusões* que aumenta o '
+            '*Teia de Ilusões* que aumenta o '
             f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
         )
@@ -423,8 +423,8 @@ class VidarsBraveryCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Bravura Indomita* de um antigo *Guerreiro Silencioso* '
-            f'que aumenta o '
+            '*Bravura Indomita* de um antigo *Guerreiro Silencioso* '
+            'que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
@@ -471,7 +471,7 @@ class ArtemissArrowCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Flecha Lunar* da *Deusa da Lua* que aumenta o '
+            '*Flecha Lunar* da *Deusa da Lua* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
             f'*{HIT_EMOJI_TEXT}* e a '
@@ -523,7 +523,7 @@ class CeridwensMagicPotionCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Poção Mágica* da *Deusa Feiticeira* que aumenta o '
+            '*Poção Mágica* da *Deusa Feiticeira* que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -571,7 +571,7 @@ class GraceOfThePantheonCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'Fragmento da *{self.enum_name.value}* '
-            f'que aumenta o '
+            'que aumenta o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
@@ -651,7 +651,7 @@ class RangerFalconCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que o vigia, '
-            f'aumentando o '
+            'aumentando o '
             f'*{HIT_EMOJI_TEXT}* e a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -694,7 +694,7 @@ class BodyguardBearCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que o protege, '
-            f'aumentando o '
+            'aumentando o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* e a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -737,7 +737,7 @@ class HunterTigerCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que persegue ao seu lado, '
-            f'aumentando o '
+            'aumentando o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -780,7 +780,7 @@ class WatcherOwlCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que observa o plano místico, '
-            f'aumentando o '
+            'aumentando o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e o '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -1281,7 +1281,7 @@ class AgileFeetCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* amplifica a capacidade de se esquivar '
-            f'dos ataques dos opoenentes, aumentando a '
+            'dos ataques dos opoenentes, aumentando a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em {self.bonus_evasion} pontos.'
         )
@@ -1319,7 +1319,7 @@ class EagleEyeCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* amplifica a capacidade de analisar '
-            f'o combate, aumentando o '
+            'o combate, aumentando o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.bonus_hit} pontos.'
         )
@@ -1359,7 +1359,7 @@ class WarSongCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que inspira o alvo, '
-            f'aumentando o '
+            'aumentando o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
@@ -1414,7 +1414,7 @@ class CrescentMoonBalladCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que inspira o alvo, '
-            f'aumentando o '
+            'aumentando o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
@@ -1464,7 +1464,7 @@ class TricksterTrovaCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que inspira o alvo, '
-            f'aumentando o '
+            'aumentando o '
             f'*{HIT_EMOJI_TEXT}*, '
             f'*{EVASION_EMOJI_TEXT}* e o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
@@ -1513,7 +1513,7 @@ class LeadershipCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Inspiração do Líder* que aumenta o '
+            '*Inspiração do Líder* que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e '
@@ -1864,7 +1864,7 @@ class FighterPandinusCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que o guarda, '
-            f'aumentando o '
+            'aumentando o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -1907,7 +1907,7 @@ class ProtectorTurtleCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que o defende, '
-            f'aumentando a '
+            'aumentando a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -1950,7 +1950,7 @@ class ClairvoyantWolfCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que fareja o futuro ao seu lado, '
-            f'aumentando o '
+            'aumentando o '
             f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
             f'*{EVASION_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -1993,7 +1993,7 @@ class LookouterYetiCondition(TargetSkillBuffCondition):
     def description(self) -> str:
         return (
             f'*{self.enum_name.value}* que observa o plano místico, '
-            f'aumentando o '
+            'aumentando o '
             f'*{HIT_POINT_FULL_EMOJI_TEXT}* e o '
             f'*{HIT_EMOJI_TEXT}* '
             f'em {self.power} pontos.'
@@ -2035,7 +2035,7 @@ class MartialBannerCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Sinal do Senhor da Guerra* que aumenta o '
+            '*Sinal do Senhor da Guerra* que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -2071,7 +2071,7 @@ class WarCornuCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Bravura do Senhor da Guerra* que aumenta o '
+            '*Bravura do Senhor da Guerra* que aumenta o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -2114,7 +2114,7 @@ class BlueEquilibriumCondition(TargetSkillBuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Chamas Azuis* que aumentam a '
+            '*Chamas Azuis* que aumentam a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -2135,7 +2135,7 @@ class BlueEquilibriumCondition(TargetSkillBuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece *Fervoroso*.'
+        return 'permanece *Fervoroso*.'
 
 
 class TargetBuffs:

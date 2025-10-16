@@ -37,6 +37,7 @@ from bot.conversations import (
     RESET_CHAR_HANDLERS,
     WORDGAME_HANDLERS,
     PICROSS_HANDLERS,
+    GAME_DEBUG_HANDLERS,
 )
 from bot.conversations import SEASON_JOBS_DEFINITIONS
 from bot.conversations.event import job_add_event_points
@@ -56,6 +57,7 @@ from function.date_time import (
 
 TELEGRAM_TOKEN = config("TELEGRAM_TOKEN")
 MY_GROUP_ID = config('MY_GROUP_ID', cast=int)
+ENVIRONMENT = config('ENVIRONMENT', default='PRODUCTION')
 (
     DEFAULT_GROUP,
     CHAT_XP_GROUP,
@@ -100,6 +102,9 @@ def main() -> None:
     application.add_handlers(SKILL_TREE_HANDLERS)
     application.add_handlers(WORDGAME_HANDLERS)
     application.add_handlers(PICROSS_HANDLERS)
+
+    if ENVIRONMENT == 'DEV':
+        application.add_handlers(GAME_DEBUG_HANDLERS)
 
     # Add Jobs
     application.job_queue.run_repeating(
@@ -166,7 +171,7 @@ def main() -> None:
     print('APP().DATETIME.NOW()', datetime.now())
     for job_definition in SEASON_JOBS_DEFINITIONS:
         job_name = job_definition['callback'].__name__.upper()
-        
+
         raw_when = job_definition['when']
         print(f'SEASON JOB BRAZIL TIME: {job_name} - "{raw_when}"')
 

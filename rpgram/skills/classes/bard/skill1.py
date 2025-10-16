@@ -27,10 +27,10 @@ if TYPE_CHECKING:
 class DissonanceSkill(BaseSkill):
     NAME = BardSkillEnum.DISSONANCE.value
     DESCRIPTION = (
-        f'Manipula o som para causar *Caos* e *Desorientação* no alvo, '
-        f'canalizando sua energia musical para criar uma cacofonia '
-        f'ensurdecedora que atinge a mente do adversário, '
-        f'causando dano '
+        'Manipula o som para causar *Caos* e *Desorientação* no alvo, '
+        'canalizando sua energia musical para criar uma cacofonia '
+        'ensurdecedora que atinge a mente do adversário, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.SONIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível) e no '
         f'*{CHARISMA_EMOJI_TEXT}* (500% + 5% x Rank x Nível).'
@@ -71,10 +71,10 @@ class DissonanceSkill(BaseSkill):
 class ResonanceSkill(BaseSkill):
     NAME = BardSkillEnum.RESONANCE.value
     DESCRIPTION = (
-        f'Canaliza a energia musical para criar ondas sonoras poderosas '
-        f'e destrutivas por meio de uma vibração intensa que ressoa '
-        f'no corpo do inimigo, '
-        f'causando dano '
+        'Canaliza a energia musical para criar ondas sonoras poderosas '
+        'e destrutivas por meio de uma vibração intensa que ressoa '
+        'no corpo do inimigo, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.SONIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível) e no '
         f'*{CHARISMA_EMOJI_TEXT}* (750% + 5% x Rank x Nível).'
@@ -117,9 +117,9 @@ class ResonanceSkill(BaseSkill):
 class FatalChordSkill(BaseSkill):
     NAME = BardSkillEnum.FATAL_CHORD.value
     DESCRIPTION = (
-        f'Toca uma *Melodia Sombria* e intensa, '
-        f'canalizando uma energia de morte em uma única nota que '
-        f'causa dano de '
+        'Toca uma *Melodia Sombria* e intensa, '
+        'canalizando uma energia de morte em uma única nota que '
+        'causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}*, '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* e '
         f'*{get_damage_emoji_text(DamageEnum.SONIC)}* com base no '
@@ -181,11 +181,11 @@ class FatalChordSkill(BaseSkill):
 class SupersonicSkill(BaseSkill):
     NAME = BardSkillEnum.SUPERSONIC.value
     DESCRIPTION = (
-        f'Canaliza a energia sonora para criar uma *Onda Supersônica*, '
-        f'ao tocar uma nota aguda e intensa, '
-        f'disparando uma sinuosidade de som concentrado que viaja em '
-        f'alta velocidade por todo o campo de batalha e '
-        f'causa dano '
+        'Canaliza a energia sonora para criar uma *Onda Supersônica*, '
+        'ao tocar uma nota aguda e intensa, '
+        'disparando uma sinuosidade de som concentrado que viaja em '
+        'alta velocidade por todo o campo de batalha e '
+        'causa dano '
         f'*{get_damage_emoji_text(DamageEnum.SONIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (50% + 2.5% x Rank x Nível) e no '
         f'*{CHARISMA_EMOJI_TEXT}* (500% + 2.5% x Rank x Nível).'

@@ -516,15 +516,15 @@ class BaseCharacter:
                 )
                 if is_immobilized:
                     report['text'] += (
-                        f'*Vulnerável*: Personagem não pôde se defender, pois '
+                        '*Vulnerável*: Personagem não pôde se defender, pois '
                         f'está com {immobilized_names}.'
-                        f'\n'
+                        '\n'
                     )
                 elif attacker_skill.is_true_damage:
                     report['text'] += (
-                        f'*Subjugado*: Personagem não pôde se defender, pois '
-                        f'o ataque é indefensável.'
-                        f'\n'
+                        '*Subjugado*: Personagem não pôde se defender, pois '
+                        'o ataque é indefensável.'
+                        '\n'
                     )
                 else:
                     report['text'] += (
@@ -542,7 +542,7 @@ class BaseCharacter:
 
             # Put the Hit Paragraph of the report['text']
             if hit_text:
-                report['text'] += f'\n\n'
+                report['text'] += '\n\n'
                 report['text'] += ALERT_SECTION_HEAD.format(f'*{attack_name}*')
                 report['text'] += f'\n{hit_text}'
 
@@ -790,12 +790,12 @@ class BaseCharacter:
 
     def __repr__(self) -> str:
         return (
-            f'Personagem('
+            'Personagem('
             f'Nome: {self.name} '
             f'({self.classe.name}/{self.race.name}), '
             f'LV: {self.bs.level}, '
             f'HP: {self.cs.show_hp}'
-            f')'
+            ')'
         )
 
     def to_dict(self):

@@ -40,12 +40,12 @@ class SpecialDamage:
             damage_type = DamageEnum[damage_type]
         if not isinstance(damage_type, DamageEnum):
             raise ValueError(
-                f'damage_type precisa ser uma string ou DamageEnum. '
+                'damage_type precisa ser uma string ou DamageEnum. '
                 f'"{type(damage_type)}" não é válido.'
             )
         if status_multiplier < 1:
             raise ValueError(
-                f'status_multiplier precisa ser maior que zero. '
+                'status_multiplier precisa ser maior que zero. '
                 f'"{status_multiplier}".'
             )
 

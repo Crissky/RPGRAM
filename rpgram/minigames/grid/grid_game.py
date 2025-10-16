@@ -49,7 +49,7 @@ class GridGame:
             n_cols = choice(n_range)
         elif rarity is not None:
             raise TypeError(
-                f'Rarity deve ser do tipo RarityEnum ou None. '
+                'Rarity deve ser do tipo RarityEnum ou None. '
                 f'Tipo: {type(rarity)}.'
             )
 

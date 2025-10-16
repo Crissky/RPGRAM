@@ -103,7 +103,7 @@ class ShatterCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'Fragmentos de *Cristais Místicos* que diminuem a '
+            'Fragmentos de *Cristais Místicos* que diminuem a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
@@ -129,7 +129,7 @@ class ShatterCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece cravejado de fragmentos de *Cristais Místicos*.'
+        return 'permanece cravejado de fragmentos de *Cristais Místicos*.'
 
 
 class MuddyCondition(TargetSkillDebuffCondition):
@@ -151,7 +151,7 @@ class MuddyCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'Lama pegajosa que diminui a '
+            'Lama pegajosa que diminui a '
             f'*{EVASION_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -172,7 +172,7 @@ class MuddyCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece *Enlameado*.'
+        return 'permanece *Enlameado*.'
 
 
 class AchillesHeelCondition(TargetSkillDebuffCondition):
@@ -194,7 +194,7 @@ class AchillesHeelCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Ferida* que debilita a mobilidade, diminuindo a '
+            '*Ferida* que debilita a mobilidade, diminuindo a '
             f'*{EVASION_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -215,7 +215,7 @@ class AchillesHeelCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com uma *Ferida Debilitante*.'
+        return 'permanece com uma *Ferida Debilitante*.'
 
 
 class DisarmorCondition(TargetSkillDebuffCondition):
@@ -237,7 +237,7 @@ class DisarmorCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Proteções Fragilizadas* que diminuem a '
+            '*Proteções Fragilizadas* que diminuem a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -258,7 +258,7 @@ class DisarmorCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com as *Proteções Fragilizadas*.'
+        return 'permanece com as *Proteções Fragilizadas*.'
 
 
 class KoteUchiCondition(TargetSkillDebuffCondition):
@@ -280,7 +280,7 @@ class KoteUchiCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Braços Desestabilizados* que diminuem o '
+            '*Braços Desestabilizados* que diminuem o '
             f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em {self.power} pontos e o '
             f'*{PRECISION_ATTACK_EMOJI_TEXT}* em {self.power} pontos.'
         )
@@ -306,7 +306,7 @@ class KoteUchiCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com os *Braços Desestabilizados*.'
+        return 'permanece com os *Braços Desestabilizados*.'
 
 
 class DoUchiCondition(TargetSkillDebuffCondition):
@@ -328,7 +328,7 @@ class DoUchiCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Tronco Desestabilizado* que diminue a '
+            '*Tronco Desestabilizado* que diminue a '
             f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -349,7 +349,7 @@ class DoUchiCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece com o *Tronco Desestabilizado*.'
+        return 'permanece com o *Tronco Desestabilizado*.'
 
 
 class RedEquilibriumCondition(TargetSkillDebuffCondition):
@@ -371,7 +371,7 @@ class RedEquilibriumCondition(TargetSkillDebuffCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Chamas Vermelhas* que diminuem a '
+            '*Chamas Vermelhas* que diminuem a '
             f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em {self.power} pontos.'
         )
 
@@ -392,7 +392,7 @@ class RedEquilibriumCondition(TargetSkillDebuffCondition):
 
     @property
     def function_text(self) -> str:
-        return f'permanece *Afogueado*.'
+        return 'permanece *Afogueado*.'
 
 
 class TargetDebuffs:

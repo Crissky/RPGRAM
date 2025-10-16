@@ -323,7 +323,7 @@ def get_material_level(equip_type: str, material: str) -> int:
         material_bonus = ACCESSORY_MATERIALS[material]
     else:
         raise ValueError(
-            f'Não foi possível definir o Nível do Material, pois o '
+            'Não foi possível definir o Nível do Material, pois o '
             f'tipo de equipamento "{equip_type}" não foi encontrado.'
         )
 

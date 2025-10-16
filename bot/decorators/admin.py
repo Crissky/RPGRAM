@@ -30,7 +30,7 @@ def need_are_admin(callback):
             print('\tAUTORIZADO')
             return await callback(update, context)
         else:
-            text = f'Esse comando só pode ser usado por administradores.'
+            text = 'Esse comando só pode ser usado por administradores.'
             await reply_text(
                 function_caller='ADMIN.START()',
                 text=text,

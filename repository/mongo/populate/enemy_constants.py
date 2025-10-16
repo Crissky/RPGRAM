@@ -1813,7 +1813,7 @@ if __name__ == '__main__':
             if equipment_name not in ALL_EQUIPMENTS_DEFINITIONS.keys():
                 raise ValueError(
                     f'Equipment "{equipment_name}" not found in '
-                    f'"ALL_EQUIPMENTS_DEFINITIONS"'
+                    '"ALL_EQUIPMENTS_DEFINITIONS"'
                 )
 
     def check_if_exists_in_classe_equipment():
@@ -1829,7 +1829,7 @@ if __name__ == '__main__':
             if equipment_name not in all_equipments:
                 raise ValueError(
                     f'Definition "{equipment_name}" not found in '
-                    f'"Archetype Equipments".'
+                    '"Archetype Equipments".'
                 )
         print('CHECK_IF_EXISTS_IN_CLASSE_EQUIPMENT: OK!!!')
 
@@ -1842,7 +1842,7 @@ if __name__ == '__main__':
             if classe_name not in ARCHETYPES_EQUIPMENTS.keys():
                 raise ValueError(
                     f'Classe "{classe_name}" from Database not found in '
-                    f'"ARCHETYPES_EQUIPMENTS".'
+                    '"ARCHETYPES_EQUIPMENTS".'
                 )
         print('CHECK_CLASSES_LOCAL: OK!!!')
 
@@ -1855,7 +1855,7 @@ if __name__ == '__main__':
             if classe_name not in classe_names:
                 raise ValueError(
                     f'Classe "{classe_name}" from "ARCHETYPES_EQUIPMENTS" '
-                    f'not found in Database.'
+                    'not found in Database.'
                 )
         print('CHECK_CLASSES_DATABASE: OK!!!')
 
@@ -1868,7 +1868,7 @@ if __name__ == '__main__':
             if race_name not in RACES_ALIGNMENT.keys():
                 raise ValueError(
                     f'Raça "{race_name}" from Database not found in '
-                    f'"RACES_ALIGNMENT".'
+                    '"RACES_ALIGNMENT".'
                 )
         print('CHECK_RACES_LOCAL: OK!!!')
 
@@ -1881,7 +1881,7 @@ if __name__ == '__main__':
             if race_name not in race_names:
                 raise ValueError(
                     f'Raça "{race_name}" from "RACES_ALIGNMENT" '
-                    f'not found in Database.'
+                    'not found in Database.'
                 )
         print('CHECK_RACES_DATABASE: OK!!!')
 

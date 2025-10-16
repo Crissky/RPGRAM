@@ -79,7 +79,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         player['SILENT'] = 'false'
         player_model.save(player)
         text = (
-            f'Configurado para os valores padrões.\n\n'
+            'Configurado para os valores padrões.\n\n'
             f'{player}'
         )
         await reply_text(

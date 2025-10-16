@@ -105,14 +105,14 @@ class BaseSkill:
                 attribute = BaseStatsEnum[attribute]
             if not isinstance(attribute, BaseStatsEnum):
                 raise TypeError(
-                    f'Os atributos (chaves) de base_stats_multiplier '
-                    f'precisam ser uma string ou BaseStatsEnum.'
+                    'Os atributos (chaves) de base_stats_multiplier '
+                    'precisam ser uma string ou BaseStatsEnum.'
                     f'"{type(attribute)}" não é válido.'
                 )
             if not isinstance(value, float):
                 raise TypeError(
-                    f'Os multiplicadores (valores) de base_stats_multiplier '
-                    f'precisam ser um float.'
+                    'Os multiplicadores (valores) de base_stats_multiplier '
+                    'precisam ser um float.'
                     f'"{type(value)}" não é válido.'
                 )
             self.base_stats_multiplier[attribute] = round(value, 2)
@@ -123,14 +123,14 @@ class BaseSkill:
                 attribute = CombatStatsEnum[attribute]
             if not isinstance(attribute, CombatStatsEnum):
                 raise TypeError(
-                    f'Os atributos (chaves) de combat_stats_multiplier '
-                    f'precisam ser uma string ou CombatStatsEnum.'
+                    'Os atributos (chaves) de combat_stats_multiplier '
+                    'precisam ser uma string ou CombatStatsEnum.'
                     f'"{type(attribute)}" não é válido.'
                 )
             if not isinstance(value, float):
                 raise TypeError(
-                    f'Os multiplicadores (valores) de combat_stats_multiplier '
-                    f'precisam ser um float.'
+                    'Os multiplicadores (valores) de combat_stats_multiplier '
+                    'precisam ser um float.'
                     f'"{type(value)}" não é válido.'
                 )
             self.combat_stats_multiplier[attribute] = value
@@ -139,7 +139,7 @@ class BaseSkill:
             target_type = TargetEnum[target_type]
         if not isinstance(target_type, TargetEnum):
             raise TypeError(
-                f'target_type precisa ser uma string ou TargetEnum.'
+                'target_type precisa ser uma string ou TargetEnum.'
                 f'"{type(target_type)}" não é válido.'
             )
 
@@ -147,7 +147,7 @@ class BaseSkill:
             skill_type = SkillTypeEnum[skill_type]
         if not isinstance(skill_type, SkillTypeEnum):
             raise TypeError(
-                f'skill_type precisa ser uma string ou SkillTypeEnum.'
+                'skill_type precisa ser uma string ou SkillTypeEnum.'
                 f'"{type(skill_type)}" não é válido.'
             )
 
@@ -155,7 +155,7 @@ class BaseSkill:
             skill_defense = SkillDefenseEnum[skill_defense]
         if not isinstance(skill_defense, SkillDefenseEnum):
             raise TypeError(
-                f'skill_defense precisa ser uma string ou SkillDefenseEnum.'
+                'skill_defense precisa ser uma string ou SkillDefenseEnum.'
                 f'"{type(skill_defense)}" não é válido.'
             )
 
@@ -172,7 +172,7 @@ class BaseSkill:
             requirements = {}
         if not isinstance(requirements, (dict, Requirement)):
             raise TypeError(
-                f'requirements precisa ser um dicionário.'
+                'requirements precisa ser um dicionário.'
                 f'"{type(requirements)}" não é válido.'
             )
         elif isinstance(requirements, dict):
@@ -188,8 +188,8 @@ class BaseSkill:
                     damage_types[index] = damage_type
                 else:
                     raise ValueError(
-                        f'damage_types precisa ser uma string ou DamageEnum ou '
-                        f'uma lista de strings ou DamageEnums. '
+                        'damage_types precisa ser uma string ou DamageEnum ou '
+                        'uma lista de strings ou DamageEnums. '
                         f'"{type(damage_type)}" não é válido.'
                     )
 
@@ -199,7 +199,7 @@ class BaseSkill:
         for condition in condition_list:
             if not isinstance(condition, Condition):
                 raise TypeError(
-                    f'condition_list precisa ser uma lista de Condition.'
+                    'condition_list precisa ser uma lista de Condition.'
                     f'"{type(condition)}" não é válido.'
                 )
 
@@ -622,7 +622,7 @@ class BaseSkill:
         return (
             f'{self.__class__.__name__}{self.level}('
             f'Power: {self.power}{special_damage_text}'
-            f')'
+            ')'
         )
 
     def __str__(self) -> str:

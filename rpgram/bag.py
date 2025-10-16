@@ -155,7 +155,7 @@ class Bag:
                 f'{item.quantity:02}x *{item.name}*'
                 for item in self.__items
             ])
-        text += f'\n'
+        text += '\n'
 
         if not markdown:
             text = remove_bold(text)

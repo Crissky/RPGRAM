@@ -33,7 +33,7 @@ def skip_if_spawn_timeout(callback):
         else:
             print(
                 f'Evento {job_name} foi skipado, '
-                f'pois está fora do horário de spawn do grupo.\n'
+                'pois está fora do horário de spawn do grupo.\n'
             )
     return wrapper
 
@@ -58,7 +58,7 @@ def skip_command_if_spawn_timeout(callback):
             return await callback(update, context)
         else:
             print(
-                f'Evento chat_xp.start foi skipado, '
-                f'pois está fora do horário de spawn do grupo.\n'
+                'Evento chat_xp.start foi skipado, '
+                'pois está fora do horário de spawn do grupo.\n'
             )
     return wrapper

@@ -213,7 +213,7 @@ class Equipment(StatsBooster):
             equip_type = EquipmentEnum[equip_type]
         elif not isinstance(equip_type, EquipmentEnum):
             raise ValueError(
-                f'equip_type precisa ser uma string ou EquipmentEnum.'
+                'equip_type precisa ser uma string ou EquipmentEnum.'
             )
 
         if isinstance(damage_types, (DamageEnum, str)):
@@ -226,8 +226,8 @@ class Equipment(StatsBooster):
                     damage_types[index] = damage_type
                 else:
                     raise ValueError(
-                        f'damage_types precisa ser uma string ou DamageEnum ou '
-                        f'uma lista de strings ou DamageEnums. '
+                        'damage_types precisa ser uma string ou DamageEnum ou '
+                        'uma lista de strings ou DamageEnums. '
                         f'"{type(damage_type)}" não é válido.'
                     )
 
@@ -237,7 +237,7 @@ class Equipment(StatsBooster):
             rarity = RarityEnum[rarity]
         if not isinstance(rarity, RarityEnum):
             raise ValueError(
-                f'rarity precisa ser uma string ou RarityEnum. '
+                'rarity precisa ser uma string ou RarityEnum. '
                 f'({type(rarity)})'
             )
 
@@ -265,7 +265,7 @@ class Equipment(StatsBooster):
                     other_equipment.equip_type not in equips_hand
                 ):
                     raise TypeError(
-                        f'Equipamentos são de tipos diferentes.'
+                        'Equipamentos são de tipos diferentes.'
                         f'("{self.equip_type.name}" e '
                         f'"{other_equipment.equip_type.name}")'
                     )
@@ -497,7 +497,7 @@ class Equipment(StatsBooster):
         ))
         if special_damage_text:
             special_damage_text = f'*Dano Especial*:\n{special_damage_text}\n'
-        special_damage_text += f'\n'
+        special_damage_text += '\n'
 
         return special_damage_text
 

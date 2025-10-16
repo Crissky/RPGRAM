@@ -170,8 +170,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif not classe_name:
         reply_markup = None
         markdown_skill_tree_sheet = (
-            f'Você ainda não criou um personagem!\n'
-            f'Crie o seu personagem com o comando '
+            'Você ainda não criou um personagem!\n'
+            'Crie o seu personagem com o comando '
             f'/{create_char_commands[0]}.'
         )
 
@@ -359,18 +359,18 @@ async def list_learn_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             markdown_skill_tree_sheet = (
                 f'*Parabéns, {char.player_name}!*\n\n'
-                f'Você alcançou um marco incrível: dominou todas as '
-                f'habilidades disponíveis! '
-                f'Sua dedicação e talento são inspiradores. '
-                f'Embora a jornada de aprendizado tenha chegado ao fim, '
-                f'a aventura continua. '
-                f'Você agora possui um arsenal completo de habilidades para '
-                f'explorar o mundo de maneiras ilimitadas.'
+                'Você alcançou um marco incrível: dominou todas as '
+                'habilidades disponíveis! '
+                'Sua dedicação e talento são inspiradores. '
+                'Embora a jornada de aprendizado tenha chegado ao fim, '
+                'a aventura continua. '
+                'Você agora possui um arsenal completo de habilidades para '
+                'explorar o mundo de maneiras ilimitadas.'
             )
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a lista de habilidades da '
+            'Não foi possível carregar a lista de habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
@@ -421,7 +421,7 @@ async def list_classes(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     markdown_skill_tree_sheet = (
         f'*{user_name}*, '
-        f'escolha a *classe* que deseja listar os *Caminhos de Habilidades*.'
+        'escolha a *classe* que deseja listar os *Caminhos de Habilidades*.'
     )
 
     classe_buttons = get_classe_buttons(
@@ -482,7 +482,7 @@ async def list_ways(update: Update, context: ContextTypes.DEFAULT_TYPE):
     markdown_skill_tree_sheet = (
         f'*{user_name}*, '
         f'escolha um caminho da classe *{classe_name}* '
-        f'que deseja listar as habilidades.\n\n'
+        'que deseja listar as habilidades.\n\n'
     )
     markdown_skill_tree_sheet += '\n\n'.join([
         f'*{name.upper()}*: {description}'
@@ -545,7 +545,7 @@ async def check_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a habilidades da '
+            'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
@@ -620,7 +620,7 @@ async def check_upgrade_skill(
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a habilidades da '
+            'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
@@ -692,7 +692,7 @@ async def check_learn_skill(
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a habilidades da '
+            'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
@@ -821,7 +821,7 @@ async def action_use_skill(
         target_type = skill.target_type
         skill_type = skill.skill_type
         markdown_skill_tree_sheet = (
-            f'ESTA FUNÇÃO AINDA NÃO FOI IMPLEMENTADA!!!\n\n'
+            'ESTA FUNÇÃO AINDA NÃO FOI IMPLEMENTADA!!!\n\n'
             f'{skill}'
         )
 
@@ -908,15 +908,15 @@ async def action_use_skill(
                 markdown_skill_tree_sheet = (
                     f'*{char.player_name}* não pôde usar a habilidade '
                     f'*{skill.name}*, pois o(s) alvo(s) não estão '
-                    f' mais disponíveis.\n'
-                    f'Tente novamente mais tarde.'
+                    ' mais disponíveis.\n'
+                    'Tente novamente mais tarde.'
                 )
 
         markdown_skill_tree_sheet += f'\n\n*{char.current_action_points_text}*'
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a habilidades da '
+            'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
@@ -1000,7 +1000,7 @@ async def action_upgrade_skill(
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a habilidades da '
+            'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
@@ -1058,14 +1058,14 @@ async def action_learn_skill(
     except ValueError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível carregar a habilidades da '
+            'Não foi possível carregar a habilidades da '
             f'classe {char.classe_name}.\n\n'
             f'Error: {e}'
         )
     except RequirementError as e:
         print(e)
         markdown_skill_tree_sheet = (
-            f'Não foi possível aprender a habilidade '
+            'Não foi possível aprender a habilidade '
             f'"{skill_class.NAME.upper()}".\n\n'
             f'{e}'
         )
@@ -1286,7 +1286,7 @@ def get_use_action_buttons(
     if target_type == TargetEnum.SELF:
         return [[
             InlineKeyboardButton(
-                text=ACTION_USE_SKILL_BUTTON_TEXT + f' em si',
+                text=ACTION_USE_SKILL_BUTTON_TEXT + ' em si',
                 callback_data=callback_data_to_string({
                     command: index,
                     'user_id': user_id,

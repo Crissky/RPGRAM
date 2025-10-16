@@ -27,3 +27,4 @@ from bot.conversations.reset_char import RESET_CHAR_HANDLERS
 from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
 from bot.conversations.word_game import WORDGAME_HANDLERS
 from bot.conversations.picross import PICROSS_HANDLERS
+from bot.conversations.game_debug import GAME_DEBUG_HANDLERS

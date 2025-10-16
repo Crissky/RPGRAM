@@ -44,38 +44,38 @@ INTRO_SKILL_TEXT = (
 HELP_SKILL_TEXT = (
     f'{EmojiEnum.TARGET_TYPE.value}*TIPO DE ALVO*:\n'
     f'{TargetEmojiEnum.SELF.value}*Si Mesmo*: '
-    f'Direciona o efeito da habilidade para quem a usa.\n'
+    'Direciona o efeito da habilidade para quem a usa.\n'
     f'{TargetEmojiEnum.SINGLE.value}*Único*: '
-    f'Seleciona um único alvo para receber o efeito da habilidade.\n'
+    'Seleciona um único alvo para receber o efeito da habilidade.\n'
     f'{TargetEmojiEnum.TEAM.value}*Equipe*: '
-    f'Aplica o efeito da habilidade a todos os '
-    f'membros da uma equipe, aliada ou inimiga.\n'
+    'Aplica o efeito da habilidade a todos os '
+    'membros da uma equipe, aliada ou inimiga.\n'
     f'{TargetEmojiEnum.ALL.value}*Todes*: '
-    f'Alcança todos os personagens em campo, '
-    f'tanto aliados quanto inimigos.\n\n'
+    'Alcança todos os personagens em campo, '
+    'tanto aliados quanto inimigos.\n\n'
 
     f'{EmojiEnum.SKILL_TYPE.value}*TIPO DE HABILIDADE*:\n'
     f'{SkillTypeEmojiEnum.ATTACK.value}*Ofensiva*: '
-    f'Habilidade de ataque focada em causar dano e '
-    f'efeitos diversos ao oponente.\n'
+    'Habilidade de ataque focada em causar dano e '
+    'efeitos diversos ao oponente.\n'
     # f'{SkillTypeEmojiEnum.DEFENSE.value}*Defensivo*: '
     f'{SkillTypeEmojiEnum.HEALING.value}*Cura*: '
     f'Habilidade que cura {HIT_POINT_FULL_EMOJI_TEXT}.\n'
     f'{SkillTypeEmojiEnum.BUFF.value}:*Fortalecimento* '
-    f'Habilidade que concede melhorias para o personagem.\n'
+    'Habilidade que concede melhorias para o personagem.\n'
     f'{SkillTypeEmojiEnum.BARRIER.value}*Barreira*: '
-    f'Habilidade que protege o personagem, concedendo '
+    'Habilidade que protege o personagem, concedendo '
     f'{BARRIER_POINT_FULL_EMOJI_TEXT} para mitigar dano.\n\n'
 
     f'{EmojiEnum.SKILL_DEFENSE.value}*TIPO DE DANO*:\n'
     f'{SkillDefenseEmojiEnum.PHYSICAL.value}*Físico*: '
-    f'Dano físico que é diminuido de acordo com a '
+    'Dano físico que é diminuido de acordo com a '
     f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*.\n'
     f'{SkillDefenseEmojiEnum.MAGICAL.value}*Mágico*: '
-    f'Dano Mágico que é diminuido de acordo com a '
+    'Dano Mágico que é diminuido de acordo com a '
     f'*{MAGICAL_DEFENSE_EMOJI_TEXT}*.\n'
     f'{SkillDefenseEmojiEnum.TRUE.value}*Verdadeiro*: '
-    f'Dano que não é afetado por nenhuma das defesas.'
+    'Dano que não é afetado por nenhuma das defesas.'
 )
 
 # PATTERNS
@@ -108,6 +108,6 @@ PATTERN_SKILL_BACK_LIST_CLASSE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"
 
 # ALERT BUTTON TEXTS
 ACCESS_DENIED = (
-    f'⛔VOCÊ NÃO TEM ACESSO A ESSA ÁRVORE DE HABILIDADES⛔\n\n'
+    '⛔VOCÊ NÃO TEM ACESSO A ESSA ÁRVORE DE HABILIDADES⛔\n\n'
     f'Use o comando !{COMMANDS[0]} para acessar a SUA ÁRVORE.'
 )

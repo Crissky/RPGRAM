@@ -184,7 +184,7 @@ class GuardianShieldCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Escudo Familiar Protetivo* que resguarda com uma barreira '
+            '*Escudo Familiar Protetivo* que resguarda com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -210,7 +210,7 @@ class AegisShadowCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Sombra do Escudo Lendário* que protege com uma barreira '
+            '*Sombra do Escudo Lendário* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -240,7 +240,7 @@ class PrismaticShieldCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Círculo Cintilante* que protege com uma barreira '
+            '*Círculo Cintilante* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -270,7 +270,7 @@ class ChaosWeaverCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Véu Caótico* que protege com uma barreira '
+            '*Véu Caótico* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -296,7 +296,7 @@ class ProtectiveAuraCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Aura Protetiva* que salvaguarda com uma barreira '
+            '*Aura Protetiva* que salvaguarda com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -322,7 +322,7 @@ class AjaxShieldCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Lendária Proteção* que protege com uma barreira '
+            '*Lendária Proteção* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -352,7 +352,7 @@ class PiskieWindbagCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Barreira de Ar Turbilhonante* que protege com '
+            '*Barreira de Ar Turbilhonante* que protege com '
             f'*{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -378,7 +378,7 @@ class MagicShieldCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Manto Mágico* que protege com uma barreira '
+            '*Manto Mágico* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -408,10 +408,10 @@ class HealingRefugeCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Refúgio Curativo* que engendrar com uma barreira '
+            '*Refúgio Curativo* que engendrar com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
             f'e cura *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
-            f'a cada turno.'
+            'a cada turno.'
         )
 
     @property
@@ -456,10 +456,10 @@ class ProtectiveInfusionCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Infusão Protetiva* que protege com uma barreira '
+            '*Infusão Protetiva* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT} '
-            f'e cura até (Nível) níveis de condições aleatórias '
-            f'a cada turno.'
+            'e cura até (Nível) níveis de condições aleatórias '
+            'a cada turno.'
         )
 
     @property
@@ -501,12 +501,12 @@ class BeatifyingAegisCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Proteção Sacra* que escuda com uma barreira '
+            '*Proteção Sacra* que escuda com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}, '
             f'recupera *{self.healing_points}* {HIT_POINT_FULL_EMOJI_TEXT} '
-            f'a cada turno '
-            f'e cura até (5 * Nível) níveis de condições aleatórias '
-            f'a cada turno.'
+            'a cada turno '
+            'e cura até (5 * Nível) níveis de condições aleatórias '
+            'a cada turno.'
         )
 
     @property
@@ -564,8 +564,8 @@ class RobysticShieldCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Robusto Escudo Familiar Protetivo* '
-            f'carregado de *Forças Místicas* que resguarda com uma barreira '
+            '*Robusto Escudo Familiar Protetivo* '
+            'carregado de *Forças Místicas* que resguarda com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -595,9 +595,9 @@ class FlameMantillaCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'Escudo gerado pelo calor da liberação da '
-            f'*Energia Vigílica* atritando com o ar, '
-            f'criando uma *Mantilha de Chamas* que protege com uma barreira '
+            'Escudo gerado pelo calor da liberação da '
+            '*Energia Vigílica* atritando com o ar, '
+            'criando uma *Mantilha de Chamas* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 
@@ -627,8 +627,8 @@ class RoyalShieldCondition(BarrierCondition):
     @property
     def description(self) -> str:
         return (
-            f'Quebra o *Selo Real* para convocar um escudo gerado '
-            f'pela liberação do *Poder Régio* que protege com uma barreira '
+            'Quebra o *Selo Real* para convocar um escudo gerado '
+            'pela liberação do *Poder Régio* que protege com uma barreira '
             f'de *{self.barrier_points}* {BARRIER_POINT_FULL_EMOJI_TEXT}.'
         )
 

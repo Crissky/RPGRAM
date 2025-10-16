@@ -605,7 +605,7 @@ def condition_factory(
     ):
         print(
             f'{condition_name} ({condition_class.__name__}) '
-            f'não está na lista de condições que têm o atributo power.'
+            'não está na lista de condições que têm o atributo power.'
         )
 
     return condition_class(**kwargs)

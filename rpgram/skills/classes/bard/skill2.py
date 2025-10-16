@@ -35,8 +35,8 @@ if TYPE_CHECKING:
 class WarSongSkill(BaseSkill):
     NAME = BardSkillEnum.WAR_SONG.value
     DESCRIPTION = (
-        f'Entoa uma *Antiga Canção de Batalha* para inspirar um companheiro, '
-        f'aumentando o '
+        'Entoa uma *Antiga Canção de Batalha* para inspirar um companheiro, '
+        'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
@@ -82,7 +82,7 @@ class WarSongSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se inspira pela *{self.name}*, '
-                f'que aumenta o '
+                'que aumenta o '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {self_condition.bonus_physical_attack} pontos, '
                 f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
@@ -102,9 +102,9 @@ class WarSongSkill(BaseSkill):
                 [report["text"] for report in report_list]
             )
             report['text'] += (
-                f'\n\n'
+                '\n\n'
                 f'*{target_name}* também é inspirado pela *{self.name}*, '
-                f'que aumenta o '
+                'que aumenta o '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos, '
                 f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
@@ -125,8 +125,8 @@ class WarSongSkill(BaseSkill):
 class CrescentMoonBalladSkill(BaseSkill):
     NAME = BardSkillEnum.CRESCENT_MOON_BALLAD.value
     DESCRIPTION = (
-        f'Solfea uma *Balada Élfica* que inspira um companheiro, '
-        f'aumentando o '
+        'Solfea uma *Balada Élfica* que inspira um companheiro, '
+        'aumentando o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* de ambos com base no '
@@ -171,7 +171,7 @@ class CrescentMoonBalladSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se inspira pela *{self.name}*, '
-                f'que aumenta o '
+                'que aumenta o '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {self_condition.bonus_magical_attack} pontos, '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -189,9 +189,9 @@ class CrescentMoonBalladSkill(BaseSkill):
                 [report["text"] for report in report_list]
             )
             report['text'] += (
-                f'\n\n'
+                '\n\n'
                 f'*{target_name}* também é inspirado pela *{self.name}*, '
-                f'que aumenta o '
+                'que aumenta o '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_attack} pontos, '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -210,9 +210,9 @@ class CrescentMoonBalladSkill(BaseSkill):
 class TricksterTrovaSkill(BaseSkill):
     NAME = BardSkillEnum.TRICKSTER_TROVA.value
     DESCRIPTION = (
-        f'Surrura, como que contando um secredo, uma *Trova dos Halfling* '
-        f'que inspira um companheiro, '
-        f'aumentando o '
+        'Surrura, como que contando um secredo, uma *Trova dos Halfling* '
+        'que inspira um companheiro, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}*, '
         f'*{EVASION_EMOJI_TEXT}* e o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* de ambos com base no '
@@ -257,7 +257,7 @@ class TricksterTrovaSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se inspira pela *{self.name}*, '
-                f'que aumenta o '
+                'que aumenta o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {self_condition.bonus_hit} pontos, '
                 f'*{EVASION_EMOJI_TEXT}* '
@@ -275,9 +275,9 @@ class TricksterTrovaSkill(BaseSkill):
                 [report["text"] for report in report_list]
             )
             report['text'] += (
-                f'\n\n'
+                '\n\n'
                 f'*{target_name}* também é inspirado pela *{self.name}*, '
-                f'que aumenta o '
+                'que aumenta o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {self_condition.bonus_hit} pontos, '
                 f'*{EVASION_EMOJI_TEXT}* '
@@ -296,8 +296,8 @@ class TricksterTrovaSkill(BaseSkill):
 class InvigoratingSongSkill(BaseSkill):
     NAME = BardSkillEnum.INVIGORATING_SONG.value
     DESCRIPTION = (
-        f'Executa uma melodia suave e calmante que transmite energia vital '
-        f'ao companheiro ferido, '
+        'Executa uma melodia suave e calmante que transmite energia vital '
+        'ao companheiro ferido, '
         f'curando o *{HIT_POINT_FULL_EMOJI_TEXT}* de ambos com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível) e no '
         f'*{CHARISMA_EMOJI_TEXT}* (750% + 10% x Rank x Nível).'
@@ -351,7 +351,7 @@ class InvigoratingSongSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é rodeado por uma melodia suave e '
-                f'calmante que cura suas feridas.\n'
+                'calmante que cura suas feridas.\n'
                 f'*{report_text}*({dice.text}).'
             )
         }
@@ -359,9 +359,9 @@ class InvigoratingSongSkill(BaseSkill):
             cure_report = char.cs.cure_hit_points(power)
             report_text = cure_report["text"]
             report['text'] += (
-                f'\n\n'
+                '\n\n'
                 f'*{target_name}* é rodeado por uma melodia suave e '
-                f'calmante que cura suas feridas.\n'
+                'calmante que cura suas feridas.\n'
                 f'*{report_text}*({dice.text}).'
             )
         elif char.is_dead:

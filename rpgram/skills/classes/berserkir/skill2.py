@@ -37,11 +37,11 @@ if TYPE_CHECKING:
 class HrungnirsSovereigntySkill(BaseSkill):
     NAME = BerserkirSkillEnum.HRUNGNIRÇÇÇS_SOVEREIGNTY.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
-        f'espírito do *Gigante Hrungnir*, '
-        f'recebendo a condição '
+        'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
+        'espírito do *Gigante Hrungnir*, '
+        'recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível) e '
+        'com nível igual ao (Rank x Nível) e '
         f'aumentando o *{HIT_POINT_FULL_EMOJI_TEXT}* e o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
@@ -89,8 +89,8 @@ class HrungnirsSovereigntySkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é envolto pelo espírito do '
-                f'*Gigante Hrungnir*, entrando em um estado '
-                f'de *Fúria Desenfreada* que aumenta o seu '
+                '*Gigante Hrungnir*, entrando em um estado '
+                'de *Fúria Desenfreada* que aumenta o seu '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit_points} pontos e o '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
@@ -107,11 +107,11 @@ class HrungnirsSovereigntySkill(BaseSkill):
 class FenrirsInstinctSkill(BaseSkill):
     NAME = BerserkirSkillEnum.FENRIRÇÇÇS_INSTINCT.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
-        f'espírito do lobo gigante, *Fenrir*, '
-        f'recebendo a condição '
+        'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
+        'espírito do lobo gigante, *Fenrir*, '
+        'recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível) e '
+        'com nível igual ao (Rank x Nível) e '
         f'aumentando o *{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'o *{HIT_EMOJI_TEXT}* e a '
         f'*{EVASION_EMOJI_TEXT}* com base na '
@@ -160,8 +160,8 @@ class FenrirsInstinctSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é envolto pelo espírito de '
-                f'*Fenrir*, o lobo gigante, entrando em um estado '
-                f'de *Fúria Desenfreada* que aumenta o seu '
+                '*Fenrir*, o lobo gigante, entrando em um estado '
+                'de *Fúria Desenfreada* que aumenta o seu '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit_points} pontos, '
                 f'o *{HIT_EMOJI_TEXT}* '
@@ -180,11 +180,11 @@ class FenrirsInstinctSkill(BaseSkill):
 class YmirsResilienceSkill(BaseSkill):
     NAME = BerserkirSkillEnum.YMIRÇÇÇS_RESILIENCE.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
-        f'espírito do gigante de gelo, *Ymir*, '
-        f'recebendo a condição '
+        'Entra em um estado de *Fúria Desenfreada* ao ser envolto pelo '
+        'espírito do gigante de gelo, *Ymir*, '
+        'recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível) e '
+        'com nível igual ao (Rank x Nível) e '
         f'aumentando o *{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -233,8 +233,8 @@ class YmirsResilienceSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é envolto pelo espírito de '
-                f'*Ymir*, o gigante de gelo, entrando em um estado '
-                f'de *Fúria Desenfreada* que aumenta o seu '
+                '*Ymir*, o gigante de gelo, entrando em um estado '
+                'de *Fúria Desenfreada* que aumenta o seu '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit_points} pontos, '
                 f'o *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
@@ -253,13 +253,13 @@ class YmirsResilienceSkill(BaseSkill):
 class StoneStrikeSkill(BaseSkill):
     NAME = BerserkirSkillEnum.STONE_STRIKE.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Incontrolável*, '
-        f'contraindo os músculos dos braços até transformá-los em pedra, '
-        f'recebendo a condição '
+        'Entra em um estado de *Fúria Incontrolável*, '
+        'contraindo os músculos dos braços até transformá-los em pedra, '
+        'recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível) '
-        f'e desferindo um ataque com força bruta, '
-        f'que causa dano de '
+        'com nível igual ao (Rank x Nível) '
+        'e desferindo um ataque com força bruta, '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (250% + 5% x Rank x Nível).'
@@ -309,14 +309,14 @@ class StoneStrikeSkill(BaseSkill):
 class FrostBiteSkill(BaseSkill):
     NAME = BerserkirSkillEnum.FROST_BITE.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Incontrolável*, '
-        f'envolvendo os braços em uma energia gélida a ponto de congelá-los '
-        f'em forma de estacas, '
-        f'recebendo a condição '
+        'Entra em um estado de *Fúria Incontrolável*, '
+        'envolvendo os braços em uma energia gélida a ponto de congelá-los '
+        'em forma de estacas, '
+        'recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível) '
-        f'e desferindo um ataque rápido, '
-        f'que causa dano de '
+        'com nível igual ao (Rank x Nível) '
+        'e desferindo um ataque rápido, '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (225% + 5% x Rank x Nível). '
@@ -371,13 +371,13 @@ class FrostBiteSkill(BaseSkill):
 class AncientFurySkill(BaseSkill):
     NAME = BerserkirSkillEnum.ANCIENT_FURY.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Incontrolável*, '
-        f'fervendo o sangue, transformando seus braços em brasas ardentes, '
-        f'recebendo a condição '
+        'Entra em um estado de *Fúria Incontrolável*, '
+        'fervendo o sangue, transformando seus braços em brasas ardentes, '
+        'recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível) '
-        f'e desferindo uma saraivada de golpes imprecisos, '
-        f'que causa dano de '
+        'com nível igual ao (Rank x Nível) '
+        'e desferindo uma saraivada de golpes imprecisos, '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '

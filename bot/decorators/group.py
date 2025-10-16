@@ -21,8 +21,8 @@ def need_singup_group(callback):
             return await callback(update, context)
         else:
             text = (
-                f'É necessário cadastrar o grupo '
-                f'para utilizar esse comando.\n'
+                'É necessário cadastrar o grupo '
+                'para utilizar esse comando.\n'
                 f'Cadastre o grupo com o comando /{COMMANDS[0]}.'
             )
             await reply_text(
@@ -43,7 +43,7 @@ def allow_only_in_group(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print('@NEED_USE_IN_GROUP')
         if update.effective_chat.type == ChatType.PRIVATE:
-            text = f'Esse comando só pode ser usado em um grupo.'
+            text = 'Esse comando só pode ser usado em um grupo.'
             await reply_text(
                 function_caller='GROUP.ALLOW_ONLY_IN_GROUP()',
                 text=text,

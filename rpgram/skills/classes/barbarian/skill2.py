@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 class FuriousFurySkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_FURY.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria* que o leva a agir *Furiosamente*, '
+        'Entra em um estado de *Fúria* que o leva a agir *Furiosamente*, '
         f'aumentando o *{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -72,7 +72,7 @@ class FuriousFurySkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* perde a concentração e entra em um estado '
-                f'de *Fúria*, aumentando o seu '
+                'de *Fúria*, aumentando o seu '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -86,8 +86,8 @@ class FuriousFurySkill(BaseSkill):
 class FuriousInstinctSkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_INSTINCT.value
     DESCRIPTION = (
-        f'Desperta *Furiosamente* um *Instinto* que amplifica seus sentidos e '
-        f'afia suas habilidades de combate, aumentando a '
+        'Desperta *Furiosamente* um *Instinto* que amplifica seus sentidos e '
+        'afia suas habilidades de combate, aumentando a '
         f'*{DEXTERITY_EMOJI_TEXT}* (20% + 5% x Rank x Nível).'
     )
     RANK = 2
@@ -130,8 +130,8 @@ class FuriousInstinctSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* desperta um instinto que amplifica seus '
-                f'sentidos e afia suas habilidades de combate, '
-                f'aumentando o multiplicador de '
+                'sentidos e afia suas habilidades de combate, '
+                'aumentando o multiplicador de '
                 f'*{DEXTERITY_EMOJI_TEXT}* '
                 f'em {condition.multiplier_dexterity} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -145,12 +145,12 @@ class FuriousInstinctSkill(BaseSkill):
 class FrenzySkill(BaseSkill):
     NAME = BarbarianSkillEnum.FRENZY.value
     DESCRIPTION = (
-        f'Entra em um estado de *Frenesi* que o leva a agir '
-        f'como uma *Criatura Selvagem*, '
-        f'afiando suas habilidades de combate, aprimorando a '
+        'Entra em um estado de *Frenesi* que o leva a agir '
+        'como uma *Criatura Selvagem*, '
+        'afiando suas habilidades de combate, aprimorando a '
         f'*{STRENGTH_EMOJI_TEXT}* e a *{DEXTERITY_EMOJI_TEXT}* '
-        f'(50% + 5% x Nível), mas pode, em um momento de insanidade, '
-        f'atacar aliados ou a si mesmo.'
+        '(50% + 5% x Nível), mas pode, em um momento de insanidade, '
+        'atacar aliados ou a si mesmo.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -192,11 +192,11 @@ class FrenzySkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* acessa um estado de *Frenesi*, '
-                f'afiando suas habilidades de combate, '
-                f'aumentando o multiplicador de '
+                'afiando suas habilidades de combate, '
+                'aumentando o multiplicador de '
                 f'*{STRENGTH_EMOJI_TEXT}* '
                 f'em {condition.multiplier_strength} pontos '
-                f'e o multiplicador de '
+                'e o multiplicador de '
                 f'*{DEXTERITY_EMOJI_TEXT}* '
                 f'em {condition.multiplier_dexterity} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -210,8 +210,8 @@ class FrenzySkill(BaseSkill):
 class FuriousRoarSkill(BaseSkill):
     NAME = BarbarianSkillEnum.FURIOUS_ROAR.value
     DESCRIPTION = (
-        f'Libera um *Rugido Aterrorizante* que despedaça a alma dos inimigos '
-        f'com uma onda de terror que causa dano de '
+        'Libera um *Rugido Aterrorizante* que despedaça a alma dos inimigos '
+        'com uma onda de terror que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.ROAR)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (87% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'

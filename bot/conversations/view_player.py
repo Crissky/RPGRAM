@@ -113,7 +113,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
     else:
         text = (
-            f'Você ainda não está cadastrado!\n'
+            'Você ainda não está cadastrado!\n'
             f'Cadastre-se com o comando /{sign_up_player_commands[0]}.'
         )
         await reply_text(

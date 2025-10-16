@@ -215,70 +215,70 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.GROUP.value}'
             f'*CRIAR CONTA DO GRUPO*: /{sign_up_group_commands[0]}\n'
-            f'INFO: Cria uma conta para o grupo.\n'
+            'INFO: Cria uma conta para o grupo.\n'
             f'Atalhos: {sign_up_group_cmd}\n\n'
 
             f'{EmojiEnum.PLAYER.value}'
             f'*CRIAR CONTA DE JOGADOR*: /{sign_up_player_commands[0]}\n'
-            f'INFO: Cria uma conta para o jogador.\n'
+            'INFO: Cria uma conta para o jogador.\n'
             f'Atalhos: {sign_up_player_cmd}\n\n'
 
             f'{EmojiEnum.CHARACTER.value}'
             f'*CRIAR PERSONAGEM*: /{create_char_commands[0]}\n'
-            f'INFO: Cria um personagem para o jogador.\n'
+            'INFO: Cria um personagem para o jogador.\n'
             f'Atalhos: {create_char_cmd}\n\n'
 
             f'{EmojiEnum.GROUP.value}'
             f'*INFORMAÇÕES DO GRUPO*: /{view_group_commands[0]}\n'
-            f'INFO: Exibe as informações do grupo.\n'
+            'INFO: Exibe as informações do grupo.\n'
             f'Atalhos: {view_group_cmd}\n\n'
 
             f'{EmojiEnum.PLAYER.value}'
             f'*INFORMAÇÕES DO JOGADOR*: /{view_player_commands[0]}\n'
-            f'INFO: Exibe as informações do jogador.\n'
+            'INFO: Exibe as informações do jogador.\n'
             f'Atalhos: {view_player_cmd}\n\n'
 
             f'{EmojiEnum.CHARACTER.value}'
             f'*INFORMAÇÕES DO PERSONAGEM*: /{view_char_commands[0]}\n'
-            f'INFO: Exibe as informações do personagem.\n'
+            'INFO: Exibe as informações do personagem.\n'
             f'Atalhos: {view_char_cmd}\n\n'
 
             f'{EmojiEnum.STATS.value}'
             f'*ADICIONAR/EXIBIR ESTATISTICAS*: /{add_stats_commands[0]}\n'
-            f'INFO: Exibe ou Adiciona estatisticas no personagem.\n'
+            'INFO: Exibe ou Adiciona estatisticas no personagem.\n'
             f'Atalhos: {add_stats_cmd}\n\n'
 
             f'{EmojiEnum.CONFIG.value}'
             f'*CONFIGURAÇÃO DO GRUPO*: /{config_group_commands[0]}\n'
-            f'INFO: Configura preferências do grupo.\n'
+            'INFO: Configura preferências do grupo.\n'
             f'Atalhos: {config_group_cmd}\n\n'
 
             f'{EmojiEnum.CONFIG.value}'
             f'*CONFIGURAÇÃO DO JOGADOR*: /{config_player_commands[0]}\n'
-            f'INFO: Configura preferências do jogador.\n'
+            'INFO: Configura preferências do jogador.\n'
             f'Atalhos: {config_player_cmd}\n\n'
 
             f'{EmojiEnum.REST.value}*INICIAR DESCANSO*: /{rest_commands[0]}\n'
-            f'INFO: Recupera HP do personagem a cada hora '
-            f'(mesmo se estiver 0).\n'
+            'INFO: Recupera HP do personagem a cada hora '
+            '(mesmo se estiver 0).\n'
             f'Atalhos: {rest_cmd}\n\n'
 
             f'{EmojiEnum.CLASSE.value}*CLASSES*: /{classe_commands[0]}\n'
-            f'INFO: Exibe as classes existentes no jogo, tanto para os '
-            f'jogadores, quanto as classes exclusivas para os NPCs.\n'
+            'INFO: Exibe as classes existentes no jogo, tanto para os '
+            'jogadores, quanto as classes exclusivas para os NPCs.\n'
             f'Atalhos: {classe_cmd}\n\n'
 
             f'{EmojiEnum.RACE.value}*RAÇAS*: /{race_commands[0]}\n'
-            f'INFO: Exibe as raças existentes no jogo, tanto para os '
-            f'jogadores, quanto as raças exclusivas para os NPCs.\n'
+            'INFO: Exibe as raças existentes no jogo, tanto para os '
+            'jogadores, quanto as raças exclusivas para os NPCs.\n'
             f'Atalhos: {race_cmd}\n\n'
 
             f'{EmojiEnum.ITEMS.value}*BOLSA*: /{bag_commands[0]}\n'
-            f'INFO: Exibe o conteúdo da bolsa.\n'
+            'INFO: Exibe o conteúdo da bolsa.\n'
             f'Atalhos: {bag_cmd}\n\n'
 
             f'{EmojiEnum.EQUIPS.value}*EQUIPAMENTOS*: /{equips_commands[0]}\n'
-            f'INFO: Exibe os itens equipados no personagem.\n'
+            'INFO: Exibe os itens equipados no personagem.\n'
             f'Atalhos: {equips_cmd}\n\n'
 
             f'{EmojiEnum.CHRYSUS_1.value}*LOJA*: /{seller_commands[0]}\n'
@@ -287,12 +287,12 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.SKILL_POINTS.value}*HABILIDADES*: '
             f'/{skill_commands[0]}\n'
-            f'INFO: Abre o menu de gerenciamento de Habilidades.\n'
+            'INFO: Abre o menu de gerenciamento de Habilidades.\n'
             f'Atalhos: {skill_cmd}\n\n'
             
             f'{EmojiEnum.SKILL_POINTS.value}*CHARS LEVELS*: '
             f'/{view_level_commands[0]}\n'
-            f'INFO: Exibe níveis dos personagens do grupo.\n'
+            'INFO: Exibe níveis dos personagens do grupo.\n'
             f'Atalhos: {view_level_cmd}'
         )
     elif option == CALLBACK_STATS:
@@ -300,23 +300,23 @@ def get_details_text(option: str) -> str:
         reset_char_cmd = command_to_string(reset_char_commands)
         text = (
             f'*ADICIONAR/EXIBIR ESTATÍSTICAS*: /{add_stats_commands[0]}\n'
-            f'Argumentos: [<ATRIBUTO> <VALOR>]\n\n'
+            'Argumentos: [<ATRIBUTO> <VALOR>]\n\n'
 
             f'Exemplo: "/{add_stats_commands[0]} FOR 10" '
-            f'(Adiciona 10 pontos em FORÇA).\n\n'
+            '(Adiciona 10 pontos em FORÇA).\n\n'
 
-            f'OBS: Pode ser usado sem argumentos para exibir as estatísticas '
-            f'do personagem. '
-            f'Use o argumento "verbose" ou "v" para exibir as estatísticas '
-            f'com mais detalhes.\n\n'
+            'OBS: Pode ser usado sem argumentos para exibir as estatísticas '
+            'do personagem. '
+            'Use o argumento "verbose" ou "v" para exibir as estatísticas '
+            'com mais detalhes.\n\n'
 
             f'Atalhos: {add_stats_cmd}\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'*RESETAR ATRIBUTOS BASE*: /{reset_char_commands[0]}\n'
-            f'INFO: Restitui todos os pontos usados nas estatísticas dos '
-            f'*Atributos Base*.\n\n'
+            'INFO: Restitui todos os pontos usados nas estatísticas dos '
+            '*Atributos Base*.\n\n'
             f'Atalhos: {reset_char_cmd}\n\n'
         )
     elif option == CALLBACK_GROUP:
@@ -325,39 +325,39 @@ def get_details_text(option: str) -> str:
         view_group_cmd = command_to_string(view_group_commands)
         text = (
             f'*CRIAR CONTA DO GRUPO*: /{sign_up_group_commands[0]}\n'
-            f'INFO: Cria uma conta para o grupo.\n\n'
+            'INFO: Cria uma conta para o grupo.\n\n'
 
             f'Atalhos: {sign_up_group_cmd}\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'*CONFIGURAÇÃO DO GRUPO*: /{config_group_commands[0]}\n'
-            f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n\n'
+            'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n\n'
 
-            f'Configurações:\n'
-            f'    "verbose": [true/false]. Configura se o bot vai falar muito.'
-            f'\n'
-            f'    "silent": [true/false]. Configura se as notificações do bot '
-            f'no '
-            f'grupo terão som.\n'
-            f'    "spawn_start_time": inteiro[0-24]. Hora de início do spawn.'
-            f'\n'
-            f'    "spawn_end_time": inteiro[0-24]. Hora de fim do spawn.\n'
-            f'    "multiplier_xp": decimal[0-5]. Multiplicador de XP.\n'
-            f'    "char_multiplier_xp": decimal[0-10]. Multiplicador do bônus '
-            f'de '
-            f'XP baseado no nível do personagem.\n\n'
+            'Configurações:\n'
+            '    "verbose": [true/false]. Configura se o bot vai falar muito.'
+            '\n'
+            '    "silent": [true/false]. Configura se as notificações do bot '
+            'no '
+            'grupo terão som.\n'
+            '    "spawn_start_time": inteiro[0-24]. Hora de início do spawn.'
+            '\n'
+            '    "spawn_end_time": inteiro[0-24]. Hora de fim do spawn.\n'
+            '    "multiplier_xp": decimal[0-5]. Multiplicador de XP.\n'
+            '    "char_multiplier_xp": decimal[0-10]. Multiplicador do bônus '
+            'de '
+            'XP baseado no nível do personagem.\n\n'
 
-            f'Outros Argumentos:\n'
-            f'    "default": Retorna a configuração do grupo para o padrão.\n'
-            f'    "update": Atualiza as informações do grupo.\n\n'
+            'Outros Argumentos:\n'
+            '    "default": Retorna a configuração do grupo para o padrão.\n'
+            '    "update": Atualiza as informações do grupo.\n\n'
 
             f'Atalhos: {config_group_cmd}\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'*INFORMAÇÕES DO GRUPO*: /{view_group_commands[0]}\n'
-            f'INFO: Exibe as informações do grupo.\n\n'
+            'INFO: Exibe as informações do grupo.\n\n'
 
             f'Atalhos: {view_group_cmd}'
         )
@@ -367,31 +367,31 @@ def get_details_text(option: str) -> str:
         view_player_cmd = command_to_string(view_player_commands)
         text = (
             f'*CRIAR CONTA DE JOGADOR*: /{sign_up_player_commands[0]}\n'
-            f'INFO: Cria uma conta para o jogador.\n\n'
+            'INFO: Cria uma conta para o jogador.\n\n'
 
             f'Atalhos: {sign_up_player_cmd}\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'*CONFIGURAÇÃO DO JOGADOR*: /{config_player_commands[0]}\n'
-            f'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n\n'
+            'Argumentos: [<CONFIGURAÇÃO> <VALOR>]\n\n'
 
-            f'Configurações:\n'
-            f'    "verbose": [true/false]. Configura se o bot vai envia '
-            f'mensagens privadas para o jogador.\n'
-            f'    "silent": [true/false]. Configura se as notificações do bot '
-            f'no chat privado terão som.\n\n'
+            'Configurações:\n'
+            '    "verbose": [true/false]. Configura se o bot vai envia '
+            'mensagens privadas para o jogador.\n'
+            '    "silent": [true/false]. Configura se as notificações do bot '
+            'no chat privado terão som.\n\n'
 
-            f'Outros Argumentos:\n'
-            f'    "default": Retorna a configuração do jogador para o padrão.\n'
-            f'    "update": Atualiza as informações do jogador.\n\n'
+            'Outros Argumentos:\n'
+            '    "default": Retorna a configuração do jogador para o padrão.\n'
+            '    "update": Atualiza as informações do jogador.\n\n'
 
             f'Atalhos: {config_player_cmd}\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'*INFORMAÇÕES DO JOGADOR*: /{view_player_commands[0]}\n'
-            f'INFO: Exibe as informações do jogador.\n\n'
+            'INFO: Exibe as informações do jogador.\n\n'
 
             f'Atalhos: {view_player_cmd}'
         )
@@ -399,39 +399,39 @@ def get_details_text(option: str) -> str:
         equips_cmd = command_to_string(equips_commands)
         text = (
             f'*EQUIPAMENTOS*: /{equips_commands[0]}\n'
-            f'INFO: Mostra os equipamentos do personagem.\n\n'
+            'INFO: Mostra os equipamentos do personagem.\n\n'
 
-            f'OBS: Use o argumento "verbose" ou "v" para exibir os '
-            f'equipamentos com mais detalhes.\n\n'
+            'OBS: Use o argumento "verbose" ou "v" para exibir os '
+            'equipamentos com mais detalhes.\n\n'
 
             f'Atalhos: {equips_cmd}\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'{EmojiEnum.EQUIPMENT_POWER.value}*PODER*\n\n'
-            f'O poder de um equipamento é calculado como a soma poderada de '
-            f'todos os atributos que o equipamento garante. Existem alguns '
-            f'fatores que influenciam no total de pontos de atributo que um '
-            f'equipamento vai possuir. Os principais fatores são: '
-            f'`Nível do Equipamento`, `Tipo do Equipamento`, '
-            f'`Raridade` e `Material`.\n\n'
+            'O poder de um equipamento é calculado como a soma poderada de '
+            'todos os atributos que o equipamento garante. Existem alguns '
+            'fatores que influenciam no total de pontos de atributo que um '
+            'equipamento vai possuir. Os principais fatores são: '
+            '`Nível do Equipamento`, `Tipo do Equipamento`, '
+            '`Raridade` e `Material`.\n\n'
 
             f'{EmojiEnum.EQUIPMENT_LEVEL.value}*NÍVEL DO EQUIPAMENTO*\n\n'
 
-            f'O `Nível do Equipamento` é o requisitos que todos os '
-            f'equipamentos possuem. Personagens com um `Nível` inferior ao '
-            f'`Nível do Equipamento` não poderão utilizar o equipamento.\n\n'
-            f'O `Nível do Equipamento` também é a base da distribuição dos '
-            f'atributos dos equipamentos. Ele será multiplicado pela valor do '
-            f'`Tipo do Equipamento`, `Raridade` e `Material` para definir '
-            f'o valor total de pontos que serão distribuídos entre os '
-            f'`Atributos de Combate` do equipamento.\n\n'
+            'O `Nível do Equipamento` é o requisitos que todos os '
+            'equipamentos possuem. Personagens com um `Nível` inferior ao '
+            '`Nível do Equipamento` não poderão utilizar o equipamento.\n\n'
+            'O `Nível do Equipamento` também é a base da distribuição dos '
+            'atributos dos equipamentos. Ele será multiplicado pela valor do '
+            '`Tipo do Equipamento`, `Raridade` e `Material` para definir '
+            'o valor total de pontos que serão distribuídos entre os '
+            '`Atributos de Combate` do equipamento.\n\n'
 
             f'{EmojiEnum.EQUIPS.value}*TIPO DE EQUIPAMENTO*\n\n'
 
             f'Os tipos de equipamentos são {len(EquipmentEnum)} ao todo. '
-            f'Cada tipo de equipamento possui um multiplicador diferente.\n'
-            f'Os tipos de equipamento são:\n'
+            'Cada tipo de equipamento possui um multiplicador diferente.\n'
+            'Os tipos de equipamento são:\n'
             f'{EmojiEnum.HELMET.value}`{EquipmentEnum.HELMET.value}` (x0,5), '
             f'{EmojiEnum.ONE_HAND.value}`{EquipmentEnum.ONE_HAND.value}` (x1), '
             f'{EmojiEnum.TWO_HANDS.value}`{EquipmentEnum.TWO_HANDS.value}` (x2,5), '
@@ -443,17 +443,17 @@ def get_details_text(option: str) -> str:
             f'{EmojiEnum.EQUIPMENT_RARITY.value}*RARIDADE*\n\n'
 
             f'Os tipos de raridade são {len(RarityEnum)} ao todo. '
-            f'Cada raridade possui um multiplicador diferente. Além disso, '
+            'Cada raridade possui um multiplicador diferente. Além disso, '
             f'as raridades acima da `{list(RarityEnum)[1].value}` possuem a '
-            f'chance de ter `Atributos Ocultos` que precisam ser identificados '
-            f'para que o personagem possa garantir esses bônus. Esses '
-            f'`Atributos Ocultos` são pontos extras que podem ser '
-            f'distribuídos nos `Atributos de Combate` e também nos '
-            f'`Atributos Base`.\n'
-            f'As raridades são:\n'
+            'chance de ter `Atributos Ocultos` que precisam ser identificados '
+            'para que o personagem possa garantir esses bônus. Esses '
+            '`Atributos Ocultos` são pontos extras que podem ser '
+            'distribuídos nos `Atributos de Combate` e também nos '
+            '`Atributos Base`.\n'
+            'As raridades são:\n'
             f'{help_enum(RarityEnum)}.\n\n'
 
-            f'Níveis de equipamentos que as raridades começam a aparecer:\n'
+            'Níveis de equipamentos que as raridades começam a aparecer:\n'
             f'Nível 1: {RarityEnum.COMMON.value} e {RarityEnum.UNCOMMON.value}\n'
             f'Nível 50: {RarityEnum.RARE.value}\n'
             f'Nível 500: {RarityEnum.EPIC.value}\n'
@@ -462,9 +462,9 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.EQUIPMENT_MATERIAL.value}*MATERIAIS*\n\n'
 
-            f'Os materias variam de acordo com o `Tipo do Equipamento` '
-            f'podendo variar entre equipamentos de um mesmo tipo. '
-            f'Os materias dos equipamentos são:\n'
+            'Os materias variam de acordo com o `Tipo do Equipamento` '
+            'podendo variar entre equipamentos de um mesmo tipo. '
+            'Os materias dos equipamentos são:\n'
 
             f'*Armas* : {help_enum(WeaponMaterialEnum)}.\n\n'
             f'*Penas* : {help_enum(MagicalQuillMaterialEnum)}.\n\n'
@@ -480,98 +480,98 @@ def get_details_text(option: str) -> str:
             f'*Moedas* : {help_enum(CoinMaterialsEnum)}.\n\n'
             f'*Omamori* : {help_enum(OmamoriMaterialEnum)}.\n\n'
 
-            f'Níveis de aparição dos Materiais dos Equipamentos:\n'
-            f'1º: NV 1\n'
-            f'2º: NV 25\n'
-            f'3º: NV 100\n'
-            f'4º: NV 225\n'
-            f'5º: NV 400\n'
-            f'6º: NV 625\n'
-            f'7º: NV 900\n'
-            f'8º: NV 1225\n'
-            f'9º: NV 1600\n\n'
+            'Níveis de aparição dos Materiais dos Equipamentos:\n'
+            '1º: NV 1\n'
+            '2º: NV 25\n'
+            '3º: NV 100\n'
+            '4º: NV 225\n'
+            '5º: NV 400\n'
+            '6º: NV 625\n'
+            '7º: NV 900\n'
+            '8º: NV 1225\n'
+            '9º: NV 1600\n\n'
 
-            f'Níveis de aparição dos Materiais dos Acessórios:\n'
-            f'1º: NV 1\n'
-            f'2º: NV 50\n'
-            f'3º: NV 200\n'
-            f'4º: NV 450\n'
-            f'5º: NV 800\n'
-            f'6º: NV 1250\n\n'
+            'Níveis de aparição dos Materiais dos Acessórios:\n'
+            '1º: NV 1\n'
+            '2º: NV 50\n'
+            '3º: NV 200\n'
+            '4º: NV 450\n'
+            '5º: NV 800\n'
+            '6º: NV 1250\n\n'
         )
     elif option == CALLBACK_BASE_ATTRIBUTES:
         text = (
             f'{EmojiEnum.BASE_ATTRIBUTES.value}*ATRIBUTOS BASE*\n\n'
 
-            f'Os Atributos Base do personagem representam suas '
+            'Os Atributos Base do personagem representam suas '
             'características que vão além do combate. Os seis Atributos Base '
-            f'são os seguintes:\n\n'
+            'são os seguintes:\n\n'
 
             f'{EmojiEnum.STRENGTH.value}'
-            f'*Força* (FOR): Representa a força física do personagem. '
-            f'A força influencia bastante no `Ataque Físico`, moderado nos '
-            f'`Pontos de Vida` e um pouco no `Ataque de Precisão`.\n\n'
+            '*Força* (FOR): Representa a força física do personagem. '
+            'A força influencia bastante no `Ataque Físico`, moderado nos '
+            '`Pontos de Vida` e um pouco no `Ataque de Precisão`.\n\n'
 
             f'{EmojiEnum.DEXTERITY.value}'
-            f'*Destreza* (DES): Representa a habilidade e a ligeireza do '
-            f'personagem. A destreza influencia bastante no '
-            f'`Ataque de Precisão`, `Acerto` e `Evasão`, possui um pouco de '
-            f'influência na `Iniciativa`, no `Ataque Físico` e '
-            f'na `Defesa Física`.\n\n'
+            '*Destreza* (DES): Representa a habilidade e a ligeireza do '
+            'personagem. A destreza influencia bastante no '
+            '`Ataque de Precisão`, `Acerto` e `Evasão`, possui um pouco de '
+            'influência na `Iniciativa`, no `Ataque Físico` e '
+            'na `Defesa Física`.\n\n'
 
             f'{EmojiEnum.CONSTITUTION.value}'
-            f'*Constituição* (CON): Representa o vigor físico do '
-            f'personagem e a capacidade de resistir à ataques de qualquer '
-            f'origem. A contituição influencia bastante nos `Pontos de Vida` '
-            f'e na `Defesa Física` e na `Defesa Mágica`.\n\n'
+            '*Constituição* (CON): Representa o vigor físico do '
+            'personagem e a capacidade de resistir à ataques de qualquer '
+            'origem. A contituição influencia bastante nos `Pontos de Vida` '
+            'e na `Defesa Física` e na `Defesa Mágica`.\n\n'
 
             f'{EmojiEnum.INTELLIGENCE.value}'
-            f'*Inteligência* (INT): Representa a capacidade do personagem '
-            f'de pensar e aprender coisas por meio de estudo. '
-            f'A inteligência influencia consideravelmente no '
-            f'`Ataque Mágico` e na `Defesa Mágica` e um pouco na '
-            f'`Iniciativa`, no `Acerto` e na `Evasão`.\n\n'
+            '*Inteligência* (INT): Representa a capacidade do personagem '
+            'de pensar e aprender coisas por meio de estudo. '
+            'A inteligência influencia consideravelmente no '
+            '`Ataque Mágico` e na `Defesa Mágica` e um pouco na '
+            '`Iniciativa`, no `Acerto` e na `Evasão`.\n\n'
 
             f'{EmojiEnum.WISDOM.value}'
-            f'*Sabedoria* (SAB): Representa a capacidade de raciocício '
-            f'inata e a habilidade de compreender o mundo do personagem. '
-            f'A sabedoria influencia bastante na `Defesa Mágica` e no '
-            f'`Ataque Mágico` e tem pouca influência na `Iniciativa`, no '
-            f'`Acerto` e na `Evasão`.\n\n'
+            '*Sabedoria* (SAB): Representa a capacidade de raciocício '
+            'inata e a habilidade de compreender o mundo do personagem. '
+            'A sabedoria influencia bastante na `Defesa Mágica` e no '
+            '`Ataque Mágico` e tem pouca influência na `Iniciativa`, no '
+            '`Acerto` e na `Evasão`.\n\n'
 
             f'{EmojiEnum.CHARISMA.value}'
-            f'*Carisma* (CAR): Representa a capacidade do personagem de '
-            f'inspirar, persuadir, sugestionar ou manipular outras pessoas, '
-            f'seja de maneira positiva ou negativa. '
-            f'O carisma influencia bastante na `Iniciativa`, no `Acerto` '
-            f'e na `Evasão`.'
+            '*Carisma* (CAR): Representa a capacidade do personagem de '
+            'inspirar, persuadir, sugestionar ou manipular outras pessoas, '
+            'seja de maneira positiva ou negativa. '
+            'O carisma influencia bastante na `Iniciativa`, no `Acerto` '
+            'e na `Evasão`.'
         )
     elif option == CALLBACK_COMBAT_ATTRIBUTES:
         text = (
             f'{EmojiEnum.COMBAT_ATTRIBUTES.value}*ATRIBUTOS DE COMBATE*\n\n'
 
-            f'Os Atributos de Combate do personagem representam suas '
-            f'habilidades ofensivas e defensivas em lutas. Esses atributos '
-            f'são diretamente influenciados pelos `Atributos Base` '
-            f'do personagem. Os nove Atributos de Combate '
-            f'são os seguintes:\n\n'
+            'Os Atributos de Combate do personagem representam suas '
+            'habilidades ofensivas e defensivas em lutas. Esses atributos '
+            'são diretamente influenciados pelos `Atributos Base` '
+            'do personagem. Os nove Atributos de Combate '
+            'são os seguintes:\n\n'
 
             f'{EmojiEnum.HIT_POINT_FULL.value}'
-            f'*Pontos de Vida (HP)*: Representam a '
-            f'vitalidade do personagem. Quando os `Pontos de Vida` chegam a '
-            f'zero o personagem ficará incapacidado até que recupere ao menos '
-            f'um `Ponto de Vida`.\n'
-            f'Os Atributos Base que compoem os `Pontos de Vida` são:\n'
+            '*Pontos de Vida (HP)*: Representam a '
+            'vitalidade do personagem. Quando os `Pontos de Vida` chegam a '
+            'zero o personagem ficará incapacidado até que recupere ao menos '
+            'um `Ponto de Vida`.\n'
+            'Os Atributos Base que compoem os `Pontos de Vida` são:\n'
             f'A `Constituição`(x{HIT_POINTS_CONSTITUTION}), '
             f'a `Força`(x{HIT_POINTS_STRENGTH}) e '
             f'o `Nível`(x{HIT_POINTS_LEVEL}).\n\n'
 
             f'{EmojiEnum.INITIATIVE.value}'
-            f'*Iniciativa*: Representa o quão rápido e sagaz um '
-            f'personagem é para agir em combate. Quanto maior o valor da '
-            f'`Iniciativa` em relação a dos demais lutadores, mais a frente o '
-            f'personagem estará na ordem de ataque.\n'
-            f'Os Atributos Base que compoem a `Iniciativa` são:\n'
+            '*Iniciativa*: Representa o quão rápido e sagaz um '
+            'personagem é para agir em combate. Quanto maior o valor da '
+            '`Iniciativa` em relação a dos demais lutadores, mais a frente o '
+            'personagem estará na ordem de ataque.\n'
+            'Os Atributos Base que compoem a `Iniciativa` são:\n'
             f'O `Carisma`(x{INITIATIVE_CHARISMA}), '
             f'a `Destreza`(x{INITIATIVE_DEXTERITY}), '
             f'a `Sabedoria`(x{INITIATIVE_WISDOM}), '
@@ -579,65 +579,65 @@ def get_details_text(option: str) -> str:
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.PHYSICAL_ATTACK.value}'
-            f'*Ataque Físico*: Representa o poder dos '
-            f'golpes baseados na força física do personagem. Quanto maior o '
-            f'valor do `Ataque Físico` em relação ao da `Defesa Física` '
-            f'do alvo, maior será o dano causado aos `Pontos de Vida`.\n'
-            f'Os Atributos Base que compoem o `Ataque Físico` são:\n'
+            '*Ataque Físico*: Representa o poder dos '
+            'golpes baseados na força física do personagem. Quanto maior o '
+            'valor do `Ataque Físico` em relação ao da `Defesa Física` '
+            'do alvo, maior será o dano causado aos `Pontos de Vida`.\n'
+            'Os Atributos Base que compoem o `Ataque Físico` são:\n'
             f'A `Força`(x{PHYSICAL_ATTACK_STRENGTH}), '
             f'a `Destreza`(x{PHYSICAL_ATTACK_DEXTERITY}) e '
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.PRECISION_ATTACK.value}'
-            f'*Ataque de Precisão*: Representa o '
-            f'poder dos golpes de visam atingir os pontos vitais do oponente '
-            f'para causar mais dano sem a necessidade de possuir uma grande '
-            f'força física. Quanto maior o valor do `Ataque de Precisão` em '
-            f'relação ao da `Defesa Física` do alvo, maior será o dano '
-            f'causado aos `Pontos de Vida` do oponente.\n'
-            f'Os Atributos Base que compoem o `Ataque de Precisão` são:\n'
+            '*Ataque de Precisão*: Representa o '
+            'poder dos golpes de visam atingir os pontos vitais do oponente '
+            'para causar mais dano sem a necessidade de possuir uma grande '
+            'força física. Quanto maior o valor do `Ataque de Precisão` em '
+            'relação ao da `Defesa Física` do alvo, maior será o dano '
+            'causado aos `Pontos de Vida` do oponente.\n'
+            'Os Atributos Base que compoem o `Ataque de Precisão` são:\n'
             f'A `Destreza`(x{PRECISION_ATTACK_DEXTERITY}), '
             f'a `Força`(x{PRECISION_ATTACK_STRENGTH}) e '
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.MAGICAL_ATTACK.value}'
-            f'*Ataque Mágico*: Representa o poder dos '
-            f'feitiços, magias e quaisquer outras habilidades sobrenaturais '
-            f'do personagem. Quanto maior o valor do `Ataque Mágico` em '
-            f'relação ao da `Defesa Mágica` do alvo, maior será o dano '
-            f'causado aos `Pontos de Vida` do inimigo.\n'
-            f'Os Atributos Base que compoem o `Ataque Mágico` são:\n'
+            '*Ataque Mágico*: Representa o poder dos '
+            'feitiços, magias e quaisquer outras habilidades sobrenaturais '
+            'do personagem. Quanto maior o valor do `Ataque Mágico` em '
+            'relação ao da `Defesa Mágica` do alvo, maior será o dano '
+            'causado aos `Pontos de Vida` do inimigo.\n'
+            'Os Atributos Base que compoem o `Ataque Mágico` são:\n'
             f'A `Inteligência`(x{MAGICAL_ATTACK_INTELLIGENCE}), '
             f'a `Sabedoria`(x{MAGICAL_ATTACK_WISDOM}) e '
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.PHYSICAL_DEFENSE.value}'
-            f'*Defesa Física*: Representa a habilidade '
-            f'que o personagem possui para bloquear o dano de um '
-            f'golpe físico (aqueles baseados em `Ataque Físico` ou '
-            f'`Ataque de Precisão`).\n'
-            f'Os Atributos Base que compoem a `Defesa Física` são:\n'
+            '*Defesa Física*: Representa a habilidade '
+            'que o personagem possui para bloquear o dano de um '
+            'golpe físico (aqueles baseados em `Ataque Físico` ou '
+            '`Ataque de Precisão`).\n'
+            'Os Atributos Base que compoem a `Defesa Física` são:\n'
             f'A `Constituição`(x{PHYSICAL_DEFENSE_CONSTITUTION}), '
             f'a `Destreza`(x{PHYSICAL_DEFENSE_DEXTERITY}) e '
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.MAGICAL_DEFENSE.value}'
-            f'*Defesa Mágica*: Representa a capacidade '
-            f'que o personagem possui para bloquear o dano oriundo '
-            f'de ataques sobrenaturais (aqueles baseados em '
-            f'`Ataque Mágico`).\n'
-            f'Os Atributos Base que compoem a `Defesa Mágica` são:\n'
+            '*Defesa Mágica*: Representa a capacidade '
+            'que o personagem possui para bloquear o dano oriundo '
+            'de ataques sobrenaturais (aqueles baseados em '
+            '`Ataque Mágico`).\n'
+            'Os Atributos Base que compoem a `Defesa Mágica` são:\n'
             f'A `Sabedoria`(x{MAGICAL_DEFENSE_WISDOM}), '
             f'a `Inteligência`(x{MAGICAL_DEFENSE_INTELLIGENCE}), '
             f'a `Constituição`(x{MAGICAL_DEFENSE_CONSTITUTION}) e '
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.HIT.value}'
-            f'*Acerto*: Representa a perícia que o '
-            f'personagem possui para ter êxito em atingir um alvo com '
-            f'os seus ataques. Quanto maior o valor do `Acerto` em relação '
-            f'ao da `Evasão` do alvo, maior será a chance de acerto.\n'
-            f'Os Atributos Base que compoem o `Acerto` são:\n'
+            '*Acerto*: Representa a perícia que o '
+            'personagem possui para ter êxito em atingir um alvo com '
+            'os seus ataques. Quanto maior o valor do `Acerto` em relação '
+            'ao da `Evasão` do alvo, maior será a chance de acerto.\n'
+            'Os Atributos Base que compoem o `Acerto` são:\n'
             f'O `Carisma`(x{HIT_CHARISMA}), '
             f'a `Destreza`(x{HIT_DEXTERITY}), '
             f'a `Inteligência`(x{HIT_INTELLIGENCE}), '
@@ -645,11 +645,11 @@ def get_details_text(option: str) -> str:
             f'o `Nível`(x{GENERAL_LEVEL}).\n\n'
 
             f'{EmojiEnum.EVASION.value}'
-            f'*Evasão*: Representa a maestria que o '
-            f'personagem possui para evitar qualquer ataque. Quanto maior '
-            f'o valor da `Evasão` em relação ao do `Acerto` do atacante, '
-            f'maior será a chance de evitar o ataque.\n'
-            f'Os Atributos Base que compoem o `Evasão` são:\n'
+            '*Evasão*: Representa a maestria que o '
+            'personagem possui para evitar qualquer ataque. Quanto maior '
+            'o valor da `Evasão` em relação ao do `Acerto` do atacante, '
+            'maior será a chance de evitar o ataque.\n'
+            'Os Atributos Base que compoem o `Evasão` são:\n'
             f'O `Carisma`(x{EVASION_CHARISMA}), '
             f'a `Destreza`(x{EVASION_DEXTERITY}), '
             f'a `Sabedoria`(x{EVASION_WISDOM}), '
@@ -660,13 +660,13 @@ def get_details_text(option: str) -> str:
         text = (
             f'{EmojiEnum.SPECIAL_DAMAGE.value}*DANO ESPECIAL*\n\n'
 
-            f'O `Dano Especial` é um dano adicional que armas e habilidades '
-            f'podem causar. Para armas, o valor do dano é baseado nos '
-            f'atributos de ataque da arma e no seu nível. '
-            f'Já para habilidades, o valor do dano é baseado no *Poder'
+            'O `Dano Especial` é um dano adicional que armas e habilidades '
+            'podem causar. Para armas, o valor do dano é baseado nos '
+            'atributos de ataque da arma e no seu nível. '
+            'Já para habilidades, o valor do dano é baseado no *Poder'
             f'{EmojiEnum.EQUIPMENT_POWER.value}*.\n'
-            f'Além do dano extra, o `Dano Especial` pode causar condições '
-            f'negativas (*Debuff*).\n\n`Danos Especiais` '
+            'Além do dano extra, o `Dano Especial` pode causar condições '
+            'negativas (*Debuff*).\n\n`Danos Especiais` '
             f'com 100 de *Poder{EmojiEnum.EQUIPMENT_POWER.value}*:\n\n'
         )
         for damage in DamageEnum:
@@ -693,16 +693,16 @@ def get_details_text(option: str) -> str:
         text = (
 
             f'*BAG (Items)*: /{bag_commands[0]}\n'
-            f'INFO: Mostra os itens na bolsa do jogador. Para usar itens '
-            f'consumíveis em outro jogador, passe o arroba dele como '
-            f'argumento do comando.\n'
-            f'Argumentos: [Arroba de algum jogador]\n\n'
+            'INFO: Mostra os itens na bolsa do jogador. Para usar itens '
+            'consumíveis em outro jogador, passe o arroba dele como '
+            'argumento do comando.\n'
+            'Argumentos: [Arroba de algum jogador]\n\n'
 
-            f'OBS: Se o comando for acionado sem argumentos, os itens serão '
-            f'usados no próprio jogador. Somente consumíveis podem ser '
-            f'usados em outros jogadores, os equipamentos serão equipados '
-            f'no próprio jogador - independente do arroba passado como '
-            f'argumento.\n\n'
+            'OBS: Se o comando for acionado sem argumentos, os itens serão '
+            'usados no próprio jogador. Somente consumíveis podem ser '
+            'usados em outros jogadores, os equipamentos serão equipados '
+            'no próprio jogador - independente do arroba passado como '
+            'argumento.\n\n'
 
             f'Atalhos: {bag_cmd}\n\n'
 
@@ -710,39 +710,39 @@ def get_details_text(option: str) -> str:
 
             f'{EmojiEnum.ITEMS.value}*ITEMS*\n\n'
 
-            f'Os itens são divididos em duas categorias: `Consumíveis` e '
-            f'`Equipamentos`.\n'
-            f'Os itens `Consumíveis` são aqueles que o personagem pode usar '
-            f'somente uma vez, como beber uma poção de cura para recuperar os '
-            f'`Pontos de Vida`.\n'
-            f'Os `Equipamentos` são itens que o personagem pode usar para '
-            f'obter poderes enquanto estiver com ele equipado, como os '
-            f'pontos de `Ataque Físico` que uma espada pode fornecer ao '
-            f'personagem.'
+            'Os itens são divididos em duas categorias: `Consumíveis` e '
+            '`Equipamentos`.\n'
+            'Os itens `Consumíveis` são aqueles que o personagem pode usar '
+            'somente uma vez, como beber uma poção de cura para recuperar os '
+            '`Pontos de Vida`.\n'
+            'Os `Equipamentos` são itens que o personagem pode usar para '
+            'obter poderes enquanto estiver com ele equipado, como os '
+            'pontos de `Ataque Físico` que uma espada pode fornecer ao '
+            'personagem.'
 
         )
     elif option == CALLBACK_DEBUFFS:
         text = (
             f'{EmojiEnum.STATUS.value}*STATUS(DEBUFFS)*\n\n'
 
-            f'Debuffs são *Condições* que prejudicam o personagem de diversas '
-            f'maneiras - como causar dano ou reduzir as estatísticas.\n\n'
+            'Debuffs são *Condições* que prejudicam o personagem de diversas '
+            'maneiras - como causar dano ou reduzir as estatísticas.\n\n'
 
-            f'Os debuffs podem durar uma quantidade fixa de turnos ou por '
-            f'tempo indeterminado.\n\n'
+            'Os debuffs podem durar uma quantidade fixa de turnos ou por '
+            'tempo indeterminado.\n\n'
 
-            f'Quando o personagem com um debuff de um tipo recebe novamente '
-            f'um debuff do mesmo tipo, o número de turnos para se curar '
-            f'retorna para o valor inicial e o '
-            f'nível do debuff é aumentado.\n\n'
+            'Quando o personagem com um debuff de um tipo recebe novamente '
+            'um debuff do mesmo tipo, o número de turnos para se curar '
+            'retorna para o valor inicial e o '
+            'nível do debuff é aumentado.\n\n'
 
-            f'O nível do debuff pode influenciar em quanto de prejuízo '
-            f'ele ira causar ao personagem ou somente dificultar na cura '
-            f'por meio de itens.\n\n'
+            'O nível do debuff pode influenciar em quanto de prejuízo '
+            'ele ira causar ao personagem ou somente dificultar na cura '
+            'por meio de itens.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'*LISTA DE DEBUFFS*:\n\n'
+            '*LISTA DE DEBUFFS*:\n\n'
         )
         for debuff in ALL_DEBUFFS:
             debuff_name = f'({debuff.enum_name.value})'
@@ -753,23 +753,23 @@ def get_details_text(option: str) -> str:
         text = (
             f'{EmojiEnum.STATUS.value}*STATUS(BUFFS)*\n\n'
 
-            f'Buffs são *Condições* que auxiliam o personagem de diversas '
-            f'maneiras - como curar dano ou aprimorar as estatísticas.\n\n'
+            'Buffs são *Condições* que auxiliam o personagem de diversas '
+            'maneiras - como curar dano ou aprimorar as estatísticas.\n\n'
 
-            f'Os buffs podem durar uma quantidade fixa de turnos ou por '
-            f'tempo indeterminado.\n\n'
+            'Os buffs podem durar uma quantidade fixa de turnos ou por '
+            'tempo indeterminado.\n\n'
 
-            f'Quando o personagem com um buff de um tipo recebe novamente '
-            f'um mesmo buff, o número de turnos para se perder o benefício '
-            f'retorna para o valor inicial e o '
-            f'nível do buff é aumentado.\n\n'
+            'Quando o personagem com um buff de um tipo recebe novamente '
+            'um mesmo buff, o número de turnos para se perder o benefício '
+            'retorna para o valor inicial e o '
+            'nível do buff é aumentado.\n\n'
 
-            f'O nível do buff irá influenciar em quanto de auxílio '
-            f'ele ira conceder ao personagem.\n\n'
+            'O nível do buff irá influenciar em quanto de auxílio '
+            'ele ira conceder ao personagem.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'*LISTA ALEATÓRIA DE BUFFS (20)*:\n\n'
+            '*LISTA ALEATÓRIA DE BUFFS (20)*:\n\n'
         )
         for buff in sorted(sample(list(ALL_BUFFS), 20)):
             buff_name = f'({buff.enum_name.value})'
@@ -780,20 +780,20 @@ def get_details_text(option: str) -> str:
         text = (
             f'{EmojiEnum.STATUS.value}*STATUS(CURA)*\n\n'
 
-            f'*Condições* de cura recuperam os Pontos de Vida (HP) do '
-            f'personagem a cada turno.\n\n'
+            '*Condições* de cura recuperam os Pontos de Vida (HP) do '
+            'personagem a cada turno.\n\n'
 
-            f'Essas *Condições* geralmente são recebidas pelo uso de itens ou '
-            f'magias de cura durante a batalha, podendo durar alguns '
-            f'turnos ou por um número indefinido de turnos.\n\n'
+            'Essas *Condições* geralmente são recebidas pelo uso de itens ou '
+            'magias de cura durante a batalha, podendo durar alguns '
+            'turnos ou por um número indefinido de turnos.\n\n'
 
-            f'Fora de batalha, essas *Condições* duram somente um turno, '
-            f'recebendo a cura de um turno multiplicada pelo total de turnos '
-            f'faltantes.\n\n'
+            'Fora de batalha, essas *Condições* duram somente um turno, '
+            'recebendo a cura de um turno multiplicada pelo total de turnos '
+            'faltantes.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
-            f'*LISTA DE CONDIÇÕES DE CURA*:\n\n'
+            '*LISTA DE CONDIÇÕES DE CURA*:\n\n'
         )
 
         for heal_status in HEAL_STATUS:
@@ -805,19 +805,19 @@ def get_details_text(option: str) -> str:
         query = {}
         all_classes = classe_model.get_all(query)
         text = (
-            f'A classe é a definição principal daquilo que o per­sonagem é '
-            f'capaz de realizar no cenário mágico e extraor­dinário. '
-            f'Uma classe é mais que uma profissão; ela é a vocação do seu '
-            f'personagem. A escolha de classe modelará todas as ações do '
-            f'herói durante suas aventuras através de um mun­do de fantasia '
-            f'repleto de magias, assolado por monstros e '
-            f'imerso em batalhas.\n\n'
+            'A classe é a definição principal daquilo que o per­sonagem é '
+            'capaz de realizar no cenário mágico e extraor­dinário. '
+            'Uma classe é mais que uma profissão; ela é a vocação do seu '
+            'personagem. A escolha de classe modelará todas as ações do '
+            'herói durante suas aventuras através de um mun­do de fantasia '
+            'repleto de magias, assolado por monstros e '
+            'imerso em batalhas.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'{EmojiEnum.CLASSE.value}*CLASSES*: /{classe_commands[0]}\n'
-            f'Use o argumento *"all"* ou *"a"* para exibir todas as classes.'
-            f'\n\n'
+            'Use o argumento *"all"* ou *"a"* para exibir todas as classes.'
+            '\n\n'
         )
 
         keys = attrgetter('name')
@@ -829,24 +829,24 @@ def get_details_text(option: str) -> str:
         query = {}
         all_races = race_model.get_all(query)
         text = (
-            f'Diversas culturas e sociedades povoam o mundo; algumas são '
-            f'formadas por humanos, mas existem outras que são compostas por '
-            f'raças fantásticas, como elfos e anões. '
-            f'Os aventureiros e heróis podem surgir dentre esses vários '
-            f'povos. A raça escolhida fornece ao personagem um conjunto '
-            f'básico de vantagens e habilidades especiais. '
-            f'Se optar por um guerreiro, seu personagem será um anão matador '
-            f'de monstros muito teimoso, uma graciosa elfa com domínio da '
-            f'esgrima ou um obstinado gladiador Orque? Caso escolha um mago, '
-            f'ele será um corajoso humano mercenário ou um astuto Halfling '
-            f'conjurador? A raça não afeta somente os valores de atributo e '
-            f'os poderes do personagem, mas também fornece as primeiras '
-            f'pistas para construir sua história.\n\n'
+            'Diversas culturas e sociedades povoam o mundo; algumas são '
+            'formadas por humanos, mas existem outras que são compostas por '
+            'raças fantásticas, como elfos e anões. '
+            'Os aventureiros e heróis podem surgir dentre esses vários '
+            'povos. A raça escolhida fornece ao personagem um conjunto '
+            'básico de vantagens e habilidades especiais. '
+            'Se optar por um guerreiro, seu personagem será um anão matador '
+            'de monstros muito teimoso, uma graciosa elfa com domínio da '
+            'esgrima ou um obstinado gladiador Orque? Caso escolha um mago, '
+            'ele será um corajoso humano mercenário ou um astuto Halfling '
+            'conjurador? A raça não afeta somente os valores de atributo e '
+            'os poderes do personagem, mas também fornece as primeiras '
+            'pistas para construir sua história.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
             f'{EmojiEnum.RACE.value}*RAÇAS*: /{race_commands[0]}\n'
-            f'Use o argumento *"all"* ou *"a"* para exibir todas as raças.\n\n'
+            'Use o argumento *"all"* ou *"a"* para exibir todas as raças.\n\n'
         )
 
         keys = attrgetter('name')
@@ -858,14 +858,14 @@ def get_details_text(option: str) -> str:
         query = {'_class': HealingConsumable.__name__}
         all_healing_consumables = item_model.get_all(query)
         text = (
-            f'Os itens que curam HP desempenham o papel vital de '
-            f'restaurar a saúde dos personagens. '
-            f'Esses itens são frequentemente consumíveis ou utilizáveis '
-            f'e são essenciais para a sobrevivência dos '
-            f'aventureiros em situações desafiadoras. '
-            f'Eles são projetados para fornecer uma solução rápida e eficaz '
-            f'para recuperar pontos de vida perdidos durante combates, '
-            f'explorações ou outros desafios.\n\n'
+            'Os itens que curam HP desempenham o papel vital de '
+            'restaurar a saúde dos personagens. '
+            'Esses itens são frequentemente consumíveis ou utilizáveis '
+            'e são essenciais para a sobrevivência dos '
+            'aventureiros em situações desafiadoras. '
+            'Eles são projetados para fornecer uma solução rápida e eficaz '
+            'para recuperar pontos de vida perdidos durante combates, '
+            'explorações ou outros desafios.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
@@ -886,13 +886,13 @@ def get_details_text(option: str) -> str:
         }
         all_cure_consumables = item_model.get_all(query)
         text = (
-            f'Os itens que curam Condições (Status) negativas atuam na '
-            f'retirada dos efeitos desfavoráveis que prejudicam o '
-            f'personagem ao longo do tempo. '
-            f'Geralmente, esses itens são representados por poções, elixires, '
-            f'ervas medicinais ou outros recursos mágicos ou alquímicos. '
-            f'Ao serem utilizados, esse itens diminuem o nível da condição '
-            f'que é retirada do personagem ao alcançar o nível zero.\n\n'
+            'Os itens que curam Condições (Status) negativas atuam na '
+            'retirada dos efeitos desfavoráveis que prejudicam o '
+            'personagem ao longo do tempo. '
+            'Geralmente, esses itens são representados por poções, elixires, '
+            'ervas medicinais ou outros recursos mágicos ou alquímicos. '
+            'Ao serem utilizados, esse itens diminuem o nível da condição '
+            'que é retirada do personagem ao alcançar o nível zero.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
@@ -910,15 +910,15 @@ def get_details_text(option: str) -> str:
         query = {'_class': ReviveConsumable.__name__}
         all_revive_consumables = item_model.get_all(query)
         text = (
-            f'Os itens que revivem personagens exercem um papel crucial ao '
-            f'proporcionar uma nova chance aos aventureiros que enfrentaram '
-            f'a morte. Esses itens são frequentemente raros e preciosos, '
-            f'representando uma oportunidade de trazer de volta à vida um '
-            f'personagem que foi derrotado em combate ou por circunstâncias '
-            f'adversas. '
-            f'Ao serem utilizados, os itens de ressurreição têm o poder de '
-            f'restaurar um personagem à vida, superando lesões fatais ou '
-            f'mesmo mortes permanentes.\n\n'
+            'Os itens que revivem personagens exercem um papel crucial ao '
+            'proporcionar uma nova chance aos aventureiros que enfrentaram '
+            'a morte. Esses itens são frequentemente raros e preciosos, '
+            'representando uma oportunidade de trazer de volta à vida um '
+            'personagem que foi derrotado em combate ou por circunstâncias '
+            'adversas. '
+            'Ao serem utilizados, os itens de ressurreição têm o poder de '
+            'restaurar um personagem à vida, superando lesões fatais ou '
+            'mesmo mortes permanentes.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
@@ -959,29 +959,29 @@ def get_details_text(option: str) -> str:
         text = (
             f'As {TrocadoEnum.TROCADO_POUCHES.value}'
             f'{EmojiEnum.TROCADO_POUCH.value} '
-            f'são bolsas especiais projetadas para '
+            'são bolsas especiais projetadas para '
             f'armazenar o {TrocadoEnum.TROCADO.value}'
             f'{EmojiEnum.TROCADO.value}, '
-            f'a moeda valiosa do jogo. '
-            f'Essas bolsas são distintas por sua capacidade de armazenar '
+            'a moeda valiosa do jogo. '
+            'Essas bolsas são distintas por sua capacidade de armazenar '
             f'diferentes quantidades de {TrocadoEnum.TROCADO.value}'
             f'{EmojiEnum.TROCADO.value}, '
-            f'dependendo do tipo e '
-            f'tamanho específicos. Elas podem ser obtidas de baús.\n\n'
+            'dependendo do tipo e '
+            'tamanho específicos. Elas podem ser obtidas de baús.\n\n'
 
-            f'Existem quatro tipos principais de '
+            'Existem quatro tipos principais de '
             f'{TrocadoEnum.TROCADO_POUCHES.value}{EmojiEnum.TROCADO_POUCH.value}, '
-            f'cada um correspondendo a uma hierarquia diferente de valores '
-            f'monetários. O tipo Tax é a bolsa de menor valor, seguido por '
-            f'Monarch, Emperor e, no ápice, Overlord.\n\n'
+            'cada um correspondendo a uma hierarquia diferente de valores '
+            'monetários. O tipo Tax é a bolsa de menor valor, seguido por '
+            'Monarch, Emperor e, no ápice, Overlord.\n\n'
 
             f'Além disso, as {TrocadoEnum.TROCADO_POUCHES.value}{EmojiEnum.TROCADO_POUCH.value} '
-            f'também variam em tamanho, '
-            f'apresentando seis categorias distintas: Tiny, Minor, Normal, '
-            f'Greater, Major e Superior. Cada tamanho representa a capacidade '
+            'também variam em tamanho, '
+            'apresentando seis categorias distintas: Tiny, Minor, Normal, '
+            'Greater, Major e Superior. Cada tamanho representa a capacidade '
             f'da bolsa de armazenar {TrocadoEnum.TROCADO.value}'
             f'{EmojiEnum.TROCADO.value}, '
-            f'sendo Tiny a menor e Superior a maior.\n\n'
+            'sendo Tiny a menor e Superior a maior.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
@@ -999,21 +999,21 @@ def get_details_text(option: str) -> str:
         query = {'_class': GemstoneConsumable.__name__}
         all_other_consumables = item_model.get_all(query)
         text = (
-            f'As Gemstones, ou Pedras Preciosas, são itens valiosos e '
-            f'cobiçados no vasto mundo, oferecendo aos aventureiros uma '
+            'As Gemstones, ou Pedras Preciosas, são itens valiosos e '
+            'cobiçados no vasto mundo, oferecendo aos aventureiros uma '
             f'fonte de {TrocadoEnum.TROCADOS.value}{EmojiEnum.TROCADO.value} '
-            f'substancial quando '
-            f'vendidas. Essas gemas são classificadas em três tamanhos '
-            f'distintos: Minor, Normal e Greater, representando a raridade '
-            f'e o valor relativo de cada pedra.\n\n'
+            'substancial quando '
+            'vendidas. Essas gemas são classificadas em três tamanhos '
+            'distintos: Minor, Normal e Greater, representando a raridade '
+            'e o valor relativo de cada pedra.\n\n'
 
-            f'Dentro de cada categoria de tamanho, as Gemstones são '
-            f'diferenciadas pelos tipos de pedras preciosas que incorporam. '
-            f'As variedades incluem Opal, Jadeite, Sapphire, Ruby, Emerald e '
-            f'Diamond. Cada tipo de pedra possui suas próprias '
-            f'características únicas, proporcionando uma variedade de '
-            f'opções aos jogadores que desejam maximizar seus ganhos ao '
-            f'vender esses itens valiosos.\n\n'
+            'Dentro de cada categoria de tamanho, as Gemstones são '
+            'diferenciadas pelos tipos de pedras preciosas que incorporam. '
+            'As variedades incluem Opal, Jadeite, Sapphire, Ruby, Emerald e '
+            'Diamond. Cada tipo de pedra possui suas próprias '
+            'características únicas, proporcionando uma variedade de '
+            'opções aos jogadores que desejam maximizar seus ganhos ao '
+            'vender esses itens valiosos.\n\n'
 
             f'{TEXT_SEPARATOR}\n\n'
 
@@ -1323,12 +1323,12 @@ async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
         chat_id=chat_id,
         text=(
             f'{SECTION_HEAD.format("DEPLOYANDO")}\n'
-            f'Viajantes destemidos, uma atualização mágica acaba de ser '
-            f'lançada em mim! '
-            f'Porém, como toda mudança encantada, aqueles que estavam '
-            f'desfrutando de um merecido descanso foram interrompidos, '
-            f'por isso todos que estiverem cansandos retomarão o descanso '
-            f'em breve para renovar suas energias.\n\n'
+            'Viajantes destemidos, uma atualização mágica acaba de ser '
+            'lançada em mim! '
+            'Porém, como toda mudança encantada, aqueles que estavam '
+            'desfrutando de um merecido descanso foram interrompidos, '
+            'por isso todos que estiverem cansandos retomarão o descanso '
+            'em breve para renovar suas energias.\n\n'
             f'{" ".join(player_name)}'
         ),
     )

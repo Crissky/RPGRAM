@@ -16,7 +16,7 @@ REFRESH_ADD_STATS_PATTERN = 'refresh_add_stats'
 
 # ALERT BUTTON TEXTS
 ACCESS_DENIED = (
-    f'⛔VOCÊ NÃO TEM ACESSO A ESSAS ESTATÍSTICAS⛔\n\n'
+    '⛔VOCÊ NÃO TEM ACESSO A ESSAS ESTATÍSTICAS⛔\n\n'
     f'Use o comando !{COMMANDS[0]} para acessar '
     f'SUAS {EmojiEnum.BASE_ATTRIBUTES.value}ESTATÍSTICAS.'
 )

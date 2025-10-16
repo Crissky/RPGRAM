@@ -157,7 +157,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             )
     else:
         text = (
-            f'Seu personagem ainda não possui equipamentos.\n'
+            'Seu personagem ainda não possui equipamentos.\n'
             f'Equips: {equips}'
         )
         await reply_text(

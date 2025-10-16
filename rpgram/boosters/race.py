@@ -68,32 +68,32 @@ class Race(StatsBooster):
         text += f'`{STRENGTH_EMOJI_TEXT}: {self.strength:+}'
         if verbose:
             text += f' x({self.multiplier_strength:+.2f})'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{DEXTERITY_EMOJI_TEXT}: {self.dexterity:+}'
         if verbose:
             text += f' x({self.multiplier_dexterity:+.2f})'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{CONSTITUTION_EMOJI_TEXT}: {self.constitution:+}'
         if verbose:
             text += f' x({self.multiplier_constitution:+.2f})'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{INTELLIGENCE_EMOJI_TEXT}: {self.intelligence:+}'
         if verbose:
             text += f' x({self.multiplier_intelligence:+.2f})'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{WISDOM_EMOJI_TEXT}: {self.wisdom:+}'
         if verbose:
             text += f' x({self.multiplier_wisdom:+.2f})'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{CHARISMA_EMOJI_TEXT}: {self.charisma:+}'
         if verbose:
             text += f' x({self.multiplier_charisma:+.2f})'
-        text += f'`\n'
+        text += '`\n'
 
         if not markdown:
             text = remove_bold(text)

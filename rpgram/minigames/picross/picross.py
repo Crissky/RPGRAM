@@ -44,7 +44,7 @@ class PicrossGame:
                     width += 1
         elif rarity is not None:
             raise TypeError(
-                f'Rarity deve ser do tipo RarityEnum ou None. '
+                'Rarity deve ser do tipo RarityEnum ou None. '
                 f'Tipo: {type(rarity)}.'
             )
 

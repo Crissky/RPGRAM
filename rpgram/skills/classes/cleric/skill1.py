@@ -43,9 +43,9 @@ if TYPE_CHECKING:
 class IdunnsAppleSkill(BaseSkill):
     NAME = ClericSkillEnum.IDUNNÇÇÇS_APPLE.value
     DESCRIPTION = (
-        f'Recita cânticos antigos para materializar '
-        f'uma *Maçã Mágica* que irradia uma luz suave e '
-        f'amplifica a vitalidade de um aliado, '
+        'Recita cânticos antigos para materializar '
+        'uma *Maçã Mágica* que irradia uma luz suave e '
+        'amplifica a vitalidade de um aliado, '
         f'aumentando seu *{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (200% + 20% x Rank x Nível).'
     )
@@ -88,7 +88,7 @@ class IdunnsAppleSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é agraciado com uma *Maçã Mágica* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -104,8 +104,8 @@ class IdunnsAppleSkill(BaseSkill):
 class KratossWrathSkill(BaseSkill):
     NAME = ClericSkillEnum.KRATOSÇÇÇS_WRATH.value
     DESCRIPTION = (
-        f'Como o peso de um corpo, faz decair sobre um aliado a '
-        f'*Ira do Deus Grego da Guerra*, '
+        'Como o peso de um corpo, faz decair sobre um aliado a '
+        '*Ira do Deus Grego da Guerra*, '
         f'aumentando seu *{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -148,8 +148,8 @@ class KratossWrathSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é agraciado com a '
-                    f'*Ira do Deus Grego da Guerra* '
-                    f'que aumenta o '
+                    '*Ira do Deus Grego da Guerra* '
+                    'que aumenta o '
                     f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_attack} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -165,8 +165,8 @@ class KratossWrathSkill(BaseSkill):
 class UllrsFocusSkill(BaseSkill):
     NAME = ClericSkillEnum.ULLRÇÇÇS_FOCUS.value
     DESCRIPTION = (
-        f'*Ullr* limpa a mente de um aliado, fazendo-o perceber '
-        f'cada ponto vulnerável na defesa do oponente, '
+        '*Ullr* limpa a mente de um aliado, fazendo-o perceber '
+        'cada ponto vulnerável na defesa do oponente, '
         f'aumentando o *{PRECISION_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -209,8 +209,8 @@ class UllrsFocusSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é agraciado com o '
-                    f'*Foco de Ullr* '
-                    f'que aumenta o '
+                    '*Foco de Ullr* '
+                    'que aumenta o '
                     f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
                     f'em {condition.bonus_precision_attack} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -226,8 +226,8 @@ class UllrsFocusSkill(BaseSkill):
 class HecatesFlamesSkill(BaseSkill):
     NAME = ClericSkillEnum.HECATEÇÇÇS_FLAMES.value
     DESCRIPTION = (
-        f'*Chamas Mágicas* irrompem dos céus, banhando um aliado e '
-        f'fazendo com que seu poder mágico entre em um estado de ebulição, '
+        '*Chamas Mágicas* irrompem dos céus, banhando um aliado e '
+        'fazendo com que seu poder mágico entre em um estado de ebulição, '
         f'aumentando o *{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -270,8 +270,8 @@ class HecatesFlamesSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é agraciado com as '
-                    f'*Chamas Mágicas* '
-                    f'que aumentam o '
+                    '*Chamas Mágicas* '
+                    'que aumentam o '
                     f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
                     f'em {condition.bonus_magical_attack} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -287,8 +287,8 @@ class HecatesFlamesSkill(BaseSkill):
 class OgunsCloakSkill(BaseSkill):
     NAME = ClericSkillEnum.OGUNÇÇÇS_CLOAK.value
     DESCRIPTION = (
-        f'Conjura *Fragmentos de Metal dos Deuses* que envolvem um aliado, '
-        f'formando uma espécie de manto escuro e reluzente que '
+        'Conjura *Fragmentos de Metal dos Deuses* que envolvem um aliado, '
+        'formando uma espécie de manto escuro e reluzente que '
         f'aumentam a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -331,8 +331,8 @@ class OgunsCloakSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é agraciado com os '
-                    f'*Fragmentos de Metal dos Deuses* '
-                    f'que aumentam a '
+                    '*Fragmentos de Metal dos Deuses* '
+                    'que aumentam a '
                     f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_defense} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -348,8 +348,8 @@ class OgunsCloakSkill(BaseSkill):
 class IsissVeilSkill(BaseSkill):
     NAME = ClericSkillEnum.ISISÇÇÇS_VEIL.value
     DESCRIPTION = (
-        f'Evoca uma *Névoa Resplandecente de Energia Divina* '
-        f'que cinge um aliado, '
+        'Evoca uma *Névoa Resplandecente de Energia Divina* '
+        'que cinge um aliado, '
         f'aumentando a *{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -392,8 +392,8 @@ class IsissVeilSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é agraciado com a '
-                    f'*Névoa Resplandecente de Energia Divina* '
-                    f'que aumenta a '
+                    '*Névoa Resplandecente de Energia Divina* '
+                    'que aumenta a '
                     f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                     f'em {condition.bonus_magical_defense} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -409,9 +409,9 @@ class IsissVeilSkill(BaseSkill):
 class AnansisTrickerySkill(BaseSkill):
     NAME = ClericSkillEnum.ANANSIÇÇÇS_TRICKERY.value
     DESCRIPTION = (
-        f'Invoca a *Astúcia e Engenhosidade de Anansi* e '
-        f'tece uma *Teia de Ilusões*, '
-        f'aumentando o '
+        'Invoca a *Astúcia e Engenhosidade de Anansi* e '
+        'tece uma *Teia de Ilusões*, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -454,8 +454,8 @@ class AnansisTrickerySkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* recebe a '
-                    f'*Teia de Ilusões* '
-                    f'que aumenta o '
+                    '*Teia de Ilusões* '
+                    'que aumenta o '
                     f'*{HIT_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit} pontos e a '
                     f'*{EVASION_EMOJI_TEXT}* '
@@ -473,8 +473,8 @@ class AnansisTrickerySkill(BaseSkill):
 class VidarsBraverySkill(BaseSkill):
     NAME = ClericSkillEnum.VIDARÇÇÇS_BRAVERY.value
     DESCRIPTION = (
-        f'Unge um aliado com a *Bravura Indomita de Vigar*, '
-        f'aumentando o '
+        'Unge um aliado com a *Bravura Indomita de Vigar*, '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -525,7 +525,7 @@ class VidarsBraverySkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é ungido com a *Bravura Indomita* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit_points} pontos, '
                     f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
@@ -545,9 +545,9 @@ class VidarsBraverySkill(BaseSkill):
 class ArtemissArrowSkill(BaseSkill):
     NAME = ClericSkillEnum.ARTEMISÇÇÇS_ARROW.value
     DESCRIPTION = (
-        f'Atira contra um aliado uma *Flecha Lunar* que desperta os '
-        f'instintos de combate do alvo, '
-        f'aumentando o '
+        'Atira contra um aliado uma *Flecha Lunar* que desperta os '
+        'instintos de combate do alvo, '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
         f'*{HIT_EMOJI_TEXT}* e a '
@@ -599,7 +599,7 @@ class ArtemissArrowSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é atingido pela *Flecha Lunar* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit_points} pontos, '
                     f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
@@ -621,10 +621,10 @@ class ArtemissArrowSkill(BaseSkill):
 class CeridwensMagicPotionSkill(BaseSkill):
     NAME = ClericSkillEnum.CERIDWENÇÇÇS_MAGIC_POTION.value
     DESCRIPTION = (
-        f'Chama a realidade um antigo *Caldeirão Encantado* que derrama sobre '
-        f'um aliado uma *Poção Mágica* que desperta os seus '
-        f'poderes sobrenaturais, '
-        f'aumentando o '
+        'Chama a realidade um antigo *Caldeirão Encantado* que derrama sobre '
+        'um aliado uma *Poção Mágica* que desperta os seus '
+        'poderes sobrenaturais, '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -675,7 +675,7 @@ class CeridwensMagicPotionSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é banhado pela *Poção Mágica* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit_points} pontos, '
                     f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
@@ -695,9 +695,9 @@ class CeridwensMagicPotionSkill(BaseSkill):
 class GraceOfThePantheonSkill(BaseSkill):
     NAME = ClericSkillEnum.GRACE_OF_THE_PANTHEON.value
     DESCRIPTION = (
-        f'Agraciado pelos deuses, sua fé inabalável concede a um aliado um '
+        'Agraciado pelos deuses, sua fé inabalável concede a um aliado um '
         f'fragmento da *{ClericSkillEnum.GRACE_OF_THE_PANTHEON.value}*, '
-        f'aumentando o '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
@@ -761,7 +761,7 @@ class GraceOfThePantheonSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é agraciado por um fragmentos da '
                     f'*{self.name}* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit_points} pontos, '
                     f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '

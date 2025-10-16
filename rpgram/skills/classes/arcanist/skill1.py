@@ -29,8 +29,8 @@ if TYPE_CHECKING:
 class FireRaySkill(BaseSkill):
     NAME = ArcanistSkillEnum.FIRE_RAY.value
     DESCRIPTION = (
-        f'Usa as mãos para conjurar um feixe concentrado de *Energia Ígnea*, '
-        f'causando dano de '
+        'Usa as mãos para conjurar um feixe concentrado de *Energia Ígnea*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -75,9 +75,9 @@ class FireRaySkill(BaseSkill):
 class FireWaveSkill(BaseSkill):
     NAME = ArcanistSkillEnum.FIRE_WAVE.value
     DESCRIPTION = (
-        f'Com um levantar das mãos, conjura uma poderosa *Parede de Chamas* '
-        f'que se espalha rapidamente, incinerando tudo em seu caminho e '
-        f'causando dano de '
+        'Com um levantar das mãos, conjura uma poderosa *Parede de Chamas* '
+        'que se espalha rapidamente, incinerando tudo em seu caminho e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
@@ -122,11 +122,11 @@ class FireWaveSkill(BaseSkill):
 class MagmaGeyserSkill(BaseSkill):
     NAME = ArcanistSkillEnum.MAGMA_GEYSER.value
     DESCRIPTION = (
-        f'Toca o chão com a ponta do dedo para canalizar a energia da '
-        f'*Terra* e do *Fogo*, criando uma *Erupção de Magma* em um ponto '
-        f'específico, lançando jatos de magma incandescente que incineram '
-        f'o alvo e '
-        f'causam dano de '
+        'Toca o chão com a ponta do dedo para canalizar a energia da '
+        '*Terra* e do *Fogo*, criando uma *Erupção de Magma* em um ponto '
+        'específico, lançando jatos de magma incandescente que incineram '
+        'o alvo e '
+        'causam dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -171,9 +171,9 @@ class MagmaGeyserSkill(BaseSkill):
 class SwirlSkill(BaseSkill):
     NAME = ArcanistSkillEnum.SWIRL.value
     DESCRIPTION = (
-        f'Canaliza a energia arcana e cria um *Redemoinho Voraz* que '
-        f'suga o alvo, '
-        f'causando dano de '
+        'Canaliza a energia arcana e cria um *Redemoinho Voraz* que '
+        'suga o alvo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -218,16 +218,16 @@ class SwirlSkill(BaseSkill):
 class SandGustSkill(BaseSkill):
     NAME = ArcanistSkillEnum.SAND_GUST.value
     DESCRIPTION = (
-        f'Manipula a *Terra* e o *Vento* para criar um poderoso '
-        f'*Turbilhão de Areia* que se move rapidamente, '
-        f'arrastando o alvo e '
-        f'causando dano de '
+        'Manipula a *Terra* e o *Vento* para criar um poderoso '
+        '*Turbilhão de Areia* que se move rapidamente, '
+        'arrastando o alvo e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}* com nível igual ao '
-        f'(Rank x Nível).'
+        '(Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -284,14 +284,14 @@ class SandGustSkill(BaseSkill):
 class MudTrapSkill(BaseSkill):
     NAME = ArcanistSkillEnum.MUD_TRAP.value
     DESCRIPTION = (
-        f'Pisa e arrasta o pé suavemente pelo chão, liquefazendo o solo para '
-        f'criar um *Poço de Lama Viscoso* sob os pés do alvo, '
-        f'causando dano de '
+        'Pisa e arrasta o pé suavemente pelo chão, liquefazendo o solo para '
+        'criar um *Poço de Lama Viscoso* sob os pés do alvo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* e '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
         f'diminuindo a *{EVASION_EMOJI_TEXT}* '
-        f'com base no dano causado (8% + 2% x Rank x Nível).'
+        'com base no dano causado (8% + 2% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -354,11 +354,11 @@ class MudTrapSkill(BaseSkill):
 class TetragramShotSkill(BaseSkill):
     NAME = ArcanistSkillEnum.TETRAGRAM_SHOT.value
     DESCRIPTION = (
-        f'Realiza quatro movimentos concisos e suaves, '
-        f'invocando a energia dos quatro elementos fundamentais para lançar '
-        f'contra o inimigo quatro raios devastadores que se mesclam em um '
-        f'único disparo '
-        f'que causa dano de '
+        'Realiza quatro movimentos concisos e suaves, '
+        'invocando a energia dos quatro elementos fundamentais para lançar '
+        'contra o inimigo quatro raios devastadores que se mesclam em um '
+        'único disparo '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}*, '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}*, '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* e '

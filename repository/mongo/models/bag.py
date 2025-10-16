@@ -13,7 +13,7 @@ class BagModel(Model):
 
         if quantity <= 0:
             raise ValueError(
-                f'Quantidade inválida. Não pode adicionar uma quantidade '
+                'Quantidade inválida. Não pode adicionar uma quantidade '
                 f'menor ou igual a zero. Quantidade: {quantity}.'
             )
 
@@ -50,7 +50,7 @@ class BagModel(Model):
 
         if quantity >= 0:
             raise ValueError(
-                f'Quantidade inválida. A quantidade deve ser um valor menor '
+                'Quantidade inválida. A quantidade deve ser um valor menor '
                 f'que zero. Quantidade: {quantity}.'
             )
         if exists:  # decrementa se existir na bag
@@ -77,7 +77,7 @@ class BagModel(Model):
             )
         else:
             raise ValueError(
-                f'Item não encontrado no bag. Não foi possível decrementar '
+                'Item não encontrado no bag. Não foi possível decrementar '
                 f'a quantidade {quantity}.'
             )
 

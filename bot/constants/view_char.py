@@ -8,6 +8,6 @@ REFRESH_VIEW_CHAR_PATTERN = 'refresh_view_char'
 
 # ALERT BUTTON TEXTS
 ACCESS_DENIED = (
-    f'⛔VOCÊ NÃO TEM ACESSO A ESSE PERSONAGEM⛔\n\n'
+    '⛔VOCÊ NÃO TEM ACESSO A ESSE PERSONAGEM⛔\n\n'
     f'Use o comando !{COMMANDS[0]} para acessar o SEU PERSONAGEM.'
 )

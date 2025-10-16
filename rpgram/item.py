@@ -162,7 +162,7 @@ class Item:
             error_quantity = self.__quantity
             self.__quantity = quantity
             raise ValueError(
-                f'Item não pode ter uma quantidade negativa '
+                'Item não pode ter uma quantidade negativa '
                 f'({error_quantity}).'
             )
 
@@ -182,7 +182,7 @@ class Item:
                 )
             # elif isinstance(self.item, Consumable):
             #     text += f' ({self.weight:.2f}{EmojiEnum.WEIGHT.value})'
-        text += f'\n'
+        text += '\n'
 
         if not markdown:
             text = remove_bold(text)

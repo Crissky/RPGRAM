@@ -78,14 +78,14 @@ class Group:
     @property
     def show_event_points(self) -> str:
         return (
-            f'Pontos de Evento: '
+            'Pontos de Evento: '
             f'{self.current_event_points}/{self.max_event_points}'
         )
 
     @property
     def show_extra_event_points(self) -> str:
         return (
-            f'Pontos de Evento Extra: '
+            'Pontos de Evento Extra: '
             f'{self.current_extra_event_points}/{MAX_EXTRA_EVENT_POINTS}'
         )
 
@@ -131,7 +131,7 @@ class Group:
                 raise ValueError(f'Forneça um valor entre 0 e 24')
             elif value < self.spawn_start_time:
                 raise ValueError(
-                    f'Forneça um valor maior que o start_time: '
+                    'Forneça um valor maior que o start_time: '
                     f'"{self.spawn_start_time}".'
                 )
             self.spawn_end_time = value
@@ -237,7 +237,7 @@ class Group:
             f'Hora de Início de Spawn: {self.spawn_start_time:02}h\n'
             f'Hora de Fim de Spawn: {self.spawn_end_time}h\n'
             f'Multiplicador de XP: {self.multiplier_xp:.2f}\n'
-            f'Mult. de XP por Nível: '
+            'Mult. de XP por Nível: '
             f'{self.character_multiplier_xp:.2f}\n'
             f'Nível do Grupo: {self.group_level}\n'
             f'Total de Jogadores: {self.total_players}\n'

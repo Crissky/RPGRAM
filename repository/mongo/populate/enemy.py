@@ -222,7 +222,7 @@ def learn_skills(enemy_char: NPCharacter) -> NPCharacter:
         except RequirementError as error:
             print(
                 f'O inimigo [{enemy_char.full_name}] '
-                f'não pode aprender a habilidade '
+                'não pode aprender a habilidade '
                 f'{skill_class.NAME}(RANK{skill_class.RANK}) '
                 'porque:',
                 error

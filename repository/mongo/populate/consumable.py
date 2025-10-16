@@ -855,7 +855,7 @@ CONSUMABLES = [
     # Other Items
     {
         'name': 'Identifying Lens',
-        'description': f'Identifica bônus ocultos de um Equipamento.',
+        'description': 'Identifica bônus ocultos de um Equipamento.',
         'weight': 0.30,
         'rarity': RarityEnum.RARE.name,
         'class': IdentifyingConsumable
@@ -863,9 +863,9 @@ CONSUMABLES = [
     {
         'name': 'Tent',
         'description': (
-            f'Barraca pessoal efêmera usada para um aliado descansar. '
+            'Barraca pessoal efêmera usada para um aliado descansar. '
             f'Use "/{COMMANDS[0]} @nome_aliado" para utilizar a barraca '
-            f'e ajudar um aliado a começar o descanso.'
+            'e ajudar um aliado a começar o descanso.'
         ),
         'weight': 1.23,
         'rarity': RarityEnum.RARE.name,
@@ -905,7 +905,7 @@ CONSUMABLES = [
         'name': 'Legendary Proficiency Elixir',
         'description': (
             f'Adiciona {LEGENDARY_PROFICIENCY_ELIXIR_POWER} '
-            f'pontos de experiência.'
+            'pontos de experiência.'
         ),
         'power': LEGENDARY_PROFICIENCY_ELIXIR_POWER,
         'weight': 1.25,
@@ -916,7 +916,7 @@ CONSUMABLES = [
         'name': 'Mythic Proficiency Elixir',
         'description': (
             f'Adiciona {MYTHIC_PROFICIENCY_ELIXIR_POWER} '
-            f'pontos de experiência.'
+            'pontos de experiência.'
         ),
         'power': MYTHIC_PROFICIENCY_ELIXIR_POWER,
         'weight': 1.50,

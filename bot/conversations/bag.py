@@ -216,7 +216,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         if target_id is None:
             text = (
                 f'O jogador "{target_name}" não existe '
-                f'(Não possui o objeto Player).'
+                '(Não possui o objeto Player).'
             )
             return await send_alert_or_message(
                 function_caller='START_BAG()',
@@ -1259,7 +1259,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         drops = context.chat_data[DROPS_CHAT_DATA_KEY]
         if drops.get(message_id, None) is not True:
             drops.pop(message_id, None)
-            query_text = f'Este item não existe mais.'
+            query_text = 'Este item não existe mais.'
             await answer(query=query, text=query_text, show_alert=True)
             await delete_message(
                 function_caller='GET_DROP()',
@@ -1270,7 +1270,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             return ConversationHandler.END
     else:
         create_and_put_drop_dict(context=context)
-        query_text = f'Este item não existe mais.'
+        query_text = 'Este item não existe mais.'
         await answer(query=query, text=query_text, show_alert=True)
         await delete_message(
             function_caller='GET_DROP()',
@@ -1289,9 +1289,9 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if is_full_bag(user_id) and not exists_in_bag(user_id, item_id=item_id):
         query_text = (
-            f'Você não pode pegar mais itens, pois sua bolsa está cheia. '
+            'Você não pode pegar mais itens, pois sua bolsa está cheia. '
             f'A bolsa não pode ter mais de {LIMIT_ITEM_IN_BAG} '
-            f'tipos de itens diferentes.'
+            'tipos de itens diferentes.'
         )
         await answer(query=query, text=query_text, show_alert=True)
 
@@ -1310,7 +1310,7 @@ async def get_drop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         print(
             f'get_drop() - Item não existe mais: _id: {item_id} item: {item}.'
         )
-        query_text = f'Este item não existe mais.'
+        query_text = 'Este item não existe mais.'
         await answer(query=query, text=query_text, show_alert=True)
 
     await delete_message(

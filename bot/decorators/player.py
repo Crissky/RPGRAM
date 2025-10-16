@@ -22,8 +22,8 @@ def need_singup_player(callback):
             return await callback(update, context)
         else:
             text = (
-                f'Você precisa criar sua conta '
-                f'para utilizar esse comando.\n'
+                'Você precisa criar sua conta '
+                'para utilizar esse comando.\n'
                 f'Crie a conta com o comando /{COMMANDS[0]}.'
             )
             await reply_text(

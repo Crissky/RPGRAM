@@ -37,14 +37,14 @@ if TYPE_CHECKING:
 class StabSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.STAB.value
     DESCRIPTION = (
-        f'Se aproxima do inimigo e com um movimento súbito, '
-        f'inflige um golpe mortal com sua arma, '
-        f'causando dano de '
+        'Se aproxima do inimigo e com um movimento súbito, '
+        'inflige um golpe mortal com sua arma, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
-        f'(Rank x Nível), '
+        '(Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 1
@@ -98,9 +98,9 @@ class StabSkill(BaseSkill):
 class QuickDrawSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.QUICK_DRAW.value
     DESCRIPTION = (
-        f'Desenfunda sua arma com uma velocidade incrível, '
-        f'atacando contra o alvo antes que ele possa reagir, '
-        f'causando dano com base no '
+        'Desenfunda sua arma com uma velocidade incrível, '
+        'atacando contra o alvo antes que ele possa reagir, '
+        'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
     )
@@ -140,9 +140,9 @@ class QuickDrawSkill(BaseSkill):
 class SurpriseAttackSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.SURPRISE_ATTACK.value
     DESCRIPTION = (
-        f'Conhecendo o terreno como a palma de sua mão, '
-        f'embosca o inimigo e o ataca com um movimento rápido e silencioso, '
-        f'causando dano com base no '
+        'Conhecendo o terreno como a palma de sua mão, '
+        'embosca o inimigo e o ataca com um movimento rápido e silencioso, '
+        'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível), '
         f'dobrando o dano se for *Acerto Crítico*{EmojiEnum.DICE.value}. '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -198,11 +198,11 @@ class SurpriseAttackSkill(BaseSkill):
 class HuntingNetSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.HUNTING_NET.value
     DESCRIPTION = (
-        f'Lança sobre o oponente uma *Rede* feita de fios cortantes de metal, '
-        f'causando dano de '
+        'Lança sobre o oponente uma *Rede* feita de fios cortantes de metal, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.IMPRISONED)}* com nível igual ao '
         f'(Rank x Nível) se for *Acerto Crítico*{EmojiEnum.DICE.value}.'
     )
@@ -253,13 +253,13 @@ class HuntingNetSkill(BaseSkill):
 class ChompTrapSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.CHOMP_TRAP.value
     DESCRIPTION = (
-        f'Inspirada nas antigas armadilhas utilizadas para capturar '
-        f'grandes animais, '
-        f'lançar um dispositivo articular repleto de espinhos que '
-        f'causa dano de '
+        'Inspirada nas antigas armadilhas utilizadas para capturar '
+        'grandes animais, '
+        'lançar um dispositivo articular repleto de espinhos que '
+        'causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adiciona a condição '
+        'adiciona a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.IMPRISONED)}* e '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
         f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais.'
@@ -317,8 +317,8 @@ class ChompTrapSkill(BaseSkill):
 class SharpFaroSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.SHARP_FARO.value
     DESCRIPTION = (
-        f'Se conentra em usa o *Olfato Apurado* para rastrear os oponentes, '
-        f'aumentando o '
+        'Se conentra em usa o *Olfato Apurado* para rastrear os oponentes, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -360,7 +360,7 @@ class SharpFaroSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se concentra em usa o seu *Olfato Apurado*, '
-                f'aumentando o '
+                'aumentando o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -374,8 +374,8 @@ class SharpFaroSkill(BaseSkill):
 class InvestigationSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.INVESTIGATION.value
     DESCRIPTION = (
-        f'Estuda os movimentos dos oponentes no *Campo de Batalha*, '
-        f'aumentando o '
+        'Estuda os movimentos dos oponentes no *Campo de Batalha*, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* e a '
         f'*{EVASION_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
@@ -420,7 +420,7 @@ class InvestigationSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* analisa o *Campo de Batalha*, '
-                f'aumentando o '
+                'aumentando o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos e a '
                 f'*{EVASION_EMOJI_TEXT}* '

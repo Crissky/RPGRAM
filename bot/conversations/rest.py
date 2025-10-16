@@ -188,7 +188,7 @@ async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f'HP: {current_hp}\n'
                 f'Status: {debuffs_text}\n\n'
                 f'{player_character.player_name} '
-                f'irá recuperar HP e Status a cada '
+                'irá recuperar HP e Status a cada '
                 f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
             )
 
@@ -297,7 +297,7 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
     report_text = f'*HP*: {old_show_hp} ››› {new_show_hp} (*{true_cure}*).'
     hp_reporting = (
         f'{revive_reporting}'
-        f'Seu personagem curou HP❤️‍🩹 descansando!\n\n'
+        'Seu personagem curou HP❤️‍🩹 descansando!\n\n'
         f'{report_text}\n\n'
     )
 
@@ -311,8 +311,8 @@ async def job_rest_cure(context: ContextTypes.DEFAULT_TYPE):
         job.schedule_removal()
         text = (
             f'{hp_reporting}'
-            f'O HP do seu personagem está completamente recuperado. '
-            f'O descanso foi finalizado.'
+            'O HP do seu personagem está completamente recuperado. '
+            'O descanso foi finalizado.'
         )
         section_name = SECTION_TEXT_WAKEUP
         section_start = SECTION_HEAD_WAKEUP_START
@@ -435,7 +435,7 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         text = (
             f'{reply_text_rest}\n\n'
             f'{players_hp}\n\n'
-            f'Os personagens irão recuperar HP e Status a cada '
+            'Os personagens irão recuperar HP e Status a cada '
             f'{MINUTES_TO_RECOVERY_HIT_POINTS} minutos.'
         )
 
