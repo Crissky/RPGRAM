@@ -33,10 +33,10 @@ if TYPE_CHECKING:
 class IxChelsAmphoraSkill(BaseSkill):
     NAME = ClericSkillEnum.IXCHELÇÇÇS_AMPHORA.value
     DESCRIPTION = (
-        f'Um ritual de restauração que conjura uma *Amphora Mística* '
+        'Um ritual de restauração que conjura uma *Amphora Mística* '
         f'que cura o *{HIT_POINT_FULL_EMOJI_TEXT}* de um aliado '
         f'com base na *{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-        f'(200% + 10% x Rank x Nível).'
+        '(200% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -78,7 +78,7 @@ class IxChelsAmphoraSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é banhado pela águas de uma '
-                    f'*Amphora Mística* que cura suas feridas.\n'
+                    '*Amphora Mística* que cura suas feridas.\n'
                     f'*{report_text}*({dice.text}).'
                 )
             }
@@ -91,9 +91,9 @@ class IxChelsAmphoraSkill(BaseSkill):
 class DhanvantarisAmritaSkill(BaseSkill):
     NAME = ClericSkillEnum.DHANVANTARIÇÇÇS_AMRITA.value
     DESCRIPTION = (
-        f'Um ritual de purificação que conjura uma *Amrita* '
-        f'para curar até (5 x Rank x Nível) níveis de condições aleatórias '
-        f'de um aliado.'
+        'Um ritual de purificação que conjura uma *Amrita* '
+        'para curar até (5 x Rank x Nível) níveis de condições aleatórias '
+        'de um aliado.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -152,15 +152,15 @@ class DhanvantarisAmritaSkill(BaseSkill):
 class ConcealmentSkill(BaseSkill):
     NAME = ClericSkillEnum.CONCEALMENT.value
     DESCRIPTION = (
-        f'Declara uma palavra de poder que oprime a alma do alvo, '
-        f'causando dano '
+        'Declara uma palavra de poder que oprime a alma do alvo, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
-        f'O dano é setuplicado se o alvo for uma *Criatura Malégna* '
+        'O dano é setuplicado se o alvo for uma *Criatura Malégna* '
         f'({", ".join(r.title() for r in MALEGNE_RACES)}) ou se estiver '
-        f'com uma *Condição Amaldiçoante* '
+        'com uma *Condição Amaldiçoante* '
         f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}), '
-        f'além disso, cura todas as *Condições Amaldiçoantes*.'
+        'além disso, cura todas as *Condições Amaldiçoantes*.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -217,16 +217,16 @@ class ConcealmentSkill(BaseSkill):
 class HolyFireSkill(BaseSkill):
     NAME = ClericSkillEnum.HOLY_FIRE.value
     DESCRIPTION = (
-        f'Usa o poder da Fé para criar *Chamas Brancas* que incendeiam '
-        f'o espírito do alvo, causando dano de '
+        'Usa o poder da Fé para criar *Chamas Brancas* que incendeiam '
+        'o espírito do alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
-        f'O dano é decuplicado se o alvo for uma *Criatura Malégna* '
+        'O dano é decuplicado se o alvo for uma *Criatura Malégna* '
         f'({", ".join(r.title() for r in MALEGNE_RACES)}) ou se estiver '
-        f'com uma *Condição Amaldiçoante* '
+        'com uma *Condição Amaldiçoante* '
         f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}), '
-        f'além disso, cura todas as *Condições Amaldiçoantes*.'
+        'além disso, cura todas as *Condições Amaldiçoantes*.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -285,15 +285,15 @@ class HolyFireSkill(BaseSkill):
 class DivinePunishmentSkill(BaseSkill):
     NAME = ClericSkillEnum.DIVINE_PUNISHMENT.value
     DESCRIPTION = (
-        f'Clama pela punição dos deuses que acenam gentilmente em favor do '
-        f'rogador, causando dano '
+        'Clama pela punição dos deuses que acenam gentilmente em favor do '
+        'rogador, causando dano '
         f'*{get_damage_emoji_text(DamageEnum.DIVINE)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
-        f'O dano é centuplicado se o alvo for uma *Criatura Malégna* '
+        'O dano é centuplicado se o alvo for uma *Criatura Malégna* '
         f'({", ".join(r.title() for r in MALEGNE_RACES)}) ou se estiver '
-        f'com uma *Condição Amaldiçoante* '
+        'com uma *Condição Amaldiçoante* '
         f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}), '
-        f'além disso, cura todas as *Condições Amaldiçoantes*.'
+        'além disso, cura todas as *Condições Amaldiçoantes*.'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{

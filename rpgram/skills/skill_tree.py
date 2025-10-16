@@ -178,7 +178,7 @@ class SkillTree:
                 )
             else:
                 report['text'] = (
-                    f'Você não atende aos requisitos para aprimorar a '
+                    'Você não atende aos requisitos para aprimorar a '
                     f'habilidade *{skill.name}*\n\n'
                     f'{requirements_report["text"]}'
                 )
@@ -316,7 +316,7 @@ class SkillTree:
         return (
             f'{TEXT_DELIMITER}\n'
             f'{self.character.full_name_with_level}\n'
-            f'SKILLS:\n\n'
+            'SKILLS:\n\n'
             f'{text}'
             f'\n{TEXT_DELIMITER}\n'
         )

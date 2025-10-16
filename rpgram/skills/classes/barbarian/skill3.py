@@ -42,8 +42,8 @@ if TYPE_CHECKING:
 class WildForgeSkill(BaseSkill):
     NAME = BarbarianSkillEnum.WILD_FORGE.value
     DESCRIPTION = (
-        f'Imbui a própria arma com algum *Elemento Selvagem* aleatório '
-        f'com dano baseado no '
+        'Imbui a própria arma com algum *Elemento Selvagem* aleatório '
+        'com dano baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -127,7 +127,7 @@ class WildForgeSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}*{self.dice.text} forja {element_names} '
-                f'e embebeda sua(s) arma(s), recebendo '
+                'e embebeda sua(s) arma(s), recebendo '
                 f'o tipo de dano {damage_emoji_names}.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -140,11 +140,11 @@ class WildForgeSkill(BaseSkill):
 class SalamandersBreathSkill(BaseSkill):
     NAME = BarbarianSkillEnum.SALAMANDERÇÇÇS_BREATH.value
     DESCRIPTION = (
-        f'*Espírito da Salamandra*: Respira fundo, '
-        f'concentrando seu calor interno, e '
-        f'com um rugido feroz expele uma nuvem densa de vapor '
-        f'incandescente de sua boca, liberando chamas abrasadoras que '
-        f'incinera seu alvo, causando dano de '
+        '*Espírito da Salamandra*: Respira fundo, '
+        'concentrando seu calor interno, e '
+        'com um rugido feroz expele uma nuvem densa de vapor '
+        'incandescente de sua boca, liberando chamas abrasadoras que '
+        'incinera seu alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -182,10 +182,10 @@ class SalamandersBreathSkill(BaseSkill):
 class SweepingRocSkill(BaseSkill):
     NAME = BarbarianSkillEnum.SWEEPING_ROC.value
     DESCRIPTION = (
-        f'*Espírito de Roc*: Com um grito feroz, '
-        f'realiza um salto veloz em direção ao alvo e '
-        f'executa um golpe devastador '
-        f'causando dano de '
+        '*Espírito de Roc*: Com um grito feroz, '
+        'realiza um salto veloz em direção ao alvo e '
+        'executa um golpe devastador '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
@@ -229,17 +229,17 @@ class SweepingRocSkill(BaseSkill):
 class HydraFangsSkill(BaseSkill):
     NAME = BarbarianSkillEnum.HYDRAÇÇÇS_FANGS.value
     DESCRIPTION = (
-        f'*Espírito da Hidra*: Com movimentos de um predador implacável, '
-        f'ataca com as armas envolvidas em '
-        f'uma névoa ácida, '
-        f'causando dano de '
+        '*Espírito da Hidra*: Com movimentos de um predador implacável, '
+        'ataca com as armas envolvidas em '
+        'uma névoa ácida, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.ACID)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'adicionando as condições '
+        'adicionando as condições '
         f'*{get_debuff_emoji_text(DebuffEnum.BURN)}* e '
         f'*{get_debuff_emoji_text(DebuffEnum.POISONING)}* '
-        f'com nível igual a (Rank x Nível).'
+        'com nível igual a (Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -296,10 +296,10 @@ class HydraFangsSkill(BaseSkill):
 class RaijusFootstepsSkill(BaseSkill):
     NAME = BarbarianSkillEnum.RAIJŪÇÇÇS_FOOTSTEPS.value
     DESCRIPTION = (
-        f'*Espírito da Raijū*: Entra em transe com seus olhos brilhando '
-        f'como eletricidade, se tornando um raio implacável e movendo-se com '
-        f'velocidade sobrenatural, '
-        f'aumentando o '
+        '*Espírito da Raijū*: Entra em transe com seus olhos brilhando '
+        'como eletricidade, se tornando um raio implacável e movendo-se com '
+        'velocidade sobrenatural, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* com base na '
         f'{STRENGTH_EMOJI_TEXT} (200% + 10% x Rank x Nível).'
     )
@@ -343,7 +343,7 @@ class RaijusFootstepsSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* desperta um *Transe Sobrenatural* '
-                f'que aumenta '
+                'que aumenta '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos e '
                 f'*{EVASION_EMOJI_TEXT}* '
@@ -359,13 +359,13 @@ class RaijusFootstepsSkill(BaseSkill):
 class FafnirsScalesSkill(BaseSkill):
     NAME = BarbarianSkillEnum.FAFNIRÇÇÇS_SCALES.value
     DESCRIPTION = (
-        f'*Espírito da Fáfnir*: Tenciona os seus músculos, '
-        f'os contraindo juntamente com a sua pele, transformando-os em pedra, '
-        f'aumentando a '
+        '*Espírito da Fáfnir*: Tenciona os seus músculos, '
+        'os contraindo juntamente com a sua pele, transformando-os em pedra, '
+        'aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
-        f'com base na '
+        'com base na '
         f'{STRENGTH_EMOJI_TEXT} (200% + 10% x Rank x Nível), '
-        f'o bônus concedido aumenta quanto mais próximo da morte estiver.'
+        'o bônus concedido aumenta quanto mais próximo da morte estiver.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -407,8 +407,8 @@ class FafnirsScalesSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* Tenciona os músculos, '
-                f'transformando-os em pedra, '
-                f'aumentando a '
+                'transformando-os em pedra, '
+                'aumentando a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'

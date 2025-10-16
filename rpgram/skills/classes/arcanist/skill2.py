@@ -29,11 +29,11 @@ if TYPE_CHECKING:
 class DarkShotSkill(BaseSkill):
     NAME = ArcanistSkillEnum.DARK_SHOT.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica* e dispara um *Feixe Trevoso*, '
-        f'causando dano de '
+        'Canaliza a *Energia Mágica* e dispara um *Feixe Trevoso*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}* com nível igual ao '
         f'(Rank x Nível) se for *Acerto Crítico*{EmojiEnum.DICE.value}.'
     )
@@ -84,12 +84,12 @@ class DarkShotSkill(BaseSkill):
 class PrismaticAbrumationSkill(BaseSkill):
     NAME = ArcanistSkillEnum.PRISMATIC_ABRUMATION.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica*, criando e lançando um *Artefato '
-        f'Trevoso* que causa dano de '
+        'Canaliza a *Energia Mágica*, criando e lançando um *Artefato '
+        'Trevoso* que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* '
-        f'a *TODES os inimigos* com base no '
+        'a *TODES os inimigos* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (62% + 2.5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}* com nível igual ao '
         f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais.'
     )
@@ -142,12 +142,12 @@ class PrismaticAbrumationSkill(BaseSkill):
 class ConcentratedPrismaticShotSkill(BaseSkill):
     NAME = ArcanistSkillEnum.CONCENTRATED_PRISMATIC_SHOT.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica*, criando um *Artefato Prismático* '
-        f'e orientando o foco do aparato para disparar um '
+        'Canaliza a *Energia Mágica*, criando um *Artefato Prismático* '
+        'e orientando o foco do aparato para disparar um '
         f'*{ArcanistSkillEnum.CONCENTRATED_PRISMATIC_SHOT.value}* '
-        f'que causa dano de '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
-        f'com base no '
+        'com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -189,16 +189,16 @@ class ConcentratedPrismaticShotSkill(BaseSkill):
 class ConcentratedBichromaticAbrumationSkill(BaseSkill):
     NAME = ArcanistSkillEnum.CONCENTRATED_BICHROMATIC_ABRUMATION.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica*, criando um *Artefato Bicromático* '
-        f'e orientando o foco do aparato para disparar uma '
+        'Canaliza a *Energia Mágica*, criando um *Artefato Bicromático* '
+        'e orientando o foco do aparato para disparar uma '
         f'*{ArcanistSkillEnum.CONCENTRATED_BICHROMATIC_ABRUMATION.value}* '
-        f'que causa dano de '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
-        f'com base no '
+        'com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}. Além disso, '
-        f'adiciona a condição '
+        'adiciona a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}* com nível igual ao '
         f'(Rank x Nível) se tirar 10{EmojiEnum.DICE.value} ou mais.'
     )

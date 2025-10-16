@@ -20,8 +20,8 @@ if TYPE_CHECKING:
 class WillOTheWispSkill(BaseSkill):
     NAME = ClericSkillEnum.WILL_O_THE_WISP.value
     DESCRIPTION = (
-        f'Utiliza um artefato antigo para lançar *Chamas Fantasmagóricas* '
-        f'em um inimigo, causando dano de '
+        'Utiliza um artefato antigo para lançar *Chamas Fantasmagóricas* '
+        'em um inimigo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
@@ -58,9 +58,9 @@ class WillOTheWispSkill(BaseSkill):
 class GreekFireSkill(BaseSkill):
     NAME = ClericSkillEnum.GREEK_FIRE.value
     DESCRIPTION = (
-        f'Por meio de um engenhoso artefato antigo, invoca as '
-        f'*Chamas Negras das Fornalhas de Hefesto* para golpear o oponente, '
-        f'causando dano de '
+        'Por meio de um engenhoso artefato antigo, invoca as '
+        '*Chamas Negras das Fornalhas de Hefesto* para golpear o oponente, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'

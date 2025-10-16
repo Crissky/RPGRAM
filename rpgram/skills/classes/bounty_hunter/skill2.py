@@ -37,9 +37,9 @@ if TYPE_CHECKING:
 class GlowBurstSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.GLOW_BURST.value
     DESCRIPTION = (
-        f'Lança no alvo um *Estouro Brilhante* que irrompe em uma '
-        f'*Explosão Fúlgida*, '
-        f'causando dano de '
+        'Lança no alvo um *Estouro Brilhante* que irrompe em uma '
+        '*Explosão Fúlgida*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
@@ -76,9 +76,9 @@ class GlowBurstSkill(BaseSkill):
 class GlowBurstVolleySkill(BaseSkill):
     NAME = BountyHunterSkillEnum.GLOW_BURST_VOLLEY.value
     DESCRIPTION = (
-        f'Lança uma enxurrada de *Estouros Brilhantes* '
-        f'que irrompem em várias *Explosões Fúlgidas*, '
-        f'causando dano de '
+        'Lança uma enxurrada de *Estouros Brilhantes* '
+        'que irrompem em várias *Explosões Fúlgidas*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
@@ -117,9 +117,9 @@ class GlowBurstVolleySkill(BaseSkill):
 class GigaGlowBurstSkill(BaseSkill):
     NAME = BountyHunterSkillEnum.GIGA_GLOW_BURST.value
     DESCRIPTION = (
-        f'Lança um *Estouro Brilhante Gigante* '
-        f'que irrompe em uma imensa *Explosão Fúlgida*, '
-        f'causando dano de '
+        'Lança um *Estouro Brilhante Gigante* '
+        'que irrompe em uma imensa *Explosão Fúlgida*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (400% + 5% x Rank x Nível), '

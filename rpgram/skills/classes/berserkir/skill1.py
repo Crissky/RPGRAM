@@ -25,11 +25,11 @@ if TYPE_CHECKING:
 class IndomitableAttackSkill(BaseSkill):
     NAME = BerserkirSkillEnum.INDOMITABLE_ATTACK.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Incontrolável*, recebendo a condição '
+        'Entra em um estado de *Fúria Incontrolável*, recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível), '
-        f'após isso, realiza uma série de ataques rápidos e brutais, '
-        f'causando dano ao inimigo com base no '
+        'com nível igual ao (Rank x Nível), '
+        'após isso, realiza uma série de ataques rápidos e brutais, '
+        'causando dano ao inimigo com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -80,11 +80,11 @@ class IndomitableAttackSkill(BaseSkill):
 class ImpetuousStrikeSkill(BaseSkill):
     NAME = BerserkirSkillEnum.IMPETUOUS_STRIKE.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Incontrolável*, recebendo a condição '
+        'Entra em um estado de *Fúria Incontrolável*, recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível), '
-        f'e desfere um ataque com força bruta, '
-        f'causando dano com base no '
+        'com nível igual ao (Rank x Nível), '
+        'e desfere um ataque com força bruta, '
+        'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (400% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -137,11 +137,11 @@ class ImpetuousStrikeSkill(BaseSkill):
 class DevastatingRushSkill(BaseSkill):
     NAME = BerserkirSkillEnum.DEVASTATING_RUSH.value
     DESCRIPTION = (
-        f'Entra em um estado de *Fúria Incontrolável*, recebendo a condição '
+        'Entra em um estado de *Fúria Incontrolável*, recebendo a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BERSERKER)}* '
-        f'com nível igual ao (Rank x Nível), '
-        f'e lança-se contra o alvo em uma corrida implacável, '
-        f'causando dano com base no '
+        'com nível igual ao (Rank x Nível), '
+        'e lança-se contra o alvo em uma corrida implacável, '
+        'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (500% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )

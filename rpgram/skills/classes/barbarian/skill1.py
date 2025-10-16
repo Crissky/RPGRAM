@@ -24,8 +24,8 @@ if TYPE_CHECKING:
 class PrimalAttackSkill(BaseSkill):
     NAME = BarbarianSkillEnum.PRIMAL_ATTACK.value
     DESCRIPTION = (
-        f'Realiza uma série de ataques rápidos e brutais, causando dano ao '
-        f'inimigo com base no '
+        'Realiza uma série de ataques rápidos e brutais, causando dano ao '
+        'inimigo com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -65,8 +65,8 @@ class PrimalAttackSkill(BaseSkill):
 class PrimalStrikeSkill(BaseSkill):
     NAME = BarbarianSkillEnum.PRIMAL_STRIKE.value
     DESCRIPTION = (
-        f'Desfere um ataque com força bruta, causando dano ao '
-        f'alvo com base no '
+        'Desfere um ataque com força bruta, causando dano ao '
+        'alvo com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (210% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
     )
@@ -108,9 +108,9 @@ class PrimalStrikeSkill(BaseSkill):
 class PrimalRamSkill(BaseSkill):
     NAME = BarbarianSkillEnum.PRIMAL_RAM.value
     DESCRIPTION = (
-        f'Abaixa a cabeça e investe contra o inimigo como um '
-        f'*Ariete de Guerra*, destruindo qualquer barreira antes de aplicar '
-        f'o dano de '
+        'Abaixa a cabeça e investe contra o inimigo como um '
+        '*Ariete de Guerra*, destruindo qualquer barreira antes de aplicar '
+        'o dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* baseado em '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (160% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
@@ -161,9 +161,9 @@ class PrimalRamSkill(BaseSkill):
 class SeismicImpactSkill(BaseSkill):
     NAME = BarbarianSkillEnum.SEISMIC_IMPACT.value
     DESCRIPTION = (
-        f'Com uma força descomunal, ergue sua arma e a golpeia violentamente '
-        f'contra o chão, liberando uma onda de choque que faz a terra '
-        f'tremer e se despedaçar ao redor, causando dano de '
+        'Com uma força descomunal, ergue sua arma e a golpeia violentamente '
+        'contra o chão, liberando uma onda de choque que faz a terra '
+        'tremer e se despedaçar ao redor, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* baseado em '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (132% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
