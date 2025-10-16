@@ -48,6 +48,9 @@ async def create_game_event(
 
 
 def select_job_start_game(job_start_name: str) -> Optional[Callable]:
+    if not isinstance(job_start_name, str):
+        return None
+
     job_callback = None
     event_name = job_start_name.lower()
 
