@@ -171,7 +171,7 @@ def main() -> None:
     print('APP().DATETIME.NOW()', datetime.now())
     for job_definition in SEASON_JOBS_DEFINITIONS:
         job_name = job_definition['callback'].__name__.upper()
-        
+
         raw_when = job_definition['when']
         print(f'SEASON JOB BRAZIL TIME: {job_name} - "{raw_when}"')
 
