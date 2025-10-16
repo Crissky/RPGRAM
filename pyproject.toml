@@ -16,6 +16,7 @@ pandas = "2.2.3"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.2"
+flake8 = "7.1.2"
 
 [build-system]
 requires = ["poetry-core"]
