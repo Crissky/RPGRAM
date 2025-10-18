@@ -24,9 +24,9 @@ if TYPE_CHECKING:
 class InverseSkill(BaseSkill):
     NAME = DuelistSkillEnum.INVERSE.value
     DESCRIPTION = (
-        f'Avança contra o inimigo e finge um ataque em uma direção, '
-        f'mas ataca na outra, '
-        f'causando dano com base no '
+        'Avança contra o inimigo e finge um ataque em uma direção, '
+        'mas ataca na outra, '
+        'causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -61,15 +61,15 @@ class InverseSkill(BaseSkill):
 class DirtyBlowSkill(BaseSkill):
     NAME = DuelistSkillEnum.DIRTY_BLOW.value
     DESCRIPTION = (
-        f'Acomete contra o inimigo de maneira astuta e imprevisível, '
-        f'atirando algo em seus olhos para turvar a sua visão '
-        f'e, em seguida, desfere um golpe veloz, '
-        f'causando dano de '
+        'Acomete contra o inimigo de maneira astuta e imprevisível, '
+        'atirando algo em seus olhos para turvar a sua visão '
+        'e, em seguida, desfere um golpe veloz, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}* com nível igual ao '
-        f'(Rank x Nível).'
+        '(Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -120,13 +120,13 @@ class DirtyBlowSkill(BaseSkill):
 class AchillesHeelSkill(BaseSkill):
     NAME = DuelistSkillEnum.ACHILLEÇÇÇS_HEEL.value
     DESCRIPTION = (
-        f'Detecta os pontos vulneráveis de seus inimigos, '
-        f'seja uma articulação frágil, uma postura desequilibrada ou '
-        f'um movimento previsível e ataca de modo a debilitar os movimentos '
-        f'do alvo, causando dano com base no '
+        'Detecta os pontos vulneráveis de seus inimigos, '
+        'seja uma articulação frágil, uma postura desequilibrada ou '
+        'um movimento previsível e ataca de modo a debilitar os movimentos '
+        'do alvo, causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
         f'diminuindo a *{EVASION_EMOJI_TEXT}* em '
-        f'(5% do dano causado + 1% x Rank x Nível).'
+        '(5% do dano causado + 1% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -183,13 +183,13 @@ class AchillesHeelSkill(BaseSkill):
 class DisarmorSkill(BaseSkill):
     NAME = DuelistSkillEnum.DISARMOR.value
     DESCRIPTION = (
-        f'Identifica uma abertura nas proteções do inimigo e '
-        f'executa um movimento rápido e preciso, '
-        f'fragilizando as proteções do oponente e '
-        f'causando dano com base no '
+        'Identifica uma abertura nas proteções do inimigo e '
+        'executa um movimento rápido e preciso, '
+        'fragilizando as proteções do oponente e '
+        'causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
         f'diminuindo a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* em '
-        f'(5% do dano causado + 1% x Rank x Nível).'
+        '(5% do dano causado + 1% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -246,12 +246,12 @@ class DisarmorSkill(BaseSkill):
 class SiegfriedsShoulderBladeSkill(BaseSkill):
     NAME = DuelistSkillEnum.SIEGFRIEDÇÇÇS_SHOULDER_BLADE.value
     DESCRIPTION = (
-        f'Avança sobre o oponente e imobiliza-o, '
-        f'utilizando a sua força e tenacidade para aplicar uma pressão '
-        f'insuportável sobre o ombro e o pescoço do oponente, '
-        f'causando dano com base no '
+        'Avança sobre o oponente e imobiliza-o, '
+        'utilizando a sua força e tenacidade para aplicar uma pressão '
+        'insuportável sobre o ombro e o pescoço do oponente, '
+        'causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível). '
-        f'Caso o golpe seja aplicado com perfeição '
+        'Caso o golpe seja aplicado com perfeição '
         f'(*Acerto Crítico*{EmojiEnum.DICE.value}) o dano é decuplicado.'
     )
     RANK = 2

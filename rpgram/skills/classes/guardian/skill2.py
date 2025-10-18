@@ -25,9 +25,9 @@ if TYPE_CHECKING:
 class IronChargeSkill(BaseSkill):
     NAME = GuardianSkillEnum.IRON_CHARGE.value
     DESCRIPTION = (
-        f'Avança através das linhas inimigas com uma força imparável '
-        f'como um ariete implacável, envolto em uma aura metálica '
-        f'causando dano de '
+        'Avança através das linhas inimigas com uma força imparável '
+        'como um ariete implacável, envolto em uma aura metálica '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base em '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível), '
@@ -77,10 +77,10 @@ class IronChargeSkill(BaseSkill):
 class SteelStormSkill(BaseSkill):
     NAME = GuardianSkillEnum.STEEL_STORM.value
     DESCRIPTION = (
-        f'Avança com um giro devastador revestido em uma energia metálica '
-        f'que desencadeia uma *Tempestade*, '
-        f'ceifando seus inimigos impiedosamente com '
-        f'dano de '
+        'Avança com um giro devastador revestido em uma energia metálica '
+        'que desencadeia uma *Tempestade*, '
+        'ceifando seus inimigos impiedosamente com '
+        'dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* baseado em '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (9% + 2.5% x Rank x Nível), '

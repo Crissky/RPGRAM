@@ -47,15 +47,15 @@ class RangerFalconSkill(BaseSkill):
     NAME = DruidSkillEnum.RANGER_FALCON.value
     DESCRIPTION = (
         f'Convoca um companheiro *{DruidSkillEnum.RANGER_FALCON.value}* '
-        f'que ronda as proximidades e o auxilia nos combates, '
-        f'aumentando o '
+        'que ronda as proximidades e o auxilia nos combates, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* e a *{EVASION_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, o *{DruidSkillEnum.FELLOW_FALCON.value}* '
-        f'ataca em conjunto com o *Druida*, adicionando dano de '
+        'ataca em conjunto com o *Druida*, adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -99,7 +99,7 @@ class RangerFalconSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para vigiar e batalhar ao seu lado. '
+                'para vigiar e batalhar ao seu lado. '
                 f'*{self.name}* aumenta o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos e a '
@@ -117,16 +117,16 @@ class GuardianBearSkill(BaseSkill):
     NAME = DruidSkillEnum.GUARDIAN_BEAR.value
     DESCRIPTION = (
         f'Convoca um companheiro *{DruidSkillEnum.GUARDIAN_BEAR.value}* '
-        f'que o protege e o auxilia nos combates, '
-        f'aumentando o '
+        'que o protege e o auxilia nos combates, '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* e a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, o *{DruidSkillEnum.FELLOW_BEAR.value}* '
-        f'ataca em conjunto com o *Druida*, adicionando dano de '
+        'ataca em conjunto com o *Druida*, adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -170,7 +170,7 @@ class GuardianBearSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para o proteger e batalhar ao seu lado. '
+                'para o proteger e batalhar ao seu lado. '
                 f'*{self.name}* aumenta o '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit_points} pontos e a '
@@ -188,16 +188,16 @@ class HunterTigerSkill(BaseSkill):
     NAME = DruidSkillEnum.HUNTER_TIGER.value
     DESCRIPTION = (
         f'Convoca um companheiro *{DruidSkillEnum.HUNTER_TIGER.value}* '
-        f'que persegue presas e o auxilia nos combates, '
-        f'aumentando o '
+        'que persegue presas e o auxilia nos combates, '
+        'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, o *{DruidSkillEnum.FELLOW_TIGER.value}* '
-        f'ataca em conjunto com o *Druida*, adicionando dano de '
+        'ataca em conjunto com o *Druida*, adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -241,7 +241,7 @@ class HunterTigerSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para caçar e batalhar ao seu lado. '
+                'para caçar e batalhar ao seu lado. '
                 f'*{self.name}* aumenta o '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos e o '
@@ -259,16 +259,16 @@ class WatcherOwlSkill(BaseSkill):
     NAME = DruidSkillEnum.WATCHER_OWL.value
     DESCRIPTION = (
         f'Convoca uma companheira *{DruidSkillEnum.WATCHER_OWL.value}* '
-        f'que observa o plano místico e o auxilia nos combates, '
-        f'aumentando o '
+        'que observa o plano místico e o auxilia nos combates, '
+        'aumentando o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, a *{DruidSkillEnum.FELLOW_OWL.value}* '
-        f'ataca em conjunto com o *Druida*, adicionando dano '
+        'ataca em conjunto com o *Druida*, adicionando dano '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -312,7 +312,7 @@ class WatcherOwlSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para observar o plano místico e batalhar ao seu lado. '
+                'para observar o plano místico e batalhar ao seu lado. '
                 f'*{self.name}* aumenta o '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_attack} pontos e a '
@@ -329,9 +329,9 @@ class WatcherOwlSkill(BaseSkill):
 class FireBirdSkill(BaseSkill):
     NAME = DruidSkillEnum.FIRE_BIRD.value
     DESCRIPTION = (
-        f'Conjura um *Pássaro Flamejante* que '
-        f'voa rapidamente, atacando com um rasante e '
-        f'causando dano de '
+        'Conjura um *Pássaro Flamejante* que '
+        'voa rapidamente, atacando com um rasante e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
@@ -377,9 +377,9 @@ class FireBirdSkill(BaseSkill):
 class UrseismicTremorSkill(BaseSkill):
     NAME = DruidSkillEnum.URSEISMIC_TREMOR.value
     DESCRIPTION = (
-        f'Conjura um *Urso Gigantesco* que '
-        f'golpeia o chão, estilhaçando a terra em um mosaico sísmico e '
-        f'causando dano de '
+        'Conjura um *Urso Gigantesco* que '
+        'golpeia o chão, estilhaçando a terra em um mosaico sísmico e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (105% + 2.5% x Rank x Nível), '
@@ -426,11 +426,11 @@ class UrseismicTremorSkill(BaseSkill):
 class ThunderingOnslaughtSkill(BaseSkill):
     NAME = DruidSkillEnum.THUNDERING_ONSLAUGHT.value
     DESCRIPTION = (
-        f'Conjura um *Tigre da Tempestade* que '
-        f'concentra uma enorme quantidade de energia em suas garras e '
-        f'avança sobre o inimigo, desferindo um golpe devastador que libera '
-        f'uma descarga elétrica, ignorando as defesas do oponente e '
-        f'causando dano de '
+        'Conjura um *Tigre da Tempestade* que '
+        'concentra uma enorme quantidade de energia em suas garras e '
+        'avança sobre o inimigo, desferindo um golpe devastador que libera '
+        'uma descarga elétrica, ignorando as defesas do oponente e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'
@@ -472,10 +472,10 @@ class ThunderingOnslaughtSkill(BaseSkill):
 class MagicGaleSkill(BaseSkill):
     NAME = DruidSkillEnum.MAGIC_GALE.value
     DESCRIPTION = (
-        f'Conjura uma *Coruja Mística* que '
-        f'concentra sua energia mágica, '
-        f'infundindo-a em uma poderosa rajada de vento, '
-        f'causando dano '
+        'Conjura uma *Coruja Mística* que '
+        'concentra sua energia mágica, '
+        'infundindo-a em uma poderosa rajada de vento, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'

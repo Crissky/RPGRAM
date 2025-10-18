@@ -31,11 +31,11 @@ if TYPE_CHECKING:
 class PoisonousSapSkill(BaseSkill):
     NAME = DruidSkillEnum.POISONOUS_SAP.value
     DESCRIPTION = (
-        f'Imbui os equipamentos com uma '
+        'Imbui os equipamentos com uma '
         f'*{DruidSkillEnum.POISONOUS_SAP.value}* que '
-        f'adiciona dano de '
+        'adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -96,11 +96,11 @@ class PoisonousSapSkill(BaseSkill):
 class IgneousSapSkill(BaseSkill):
     NAME = DruidSkillEnum.IGNEOUS_SAP.value
     DESCRIPTION = (
-        f'Imbui os equipamentos com uma '
+        'Imbui os equipamentos com uma '
         f'*{DruidSkillEnum.IGNEOUS_SAP.value}* que '
-        f'adiciona dano de '
+        'adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -161,11 +161,11 @@ class IgneousSapSkill(BaseSkill):
 class EscarchaSapSkill(BaseSkill):
     NAME = DruidSkillEnum.ESCARCHA_SAP.value
     DESCRIPTION = (
-        f'Imbui os equipamentos com uma '
+        'Imbui os equipamentos com uma '
         f'*{DruidSkillEnum.ESCARCHA_SAP.value}* que '
-        f'adiciona dano de '
+        'adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -226,9 +226,9 @@ class EscarchaSapSkill(BaseSkill):
 class SapiousCubeSkill(BaseSkill):
     NAME = DruidSkillEnum.SAPIOUS_CUBE.value
     DESCRIPTION = (
-        f'Conjura os poderes da natureza para materializar um '
-        f'*Cubo Gelatinoso*, composto por diversos tipos de *Seivas*, '
-        f'ao redor do alvo, causando dano de '
+        'Conjura os poderes da natureza para materializar um '
+        '*Cubo Gelatinoso*, composto por diversos tipos de *Seivas*, '
+        'ao redor do alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* com base no '

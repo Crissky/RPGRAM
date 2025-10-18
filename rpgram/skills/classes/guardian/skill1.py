@@ -27,9 +27,9 @@ if TYPE_CHECKING:
 class ShieldWallSkill(BaseSkill):
     NAME = GuardianSkillEnum.SHIELD_WALL.value
     DESCRIPTION = (
-        f'Erguendo o escudo com *Determinação* e *Fé Inabalável*, '
-        f'evoca uma miríade de *Escudo Familiar Protetivo* '
-        f'que resguardam os aliados com barreiras baseada na '
+        'Erguendo o escudo com *Determinação* e *Fé Inabalável*, '
+        'evoca uma miríade de *Escudo Familiar Protetivo* '
+        'que resguardam os aliados com barreiras baseada na '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -80,7 +80,7 @@ class ShieldWallSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* se impõe contra o perigo, evocando um '
-                    f'*Escudo Familiar Protetivo* para resguardar '
+                    '*Escudo Familiar Protetivo* para resguardar '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'

@@ -28,9 +28,9 @@ if TYPE_CHECKING:
 class WindBladeSkill(BaseSkill):
     NAME = DuelistSkillEnum.WIND_BLADE.value
     DESCRIPTION = (
-        f'Brande a arma com um único movimento rápido e imprevisível, '
-        f'cortando o ar violentamente e '
-        f'causando dano de '
+        'Brande a arma com um único movimento rápido e imprevisível, '
+        'cortando o ar violentamente e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
@@ -74,11 +74,11 @@ class WindBladeSkill(BaseSkill):
 class SplashFountSkill(BaseSkill):
     NAME = DuelistSkillEnum.SPLASH_FOUNT.value
     DESCRIPTION = (
-        f'Saca a arma com celeridade e desfere múltiplos ataques rápidos, '
-        f'causando dano com base no '
+        'Saca a arma com celeridade e desfere múltiplos ataques rápidos, '
+        'causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
-        f'Pode acertar o alvo diversas até 5 vezes '
-        f'(cada acerto subsequente causa metade do dano).'
+        'Pode acertar o alvo diversas até 5 vezes '
+        '(cada acerto subsequente causa metade do dano).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{
@@ -136,9 +136,9 @@ class SplashFountSkill(BaseSkill):
 class AgileFeetSkill(BaseSkill):
     NAME = DuelistSkillEnum.AGILE_FEET.value
     DESCRIPTION = (
-        f'Com graça e agilidade, se torna um borrão de movimento, '
-        f'capaz de desviar de ataques com uma destreza impressionante, '
-        f'aumentando a '
+        'Com graça e agilidade, se torna um borrão de movimento, '
+        'capaz de desviar de ataques com uma destreza impressionante, '
+        'aumentando a '
         f'*{EVASION_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -181,7 +181,7 @@ class AgileFeetSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se torna um borrão de movimento, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{EVASION_EMOJI_TEXT}* '
                 f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -195,10 +195,10 @@ class AgileFeetSkill(BaseSkill):
 class EagleEyeSkill(BaseSkill):
     NAME = DuelistSkillEnum.EAGLE_EYE.value
     DESCRIPTION = (
-        f'Usa sua percepção aguçada para analisar a situação do combate '
-        f'com uma clareza excepcional, permitindo antecipar os movimentos '
-        f'do oponente para antecipar a sua reação, '
-        f'aumentando o '
+        'Usa sua percepção aguçada para analisar a situação do combate '
+        'com uma clareza excepcional, permitindo antecipar os movimentos '
+        'do oponente para antecipar a sua reação, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -241,8 +241,8 @@ class EagleEyeSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* amplifica a sua capacidade de analisar '
-                f'o combate, '
-                f'aumentando o '
+                'o combate, '
+                'aumentando o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -256,10 +256,10 @@ class EagleEyeSkill(BaseSkill):
 class LungeSkill(BaseSkill):
     NAME = DuelistSkillEnum.LUNGE.value
     DESCRIPTION = (
-        f'Concentra toda a sua força e '
-        f'executa um único ataque direto e conciso, '
-        f'visando um ponto vital do oponente, '
-        f'causando dano de '
+        'Concentra toda a sua força e '
+        'executa um único ataque direto e conciso, '
+        'visando um ponto vital do oponente, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -297,10 +297,10 @@ class LungeSkill(BaseSkill):
 class TranspassSkill(BaseSkill):
     NAME = DuelistSkillEnum.TRANSPASS.value
     DESCRIPTION = (
-        f'Avança contra o oponente, superando as suas defesas e '
-        f'atingindo-o em seus pontos mais vulneráveis com um '
-        f'golpe preciso e poderoso, '
-        f'causando dano de '
+        'Avança contra o oponente, superando as suas defesas e '
+        'atingindo-o em seus pontos mais vulneráveis com um '
+        'golpe preciso e poderoso, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (75% + 5% x Rank x Nível).'
     )

@@ -28,10 +28,10 @@ if TYPE_CHECKING:
 class CrystalArmorSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTAL_ARMOR.value
     DESCRIPTION = (
-        f'Forja uma armadura composta por *Cristais Místicos* que aumenta a '
+        'Forja uma armadura composta por *Cristais Místicos* que aumenta a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na redução de 25% da '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT} BASE* '
-        f'mais um bônus de (10% x Rank x Nível) do valor reduzido.'
+        'mais um bônus de (10% x Rank x Nível) do valor reduzido.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -71,10 +71,10 @@ class CrystalArmorSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* forja uma armadura de *Cristais Místicos*, '
-                f'reduzindo a sua '
+                'reduzindo a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos, '
-                f'em favor de aumentar a sua '
+                'em favor de aumentar a sua '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -88,9 +88,9 @@ class CrystalArmorSkill(BaseSkill):
 class CrystallineInfusionSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTALLINE_INFUSION.value
     DESCRIPTION = (
-        f'Imbui as mãos do alvo em uma infusão de *Cristais Místicos* que '
+        'Imbui as mãos do alvo em uma infusão de *Cristais Místicos* que '
         f'concede dano de *{get_damage_emoji_text(DamageEnum.CRYSTAL)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -139,7 +139,7 @@ class CrystallineInfusionSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* imbuiu as mãos de *{target_name}* em uma '
-                    f'infusão de *Cristais Místicos*, concedendo dano de '
+                    'infusão de *Cristais Místicos*, concedendo dano de '
                     f'{get_damage_emoji_text(DamageEnum.CRYSTAL)}.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'
@@ -154,15 +154,15 @@ class CrystallineInfusionSkill(BaseSkill):
 class ShatterSkill(BaseSkill):
     NAME = GuardianSkillEnum.SHATTER.value
     DESCRIPTION = (
-        f'Se envolve com um balandrau de *Cristais Místicos* e avança '
-        f'contra o oponente, causando dano de '
+        'Se envolve com um balandrau de *Cristais Místicos* e avança '
+        'contra o oponente, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* com base em '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível), '
-        f'além de reduzir a '
+        'além de reduzir a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-        f'com base no dano causado (5% + 1% x Rank x Nível).'
+        'com base no dano causado (5% + 1% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -221,8 +221,8 @@ class ShatterSkill(BaseSkill):
 class CrystalChrysalisSkill(BaseSkill):
     NAME = GuardianSkillEnum.CRYSTAL_CHRYSALIS.value
     DESCRIPTION = (
-        f'Lança fragmentos de *Cristais Místicos* '
-        f'contra o oponente, causando dano de '
+        'Lança fragmentos de *Cristais Místicos* '
+        'contra o oponente, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* com base em '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'

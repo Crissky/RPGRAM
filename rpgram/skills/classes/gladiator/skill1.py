@@ -39,9 +39,9 @@ if TYPE_CHECKING:
 class AchillesAttackSkill(BaseSkill):
     NAME = GladiatorSkillEnum.ACHILLES_ATTACK.value
     DESCRIPTION = (
-        f'Canaliza a *Força e a Fúria de Aquiles*, '
-        f'concentrando toda a sua energia em um único golpe poderoso, '
-        f'causando dano com base no '
+        'Canaliza a *Força e a Fúria de Aquiles*, '
+        'concentrando toda a sua energia em um único golpe poderoso, '
+        'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -76,10 +76,10 @@ class AchillesAttackSkill(BaseSkill):
 class HerculesFurySkill(BaseSkill):
     NAME = GladiatorSkillEnum.HERCULES_FURY.value
     DESCRIPTION = (
-        f'Invoca a *Força Bruta* e a raiva do lendário herói grego, '
-        f'se transformando em um jugo da natureza para '
-        f'investir contra o inimigo e '
-        f'causar dano de '
+        'Invoca a *Força Bruta* e a raiva do lendário herói grego, '
+        'se transformando em um jugo da natureza para '
+        'investir contra o inimigo e '
+        'causar dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -119,16 +119,16 @@ class HerculesFurySkill(BaseSkill):
 class AresBladeSkill(BaseSkill):
     NAME = GladiatorSkillEnum.ARES_BLADE.value
     DESCRIPTION = (
-        f'Imbui sua arma com a *Ira de Ares*, '
-        f'concedendo dano de '
+        'Imbui sua arma com a *Ira de Ares*, '
+        'concedendo dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}*, '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}*, '
         f'*{get_damage_emoji_text(DamageEnum.DIVINE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível) '
-        f'e desfere um ataque poderoso, '
-        f'causando dano com base no '
+        'e desfere um ataque poderoso, '
+        'causando dano com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível).'
     )
     RANK = 3
@@ -176,7 +176,7 @@ class AresBladeSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* imbui sua arma com a *Ira de Ares*, '
-                f'concedendo dano '
+                'concedendo dano '
                 f'*{get_damage_emoji_text(DamageEnum.SLASHING)}*, '
                 f'*{get_damage_emoji_text(DamageEnum.FIRE)}*, '
                 f'*{get_damage_emoji_text(DamageEnum.DIVINE)}* e '
@@ -192,9 +192,9 @@ class AresBladeSkill(BaseSkill):
 class AjaxShieldSkill(BaseSkill):
     NAME = GladiatorSkillEnum.AJAX_SHIELD.value
     DESCRIPTION = (
-        f'Evoca a *Lendária Proteção* do guerreiro grego, '
-        f'criando um escudo de energia à sua frente, '
-        f'recebendo uma barreira com base no '
+        'Evoca a *Lendária Proteção* do guerreiro grego, '
+        'criando um escudo de energia à sua frente, '
+        'recebendo uma barreira com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -236,7 +236,7 @@ class AjaxShieldSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é coberto pela *Lendária Proteção* '
-                f'que concede uma barreira '
+                'que concede uma barreira '
                 f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -249,10 +249,10 @@ class AjaxShieldSkill(BaseSkill):
 class TurtleStanceSkill(BaseSkill):
     NAME = GladiatorSkillEnum.TURTLE_STANCE.value
     DESCRIPTION = (
-        f'Se curva sobre si mesmo, protegendo seu corpo '
-        f'com os braços e as pernas, assumindo uma postura defensiva '
-        f'que lembra o casco de uma tartaruga, '
-        f'aumentando a '
+        'Se curva sobre si mesmo, protegendo seu corpo '
+        'com os braços e as pernas, assumindo uma postura defensiva '
+        'que lembra o casco de uma tartaruga, '
+        'aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -294,7 +294,7 @@ class TurtleStanceSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se curva sobre si mesmo '
-                f'assumindo uma postura preventiva que aumenta a sua '
+                'assumindo uma postura preventiva que aumenta a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -308,9 +308,9 @@ class TurtleStanceSkill(BaseSkill):
 class UnicornStanceSkill(BaseSkill):
     NAME = GladiatorSkillEnum.UNICORN_STANCE.value
     DESCRIPTION = (
-        f'Assume uma postura elegante e poderosa, '
-        f'canalizando a energia de um *Lendário Unicórnio*, '
-        f'aumentando o '
+        'Assume uma postura elegante e poderosa, '
+        'canalizando a energia de um *Lendário Unicórnio*, '
+        'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
@@ -354,7 +354,7 @@ class UnicornStanceSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* assume a *{self.name}* '
-                f'assumindo uma postura agressiva quee aumenta o seu '
+                'assumindo uma postura agressiva quee aumenta o seu '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -368,9 +368,9 @@ class UnicornStanceSkill(BaseSkill):
 class ArenaDomainSkill(BaseSkill):
     NAME = GladiatorSkillEnum.ARENA_DOMAIN.value
     DESCRIPTION = (
-        f'Entra em um *Estado de Fluxo*, onde seus sentidos se aguçam e '
-        f'sua compreensão do combate se aprofunda, '
-        f'aumentando o '
+        'Entra em um *Estado de Fluxo*, onde seus sentidos se aguçam e '
+        'sua compreensão do combate se aprofunda, '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, '
@@ -424,7 +424,7 @@ class ArenaDomainSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* entra em um *Estado de Fluxo* '
-                f'que aumenta o seu '
+                'que aumenta o seu '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit_points} pontos, '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
