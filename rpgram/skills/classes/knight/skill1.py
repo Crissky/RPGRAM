@@ -33,9 +33,9 @@ if TYPE_CHECKING:
 class ChargeSkill(BaseSkill):
     NAME = KnightSkillEnum.CHARGE.value
     DESCRIPTION = (
-        f'Impulsiona-se sobre o inimigo com *Grande Velocidade*, '
-        f'tornando-se uma força imparável no campo de batalha e '
-        f'causando dano de '
+        'Impulsiona-se sobre o inimigo com *Grande Velocidade*, '
+        'tornando-se uma força imparável no campo de batalha e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível). '
@@ -80,9 +80,9 @@ class ChargeSkill(BaseSkill):
 class HeavyChargeSkill(BaseSkill):
     NAME = KnightSkillEnum.HEAVY_CHARGE.value
     DESCRIPTION = (
-        f'Impulsiona-se sobre o inimigo com *Força Devastadora*, '
-        f'tornando-se uma força incontível no campo de batalha e '
-        f'causando dano de '
+        'Impulsiona-se sobre o inimigo com *Força Devastadora*, '
+        'tornando-se uma força incontível no campo de batalha e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível). '
@@ -129,15 +129,15 @@ class HeavyChargeSkill(BaseSkill):
 class SuperChargeSkill(BaseSkill):
     NAME = KnightSkillEnum.SUPER_CHARGE.value
     DESCRIPTION = (
-        f'Impulsiona-se sobre o inimigo com *Ímpeto Inimaginável*, '
-        f'tornando-se uma força irrefreável no campo de batalha, '
-        f'causando dano de '
+        'Impulsiona-se sobre o inimigo com *Ímpeto Inimaginável*, '
+        'tornando-se uma força irrefreável no campo de batalha, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (400% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.STUNNED)}* com nível igual ao '
-        f'(Rank x Nível). '
+        '(Rank x Nível). '
         f'Essa habilidade possui baixa taxa de {HIT_EMOJI_TEXT}.'
     )
     RANK = 3
@@ -196,9 +196,9 @@ class SuperChargeSkill(BaseSkill):
 class ChampionInspirationSkill(BaseSkill):
     NAME = KnightSkillEnum.CHAMPION_INSPIRATION.value
     DESCRIPTION = (
-        f'Libera uma *Explosão de Energia Inspiradora* que '
-        f'fortalece o seu espírito, '
-        f'aumentando o '
+        'Libera uma *Explosão de Energia Inspiradora* que '
+        'fortalece o seu espírito, '
+        'aumentando o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
         f'*{HIT_EMOJI_TEXT}* com base no '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
@@ -241,8 +241,8 @@ class ChampionInspirationSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* liberou uma '
-                f'*Explosão de Energia Inspiradora*, '
-                f'aumentando o seu '
+                '*Explosão de Energia Inspiradora*, '
+                'aumentando o seu '
                 f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_precision_attack} pontos e '
                 f'*{HIT_EMOJI_TEXT}* '
@@ -258,9 +258,9 @@ class ChampionInspirationSkill(BaseSkill):
 class LeadershipSkill(BaseSkill):
     NAME = KnightSkillEnum.LEADERSHIP.value
     DESCRIPTION = (
-        f'Usa a própria *Força* e *Determinação* para despertar o seu '
-        f'*Espírito de Liderança* e conceder à equipe '
-        f'uma inspiração de combate que aumenta o '
+        'Usa a própria *Força* e *Determinação* para despertar o seu '
+        '*Espírito de Liderança* e conceder à equipe '
+        'uma inspiração de combate que aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e '
@@ -309,7 +309,7 @@ class LeadershipSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* recebe a *Inspiração do Líder* '
-                    f'aumentando o '
+                    'aumentando o '
                     f'{PHYSICAL_ATTACK_EMOJI_TEXT}, '
                     f'{PRECISION_ATTACK_EMOJI_TEXT}, '
                     f'{MAGICAL_ATTACK_EMOJI_TEXT} e '

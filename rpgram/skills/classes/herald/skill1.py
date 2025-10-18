@@ -38,9 +38,9 @@ if TYPE_CHECKING:
 class MysticBlockSkill(BaseSkill):
     NAME = HeraldSkillEnum.MYSTIC_BLOCK.value
     DESCRIPTION = (
-        f'Utiliza a *Fé* e *Devoção* para invocar *Forças Místicas*, '
-        f'criando uma *Aura Protetora* que o rodeia, '
-        f'aumentando a '
+        'Utiliza a *Fé* e *Devoção* para invocar *Forças Místicas*, '
+        'criando uma *Aura Protetora* que o rodeia, '
+        'aumentando a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{CONSTITUTION_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
@@ -84,8 +84,8 @@ class MysticBlockSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se concentra para criar uma '
-                f'*Aura Protetora*, '
-                f'aumentando a sua '
+                '*Aura Protetora*, '
+                'aumentando a sua '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -99,12 +99,12 @@ class MysticBlockSkill(BaseSkill):
 class RobysticShieldSkill(BaseSkill):
     NAME = HeraldSkillEnum.ROBYSTIC_SHIELD.value
     DESCRIPTION = (
-        f'Erguendo o escudo com *Fé* e *Devoção*, '
-        f'evoca um *Robusto Escudo Familiar Protetivo* '
-        f'carregado de *Forças Místicas* '
-        f'que resguarda com uma barreira baseada na '
+        'Erguendo o escudo com *Fé* e *Devoção*, '
+        'evoca um *Robusto Escudo Familiar Protetivo* '
+        'carregado de *Forças Místicas* '
+        'que resguarda com uma barreira baseada na '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e '
-        f'aumentando a '
+        'aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{CONSTITUTION_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
@@ -167,10 +167,10 @@ class RobysticShieldSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* se impõe contra o perigo, evocando um '
-                    f'*Robusto Escudo Familiar Protetivo* para resguardar '
+                    '*Robusto Escudo Familiar Protetivo* para resguardar '
                     f'*{target_name}* com uma barreira '
                     f'*{condition_shield.barrier_points_text}*({dice.text}).'
-                    f' e aumentando a sua '
+                    ' e aumentando a sua '
                     f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_defense} pontos e a '
                     f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -188,9 +188,9 @@ class RobysticShieldSkill(BaseSkill):
 class ColossalOnslaughtSkill(BaseSkill):
     NAME = HeraldSkillEnum.COLOSSAL_ONSLAUGHT.value
     DESCRIPTION = (
-        f'Avança através das linhas inimigas com uma *Força Colossal* '
-        f'como um *Gigante Implacável*, envolto em uma aura de fogo e rocha, '
-        f'causando dano de '
+        'Avança através das linhas inimigas com uma *Força Colossal* '
+        'como um *Gigante Implacável*, envolto em uma aura de fogo e rocha, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* com base em '

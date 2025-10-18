@@ -29,10 +29,10 @@ if TYPE_CHECKING:
 class HealingTouchSkill(BaseSkill):
     NAME = HealerSkillEnum.HEALING_TOUCH.value
     DESCRIPTION = (
-        f'Canaliza *Energia Vital* para, com um simples toque, '
+        'Canaliza *Energia Vital* para, com um simples toque, '
         f'curar o *{HIT_POINT_FULL_EMOJI_TEXT}* de um aliado '
         f'com base na *{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-        f'(200% + 10% x Rank x Nível).'
+        '(200% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -86,10 +86,10 @@ class HealingTouchSkill(BaseSkill):
 class HealingHerbSkill(BaseSkill):
     NAME = HealerSkillEnum.HEALING_HERB.value
     DESCRIPTION = (
-        f'Imbui um punhado de ervas com *Energia Vital*, '
-        f'atribuindo-lhe propriedades terapêuticas '
-        f'para curar até (5 x Rank x Nível) níveis de condições aleatórias '
-        f'de um aliado.'
+        'Imbui um punhado de ervas com *Energia Vital*, '
+        'atribuindo-lhe propriedades terapêuticas '
+        'para curar até (5 x Rank x Nível) níveis de condições aleatórias '
+        'de um aliado.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -146,11 +146,11 @@ class HealingHerbSkill(BaseSkill):
 class VitalityAuraSkill(BaseSkill):
     NAME = HealerSkillEnum.VITALITY_AURA.value
     DESCRIPTION = (
-        f'Cria uma aura usando a *Energia Vital*, '
-        f'melhorando a vitalidade de um aliado, '
+        'Cria uma aura usando a *Energia Vital*, '
+        'melhorando a vitalidade de um aliado, '
         f'aumentando seu *{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
         f'*{INTELLIGENCE_EMOJI_TEXT}* e na *{WISDOM_EMOJI_TEXT}* '
-        f'(200% + 20% x Rank x Nível).'
+        '(200% + 20% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -191,7 +191,7 @@ class VitalityAuraSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* é envolvido pela *{self.name}* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                     f'em {condition.bonus_hit_points} pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -207,12 +207,12 @@ class VitalityAuraSkill(BaseSkill):
 class ReviveRitualSkill(BaseSkill):
     NAME = HealerSkillEnum.REVIVE_RITUAL.value
     DESCRIPTION = (
-        f'Realiza um *Ritual Sagrado*, concentrando *Energia Vital* '
-        f'que permite trazer um aliado caído de volta à vida, '
-        f'desafiando as leis da morte, '
+        'Realiza um *Ritual Sagrado*, concentrando *Energia Vital* '
+        'que permite trazer um aliado caído de volta à vida, '
+        'desafiando as leis da morte, '
         f'curando o *{HIT_POINT_FULL_EMOJI_TEXT}* de um aliado '
         f'com base na *{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-        f'(200% + 10% x Rank x Nível).'
+        '(200% + 10% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
