@@ -30,11 +30,11 @@ if TYPE_CHECKING:
 class SilentAssassinSkill(BaseSkill):
     NAME = LordOfTheRoguesSkillEnum.SILENT_ASSASSIN.value
     DESCRIPTION = (
-        f'Move-se com a agilidade de uma sombra e desfere um golpe lôbrego, '
-        f'causando dano de '
+        'Move-se com a agilidade de uma sombra e desfere um golpe lôbrego, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.SILENCE)}* com nível igual ao '
         f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais. '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -92,13 +92,13 @@ class SilentAssassinSkill(BaseSkill):
 class DeadlyBladeSkill(BaseSkill):
     NAME = LordOfTheRoguesSkillEnum.DEADLY_BLADE.value
     DESCRIPTION = (
-        f'Desfere um golpe fatal em um ponto vital do inimigo, '
-        f'causando dano de '
+        'Desfere um golpe fatal em um ponto vital do inimigo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.DEATH_SENTENCE)}* '
-        f'com nível igual ao (Rank x Nível). '
+        'com nível igual ao (Rank x Nível). '
         f'Mata o oponente se for *Acerto Crítico*{EmojiEnum.DICE.value}. '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
     )

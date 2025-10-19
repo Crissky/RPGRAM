@@ -21,8 +21,8 @@ if TYPE_CHECKING:
 class FireBallSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.FIRE_BALL.value
     DESCRIPTION = (
-        f'Com movimentos incisivos, conjura uma *Bola de Fogo* e a lança '
-        f'contra um alvo, causando dano de '
+        'Com movimentos incisivos, conjura uma *Bola de Fogo* e a lança '
+        'contra um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -61,8 +61,8 @@ class FireBallSkill(BaseSkill):
 class WaterBubbleSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.WATER_BUBBLE.value
     DESCRIPTION = (
-        f'Com movimentos suaves, conjura uma *Bolha de Água* e a lança '
-        f'contra um alvo, causando dano de '
+        'Com movimentos suaves, conjura uma *Bolha de Água* e a lança '
+        'contra um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -101,8 +101,8 @@ class WaterBubbleSkill(BaseSkill):
 class WindGustSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.WIND_GUST.value
     DESCRIPTION = (
-        f'Com movimentos undosos, conjura uma *Rajada de Vento* que vai de '
-        f'encontro ao alvo, causando dano de '
+        'Com movimentos undosos, conjura uma *Rajada de Vento* que vai de '
+        'encontro ao alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -141,8 +141,8 @@ class WindGustSkill(BaseSkill):
 class EarthBreakSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.EARTH_BREAK.value
     DESCRIPTION = (
-        f'Com um movimento brusco, *Quebra-Terra* '
-        f'debaixo de um alvo, causando dano de '
+        'Com um movimento brusco, *Quebra-Terra* '
+        'debaixo de um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -181,8 +181,8 @@ class EarthBreakSkill(BaseSkill):
 class PrismaticShotSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.PRISMATIC_SHOT.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica* e dispara um *Feixe Prismático*, '
-        f'causando dano de '
+        'Canaliza a *Energia Mágica* e dispara um *Feixe Prismático*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )

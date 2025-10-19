@@ -26,8 +26,8 @@ if TYPE_CHECKING:
 class RoyalFurySkill(BaseSkill):
     NAME = KnightSkillEnum.ROYAL_FURY.value
     DESCRIPTION = (
-        f'*Em nome do Rei*, desfere uma série de golpes rápidos e '
-        f'devastadores, causando dano '
+        '*Em nome do Rei*, desfere uma série de golpes rápidos e '
+        'devastadores, causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -70,9 +70,9 @@ class RoyalFurySkill(BaseSkill):
 class JusticeBladeSkill(BaseSkill):
     NAME = KnightSkillEnum.JUSTICE_BLADE.value
     DESCRIPTION = (
-        f'*Em nome do Rei*, desfere um golpe rápido e preciso, que causa o '
-        f'dobro de dano em alvos *Transgressores*. '
-        f'Causa dano '
+        '*Em nome do Rei*, desfere um golpe rápido e preciso, que causa o '
+        'dobro de dano em alvos *Transgressores*. '
+        'Causa dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
@@ -137,10 +137,10 @@ class JusticeBladeSkill(BaseSkill):
 class SovereignCutSkill(BaseSkill):
     NAME = KnightSkillEnum.SOVEREIGN_CUT.value
     DESCRIPTION = (
-        f'*Em nome do Rei*, desfere um golpe amplo, que varre o '
-        f'campo de batalha e inflige o '
-        f'dobro de dano em todos os alvos *Transgressores*. '
-        f'Causa dano '
+        '*Em nome do Rei*, desfere um golpe amplo, que varre o '
+        'campo de batalha e inflige o '
+        'dobro de dano em todos os alvos *Transgressores*. '
+        'Causa dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
@@ -205,9 +205,9 @@ class SovereignCutSkill(BaseSkill):
 class RoyalShieldSkill(BaseSkill):
     NAME = KnightSkillEnum.ROYAL_SHIELD.value
     DESCRIPTION = (
-        f'Quebra o *Selo Real* para convocar um escudo gerado '
-        f'pela liberação do *Poder Régio*, protegendo com uma barreira '
-        f'baseada no '
+        'Quebra o *Selo Real* para convocar um escudo gerado '
+        'pela liberação do *Poder Régio*, protegendo com uma barreira '
+        'baseada no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -256,7 +256,7 @@ class RoyalShieldSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* Quebra o *Selo Real*, convocando uma '
-                    f'proteção com o *Poder Régio* para proteger '
+                    'proteção com o *Poder Régio* para proteger '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
