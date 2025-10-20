@@ -24,9 +24,9 @@ if TYPE_CHECKING:
 class BoneBucklerSkill(BaseSkill):
     NAME = NecromancerSkillEnum.BONE_BUCKLER.value
     DESCRIPTION = (
-        f'Constrói um *Escudo Esquelético* feito de '
-        f'*Ossos* e *Névoa Necromântica*, '
-        f'aumentando a '
+        'Constrói um *Escudo Esquelético* feito de '
+        '*Ossos* e *Névoa Necromântica*, '
+        'aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{INTELLIGENCE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -69,7 +69,7 @@ class BoneBucklerSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa um *{self.name}*, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -83,9 +83,9 @@ class BoneBucklerSkill(BaseSkill):
 class BoneSpaulderSkill(BaseSkill):
     NAME = NecromancerSkillEnum.BONE_SPAULDER.value
     DESCRIPTION = (
-        f'Forja uma *Espaldeira Esquelética* feita de '
-        f'*Ossos* e *Névoa Necromântica* e que '
-        f'aumenta a '
+        'Forja uma *Espaldeira Esquelética* feita de '
+        '*Ossos* e *Névoa Necromântica* e que '
+        'aumenta a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{INTELLIGENCE_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
@@ -130,7 +130,7 @@ class BoneSpaulderSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa uma *{self.name}*, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -144,9 +144,9 @@ class BoneSpaulderSkill(BaseSkill):
 class BoneArmorSkill(BaseSkill):
     NAME = NecromancerSkillEnum.BONE_ARMOR.value
     DESCRIPTION = (
-        f'Forja uma *Armadura Esquelética* com placas feitas de '
-        f'*Ossos* e *Névoa Necromântica* e que '
-        f'aumenta a '
+        'Forja uma *Armadura Esquelética* com placas feitas de '
+        '*Ossos* e *Névoa Necromântica* e que '
+        'aumenta a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{INTELLIGENCE_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
@@ -191,7 +191,7 @@ class BoneArmorSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa uma *{self.name}*, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
