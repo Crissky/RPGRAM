@@ -26,10 +26,10 @@ if TYPE_CHECKING:
 class ExcaliburSkill(BaseSkill):
     NAME = PaladinSkillEnum.EXCALIBUR.value
     DESCRIPTION = (
-        f'Transmuta a própria arma na *Épica '
+        'Transmuta a própria arma na *Épica '
         f'{PaladinSkillEnum.EXCALIBUR.value}* '
-        f'e desfere um ataque poderoso, '
-        f'causando dano '
+        'e desfere um ataque poderoso, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
@@ -71,10 +71,10 @@ class ExcaliburSkill(BaseSkill):
 class KusanagiNoTsurugiSkill(BaseSkill):
     NAME = PaladinSkillEnum.KUSANAGI_NO_TSURUGI.value
     DESCRIPTION = (
-        f'Transmuta a própria arma na *Lendária '
+        'Transmuta a própria arma na *Lendária '
         f'{PaladinSkillEnum.KUSANAGI_NO_TSURUGI.value}* '
-        f'e desfere um ataque devastador, '
-        f'causando dano '
+        'e desfere um ataque devastador, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* e de '
@@ -120,10 +120,10 @@ class KusanagiNoTsurugiSkill(BaseSkill):
 class TyrfingSkill(BaseSkill):
     NAME = PaladinSkillEnum.TYRFING.value
     DESCRIPTION = (
-        f'Transmuta a própria arma na *Mítica '
+        'Transmuta a própria arma na *Mítica '
         f'{PaladinSkillEnum.TYRFING.value}* '
-        f'e desfere um ataque implacável, '
-        f'causando dano '
+        'e desfere um ataque implacável, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
@@ -172,10 +172,10 @@ class TyrfingSkill(BaseSkill):
 class OsheSkill(BaseSkill):
     NAME = PaladinSkillEnum.OSHE.value
     DESCRIPTION = (
-        f'Transmuta a própria arma no *Épico '
+        'Transmuta a própria arma no *Épico '
         f'{PaladinSkillEnum.OSHE.value}* '
-        f'e desfere um ataque energético, '
-        f'causando dano '
+        'e desfere um ataque energético, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
@@ -219,19 +219,19 @@ class OsheSkill(BaseSkill):
 class SudarshanaChakraSkill(BaseSkill):
     NAME = PaladinSkillEnum.SUDARSHANA_CHAKRA.value
     DESCRIPTION = (
-        f'Transmuta a própria arma na *Lendária '
+        'Transmuta a própria arma na *Lendária '
         f'{PaladinSkillEnum.SUDARSHANA_CHAKRA.value}* '
-        f'e a atira contra o oponente de maneira destroçadora, '
-        f'ignorando suas defesas e '
-        f'causando dano '
+        'e a atira contra o oponente de maneira destroçadora, '
+        'ignorando suas defesas e '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível). '
-        f'O dano é decuplicado se o alvo for uma *Criatura Malégna* '
+        'O dano é decuplicado se o alvo for uma *Criatura Malégna* '
         f'({", ".join(r.title() for r in MALEGNE_RACES)}) ou se estiver '
-        f'com uma *Condição Amaldiçoante* '
+        'com uma *Condição Amaldiçoante* '
         f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}), '
-        f'além disso, cura todas as *Condições Amaldiçoantes*.'
+        'além disso, cura todas as *Condições Amaldiçoantes*.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -293,15 +293,15 @@ class SudarshanaChakraSkill(BaseSkill):
 class GungnirSkill(BaseSkill):
     NAME = PaladinSkillEnum.GUNGNIR.value
     DESCRIPTION = (
-        f'Transmuta a própria arma na *Mítica '
+        'Transmuta a própria arma na *Mítica '
         f'{PaladinSkillEnum.GUNGNIR.value}* '
-        f'e a arremessa de maneira inerrável, '
-        f'causando dano '
+        'e a arremessa de maneira inerrável, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
-        f'Essa habilidade não pode ser esquivada.'
+        'Essa habilidade não pode ser esquivada.'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{

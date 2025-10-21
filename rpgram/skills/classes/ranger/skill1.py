@@ -25,9 +25,9 @@ if TYPE_CHECKING:
 class K9AttackSkill(BaseSkill):
     NAME = RangerSkillEnum.K9_STRIKE.value
     DESCRIPTION = (
-        f'Realiza um comando sutil que faz com que seu '
-        f'*Companheiro de Guarda* inicie um ataque feroz, '
-        f'causando dano de '
+        'Realiza um comando sutil que faz com que seu '
+        '*Companheiro de Guarda* inicie um ataque feroz, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -63,8 +63,8 @@ class K9AttackSkill(BaseSkill):
 class DoubleAmbushSkill(BaseSkill):
     NAME = RangerSkillEnum.DOUBLE_AMBUSH.value
     DESCRIPTION = (
-        f'Realiza um ataque em conjunto com o seu *Companheiro de Guarda*, '
-        f'causando dano de '
+        'Realiza um ataque em conjunto com o seu *Companheiro de Guarda*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -103,9 +103,9 @@ class ThePackSkill(BaseSkill):
     NAME = RangerSkillEnum.THE_PACK.value
     DESCRIPTION = (
         f'Convoca *{RangerSkillEnum.THE_PACK.value}* e '
-        f'realiza um ataque em conjunto contra os inimigos, juntamente com '
-        f'o seu *Companheiro de Guarda*, '
-        f'causando dano de '
+        'realiza um ataque em conjunto contra os inimigos, juntamente com '
+        'o seu *Companheiro de Guarda*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
     )
@@ -147,9 +147,9 @@ class ThePackSkill(BaseSkill):
 class SniffSkill(BaseSkill):
     NAME = RangerSkillEnum.SNIFF.value
     DESCRIPTION = (
-        f'Realiza um comando para o *Companheiro de Guarda* iniciar o '
-        f'ratreio de inimigos com o seu *Faro*, '
-        f'aumentando o '
+        'Realiza um comando para o *Companheiro de Guarda* iniciar o '
+        'ratreio de inimigos com o seu *Faro*, '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -191,8 +191,8 @@ class SniffSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* realiza um comando para o '
-                f'*Companheiro de Guarda* farejar, '
-                f'aumentando o seu '
+                '*Companheiro de Guarda* farejar, '
+                'aumentando o seu '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -206,9 +206,9 @@ class SniffSkill(BaseSkill):
 class AlertSkill(BaseSkill):
     NAME = RangerSkillEnum.ALERT.value
     DESCRIPTION = (
-        f'Realiza um comando para o *Companheiro de Guarda* entrar em '
-        f'*Estado de Alerta*, '
-        f'aumentando o '
+        'Realiza um comando para o *Companheiro de Guarda* entrar em '
+        '*Estado de Alerta*, '
+        'aumentando o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
         f'*{HIT_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
@@ -253,8 +253,8 @@ class AlertSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* realiza um comando para o '
-                f'*Companheiro de Guarda* entrar em *Estado de Alerta*, '
-                f'aumentando o '
+                '*Companheiro de Guarda* entrar em *Estado de Alerta*, '
+                'aumentando o '
                 f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_precision_attack} pontos e o '
                 f'*{HIT_EMOJI_TEXT}* '
