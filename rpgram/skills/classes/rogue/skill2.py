@@ -30,8 +30,8 @@ if TYPE_CHECKING:
 class ShadowStepsSkill(BaseSkill):
     NAME = RogueSkillEnum.SHADOW_STEPS.value
     DESCRIPTION = (
-        f'Torna-se um "Fantasma", movendo-se pelas *Sombras* e '
-        f'aumentando o '
+        'Torna-se um "Fantasma", movendo-se pelas *Sombras* e '
+        'aumentando o '
         f'*{HIT_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -73,7 +73,7 @@ class ShadowStepsSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* move-se pelas *Sombras*, '
-                f' aumentando o '
+                ' aumentando o '
                 f'*{HIT_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -87,9 +87,9 @@ class ShadowStepsSkill(BaseSkill):
 class ChaoticStepsSkill(BaseSkill):
     NAME = RogueSkillEnum.CHAOTIC_STEPS.value
     DESCRIPTION = (
-        f'Assume um padrão errático e imprevisível de movimentos, '
-        f'tornado sua locomoção ainda mais difícil de prever, '
-        f'aumentando a '
+        'Assume um padrão errático e imprevisível de movimentos, '
+        'tornado sua locomoção ainda mais difícil de prever, '
+        'aumentando a '
         f'*{EVASION_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -131,8 +131,8 @@ class ChaoticStepsSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* começa a mover-se de maneira '
-                f'errática e imprevisível, '
-                f'aumentando a '
+                'errática e imprevisível, '
+                'aumentando a '
                 f'*{EVASION_EMOJI_TEXT}* '
                 f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -146,8 +146,8 @@ class ChaoticStepsSkill(BaseSkill):
 class ShadowStrikeSkill(BaseSkill):
     NAME = RogueSkillEnum.SHADOW_STRIKE.value
     DESCRIPTION = (
-        f'Se mescla as *Sombras* e as usa para lançar um ataque poderoso, '
-        f'causando dano de '
+        'Se mescla as *Sombras* e as usa para lançar um ataque poderoso, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.DARK)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -185,9 +185,9 @@ class ShadowStrikeSkill(BaseSkill):
 class ChaoticStrikeSkill(BaseSkill):
     NAME = RogueSkillEnum.CHAOTIC_STRIKE.value
     DESCRIPTION = (
-        f'Usa a imprevisibilidade e a desorientação para realizar uma '
-        f'série de golpes rápidos e *Caóticos*, '
-        f'causando dano de '
+        'Usa a imprevisibilidade e a desorientação para realizar uma '
+        'série de golpes rápidos e *Caóticos*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
