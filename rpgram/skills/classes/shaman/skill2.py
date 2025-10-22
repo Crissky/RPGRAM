@@ -45,17 +45,17 @@ class FighterPandinusSkill(BaseSkill):
     NAME = ShamanSkillEnum.FIGHTER_PANDINUS.value
     DESCRIPTION = (
         f'Convoca um companheiro *{ShamanSkillEnum.FIGHTER_PANDINUS.value}* '
-        f'que guarda o Xamã e o auxilia nos combates, '
-        f'aumentando o '
+        'que guarda o Xamã e o auxilia nos combates, '
+        'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, o *{ShamanSkillEnum.FELLOW_PANDINUS.value}* '
-        f'ataca em conjunto com o *Xamã*, adicionando dano de '
+        'ataca em conjunto com o *Xamã*, adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* '
-        f'baseado no '
+        'baseado no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -99,8 +99,8 @@ class FighterPandinusSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para batalhar ao seu lado, '
-                f'aumentando o '
+                'para batalhar ao seu lado, '
+                'aumentando o '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* em '
                 f'{condition.bonus_physical_attack} pontos e o '
                 f'*{PRECISION_ATTACK_EMOJI_TEXT}* em '
@@ -117,16 +117,16 @@ class ProtectorTurtleSkill(BaseSkill):
     NAME = ShamanSkillEnum.PROTECTOR_TURTLE.value
     DESCRIPTION = (
         f'Convoca uma companheira *{ShamanSkillEnum.PROTECTOR_TURTLE.value}* '
-        f'que o defende e o auxilia nos combates, '
-        f'aumentando a '
+        'que o defende e o auxilia nos combates, '
+        'aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, a *{ShamanSkillEnum.FELLOW_TURTLE.value}* '
-        f'ataca em conjunto com o *Xamã*, adicionando dano de '
+        'ataca em conjunto com o *Xamã*, adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* '
-        f'baseado no '
+        'baseado no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -170,8 +170,8 @@ class ProtectorTurtleSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para o proteger e batalhar ao seu lado, '
-                f'aumentando a '
+                'para o proteger e batalhar ao seu lado, '
+                'aumentando a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* em '
                 f'{condition.bonus_physical_defense} pontos e a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
@@ -188,16 +188,16 @@ class ClairvoyantWolfSkill(BaseSkill):
     NAME = ShamanSkillEnum.CLAIRVOYANT_WOLF.value
     DESCRIPTION = (
         f'Convoca um companheiro *{ShamanSkillEnum.CLAIRVOYANT_WOLF.value}* '
-        f'que fareja o futuro e o auxilia nos combates, '
-        f'aumentando o '
+        'que fareja o futuro e o auxilia nos combates, '
+        'aumentando o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
         f'*{EVASION_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, o *{ShamanSkillEnum.FELLOW_WOLF.value}* '
-        f'ataca em conjunto com o *Xamã*, adicionando dano de '
+        'ataca em conjunto com o *Xamã*, adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
-        f'baseado no '
+        'baseado no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -241,8 +241,8 @@ class ClairvoyantWolfSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para fareja o futuro e batalhar ao seu lado, '
-                f'aumentando o '
+                'para fareja o futuro e batalhar ao seu lado, '
+                'aumentando o '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}* em '
                 f'{condition.bonus_magical_attack} pontos e a '
                 f'*{EVASION_EMOJI_TEXT}* em '
@@ -259,16 +259,16 @@ class LookouterYetiSkill(BaseSkill):
     NAME = ShamanSkillEnum.LOOKOUTER_YETI.value
     DESCRIPTION = (
         f'Convoca um companheiro *{ShamanSkillEnum.LOOKOUTER_YETI.value}* '
-        f'que o observa e o auxilia nos combates, '
-        f'aumentando o '
+        'que o observa e o auxilia nos combates, '
+        'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* e o '
         f'*{HIT_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
         f'Além disso, o *{ShamanSkillEnum.FELLOW_YETI.value}* '
-        f'ataca em conjunto com o *Xamã*, adicionando dano '
+        'ataca em conjunto com o *Xamã*, adicionando dano '
         f'*{get_damage_emoji_text(DamageEnum.ROAR)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* '
-        f'baseado no '
+        'baseado no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -312,8 +312,8 @@ class LookouterYetiSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* convoca um companheiro *{self.name}* '
-                f'para observar e batalhar ao seu lado, '
-                f'aumentando o '
+                'para observar e batalhar ao seu lado, '
+                'aumentando o '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* em '
                 f'{condition.bonus_hit_points} pontos e o '
                 f'*{HIT_EMOJI_TEXT}* em '
@@ -329,9 +329,9 @@ class LookouterYetiSkill(BaseSkill):
 class RockPandinusSkill(BaseSkill):
     NAME = ShamanSkillEnum.ROCK_PANDINUS.value
     DESCRIPTION = (
-        f'Conjura um *Pandinus de Pedra* que '
-        f'avança lentamente, atacando com uma ferroada e '
-        f'causando dano de '
+        'Conjura um *Pandinus de Pedra* que '
+        'avança lentamente, atacando com uma ferroada e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
@@ -380,9 +380,9 @@ class RockPandinusSkill(BaseSkill):
 class MaelstromSkill(BaseSkill):
     NAME = ShamanSkillEnum.MAELSTROM.value
     DESCRIPTION = (
-        f'Conjura uma *Tartaruga Anciã* que '
-        f'gira em grande velocidade, iniciando um *Sorvedouro* e '
-        f'causando dano de '
+        'Conjura uma *Tartaruga Anciã* que '
+        'gira em grande velocidade, iniciando um *Sorvedouro* e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -424,10 +424,10 @@ class MaelstromSkill(BaseSkill):
 class LaserClawSkill(BaseSkill):
     NAME = ShamanSkillEnum.LASER_CLAW.value
     DESCRIPTION = (
-        f'Conjura um *Lobo Boreal* que '
-        f'avança contra o oponente, energizando sua *Garra* e '
-        f'destruindo qualquer barreira antes de aplicar '
-        f'dano de '
+        'Conjura um *Lobo Boreal* que '
+        'avança contra o oponente, energizando sua *Garra* e '
+        'destruindo qualquer barreira antes de aplicar '
+        'dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
@@ -477,9 +477,9 @@ class LaserClawSkill(BaseSkill):
 class SnowBreathSkill(BaseSkill):
     NAME = ShamanSkillEnum.SNOW_BREATH.value
     DESCRIPTION = (
-        f'Conjura um *Yeti das Neves* que '
-        f'solta um *Rugido Gélido* que se propaga pelo campo de batalha, '
-        f'causando dano de '
+        'Conjura um *Yeti das Neves* que '
+        'solta um *Rugido Gélido* que se propaga pelo campo de batalha, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.ROAR)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'

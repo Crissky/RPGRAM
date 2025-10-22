@@ -31,9 +31,9 @@ if TYPE_CHECKING:
 class ZantetsusenSkill(BaseSkill):
     NAME = SamuraiSkillEnum.ZANTETSUSEN.value
     DESCRIPTION = (
-        f'Executa um poderoso golpe pesado acima da cabeça, '
-        f'recuando e avançando para um golpe lateral usando as duas mãos, '
-        f'causando dano de '
+        'Executa um poderoso golpe pesado acima da cabeça, '
+        'recuando e avançando para um golpe lateral usando as duas mãos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -69,13 +69,13 @@ class ZantetsusenSkill(BaseSkill):
 class MizuKogekiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.MIZU_KOGEKI.value
     DESCRIPTION = (
-        f'Executa movimentos giratórios para desferir um poderoso golpe '
-        f'usando as duas mãos, '
-        f'causando dano de '
+        'Executa movimentos giratórios para desferir um poderoso golpe '
+        'usando as duas mãos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.STUNNED)}* com nível igual ao '
         f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais.'
     )
@@ -128,13 +128,13 @@ class MizuKogekiSkill(BaseSkill):
 class HonoKogekiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.HONO_KOGEKI.value
     DESCRIPTION = (
-        f'Executa um movimento concentrado para desferir um poderoso golpe '
-        f'usando as duas mãos, '
-        f'causando dano de '
+        'Executa um movimento concentrado para desferir um poderoso golpe '
+        'usando as duas mãos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BURN)}* com nível igual ao '
         f'(Rank x Nível) se tirar 5{EmojiEnum.DICE.value} ou mais.'
     )
@@ -187,13 +187,13 @@ class HonoKogekiSkill(BaseSkill):
 class KosenKogekiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.KOSEN_KOGEKI.value
     DESCRIPTION = (
-        f'Executa um movimento rápido para desferir um poderoso golpe '
-        f'usando as duas mãos, '
-        f'causando dano de '
+        'Executa um movimento rápido para desferir um poderoso golpe '
+        'usando as duas mãos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.PARALYSIS)}* com nível igual ao '
         f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais.'
     )
@@ -246,13 +246,13 @@ class KosenKogekiSkill(BaseSkill):
 class KazeKogekiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.KAZE_KOGEKI.value
     DESCRIPTION = (
-        f'Executa um movimento direto para desferir um poderoso golpe '
-        f'usando as duas mãos, '
-        f'causando dano de '
+        'Executa um movimento direto para desferir um poderoso golpe '
+        'usando as duas mãos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
         f'(Rank x Nível) se tirar 5{EmojiEnum.DICE.value} ou mais.'
     )
@@ -305,13 +305,13 @@ class KazeKogekiSkill(BaseSkill):
 class IwaKogekiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.IWA_KOGEKI.value
     DESCRIPTION = (
-        f'Executa um movimento pesado para desferir um poderoso golpe '
-        f'usando as duas mãos, '
-        f'causando dano de '
+        'Executa um movimento pesado para desferir um poderoso golpe '
+        'usando as duas mãos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.PETRIFIED)}* com nível igual ao '
         f'(Rank x Nível) se for *Acerto Crítico*{EmojiEnum.DICE.value}.'
     )
