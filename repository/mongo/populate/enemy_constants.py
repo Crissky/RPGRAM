@@ -1797,7 +1797,7 @@ if __name__ == '__main__':
     ]
 
     def get_archetype_equipment_names(key: str) -> List[str]:
-        '''Retorna uma lista com os nomes dos equipamentos de um tipo (key) 
+        '''Retorna uma lista com os nomes dos equipamentos de um tipo (key)
         de todos os arquétipos.'''
         equipment_names = []
         for archetype_equipment in ALL_ARCHETYPE_EQUIPMENTS:
@@ -1806,7 +1806,7 @@ if __name__ == '__main__':
         return equipment_names
 
     def check_if_exists_in_definitions(key):
-        '''Checa se todos os equipamentos de um tipo (key) dos arquétipos 
+        '''Checa se todos os equipamentos de um tipo (key) dos arquétipos
         existem nas Definições de Equipamentos.'''
         equipment_names = get_archetype_equipment_names(key)
         for equipment_name in equipment_names:
@@ -1817,7 +1817,7 @@ if __name__ == '__main__':
                 )
 
     def check_if_exists_in_classe_equipment():
-        '''Checa se todos os equipamentos das Definições de Equipamentos 
+        '''Checa se todos os equipamentos das Definições de Equipamentos
         existem nos equipamentos dos arquétipos.'''
         all_equipments = set([
             equipment
@@ -1834,7 +1834,7 @@ if __name__ == '__main__':
         print('CHECK_IF_EXISTS_IN_CLASSE_EQUIPMENT: OK!!!')
 
     def check_classes_local():
-        '''Checa se todas as classes do Database estão sendo usadas no 
+        '''Checa se todas as classes do Database estão sendo usadas no
         "ARCHETYPES_EQUIPMENTS".'''
         classe_model = ClasseModel()
         classe_names = classe_model.get_all(fields=['name'])
@@ -1847,7 +1847,7 @@ if __name__ == '__main__':
         print('CHECK_CLASSES_LOCAL: OK!!!')
 
     def check_classes_database():
-        '''Checa se todas as classes do "ARCHETYPES_EQUIPMENTS" estão 
+        '''Checa se todas as classes do "ARCHETYPES_EQUIPMENTS" estão
         presentes no Database.'''
         classe_model = ClasseModel()
         classe_names = classe_model.get_all(fields=['name'])
@@ -1860,7 +1860,7 @@ if __name__ == '__main__':
         print('CHECK_CLASSES_DATABASE: OK!!!')
 
     def check_races_local():
-        '''Checa se todas as raças do Database estão sendo usadas no 
+        '''Checa se todas as raças do Database estão sendo usadas no
         "RACES_ALIGNMENT".'''
         race_model = RaceModel()
         race_names = race_model.get_all(fields=['name'])
@@ -1873,7 +1873,7 @@ if __name__ == '__main__':
         print('CHECK_RACES_LOCAL: OK!!!')
 
     def check_races_database():
-        '''Checa se todas as raças do "RACES_ALIGNMENT" estão 
+        '''Checa se todas as raças do "RACES_ALIGNMENT" estão
         presentes no Database.'''
         race_model = RaceModel()
         race_names = race_model.get_all(fields=['name'])

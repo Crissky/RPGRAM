@@ -11,15 +11,15 @@ class RequirementError(Exception):
 
 
 class EquipmentRequirementError(Exception):
-    ''' Erro quando o personagem não tem os requisitos necessários para 
+    ''' Erro quando o personagem não tem os requisitos necessários para
     equipar o item.'''
 
 
 class SkillRequirementError(Exception):
-    ''' Erro quando o personagem não tem os requisitos necessários para 
+    ''' Erro quando o personagem não tem os requisitos necessários para
     usar a habilidade.'''
 
 
 class InvalidWordError(Exception):
-    ''' Erro quando é enviada uma palavra que não atende aos critérios 
+    ''' Erro quando é enviada uma palavra que não atende aos critérios
     do WordGame (SecretWord)'''

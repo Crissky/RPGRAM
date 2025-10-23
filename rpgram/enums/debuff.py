@@ -89,7 +89,7 @@ def get_debuffs_emoji_text(
     *debuff_names: Union[DebuffEnum, str],
     sep: str = ', '
 ) -> str:
-    '''Retorna tupla de debuffs como uma string com o emoji e 
+    '''Retorna tupla de debuffs como uma string com o emoji e
     o nome do debuff separados pelo "sep".
     '''
 

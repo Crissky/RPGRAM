@@ -25,10 +25,10 @@ from rpgram.constants.text import (
 
 
 class StatsBooster:
-    '''Classe Base para ser usada em características que dão bônus aos 
+    '''Classe Base para ser usada em características que dão bônus aos
     atributos dos personagens como: Raça, Classe, Taletos, Equipamentos, etc.
 
-    A princípio esses atributos não são alterados, permanencendo os mesmos 
+    A princípio esses atributos não são alterados, permanencendo os mesmos
     valores do momento de sua criação.
 
     '''

@@ -229,12 +229,12 @@ class Model:
         return self.database.length(self.collection, query, field)
 
     def __populate_load(self, dict_obj: dict):
-        '''Função que popula os campos do objeto que são outras classes e que 
-        no banco são salvos somente a sua chave. Esses campo que serão 
+        '''Função que popula os campos do objeto que são outras classes e que
+        no banco são salvos somente a sua chave. Esses campo que serão
         populados pertencem a outra tabela e por conta disso
         devem possuir sua própria classe Model.
 
-        Quando o campo a ser populado é uma lista, todos os elementos da lista 
+        Quando o campo a ser populado é uma lista, todos os elementos da lista
         serão populados, porém todos eles devem pertencer a mesma tabela.'''
         for popu_field_name, popu_field_info in self.populate_fields.items():
             expected_class = popu_field_info.get('_class')
@@ -333,27 +333,27 @@ class Model:
                 model: Modelo usado para carregar o objeto que populará
                     o objeto do modelo atual.
                 subclass: Class que será usada para instanciar novos objetos.
-                    Essa classe usará o objeto carregado pelo `model` como um 
-                    dos seus atributos, além dos demais chaves/valores do 
+                    Essa classe usará o objeto carregado pelo `model` como um
+                    dos seus atributos, além dos demais chaves/valores do
                     dicionário salvo no banco.
                     Usado quando o campo é salvo no banco do objeto pai como
-                    uma lista de dicionários (Usado no BagModel para usar os 
-                    objetos do tipo Equipment/Consumable carregados pelo 
+                    uma lista de dicionários (Usado no BagModel para usar os
+                    objetos do tipo Equipment/Consumable carregados pelo
                     ItemModel como atributo da classe Item).
-                remakeclass: Se existir esse campo, define que a Classe que 
+                remakeclass: Se existir esse campo, define que a Classe que
                     será instanciada usando o to_dict() do
-                    objeto carregado do banco pelo `model` como seus 
-                    atributos, além dos demais chaves/valores do dicionário 
-                    salvo no banco. (Usado pelo StatusModel para modificar 
-                    valores que deveriam ser variáveis [como turno e level] da 
-                    classe Condition sem alterar os valores padrão [como nome 
+                    objeto carregado do banco pelo `model` como seus
+                    atributos, além dos demais chaves/valores do dicionário
+                    salvo no banco. (Usado pelo StatusModel para modificar
+                    valores que deveriam ser variáveis [como turno e level] da
+                    classe Condition sem alterar os valores padrão [como nome
                     e descrição]).
-                factory: Função que ira carregar o atributo a partir de uma 
-                função factory usando como argumentos os campos vindos do 
+                factory: Função que ira carregar o atributo a partir de uma
+                função factory usando como argumentos os campos vindos do
                 Mongo, ao invés de carregar do banco a partir de um Model.
-                _class: Atributo só será populado em objetos que 
-                    são dessa classe. (Usando em ItemModel para popular 
-                    atributo somente da classe Consumable e não tenta na 
+                _class: Atributo só será populado em objetos que
+                    são dessa classe. (Usando em ItemModel para popular
+                    atributo somente da classe Consumable e não tenta na
                     Classe Equipment, pois levantaria um erro).
 
             populate_fields = {

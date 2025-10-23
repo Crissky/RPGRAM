@@ -69,7 +69,7 @@ class Player:
 
     def in_chat(self, chat_id: int) -> bool:
         '''Checa se o jogador já possui o chat_id em sua lista.
-        Retorna True se o chat_id esta na lista de chat_ids do jogador e, 
+        Retorna True se o chat_id esta na lista de chat_ids do jogador e,
         caso contrário, retorna False.
         '''
 

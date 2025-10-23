@@ -1,5 +1,5 @@
 ''' Módulo com as Condições do tipo SELF
-    Essas Condições usam dos stats do personagem atualizados, por isso 
+    Essas Condições usam dos stats do personagem atualizados, por isso
     recebem um personagem como argumento.
 '''
 

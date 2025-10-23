@@ -110,7 +110,7 @@ class GridGame:
         return is_good_move
 
     def get_next_color(self, value) -> str:
-        """Retorna o próximo valor na lista após o valor especificado. 
+        """Retorna o próximo valor na lista após o valor especificado.
         Se o valor for o último da lista, retorna o primeiro elemento.
         """
 

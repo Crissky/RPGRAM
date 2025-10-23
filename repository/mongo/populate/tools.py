@@ -16,7 +16,7 @@ def weighted_choice(**items) -> Hashable:
 
 
 def random_group_level(level: int) -> int:
-    '''Função que retorna um valor inteiro aleatório entre 75% e 125% do 
+    '''Função que retorna um valor inteiro aleatório entre 75% e 125% do
     level passado. No entando, o menor valor retornado sempre será 1.
     '''
     min_level = max(int(level - 10), 1)
@@ -29,8 +29,8 @@ def choice_rarity(group_level: int) -> str:
     '''Retorna uma raridade de maneira aleatória.
     A raridade é retornada com base em sua propabilidade e no nível do grupo.
     Um nível de grupo maior libera mais tipos de raridades.
-    As raridades opcionais (que estão nos IFs) aumentam a sua probabilidade de 
-    acordo com o nível do grupo com um valor máximo de 50, recebendo um bônus 
+    As raridades opcionais (que estão nos IFs) aumentam a sua probabilidade de
+    acordo com o nível do grupo com um valor máximo de 50, recebendo um bônus
     entre 1/100 à 1/5 do nível de grupo.
     '''
 

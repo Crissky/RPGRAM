@@ -97,7 +97,7 @@ class Status:
         self,
         *condition_ratio_tuple: Tuple[dict]
     ) -> dict:
-        '''Testa se o personagem irá receber a condição vinda de 
+        '''Testa se o personagem irá receber a condição vinda de
         SpecialDamage.condition_list
         Tupla de dicionários de condições e respectivos ratios de acerto.
         condition = {
@@ -425,8 +425,9 @@ class Status:
         )
 
     def immobilized_names(self) -> str:
-        '''Retorna os nomes das condições imobilizantes que o personagem 
-        possui. Caso não haja condições desse tipo, retorna uma exceção.'''
+        '''Retorna os nomes das condições imobilizantes que o personagem
+        possui. Caso não haja condições desse tipo, retorna uma exceção.
+        '''
 
         names = []
         for condition in self.__conditions:
@@ -439,8 +440,9 @@ class Status:
         return ', '.join(names)
 
     def cursed_names(self) -> str:
-        '''Retorna os nomes das condições de maldição que o personagem 
-        possui. Caso não haja condições desse tipo, retorna uma exceção.'''
+        '''Retorna os nomes das condições de maldição que o personagem
+        possui. Caso não haja condições desse tipo, retorna uma exceção.
+        '''
 
         names = []
         for condition in self.__conditions:

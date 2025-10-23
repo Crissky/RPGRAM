@@ -1,5 +1,5 @@
 '''
-Arquivo responsável por resetar os atributos base dos jogadores, 
+Arquivo responsável por resetar os atributos base dos jogadores,
 além de atualizar os bônus dos atributos das raça e classe dos personagens.
 O LEVEL do personagem será mantido. Os PONTOS DEVERÃO SER REDISTRIBUÍDOS.
 '''

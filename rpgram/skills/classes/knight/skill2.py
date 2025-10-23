@@ -271,8 +271,8 @@ class RoyalShieldSkill(BaseSkill):
 
 SKILL_WAY_DESCRIPTION = {
     # Sugestão para nomes do caminho:
-    # Sentinela da Planície, Lâmina dos Reis, Lança Celeste, 
-    # Arauto da Tempestade, Juramento de Aço, Guardião da Honra, 
+    # Sentinela da Planície, Lâmina dos Reis, Lança Celeste,
+    # Arauto da Tempestade, Juramento de Aço, Guardião da Honra,
     # Marechal de Guerra, Vanguarda da Justiça
     'name': 'Lâmina dos Reis',
     'description': (
