@@ -24,10 +24,10 @@ if TYPE_CHECKING:
 class PrismaticScintillationSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SCINTILLATION.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica*, criando e lançando um *Artefato '
-        f'Prismático* que causa dano de '
+        'Canaliza a *Energia Mágica*, criando e lançando um *Artefato '
+        'Prismático* que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
-        f'a *TODES os inimigos* com base no '
+        'a *TODES os inimigos* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 2.5% x Rank x Nível).'
     )
     RANK = 2
@@ -64,8 +64,8 @@ class PrismaticScintillationSkill(BaseSkill):
 class PrismaticShieldSkill(BaseSkill):
     NAME = SorcererSkillEnum.PRISMATIC_SHIELD.value
     DESCRIPTION = (
-        f'Canaliza a *Energia Mágica* para envolver um aliado em um círculo '
-        f'prismático que o salvaguardar com uma barreira baseada no '
+        'Canaliza a *Energia Mágica* para envolver um aliado em um círculo '
+        'prismático que o salvaguardar com uma barreira baseada no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -116,7 +116,7 @@ class PrismaticShieldSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* canaliza um *Círculo Cintilante* '
-                    f'para salvaguardar '
+                    'para salvaguardar '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'

@@ -27,9 +27,9 @@ if TYPE_CHECKING:
 class FlamingSpecterSkill(BaseSkill):
     NAME = SummonerSkillEnum.FLAMING_SPECTER.value
     DESCRIPTION = (
-        f'Conjura uma *Criatura Espectral de Fogo* com olhos ardentes '
-        f'e corpo feito de chamas, ele avança sobre um inimigo '
-        f'causando dano de '
+        'Conjura uma *Criatura Espectral de Fogo* com olhos ardentes '
+        'e corpo feito de chamas, ele avança sobre um inimigo '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -65,11 +65,11 @@ class FlamingSpecterSkill(BaseSkill):
 class KappaFountainSkill(BaseSkill):
     NAME = SummonerSkillEnum.KAPPA_FOUNTAIN.value
     DESCRIPTION = (
-        f'Convoca um *Kappa Amigável* que fornece um pouco da '
-        f'*Água do seu Prato* para um aliado, '
+        'Convoca um *Kappa Amigável* que fornece um pouco da '
+        '*Água do seu Prato* para um aliado, '
         f'curando o seu *{HIT_POINT_FULL_EMOJI_TEXT}* '
         f'com base na *{MAGICAL_DEFENSE_EMOJI_TEXT}* '
-        f'(200% + 10% x Rank x Nível).'
+        '(200% + 10% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -111,7 +111,7 @@ class KappaFountainSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* recebe um pouco de água do '
-                    f'*Prato do Kappa* que cura suas feridas.\n'
+                    '*Prato do Kappa* que cura suas feridas.\n'
                     f'*{report_text}*({dice.text}).'
                 )
             }
@@ -124,10 +124,10 @@ class KappaFountainSkill(BaseSkill):
 class PiskieWindbagSkill(BaseSkill):
     NAME = SummonerSkillEnum.PISKIE_WINDBAG.value
     DESCRIPTION = (
-        f'Chama um *Pequenino Piskie* que mira a boca do seu '
-        f'minúsculo *Sacovento* para proteger um aliado com uma '
-        f'*Barreira de Ar Turbilhonante* '
-        f'baseada na '
+        'Chama um *Pequenino Piskie* que mira a boca do seu '
+        'minúsculo *Sacovento* para proteger um aliado com uma '
+        '*Barreira de Ar Turbilhonante* '
+        'baseada na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -169,8 +169,8 @@ class PiskieWindbagSkill(BaseSkill):
             )
             report = {
                 'text': (
-                    f'*Piskie* dispara uma *Barreira de Ar Turbilhonante* '
-                    f'para proteger '
+                    '*Piskie* dispara uma *Barreira de Ar Turbilhonante* '
+                    'para proteger '
                     f'*{target_name}* com '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'

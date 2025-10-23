@@ -27,9 +27,9 @@ if TYPE_CHECKING:
 class MagicOrbSkill(BaseSkill):
     NAME = SorcererSupremeSkillEnum.MAGIC_ORB.value
     DESCRIPTION = (
-        f'Conjura uma *Esfera de Energia* pura e destrutiva que flutua '
-        f'diante do conjurador e irrompe contra o inimigo, '
-        f'causando dano '
+        'Conjura uma *Esfera de Energia* pura e destrutiva que flutua '
+        'diante do conjurador e irrompe contra o inimigo, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (155% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
@@ -70,11 +70,11 @@ class MagicOrbSkill(BaseSkill):
 class MagicalImprisonmentSkill(BaseSkill):
     NAME = SorcererSupremeSkillEnum.MAGICAL_IMPRISONMENT.value
     DESCRIPTION = (
-        f'Conjura e lança sobre o inimigo um *Artefato* ou *Animal Mágico*, '
-        f'causando dano '
+        'Conjura e lança sobre o inimigo um *Artefato* ou *Animal Mágico*, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.IMPRISONED)}* com nível igual ao '
         f'(Rank x Nível) se tirar 15{EmojiEnum.DICE.value} ou mais.'
     )
@@ -127,8 +127,8 @@ class MagicalImprisonmentSkill(BaseSkill):
 class MagicShieldSkill(BaseSkill):
     NAME = SorcererSupremeSkillEnum.MAGIC_SHIELD.value
     DESCRIPTION = (
-        f'Canaliza *Energia Mágica* para envolver um aliado em um *Manto '
-        f'Mágico* que o resguardar com uma barreira baseada no '
+        'Canaliza *Energia Mágica* para envolver um aliado em um *Manto '
+        'Mágico* que o resguardar com uma barreira baseada no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -179,7 +179,7 @@ class MagicShieldSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* canaliza um *Manto Mágico* '
-                    f'para resguardar '
+                    'para resguardar '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -195,9 +195,9 @@ class MagicShieldSkill(BaseSkill):
 class MagicShotSkill(BaseSkill):
     NAME = SorcererSupremeSkillEnum.MAGIC_SHOT.value
     DESCRIPTION = (
-        f'Conjura uma *Centelha Mágica* na ponta do dedo e a dispara, '
-        f'ignorando as defesas do oponente e '
-        f'causando dano '
+        'Conjura uma *Centelha Mágica* na ponta do dedo e a dispara, '
+        'ignorando as defesas do oponente e '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (75% + 5% x Rank x Nível).'
     )
