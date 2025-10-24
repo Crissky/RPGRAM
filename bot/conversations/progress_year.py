@@ -1,5 +1,5 @@
 '''
-Módulo responsável por exibir diariamente a porcentagem do dia atual em 
+Módulo responsável por exibir diariamente a porcentagem do dia atual em
 relação ao total de dias do ano vigente.
 '''
 
@@ -63,7 +63,7 @@ async def show_percent_today(context: ContextTypes.DEFAULT_TYPE):
 
 def percent_today() -> float:
     '''
-    Calcula a porcentagem do dia atual em relação a quantidade de dias do ano 
+    Calcula a porcentagem do dia atual em relação a quantidade de dias do ano
     atual.
     '''
 

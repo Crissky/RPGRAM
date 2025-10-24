@@ -90,7 +90,7 @@ MINUTES_TO_TIMEOUT_FIND_TREASURE = 60
 
 @skip_if_spawn_timeout
 async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
-    '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR 
+    '''Envia uma mensagem para o grupo com as opções de INVESTIGAR ou IGNORAR
     uma busca por tesouro. A mensagem é gerada de maneira aleatória.
     '''
 
@@ -151,7 +151,7 @@ async def job_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_timeout_find_treasure(context: ContextTypes.DEFAULT_TYPE):
-    '''Job que exclui a mensagem do Baú do Tesouro e retira no dicionário o 
+    '''Job que exclui a mensagem do Baú do Tesouro e retira no dicionário o
     ID do mesmo após um tempo pré determinado.
     '''
 
@@ -175,7 +175,7 @@ async def job_timeout_find_treasure(context: ContextTypes.DEFAULT_TYPE):
 @confusion()
 @print_basic_infos
 async def inspect_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador 
+    '''Cria de maneira aleatória um item (Consumable/Equipment) para o jogador
     que clicou no botão de investigar e salva o item em sua bolsa.
     '''
 
@@ -295,7 +295,7 @@ async def activated_trap(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
 ):
-    '''Ativa armadilha que causa dano e debuffs ao jogador que 
+    '''Ativa armadilha que causa dano e debuffs ao jogador que
     tentou abrir o baú.
     '''
 
@@ -381,7 +381,7 @@ async def activated_trap(
 @confusion()
 @print_basic_infos
 async def ignore_treasure(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    '''Apaga a mensagem de busca de tesouro quando um jogador 
+    '''Apaga a mensagem de busca de tesouro quando um jogador
     clica em IGNORAR.
     '''
 

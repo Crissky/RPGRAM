@@ -187,7 +187,7 @@ class SuperChargeSkill(BaseSkill):
             report['status_text'] = status_report['text']
 
         return report
-    
+
     @property
     def hit_multiplier(self) -> float:
         return 0.75

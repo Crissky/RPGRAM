@@ -110,25 +110,25 @@ async def call_telegram_message_function(
     auto_delete_message: Union[bool, int, timedelta] = True,
     **kwargs
 ) -> Union[Any, Message]:
-    '''Função que chama qualquer função de mensagem do telegram. 
-    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará 
-    alguns segundos tentará novamente com um número máximo de 3 tentativas. 
-    Caso a função retorne um objeto do tipo Message, a mensagem será excluída 
+    '''Função que chama qualquer função de mensagem do telegram.
+    Caso ocorra um erro do tipo RetryAfter ou TimedOut, a função agurdará
+    alguns segundos tentará novamente com um número máximo de 3 tentativas.
+    Caso a função retorne um objeto do tipo Message, a mensagem será excluída
     em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
 
-    Se need_response for True, a função aguardará para realizar uma nova 
-    tentativa, caso contrário, a função será agendada em um job para ser 
+    Se need_response for True, a função aguardará para realizar uma nova
+    tentativa, caso contrário, a função será agendada em um job para ser
     executada posteriormente.
 
-    Se skip_retry for True, a função não tentará novamente e nem agendará uma 
+    Se skip_retry for True, a função não tentará novamente e nem agendará uma
     nova tentativa.
 
-    Se auto_delete_message for igual a False, a exclusão automática da 
-    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída 
-    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas. 
-    Mas se for um valor inteiro positivo, a mensagem será excluída em uma 
+    Se auto_delete_message for igual a False, a exclusão automática da
+    mensagem será ignorada. Caso seja igual a True, a mensagem será excluída
+    em "HOURS_DELETE_MESSAGE_FROM_CONTEXT" horas.
+    Mas se for um valor inteiro positivo, a mensagem será excluída em uma
     quantidade de horas igual ao valor passado.
-    E se for um timedelta, a mensagem será excluída de acordo com o tempo 
+    E se for um timedelta, a mensagem será excluída de acordo com o tempo
     passado no timedelta.
     '''
 
@@ -222,7 +222,7 @@ async def send_private_message(
     skip_retry: bool = False,
     auto_delete_message: Union[bool, int, timedelta] = True,
 ):
-    ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden" 
+    ''' Tenta enviar mensagem privada, caso não consiga pelo erro "Forbidden"
     envia mensagem para o grupo marcando o nome do jogador.
     '''
 
@@ -309,7 +309,7 @@ async def send_alert_or_message(
     skip_retry: bool = False,
     auto_delete_message: Union[bool, int, timedelta] = True,
 ):
-    '''Envia um alert se uma query for passado, caso contrário, enviará 
+    '''Envia um alert se uma query for passado, caso contrário, enviará
     uma mensagem privada.
     '''
 
@@ -454,7 +454,7 @@ async def edit_message_text_and_forward(
     reply_markup: InlineKeyboardMarkup = REPLY_MARKUP_DEFAULT,
     close_by_owner: bool = False,
 ) -> Union[Message, bool]:
-    '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha 
+    '''Edita uma mensagem usando um Message ou um ContextTypes e encaminha
     a mesma para o usuário.
     '''
 
@@ -508,17 +508,17 @@ async def reply_text(
 
     É obrigatório passar update ou message_id.
 
-    markdown for True, o parse_mode será igual a 
+    markdown for True, o parse_mode será igual a
     ParseMode.MARKDOWN_V2, caso contrário, parse_mode será igual a None
 
-    silent for None, usará a configuração de notificação do chat em 
+    silent for None, usará a configuração de notificação do chat em
     disable_notification.
 
     reply_markup não for passado, a mensagem terá um botão de fechar.
 
-    close_by_owner for True e não for passado reply_markup, a mensagem terá 
-    um botão de fechar que somente o usuário responsável pelo envio da 
-    mensagem que poderá fechá-la. Caso contrário, 
+    close_by_owner for True e não for passado reply_markup, a mensagem terá
+    um botão de fechar que somente o usuário responsável pelo envio da
+    mensagem que poderá fechá-la. Caso contrário,
     qualquer jogador poderá fechar.
     '''
 
@@ -627,7 +627,7 @@ async def delete_message_from_context(
     context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
 ):
-    '''Deleta a mensagem usando context, 
+    '''Deleta a mensagem usando context,
     caso ocorra um erro BadRequest (Mensagem não encontrada), ignora ação.
     '''
 
@@ -705,7 +705,7 @@ def remove_job_delete_message_from_context(
 
 
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
-    '''Agenda uma função call_telegram_message_function caso ocorra um erro 
+    '''Agenda uma função call_telegram_message_function caso ocorra um erro
     do tipo RetryAfter, TimedOut e o need_response seja False
     '''
 
@@ -741,7 +741,7 @@ async def delete_message(
     context: ContextTypes.DEFAULT_TYPE,
     query: CallbackQuery,
 ):
-    '''Deleta a mensagem usando query, 
+    '''Deleta a mensagem usando query,
     caso ocorra um erro BadRequest tenta deletar a mensagem usando o context.
     '''
 
@@ -810,7 +810,7 @@ async def message_edit_reply_markup(
     reply_markup: InlineKeyboardMarkup = None,
     **kwargs
 ) -> Message:
-    '''Edita a reply_markup de uma mensagem usando a função de edição na 
+    '''Edita a reply_markup de uma mensagem usando a função de edição na
     Mensagem.
     '''
 
@@ -831,7 +831,7 @@ async def message_edit_reply_markup(
 
 # CALLBACK FUNCTIONS
 def callback_data_to_string(callback_data: dict) -> str:
-    '''Transforma um dicionário em uma string compactada usada no campo data 
+    '''Transforma um dicionário em uma string compactada usada no campo data
     de um botão.
     '''
 
@@ -849,7 +849,7 @@ def callback_data_to_string(callback_data: dict) -> str:
 
 
 def callback_data_to_dict(callback_data_str: str) -> dict:
-    '''Transforma de volta uma string compactada usada no campo data 
+    '''Transforma de volta uma string compactada usada no campo data
     de um botão em um dicionário.
     '''
 
@@ -867,8 +867,8 @@ def get_close_button(
     text: str = None,
     right_icon: bool = False,
 ) -> InlineKeyboardButton:
-    '''Se user_id for None, qualquer um pode fechar a mensagem, 
-    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    '''Se user_id for None, qualquer um pode fechar a mensagem,
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar
     a mensagem.
     '''
 
@@ -891,8 +891,8 @@ def get_refresh_close_button(
     refresh_data: str = 'refresh',
     to_detail: bool = False,
 ) -> List[InlineKeyboardButton]:
-    '''Se user_id for None, qualquer um pode fechar a mensagem, 
-    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    '''Se user_id for None, qualquer um pode fechar a mensagem,
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar
     a mensagem.
     '''
 
@@ -927,8 +927,8 @@ def get_random_refresh_text() -> str:
 
 
 def get_close_keyboard(user_id: int) -> InlineKeyboardMarkup:
-    '''Se user_id for None, qualquer um pode fechar a mensagem, 
-    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    '''Se user_id for None, qualquer um pode fechar a mensagem,
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar
     a mensagem.
     '''
 
@@ -942,8 +942,8 @@ def get_refresh_close_keyboard(
     refresh_data: str = 'refresh',
     to_detail: bool = False,
 ) -> InlineKeyboardMarkup:
-    '''Se user_id for None, qualquer um pode fechar a mensagem, 
-    caso contrário, somente o usuário com o mesmo user_id poderar fechar 
+    '''Se user_id for None, qualquer um pode fechar a mensagem,
+    caso contrário, somente o usuário com o mesmo user_id poderar fechar
     a mensagem.
     '''
 

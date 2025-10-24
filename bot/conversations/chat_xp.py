@@ -1,5 +1,5 @@
 '''
-Módulo responsável por gerenciar o ganho de xp dos jogadores ao enviarem 
+Módulo responsável por gerenciar o ganho de xp dos jogadores ao enviarem
 mensagens nos grupos.
 '''
 

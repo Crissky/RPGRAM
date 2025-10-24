@@ -124,8 +124,8 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
-    ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
-    picross encerre. Mas se já estiver fora do horário de spawn, o 
+    ''' Causa dano e Status aos jogadores caso o tempo para concluir o
+    picross encerre. Mas se já estiver fora do horário de spawn, o
     deus irá embora.
     '''
 
@@ -400,7 +400,7 @@ def put_picross_in_dict(
     message_id: int,
     picross: PicrossGame,
 ):
-    '''Adiciona o picross ao dicionário de Picrosses, em que a chave é a 
+    '''Adiciona o picross ao dicionário de Picrosses, em que a chave é a
     message_id.
     '''
 

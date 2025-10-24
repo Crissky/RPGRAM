@@ -70,8 +70,8 @@ def get_midnight_hour(get_yesterday: bool = False) -> datetime:
 
 
 def adjust_season_datetime(input_datetime: datetime) -> datetime:
-    '''Adiciona 1 ano ao datetime fornecido se a data já passou em relação ao 
-    momento atual. 
+    '''Adiciona 1 ano ao datetime fornecido se a data já passou em relação ao
+    momento atual.
     Caso contrário, retorna o mesmo datetime sem alterações.
     '''
 

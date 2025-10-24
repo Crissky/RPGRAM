@@ -8,7 +8,7 @@ from rpgram import Group
 
 
 def skip_if_spawn_timeout(callback):
-    # @wraps serve para manter os metadados das funções que receberão o 
+    # @wraps serve para manter os metadados das funções que receberão o
     # decorator, como o nome da função.
     @wraps(callback)
     async def wrapper(context: ContextTypes.DEFAULT_TYPE):

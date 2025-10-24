@@ -1,5 +1,5 @@
 '''
-Módulo responsável por gerenciar as requisiçães de visualização de 
+Módulo responsável por gerenciar as requisiçães de visualização de
 informações dos grupos.
 '''
 

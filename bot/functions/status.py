@@ -39,7 +39,7 @@ def silenced_status(user_id: int) -> dict:
 
 
 def get_confusion_status(user_id: int) -> dict:
-    '''Retorna um dicionário caso o status do personagem exista 
+    '''Retorna um dicionário caso o status do personagem exista
     a condição CONFUSION.
     '''
 

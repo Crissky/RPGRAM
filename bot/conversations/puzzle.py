@@ -139,8 +139,8 @@ async def job_start_puzzle(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_timeout_puzzle(context: ContextTypes.DEFAULT_TYPE):
-    ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
-    puzzle encerre. Mas se já estiver fora do horário de spawn, os 
+    ''' Causa dano e Status aos jogadores caso o tempo para concluir o
+    puzzle encerre. Mas se já estiver fora do horário de spawn, os
     deuses irão embora.
     '''
 
@@ -433,7 +433,7 @@ def put_grid_in_dict(
     message_id: int,
     grid: GridGame,
 ):
-    '''Adiciona o grid ao dicionário de Grids, em que a chave é a 
+    '''Adiciona o grid ao dicionário de Grids, em que a chave é a
     message_id.
     '''
 

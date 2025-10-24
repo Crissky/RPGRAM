@@ -59,8 +59,8 @@ def alert_if_not_chat_owner(
     retry_state=ConversationHandler.END,
     alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
 ):
-    '''Não executa a ação quando o botão é clicado por um usuário que não 
-    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    '''Não executa a ação quando o botão é clicado por um usuário que não
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no
     botão.'''
 
     def decorator(callback):
@@ -91,8 +91,8 @@ def alert_if_not_chat_owner_to_callback_data_to_dict(
     retry_state=ConversationHandler.END,
     alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
 ):
-    '''Não executa a ação quando o botão é clicado por um usuário que não 
-    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    '''Não executa a ação quando o botão é clicado por um usuário que não
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no
     botão.'''
 
     def decorator(callback):
@@ -123,8 +123,8 @@ def alert_if_not_chat_owner_to_anyway(
     retry_state=ConversationHandler.END,
     alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
 ):
-    '''Não executa a ação quando o botão é clicado por um usuário que não 
-    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    '''Não executa a ação quando o botão é clicado por um usuário que não
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no
     botão.'''
 
     def decorator(callback):

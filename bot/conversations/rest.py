@@ -69,9 +69,9 @@ from rpgram.characters import BaseCharacter
 @print_basic_infos
 async def rest(update: Update, context: ContextTypes.DEFAULT_TYPE):
     '''Comando que inicia o descanso do personagem.
-    O descanso faz com que o personagem recupere HP a cada 
+    O descanso faz com que o personagem recupere HP a cada
     "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.
-    Se o personagem estiver morto, ele reviverá e recuperará 1 de HP 
+    Se o personagem estiver morto, ele reviverá e recuperará 1 de HP
     em "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.'''
 
     char_model = CharacterModel()
@@ -377,11 +377,11 @@ async def job_rest_action_point(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
-    '''Comando que inicia o descanso de todos os personagens do grupo que 
+    '''Comando que inicia o descanso de todos os personagens do grupo que
     não estão com o HP cheio.
-    O descanso faz com que o personagem recupere HP e Stauts a cada 
+    O descanso faz com que o personagem recupere HP e Stauts a cada
     "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.
-    Se o personagem estiver morto, ele reviverá, recuperando 1 de HP 
+    Se o personagem estiver morto, ele reviverá, recuperando 1 de HP
     em "MINUTES_TO_RECOVERY_HIT_POINTS" minutos.'''
 
     print('JOB_AUTOREST_MIDNIGHT()')

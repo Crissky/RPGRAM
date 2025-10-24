@@ -160,7 +160,7 @@ ATTACK_TEXT = [
 
 
 def need_have_char(callback):
-    '''Pula ação se o jogador não tiver um personagem e avisa qual o comando 
+    '''Pula ação se o jogador não tiver um personagem e avisa qual o comando
     para criar um.
     '''
 

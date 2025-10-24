@@ -1666,14 +1666,14 @@ def create_and_put_drop_dict(
     context: ContextTypes.DEFAULT_TYPE,
     drops_message_id: int = None
 ):
-    '''Cria o dicionário de DROPS que indica quais items dropados ainda podem 
+    '''Cria o dicionário de DROPS que indica quais items dropados ainda podem
     ser pegos'''
     drop_dict = {drops_message_id: True} if drops_message_id else {}
     context.chat_data[DROPS_CHAT_DATA_KEY] = drop_dict
 
 
 async def job_timeout_drop(context: ContextTypes.DEFAULT_TYPE):
-    '''Job que exclui a mensagem do Drop e retira no dicionário o 
+    '''Job que exclui a mensagem do Drop e retira no dicionário o
     ID do mesmo após um tempo pré determinado.
     '''
 

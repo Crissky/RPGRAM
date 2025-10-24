@@ -28,7 +28,7 @@ async def create_game_event(
         disable_notification=silent,
         allow_sending_without_reply=True,
     )
-    
+
     if job_callback:
         job_callback_name = job_callback.__name__.upper()
         job_name = f'{job_callback_name}_{ObjectId()}'

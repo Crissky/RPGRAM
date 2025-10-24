@@ -289,7 +289,7 @@ def get_details_text(option: str) -> str:
             f'/{skill_commands[0]}\n'
             'INFO: Abre o menu de gerenciamento de Habilidades.\n'
             f'Atalhos: {skill_cmd}\n\n'
-            
+
             f'{EmojiEnum.SKILL_POINTS.value}*CHARS LEVELS*: '
             f'/{view_level_commands[0]}\n'
             'INFO: Exibe níveis dos personagens do grupo.\n'
@@ -1307,7 +1307,7 @@ def help_enum(enum_class: Enum) -> str:
 
 
 async def job_info_deploy_bot(context: ContextTypes.DEFAULT_TYPE):
-    '''Envia mensagem para o grupo informando o deploy e pedindo para usar o 
+    '''Envia mensagem para o grupo informando o deploy e pedindo para usar o
     comando de descanso.
     '''
     print('JOB_INFO_DEPLOY_BOT()')
