@@ -23,8 +23,8 @@ if TYPE_CHECKING:
 class SlashingAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.SLASHING_ATTACK.value
     DESCRIPTION = (
-        f'Com um movimento preciso, inflige múltiplos golpes rápidos, '
-        f'causando dano de '
+        'Com um movimento preciso, inflige múltiplos golpes rápidos, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -65,9 +65,9 @@ class SlashingAttackSkill(BaseSkill):
 class SonicBladeSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.SONIC_BLADE.value
     DESCRIPTION = (
-        f'Canaliza energia através de sua arma, criando uma *Onda de Choque* '
-        f'poderosas que corta o ar e dilacera a carne do oponente, '
-        f'causando dano de '
+        'Canaliza energia através de sua arma, criando uma *Onda de Choque* '
+        'poderosas que corta o ar e dilacera a carne do oponente, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* e '
         f'*{get_damage_emoji_text(DamageEnum.SONIC)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
@@ -111,8 +111,8 @@ class SonicBladeSkill(BaseSkill):
 class VorpalBladeAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.VORPAL_BLADE_ATTACK.value
     DESCRIPTION = (
-        f'Desfere um golpe único e poderoso, direcionado à cabeça do inimigo, '
-        f'causando dano de '
+        'Desfere um golpe único e poderoso, direcionado à cabeça do inimigo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}*, '
         f'*{get_damage_emoji_text(DamageEnum.SONIC)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
@@ -179,8 +179,8 @@ class VorpalBladeAttackSkill(BaseSkill):
 class BruisingAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.BRUISING_ATTACK.value
     DESCRIPTION = (
-        f'Concentra toda a sua força em um único golpe devastador, '
-        f'causando dano de '
+        'Concentra toda a sua força em um único golpe devastador, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
@@ -221,9 +221,9 @@ class BruisingAttackSkill(BaseSkill):
 class CrystallineClashSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.CRYSTALLINE_CLASH.value
     DESCRIPTION = (
-        f'Canaliza *Energia Cristalina* e desfere um golpe que, '
-        f'ao impactar o inimigo, libera uma explosão de cristais, '
-        f'causando dano de '
+        'Canaliza *Energia Cristalina* e desfere um golpe que, '
+        'ao impactar o inimigo, libera uma explosão de cristais, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
@@ -267,11 +267,11 @@ class CrystallineClashSkill(BaseSkill):
 class GeocrusherAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.GEOCRUSHER_ATTACK.value
     DESCRIPTION = (
-        f'Concentra sua força para canalizar a energia do solo, '
-        f'imbuindo sua(s) arma(s) com o poder dos minerais para '
-        f'atingir o alvo com força esmagadora, '
-        f'destruindo qualquer barreira antes de '
-        f'causar dano de '
+        'Concentra sua força para canalizar a energia do solo, '
+        'imbuindo sua(s) arma(s) com o poder dos minerais para '
+        'atingir o alvo com força esmagadora, '
+        'destruindo qualquer barreira antes de '
+        'causar dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.CRYSTAL)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.ROCK)}* com base no '
@@ -328,9 +328,9 @@ class GeocrusherAttackSkill(BaseSkill):
 class TerrebrantAttackSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.TERREBRANT_ATTACK.value
     DESCRIPTION = (
-        f'Desfere uma série de golpes direcionados aos '
-        f'pontos vitais do inimigo, '
-        f'causando dano de '
+        'Desfere uma série de golpes direcionados aos '
+        'pontos vitais do inimigo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -366,9 +366,9 @@ class TerrebrantAttackSkill(BaseSkill):
 class ThunderpassSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.THUNDERPASS.value
     DESCRIPTION = (
-        f'Canaliza *Energia do Trovão* através de sua arma e '
-        f'desfecha um golpe que libera uma descarga elétrica, '
-        f'causando dano de '
+        'Canaliza *Energia do Trovão* através de sua arma e '
+        'desfecha um golpe que libera uma descarga elétrica, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -407,11 +407,11 @@ class ThunderpassSkill(BaseSkill):
 class StormDanceSkill(BaseSkill):
     NAME = WeaponMasterSkillEnum.STORM_DANCE.value
     DESCRIPTION = (
-        f'Percorre rapidamente todos os inimigos como um ricochete, '
-        f'transfixando-os '
-        f'com o *Poder da Tempestade*, eletroerosando as suas armaduras - '
-        f'ignorando as defesas dos oponentes e '
-        f'causando dano de '
+        'Percorre rapidamente todos os inimigos como um ricochete, '
+        'transfixando-os '
+        'com o *Poder da Tempestade*, eletroerosando as suas armaduras - '
+        'ignorando as defesas dos oponentes e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
