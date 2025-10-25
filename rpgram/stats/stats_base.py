@@ -63,7 +63,7 @@ class BaseStats:
         points = max_level_points - self.total_base_stats
         if points < 0:
             raise ValueError(
-                f'Foi gasto mais Pontos nos atributos que o Nível permite.\n'
+                'Foi gasto mais Pontos nos atributos que o Nível permite.\n'
                 f'Total de Pontos do Nível {self.__level}: '
                 f'{max_level_points}.\n'
                 f'Total de Pontos gastos: {self.total_base_stats}.'
@@ -84,7 +84,7 @@ class BaseStats:
             )
         if points <= 0:
             raise ValueError(
-                f'Não é possível adicionar menos que '
+                'Não é possível adicionar menos que '
                 f'1 Ponto de {clean_attribute}.'
             )
         new_value = getattr(self, attribute) + points
@@ -274,7 +274,7 @@ class BaseStats:
         value = int(value)
         if value <= 0:
             raise ValueError(
-                f'Não é possível adicionar Pontos de Experiência menor que 1.'
+                'Não é possível adicionar Pontos de Experiência menor que 1.'
             )
         print(f'Ganhou {value} Pontos de Experiência.')
         while value > 0:
@@ -470,7 +470,7 @@ class BaseStats:
         else:
             raise KeyError(
                 f'Atributo "{key}" não encontrado.\n'
-                f'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
+                'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
             )
 
     def __setitem__(self, key: str, value: int) -> None:
@@ -498,7 +498,7 @@ class BaseStats:
         else:
             raise KeyError(
                 f'Atributo "{key}" não encontrado. '
-                f'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
+                'Atributos disponíveis: FOR, DES, CON, INT, SAB, CAR.'
             )
 
     def get_sheet(self, verbose: bool = False, markdown: bool = False) -> str:
