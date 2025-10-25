@@ -51,7 +51,7 @@ if __name__ == '__main__':
         _id='ffffffffffffffffffffffff',
     )
     char_model = CharacterModel()
-    print(f'Collection:', char_model.collection)
+    print('Collection:', char_model.collection)
     result = char_model.save(player_character)
     print('result:', result)
     player_character2 = char_model.get('ffffffffffffffffffffffff')

@@ -1197,7 +1197,7 @@ def get_classe_buttons(
         ))
 
     items_buttons.append(InlineKeyboardButton(
-        text=f'TODES',
+        text='TODES',
         callback_data=callback_data_to_string({
             'list_all_skill': 1,
             'user_id': user_id,

@@ -17,7 +17,7 @@ async def job_new_year(context: ContextTypes.DEFAULT_TYPE):
     '''Envia Mensagem de Feliz Ano Novo para o grupo.
     '''
 
-    print(f'JOB_NEW_YEAR()')
+    print('JOB_NEW_YEAR()')
     job = context.job
     chat_id = job.chat_id
     text = (
@@ -50,7 +50,7 @@ async def job_new_year(context: ContextTypes.DEFAULT_TYPE):
     )
     text = create_text_in_box(
         text=text,
-        section_name=f'FELIZ ANO NOVO',
+        section_name='FELIZ ANO NOVO',
         section_start=SECTION_HEAD_NEW_YEAR_START,
         section_end=SECTION_HEAD_NEW_YEAR_END,
     )
@@ -74,7 +74,7 @@ async def job_christmas(context: ContextTypes.DEFAULT_TYPE):
     '''Envia Mensagem de Feliz Ano Novo para o grupo.
     '''
 
-    print(f'JOB_CHRISTMAS()')
+    print('JOB_CHRISTMAS()')
     job = context.job
     chat_id = job.chat_id
     text = (
@@ -109,7 +109,7 @@ async def job_christmas(context: ContextTypes.DEFAULT_TYPE):
     )
     text = create_text_in_box(
         text=text,
-        section_name=f'FELIZ NATAL',
+        section_name='FELIZ NATAL',
         section_start=SECTION_HEAD_CHRISTMAS_START,
         section_end=SECTION_HEAD_CHRISTMAS_END,
     )

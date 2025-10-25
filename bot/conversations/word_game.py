@@ -193,7 +193,7 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_message_id = int(args[2])
         message_text = args[3]
     else:
-        print(f'Sem reply_message e sem 4 args.')
+        print('Sem reply_message e sem 4 args.')
         return None
 
     game = get_wordgame_from_dict(context=context, message_id=reply_message_id)

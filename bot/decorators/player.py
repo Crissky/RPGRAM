@@ -42,7 +42,7 @@ def need_singup_player(callback):
 
 def skip_if_no_singup_player(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_NO_SINGUP_PLAYER')
+        print('@SKIP_IF_NO_SINGUP_PLAYER')
         player_model = PlayerModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
