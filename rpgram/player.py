@@ -152,7 +152,7 @@ class Player:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                raise ValueError(f'Forneça o valor "True" ou "False"')
+                raise ValueError('Forneça o valor "True" ou "False"')
             self.verbose = value
         elif key in ['SILENT', 'SILENCIOSO']:
             value = value.upper()
@@ -161,7 +161,7 @@ class Player:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                raise ValueError(f'Forneça o valor "True" ou "False"')
+                raise ValueError('Forneça o valor "True" ou "False"')
             self.silent = value
         else:
             raise KeyError(f'"{key}" não é uma chave válida.')

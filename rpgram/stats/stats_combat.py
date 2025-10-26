@@ -100,7 +100,7 @@ class CombatStats:
             print(f'Recebeu {value} de Dano!!!', end=' ')
         elif value < 0:
             if self.dead:
-                print(f'Não pode curar um personagem morto.')
+                print('Não pode curar um personagem morto.')
                 return None
             print(f'Recebeu {-value} de Cura.', end=' ')
         self.__damage += value
@@ -111,7 +111,7 @@ class CombatStats:
         print(f'HP: {self.show_hp}')
         is_dead_end = self.dead
         if not is_dead_start and is_dead_end:
-            print(f'Morreu!!!')
+            print('Morreu!!!')
             self.__add_death_counter()
             self.clean_status_by_death()
 
