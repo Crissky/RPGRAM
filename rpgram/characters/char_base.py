@@ -392,7 +392,7 @@ class BaseCharacter:
             attacker_skill = self.get_best_basic_attack()
 
         # if not isinstance(attacker_dice, Dice):
-        #     atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20
+        #     atk_faces = attacker_dice if isinstance(attacker_dice, int) else 20  # noqa
         #     attacker_dice = Dice(character=self, faces=atk_faces)
         attacker_dice = attacker_skill.dice
         if not isinstance(defender_dice, Dice):

@@ -1,7 +1,14 @@
 from typing import TYPE_CHECKING
 from rpgram.conditions.debuff import BlindnessCondition
-from rpgram.conditions.target_skill_debuff import AchillesHeelCondition, DisarmorCondition
-from rpgram.constants.text import EVASION_EMOJI_TEXT, HIT_EMOJI_TEXT, PHYSICAL_DEFENSE_EMOJI_TEXT, PRECISION_ATTACK_EMOJI_TEXT
+from rpgram.conditions.target_skill_debuff import (
+    AchillesHeelCondition,
+    DisarmorCondition
+)
+from rpgram.constants.text import (
+    EVASION_EMOJI_TEXT,
+    PHYSICAL_DEFENSE_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT
+)
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text

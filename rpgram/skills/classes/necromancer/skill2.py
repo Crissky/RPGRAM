@@ -1,7 +1,11 @@
 from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.target_skill_buff import BoneArmorCondition, BoneBucklerCondition, BoneSpaulderCondition
+from rpgram.conditions.target_skill_buff import (
+    BoneArmorCondition,
+    BoneBucklerCondition,
+    BoneSpaulderCondition
+)
 from rpgram.constants.text import (
     INTELLIGENCE_EMOJI_TEXT,
     PHYSICAL_DEFENSE_EMOJI_TEXT

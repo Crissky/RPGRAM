@@ -22,7 +22,7 @@ from rpgram.enums.stats_base import BaseStatsEnum
 class BaseStats:
     '''Classe que representa as estatísticas básicas de um personagem.
 
-    Fonte: https://i.pinimg.com/originals/ee/9b/0c/ee9b0cd5fc0c94dcfb215ad94c6a6871.jpg'''
+    Fonte: https://i.pinimg.com/originals/ee/9b/0c/ee9b0cd5fc0c94dcfb215ad94c6a6871.jpg'''  # noqa
 
     def __init__(
         self,

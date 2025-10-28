@@ -27,7 +27,8 @@ class Item:
     def __init__(self, item: ITEMS_TYPES, quantity: int = 1):
         if not isinstance(item, ITEMS_TYPES_TUPLE):
             raise TypeError(
-                f'Item precisa ser de algum desses tipos: {ITEMS_TYPES_TUPLE}.\n'
+                'Item precisa ser de algum desses '
+                f'tipos: {ITEMS_TYPES_TUPLE}.\n'
                 f'Mas o item fornecido é do tipo: ({type(item)}).'
             )
 

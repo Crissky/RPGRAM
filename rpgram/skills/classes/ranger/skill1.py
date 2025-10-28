@@ -4,7 +4,11 @@ from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.self_skill import AlertCondition, SniffCondition
-from rpgram.constants.text import DEXTERITY_EMOJI_TEXT, HIT_EMOJI_TEXT, MAGICAL_ATTACK_EMOJI_TEXT, PRECISION_ATTACK_EMOJI_TEXT
+from rpgram.constants.text import (
+    DEXTERITY_EMOJI_TEXT,
+    HIT_EMOJI_TEXT,
+    PRECISION_ATTACK_EMOJI_TEXT
+)
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
 from rpgram.enums.skill import (

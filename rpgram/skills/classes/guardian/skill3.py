@@ -138,8 +138,9 @@ class CrystallineInfusionSkill(BaseSkill):
             )
             report = {
                 'text': (
-                    f'*{player_name}* imbuiu as mãos de *{target_name}* em uma '
-                    'infusão de *Cristais Místicos*, concedendo dano de '
+                    f'*{player_name}* imbuiu as mãos de *{target_name}* '
+                    'em uma infusão de *Cristais Místicos*, '
+                    'concedendo dano de '
                     f'{get_damage_emoji_text(DamageEnum.CRYSTAL)}.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                     f'{status_report_text}'

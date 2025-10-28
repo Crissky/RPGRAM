@@ -1,6 +1,9 @@
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.target_skill_buff import AgileFeetCondition, EagleEyeCondition
+from rpgram.conditions.target_skill_buff import (
+    AgileFeetCondition,
+    EagleEyeCondition
+)
 from rpgram.constants.text import (
     DEXTERITY_EMOJI_TEXT,
     EVASION_EMOJI_TEXT,

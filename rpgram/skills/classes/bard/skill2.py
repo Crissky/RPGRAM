@@ -394,31 +394,51 @@ if __name__ == '__main__':
     skill = WarSongSkill(BARD_CHARACTER)
     print(skill)
     print(BARD_CHARACTER.bs.charisma)
-    print(BARD_CHARACTER.cs.physical_attack, BARD_CHARACTER.cs.precision_attack,
-          BARD_CHARACTER.cs.physical_defense, BARD_CHARACTER.cs.hp)
+    print(
+        BARD_CHARACTER.cs.physical_attack,
+        BARD_CHARACTER.cs.precision_attack,
+        BARD_CHARACTER.cs.physical_defense,
+        BARD_CHARACTER.cs.hp
+    )
     print(skill.function(BARBARIAN_CHARACTER))
-    print(BARD_CHARACTER.cs.physical_attack, BARD_CHARACTER.cs.precision_attack,
-          BARD_CHARACTER.cs.physical_defense, BARD_CHARACTER.cs.hp)
+    print(
+        BARD_CHARACTER.cs.physical_attack,
+        BARD_CHARACTER.cs.precision_attack,
+        BARD_CHARACTER.cs.physical_defense,
+        BARD_CHARACTER.cs.hp
+    )
     BARD_CHARACTER.skill_tree.learn_skill(WarSongSkill)
 
     skill = CrescentMoonBalladSkill(BARD_CHARACTER)
     print(skill)
     print(BARD_CHARACTER.bs.charisma)
-    print(BARD_CHARACTER.cs.magical_attack,
-          BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
+    print(
+        BARD_CHARACTER.cs.magical_attack,
+        BARD_CHARACTER.cs.magical_defense,
+        BARD_CHARACTER.cs.hp
+    )
     print(skill.function(BARBARIAN_CHARACTER))
-    print(BARD_CHARACTER.cs.magical_attack,
-          BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
+    print(
+        BARD_CHARACTER.cs.magical_attack,
+        BARD_CHARACTER.cs.magical_defense,
+        BARD_CHARACTER.cs.hp
+    )
     BARD_CHARACTER.skill_tree.learn_skill(CrescentMoonBalladSkill)
 
     skill = TricksterTrovaSkill(BARD_CHARACTER)
     print(skill)
     print(BARD_CHARACTER.bs.charisma)
-    print(BARD_CHARACTER.cs.magical_attack,
-          BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
+    print(
+        BARD_CHARACTER.cs.magical_attack,
+        BARD_CHARACTER.cs.magical_defense,
+        BARD_CHARACTER.cs.hp
+    )
     print(skill.function(BARBARIAN_CHARACTER))
-    print(BARD_CHARACTER.cs.magical_attack,
-          BARD_CHARACTER.cs.magical_defense, BARD_CHARACTER.cs.hp)
+    print(
+        BARD_CHARACTER.cs.magical_attack,
+        BARD_CHARACTER.cs.magical_defense,
+        BARD_CHARACTER.cs.hp
+    )
     BARD_CHARACTER.skill_tree.learn_skill(TricksterTrovaSkill)
 
     BARBARIAN_CHARACTER.cs.damage_hit_points(10000)

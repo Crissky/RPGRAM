@@ -1,5 +1,11 @@
 from typing import TYPE_CHECKING
-from rpgram.conditions.debuff import BleedingCondition, BurnCondition, ParalysisCondition, PetrifiedCondition, StunnedCondition
+from rpgram.conditions.debuff import (
+    BleedingCondition,
+    BurnCondition,
+    ParalysisCondition,
+    PetrifiedCondition,
+    StunnedCondition
+)
 from rpgram.conditions.target_skill_debuff import (
     DoUchiCondition,
     KoteUchiCondition

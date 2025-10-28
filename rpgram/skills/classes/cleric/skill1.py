@@ -877,43 +877,75 @@ if __name__ == '__main__':
     skill = VidarsBraverySkill(CLERIC_CHARACTER)
     print(skill)
     print(CLERIC_CHARACTER.bs.wisdom)
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
-          CLERIC_CHARACTER.cs.physical_defense)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.physical_attack,
+        CLERIC_CHARACTER.cs.physical_defense
+    )
     print(skill.function(CLERIC_CHARACTER))
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
-          CLERIC_CHARACTER.cs.physical_defense)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.physical_attack,
+        CLERIC_CHARACTER.cs.physical_defense
+    )
     CLERIC_CHARACTER.skill_tree.learn_skill(VidarsBraverySkill)
 
     skill = ArtemissArrowSkill(CLERIC_CHARACTER)
     print(skill)
     print(CLERIC_CHARACTER.bs.wisdom)
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.precision_attack,
-          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.precision_attack,
+        CLERIC_CHARACTER.cs.hit,
+        CLERIC_CHARACTER.cs.evasion
+    )
     print(skill.function(CLERIC_CHARACTER))
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.precision_attack,
-          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.precision_attack,
+        CLERIC_CHARACTER.cs.hit,
+        CLERIC_CHARACTER.cs.evasion
+    )
     CLERIC_CHARACTER.skill_tree.learn_skill(ArtemissArrowSkill)
 
     skill = CeridwensMagicPotionSkill(CLERIC_CHARACTER)
     print(skill)
     print(CLERIC_CHARACTER.bs.wisdom)
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.magical_attack,
-          CLERIC_CHARACTER.cs.magical_defense)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.magical_attack,
+        CLERIC_CHARACTER.cs.magical_defense
+    )
     print(skill.function(CLERIC_CHARACTER))
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.magical_attack,
-          CLERIC_CHARACTER.cs.magical_defense)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.magical_attack,
+        CLERIC_CHARACTER.cs.magical_defense
+    )
     CLERIC_CHARACTER.skill_tree.learn_skill(CeridwensMagicPotionSkill)
 
     skill = GraceOfThePantheonSkill(CLERIC_CHARACTER)
     print(skill)
     print(CLERIC_CHARACTER.bs.wisdom)
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
-          CLERIC_CHARACTER.cs.precision_attack, CLERIC_CHARACTER.cs.magical_attack,
-          CLERIC_CHARACTER.cs.physical_defense, CLERIC_CHARACTER.cs.magical_defense,
-          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.physical_attack,
+        CLERIC_CHARACTER.cs.precision_attack,
+        CLERIC_CHARACTER.cs.magical_attack,
+        CLERIC_CHARACTER.cs.physical_defense,
+        CLERIC_CHARACTER.cs.magical_defense,
+        CLERIC_CHARACTER.cs.hit,
+        CLERIC_CHARACTER.cs.evasion
+    )
     print(skill.function(CLERIC_CHARACTER))
-    print(CLERIC_CHARACTER.cs.hit_points, CLERIC_CHARACTER.cs.physical_attack,
-          CLERIC_CHARACTER.cs.precision_attack, CLERIC_CHARACTER.cs.magical_attack,
-          CLERIC_CHARACTER.cs.physical_defense, CLERIC_CHARACTER.cs.magical_defense,
-          CLERIC_CHARACTER.cs.hit, CLERIC_CHARACTER.cs.evasion)
+    print(
+        CLERIC_CHARACTER.cs.hit_points,
+        CLERIC_CHARACTER.cs.physical_attack,
+        CLERIC_CHARACTER.cs.precision_attack,
+        CLERIC_CHARACTER.cs.magical_attack,
+        CLERIC_CHARACTER.cs.physical_defense,
+        CLERIC_CHARACTER.cs.magical_defense,
+        CLERIC_CHARACTER.cs.hit,
+        CLERIC_CHARACTER.cs.evasion
+    )
     CLERIC_CHARACTER.skill_tree.learn_skill(GraceOfThePantheonSkill)

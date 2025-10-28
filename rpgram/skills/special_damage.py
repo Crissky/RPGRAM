@@ -375,7 +375,10 @@ class SpecialDamage:
             ])
         elif self.damage_type == DamageEnum.CRYSTAL:
             condition_list.extend([
-                dict(condition=self.partial(CrystallizedCondition), ratio=0.10),
+                dict(
+                    condition=self.partial(CrystallizedCondition),
+                    ratio=0.10
+                ),
                 dict(condition=self.partial(BleedingCondition), ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.BLAST:
