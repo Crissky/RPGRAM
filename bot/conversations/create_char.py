@@ -161,7 +161,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 # SELECT_CLASSE_ROUTES
 @print_basic_infos
-async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def start_over(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+) -> int:
     race_model = RaceModel()
     query = update.callback_query
     chat_id = update.effective_chat.id

@@ -376,7 +376,8 @@ class Model:
                 'items': {
                     'id_key': 'items_ids',
                     'model': ItemModel(),  # Carrega equipamentos e consumíveis
-                    'subclass': Item  # Usa o equipamento/consumível carregado como atributo ao instanciar a classe Item
+                    'subclass': Item  # Usa o equipamento/consumível carregado
+                      como atributo ao instanciar a classe Item
                 }
             }
             Exemplo3:
@@ -389,7 +390,8 @@ class Model:
             Exemplo4:
             'condition': {
                 'id_key': 'condition_name',
-                '_class': 'Consumable',  # Atributo 'condition' só será populado em objetos dessa classe.
+                '_class': 'Consumable',  # Atributo 'condition'
+                  só será populado em objetos dessa classe.
                 'model': ConditionModel()
             }
             Exemplo4:

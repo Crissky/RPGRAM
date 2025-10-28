@@ -353,8 +353,12 @@ class StatsBooster:
             secret_bonus_charisma=self.__secret_bonus_charisma,
             secret_multiplier_strength=self.__secret_multiplier_strength,
             secret_multiplier_dexterity=self.__secret_multiplier_dexterity,
-            secret_multiplier_constitution=self.__secret_multiplier_constitution,
-            secret_multiplier_intelligence=self.__secret_multiplier_intelligence,
+            secret_multiplier_constitution=(
+                self.__secret_multiplier_constitution
+            ),
+            secret_multiplier_intelligence=(
+                self.__secret_multiplier_intelligence
+            ),
             secret_multiplier_wisdom=self.__secret_multiplier_wisdom,
             secret_multiplier_charisma=self.__secret_multiplier_charisma,
             secret_bonus_hit_points=self.__secret_bonus_hit_points,
