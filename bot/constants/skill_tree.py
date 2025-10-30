@@ -83,27 +83,51 @@ PATTERN_MAIN = fr'^{{"{REFRESH_SKILL_TREE_PATTERN}":1'
 
 PATTERN_HELP_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("help_skill")}:'
 PATTERN_LIST_ALL_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_all_skill")}:'
-PATTERN_LIST_CLASSE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_classe_skill")}:'
+PATTERN_LIST_CLASSE_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("list_classe_skill")}:'
+)
 PATTERN_LIST_WAY_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_way_skill")}:'
 
 PATTERN_LIST_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_use_skill")}:'
-PATTERN_LIST_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_learn_skill")}:'
-PATTERN_LIST_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("list_upgrade_skill")}:'
+PATTERN_LIST_LEARN_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("list_learn_skill")}:'
+)
+PATTERN_LIST_UPGRADE_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("list_upgrade_skill")}:'
+)
 
 PATTERN_CHECK_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_use_skill")}:'
-PATTERN_CHECK_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_learn_skill")}:'
-PATTERN_CHECK_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_upgrade_skill")}:'
+PATTERN_CHECK_LEARN_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("check_learn_skill")}:'
+)
+PATTERN_CHECK_UPGRADE_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("check_upgrade_skill")}:'
+)
 PATTERN_CHECK_WAY_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("check_way_skill")}:'
 
-PATTERN_ACTION_USE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_use_skill")}:'
-PATTERN_ACTION_LEARN_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_learn_skill")}:'
-PATTERN_ACTION_UPGRADE_SKILL = fr'^{{{CALLBACK_KEY_LIST.index("action_upgrade_skill")}:'
+PATTERN_ACTION_USE_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("action_use_skill")}:'
+)
+PATTERN_ACTION_LEARN_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("action_learn_skill")}:'
+)
+PATTERN_ACTION_UPGRADE_SKILL = (
+    fr'^{{{CALLBACK_KEY_LIST.index("action_upgrade_skill")}:'
+)
 
 PATTERN_SKILL_BACK_MAIN = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"main"'
-PATTERN_SKILL_BACK_LIST_USE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_use"'
-PATTERN_SKILL_BACK_LIST_LEARN = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_learn"'
-PATTERN_SKILL_BACK_LIST_UPGRADE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_upgrade"'
-PATTERN_SKILL_BACK_LIST_CLASSE = fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_classe"'
+PATTERN_SKILL_BACK_LIST_USE = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_use"'
+)
+PATTERN_SKILL_BACK_LIST_LEARN = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_learn"'
+)
+PATTERN_SKILL_BACK_LIST_UPGRADE = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_upgrade"'
+)
+PATTERN_SKILL_BACK_LIST_CLASSE = (
+    fr'^{{{CALLBACK_KEY_LIST.index("skill_back")}:"list_classe"'
+)
 
 
 # ALERT BUTTON TEXTS
