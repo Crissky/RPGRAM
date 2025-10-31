@@ -17,503 +17,1045 @@ PATTERN_ITEM_QUEST = (
 
 
 ARRIVAL_NARRATION = [
-    'Um estranho se aproxima do grupo, emergindo das sombras com passos cautelosos.',
-    'Vocês avistam alguém se aproximando no horizonte, caminhando em sua direção com determinação.',
-    'Uma figura misteriosa se aproxima lentamente, observando o grupo com curiosidade.',
-    'Alguém se aproxima do acampamento, fazendo-se notar com passos firmes e decididos.',
-    'O som de passos se aproxima, revelando a presença de alguém que se aproxima rapidamente.',
-    'Uma sombra se aproxima silenciosamente do grupo, sua presença apenas percebida pelos mais atentos.',
-    'Um viajante solitário se aproxima, saudando o grupo com um aceno amigável.',
-    'Vocês percebem uma figura distante se aproximando, movendo-se com determinação em sua direção.',
-    'Alguém se aproxima com passos apressados, chamando a atenção do grupo para sua presença iminente.',
-    'Uma figura familiar se aproxima, revelando-se como um amigo há muito perdido.',
-    'O som de galhos quebrando preenche o ar quando alguém se aproxima do grupo pela floresta.',
-    'Uma silhueta se aproxima lentamente da escuridão, revelando-se como um forasteiro solitário.',
-    'Vocês avistam alguém se aproximando no horizonte, seu rosto obscurecido pela distância.',
-    'Um estranho se aproxima do grupo, seu semblante carregando um mistério insondável.',
-    'O som de passos ecoa pela trilha quando alguém se aproxima, emergindo da escuridão da noite.',
-    'Uma presença familiar se aproxima do acampamento, trazendo consigo uma sensação de alívio.',
-    'Alguém se aproxima dos aventureiros, sua presença indicando uma missão urgente.',
-    'Vocês veem uma figura solitária se aproximando, seu propósito desconhecido até o momento.',
-    'Um estranho se aproxima, sua expressão séria revelando uma história por contar.',
-    'O som de vozes distantes indica que alguém se aproxima do grupo, talvez com notícias importantes.',
-    'Uma sombra se aproxima da fogueira, revelando um rosto desconhecido para os aventureiros.',
-    'Alguém se aproxima dos aventureiros, sua postura indicando uma necessidade iminente de ajuda.',
-    'O ruído de cascalho sob os pés revela a chegada de alguém, que se aproxima do grupo sem hesitação.',
-    'Uma figura encapuzada se aproxima lentamente, sua identidade oculta sob o manto sombrio.',
-    'Vocês avistam um viajante solitário se aproximando, seu semblante mostrando os sinais de uma jornada difícil.',
-    'O som de passos ressoa pelos corredores quando alguém se aproxima da entrada da caverna.',
-    'Uma figura misteriosa se aproxima do grupo, suas intenções ainda envoltas em mistério.',
-    'Alguém se aproxima dos aventureiros, trazendo consigo uma aura de perigo iminente.',
-    'O som de galhos quebrando indica que alguém se aproxima, talvez um amigo ou um inimigo.',
-    'Uma sombra se move entre as árvores, revelando a presença de alguém que se aproxima silenciosamente.',
-    'Vocês percebem uma presença se aproximando, sua silhueta escura contra o brilho do sol poente.',
-    'Alguém se aproxima do acampamento, seus passos pesados ecoando pela clareira.',
-    'Uma figura solitária se aproxima do grupo, sua expressão revelando uma necessidade urgente de ajuda.',
-    'O som de risadas distantes indica que alguém se aproxima, talvez em busca de companhia.',
-    'Um estranho se aproxima dos aventureiros, sua presença trazendo consigo um ar de mistério.',
-    'Vocês avistam um viajante cansado se aproximando, sua silhueta desfocada pela luz do sol.',
-    'Uma sombra se move na escuridão, revelando a presença de alguém que se aproxima furtivamente.',
+    'Um estranho se aproxima do grupo, emergindo das sombras com passos '
+    'cautelosos.',
+    'Vocês avistam alguém se aproximando no horizonte, caminhando em '
+    'sua direção com determinação.',
+    'Uma figura misteriosa se aproxima lentamente, observando o grupo '
+    'com curiosidade.',
+    'Alguém se aproxima do acampamento, fazendo-se notar com '
+    'passos firmes e decididos.',
+    'O som de passos se aproxima, revelando a presença de alguém '
+    'que se aproxima rapidamente.',
+    'Uma sombra se aproxima silenciosamente do grupo, sua presença '
+    'apenas percebida pelos mais atentos.',
+    'Um viajante solitário se aproxima, saudando o grupo com '
+    'um aceno amigável.',
+    'Vocês percebem uma figura distante se aproximando, movendo-se '
+    'com determinação em sua direção.',
+    'Alguém se aproxima com passos apressados, chamando a atenção '
+    'do grupo para sua presença iminente.',
+    'Uma figura familiar se aproxima, revelando-se como um amigo '
+    'há muito perdido.',
+    'O som de galhos quebrando preenche o ar quando alguém se '
+    'aproxima do grupo pela floresta.',
+    'Uma silhueta se aproxima lentamente da escuridão, revelando-se '
+    'como um forasteiro solitário.',
+    'Vocês avistam alguém se aproximando no horizonte, seu rosto '
+    'obscurecido pela distância.',
+    'Um estranho se aproxima do grupo, seu semblante carregando um '
+    'mistério insondável.',
+    'O som de passos ecoa pela trilha quando alguém se aproxima, emergindo '
+    'da escuridão da noite.',
+    'Uma presença familiar se aproxima do acampamento, trazendo consigo '
+    'uma sensação de alívio.',
+    'Alguém se aproxima dos aventureiros, sua presença indicando uma '
+    'missão urgente.',
+    'Vocês veem uma figura solitária se aproximando, seu propósito '
+    'desconhecido até o momento.',
+    'Um estranho se aproxima, sua expressão séria revelando uma '
+    'história por contar.',
+    'O som de vozes distantes indica que alguém se aproxima do '
+    'grupo, talvez com notícias importantes.',
+    'Uma sombra se aproxima da fogueira, revelando um rosto desconhecido '
+    'para os aventureiros.',
+    'Alguém se aproxima dos aventureiros, sua postura indicando uma '
+    'necessidade iminente de ajuda.',
+    'O ruído de cascalho sob os pés revela a chegada de alguém, que '
+    'se aproxima do grupo sem hesitação.',
+    'Uma figura encapuzada se aproxima lentamente, sua identidade oculta '
+    'sob o manto sombrio.',
+    'Vocês avistam um viajante solitário se aproximando, seu '
+    'semblante mostrando os sinais de uma jornada difícil.',
+    'O som de passos ressoa pelos corredores quando alguém se '
+    'aproxima da entrada da caverna.',
+    'Uma figura misteriosa se aproxima do grupo, suas intenções ainda '
+    'envoltas em mistério.',
+    'Alguém se aproxima dos aventureiros, trazendo consigo uma '
+    'aura de perigo iminente.',
+    'O som de galhos quebrando indica que alguém se aproxima, talvez '
+    'um amigo ou um inimigo.',
+    'Uma sombra se move entre as árvores, revelando a presença de '
+    'alguém que se aproxima silenciosamente.',
+    'Vocês percebem uma presença se aproximando, sua silhueta escura '
+    'contra o brilho do sol poente.',
+    'Alguém se aproxima do acampamento, seus passos pesados ecoando '
+    'pela clareira.',
+    'Uma figura solitária se aproxima do grupo, sua expressão revelando '
+    'uma necessidade urgente de ajuda.',
+    'O som de risadas distantes indica que alguém se aproxima, talvez '
+    'em busca de companhia.',
+    'Um estranho se aproxima dos aventureiros, sua presença trazendo '
+    'consigo um ar de mistério.',
+    'Vocês avistam um viajante cansado se aproximando, sua silhueta '
+    'desfocada pela luz do sol.',
+    'Uma sombra se move na escuridão, revelando a presença de '
+    'alguém que se aproxima furtivamente.',
     'Alguém se aproxima do grupo, sua voz carregando um sotaque estrangeiro.',
-    'O som de passos rápidos indica que alguém se aproxima, talvez com notícias importantes para os aventureiros.',
-    'Uma figura solitária se aproxima da cidade, seus olhos varrendo o horizonte em busca de algo.',
-    'Vocês percebem uma presença se aproximando, seu propósito ainda desconhecido para os aventureiros.',
-    'O som de cascos batendo na estrada revela a aproximação de um cavaleiro solitário.',
-    'Uma sombra se move pela floresta, indicando a chegada iminente de alguém ao acampamento.',
-    'Alguém se aproxima dos aventureiros, sua postura indicando uma necessidade urgente de assistência.',
-    'Vocês avistam um estranho se aproximando, seus passos determinados e sua expressão séria.',
-    'O som de risadas alegres indica que alguém se aproxima, talvez em busca de uma boa conversa.',
-    'Uma figura encapuzada se aproxima dos aventureiros, seu rosto oculto pela sombra do capuz.',
-    'Alguém se aproxima da taverna, seu porte indicando uma presença poderosa e imponente.',
-    'O som de asas batendo preenche o ar quando alguém se aproxima voando, sua silhueta escura contra o céu noturno.',
-    'Uma presença familiar se aproxima do grupo, trazendo consigo uma sensação de calma e segurança.',
+    'O som de passos rápidos indica que alguém se aproxima, talvez '
+    'com notícias importantes para os aventureiros.',
+    'Uma figura solitária se aproxima da cidade, seus olhos varrendo '
+    'o horizonte em busca de algo.',
+    'Vocês percebem uma presença se aproximando, seu propósito '
+    'ainda desconhecido para os aventureiros.',
+    'O som de cascos batendo na estrada revela a aproximação de '
+    'um cavaleiro solitário.',
+    'Uma sombra se move pela floresta, indicando a chegada iminente '
+    'de alguém ao acampamento.',
+    'Alguém se aproxima dos aventureiros, sua postura indicando '
+    'uma necessidade urgente de assistência.',
+    'Vocês avistam um estranho se aproximando, seus passos determinados '
+    'e sua expressão séria.',
+    'O som de risadas alegres indica que alguém se aproxima, talvez '
+    'em busca de uma boa conversa.',
+    'Uma figura encapuzada se aproxima dos aventureiros, seu rosto '
+    'oculto pela sombra do capuz.',
+    'Alguém se aproxima da taverna, seu porte indicando uma presença '
+    'poderosa e imponente.',
+    'O som de asas batendo preenche o ar quando alguém se aproxima '
+    'voando, sua silhueta escura contra o céu noturno.',
+    'Uma presença familiar se aproxima do grupo, trazendo consigo '
+    'uma sensação de calma e segurança.',
 ]
 LEAVE_NARRATION = [
-    'Com um suspiro pesado, *{helped_name}* se despede e parte para sua próxima jornada.',
-    'O olhar de *{helped_name}* se volta para o horizonte distante enquanto ele se prepara para partir.',
-    '*{helped_name}* anuncia sua partida e se despede, deixando um vazio no grupo.',
-    'Com passos firmes, *{helped_name}* se afasta, pronto para enfrentar novos desafios.',
-    'As últimas palavras de *{helped_name}* ecoam no ar enquanto ele se distancia do grupo.',
-    '*{helped_name}* acena brevemente antes de seguir em frente, deixando seus amigos para trás.',
-    'O grupo observa silenciosamente enquanto *{helped_name}* desaparece no horizonte.',
-    'Com um aceno de despedida, *{helped_name}* parte, deixando lembranças e saudades.',
-    '*{helped_name}* se despede com um sorriso triste, pronto para seguir seu próprio caminho.',
-    'Os passos de *{helped_name}* se desvanecem lentamente, marcando sua partida.',
-    'O grupo observa em silêncio enquanto *{helped_name}* se afasta, rumo ao desconhecido.',
-    '*{helped_name}* parte com determinação, deixando para trás as lembranças de tempos melhores.',
-    'Com um último olhar para trás, *{helped_name}* segue em frente, buscando seu destino.',
-    '*{helped_name}* se despede com palavras simples, mas seu adeus ecoa no coração do grupo.',
-    'O grupo assiste em silêncio enquanto *{helped_name}* se afasta, pronto para enfrentar novos desafios.',
-    '*{helped_name}* parte sem olhar para trás, deixando para trás apenas memórias.',
-    'Com um aceno final, *{helped_name}* parte, levando consigo uma parte do grupo.',
+    'Com um suspiro pesado, *{helped_name}* se despede e parte '
+    'para sua próxima jornada.',
+    'O olhar de *{helped_name}* se volta para o horizonte distante '
+    'enquanto ele se prepara para partir.',
+    '*{helped_name}* anuncia sua partida e se despede, deixando '
+    'um vazio no grupo.',
+    'Com passos firmes, *{helped_name}* se afasta, pronto para '
+    'enfrentar novos desafios.',
+    'As últimas palavras de *{helped_name}* ecoam no ar enquanto '
+    'ele se distancia do grupo.',
+    '*{helped_name}* acena brevemente antes de seguir em frente,'
+    ' deixando seus amigos para trás.',
+    'O grupo observa silenciosamente enquanto *{helped_name}'
+    '* desaparece no horizonte.',
+    'Com um aceno de despedida, *{helped_name}* parte, deixando '
+    'lembranças e saudades.',
+    '*{helped_name}* se despede com um sorriso triste, pronto '
+    'para seguir seu próprio caminho.',
+    'Os passos de *{helped_name}* se desvanecem lentamente, '
+    'marcando sua partida.',
+    'O grupo observa em silêncio enquanto *{helped_name}* se '
+    'afasta, rumo ao desconhecido.',
+    '*{helped_name}* parte com determinação, deixando para trás '
+    'as lembranças de tempos melhores.',
+    'Com um último olhar para trás, *{helped_name}* segue em '
+    'frente, buscando seu destino.',
+    '*{helped_name}* se despede com palavras simples, mas seu '
+    'adeus ecoa no coração do grupo.',
+    'O grupo assiste em silêncio enquanto *{helped_name}* se '
+    'afasta, pronto para enfrentar novos desafios.',
+    '*{helped_name}* parte sem olhar para trás, deixando para '
+    'trás apenas memórias.',
+    'Com um aceno final, *{helped_name}* parte, levando consigo '
+    'uma parte do grupo.',
     'O adeus de *{helped_name}* é breve, mas seu impacto é duradouro.',
-    '*{helped_name}* se afasta com determinação, deixando para trás os confortos do passado.',
-    'Os passos de *{helped_name}* ecoam no silêncio, marcando sua jornada solitária.',
-    'Com um último suspiro, *{helped_name}* parte, deixando para trás seus amigos e companheiros.',
-    '*{helped_name}* parte sem olhar para trás, pronto para enfrentar os desafios que o esperam.',
-    'O grupo observa em silêncio enquanto *{helped_name}* se afasta, seguindo seu próprio caminho.',
-    'Com uma expressão sombria, *{helped_name}* se despede, preparado para enfrentar o desconhecido.',
-    '*{helped_name}* se afasta com determinação, deixando para trás os confortos do lar.',
-    'Os últimos vestígios de *{helped_name}* desaparecem no horizonte, deixando o grupo em silêncio.',
-    'Com um sorriso resignado, *{helped_name}* parte, deixando para trás seus amigos e suas preocupações.',
-    'O grupo assiste em silêncio enquanto *{helped_name}* se afasta, pronto para começar de novo.',
-    '*{helped_name}* parte com um nó na garganta, sabendo que nunca mais será o mesmo.',
-    'Com um aceno de despedida, *{helped_name}* parte, deixando para trás seus entes queridos.',
-    '*{helped_name}* se despede com um sorriso triste, prometendo retornar um dia.',
-    'Os olhos de *{helped_name}* brilham com determinação enquanto ele se afasta, pronto para enfrentar seu destino.',
-    'Com um último abraço, *{helped_name}* parte, deixando para trás os confortos do lar.',
-    '*{helped_name}* parte com um suspiro, deixando para trás suas preocupações e medos.',
-    'O grupo observa em silêncio enquanto *{helped_name}* se afasta, levando consigo uma parte de cada um.',
-    'Com um aperto no coração, *{helped_name}* parte, deixando para trás as lembranças de dias melhores.',
-    '*{helped_name}* se despede com um sorriso triste, sabendo que sua jornada está apenas começando.',
-    'Com um aceno final, *{helped_name}* parte, deixando para trás os confortos de sua vida anterior.',
-    'Os passos de *{helped_name}* ecoam no vazio, marcando sua jornada solitária.',
-    '*{helped_name}* parte com determinação, deixando para trás seus amigos e sua família.',
-    'Com um último olhar para trás, *{helped_name}* se afasta, pronto para enfrentar o desconhecido.',
-    '*{helped_name}* se despede com um aceno, deixando para trás os confortos do lar.',
-    'Com um sorriso nos lábios, *{helped_name}* parte, deixando para trás as preocupações do passado.',
-    'O grupo observa em silêncio enquanto *{helped_name}* se afasta, sabendo que ele nunca será esquecido.',
-    '*{helped_name}* parte com um peso no coração, sabendo que nunca mais será o mesmo.',
-    'Com um último aperto de mão, *{helped_name}* parte, deixando para trás seus amigos e seu lar.',
-    'Os passos de *{helped_name}* se desvanecem no horizonte, marcando sua jornada solitária.',
-    'Com uma promessa de retorno, *{helped_name}* parte, deixando para trás as preocupações do presente.',
-    '*{helped_name}* se despede com um nó na garganta, sabendo que nunca mais será o mesmo.',
-    'Com um último aceno, *{helped_name}* parte, deixando para trás os confortos de sua vida anterior.',
+    '*{helped_name}* se afasta com determinação, deixando para '
+    'trás os confortos do passado.',
+    'Os passos de *{helped_name}* ecoam no silêncio, marcando sua '
+    'jornada solitária.',
+    'Com um último suspiro, *{helped_name}* parte, deixando para '
+    'trás seus amigos e companheiros.',
+    '*{helped_name}* parte sem olhar para trás, pronto para enfrentar '
+    'os desafios que o esperam.',
+    'O grupo observa em silêncio enquanto *{helped_name}* se afasta,'
+    ' seguindo seu próprio caminho.',
+    'Com uma expressão sombria, *{helped_name}* se despede, preparado '
+    'para enfrentar o desconhecido.',
+    '*{helped_name}* se afasta com determinação, deixando para '
+    'trás os confortos do lar.',
+    'Os últimos vestígios de *{helped_name}* desaparecem no horizonte,'
+    ' deixando o grupo em silêncio.',
+    'Com um sorriso resignado, *{helped_name}* parte, deixando '
+    'para trás seus amigos e suas preocupações.',
+    'O grupo assiste em silêncio enquanto *{helped_name}* se afasta,'
+    ' pronto para começar de novo.',
+    '*{helped_name}* parte com um nó na garganta, sabendo que nunca '
+    'mais será o mesmo.',
+    'Com um aceno de despedida, *{helped_name}* parte, deixando '
+    'para trás seus entes queridos.',
+    '*{helped_name}* se despede com um sorriso triste, prometendo '
+    'retornar um dia.',
+    'Os olhos de *{helped_name}* brilham com determinação enquanto '
+    'ele se afasta, pronto para enfrentar seu destino.',
+    'Com um último abraço, *{helped_name}* parte, deixando para '
+    'trás os confortos do lar.',
+    '*{helped_name}* parte com um suspiro, deixando para trás suas '
+    'preocupações e medos.',
+    'O grupo observa em silêncio enquanto *{helped_name}* se afasta,'
+    ' levando consigo uma parte de cada um.',
+    'Com um aperto no coração, *{helped_name}* parte, deixando '
+    'para trás as lembranças de dias melhores.',
+    '*{helped_name}* se despede com um sorriso triste, sabendo '
+    'que sua jornada está apenas começando.',
+    'Com um aceno final, *{helped_name}* parte, deixando para trás '
+    'os confortos de sua vida anterior.',
+    'Os passos de *{helped_name}* ecoam no vazio, marcando sua '
+    'jornada solitária.',
+    '*{helped_name}* parte com determinação, deixando para trás '
+    'seus amigos e sua família.',
+    'Com um último olhar para trás, *{helped_name}* se afasta, '
+    'pronto para enfrentar o desconhecido.',
+    '*{helped_name}* se despede com um aceno, deixando para trás '
+    'os confortos do lar.',
+    'Com um sorriso nos lábios, *{helped_name}* parte, deixando '
+    'para trás as preocupações do passado.',
+    'O grupo observa em silêncio enquanto *{helped_name}* se afasta,'
+    ' sabendo que ele nunca será esquecido.',
+    '*{helped_name}* parte com um peso no coração, sabendo que '
+    'nunca mais será o mesmo.',
+    'Com um último aperto de mão, *{helped_name}* parte, deixando '
+    'para trás seus amigos e seu lar.',
+    'Os passos de *{helped_name}* se desvanecem no horizonte, marcando '
+    'sua jornada solitária.',
+    'Com uma promessa de retorno, *{helped_name}* parte, deixando '
+    'para trás as preocupações do presente.',
+    '*{helped_name}* se despede com um nó na garganta, sabendo '
+    'que nunca mais será o mesmo.',
+    'Com um último aceno, *{helped_name}* parte, deixando para '
+    'trás os confortos de sua vida anterior.',
 ]
 DISAPPOINTED_NARRATION = [
-    'Com um suspiro pesado, *{helped_name}* parte, carregando consigo o peso da decepção.',
-    'Os ombros de *{helped_name}* se curvam sob o peso da frustração enquanto ele se afasta.',
-    '*{helped_name}* se despede com um olhar triste, incapaz de encontrar a solução que tanto buscava.',
-    'A expressão abatida de *{helped_name}* revela sua decepção enquanto ele parte sem conseguir resolver seu problema.',
-    'Com um semblante sombrio, *{helped_name}* se afasta, resignado por não ter encontrado a resposta que procurava.',
-    'As palavras de despedida de *{helped_name}* ecoam no ar, tingidas com o tom da decepção.',
-    '*{helped_name}* se despede com um sorriso forçado, escondendo a frustração por não conseguir resolver seu dilema.',
-    'Com um último olhar para trás, *{helped_name}* parte, lamentando não ter alcançado seu objetivo.',
-    'Os passos de *{helped_name}* ecoam no silêncio, acompanhados pelo peso de sua decepção.',
-    '*{helped_name}* se afasta com um suspiro, incapaz de encontrar a resposta que tanto buscava.',
-    'Com um aceno triste, *{helped_name}* parte, deixando para trás suas esperanças frustradas.',
-    'A desilusão pesa sobre os ombros de *{helped_name}* enquanto ele se afasta, incapaz de resolver seu problema.',
-    '*{helped_name}* parte com um aperto no coração, desanimado por não ter conseguido superar seu obstáculo.',
-    'Com um último olhar para trás, *{helped_name}* parte, levando consigo a lembrança de sua falha.',
-    '*{helped_name}* se despede com um sorriso amargo, lamentando não ter encontrado a solução que procurava.',
-    'A frustração transparece nos olhos de *{helped_name}* enquanto ele se afasta, derrotado por seu fracasso.',
-    'Com um suspiro resignado, *{helped_name}* parte, deixando para trás seu problema sem solução.',
-    '*{helped_name}* se afasta com os ombros caídos, desanimado por não ter alcançado seu objetivo.',
-    'Com um último olhar para trás, *{helped_name}* parte, aceitando sua derrota com dignidade.',
-    'Os passos de *{helped_name}* ecoam no vazio, acompanhados pelo eco de sua decepção.',
-    '*{helped_name}* se despede com um suspiro pesaroso, resignado por não ter conseguido resolver seu dilema.',
-    'Com um sorriso triste, *{helped_name}* parte, reconhecendo sua derrota com humildade.',
-    'A desilusão paira sobre *{helped_name}* enquanto ele se afasta, incapaz de encontrar a resposta que tanto buscava.',
-    '*{helped_name}* parte com um nó na garganta, lamentando não ter sido capaz de superar seu problema.',
-    'Com um aceno de despedida, *{helped_name}* parte, deixando para trás sua busca infrutífera.',
-    'A expressão abatida de *{helped_name}* revela sua decepção enquanto ele parte sem ter encontrado a solução.',
-    '*{helped_name}* se despede com um olhar melancólico, resignado por não ter conseguido resolver seu dilema.',
-    'Com um último suspiro, *{helped_name}* parte, deixando para trás seus sonhos frustrados.',
-    'Os olhos de *{helped_name}* refletem sua decepção enquanto ele se afasta, incapaz de encontrar uma solução.',
-    '*{helped_name}* parte com um peso no coração, derrotado pela impossibilidade de resolver seu problema.',
-    'Com um aceno triste, *{helped_name}* parte, levando consigo a lembrança de sua falha.',
-    'A decepção se mistura ao adeus de *{helped_name}*, marcando sua partida com um gosto amargo.',
-    '*{helped_name}* se afasta com um suspiro resignado, aceitando sua derrota com humildade.',
-    'Com um último olhar para trás, *{helped_name}* parte, reconhecendo sua incapacidade de superar seu obstáculo.',
-    'A desilusão paira sobre os ombros de *{helped_name}* enquanto ele se afasta, incapaz de encontrar uma saída.',
-    '*{helped_name}* parte com um sorriso forçado, escondendo a tristeza por não ter conseguido resolver seu dilema.',
-    'Com um último suspiro de resignação, *{helped_name}* parte, deixando para trás sua busca infrutífera.',
-    'A expressão abatida de *{helped_name}* reflete sua derrota enquanto ele se afasta, incapaz de encontrar uma solução.',
-    '*{helped_name}* se despede com um aperto no coração, sabendo que sua jornada termina aqui.',
-    'Com um aceno de despedida, *{helped_name}* parte, deixando para trás sua busca sem fim.',
-    'A frustração se mistura ao adeus de *{helped_name}*, marcando sua partida com um sentimento de desalento.',
-    '*{helped_name}* parte com um suspiro pesado, resignado por não ter sido capaz de superar seu problema.',
-    'Com um último olhar para trás, *{helped_name}* parte, deixando para trás seus sonhos desfeitos.',
-    'A desilusão envolve *{helped_name}* enquanto ele se afasta, incapaz de encontrar uma solução para seu dilema.',
-    '*{helped_name}* se despede com um sorriso triste, reconhecendo sua derrota com dignidade.',
-    'Com um aceno triste, *{helped_name}* parte, sabendo que não há mais nada que ele possa fazer.',
-    'Os passos de *{helped_name}* ecoam no vazio, acompanhados pela tristeza de sua derrota.',
-    '*{helped_name}* parte com um último olhar de resignação, aceitando sua incapacidade de superar seu problema.',
-    'Com um suspiro de desânimo, *{helped_name}* parte, deixando para trás seu problema sem solução.',
-    'A decepção pesa sobre *{helped_name}* enquanto ele se afasta, derrotado pela impossibilidade de encontrar uma saída.',
+    'Com um suspiro pesado, *{helped_name}* parte, '
+    'carregando consigo o peso da decepção.',
+    'Os ombros de *{helped_name}* se curvam sob o '
+    'peso da frustração enquanto ele se afasta.',
+    '*{helped_name}* se despede com um olhar triste, '
+    'incapaz de encontrar a solução que tanto buscava.',
+    'A expressão abatida de *{helped_name}* revela sua decepção '
+    'enquanto ele parte sem conseguir resolver seu problema.',
+    'Com um semblante sombrio, *{helped_name}* se afasta, '
+    'resignado por não ter encontrado a resposta que procurava.',
+    'As palavras de despedida de *{helped_name}* ecoam no '
+    'ar, tingidas com o tom da decepção.',
+    '*{helped_name}* se despede com um sorriso forçado, '
+    'escondendo a frustração por não conseguir resolver seu dilema.',
+    'Com um último olhar para trás, *{helped_name}* '
+    'parte, lamentando não ter alcançado seu objetivo.',
+    'Os passos de *{helped_name}* ecoam no silêncio, '
+    'acompanhados pelo peso de sua decepção.',
+    '*{helped_name}* se afasta com um suspiro, incapaz '
+    'de encontrar a resposta que tanto buscava.',
+    'Com um aceno triste, *{helped_name}* parte, '
+    'deixando para trás suas esperanças frustradas.',
+    'A desilusão pesa sobre os ombros de *{helped_name}* '
+    'enquanto ele se afasta, incapaz de resolver seu problema.',
+    '*{helped_name}* parte com um aperto no coração, '
+    'desanimado por não ter conseguido superar seu obstáculo.',
+    'Com um último olhar para trás, *{helped_name}* '
+    'parte, levando consigo a lembrança de sua falha.',
+    '*{helped_name}* se despede com um sorriso amargo, '
+    'lamentando não ter encontrado a solução que procurava.',
+    'A frustração transparece nos olhos de *{helped_name}* enquanto '
+    'ele se afasta, derrotado por seu fracasso.',
+    'Com um suspiro resignado, *{helped_name}* parte, '
+    'deixando para trás seu problema sem solução.',
+    '*{helped_name}* se afasta com os ombros caídos, '
+    'desanimado por não ter alcançado seu objetivo.',
+    'Com um último olhar para trás, *{helped_name}* '
+    'parte, aceitando sua derrota com dignidade.',
+    'Os passos de *{helped_name}* ecoam no vazio, '
+    'acompanhados pelo eco de sua decepção.',
+    '*{helped_name}* se despede com um suspiro pesaroso, '
+    'resignado por não ter conseguido resolver seu dilema.',
+    'Com um sorriso triste, *{helped_name}* parte, '
+    'reconhecendo sua derrota com humildade.',
+    'A desilusão paira sobre *{helped_name}* enquanto ele se '
+    'afasta, incapaz de encontrar a resposta que tanto buscava.',
+    '*{helped_name}* parte com um nó na garganta, '
+    'lamentando não ter sido capaz de superar seu problema.',
+    'Com um aceno de despedida, *{helped_name}* parte, '
+    'deixando para trás sua busca infrutífera.',
+    'A expressão abatida de *{helped_name}* revela sua decepção '
+    'enquanto ele parte sem ter encontrado a solução.',
+    '*{helped_name}* se despede com um olhar melancólico, '
+    'resignado por não ter conseguido resolver seu dilema.',
+    'Com um último suspiro, *{helped_name}* parte, '
+    'deixando para trás seus sonhos frustrados.',
+    'Os olhos de *{helped_name}* refletem sua decepção enquanto '
+    'ele se afasta, incapaz de encontrar uma solução.',
+    '*{helped_name}* parte com um peso no coração, '
+    'derrotado pela impossibilidade de resolver seu problema.',
+    'Com um aceno triste, *{helped_name}* parte, '
+    'levando consigo a lembrança de sua falha.',
+    'A decepção se mistura ao adeus de *{helped_name}*, '
+    'marcando sua partida com um gosto amargo.',
+    '*{helped_name}* se afasta com um suspiro resignado, '
+    'aceitando sua derrota com humildade.',
+    'Com um último olhar para trás, *{helped_name}* '
+    'parte, reconhecendo sua incapacidade de superar seu obstáculo.',
+    'A desilusão paira sobre os ombros de *{helped_name}* '
+    'enquanto ele se afasta, incapaz de encontrar uma saída.',
+    '*{helped_name}* parte com um sorriso forçado, escondendo '
+    'a tristeza por não ter conseguido resolver seu dilema.',
+    'Com um último suspiro de resignação, *{helped_name}* '
+    'parte, deixando para trás sua busca infrutífera.',
+    'A expressão abatida de *{helped_name}* reflete sua derrota '
+    'enquanto ele se afasta, incapaz de encontrar uma solução.',
+    '*{helped_name}* se despede com um aperto no coração, '
+    'sabendo que sua jornada termina aqui.',
+    'Com um aceno de despedida, *{helped_name}* parte, '
+    'deixando para trás sua busca sem fim.',
+    'A frustração se mistura ao adeus de *{helped_name}*, '
+    'marcando sua partida com um sentimento de desalento.',
+    '*{helped_name}* parte com um suspiro pesado, resignado '
+    'por não ter sido capaz de superar seu problema.',
+    'Com um último olhar para trás, *{helped_name}* '
+    'parte, deixando para trás seus sonhos desfeitos.',
+    'A desilusão envolve *{helped_name}* enquanto ele se afasta, '
+    'incapaz de encontrar uma solução para seu dilema.',
+    '*{helped_name}* se despede com um sorriso triste, '
+    'reconhecendo sua derrota com dignidade.',
+    'Com um aceno triste, *{helped_name}* parte, '
+    'sabendo que não há mais nada que ele possa fazer.',
+    'Os passos de *{helped_name}* ecoam no vazio, '
+    'acompanhados pela tristeza de sua derrota.',
+    '*{helped_name}* parte com um último olhar de resignação, '
+    'aceitando sua incapacidade de superar seu problema.',
+    'Com um suspiro de desânimo, *{helped_name}* parte, '
+    'deixando para trás seu problema sem solução.',
+    'A decepção pesa sobre *{helped_name}* enquanto ele se '
+    'afasta, derrotado pela impossibilidade de encontrar uma saída.',
 ]
 REPLY_TEXT_HEAL_CURE_ITEM = [
-    'Saudações! Sou um viajante em busca de aventuras, mas infelizmente me encontro ferido. Se tiver "{item}" à disposição, seria de grande ajuda!',
-    'Olá! Estou em uma jornada épica. Preciso de "{item}" para recuperar minhas energias e seguir em frente. Você poderia me ajudar?',
-    'Bom dia! Estou em uma missão importante e sofri alguns ferimentos no caminho. Se puder me fornecer "{item}", ficaria imensamente grato!',
-    'Oi! Estou em uma jornada desafiadora e estou precisando de um pouco de ajuda para me recuperar. Se tiver "{item}" para me oferecer, seria maravilhoso!',
-    'E aí! Estou em busca de "{item}" para aliviar minhas dores e seguir em minha jornada. Você teria algo para me ajudar?',
-    'Olá! Estou precisando de "{item}" para me restabelecer. Seria possível conseguir um?',
-    'Bom dia! Estou ferido e precisando de "{item}" para me recuperar. Você teria algum disponível para me ajudar?',
-    'Saudações! Estou em uma jornada perigosa e sofri alguns ferimentos. Se tiver "{item}" para me oferecer, seria de grande ajuda!',
-    'Oi! Estou em apuros e preciso de "{item}" para me recuperar. Se puder me ajudar, ficaria muito agradecido!',
-    'E aí! Estou buscando "{item}" para me recuperar de alguns ferimentos. Você teria algo para me ajudar?',
-    'Olá! Estou em busca de "{item}" para me restabelecer. Seria possível conseguir um?',
-    'Bom dia! Sofri alguns ferimentos em minha jornada e estou precisando de "{item}" para me recuperar. Você teria algo para me oferecer?',
-    'Saudações! Estou precisando de "{item}" para me ajudar a me recuperar de alguns ferimentos. Se puder me ajudar, ficaria muito grato!',
-    'Oi! Estou em uma situação complicada e preciso de "{item}" para me recuperar. Você teria algum disponível para me ajudar?',
-    'E aí! Estou buscando "{item}" para aliviar minhas dores. Será que você teria algo para me oferecer?',
-    'Olá! Estou precisando de "{item}" para me recuperar de alguns ferimentos. Será que você poderia me ajudar?',
-    'Bom dia! Estou em uma situação difícil e preciso de "{item}" para me recuperar. Você teria algum disponível para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para me ajudar a me restabelecer. Se puder me ajudar, ficaria muito agradecido!',
-    'Oi! Estou precisando de "{item}" para me recuperar de alguns ferimentos. Será que você poderia me ajudar?',
-    'E aí! Estou ferido e buscando "{item}" para me ajudar a me recuperar. Será que você teria algo para me oferecer?',
-    'Olá! Estou em uma jornada desafiadora e preciso de "{item}" para me recuperar. Se puder me ajudar, ficaria muito grato!',
-    'Bom dia! Sofri alguns ferimentos e estou buscando "{item}" para me recuperar. Você teria algo para me oferecer?',
-    'Saudações! Estou precisando de "{item}" para aliviar minhas dores. Se puder me ajudar, ficaria muito agradecido!',
-    'Oi! Estou em uma situação complicada e buscando "{item}" para me recuperar. Será que você poderia me ajudar?',
-    'E aí! Estou precisando de "{item}" para me ajudar a me restabelecer. Será que você teria algo para me oferecer?',
-    'Olá! Estou ferido e buscando "{item}" para me recuperar. Se puder me ajudar, ficaria muito grato!',
-    'Bom dia! Estou em uma situação difícil e preciso de "{item}" para me recuperar. Será que você poderia me ajudar?',
-    'Saudações! Estou buscando "{item}" para me ajudar a me recuperar de alguns ferimentos. Será que você teria algo para me oferecer?',
-    'Oi! Estou ferido e buscando "{item}" para me recuperar. Se puder me ajudar, ficaria muito grato!',
-    'E aí! Sofri alguns ferimentos e estou precisando de "{item}" para me recuperar. Será que você poderia me ajudar?',
-    'Olá! Estou em uma jornada desafiadora e preciso urgentemente de "{item}" para me recuperar. Você poderia me ajudar?',
-    'Bom dia! Infelizmente me machuquei durante minha exploração. Se tiver "{item}" à disposição, seria de grande ajuda!',
-    'Saudações! Estou precisando de "{item}" para aliviar minhas dores e continuar minha jornada. Se puder me ajudar, ficaria muito grato!',
-    'Oi! Estou em busca de "{item}" para me recuperar de alguns ferimentos. Será que você poderia me ajudar?',
-    'E aí! Sofri alguns ferimentos e estou precisando urgentemente de "{item}" para me recuperar. Será que você poderia me ajudar?',
-    'Olá! Estou ferido e buscando desesperadamente "{item}" para me recuperar. Se puder me ajudar, ficaria eternamente grato!',
-    'Bom dia! Estou em uma situação complicada e preciso urgentemente de "{item}" para me recuperar. Será que você teria algo para me oferecer?',
-    'Saudações! Estou precisando urgentemente de "{item}" para me ajudar a me restabelecer. Será que você poderia me ajudar?',
-    'Oi! Sofri alguns ferimentos em minha jornada e estou precisando urgentemente de "{item}" para me recuperar. Você teria algo para me oferecer?',
-    'E aí! Estou ferido e buscando desesperadamente "{item}" para me ajudar a me recuperar. Será que você poderia me ajudar?',
-    'Olá! Estou em apuros e preciso urgentemente de "{item}" para me recuperar. Se puder me ajudar, ficaria eternamente grato!',
-    'Bom dia! Estou precisando urgentemente de "{item}" para aliviar minhas dores. Será que você teria algo para me oferecer?',
-    'Saudações! Estou buscando desesperadamente "{item}" para me recuperar de alguns ferimentos. Será que você poderia me ajudar?',
-    'Oi! Sofri alguns ferimentos e estou precisando urgentemente de "{item}" para me recuperar. Se puder me ajudar, ficaria muito grato!',
-    'E aí! Estou ferido e buscando desesperadamente "{item}" para me recuperar. Será que você poderia me ajudar?',
-    'Olá! Estou em uma situação complicada e preciso urgentemente de "{item}" para me recuperar. Será que você teria algo para me oferecer?',
-    'Bom dia! Sofri alguns ferimentos em minha jornada e estou buscando desesperadamente "{item}" para me ajudar a me recuperar. Será que você poderia me ajudar?',
-    'Saudações! Estou precisando urgentemente de "{item}" para aliviar minhas dores. Será que você teria algo para me oferecer?',
-    'Oi! Estou ferido e buscando desesperadamente "{item}" para me recuperar. Se puder me ajudar, ficaria muito grato!',
-    'E aí! Sofri alguns ferimentos e estou precisando urgentemente de "{item}" para me recuperar. Será que você poderia me ajudar?',
+    'Saudações! Sou um viajante em busca de aventuras, '
+    'mas infelizmente me encontro ferido. Se tiver "{item}" '
+    'à disposição, seria de grande ajuda!',
+    'Olá! Estou em uma jornada épica. Preciso de "{item}" para recuperar '
+    'minhas energias e seguir em frente. Você poderia me ajudar?',
+    'Bom dia! Estou em uma missão importante e sofri alguns ferimentos no '
+    'caminho. Se puder me fornecer "{item}", ficaria imensamente grato!',
+    'Oi! Estou em uma jornada desafiadora e estou precisando de um pouco '
+    'de ajuda para me recuperar. Se tiver "{item}" para me oferecer, '
+    'seria maravilhoso!',
+    'E aí! Estou em busca de "{item}" para aliviar minhas dores e seguir '
+    'em minha jornada. Você teria algo para me ajudar?',
+    'Olá! Estou precisando de "{item}" para me restabelecer. '
+    'Seria possível conseguir um?',
+    'Bom dia! Estou ferido e precisando de "{item}" para me recuperar. '
+    'Você teria algum disponível para me ajudar?',
+    'Saudações! Estou em uma jornada perigosa e sofri alguns ferimentos. '
+    'Se tiver "{item}" para me oferecer, seria de grande ajuda!',
+    'Oi! Estou em apuros e preciso de "{item}" para me recuperar. '
+    'Se puder me ajudar, ficaria muito agradecido!',
+    'E aí! Estou buscando "{item}" para me recuperar de alguns ferimentos. '
+    'Você teria algo para me ajudar?',
+    'Olá! Estou em busca de "{item}" para me restabelecer. '
+    'Seria possível conseguir um?',
+    'Bom dia! Sofri alguns ferimentos em minha jornada e estou precisando '
+    'de "{item}" para me recuperar. Você teria algo para me oferecer?',
+    'Saudações! Estou precisando de "{item}" para me ajudar a me recuperar '
+    'de alguns ferimentos. Se puder me ajudar, ficaria muito grato!',
+    'Oi! Estou em uma situação complicada e preciso de "{item}" para me '
+    'recuperar. Você teria algum disponível para me ajudar?',
+    'E aí! Estou buscando "{item}" para aliviar minhas dores. '
+    'Será que você teria algo para me oferecer?',
+    'Olá! Estou precisando de "{item}" para me recuperar de alguns '
+    'ferimentos. Será que você poderia me ajudar?',
+    'Bom dia! Estou em uma situação difícil e preciso de "{item}" '
+    'para me recuperar. Você teria algum disponível para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para me ajudar a me restabelecer. '
+    'Se puder me ajudar, ficaria muito agradecido!',
+    'Oi! Estou precisando de "{item}" para me recuperar de alguns '
+    'ferimentos. Será que você poderia me ajudar?',
+    'E aí! Estou ferido e buscando "{item}" para me ajudar a me recuperar. '
+    'Será que você teria algo para me oferecer?',
+    'Olá! Estou em uma jornada desafiadora e preciso de "{item}" '
+    'para me recuperar. Se puder me ajudar, ficaria muito grato!',
+    'Bom dia! Sofri alguns ferimentos e estou buscando "{item}" '
+    'para me recuperar. Você teria algo para me oferecer?',
+    'Saudações! Estou precisando de "{item}" para aliviar minhas dores. '
+    'Se puder me ajudar, ficaria muito agradecido!',
+    'Oi! Estou em uma situação complicada e buscando "{item}" para '
+    'me recuperar. Será que você poderia me ajudar?',
+    'E aí! Estou precisando de "{item}" para me ajudar a me restabelecer. '
+    'Será que você teria algo para me oferecer?',
+    'Olá! Estou ferido e buscando "{item}" para me recuperar. '
+    'Se puder me ajudar, ficaria muito grato!',
+    'Bom dia! Estou em uma situação difícil e preciso de "{item}" '
+    'para me recuperar. Será que você poderia me ajudar?',
+    'Saudações! Estou buscando "{item}" para me ajudar a me recuperar '
+    'de alguns ferimentos. Será que você teria algo para me oferecer?',
+    'Oi! Estou ferido e buscando "{item}" para me recuperar. '
+    'Se puder me ajudar, ficaria muito grato!',
+    'E aí! Sofri alguns ferimentos e estou precisando de "{item}" '
+    'para me recuperar. Será que você poderia me ajudar?',
+    'Olá! Estou em uma jornada desafiadora e preciso urgentemente de '
+    '"{item}" para me recuperar. Você poderia me ajudar?',
+    'Bom dia! Infelizmente me machuquei durante minha exploração. '
+    'Se tiver "{item}" à disposição, seria de grande ajuda!',
+    'Saudações! Estou precisando de "{item}" para aliviar minhas dores e '
+    'continuar minha jornada. Se puder me ajudar, ficaria muito grato!',
+    'Oi! Estou em busca de "{item}" para me recuperar de alguns ferimentos. '
+    'Será que você poderia me ajudar?',
+    'E aí! Sofri alguns ferimentos e estou precisando urgentemente de '
+    '"{item}" para me recuperar. Será que você poderia me ajudar?',
+    'Olá! Estou ferido e buscando desesperadamente "{item}" para me '
+    'recuperar. Se puder me ajudar, ficaria eternamente grato!',
+    'Bom dia! Estou em uma situação complicada e preciso urgentemente de '
+    '"{item}" para me recuperar. Será que você teria algo para me oferecer?',
+    'Saudações! Estou precisando urgentemente de "{item}" para me '
+    'ajudar a me restabelecer. Será que você poderia me ajudar?',
+    'Oi! Sofri alguns ferimentos em minha jornada e estou precisando '
+    'urgentemente de "{item}" para me recuperar. Você teria algo '
+    'para me oferecer?',
+    'E aí! Estou ferido e buscando desesperadamente "{item}" para me '
+    'ajudar a me recuperar. Será que você poderia me ajudar?',
+    'Olá! Estou em apuros e preciso urgentemente de "{item}" para me '
+    'recuperar. Se puder me ajudar, ficaria eternamente grato!',
+    'Bom dia! Estou precisando urgentemente de "{item}" para aliviar '
+    'minhas dores. Será que você teria algo para me oferecer?',
+    'Saudações! Estou buscando desesperadamente "{item}" para me '
+    'recuperar de alguns ferimentos. Será que você poderia me ajudar?',
+    'Oi! Sofri alguns ferimentos e estou precisando urgentemente de '
+    '"{item}" para me recuperar. Se puder me ajudar, ficaria muito grato!',
+    'E aí! Estou ferido e buscando desesperadamente "{item}" para me '
+    'recuperar. Será que você poderia me ajudar?',
+    'Olá! Estou em uma situação complicada e preciso urgentemente de '
+    '"{item}" para me recuperar. Será que você teria algo para me oferecer?',
+    'Bom dia! Sofri alguns ferimentos em minha jornada e estou buscando '
+    'desesperadamente "{item}" para me ajudar a me recuperar. Será que '
+    'você poderia me ajudar?',
+    'Saudações! Estou precisando urgentemente de "{item}" para aliviar '
+    'minhas dores. Será que você teria algo para me oferecer?',
+    'Oi! Estou ferido e buscando desesperadamente "{item}" para me '
+    'recuperar. Se puder me ajudar, ficaria muito grato!',
+    'E aí! Sofri alguns ferimentos e estou precisando urgentemente de '
+    '"{item}" para me recuperar. Será que você poderia me ajudar?',
 ]
 REPLY_TEXT_REVIVE_ITEM = [
-    'Olá! Estou buscando "{item}" para ajudar um amigo que se feriu gravemente. Será que você poderia me ajudar?',
-    'Oi! Estou precisando urgentemente de "{item}" para salvar a vida de um companheiro ferido. Será que você teria algo para me oferecer?',
-    'E aí! Estou em uma missão de resgate e preciso de "{item}" para trazer de volta um aliado que está à beira da morte. Você poderia me ajudar?',
-    'Olá! Estou em uma jornada para salvar um amigo. Estou precisando de "{item}" para trazê-lo de volta à vida. Será que você teria algo para me oferecer?',
-    'Saudações! Estou em uma missão de resgate e preciso de "{item}" para salvar um companheiro caído. Será que você poderia me ajudar?',
-    'Oi! Estou desesperadamente em busca de "{item}" para salvar um amigo ferido. Se puder me ajudar, ficaria muito grato!',
-    'E aí! Estou precisando urgentemente de "{item}" para salvar um aliado em perigo. Será que você teria algo para me oferecer?',
-    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para trazer de volta um companheiro ferido. Será que você poderia me ajudar?',
-    'Saudações! Estou buscando "{item}" para salvar a vida de um amigo que está em perigo. Se puder me ajudar, ficaria eternamente grato!',
-    'Oi! Estou precisando de "{item}" para trazer de volta à vida um aliado que se sacrificou por nós. Será que você poderia me ajudar?',
-    'E aí! Estou em uma jornada para resgatar um amigo que foi ferido em combate. Preciso de "{item}" para trazê-lo de volta à vida. Você poderia me ajudar?',
-    'Olá! Estou em uma missão de resgate. Preciso urgentemente de "{item}" para salvar um companheiro que está à beira da morte. Será que você poderia me ajudar?',
-    'Saudações! Estou em uma jornada para salvar um aliado ferido. Preciso de "{item}" para trazer de volta sua vida. Se puder me ajudar, ficaria muito grato!',
-    'Oi! Estou em busca de "{item}" para salvar um amigo que se sacrificou para proteger o grupo. Será que você teria algo para me oferecer?',
-    'E aí! Estou em uma missão de resgate e preciso urgentemente de "{item}" para salvar um companheiro caído em combate. Será que você poderia me ajudar?',
-    'Olá! Estou desesperadamente em busca de "{item}" para salvar um aliado que está à beira da morte. Se puder me ajudar, ficaria eternamente grato!',
-    'Saudações! Estou em uma missão de resgate e preciso de "{item}" para trazer de volta à vida um companheiro que se sacrificou por nós. Será que você poderia me ajudar?',
-    'Oi! Estou buscando "{item}" para ajudar um amigo que está gravemente ferido. Se puder me ajudar, ficaria muito grato!',
-    'E aí! Estou em uma jornada para salvar um aliado ferido. Preciso urgentemente de "{item}" para trazê-lo de volta à vida. Você poderia me ajudar?',
-    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para salvar um amigo que se sacrificou para nos proteger. Será que você teria algo para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para trazer de volta à vida um aliado que caiu durante uma batalha. Se puder me ajudar, ficarei muito agradecido!',
-    'Oi! Estou em uma jornada para salvar um companheiro ferido. Estou precisando urgentemente de "{item}" para trazê-lo de volta à vida. Será que você poderia me ajudar?',
-    'E aí! Estou desesperadamente em busca de "{item}" para salvar um aliado que se sacrificou para proteger o grupo. Se puder me ajudar, ficaria muito grato!',
-    'Olá! Estou buscando "{item}" para resgatar um amigo ferido em combate. Se puder me ajudar, ficarei eternamente grato!',
-    'Saudações! Estou em uma missão de resgate e preciso de "{item}" para trazer de volta à vida um companheiro que foi ferido em batalha. Você poderia me ajudar?',
-    'Oi! Estou em uma jornada para salvar um aliado que está à beira da morte. Estou precisando de "{item}" com urgência. Será que você poderia me ajudar?',
-    'E aí! Estou buscando "{item}" para trazer de volta à vida um companheiro caído em combate. Se puder me ajudar, ficaria muito grato!',
-    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para salvar um amigo ferido que está em perigo. Será que você teria algo para me oferecer?',
-    'Saudações! Estou desesperadamente em busca de "{item}" para salvar um aliado que se sacrificou para nos proteger. Se puder me ajudar, ficaria eternamente grato!',
-    'Oi! Estou em uma jornada para resgatar um amigo ferido em combate. Estou precisando urgentemente de "{item}" para trazê-lo de volta à vida. Você poderia me ajudar?',
-    'E aí! Estou em uma missão de resgate e preciso de "{item}" para trazer de volta à vida um companheiro que caiu durante uma batalha. Será que você poderia me ajudar?',
-    'Olá! Estou buscando "{item}" para resgatar um aliado ferido em combate. Se puder me ajudar, ficarei muito agradecido!',
-    'Saudações! Estou em uma jornada para salvar um companheiro que está à beira da morte. Estou precisando urgentemente de "{item}". Será que você poderia me ajudar?',
-    'Oi! Estou desesperadamente em busca de "{item}" para salvar um amigo que se feriu em batalha. Se puder me ajudar, ficaria eternamente grato!',
-    'E aí! Estou buscando "{item}" para trazer de volta à vida um aliado caído em combate. Se puder me ajudar, ficaria muito grato!',
-    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para salvar um amigo ferido em batalha. Será que você teria algo para me oferecer?',
-    'Saudações! Estou desesperadamente em busca de "{item}" para resgatar um companheiro que caiu durante uma batalha. Se puder me ajudar, ficaria muito grato!',
-    'Oi! Estou em uma jornada para salvar um aliado ferido em combate. Estou precisando urgentemente de "{item}" para trazê-lo de volta à vida. Será que você poderia me ajudar?',
-    'E aí! Estou buscando "{item}" para trazer de volta à vida um companheiro que se sacrificou para nos proteger. Se puder me ajudar, ficarei muito agradecido!',
-    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para salvar um amigo que está gravemente ferido. Será que você teria algo para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para trazer de volta à vida um aliado que lutou bravamente ao meu lado. Se puder me ajudar, ficarei muito grato!',
-    'Oi! Estou desesperadamente precisando de "{item}" para resgatar um amigo que foi ferido em combate. Será que você teria algo para me oferecer?',
-    'E aí! Estou buscando "{item}" para trazer de volta à vida um companheiro que caiu durante uma batalha intensa. Se puder me ajudar, ficaria eternamente grato!',
-    'Olá! Estou em uma jornada para salvar um aliado que está à beira da morte. Estou precisando urgentemente de "{item}". Você poderia me ajudar?',
-    'Saudações! Estou em uma missão de resgate e preciso de "{item}" para trazer de volta à vida um companheiro que se feriu em combate. Será que você teria algo para me oferecer?',
-    'Oi! Estou em busca de "{item}" para resgatar um amigo que se sacrificou para nos proteger. Se puder me ajudar, ficaria muito agradecido!',
-    'E aí! Estou em uma jornada para salvar um aliado ferido em combate. Estou precisando urgentemente de "{item}" para trazê-lo de volta à vida. Você poderia me ajudar?',
-    'Olá! Estou buscando "{item}" para trazer de volta à vida um companheiro caído em combate. Se puder me ajudar, ficaria muito grato!',
-    'Saudações! Estou em uma missão de resgate e preciso de "{item}" para salvar um aliado gravemente ferido. Será que você teria algo para me oferecer?',
-    'Oi! Estou em uma jornada para resgatar um amigo que está à beira da morte. Estou precisando urgentemente de "{item}". Você poderia me ajudar?',
+    'Olá! Estou buscando "{item}" para ajudar um amigo que se feriu '
+    'gravemente. Será que você poderia me ajudar?',
+    'Oi! Estou precisando urgentemente de "{item}" para salvar a vida de '
+    'um companheiro ferido. Será que você teria algo para me oferecer?',
+    'E aí! Estou em uma missão de resgate e preciso de "{item}" para '
+    'trazer de volta um aliado que está à beira da morte. Você poderia '
+    'me ajudar?',
+    'Olá! Estou em uma jornada para salvar um amigo. Estou precisando de '
+    '"{item}" para trazê-lo de volta à vida. Será que você teria algo '
+    'para me oferecer?',
+    'Saudações! Estou em uma missão de resgate e preciso de "{item}" para '
+    'salvar um companheiro caído. Será que você poderia me ajudar?',
+    'Oi! Estou desesperadamente em busca de "{item}" para salvar um amigo '
+    'ferido. Se puder me ajudar, ficaria muito grato!',
+    'E aí! Estou precisando urgentemente de "{item}" para salvar um aliado '
+    'em perigo. Será que você teria algo para me oferecer?',
+    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para trazer '
+    'de volta um companheiro ferido. Será que você poderia me ajudar?',
+    'Saudações! Estou buscando "{item}" para salvar a vida de um amigo que '
+    'está em perigo. Se puder me ajudar, ficaria eternamente grato!',
+    'Oi! Estou precisando de "{item}" para trazer de volta à vida um aliado '
+    'que se sacrificou por nós. Será que você poderia me ajudar?',
+    'E aí! Estou em uma jornada para resgatar um amigo que foi ferido em '
+    'combate. Preciso de "{item}" para trazê-lo de volta à vida. '
+    'Você poderia me ajudar?',
+    'Olá! Estou em uma missão de resgate. Preciso urgentemente de '
+    '"{item}" para salvar um companheiro que está à beira da morte. '
+    'Será que você poderia me ajudar?',
+    'Saudações! Estou em uma jornada para salvar um aliado ferido. '
+    'Preciso de "{item}" para trazer de volta sua vida. Se puder me ajudar, '
+    'ficaria muito grato!',
+    'Oi! Estou em busca de "{item}" para salvar um amigo que se '
+    'sacrificou para proteger o grupo. Será que você teria algo '
+    'para me oferecer?',
+    'E aí! Estou em uma missão de resgate e preciso urgentemente de '
+    '"{item}" para salvar um companheiro caído em combate. '
+    'Será que você poderia me ajudar?',
+    'Olá! Estou desesperadamente em busca de "{item}" para salvar um '
+    'aliado que está à beira da morte. Se puder me ajudar, ficaria '
+    'eternamente grato!',
+    'Saudações! Estou em uma missão de resgate e preciso de "{item}" '
+    'para trazer de volta à vida um companheiro que se sacrificou por nós. '
+    'Será que você poderia me ajudar?',
+    'Oi! Estou buscando "{item}" para ajudar um amigo que está '
+    'gravemente ferido. Se puder me ajudar, ficaria muito grato!',
+    'E aí! Estou em uma jornada para salvar um aliado ferido. '
+    'Preciso urgentemente de "{item}" para trazê-lo de volta à vida. '
+    'Você poderia me ajudar?',
+    'Olá! Estou em uma missão de resgate. Preciso de "{item}" '
+    'para salvar um amigo que se sacrificou para nos proteger. '
+    'Será que você teria algo para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para trazer de volta à vida '
+    'um aliado que caiu durante uma batalha. Se puder me ajudar, '
+    'ficarei muito agradecido!',
+    'Oi! Estou em uma jornada para salvar um companheiro ferido. '
+    'Estou precisando urgentemente de "{item}" para trazê-lo de '
+    'volta à vida. Será que você poderia me ajudar?',
+    'E aí! Estou desesperadamente em busca de "{item}" '
+    'para salvar um aliado que se sacrificou para proteger o grupo. '
+    'Se puder me ajudar, ficaria muito grato!',
+    'Olá! Estou buscando "{item}" para resgatar um amigo ferido em '
+    'combate. Se puder me ajudar, ficarei eternamente grato!',
+    'Saudações! Estou em uma missão de resgate e preciso de "{item}" '
+    'para trazer de volta à vida um companheiro que foi ferido em '
+    'batalha. Você poderia me ajudar?',
+    'Oi! Estou em uma jornada para salvar um aliado que está à '
+    'beira da morte. Estou precisando de "{item}" com urgência. '
+    'Será que você poderia me ajudar?',
+    'E aí! Estou buscando "{item}" para trazer de volta à vida um '
+    'companheiro caído em combate. Se puder me ajudar, ficaria muito grato!',
+    'Olá! Estou em uma missão de resgate. Preciso de "{item}" '
+    'para salvar um amigo ferido que está em perigo. '
+    'Será que você teria algo para me oferecer?',
+    'Saudações! Estou desesperadamente em busca de "{item}" '
+    'para salvar um aliado que se sacrificou para nos proteger. '
+    'Se puder me ajudar, ficaria eternamente grato!',
+    'Oi! Estou em uma jornada para resgatar um amigo ferido em combate. '
+    'Estou precisando urgentemente de "{item}" para trazê-lo de '
+    'volta à vida. Você poderia me ajudar?',
+    'E aí! Estou em uma missão de resgate e preciso de "{item}" '
+    'para trazer de volta à vida um companheiro que caiu durante '
+    'uma batalha. Será que você poderia me ajudar?',
+    'Olá! Estou buscando "{item}" para resgatar um aliado ferido em '
+    'combate. Se puder me ajudar, ficarei muito agradecido!',
+    'Saudações! Estou em uma jornada para salvar um companheiro que '
+    'está à beira da morte. Estou precisando urgentemente de "{item}". '
+    'Será que você poderia me ajudar?',
+    'Oi! Estou desesperadamente em busca de "{item}" para salvar '
+    'um amigo que se feriu em batalha. Se puder me ajudar, ficaria '
+    'eternamente grato!',
+    'E aí! Estou buscando "{item}" para trazer de volta à vida um '
+    'aliado caído em combate. Se puder me ajudar, ficaria muito grato!',
+    'Olá! Estou em uma missão de resgate. Preciso de "{item}" para '
+    'salvar um amigo ferido em batalha. Será que você teria algo para '
+    'me oferecer?',
+    'Saudações! Estou desesperadamente em busca de "{item}" para resgatar '
+    'um companheiro que caiu durante uma batalha. Se puder me ajudar, '
+    'ficaria muito grato!',
+    'Oi! Estou em uma jornada para salvar um aliado ferido em combate. '
+    'Estou precisando urgentemente de "{item}" para trazê-lo de '
+    'volta à vida. Será que você poderia me ajudar?',
+    'E aí! Estou buscando "{item}" para trazer de volta à vida um '
+    'companheiro que se sacrificou para nos proteger. Se puder me ajudar, '
+    'ficarei muito agradecido!',
+    'Olá! Estou em uma missão de resgate. Preciso de "{item}" '
+    'para salvar um amigo que está gravemente ferido. '
+    'Será que você teria algo para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para trazer de volta à vida '
+    'um aliado que lutou bravamente ao meu lado. Se puder me ajudar, '
+    'ficarei muito grato!',
+    'Oi! Estou desesperadamente precisando de "{item}" '
+    'para resgatar um amigo que foi ferido em combate. '
+    'Será que você teria algo para me oferecer?',
+    'E aí! Estou buscando "{item}" para trazer de volta à vida um '
+    'companheiro que caiu durante uma batalha intensa. Se puder me ajudar, '
+    'ficaria eternamente grato!',
+    'Olá! Estou em uma jornada para salvar um aliado que está à '
+    'beira da morte. Estou precisando urgentemente de "{item}". '
+    'Você poderia me ajudar?',
+    'Saudações! Estou em uma missão de resgate e preciso de "{item}" '
+    'para trazer de volta à vida um companheiro que se feriu em combate. '
+    'Será que você teria algo para me oferecer?',
+    'Oi! Estou em busca de "{item}" para resgatar um amigo que se '
+    'sacrificou para nos proteger. Se puder me ajudar, '
+    'ficaria muito agradecido!',
+    'E aí! Estou em uma jornada para salvar um aliado ferido em combate. '
+    'Estou precisando urgentemente de "{item}" para trazê-lo de '
+    'volta à vida. Você poderia me ajudar?',
+    'Olá! Estou buscando "{item}" para trazer de volta à vida um '
+    'companheiro caído em combate. Se puder me ajudar, ficaria muito grato!',
+    'Saudações! Estou em uma missão de resgate e preciso de "{item}" '
+    'para salvar um aliado gravemente ferido. Será que você teria algo '
+    'para me oferecer?',
+    'Oi! Estou em uma jornada para resgatar um amigo que está à beira '
+    'da morte. Estou precisando urgentemente de "{item}". '
+    'Você poderia me ajudar?',
 ]
 REPLY_TEXT_IDENTIFY_ITEM = [
-    'Olá, Estou em busca de "{item}" para desvendar os segredos de um equipamento antigo. Você poderia me ajudar?',
-    'Saudações! Estou em uma jornada para descobrir os poderes ocultos de um artefato misterioso. Você teria "{item}" para me oferecer?',
-    'E aí! Estou precisando de "{item}" para revelar os segredos de um objeto enigmático que encontrei em minhas aventuras. Será que você pode me ajudar?',
-    'Oi! Estou em uma missão para descobrir os poderes ocultos de um equipamento lendário. Será que você teria "{item}" para me auxiliar nessa busca?',
-    'Olá, Estou em busca de "{item}" para decifrar os mistérios de um artefato ancestral. Será que você poderia me ajudar nessa jornada?',
-    'Saudações! Estou em uma jornada para desvendar os segredos de um item lendário. Você teria "{item}" para me auxiliar nessa busca?',
-    'Ei! Estou precisando de "{item}" para revelar os poderes ocultos de um objeto que encontrei em minhas aventuras. Você pode me ajudar?',
-    'Oi! Estou em uma missão para desvendar os segredos de um equipamento misterioso. Será que você teria "{item}" para me oferecer?',
-    'Olá, Estou em busca de "{item}" para descobrir os segredos de um artefato antigo. Você teria algo que possa me ajudar?',
-    'Saudações! Estou precisando de "{item}" para decifrar os mistérios de um artefato enigmático que encontrei em minhas viagens. Será que você poderia me auxiliar?',
-    'E aí! Estou em uma jornada para revelar os poderes ocultos de um item lendário. Será que você teria "{item}" para me oferecer?',
-    'Oi! Estou em busca de "{item}" para desvendar os segredos de um objeto antigo que encontrei em minhas aventuras. Você poderia me ajudar?',
-    'Ol! Estou precisando de "{item}" para revelar os poderes ocultos de um equipamento lendário. Será que você poderia me auxiliar nessa busca?',
-    'Saudações! Estou em uma missão para descobrir os segredos de um artefato ancestral. Você teria "{item}" para me oferecer?',
-    'Ei! Estou em uma jornada para desvendar os segredos de um objeto misterioso. Será que você teria "{item}" para me ajudar?',
-    'Oi! Estou precisando de "{item}" para decifrar os mistérios de um equipamento que encontrei em minhas viagens. Você pode me ajudar?',
-    'Olá, Estou em busca de "{item}" para revelar os poderes ocultos de um artefato enigmático. Você teria algo que possa me auxiliar?',
-    'Saudações! Estou em uma jornada para descobrir os segredos de um item lendário. Será que você teria "{item}" para me oferecer?',
-    'E aí! Estou precisando de "{item}" para desvendar os segredos de um objeto antigo que encontrei em minhas viagens. Você poderia me ajudar?',
-    'Oi! Estou em uma missão para revelar os poderes ocultos de um equipamento enigmático. Será que você teria "{item}" para me auxiliar?',
-    'Ol! Estou em busca de "{item}" para decifrar os mistérios de um artefato lendário. Você teria algo que possa me ajudar?',
-    'Saudações! Estou em uma missão para desvendar os segredos de um objeto ancestral. Será que você teria "{item}" para me oferecer?',
-    'Ei! Estou em uma jornada para descobrir os poderes ocultos de um equipamento misterioso. Será que você teria "{item}" para me ajudar?',
-    'Oi! Estou precisando de "{item}" para revelar os segredos de um artefato antigo que encontrei em minhas aventuras. Você pode me ajudar?',
-    'Olá, Estou em busca de "{item}" para desvendar os segredos de um equipamento lendário. Será que você poderia me auxiliar nessa busca?',
-    'Saudações! Estou em uma jornada para revelar os poderes ocultos de um item antigo. Você teria "{item}" para me oferecer?',
-    'E aí! Estou precisando de "{item}" para decifrar os mistérios de um objeto enigmático que encontrei em minhas aventuras. Você poderia me ajudar?',
-    'Oi! Estou em uma missão para desvendar os segredos de um equipamento lendário. Será que você teria "{item}" para me auxiliar?',
-    'Ol! Estou buscando "{item}" para revelar os poderes ocultos de um artefato ancestral. Será que você poderia me ajudar?',
-    'Saudações! Estou em uma missão para descobrir os segredos de um objeto enigmático. Você teria "{item}" para me oferecer?',
-    'Ei! Estou precisando de "{item}" para desvendar os segredos de um artefato lendário. Será que você teria "{item}" para me ajudar?',
-    'Oi! Estou em uma jornada para revelar os poderes ocultos de um item misterioso. Será que você teria "{item}" para me oferecer?',
-    'Ol! Estou em busca de "{item}" para decifrar os mistérios de um equipamento antigo. Você teria algo que possa me auxiliar?',
-    'Saudações! Estou em uma jornada para desvendar os segredos de um artefato lendário. Será que você teria "{item}" para me oferecer?',
-    'E aí! Estou precisando de "{item}" para revelar os poderes ocultos de um objeto ancestral que encontrei em minhas viagens. Você pode me ajudar?',
-    'Oi! Estou em uma missão para descobrir os segredos de um equipamento misterioso. Será que você teria "{item}" para me auxiliar?',
-    'Ol! Estou buscando "{item}" para desvendar os segredos de um artefato lendário. Será que você poderia me ajudar?',
-    'Saudações! Estou em uma missão para revelar os poderes ocultos de um item antigo. Será que você teria "{item}" para me oferecer?',
-    'Ei! Estou precisando de "{item}" para decifrar os mistérios de um equipamento lendário. Será que você teria "{item}" para me ajudar?',
-    'Oi! Estou em uma jornada para desvendar os segredos de um objeto misterioso. Será que você teria "{item}" para me oferecer?',
+    'Olá, Estou em busca de "{item}" para desvendar os segredos '
+    'de um equipamento antigo. Você poderia me ajudar?',
+    'Saudações! Estou em uma jornada para descobrir os poderes '
+    'ocultos de um artefato misterioso. Você teria "{item}" para me oferecer?',
+    'E aí! Estou precisando de "{item}" para revelar os segredos '
+    'de um objeto enigmático que encontrei em minhas aventuras. '
+    'Será que você pode me ajudar?',
+    'Oi! Estou em uma missão para descobrir os poderes ocultos '
+    'de um equipamento lendário. Será que você teria "{item}" '
+    'para me auxiliar nessa busca?',
+    'Olá, Estou em busca de "{item}" para decifrar os mistérios '
+    'de um artefato ancestral. Será que você poderia me ajudar nessa jornada?',
+    'Saudações! Estou em uma jornada para desvendar os segredos '
+    'de um item lendário. Você teria "{item}" para me auxiliar nessa busca?',
+    'Ei! Estou precisando de "{item}" para revelar os poderes '
+    'ocultos de um objeto que encontrei em minhas aventuras. '
+    'Você pode me ajudar?',
+    'Oi! Estou em uma missão para desvendar os segredos de '
+    'um equipamento misterioso. Será que você teria "{item}" '
+    'para me oferecer?',
+    'Olá, Estou em busca de "{item}" para descobrir os segredos '
+    'de um artefato antigo. Você teria algo que possa me ajudar?',
+    'Saudações! Estou precisando de "{item}" para decifrar '
+    'os mistérios de um artefato enigmático que encontrei em minhas '
+    'viagens. Será que você poderia me auxiliar?',
+    'E aí! Estou em uma jornada para revelar os poderes ocultos '
+    'de um item lendário. Será que você teria "{item}" para me oferecer?',
+    'Oi! Estou em busca de "{item}" para desvendar os segredos '
+    'de um objeto antigo que encontrei em minhas aventuras. '
+    'Você poderia me ajudar?',
+    'Ol! Estou precisando de "{item}" para revelar os poderes '
+    'ocultos de um equipamento lendário. '
+    'Será que você poderia me auxiliar nessa busca?',
+    'Saudações! Estou em uma missão para descobrir os segredos '
+    'de um artefato ancestral. Você teria "{item}" para me oferecer?',
+    'Ei! Estou em uma jornada para desvendar os segredos '
+    'de um objeto misterioso. Será que você teria "{item}" para me ajudar?',
+    'Oi! Estou precisando de "{item}" para decifrar os mistérios '
+    'de um equipamento que encontrei em minhas viagens. Você pode me ajudar?',
+    'Olá, Estou em busca de "{item}" para revelar os poderes '
+    'ocultos de um artefato enigmático. '
+    'Você teria algo que possa me auxiliar?',
+    'Saudações! Estou em uma jornada para descobrir os segredos '
+    'de um item lendário. Será que você teria "{item}" para me oferecer?',
+    'E aí! Estou precisando de "{item}" para desvendar os '
+    'segredos de um objeto antigo que encontrei em minhas viagens. '
+    'Você poderia me ajudar?',
+    'Oi! Estou em uma missão para revelar os poderes ocultos '
+    'de um equipamento enigmático. Será que você teria "{item}" '
+    'para me auxiliar?',
+    'Ol! Estou em busca de "{item}" para decifrar os mistérios '
+    'de um artefato lendário. Você teria algo que possa me ajudar?',
+    'Saudações! Estou em uma missão para desvendar os segredos '
+    'de um objeto ancestral. Será que você teria "{item}" para me oferecer?',
+    'Ei! Estou em uma jornada para descobrir os poderes ocultos '
+    'de um equipamento misterioso. Será que você teria "{item}" '
+    'para me ajudar?',
+    'Oi! Estou precisando de "{item}" para revelar os segredos '
+    'de um artefato antigo que encontrei em minhas aventuras. '
+    'Você pode me ajudar?',
+    'Olá, Estou em busca de "{item}" para desvendar os segredos '
+    'de um equipamento lendário. '
+    'Será que você poderia me auxiliar nessa busca?',
+    'Saudações! Estou em uma jornada para revelar os poderes '
+    'ocultos de um item antigo. Você teria "{item}" para me oferecer?',
+    'E aí! Estou precisando de "{item}" para decifrar os '
+    'mistérios de um objeto enigmático que encontrei em minhas aventuras. '
+    'Você poderia me ajudar?',
+    'Oi! Estou em uma missão para desvendar os segredos de '
+    'um equipamento lendário. Será que você teria "{item}" para me auxiliar?',
+    'Ol! Estou buscando "{item}" para revelar os poderes '
+    'ocultos de um artefato ancestral. Será que você poderia me ajudar?',
+    'Saudações! Estou em uma missão para descobrir os segredos '
+    'de um objeto enigmático. Você teria "{item}" para me oferecer?',
+    'Ei! Estou precisando de "{item}" para desvendar os segredos '
+    'de um artefato lendário. Será que você teria "{item}" para me ajudar?',
+    'Oi! Estou em uma jornada para revelar os poderes ocultos '
+    'de um item misterioso. Será que você teria "{item}" para me oferecer?',
+    'Ol! Estou em busca de "{item}" para decifrar os mistérios '
+    'de um equipamento antigo. Você teria algo que possa me auxiliar?',
+    'Saudações! Estou em uma jornada para desvendar os segredos '
+    'de um artefato lendário. Será que você teria "{item}" para me oferecer?',
+    'E aí! Estou precisando de "{item}" para revelar os poderes '
+    'ocultos de um objeto ancestral que encontrei em minhas viagens. '
+    'Você pode me ajudar?',
+    'Oi! Estou em uma missão para descobrir os segredos de '
+    'um equipamento misterioso. Será que você teria "{item}" '
+    'para me auxiliar?',
+    'Ol! Estou buscando "{item}" para desvendar os segredos '
+    'de um artefato lendário. Será que você poderia me ajudar?',
+    'Saudações! Estou em uma missão para revelar os poderes '
+    'ocultos de um item antigo. Será que você teria "{item}" '
+    'para me oferecer?',
+    'Ei! Estou precisando de "{item}" para decifrar os mistérios '
+    'de um equipamento lendário. Será que você teria "{item}" para me ajudar?',
+    'Oi! Estou em uma jornada para desvendar os segredos '
+    'de um objeto misterioso. Será que você teria "{item}" para me oferecer?',
 ]
 REPLY_TEXT_XP_ITEM = [
-    'Olá, gostaria de adquirir "{item}" para fortalecer minhas habilidades. Você teria algum disponível?',
-    'Saudações! Estou em busca de "{item}" para aumentar meu poder. Você poderia me ajudar?',
-    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas habilidades. Você tem algum para me oferecer?',
-    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha força. Você poderia me ajudar a encontrar um?',
-    'Olá, estou em busca de "{item}" para me tornar mais poderoso. Você teria algum disponível para venda?',
-    'Saudações! Estou precisando de "{item}" para aprimorar minhas habilidades. Você poderia me indicar onde encontrar?',
-    'Ei, tudo bem? Estou em busca de "{item}" para me tornar mais forte. Você sabe onde posso encontrar um?',
-    'Oi! Estou procurando por "{item}" para aumentar meu poder. Você tem algum disponível?',
-    'Olá, gostaria de adquirir "{item}" para melhorar minhas habilidades. Você pode me ajudar a encontrar um?',
-    'Saudações! Estou em busca de "{item}" para fortalecer minhas habilidades. Você teria algum para me oferecer?',
-    'Ei, tudo bem? Estou precisando de "{item}" para me tornar mais poderoso. Você sabe onde posso encontrar um?',
-    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha força. Você poderia me ajudar a encontrar um?',
-    'Olá, estou em busca de "{item}" para aprimorar minhas habilidades. Você teria algum disponível para venda?',
-    'Saudações! Estou precisando de "{item}" para me tornar mais forte. Você tem algum disponível?',
-    'Ei, tudo bem? Estou em busca de "{item}" para melhorar minhas habilidades. Você pode me ajudar a encontrar um?',
-    'Oi! Estou procurando por "{item}" para aumentar meu poder. Você sabe onde posso encontrar um?',
-    'Olá, gostaria de adquirir "{item}" para fortalecer minhas habilidades. Você teria algum para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para me tornar mais poderoso. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou precisando de "{item}" para aprimorar minhas habilidades. Você teria algum disponível para venda?',
-    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha força. Você poderia me ajudar a encontrar um?',
-    'Olá, estou em busca de "{item}" para melhorar minhas habilidades. Você pode me ajudar a encontrar um?',
-    'Saudações! Estou precisando de "{item}" para me tornar mais forte. Você tem algum disponível?',
-    'Ei, tudo bem? Estou em busca de "{item}" para fortalecer minhas habilidades. Você sabe onde posso encontrar um?',
-    'Oi! Estou procurando por "{item}" para aumentar meu poder. Você tem algum disponível?',
-    'Olá, gostaria de adquirir "{item}" para aprimorar minhas habilidades. Você teria algum para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para me tornar mais poderoso. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas habilidades. Você pode me ajudar a encontrar um?',
-    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha força. Você poderia me ajudar a encontrar um?',
-    'Olá, estou em busca de "{item}" para fortalecer minhas habilidades. Você tem algum disponível?',
-    'Saudações! Estou precisando de "{item}" para me tornar mais forte. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou em busca de "{item}" para aprimorar minhas habilidades. Você teria algum disponível para venda?',
-    'Oi! Estou procurando por "{item}" para aumentar meu poder. Você tem algum disponível?',
-    'Olá, gostaria de adquirir "{item}" para fortalecer minhas habilidades. Você teria algum para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para me tornar mais poderoso. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas habilidades. Você pode me ajudar a encontrar um?',
-    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha força. Você poderia me ajudar a encontrar um?',
-    'Olá, estou em busca de "{item}" para aprimorar minhas habilidades. Você tem algum disponível para venda?',
-    'Saudações! Estou precisando de "{item}" para me tornar mais forte. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou em busca de "{item}" para fortalecer minhas habilidades. Você teria algum disponível para venda?',
-    'Oi! Estou procurando por "{item}" para aumentar meu poder. Você tem algum disponível?',
-    'Olá, gostaria de adquirir "{item}" para aprimorar minhas habilidades. Você teria algum para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para me tornar mais poderoso. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas habilidades. Você pode me ajudar a encontrar um?',
-    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha força. Você poderia me ajudar a encontrar um?',
-    'Olá, estou em busca de "{item}" para fortalecer minhas habilidades. Você tem algum disponível?',
-    'Saudações! Estou precisando de "{item}" para me tornar mais forte. Você sabe onde posso encontrar um?',
-    'Ei, tudo bem? Estou em busca de "{item}" para aprimorar minhas habilidades. Você teria algum disponível para venda?',
-    'Oi! Estou procurando por "{item}" para aumentar meu poder. Você tem algum disponível?',
-    'Olá, gostaria de adquirir "{item}" para aprimorar minhas habilidades. Você teria algum para me oferecer?',
-    'Saudações! Estou em busca de "{item}" para me tornar mais poderoso. Você sabe onde posso encontrar um?',
+    'Olá, gostaria de adquirir "{item}" para fortalecer minhas '
+    'habilidades. Você teria algum disponível?',
+    'Saudações! Estou em busca de "{item}" para aumentar meu '
+    'poder. Você poderia me ajudar?',
+    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas '
+    'habilidades. Você tem algum para me oferecer?',
+    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha '
+    'força. Você poderia me ajudar a encontrar um?',
+    'Olá, estou em busca de "{item}" para me tornar '
+    'mais poderoso. Você teria algum disponível para venda?',
+    'Saudações! Estou precisando de "{item}" para aprimorar minhas '
+    'habilidades. Você poderia me indicar onde encontrar?',
+    'Ei, tudo bem? Estou em busca de "{item}" para me tornar '
+    'mais forte. Você sabe onde posso encontrar um?',
+    'Oi! Estou procurando por "{item}" para aumentar meu '
+    'poder. Você tem algum disponível?',
+    'Olá, gostaria de adquirir "{item}" para melhorar minhas '
+    'habilidades. Você pode me ajudar a encontrar um?',
+    'Saudações! Estou em busca de "{item}" para fortalecer minhas '
+    'habilidades. Você teria algum para me oferecer?',
+    'Ei, tudo bem? Estou precisando de "{item}" para me tornar '
+    'mais poderoso. Você sabe onde posso encontrar um?',
+    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha '
+    'força. Você poderia me ajudar a encontrar um?',
+    'Olá, estou em busca de "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum disponível para venda?',
+    'Saudações! Estou precisando de "{item}" para me tornar '
+    'mais forte. Você tem algum disponível?',
+    'Ei, tudo bem? Estou em busca de "{item}" para melhorar minhas '
+    'habilidades. Você pode me ajudar a encontrar um?',
+    'Oi! Estou procurando por "{item}" para aumentar meu '
+    'poder. Você sabe onde posso encontrar um?',
+    'Olá, gostaria de adquirir "{item}" para fortalecer minhas '
+    'habilidades. Você teria algum para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para me tornar '
+    'mais poderoso. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou precisando de "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum disponível para venda?',
+    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha '
+    'força. Você poderia me ajudar a encontrar um?',
+    'Olá, estou em busca de "{item}" para melhorar minhas '
+    'habilidades. Você pode me ajudar a encontrar um?',
+    'Saudações! Estou precisando de "{item}" para me tornar '
+    'mais forte. Você tem algum disponível?',
+    'Ei, tudo bem? Estou em busca de "{item}" para fortalecer minhas '
+    'habilidades. Você sabe onde posso encontrar um?',
+    'Oi! Estou procurando por "{item}" para aumentar meu '
+    'poder. Você tem algum disponível?',
+    'Olá, gostaria de adquirir "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para me tornar '
+    'mais poderoso. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas '
+    'habilidades. Você pode me ajudar a encontrar um?',
+    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha '
+    'força. Você poderia me ajudar a encontrar um?',
+    'Olá, estou em busca de "{item}" para fortalecer minhas '
+    'habilidades. Você tem algum disponível?',
+    'Saudações! Estou precisando de "{item}" para me tornar '
+    'mais forte. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou em busca de "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum disponível para venda?',
+    'Oi! Estou procurando por "{item}" para aumentar meu '
+    'poder. Você tem algum disponível?',
+    'Olá, gostaria de adquirir "{item}" para fortalecer minhas '
+    'habilidades. Você teria algum para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para me tornar '
+    'mais poderoso. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas '
+    'habilidades. Você pode me ajudar a encontrar um?',
+    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha '
+    'força. Você poderia me ajudar a encontrar um?',
+    'Olá, estou em busca de "{item}" para aprimorar minhas '
+    'habilidades. Você tem algum disponível para venda?',
+    'Saudações! Estou precisando de "{item}" para me tornar '
+    'mais forte. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou em busca de "{item}" para fortalecer minhas '
+    'habilidades. Você teria algum disponível para venda?',
+    'Oi! Estou procurando por "{item}" para aumentar meu '
+    'poder. Você tem algum disponível?',
+    'Olá, gostaria de adquirir "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para me tornar '
+    'mais poderoso. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou precisando de "{item}" para melhorar minhas '
+    'habilidades. Você pode me ajudar a encontrar um?',
+    'Oi! Estou em uma jornada em busca de "{item}" para aumentar minha '
+    'força. Você poderia me ajudar a encontrar um?',
+    'Olá, estou em busca de "{item}" para fortalecer minhas '
+    'habilidades. Você tem algum disponível?',
+    'Saudações! Estou precisando de "{item}" para me tornar '
+    'mais forte. Você sabe onde posso encontrar um?',
+    'Ei, tudo bem? Estou em busca de "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum disponível para venda?',
+    'Oi! Estou procurando por "{item}" para aumentar meu '
+    'poder. Você tem algum disponível?',
+    'Olá, gostaria de adquirir "{item}" para aprimorar minhas '
+    'habilidades. Você teria algum para me oferecer?',
+    'Saudações! Estou em busca de "{item}" para me tornar '
+    'mais poderoso. Você sabe onde posso encontrar um?',
 ]
 REPLY_TEXT_TROCADO_ITEM = [
-    'Saudações! Preciso urgentemente de "{item}" para uma necessidade imediata. Você poderia me ajudar?',
-    'Olá, tudo bem? Estou passando por uma situação difícil e preciso de "{item}" para resolver alguns problemas. Você teria para me ajudar?',
-    'Ei, como vai? Estou em uma situação complicada e preciso desesperadamente de "{item}" para me ajudar. Você pode me ajudar com isso?',
-    'Oi! Estou enfrentando alguns contratempos e preciso de "{item}" para lidar com isso. Você poderia me ajudar?',
-    'Olá, espero que esteja bem. Estou precisando de "{item}" para resolver uma emergência. Você teria algum para me dar?',
-    'Saudações! Estou em uma situação complicada e preciso de "{item}" para superar isso. Você poderia me ajudar?',
-    'Ei, tudo bem por aí? Estou passando por dificuldades financeiras e preciso de "{item}" para me ajudar a sair dessa. Você pode me ajudar?',
-    'Oi! Estou precisando de "{item}" para resolver alguns problemas urgentes. Você teria algum para me dar?',
-    'Olá, espero não incomodar, mas estou precisando de "{item}" para enfrentar algumas dificuldades. Você poderia me ajudar com isso?',
-    'Saudações! Estou passando por uma situação complicada e preciso de "{item}" para superar essa fase difícil. Você teria para me ajudar?',
-    'Ei, como vai? Estou enfrentando alguns problemas financeiros e preciso de "{item}" para me ajudar. Você pode me dar?',
-    'Oi! Espero que esteja tudo bem. Estou precisando de "{item}" para resolver uma questão urgente. Você teria algum para me dar?',
-    'Olá, tudo bem por aí? Estou em uma situação difícil e preciso de "{item}" para me ajudar a sair dessa. Você poderia me ajudar?',
-    'Saudações! Estou enfrentando alguns contratempos e preciso de "{item}" para lidar com isso. Você teria para me dar?',
-    'Ei, espero não incomodar, mas estou precisando de "{item}" para resolver algumas questões urgentes. Você pode me ajudar?',
-    'Oi! Estou passando por dificuldades financeiras e preciso de "{item}" para me ajudar a sair dessa situação. Você teria para me dar?',
-    'Olá, como vai? Estou precisando de "{item}" para resolver alguns problemas imediatos. Você poderia me ajudar com isso?',
-    'Saudações! Estou em uma situação complicada e preciso de "{item}" para superar esses desafios. Você teria para me ajudar?',
-    'Ei, tudo bem por aí? Estou enfrentando alguns problemas financeiros e preciso de "{item}" para me ajudar a resolver isso. Você pode me dar?',
-    'Oi! Espero não incomodar, mas estou precisando de "{item}" para enfrentar algumas dificuldades. Você poderia me ajudar?',
-    'Olá, como vai? Estou precisando de "{item}" para resolver algumas questões urgentes. Você teria para me dar?',
-    'Saudações! Estou passando por uma situação difícil e preciso de "{item}" para lidar com isso. Você pode me ajudar?',
-    'Ei, espero não incomodar, mas estou precisando de "{item}" para enfrentar algumas dificuldades financeiras. Você poderia me dar?',
-    'Oi! Estou enfrentando alguns contratempos e preciso de "{item}" para resolver isso. Você poderia me ajudar?',
-    'Olá, tudo bem? Estou precisando de "{item}" para me ajudar a sair de uma situação complicada. Você teria para me dar?',
-    'Saudações! Estou em uma situação difícil e preciso de "{item}" para superar esses desafios. Você poderia me ajudar?',
-    'Ei, como vai? Estou passando por dificuldades financeiras e preciso de "{item}" para me ajudar a resolver isso. Você pode me dar?',
-    'Oi! Espero não incomodar, mas estou precisando de "{item}" para enfrentar alguns problemas urgentes. Você poderia me ajudar?',
-    'Olá, tudo bem por aí? Estou precisando de "{item}" para resolver algumas questões imediatas. Você teria para me dar?',
-    'Saudações! Estou enfrentando alguns problemas financeiros e preciso de "{item}" para lidar com isso. Você poderia me ajudar?',
-    'Ei, espero não incomodar, mas estou precisando de "{item}" para me ajudar a superar algumas dificuldades. Você teria para me dar?',
-    'Oi! Estou passando por uma situação complicada e preciso de "{item}" para resolver isso. Você poderia me ajudar?',
-    'Olá, como vai? Estou precisando de "{item}" para enfrentar alguns problemas financeiros. Você teria para me dar?',
-    'Saudações! Estou em uma situação difícil e preciso de "{item}" para me ajudar a sair dessa. Você poderia me ajudar?',
-    'Ei, tudo bem? Estou enfrentando algumas dificuldades financeiras e preciso de "{item}" para lidar com isso. Você pode me dar?',
-    'Oi! Espero não incomodar, mas estou precisando de "{item}" para resolver algumas questões urgentes. Você teria para me dar?',
-    'Olá, tudo bem por aí? Estou precisando de "{item}" para enfrentar alguns problemas imediatos. Você poderia me ajudar?',
-    'Saudações! Estou passando por uma situação complicada e preciso de "{item}" para superar isso. Você poderia me ajudar?',
-    'Ei, como vai? Estou precisando de "{item}" para lidar com alguns problemas financeiros. Você teria para me dar?',
-    'Oi! Estou enfrentando algumas dificuldades e preciso de "{item}" para me ajudar a sair dessa situação. Você poderia me ajudar?',
-    'Olá, espero não incomodar, mas estou precisando de "{item}" para resolver algumas questões financeiras urgentes. Você teria para me dar?',
-    'Saudações! Estou em uma situação difícil e preciso de "{item}" para enfrentar isso. Você teria para me dar?',
-    'Ei, tudo bem? Estou precisando de "{item}" para resolver alguns problemas imediatos. Você poderia me ajudar?',
-    'Oi! Estou passando por algumas dificuldades financeiras e preciso de "{item}" para me ajudar a superar isso. Você pode me dar?',
-    'Olá, como vai? Estou enfrentando alguns contratempos e preciso de "{item}" para lidar com isso. Você teria para me dar?',
-    'Saudações! Estou precisando de "{item}" para resolver algumas questões urgentes. Você poderia me ajudar?',
-    'Ei, espero não incomodar, mas estou precisando de "{item}" para enfrentar algumas dificuldades. Você poderia me ajudar?',
-    'Oi! Estou passando por uma situação complicada e preciso de "{item}" para lidar com isso. Você teria para me ajudar?',
-    'Olá, tudo bem por aí? Estou precisando de "{item}" para superar alguns problemas financeiros. Você poderia me dar?',
-    'Saudações! Estou enfrentando algumas dificuldades e preciso de "{item}" para me ajudar a sair dessa. Você teria para me dar?',
+    'Saudações! Preciso urgentemente de "{item}" '
+    'para uma necessidade imediata. Você poderia me ajudar?',
+    'Olá, tudo bem? Estou passando por uma situação difícil e preciso de '
+    '"{item}" para resolver alguns problemas. Você teria para me ajudar?',
+    'Ei, como vai? Estou em uma situação complicada e preciso '
+    'desesperadamente de "{item}" para me ajudar. '
+    'Você pode me ajudar com isso?',
+    'Oi! Estou enfrentando alguns contratempos e preciso de "{item}" '
+    'para lidar com isso. Você poderia me ajudar?',
+    'Olá, espero que esteja bem. Estou precisando de "{item}" '
+    'para resolver uma emergência. Você teria algum para me dar?',
+    'Saudações! Estou em uma situação complicada e preciso de "{item}" '
+    'para superar isso. Você poderia me ajudar?',
+    'Ei, tudo bem por aí? Estou passando por dificuldades financeiras e '
+    'preciso de "{item}" para me ajudar a sair dessa. Você pode me ajudar?',
+    'Oi! Estou precisando de "{item}" para resolver alguns problemas '
+    'urgentes. Você teria algum para me dar?',
+    'Olá, espero não incomodar, mas estou precisando de "{item}" '
+    'para enfrentar algumas dificuldades. Você poderia me ajudar com isso?',
+    'Saudações! Estou passando por uma situação complicada e preciso de '
+    '"{item}" para superar essa fase difícil. Você teria para me ajudar?',
+    'Ei, como vai? Estou enfrentando alguns problemas financeiros e '
+    'preciso de "{item}" para me ajudar. Você pode me dar?',
+    'Oi! Espero que esteja tudo bem. Estou precisando de "{item}" '
+    'para resolver uma questão urgente. Você teria algum para me dar?',
+    'Olá, tudo bem por aí? Estou em uma situação difícil e preciso de '
+    '"{item}" para me ajudar a sair dessa. Você poderia me ajudar?',
+    'Saudações! Estou enfrentando alguns contratempos e preciso de '
+    '"{item}" para lidar com isso. Você teria para me dar?',
+    'Ei, espero não incomodar, mas estou precisando de "{item}" '
+    'para resolver algumas questões urgentes. Você pode me ajudar?',
+    'Oi! Estou passando por dificuldades financeiras e preciso de '
+    '"{item}" para me ajudar a sair dessa situação. Você teria para me dar?',
+    'Olá, como vai? Estou precisando de "{item}" para resolver '
+    'alguns problemas imediatos. Você poderia me ajudar com isso?',
+    'Saudações! Estou em uma situação complicada e preciso de '
+    '"{item}" para superar esses desafios. Você teria para me ajudar?',
+    'Ei, tudo bem por aí? Estou enfrentando alguns problemas '
+    'financeiros e preciso de "{item}" para me ajudar a resolver isso. '
+    'Você pode me dar?',
+    'Oi! Espero não incomodar, mas estou precisando de "{item}" '
+    'para enfrentar algumas dificuldades. Você poderia me ajudar?',
+    'Olá, como vai? Estou precisando de "{item}" para resolver '
+    'algumas questões urgentes. Você teria para me dar?',
+    'Saudações! Estou passando por uma situação difícil e preciso de '
+    '"{item}" para lidar com isso. Você pode me ajudar?',
+    'Ei, espero não incomodar, mas estou precisando de "{item}" '
+    'para enfrentar algumas dificuldades financeiras. Você poderia me dar?',
+    'Oi! Estou enfrentando alguns contratempos e preciso de "{item}" '
+    'para resolver isso. Você poderia me ajudar?',
+    'Olá, tudo bem? Estou precisando de "{item}" para me ajudar a sair '
+    'de uma situação complicada. Você teria para me dar?',
+    'Saudações! Estou em uma situação difícil e preciso de "{item}" '
+    'para superar esses desafios. Você poderia me ajudar?',
+    'Ei, como vai? Estou passando por dificuldades financeiras e '
+    'preciso de "{item}" para me ajudar a resolver isso. Você pode me dar?',
+    'Oi! Espero não incomodar, mas estou precisando de "{item}" '
+    'para enfrentar alguns problemas urgentes. Você poderia me ajudar?',
+    'Olá, tudo bem por aí? Estou precisando de "{item}" para resolver '
+    'algumas questões imediatas. Você teria para me dar?',
+    'Saudações! Estou enfrentando alguns problemas financeiros e preciso de '
+    '"{item}" para lidar com isso. Você poderia me ajudar?',
+    'Ei, espero não incomodar, mas estou precisando de "{item}" para me '
+    'ajudar a superar algumas dificuldades. Você teria para me dar?',
+    'Oi! Estou passando por uma situação complicada e preciso de "{item}" '
+    'para resolver isso. Você poderia me ajudar?',
+    'Olá, como vai? Estou precisando de "{item}" para enfrentar alguns '
+    'problemas financeiros. Você teria para me dar?',
+    'Saudações! Estou em uma situação difícil e preciso de "{item}" '
+    'para me ajudar a sair dessa. Você poderia me ajudar?',
+    'Ei, tudo bem? Estou enfrentando algumas dificuldades financeiras e '
+    'preciso de "{item}" para lidar com isso. Você pode me dar?',
+    'Oi! Espero não incomodar, mas estou precisando de "{item}" para '
+    'resolver algumas questões urgentes. Você teria para me dar?',
+    'Olá, tudo bem por aí? Estou precisando de "{item}" para enfrentar '
+    'alguns problemas imediatos. Você poderia me ajudar?',
+    'Saudações! Estou passando por uma situação complicada e preciso de '
+    '"{item}" para superar isso. Você poderia me ajudar?',
+    'Ei, como vai? Estou precisando de "{item}" para lidar com alguns '
+    'problemas financeiros. Você teria para me dar?',
+    'Oi! Estou enfrentando algumas dificuldades e preciso de "{item}" '
+    'para me ajudar a sair dessa situação. Você poderia me ajudar?',
+    'Olá, espero não incomodar, mas estou precisando de "{item}" para '
+    'resolver algumas questões financeiras urgentes. Você teria para me dar?',
+    'Saudações! Estou em uma situação difícil e preciso de "{item}" '
+    'para enfrentar isso. Você teria para me dar?',
+    'Ei, tudo bem? Estou precisando de "{item}" para resolver alguns '
+    'problemas imediatos. Você poderia me ajudar?',
+    'Oi! Estou passando por algumas dificuldades financeiras e preciso de '
+    '"{item}" para me ajudar a superar isso. Você pode me dar?',
+    'Olá, como vai? Estou enfrentando alguns contratempos e preciso de '
+    '"{item}" para lidar com isso. Você teria para me dar?',
+    'Saudações! Estou precisando de "{item}" para resolver algumas '
+    'questões urgentes. Você poderia me ajudar?',
+    'Ei, espero não incomodar, mas estou precisando de "{item}" '
+    'para enfrentar algumas dificuldades. Você poderia me ajudar?',
+    'Oi! Estou passando por uma situação complicada e preciso de "{item}" '
+    'para lidar com isso. Você teria para me ajudar?',
+    'Olá, tudo bem por aí? Estou precisando de "{item}" para superar '
+    'alguns problemas financeiros. Você poderia me dar?',
+    'Saudações! Estou enfrentando algumas dificuldades e preciso de '
+    '"{item}" para me ajudar a sair dessa. Você teria para me dar?',
 ]
 REPLY_TEXT_GEMSTONE_ITEM = [
-    'Olá! Estou precisando de "{item}" especial para completar um feitiço importante. Você poderia me ajudar a encontrar?',
-    'Ei, como vai? Estou planejando ir a uma festa e gostaria de usar "{item}" elegante. Você teria algum para me dar?',
-    'Oi! Estou buscando "{item}" específica para complementar um feitiço poderoso que estou preparando. Você sabe onde posso encontrar?',
-    'Olá, tudo bem? Preciso de "{item}" única e brilhante para uma ocasião especial. Você pode me ajudar a encontrar?',
-    'Saudações! Estou em busca de "{item}" mágica para amplificar os meus poderes. Você teria algum para me dar?',
-    'Ei, espero não incomodar, mas estou à procura de "{item}" exótica para um ritual importante. Você poderia me ajudar a encontrar?',
-    'Oi! Estou planejando um evento e gostaria de usar "{item}" deslumbrante. Você teria algum para me dar?',
-    'Olá, tudo bem por aí? Estou precisando de "{item}" encantada para proteção. Você saberia onde posso encontrar?',
-    'Saudações! Estou em busca de "{item}" rara e poderosa para um ritual antigo. Você teria algum para me dar?',
-    'Ei, como vai? Estou procurando por "{item}" especial para presentear alguém querido. Você saberia onde posso encontrar?',
-    'Oi! Estou precisando de "{item}" mágica para aumentar a minha energia vital. Você poderia me ajudar a encontrar?',
-    'Olá, espero não incomodar, mas estou procurando por "{item}" única para uma cerimônia importante. Você teria algum para me dar?',
-    'Saudações! Estou em busca de "{item}" preciosa para complementar o meu traje para uma festa. Você sabe onde posso encontrar?',
-    'Ei, tudo bem? Estou à procura de "{item}" mística para me proteger de energias negativas. Você poderia me ajudar a encontrar?',
-    'Oi! Estou planejando uma viagem e gostaria de levar "{item}" especial como amuleto da sorte. Você teria algum para me dar?',
-    'Olá, como vai? Estou precisando de "{item}" encantada para canalizar os meus poderes mágicos. Você saberia onde posso encontrar?',
-    'Saudações! Estou em busca de "{item}" ancestral para completar um feitiço antigo. Você teria algum para me dar?',
-    'Ei, espero não incomodar, mas estou procurando por "{item}" exótica para um evento especial. Você poderia me ajudar a encontrar?',
-    'Oi! Estou precisando de "{item}" mágica para me ajudar em um desafio perigoso. Você teria algum para me dar?',
-    'Olá, tudo bem por aí? Estou em busca de "{item}" lendária para uma cerimônia sagrada. Você saberia onde posso encontrar?',
-    'Saudações! Estou procurando por "{item}" única e poderosa para canalizar os meus poderes durante um ritual. Você poderia me ajudar a encontrar?',
-    'Ei, como vai? Estou planejando uma festa e gostaria de usar "{item}" impressionante. Você teria algum para me dar?',
-    'Oi! Estou precisando de "{item}" mágica para me proteger de influências negativas. Você saberia onde posso encontrar?',
-    'Olá, espero não incomodar, mas estou em busca de "{item}" especial para presentear um amigo querido. Você poderia me ajudar a encontrar?',
-    'Saudações! Estou procurando por "{item}" rara e valiosa para um evento importante. Você teria algum para me dar?',
-    'Ei, tudo bem? Estou precisando de "{item}" encantada para me ajudar em uma jornada perigosa. Você saberia onde posso encontrar?',
-    'Oi! Estou em busca de "{item}" mística para aumentar os meus poderes durante um ritual. Você poderia me ajudar a encontrar?',
-    'Olá, como vai? Estou procurando por "{item}" especial para complementar o meu traje em uma cerimônia importante. Você saberia onde posso encontrar?',
-    'Saudações! Estou planejando uma viagem e gostaria de levar "{item}" sagrada como proteção. Você teria algum para me dar?',
-    'Ei, espero não incomodar, mas estou precisando de "{item}" lendária para enfrentar um desafio épico. Você poderia me ajudar a encontrar?',
-    'Oi! Estou procurando por "{item}" ancestral para me conectar com as energias naturais. Você saberia onde posso encontrar?',
-    'Olá, tudo bem por aí? Estou em busca de "{item}" encantada para me proteger durante uma jornada perigosa. Você poderia me ajudar a encontrar?',
-    'Saudações! Estou planejando uma festa e gostaria de usar "{item}" única e exuberante. Você teria algum para me dar?',
-    'Ei, como vai? Estou precisando de "{item}" mágica para me ajudar em um desafio extraordinário. Você saberia onde posso encontrar?',
-    'Oi! Estou procurando por "{item}" especial para presentear alguém importante. Você poderia me ajudar a encontrar?',
-    'Olá, espero não incomodar, mas estou precisando de "{item}" lendária para enfrentar uma ameaça iminente. Você teria algum para me dar?',
-    'Saudações! Estou em busca de "{item}" sagrada para uma cerimônia ancestral. Você saberia onde posso encontrar?',
-    'Ei, tudo bem? Estou procurando por "{item}" única e poderosa para complementar o meu arsenal mágico. Você poderia me ajudar a encontrar?',
-    'Oi! Estou precisando de "{item}" mística para me conectar com os poderes da natureza. Você saberia onde posso encontrar?',
-    'Olá, como vai? Estou em busca de "{item}" encantada para me proteger durante uma jornada épica. Você poderia me ajudar a encontrar?',
+    'Olá! Estou precisando de "{item}" especial para completar '
+    'um feitiço importante. Você poderia me ajudar a encontrar?',
+    'Ei, como vai? Estou planejando ir a uma festa e gostaria de '
+    'usar "{item}" elegante. Você teria algum para me dar?',
+    'Oi! Estou buscando "{item}" específica para complementar um '
+    'feitiço poderoso que estou preparando. Você sabe onde posso encontrar?',
+    'Olá, tudo bem? Preciso de "{item}" única e brilhante para uma '
+    'ocasião especial. Você pode me ajudar a encontrar?',
+    'Saudações! Estou em busca de "{item}" mágica para amplificar os '
+    'meus poderes. Você teria algum para me dar?',
+    'Ei, espero não incomodar, mas estou à procura de "{item}" exótica '
+    'para um ritual importante. Você poderia me ajudar a encontrar?',
+    'Oi! Estou planejando um evento e gostaria de usar "{item}" '
+    'deslumbrante. Você teria algum para me dar?',
+    'Olá, tudo bem por aí? Estou precisando de "{item}" '
+    'encantada para proteção. Você saberia onde posso encontrar?',
+    'Saudações! Estou em busca de "{item}" '
+    'rara e poderosa para um ritual antigo. Você teria algum para me dar?',
+    'Ei, como vai? Estou procurando por "{item}" '
+    'especial para presentear alguém querido. '
+    'Você saberia onde posso encontrar?',
+    'Oi! Estou precisando de "{item}" mágica para aumentar a '
+    'minha energia vital. Você poderia me ajudar a encontrar?',
+    'Olá, espero não incomodar, mas estou procurando por "{item}" '
+    'única para uma cerimônia importante. Você teria algum para me dar?',
+    'Saudações! Estou em busca de "{item}" preciosa para complementar '
+    'o meu traje para uma festa. Você sabe onde posso encontrar?',
+    'Ei, tudo bem? Estou à procura de "{item}" mística para me proteger '
+    'de energias negativas. Você poderia me ajudar a encontrar?',
+    'Oi! Estou planejando uma viagem e gostaria de levar "{item}" '
+    'especial como amuleto da sorte. Você teria algum para me dar?',
+    'Olá, como vai? Estou precisando de "{item}" encantada para canalizar '
+    'os meus poderes mágicos. Você saberia onde posso encontrar?',
+    'Saudações! Estou em busca de "{item}" ancestral para completar um '
+    'feitiço antigo. Você teria algum para me dar?',
+    'Ei, espero não incomodar, mas estou procurando por "{item}" exótica '
+    'para um evento especial. Você poderia me ajudar a encontrar?',
+    'Oi! Estou precisando de "{item}" mágica para me ajudar em um desafio '
+    'perigoso. Você teria algum para me dar?',
+    'Olá, tudo bem por aí? Estou em busca de "{item}" lendária para uma '
+    'cerimônia sagrada. Você saberia onde posso encontrar?',
+    'Saudações! Estou procurando por "{item}" única e poderosa para '
+    'canalizar os meus poderes durante um ritual. Você poderia me '
+    'ajudar a encontrar?',
+    'Ei, como vai? Estou planejando uma festa e gostaria de usar '
+    '"{item}" impressionante. Você teria algum para me dar?',
+    'Oi! Estou precisando de "{item}" mágica para me proteger de '
+    'influências negativas. Você saberia onde posso encontrar?',
+    'Olá, espero não incomodar, mas estou em busca de "{item}" '
+    'especial para presentear um amigo querido. Você poderia me ajudar '
+    'a encontrar?',
+    'Saudações! Estou procurando por "{item}" rara e valiosa para um '
+    'evento importante. Você teria algum para me dar?',
+    'Ei, tudo bem? Estou precisando de "{item}" encantada para me '
+    'ajudar em uma jornada perigosa. Você saberia onde posso encontrar?',
+    'Oi! Estou em busca de "{item}" mística para aumentar os meus '
+    'poderes durante um ritual. Você poderia me ajudar a encontrar?',
+    'Olá, como vai? Estou procurando por "{item}" especial para '
+    'complementar o meu traje em uma cerimônia importante. '
+    'Você saberia onde posso encontrar?',
+    'Saudações! Estou planejando uma viagem e gostaria de levar '
+    '"{item}" sagrada como proteção. Você teria algum para me dar?',
+    'Ei, espero não incomodar, mas estou precisando de "{item}" lendária '
+    'para enfrentar um desafio épico. Você poderia me ajudar a encontrar?',
+    'Oi! Estou procurando por "{item}" ancestral para me conectar '
+    'com as energias naturais. Você saberia onde posso encontrar?',
+    'Olá, tudo bem por aí? Estou em busca de "{item}" encantada para '
+    'me proteger durante uma jornada perigosa. Você '
+    'poderia me ajudar a encontrar?',
+    'Saudações! Estou planejando uma festa e gostaria '
+    'de usar "{item}" única e exuberante. Você teria algum para me dar?',
+    'Ei, como vai? Estou precisando de "{item}" '
+    'mágica para me ajudar em um desafio extraordinário. '
+    'Você saberia onde posso encontrar?',
+    'Oi! Estou procurando por "{item}" especial para '
+    'presentear alguém importante. Você poderia me ajudar a encontrar?',
+    'Olá, espero não incomodar, mas estou precisando '
+    'de "{item}" lendária para enfrentar uma ameaça iminente. '
+    'Você teria algum para me dar?',
+    'Saudações! Estou em busca de "{item}" sagrada '
+    'para uma cerimônia ancestral. Você saberia onde posso encontrar?',
+    'Ei, tudo bem? Estou procurando por "{item}" '
+    'única e poderosa para complementar o meu arsenal mágico. '
+    'Você poderia me ajudar a encontrar?',
+    'Oi! Estou precisando de "{item}" mística para me '
+    'conectar com os poderes da natureza. Você saberia onde posso encontrar?',
+    'Olá, como vai? Estou em busca de "{item}" '
+    'encantada para me proteger durante uma jornada épica. '
+    'Você poderia me ajudar a encontrar?',
 ]
 
 REPLY_TEXT_THANKS = [
-    'Muito obrigado por esse presente incrível, vai me ajudar muito em minhas jornadas!',
+    'Muito obrigado por esse presente incrível, '
+    'vai me ajudar muito em minhas jornadas!',
     'Agradeço de coração por essa ajuda, será muito útil em minhas aventuras.',
-    'Que generosidade a sua em me presentear com essa contribuição tão útil, não sei como lhe agradecer o suficiente!',
-    'Estou verdadeiramente grato por esse presente, você não faz ideia de como isso vai facilitar minha vida.',
-    'Não tenho palavras para expressar minha gratidão por essa ajuda, é realmente um gesto muito gentil da sua parte.',
-    'Obrigado do fundo do meu coração por me presentear com essa ajuda tão necessário.',
-    'Que belo presente! Muito obrigado por pensar em mim e me dar algo tão valioso.',
-    'Estou emocionado com sua generosidade, obrigado por me dar essa ajuda tão especial.',
-    'Não tenho como retribuir esse gesto tão gentil, mas saiba que estou imensamente grato por essa ajuda.',
-    'Receber essa ajuda foi uma surpresa maravilhosa, obrigado por sua bondade.',
-    'Sua generosidade não tem limites, obrigado por me presentear com essa ajuda tão útil.',
-    'Agradeço de todo coração por essa ajuda incrível, você é realmente um amigo maravilhoso.',
-    'Fiquei sem palavras ao receber esse presente, obrigado por sua amizade e generosidade.',
-    'Estou verdadeiramente emocionado com esse gesto tão gentil, obrigado por essa ajuda incrível.',
-    'Muito obrigado por esse presente maravilhoso, você realmente sabe como alegrar o meu dia.',
-    'Que surpresa agradável receber essa ajuda, estou imensamente grato por sua generosidade.',
-    'Estou muito feliz com esse presente, obrigado por pensar em mim e me dar algo tão especial.',
-    'Receber essa ajuda foi uma verdadeira bênção, obrigado por sua amizade e consideração.',
-    'Sua bondade não passa despercebida, obrigado por me presentear com essa ajuda tão útil.',
-    'Estou encantado com esse presente, obrigado por sua generosidade e amizade.',
-    'Muito obrigado por essa ajuda incrível, você é realmente uma pessoa especial em minha vida.',
+    'Que generosidade a sua em me presentear com '
+    'essa contribuição tão útil, não sei como lhe agradecer o suficiente!',
+    'Estou verdadeiramente grato por esse '
+    'presente, você não faz ideia de como isso vai facilitar minha vida.',
+    'Não tenho palavras para expressar minha '
+    'gratidão por essa ajuda, é realmente um gesto muito gentil da sua parte.',
+    'Obrigado do fundo do meu coração por me '
+    'presentear com essa ajuda tão necessário.',
+    'Que belo presente! Muito obrigado por '
+    'pensar em mim e me dar algo tão valioso.',
+    'Estou emocionado com sua generosidade, '
+    'obrigado por me dar essa ajuda tão especial.',
+    'Não tenho como retribuir esse gesto tão '
+    'gentil, mas saiba que estou imensamente grato por essa ajuda.',
+    'Receber essa ajuda foi uma surpresa '
+    'maravilhosa, obrigado por sua bondade.',
+    'Sua generosidade não tem limites, obrigado '
+    'por me presentear com essa ajuda tão útil.',
+    'Agradeço de todo coração por essa ajuda '
+    'incrível, você é realmente um amigo maravilhoso.',
+    'Fiquei sem palavras ao receber esse '
+    'presente, obrigado por sua amizade e generosidade.',
+    'Estou verdadeiramente emocionado com esse '
+    'gesto tão gentil, obrigado por essa ajuda incrível.',
+    'Muito obrigado por esse presente '
+    'maravilhoso, você realmente sabe como alegrar o meu dia.',
+    'Que surpresa agradável receber essa ajuda, '
+    'estou imensamente grato por sua generosidade.',
+    'Estou muito feliz com esse presente, '
+    'obrigado por pensar em mim e me dar algo tão especial.',
+    'Receber essa ajuda foi uma verdadeira '
+    'bênção, obrigado por sua amizade e consideração.',
+    'Sua bondade não passa despercebida, '
+    'obrigado por me presentear com essa ajuda tão útil.',
+    'Estou encantado com esse presente, obrigado '
+    'por sua generosidade e amizade.',
+    'Muito obrigado por essa ajuda incrível, '
+    'você é realmente uma pessoa especial em minha vida.',
     'Que gesto gentil! Agradeço muito por me dar essa ajuda tão valiosa.',
-    'Estou verdadeiramente tocado com sua generosidade, obrigado por me presentear com essa ajuda tão útil.',
-    'Receber essa ajuda foi uma surpresa maravilhosa, obrigado por sua amizade e apoio.',
-    'Estou sem palavras para expressar minha gratidão por esse presente incrível, obrigado do fundo do meu coração.',
-    'Que alegria receber essa ajuda tão especial, obrigado por sua generosidade e consideração.',
-    'Sua amizade significa muito para mim, obrigado por me presentear com essa ajuda maravilhosa.',
-    'Estou verdadeiramente emocionado com esse gesto gentil, obrigado por me dar essa ajuda incrível.',
-    'Que surpresa agradável receber esse presente, obrigado por sua bondade e generosidade.',
-    'Estou muito grato por essa ajuda, obrigado por sua amizade e apoio contínuo.',
-    'Sua generosidade me comove, obrigado por me presentear com essa ajuda tão útil.',
-    'Fiquei sem palavras ao receber esse presente, obrigado por sua amizade e apoio inabalável.',
-    'Estou verdadeiramente tocado com esse gesto gentil, obrigado por me dar essa ajuda incrível.',
+    'Estou verdadeiramente tocado com sua '
+    'generosidade, obrigado por me presentear com essa ajuda tão útil.',
+    'Receber essa ajuda foi uma surpresa '
+    'maravilhosa, obrigado por sua amizade e apoio.',
+    'Estou sem palavras para expressar minha '
+    'gratidão por esse presente incrível, obrigado do fundo do meu coração.',
+    'Que alegria receber essa ajuda tão especial'
+    ', obrigado por sua generosidade e consideração.',
+    'Sua amizade significa muito para mim, '
+    'obrigado por me presentear com essa ajuda maravilhosa.',
+    'Estou verdadeiramente emocionado com esse '
+    'gesto gentil, obrigado por me dar essa ajuda incrível.',
+    'Que surpresa agradável receber esse '
+    'presente, obrigado por sua bondade e generosidade.',
+    'Estou muito grato por essa ajuda, obrigado '
+    'por sua amizade e apoio contínuo.',
+    'Sua generosidade me comove, obrigado por me '
+    'presentear com essa ajuda tão útil.',
+    'Fiquei sem palavras ao receber esse '
+    'presente, obrigado por sua amizade e apoio inabalável.',
+    'Estou verdadeiramente tocado com esse gesto '
+    'gentil, obrigado por me dar essa ajuda incrível.',
     'Que belo presente! Agradeço muito por sua generosidade e amizade.',
-    'Estou muito feliz com esse presente, obrigado por sua amizade e apoio contínuo.',
-    'Muito obrigado por essa ajuda maravilhosa, você realmente alegrou o meu dia.',
-    'Que gesto gentil! Agradeço muito por me presentear com essa ajuda tão útil.',
-    'Estou encantado com esse presente, obrigado por sua generosidade e apoio.',
-    'Receber essa ajuda foi uma verdadeira bênção, obrigado por sua amizade e consideração.',
-    'Sua bondade não passa despercebida, obrigado por me dar essa ajuda tão valiosa.',
-    'Estou verdadeiramente emocionado com esse gesto gentil, obrigado por me presentear com essa ajuda incrível.',
-    'Que surpresa agradável receber esse presente, obrigado por sua bondade e generosidade.',
-    'Estou muito grato por essa ajuda, obrigado por sua amizade e apoio contínuo.',
-    'Sua generosidade me comove, obrigado por me presentear com essa ajuda tão útil.',
-    'Fiquei sem palavras ao receber esse presente, obrigado por sua amizade e apoio inabalável.',
-    'Estou verdadeiramente tocado com esse gesto gentil, obrigado por me dar essa ajuda incrível.',
+    'Estou muito feliz com esse presente, '
+    'obrigado por sua amizade e apoio contínuo.',
+    'Muito obrigado por essa ajuda maravilhosa, '
+    'você realmente alegrou o meu dia.',
+    'Que gesto gentil! Agradeço muito por me '
+    'presentear com essa ajuda tão útil.',
+    'Estou encantado com esse presente, obrigado '
+    'por sua generosidade e apoio.',
+    'Receber essa ajuda foi uma verdadeira '
+    'bênção, obrigado por sua amizade e consideração.',
+    'Sua bondade não passa despercebida, '
+    'obrigado por me dar essa ajuda tão valiosa.',
+    'Estou verdadeiramente emocionado com esse '
+    'gesto gentil, obrigado por me presentear com essa ajuda incrível.',
+    'Que surpresa agradável receber esse '
+    'presente, obrigado por sua bondade e generosidade.',
+    'Estou muito grato por essa ajuda, obrigado '
+    'por sua amizade e apoio contínuo.',
+    'Sua generosidade me comove, obrigado por me '
+    'presentear com essa ajuda tão útil.',
+    'Fiquei sem palavras ao receber esse '
+    'presente, obrigado por sua amizade e apoio inabalável.',
+    'Estou verdadeiramente tocado com esse gesto '
+    'gentil, obrigado por me dar essa ajuda incrível.',
     'Que belo presente! Agradeço muito por sua generosidade e amizade.',
-    'Estou muito feliz com esse presente, obrigado por sua amizade e apoio contínuo.',
-    'Muito obrigado por essa ajuda maravilhosa, você realmente alegrou o meu dia.',
-    'Que gesto gentil! Agradeço muito por me presentear com essa ajuda tão útil.',
+    'Estou muito feliz com esse presente, '
+    'obrigado por sua amizade e apoio contínuo.',
+    'Muito obrigado por essa ajuda maravilhosa, '
+    'você realmente alegrou o meu dia.',
+    'Que gesto gentil! Agradeço muito por me '
+    'presentear com essa ajuda tão útil.',
 ]
