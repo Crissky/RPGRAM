@@ -67,56 +67,207 @@ GOD_START_NARRATION_TEXTS = [
 
 
 GOD_GREETINGS_TEXTS = [
-    'Sou Xochipilli, Príncipe das Flores e Guardião dos Mistérios. Descubram a figura oculta no bordado do mundo, e verão a beleza revelada. Se falharem, o cinza tomará vossos sonhos.',
-    'Eu sou Xochipilli, aquele que dança entre os sentidos. Encontrem a imagem escondida na tapeçaria do tempo. Se triunfarem, algo belo florescerá. Se não, vossas mãos esquecerão como criar.',
-    'Saúdem Xochipilli, senhor das cores e das canções. Um rosto dorme entre formas — revelem-no. Se o fizerem, dançarão com a fortuna. Se não, cantarão para sempre em silêncio.',
-    'Sou o som entre as notas, a luz entre os matizes — Xochipilli. Mostrem-me o ser escondido no vitral da realidade. Se o encontrarem, o êxtase será vosso. Se errarem, conhecerão a mudez da alma.',
-    'Xochipilli vos fala, o deus que pinta com o vento. Revelai o vulto oculto entre as pétalas do impossível. Se o fizerdes, sereis agraciados. Se falharem, a cor abandonará vossos olhos.',
-    'Aqui estou — Xochipilli, senhor dos enigmas florais. Desvendem a figura que dança por trás da ilusão. Se virem com clareza, serão honrados. Se não, tornar-se-ão sombra entre as sombras.',
-    'Eu sou Xochipilli, espelho de tudo o que é belo. Encontrai a forma escondida no caos da arte. A glória vos espera... ou a loucura eterna da dúvida.',
-    'Sou Xochipilli, o que canta nos sonhos. Há uma figura que se esconde no mural do destino — revelem-na. Se forem dignos, verão o invisível. Se não, serão vistos pelos seus próprios medos.',
-    'Xochipilli, criador do belo e do terrível, vos desafia: descubram quem se oculta sob o véu pictórico. Acertem, e o mundo se abrirá. Errem, e ele se fechará para sempre.',
-    'A mim chamam Xochipilli, o que dança com a luz. Há um rosto oculto nas entrelinhas do universo. Decifrem-no, e terão um presente inigualável. Se falharem, perderão a capacidade de distinguir verdade de ilusão.',
-    'Xochipilli está diante de vocês — o mestre do símbolo. Vejam além da imagem, encontrem o que não está ali. Vitória trará festa. Falha trará esquecimento.',
-    'Sou o deus que sussurra em cada obra — Xochipilli. Descubram a figura velada nos traços do mundo. Se triunfarem, receberão dádivas. Se tropeçarem, viverão no borrão.',
-    'Xochipilli vos vê. Há algo escondido no pano do tempo. Revelai-o. Se conseguirem, verão além da arte. Se não, jamais verão além de si mesmos.',
-    'Sou Xochipilli, o artista eterno. Uma forma vos espreita. Mostrem-me onde ela habita. Se acertarem, se transformarão. Se errarem, serão presos na incompletude.',
-    'Xochipilli, tecelão da beleza, desafia: onde está aquele que se esconde sob mil rostos? Se encontrarem, receberão louvor. Se não, cairá o véu do esquecimento.',
-    'Aqui fala Xochipilli. Há uma figura no labirinto da cor — achai-a. Se triunfardes, dançareis entre as estrelas. Se falharem, tropeçarão na escuridão da dúvida.',
-    'Sou Xochipilli, flor entre deuses. Busquem o contorno oculto no coração da obra. Se o desvendarem, algo divino será vosso. Se não, a obra vos consumirá.',
-    'Xochipilli vos convida a ver com olhos da alma. Há uma figura que vive no vazio. Tragam-na à luz. Vitória será prazer. Derrota, eterno eco.',
-    'Apresento-me: Xochipilli, artesão do invisível. Uma silhueta vos desafia. Se a nomearem, serão nomeados. Se não, serão esquecidos.',
-    'Xochipilli os chama ao jogo. Há um ser pintado com silêncio. Revelai-o. Se conseguirem, serão agraciados. Se falharem, o vazio vos acolherá.',
-    'Xochipilli, espírito da criação, fala por imagens. Há um enigma visual — desvendem-no. A beleza vos espera... ou a maldição da ausência.',
-    'Sou o som da cor, a forma do aroma — sou Xochipilli. Descubram o rosto escondido. Se triunfarem, o mundo aplaudirá. Se não, o mundo vos esquecerá.',
-    'Xochipilli, criador de máscaras e mistérios. Uma se esconde entre as outras. Identifiquem-na. Glória ou ruína vos aguardam.',
-    'Através do traço, Xochipilli vos fala. Há um ser oculto no gesto do pincel. Encontrem-no e viverão. Errem, e apenas sobreviverão.',
-    'Sou Xochipilli, o que molda o belo no caos. Uma entidade vos observa desde o símbolo. Revelai-a ou sereis cegos diante da verdade.',
-    'Xochipilli chega em mil cores. Uma apenas é a verdadeira. Se a virem, o êxtase. Se não, o delírio eterno.',
-    'Eu, Xochipilli, vos proponho um jogo. Há um ser pintado com silêncio. Se o revelarem, verão além do tempo. Se não, cairão no esquecimento.',
-    'Sou o mestre dos enigmas visuais. Desvendem o que se oculta sob os véus da arte. Vitória trará brilho. Derrota trará trevas.',
-    'Xochipilli vos observa. Há alguém escondido nos detalhes. Descubram-no, e verão o que poucos veem. Falhem, e viverão no quase.',
-    'Eu sou Xochipilli. Dentre mil formas, uma é real. Descubram-na. Caso triunfem, um dom será vosso. Caso errem, uma parte de vocês se perderá.',
-    'Xochipilli fala: há um traço que contém um mundo. Encontrem a figura que nele habita. Se o fizerem, a arte vos dará um presente. Se não, a arte vos engolirá.',
-    'Apresento-me como Xochipilli, essência da expressão. Um ser vos espera entre linhas. Se o encontrarem, serão tocados pela beleza. Se não, serão tocados pela ruína.',
-    'Sou Xochipilli, o senhor das imagens falantes. Vede além da superfície e revelai o oculto. Se triunfarem, verão. Se não, serão esquecidos pela própria visão.',
-    'Xochipilli desafia: há uma figura presa na beleza. Libertem-na. Se o fizerem, serão livres. Se falharem, serão prisioneiros da forma.',
-    'O deus da dança e do enigma vos fala — Xochipilli. Encontrai o espírito oculto entre os símbolos. Caso triunfem, receberão dádivas. Caso errem, carregarão o fardo do erro.',
-    'Eu sou Xochipilli. Dentre cores e formas, vive um segredo. Descubram-no e serão parte da arte. Falhem, e a arte vos rejeitará.',
-    'Sou a voz do belo, Xochipilli. Uma imagem clama por libertação. Mostrem-na. Se virem, herdarão sabedoria. Se não, a loucura os espreitará.',
-    'Xochipilli vos fala entre cores. Encontrem o rosto escondido entre traços. Se triunfarem, verão a essência. Se falharem, verão apenas o vazio.',
-    'Eu sou o eco das canções não cantadas — Xochipilli. Desafiem o véu e encontrem quem se esconde. Vitória vos fará completos. Derrota vos tornará fragmentos.',
-    'Sou Xochipilli, espírito das formas vivas. Há um ser que habita o desenho da existência. Se o reconhecerem, ganharão seu favor. Se não, terão sua ira.',
-    'Sou Xochipilli, deus das visões escondidas. Há um semblante perdido no jogo de formas. Tragam-no à luz e serão recompensados. Falhem, e viverão entre imagens partidas.',
-    'Eu sou a dança entre símbolos — Xochipilli. Uma figura se esconde sob camadas de cor e engano. Descubram-na, e o sublime será vosso. Ignorem-na, e serão ignorados pela própria realidade.',
-    'Xochipilli, o que ri nas entrelinhas, vos observa. Um rosto secreto habita o quadro do destino. Se o revelarem, verão o infinito. Se não, verão apenas o reflexo do erro.',
-    'A mim chamam Xochipilli, filho do florir e do sussurro. Um ser repousa invisível entre traços tortuosos. Aquele que o encontrar será agraciado. Aquele que falhar será marcado pelo esquecimento.',
-    'Sou Xochipilli, senhor do oculto e do belo. Descubram a figura que espreita por trás do óbvio. Se triunfarem, abrir-se-á um portal. Se falharem, fechar-se-á até o vosso coração.',
-    'Xochipilli está diante de vós, com pincel de luz e sombra. Há uma entidade disfarçada na tapeçaria da visão. Reconheçam-na, e uma bênção cairá sobre vocês. Ignorem-na, e cairá uma névoa sobre suas almas.',
-    'Eu sou o eco das formas esquecidas — Xochipilli. Em cada traço repousa um segredo, e um rosto aguarda. Se o identificarem, a beleza os exaltará. Se falharem, a distorção os envolverá.',
-    'Xochipilli, cuja arte é viva, vos traz um desafio. Existe alguém na pintura do mundo esperando ser encontrado. Se o fizerem, algo divino vos tocará. Se não, algo sombrio vos acompanhará.',
-    'Sou Xochipilli, guardião das figuras que respiram cor. Há uma alma disfarçada entre os contornos do visível. Se a libertarem, serão transformados. Se falharem, se perderão em um labirinto sem forma.',
-    'Xochipilli vos saúda, mestre da harmonia secreta. Uma presença oculta espreita por trás do símbolo. Revelai-a, e cantarei em vossa honra. Negligenciai-a, e vosso nome se apagará da história.',
+    'Sou Xochipilli, Príncipe das Flores e Guardião dos Mistérios. '
+    'Descubram a figura oculta no bordado do mundo, '
+    'e verão a beleza revelada. Se falharem, o cinza tomará vossos sonhos.',
+    'Eu sou Xochipilli, aquele que dança entre os sentidos. '
+    'Encontrem a imagem escondida na tapeçaria do tempo. Se triunfarem, '
+    'algo belo florescerá. Se não, vossas mãos esquecerão como criar.',
+    'Saúdem Xochipilli, senhor das cores e das canções. '
+    'Um rosto dorme entre formas — revelem-no. Se o fizerem, '
+    'dançarão com a fortuna. Se não, cantarão para sempre em silêncio.',
+    'Sou o som entre as notas, a luz entre os matizes — Xochipilli. '
+    'Mostrem-me o ser escondido no vitral da realidade. Se o encontrarem, '
+    'o êxtase será vosso. Se errarem, conhecerão a mudez da alma.',
+    'Xochipilli vos fala, o deus que pinta com o vento. '
+    'Revelai o vulto oculto entre as pétalas do impossível. '
+    'Se o fizerdes, sereis agraciados. Se falharem, '
+    'a cor abandonará vossos olhos.',
+    'Aqui estou — Xochipilli, senhor dos enigmas florais. '
+    'Desvendem a figura que dança por trás da ilusão. '
+    'Se virem com clareza, serão honrados. '
+    'Se não, tornar-se-ão sombra entre as sombras.',
+    'Eu sou Xochipilli, espelho de tudo o que é belo. '
+    'Encontrai a forma escondida no caos da arte. '
+    'A glória vos espera... '
+    'ou a loucura eterna da dúvida.',
+    'Sou Xochipilli, o que canta nos sonhos. '
+    'Há uma figura que se esconde no mural do destino — revelem-na. '
+    'Se forem dignos, verão o invisível. '
+    'Se não, serão vistos pelos seus próprios medos.',
+    'Xochipilli, criador do belo e do terrível, '
+    'vos desafia: descubram quem se oculta sob o véu pictórico. '
+    'Acertem, e o mundo se abrirá. '
+    'Errem, e ele se fechará para sempre.',
+    'A mim chamam Xochipilli, o que dança com a luz. '
+    'Há um rosto oculto nas entrelinhas do universo. '
+    'Decifrem-no, e terão um presente inigualável. '
+    'Se falharem, perderão a capacidade de distinguir verdade de ilusão.',
+    'Xochipilli está diante de vocês — o mestre do símbolo. '
+    'Vejam além da imagem, encontrem o que não está ali. '
+    'Vitória trará festa. '
+    'Falha trará esquecimento.',
+    'Sou o deus que sussurra em cada obra — Xochipilli. '
+    'Descubram a figura velada nos traços do mundo. '
+    'Se triunfarem, receberão dádivas. '
+    'Se tropeçarem, viverão no borrão.',
+    'Xochipilli vos vê. '
+    'Há algo escondido no pano do tempo. '
+    'Revelai-o. '
+    'Se conseguirem, verão além da arte. '
+    'Se não, jamais verão além de si mesmos.',
+    'Sou Xochipilli, o artista eterno. '
+    'Uma forma vos espreita. '
+    'Mostrem-me onde ela habita. '
+    'Se acertarem, se transformarão. '
+    'Se errarem, serão presos na incompletude.',
+    'Xochipilli, tecelão da beleza, desafia: '
+    'onde está aquele que se esconde sob mil rostos? '
+    'Se encontrarem, receberão louvor. '
+    'Se não, cairá o véu do esquecimento.',
+    'Aqui fala Xochipilli. '
+    'Há uma figura no labirinto da cor — achai-a. '
+    'Se triunfardes, dançareis entre as estrelas. '
+    'Se falharem, tropeçarão na escuridão da dúvida.',
+    'Sou Xochipilli, flor entre deuses. '
+    'Busquem o contorno oculto no coração da obra. '
+    'Se o desvendarem, algo divino será vosso. '
+    'Se não, a obra vos consumirá.',
+    'Xochipilli vos convida a ver com olhos da alma. '
+    'Há uma figura que vive no vazio. '
+    'Tragam-na à luz. '
+    'Vitória será prazer. '
+    'Derrota, eterno eco.',
+    'Apresento-me: Xochipilli, artesão do invisível. '
+    'Uma silhueta vos desafia. '
+    'Se a nomearem, serão nomeados. '
+    'Se não, serão esquecidos.',
+    'Xochipilli os chama ao jogo. '
+    'Há um ser pintado com silêncio. '
+    'Revelai-o. '
+    'Se conseguirem, serão agraciados. '
+    'Se falharem, o vazio vos acolherá.',
+    'Xochipilli, espírito da criação, fala por imagens. '
+    'Há um enigma visual — desvendem-no. '
+    'A beleza vos espera... '
+    'ou a maldição da ausência.',
+    'Sou o som da cor, a forma do aroma — sou Xochipilli. '
+    'Descubram o rosto escondido. '
+    'Se triunfarem, o mundo aplaudirá. '
+    'Se não, o mundo vos esquecerá.',
+    'Xochipilli, criador de máscaras e mistérios. '
+    'Uma se esconde entre as outras. '
+    'Identifiquem-na. '
+    'Glória ou ruína vos aguardam.',
+    'Através do traço, Xochipilli vos fala. '
+    'Há um ser oculto no gesto do pincel. '
+    'Encontrem-no e viverão. '
+    'Errem, e apenas sobreviverão.',
+    'Sou Xochipilli, o que molda o belo no caos. '
+    'Uma entidade vos observa desde o símbolo. '
+    'Revelai-a ou sereis cegos diante da verdade.',
+    'Xochipilli chega em mil cores. '
+    'Uma apenas é a verdadeira. '
+    'Se a virem, o êxtase. '
+    'Se não, o delírio eterno.',
+    'Eu, Xochipilli, vos proponho um jogo. '
+    'Há um ser pintado com silêncio. '
+    'Se o revelarem, verão além do tempo. '
+    'Se não, cairão no esquecimento.',
+    'Sou o mestre dos enigmas visuais. '
+    'Desvendem o que se oculta sob os véus da arte. '
+    'Vitória trará brilho. '
+    'Derrota trará trevas.',
+    'Xochipilli vos observa. '
+    'Há alguém escondido nos detalhes. '
+    'Descubram-no, e verão o que poucos veem. '
+    'Falhem, e viverão no quase.',
+    'Eu sou Xochipilli. '
+    'Dentre mil formas, uma é real. '
+    'Descubram-na. '
+    'Caso triunfem, um dom será vosso. '
+    'Caso errem, uma parte de vocês se perderá.',
+    'Xochipilli fala: há um traço que contém um mundo. '
+    'Encontrem a figura que nele habita. '
+    'Se o fizerem, a arte vos dará um presente. '
+    'Se não, a arte vos engolirá.',
+    'Apresento-me como Xochipilli, essência da expressão. '
+    'Um ser vos espera entre linhas. '
+    'Se o encontrarem, serão tocados pela beleza. '
+    'Se não, serão tocados pela ruína.',
+    'Sou Xochipilli, o senhor das imagens falantes. '
+    'Vede além da superfície e revelai o oculto. '
+    'Se triunfarem, verão. '
+    'Se não, serão esquecidos pela própria visão.',
+    'Xochipilli desafia: há uma figura presa na beleza. '
+    'Libertem-na. '
+    'Se o fizerem, serão livres. '
+    'Se falharem, serão prisioneiros da forma.',
+    'O deus da dança e do enigma vos fala — Xochipilli. '
+    'Encontrai o espírito oculto entre os símbolos. '
+    'Caso triunfem, receberão dádivas. '
+    'Caso errem, carregarão o fardo do erro.',
+    'Eu sou Xochipilli. '
+    'Dentre cores e formas, vive um segredo. '
+    'Descubram-no e serão parte da arte. '
+    'Falhem, e a arte vos rejeitará.',
+    'Sou a voz do belo, Xochipilli. '
+    'Uma imagem clama por libertação. '
+    'Mostrem-na. '
+    'Se virem, herdarão sabedoria. '
+    'Se não, a loucura os espreitará.',
+    'Xochipilli vos fala entre cores. '
+    'Encontrem o rosto escondido entre traços. '
+    'Se triunfarem, verão a essência. '
+    'Se falharem, verão apenas o vazio.',
+    'Eu sou o eco das canções não cantadas — Xochipilli. '
+    'Desafiem o véu e encontrem quem se esconde. '
+    'Vitória vos fará completos. '
+    'Derrota vos tornará fragmentos.',
+    'Sou Xochipilli, espírito das formas vivas. '
+    'Há um ser que habita o desenho da existência. '
+    'Se o reconhecerem, ganharão seu favor. '
+    'Se não, terão sua ira.',
+    'Sou Xochipilli, deus das visões escondidas. '
+    'Há um semblante perdido no jogo de formas. '
+    'Tragam-no à luz e serão recompensados. '
+    'Falhem, e viverão entre imagens partidas.',
+    'Eu sou a dança entre símbolos — Xochipilli. '
+    'Uma figura se esconde sob camadas de cor e engano. '
+    'Descubram-na, e o sublime será vosso. '
+    'Ignorem-na, e serão ignorados pela própria realidade.',
+    'Xochipilli, o que ri nas entrelinhas, vos observa. '
+    'Um rosto secreto habita o quadro do destino. '
+    'Se o revelarem, verão o infinito. '
+    'Se não, verão apenas o reflexo do erro.',
+    'A mim chamam Xochipilli, filho do florir e do sussurro. '
+    'Um ser repousa invisível entre traços tortuosos. '
+    'Aquele que o encontrar será agraciado. '
+    'Aquele que falhar será marcado pelo esquecimento.',
+    'Sou Xochipilli, senhor do oculto e do belo. '
+    'Descubram a figura que espreita por trás do óbvio. '
+    'Se triunfarem, abrir-se-á um portal. '
+    'Se falharem, fechar-se-á até o vosso coração.',
+    'Xochipilli está diante de vós, com pincel de luz e sombra. '
+    'Há uma entidade disfarçada na tapeçaria da visão. '
+    'Reconheçam-na, e uma bênção cairá sobre vocês. '
+    'Ignorem-na, e cairá uma névoa sobre suas almas.',
+    'Eu sou o eco das formas esquecidas — Xochipilli. '
+    'Em cada traço repousa um segredo, e um rosto aguarda. '
+    'Se o identificarem, a beleza os exaltará. '
+    'Se falharem, a distorção os envolverá.',
+    'Xochipilli, cuja arte é viva, vos traz um desafio. '
+    'Existe alguém na pintura do mundo esperando ser encontrado. '
+    'Se o fizerem, algo divino vos tocará. '
+    'Se não, algo sombrio vos acompanhará.',
+    'Sou Xochipilli, guardião das figuras que respiram cor. '
+    'Há uma alma disfarçada entre os contornos do visível. '
+    'Se a libertarem, serão transformados. '
+    'Se falharem, se perderão em um labirinto sem forma.',
+    'Xochipilli vos saúda, mestre da harmonia secreta. '
+    'Uma presença oculta espreita por trás do símbolo. '
+    'Revelai-a, e cantarei em vossa honra. '
+    'Negligenciai-a, e vosso nome se apagará da história.',
 ]
 
 
@@ -163,24 +314,30 @@ GOD_GREETINGS_TEXTS = [
 #     'Parabéns pela fluidez e naturalidade do movimento!',
 #     'Incrível como vocês conseguem fazer esse movimento parecer tão fácil!',
 #     'Que explosão de energia nesse movimento!',
-#     'Vocês transmitem muita confiança e segurança na execução desse movimento!',
+#     'Vocês transmitem muita confiança e '
+#     'segurança na execução desse movimento!',
 #     'Adorei a precisão e a fluidez dos seus movimentos!',
 #     'Vocês são realmente talentosos para esse tipo de movimento!',
 #     'Que movimento bonito e harmonioso!',
-#     'Incrível como vocês conseguem combinar força e elegância nesse movimento!',
+#     'Incrível como vocês conseguem combinar força e '
+#     'elegância nesse movimento!',
 #     'Parabéns pela técnica impecável na execução desse movimento!',
 #     'Vocês realmente dominam a arte da coreografia!',
-#     'Esse movimento foi executado com tanta maestria que me deixou sem palavras!',
+#     'Esse movimento foi executado com '
+#     'tanta maestria que me deixou sem palavras!',
 #     'Adorei a criatividade e a originalidade desse movimento!',
-#     'Vocês são realmente inspiradores com a forma como executam esse movimento!',
-#     'Que movimento contagiante! Dá vontade de levantar e dançar junto com vocês!',
+#     'Vocês são realmente inspiradores com a '
+#     'forma como executam esse movimento!',
+#     'Que movimento contagiante! '
+#     'Dá vontade de levantar e dançar junto com vocês!',
 #     'Vocês transmitem muita alegria e energia na execução desse movimento!',
 #     'Parabéns pela performance impecável!',
 #     'Vocês são realmente profissionais naquilo que fazem!',
 #     'Esse movimento foi executado com tanta perfeição que me emocionou!',
 #     'Vocês são verdadeiros artistas do movimento!',
 #     'Que privilégio ter assistido a essa performance incrível!',
-#     'Vocês me deixaram sem fôlego com a beleza e a perfeição desse movimento!',
+#     'Vocês me deixaram sem fôlego com a beleza e '
+#     'a perfeição desse movimento!',
 #     'Vocês dominaram a coreografia com maestria!',
 #     'Seus movimentos são tão fluidos e graciosos!',
 #     'A sintonia entre vocês é incrível!',
@@ -219,32 +376,56 @@ GOD_GREETINGS_TEXTS = [
 #     'Passem a bola, individualismo não leva a lugar nenhum!',
 #     'Falta de comunicação! Conversem entre si e joguem como um time!',
 #     'Defesa fraca! Precisamos marcar com mais garra e determinação!',
-#     'Erros básicos estão nos custando caro! Concentrem-se e joguem com mais atenção!',
-#     'Falta de criatividade! Precisamos de jogadas mais ousadas para furar essa defesa!',
-#     'Lentidão na transição! Sejam mais rápidos para aproveitar os contra-ataques!',
-#     'Imprecisão nos passes! Precisamos de passes mais precisos para criar oportunidades!',
-#     'Falta de finalização! Treinem mais a finalização para converter as chances em gols!',
-#     'Desmotivação no time! Precisamos de mais energia e entusiasmo para virar esse jogo!',
-#     'Falta de liderança! Precisamos de alguém que inspire e comande o time dentro de campo!',
-#     'Táticas erradas! Mudanças urgentes são necessárias para reverter esse quadro!',
-#     'Subestimação do adversário! Nunca subestimem seus oponentes, sempre deem o seu melhor!',
-#     'Falta de preparo físico! Precisamos de mais condicionamento para aguentar o ritmo do jogo!',
-#     'Arrogância e falta de humildade! Reconheçam seus erros e aprendam com eles!',
-#     'Desrespeito aos companheiros! O trabalho em equipe é fundamental para o sucesso!',
-#     'Falta de disciplina! Sigam as instruções do técnico e joguem com disciplina!',
-#     'Descontrole emocional! Mantenham a calma e a concentração em todas as jogadas!',
-#     'Negação da realidade! Aceitem seus erros e busquem soluções para melhorar!',
+#     'Erros básicos estão nos custando caro! '
+#     'Concentrem-se e joguem com mais atenção!',
+#     'Falta de criatividade! '
+#     'Precisamos de jogadas mais ousadas para furar essa defesa!',
+#     'Lentidão na transição! '
+#     'Sejam mais rápidos para aproveitar os contra-ataques!',
+#     'Imprecisão nos passes! '
+#     'Precisamos de passes mais precisos para criar oportunidades!',
+#     'Falta de finalização! '
+#     'Treinem mais a finalização para converter as chances em gols!',
+#     'Desmotivação no time! '
+#     'Precisamos de mais energia e entusiasmo para virar esse jogo!',
+#     'Falta de liderança! '
+#     'Precisamos de alguém que inspire e comande o time dentro de campo!',
+#     'Táticas erradas! '
+#     'Mudanças urgentes são necessárias para reverter esse quadro!',
+#     'Subestimação do adversário! '
+#     'Nunca subestimem seus oponentes, sempre deem o seu melhor!',
+#     'Falta de preparo físico! '
+#     'Precisamos de mais condicionamento para aguentar o ritmo do jogo!',
+#     'Arrogância e falta de humildade! '
+#     'Reconheçam seus erros e aprendam com eles!',
+#     'Desrespeito aos companheiros! '
+#     'O trabalho em equipe é fundamental para o sucesso!',
+#     'Falta de disciplina! '
+#     'Sigam as instruções do técnico e joguem com disciplina!',
+#     'Descontrole emocional! '
+#     'Mantenham a calma e a concentração em todas as jogadas!',
+#     'Negação da realidade! '
+#     'Aceitem seus erros e busquem soluções para melhorar!',
 #     'Falta de ambição! Sejam ambiciosos e busquem sempre a vitória!',
 #     'Conformismo com a derrota! Nunca desistam, lutem até o fim!',
-#     'Falta de foco no objetivo! Mantenham o foco no objetivo final e joguem com determinação!',
-#     'Medo de errar! Erros fazem parte do jogo, aprendam com eles e sigam em frente!',
-#     'Desconfiança entre os jogadores! Confiem uns nos outros e joguem em conjunto!',
-#     'Falta de comunicação com a comissão técnica! Diálogo aberto é fundamental para o sucesso!',
-#     'Falta de investimento no time! Recursos e infraestrutura adequados são essenciais!',
-#     'Falta de planejamento estratégico! Um plano de ação bem definido é crucial para o sucesso!',
-#     'Falta de comprometimento da diretoria! Apoio e investimento da diretoria são fundamentais!',
-#     'Falta de identidade do time! Um estilo de jogo definido e uma filosofia clara são importantes!',
-#     'Falta de paixão pelo esporte! Amor ao jogo e entrega são a base do sucesso!',
+#     'Falta de foco no objetivo! '
+#     'Mantenham o foco no objetivo final e joguem com determinação!',
+#     'Medo de errar! '
+#     'Erros fazem parte do jogo, aprendam com eles e sigam em frente!',
+#     'Desconfiança entre os jogadores! '
+#     'Confiem uns nos outros e joguem em conjunto!',
+#     'Falta de comunicação com a comissão técnica! '
+#     'Diálogo aberto é fundamental para o sucesso!',
+#     'Falta de investimento no time! '
+#     'Recursos e infraestrutura adequados são essenciais!',
+#     'Falta de planejamento estratégico! '
+#     'Um plano de ação bem definido é crucial para o sucesso!',
+#     'Falta de comprometimento da diretoria! '
+#     'Apoio e investimento da diretoria são fundamentais!',
+#     'Falta de identidade do time! '
+#     'Um estilo de jogo definido e uma filosofia clara são importantes!',
+#     'Falta de paixão pelo esporte! '
+#     'Amor ao jogo e entrega são a base do sucesso!',
 #     'Esqueceram de aquecer antes do jogo? Essa performance foi um desastre!',
 #     'Passaram o jogo inteiro sem comunicação, como esperavam vencer?',
 #     'Tantas chances perdidas, parece que estavam jogando contra si mesmos!',
@@ -253,9 +434,11 @@ GOD_GREETINGS_TEXTS = [
 #     'Treinador errou nas substituições, o time perdeu o ritmo!',
 #     'Erros básicos repetidos, falta de foco e comprometimento!',
 #     'Joga como se estivessem em um piquenique, sem vontade de vencer!',
-#     'Parece que estavam mais preocupados em não se machucar do que em jogar!',
+#     'Parece que estavam mais preocupados em '
+#     'não se machucar do que em jogar!',
 #     'Falta de garra, paixão e amor pelo jogo, decepcionante!',
-#     'Fizeram o adversário se sentir em casa, com tantos erros e passividade!',
+#     'Fizeram o adversário se sentir em casa, '
+#     'com tantos erros e passividade!',
 #     'Jogaram como se estivessem dormindo em campo, sem intensidade!',
 #     'Falta de organização e sincronia no time, jogaram cada um por si!',
 #     'Perderam a bola fácil, entregaram o jogo pro adversário!',
@@ -272,39 +455,70 @@ GOD_GREETINGS_TEXTS = [
 #     'Jogaram sem inteligência, sem estratégia, sem nada!',
 #     'Decepção total, essa foi a pior partida da temporada!',
 #     'Precisam de um novo treinador, esse time precisa de mudanças!',
-#     'Falta de investimento no time, os jogadores precisam de melhores condições!',
+#     'Falta de investimento no time, '
+#     'os jogadores precisam de melhores condições!',
 #     'Diretoria precisa dar um jeito, essa situação não pode continuar!',
 #     'Precisam de uma reformulação geral, esse time não tem futuro!',
-#     'Parem de arrastar os pés, essa indecisão está nos custando tempo e oportunidades.',
-#     'Vocês estão se movendo como tartarugas, vamos acelerar o ritmo antes que seja tarde demais.',
-#     'Essa falta de sincronismo está criando um caos desnecessário, precisamos trabalhar em conjunto.',
-#     'Evitem a procrastinação, o trabalho acumulado só vai gerar mais estresse e atrasos.',
-#     'Abandonem essa estratégia ultrapassada, precisamos de ideias inovadoras para ter sucesso.',
-#     'Chega de negligência, vamos dar atenção aos detalhes antes que os problemas se tornem maiores.',
-#     'Evitem a comunicação ineficaz, precisamos de clareza e objetividade para evitar mal-entendidos.',
-#     'Abram mão da estagnação, vamos buscar o crescimento e a evolução constante.',
-#     'Deixem de lado a passividade, assumam a responsabilidade e tomem as rédeas da situação.',
-#     'Superem a falta de foco, concentrem-se nas tarefas prioritárias para alcançarmos nossos objetivos.',
-#     'Evitem a desmotivação, alimentem a paixão e o entusiasmo para manter o time engajado.',
-#     'Abandonem a apatia, busquem a proatividade e a iniciativa para fazer a diferença.',
-#     'Chega de negativismo, cultivem o otimismo e a positividade para superar os desafios.',
-#     'Evitem a desorganização, implementem um sistema eficiente para otimizar o trabalho.',
-#     'Abandonem a falta de planejamento, definam metas claras e estratégias eficazes para o sucesso.',
-#     'Deixem de lado a comunicação precária, invistam em ferramentas e canais eficientes para se conectar.',
-#     'Superem a falta de feedback, pratiquem a comunicação aberta e honesta para o crescimento individual e do grupo.',
-#     'Evitem a falta de reconhecimento, valorizem os esforços e conquistas de cada membro da equipe.',
-#     'Abandonem a cultura do erro, aprendam com os erros e busquem a melhoria contínua.',
-#     'Chega de acomodação, busquem a inovação e a disrupção para se destacar no mercado.',
-#     'Evitem a falta de adaptabilidade, sejam flexíveis e ágeis para lidar com as mudanças e desafios.',
-#     'Abandonem a resistência à mudança, abracem as novas oportunidades e evoluam com o tempo.',
-#     'Deixem de lado a falta de resiliência, superem os obstáculos e aprendam com as dificuldades.',
-#     'Superem a falta de colaboração, trabalhem em equipe e unam forças para alcançar o sucesso.',
-#     'Evitem a falta de comunicação interdepartamental, alinhem as ações e estratégias para um trabalho coeso.',
-#     'Abandonem a cultura da culpa, busquem soluções e aprendam com os erros sem culpar ninguém.',
-#     'Chega de falta de empatia, coloquem-se no lugar do outro para construir relações mais fortes.',
-#     'Evitem a falta de respeito, tratem todos com cordialidade e profissionalismo.',
-#     'Abandonem a falta de comprometimento, assumam suas responsabilidades e cumpram seus prazos.',
-#     'Superem a falta de ética, ajam com honestidade, integridade e transparência em todas as situações.',
+#     'Parem de arrastar os pés, '
+#     'essa indecisão está nos custando tempo e oportunidades.',
+#     'Vocês estão se movendo como tartarugas, '
+#     'vamos acelerar o ritmo antes que seja tarde demais.',
+#     'Essa falta de sincronismo está criando um caos desnecessário, '
+#     'precisamos trabalhar em conjunto.',
+#     'Evitem a procrastinação, '
+#     'o trabalho acumulado só vai gerar mais estresse e atrasos.',
+#     'Abandonem essa estratégia ultrapassada, '
+#     'precisamos de ideias inovadoras para ter sucesso.',
+#     'Chega de negligência, vamos dar atenção aos '
+#     'detalhes antes que os problemas se tornem maiores.',
+#     'Evitem a comunicação ineficaz, precisamos de clareza e '
+#     'objetividade para evitar mal-entendidos.',
+#     'Abram mão da estagnação, vamos buscar o crescimento e '
+#     'a evolução constante.',
+#     'Deixem de lado a passividade, assumam a responsabilidade e '
+#     'tomem as rédeas da situação.',
+#     'Superem a falta de foco, concentrem-se nas tarefas prioritárias para '
+#     'alcançarmos nossos objetivos.',
+#     'Evitem a desmotivação, alimentem a paixão e '
+#     'o entusiasmo para manter o time engajado.',
+#     'Abandonem a apatia, busquem a proatividade e '
+#     'a iniciativa para fazer a diferença.',
+#     'Chega de negativismo, cultivem o otimismo e '
+#     'a positividade para superar os desafios.',
+#     'Evitem a desorganização, implementem um '
+#     'sistema eficiente para otimizar o trabalho.',
+#     'Abandonem a falta de planejamento, '
+#     'definam metas claras e estratégias eficazes para o sucesso.',
+#     'Deixem de lado a comunicação precária, '
+#     'invistam em ferramentas e canais eficientes para se conectar.',
+#     'Superem a falta de feedback, pratiquem a comunicação aberta e '
+#     'honesta para o crescimento individual e do grupo.',
+#     'Evitem a falta de reconhecimento, valorizem os esforços e '
+#     'conquistas de cada membro da equipe.',
+#     'Abandonem a cultura do erro, aprendam com os erros e '
+#     'busquem a melhoria contínua.',
+#     'Chega de acomodação, busquem a inovação e'
+#     ' a disrupção para se destacar no mercado.',
+#     'Evitem a falta de adaptabilidade, sejam flexíveis e '
+#     'ágeis para lidar com as mudanças e desafios.',
+#     'Abandonem a resistência à mudança, abracem as '
+#     'novas oportunidades e evoluam com o tempo.',
+#     'Deixem de lado a falta de resiliência, superem os '
+#     'obstáculos e aprendam com as dificuldades.',
+#     'Superem a falta de colaboração, trabalhem em equipe e '
+#     'unam forças para alcançar o sucesso.',
+#     'Evitem a falta de comunicação interdepartamental, '
+#     'alinhem as ações e estratégias para um trabalho coeso.',
+#     'Abandonem a cultura da culpa, busquem soluções e '
+#     'aprendam com os erros sem culpar ninguém.',
+#     'Chega de falta de empatia, coloquem-se no '
+#     'lugar do outro para construir relações mais fortes.',
+#     'Evitem a falta de respeito, tratem todos com '
+#     'cordialidade e profissionalismo.',
+#     'Abandonem a falta de comprometimento, assumam suas '
+#     'responsabilidades e cumpram seus prazos.',
+#     'Superem a falta de ética, ajam com honestidade, '
+#     'integridade e transparência em todas as situações.',
 # ]
 
 
@@ -336,20 +550,24 @@ GOD_BAD_MOVE_FEEDBACK_TEXTS = [
     'Tão desajeitada quanto um palhaço com vertigem.',
     'Cuidado, essa jogada pode ser contagiosa. Melhor jogarem longe!',
     'Gostaria de dizer que foi uma jogada ousada… mas foi só ruim mesmo.',
-    'Vocês jogaram como quem tenta pintar com vento: bonito só na cabeça de quem faz.',
+    'Vocês jogaram como quem tenta pintar com vento: '
+    'bonito só na cabeça de quem faz.',
     'Essa jogada não é um erro — é uma performance conceitual sobre fracasso.',
     'Ah, uma tragédia que nem os bardos terão coragem de cantar.',
     'Pelo menos agora sabemos o que não fazer.',
     'Nem mesmo os deuses do caos aprovariam tamanha confusão.',
-    'Um movimento tão equivocado que até as pedras quiseram se mover por vocês.',
+    'Um movimento tão equivocado que até as '
+    'pedras quiseram se mover por vocês.',
     'Vocês jogaram com o coração… pena que esqueceram o cérebro.',
     'Vi estátuas fazerem escolhas mais eficazes.',
     'Essa jogada… é a antítese da beleza estratégica.',
     'Parece que a musa da sabedoria tirou férias.',
     'Se arte é provocar emoção, essa jogada me deu vontade de desaparecer.',
-    'Devo parabenizá-los… por redefinirem o que significa ‘falhar com estilo’.',
+    'Devo parabenizá-los… por redefinirem o '
+    'que significa ‘falhar com estilo’.',
     'Foi como ver um artista pintar com os olhos vendados… e sem pincel.',
-    'Espero que essa jogada seja parte de um plano maior… ou de uma piada cruel.',
+    'Espero que essa jogada seja parte de um plano maior… ou '
+    'de uma piada cruel.',
     'Tão fora de ritmo quanto um tambor desafinado.',
     'Vocês acabam de transformar um desafio divino numa comédia dos erros.',
     'Meus aplausos… por conseguirem decepcionar até um deus da arte.',
@@ -358,25 +576,40 @@ GOD_BAD_MOVE_FEEDBACK_TEXTS = [
     'Nem com todo o poder das flores vocês poderiam suavizar esse desastre.',
     'Uma jogada assim me dá vontade de fechar meu templo.',
     'Desenharam um futuro… com giz quebrado e sem cor.',
-    'E assim, com um gesto desastroso, vocês pintaram a vergonha em minha presença.',
+    'E assim, com um gesto desastroso, '
+    'vocês pintaram a vergonha em minha presença.',
 ]
 
 
 GOD_WINS_FEEDBACK_TEXTS = [
-    'O véu foi erguido, e vossos olhos provaram a verdade — parabéns, filhos da percepção!',
-    'Xochipilli vos aplaude com flores e cantos; a beleza se curva diante de vossa astúcia.',
-    'Com olhos de artistas e alma de poetas, decifraram meu enigma — recebam o que merecem.',
-    'Ah, peregrinos do olhar sensível, triunfaram onde muitos falharam. Minhas bênçãos vos acompanham.',
-    'O oculto vos sorriu, e vocês sorriram de volta. Xochipilli celebra vossa vitória.',
-    'As linhas do mundo se dobraram à vossa vontade. Que a recompensa floresça em vosso caminho.',
-    'Viram o que não podia ser visto — isso vos torna dignos da beleza escondida.',
-    'O símbolo foi revelado, e com ele, o vosso brilho. Parabéns, intérpretes do invisível.',
-    'Xochipilli vos concede a dádiva dos que veem além da superfície. Glória à vossa visão!',
-    'Onde havia silêncio, trouxeram música; onde havia sombra, luz. Venceram!',
-    'O mistério não vos venceu. Ao contrário, o dom artístico agora pulsa em vós.',
-    'Eu, Xochipilli, reconheço a grandeza daqueles que leem os segredos do mundo.',
-    'Com coragem e sensibilidade, atravessaram o véu da ilusão. Recebam meu louvor eterno.',
-    'A figura oculta dançou perante vossos olhos atentos. Que sua dança ecoe em vossas almas.',
+    'O véu foi erguido, e vossos olhos provaram a verdade — parabéns, '
+    'filhos da percepção!',
+    'Xochipilli vos aplaude com flores e cantos; '
+    'a beleza se curva diante de vossa astúcia.',
+    'Com olhos de artistas e alma de poetas, '
+    'decifraram meu enigma — recebam o que merecem.',
+    'Ah, peregrinos do olhar sensível, triunfaram onde muitos falharam. '
+    'Minhas bênçãos vos acompanham.',
+    'O oculto vos sorriu, e vocês sorriram de volta. '
+    'Xochipilli celebra vossa vitória.',
+    'As linhas do mundo se dobraram à vossa vontade. '
+    'Que a recompensa floresça em vosso caminho.',
+    'Viram o que não podia ser visto — '
+    'isso vos torna dignos da beleza escondida.',
+    'O símbolo foi revelado, e com ele, o vosso brilho. '
+    'Parabéns, intérpretes do invisível.',
+    'Xochipilli vos concede a dádiva dos que veem além da superfície. '
+    'Glória à vossa visão!',
+    'Onde havia silêncio, trouxeram música; '
+    'onde havia sombra, luz. Venceram!',
+    'O mistério não vos venceu. '
+    'Ao contrário, o dom artístico agora pulsa em vós.',
+    'Eu, Xochipilli, reconheço a grandeza daqueles que '
+    'leem os segredos do mundo.',
+    'Com coragem e sensibilidade, atravessaram o véu da ilusão. '
+    'Recebam meu louvor eterno.',
+    'A figura oculta dançou perante vossos olhos atentos. '
+    'Que sua dança ecoe em vossas almas.',
     'O caminho da arte é tortuoso, mas vocês o trilharam com maestria.',
     'Xochipilli sorri em mil pétalas: vocês foram dignos da flor mais rara.',
     'Vossa vitória é como uma pintura perfeita: inesperada, bela e eterna.',
@@ -405,7 +638,8 @@ GOD_WINS_FEEDBACK_TEXTS = [
     'Xochipilli vos recebe como dignos intérpretes do sublime.',
     'Transformaram o mistério em clareza, como verdadeiros filhos da beleza.',
     'Fizeram da dúvida uma flor, e do enigma, um cântico.',
-    'A obra escondida revelou-se a vocês, porque eram os únicos dignos de vê-la.',
+    'A obra escondida revelou-se a vocês, '
+    'porque eram os únicos dignos de vê-la.',
     'Como músicos da percepção, tocaram a nota certa no coração do mundo.',
     'Celebrem, pois o dom da visão vos foi confirmado por mim.',
     'Viram a verdade como ela é: escondida, mas desejosa de ser encontrada.',
@@ -417,37 +651,58 @@ GOD_WINS_FEEDBACK_TEXTS = [
 
 
 GODS_LOSES_FEEDBACK_TEXTS = [
-    'Cegos diante do evidente, negaram a beleza sagrada. Que vossos olhos nunca mais enxerguem o real.',
-    'Falharam, e a flor da verdade murchou em vossas mãos. Que tudo o que tocarem se torne pálido.',
-    'A arte vos chamou, mas vós silenciaram. Agora, o silêncio vos acompanhará para sempre.',
-    'Xochipilli se entristece… e com sua tristeza, vos amaldiçoa com a eterna ausência de inspiração.',
-    'Não decifraram o símbolo, e por isso serão marcados com a tinta da confusão.',
-    'A figura oculta se escondeu de vós… e agora vossas próprias faces se tornarão invisíveis ao mundo.',
-    'A falha tem cor e forma, e agora ela vive em vós. Que o caos se pinte sobre vossa existência.',
-    'Negaram o mistério e zombaram da harmonia. Que vivam entre ruídos e descompassos.',
-    'O olhar que falha não merece ver. Vossos olhos agora enxergarão somente ilusões.',
+    'Cegos diante do evidente, negaram a beleza sagrada. '
+    'Que vossos olhos nunca mais enxerguem o real.',
+    'Falharam, e a flor da verdade murchou em vossas mãos. '
+    'Que tudo o que tocarem se torne pálido.',
+    'A arte vos chamou, mas vós silenciaram. Agora, '
+    'o silêncio vos acompanhará para sempre.',
+    'Xochipilli se entristece… e com sua tristeza, '
+    'vos amaldiçoa com a eterna ausência de inspiração.',
+    'Não decifraram o símbolo, '
+    'e por isso serão marcados com a tinta da confusão.',
+    'A figura oculta se escondeu de vós… '
+    'e agora vossas próprias faces se tornarão invisíveis ao mundo.',
+    'A falha tem cor e forma, e agora ela vive em vós. '
+    'Que o caos se pinte sobre vossa existência.',
+    'Negaram o mistério e zombaram da harmonia. '
+    'Que vivam entre ruídos e descompassos.',
+    'O olhar que falha não merece ver. '
+    'Vossos olhos agora enxergarão somente ilusões.',
     'Onde a beleza pediu reverência, deram desprezo. Que a feiura vos abrace.',
-    'A verdade era um espelho, e vocês o quebraram. Agora, vossas almas refletirão fragmentos sem sentido.',
-    'Não ouviram meu chamado. Agora ouvirão apenas ecos distorcidos do que nunca compreenderão.',
-    'A arte é uma deusa ciumenta — falharam com ela, e ela vos negará para sempre.',
-    'Xochipilli lamenta, mas pune: que vossas mãos tremam diante de qualquer criação.',
+    'A verdade era um espelho, e vocês o quebraram. '
+    'Agora, vossas almas refletirão fragmentos sem sentido.',
+    'Não ouviram meu chamado. '
+    'Agora ouvirão apenas ecos distorcidos do que nunca compreenderão.',
+    'A arte é uma deusa ciumenta — falharam com ela, '
+    'e ela vos negará para sempre.',
+    'Xochipilli lamenta, mas pune: '
+    'que vossas mãos tremam diante de qualquer criação.',
     'Desprezaram o oculto, e agora viverão como sombras de si mesmos.',
     'Vossos nomes serão apagados do mural da história.',
-    'O símbolo não vos pertence. A partir de agora, nenhum símbolo vos acolherá.',
-    'O dom da percepção vos foi negado. Viverão no mundo como surdos em meio a música.',
+    'O símbolo não vos pertence. A partir de agora, '
+    'nenhum símbolo vos acolherá.',
+    'O dom da percepção vos foi negado. '
+    'Viverão no mundo como surdos em meio a música.',
     'A beleza recusada se vinga. Que vejam o feio onde houver o sublime.',
     'O véu permanece… e sobre vós, ele se fecha para sempre.',
     'Xochipilli vos sela com a maldição do eterno vazio criativo.',
-    'Ficaram cegos diante do claro. Que a escuridão vos ensine o que não aprenderam.',
-    'Desprezaram minha oferenda sutil. Agora, a vida lhes servirá apenas o grotesco.',
+    'Ficaram cegos diante do claro. '
+    'Que a escuridão vos ensine o que não aprenderam.',
+    'Desprezaram minha oferenda sutil. '
+    'Agora, a vida lhes servirá apenas o grotesco.',
     'Negaram a flor do espírito. Que espinhos cresçam em vossos pensamentos.',
-    'A recompensa fugiu. A punição ficou. Que vossas noites sejam povoadas por quadros incompletos.',
+    'A recompensa fugiu. A punição ficou. '
+    'Que vossas noites sejam povoadas por quadros incompletos.',
     'Não honraram o desafio. A honra vos deixará.',
     'Erraram onde tantos brilharam. Que vosso fracasso seja um fardo visível.',
-    'Vossos passos não dançam mais no ritmo da beleza. Cambaleiem nas dissonâncias da existência.',
+    'Vossos passos não dançam mais no ritmo da beleza. '
+    'Cambaleiem nas dissonâncias da existência.',
     'A arte chora, e cada lágrima dela pesa sobre vosso destino.',
-    'Vosso erro ecoa no plano dos sonhos. Que os pesadelos vos falem em minha língua.',
-    'A figura oculta vos rejeita. Agora, viverão sendo rejeitados por tudo o que é oculto.',
+    'Vosso erro ecoa no plano dos sonhos. '
+    'Que os pesadelos vos falem em minha língua.',
+    'A figura oculta vos rejeita. '
+    'Agora, viverão sendo rejeitados por tudo o que é oculto.',
     'Xochipilli fecha as portas do templo da imaginação para vós.',
     'Vosso fracasso floresceu... em maldição.',
     'A decepção pintada por vós será vossa moldura até o fim dos tempos.',
@@ -457,68 +712,109 @@ GODS_LOSES_FEEDBACK_TEXTS = [
     'Falharam diante do divino. Que o divino falte em vossas jornadas.',
     'O símbolo os julgou, e agora vos condena ao eterno não entendimento.',
     'Que vossos olhos chorem cores que não existem — lágrimas sem expressão.',
-    'Xochipilli não perdoa a indiferença. Recebam, então, o peso dela eternamente.',
+    'Xochipilli não perdoa a indiferença. '
+    'Recebam, então, o peso dela eternamente.',
     'O mundo é tela, mas para vós, será apenas parede.',
     'Faltou-lhes o espírito do artista. Que vivam como rascunhos inacabados.',
-    'Onde deveriam criar beleza, deixaram espaço em branco. Que esse branco se torne vosso túmulo simbólico.',
-    'Não viram, não sentiram, não compreenderam. Serão cegos, frios e ignorantes.',
+    'Onde deveriam criar beleza, deixaram espaço em branco. '
+    'Que esse branco se torne vosso túmulo simbólico.',
+    'Não viram, não sentiram, não compreenderam. '
+    'Serão cegos, frios e ignorantes.',
     'Xochipilli vos apaga da partitura da beleza. Que vossa música cesse.',
     'Desprezaram minha linguagem. Que falem agora apenas em sons desconexos.',
     'O desafio vos pesou. Que o peso agora ressoe em cada passo vosso.',
-    'A pintura os engoliu, e agora vossas almas estão presas nas bordas do erro.',
-    'Onde falharam, crescerá a semente da punição. Que dela brotem espinhos, sombras e silêncios.',
+    'A pintura os engoliu, '
+    'e agora vossas almas estão presas nas bordas do erro.',
+    'Onde falharam, crescerá a semente da punição. Que dela brotem espinhos, '
+    'sombras e silêncios.',
 ]
 
 
 GODS_TIMEOUT_FEEDBACK_TEXTS = [
-    'O tempo que vos dei era uma canção… e vós desafinaram. Agora, ouçam a melodia da maldição.',
-    'As areias caíram por completo. Que cada grão vos pese como um fardo eterno.',
+    'O tempo que vos dei era uma canção… e vós desafinaram. '
+    'Agora, ouçam a melodia da maldição.',
+    'As areias caíram por completo. '
+    'Que cada grão vos pese como um fardo eterno.',
     'O relógio de jade cessou. Com ele, cessa vossa sorte.',
     'O pincel ficou imóvel… e agora, a tinta da maldição escorrerá sobre vós.',
-    'A dança terminou sem aplausos. Resta-vos apenas a sombra do palco e o peso da maldição.',
-    'Xochipilli esperou, mas vós tardaram. Agora, o tempo se vinga em meu nome.',
+    'A dança terminou sem aplausos. '
+    'Resta-vos apenas a sombra do palco e o peso da maldição.',
+    'Xochipilli esperou, mas vós tardaram. '
+    'Agora, o tempo se vinga em meu nome.',
     'A ampulheta virou pó. E com o pó, vossa esperança se desfaz.',
-    'Vós falharam em ouvir o compasso do desafio. Que o próximo compasso seja um lamento.',
+    'Vós falharam em ouvir o compasso do desafio. '
+    'Que o próximo compasso seja um lamento.',
     'Quando o tempo morre, nasce a maldição. Eis o nascimento de vossa dor.',
-    'O desafio era um poema com hora certa. Vós chegaram tarde. Recebam agora os versos da ruína.',
-    'O tempo expirou, e com ele expirou minha paciência. Que a maldição vos sopre como um vendaval de sombras.',
+    'O desafio era um poema com hora certa. '
+    'Vós chegaram tarde. Recebam agora os versos da ruína.',
+    'O tempo expirou, e com ele expirou minha paciência. '
+    'Que a maldição vos sopre como um vendaval de sombras.',
     'A flor murchou. E com ela, murchará vosso destino.',
-    'Vossa lentidão foi vossa sentença. Que caminhem agora com o peso da eternidade.',
-    'O momento passou. O julgamento chegou. A maldição desce como pincelada final.',
+    'Vossa lentidão foi vossa sentença. '
+    'Que caminhem agora com o peso da eternidade.',
+    'O momento passou. O julgamento chegou. '
+    'A maldição desce como pincelada final.',
     'A imagem oculta sorriu e partiu. Vós ficastes… com a maldição.',
     'Quem não dança no tempo certo tropeça na maldição.',
     'Xochipilli não espera eternamente. E agora, quem tarda, sangra.',
-    'O tempo era vosso aliado. Ignoraram-no. Agora, ele é meu instrumento de punição.',
-    'Perderam o compasso da arte. Que a dissonância ecoe eternamente em vossas almas.',
-    'A cortina caiu. O palco se apagou. Vossos destinos serão escritos com tinta negra.',
-    'O silêncio de vossa ação tardia grita aos céus. E o eco é minha maldição.',
+    'O tempo era vosso aliado. Ignoraram-no. '
+    'Agora, ele é meu instrumento de punição.',
+    'Perderam o compasso da arte. '
+    'Que a dissonância ecoe eternamente em vossas almas.',
+    'A cortina caiu. O palco se apagou. '
+    'Vossos destinos serão escritos com tinta negra.',
+    'O silêncio de vossa ação tardia grita aos céus. '
+    'E o eco é minha maldição.',
     'Nada mais pode ser feito. A figura se escondeu… e a maldição se revelou.',
-    'Cada segundo perdido se transforma em um fio da teia que agora vos aprisiona.',
-    'O tempo voou como borboleta… mas vós ficaram presos na larva da indecisão.',
-    'A arte do momento fugaz vos escapou. Que a eternidade da dor vos acompanhe.',
-    'A janela do enigma se fechou. E vos trancou do lado de fora… com a maldição.',
+    'Cada segundo perdido se transforma em um '
+    'fio da teia que agora vos aprisiona.',
+    'O tempo voou como borboleta… mas vós '
+    'ficaram presos na larva da indecisão.',
+    'A arte do momento fugaz vos escapou. '
+    'Que a eternidade da dor vos acompanhe.',
+    'A janela do enigma se fechou. '
+    'E vos trancou do lado de fora… com a maldição.',
     'O tempo não perdoa, e tampouco Xochipilli.',
-    'Não seguiram o ritmo da beleza. Serão agora perseguidos pela melodia da desgraça.',
-    'O quadro do desafio está completo… mas vós ficaram em branco. A maldição vos preencherá.',
-    'Chegaram tarde para o banquete dos deuses. Comerão agora as migalhas da maldição.',
-    'A chave do mistério se desfez nas cinzas do tempo. A porta que se abre agora é a da punição.',
-    'Vós pintaram o fracasso com as cores da demora. Recebam o cinza da maldição.',
-    'O tempo expirou como um suspiro... e o que resta é o hálito pútrido da maldição.',
-    'Nem todas as obras esperam pelo artista. Esta vos condena por vossa lentidão.',
-    'O tempo acabou, como termina a última nota de uma sinfonia trágica. Que o silêncio seguinte vos amaldiçoe.',
-    'A figura se escondeu para sempre. Mas a maldição se revelará todos os dias diante de vós.',
-    'Xochipilli pintou o tempo com flores. Vós as deixaram murchar. Agora, provarão seus espinhos.',
+    'Não seguiram o ritmo da beleza. '
+    'Serão agora perseguidos pela melodia da desgraça.',
+    'O quadro do desafio está completo… mas vós ficaram em branco. '
+    'A maldição vos preencherá.',
+    'Chegaram tarde para o banquete dos deuses. '
+    'Comerão agora as migalhas da maldição.',
+    'A chave do mistério se desfez nas cinzas do tempo. '
+    'A porta que se abre agora é a da punição.',
+    'Vós pintaram o fracasso com as cores da demora. '
+    'Recebam o cinza da maldição.',
+    'O tempo expirou como um suspiro... '
+    'e o que resta é o hálito pútrido da maldição.',
+    'Nem todas as obras esperam pelo artista. '
+    'Esta vos condena por vossa lentidão.',
+    'O tempo acabou, como termina a última nota de uma sinfonia trágica. '
+    'Que o silêncio seguinte vos amaldiçoe.',
+    'A figura se escondeu para sempre. '
+    'Mas a maldição se revelará todos os dias diante de vós.',
+    'Xochipilli pintou o tempo com flores. Vós as deixaram murchar. '
+    'Agora, provarão seus espinhos.',
     'Demoraram demais… e agora o tempo os devora como serpente faminta.',
-    'Quem despreza o instante sagrado cava o abismo onde o tempo lança suas maldições.',
-    'Vós perderam o compasso do destino. Que vossa dança seja agora desritmada e dolorosa.',
-    'O tempo lhes deu asas. Vós recusaram voar. Agora rastejem sob o peso da maldição.',
-    'A beleza passou. A punição chegou. Xochipilli vos observa… e vos sentencia.',
+    'Quem despreza o instante sagrado cava o abismo onde o '
+    'tempo lança suas maldições.',
+    'Vós perderam o compasso do destino. '
+    'Que vossa dança seja agora desritmada e dolorosa.',
+    'O tempo lhes deu asas. '
+    'Vós recusaram voar. Agora rastejem sob o peso da maldição.',
+    'A beleza passou. A punição chegou. '
+    'Xochipilli vos observa… e vos sentencia.',
     'Quem não vê o tempo como arte, sente sua passagem como dor.',
-    'Cada batida perdida do tambor do tempo ressoa agora como golpe em vossas almas.',
+    'Cada batida perdida do tambor do tempo ressoa agora como '
+    'golpe em vossas almas.',
     'O instante certo se foi. Vós permaneceram… com o erro.',
-    'A figura desapareceu na névoa da demora. A maldição caminha nítida em vossa direção.',
-    'Não há mais chances, apenas consequências. E a minha é terrível.',
-    'A espera foi longa. Longa demais. Agora, vós esperareis pela redenção… que nunca virá.',
-    'O tempo implorou por vossa pressa. Vós deram-lhe indiferença. Eis a resposta do deus das artes.',
+    'A figura desapareceu na névoa da demora. '
+    'A maldição caminha nítida em vossa direção.',
+    'Não há mais chances, apenas consequências. '
+    'E a minha é terrível.',
+    'A espera foi longa. Longa demais. '
+    'Agora, vós esperareis pela redenção… que nunca virá.',
+    'O tempo implorou por vossa pressa. Vós deram-lhe indiferença. '
+    'Eis a resposta do deus das artes.',
     'Silêncio. O tempo morreu. E sua última palavra foi: maldição.',
 ]
