@@ -51,105 +51,166 @@ TRAP_DAMAGE_TYPE_RATIO = {
 
 
 REPLY_TEXTS_FIND_TREASURE_START = [
-    'Durante a sua viagem, vocês se deparam com uma clareira tranquila na floresta, ',
-    'Explorando uma caverna escura, vocês se deparam com uma passagem secreta, ',
+    'Durante a sua viagem, '
+    'vocês se deparam com uma clareira tranquila na floresta, ',
+    'Explorando uma caverna escura, '
+    'vocês se deparam com uma passagem secreta, ',
     'Ao cruzar uma ponte antiga, vocês se deparam com uma ilha misteriosa, ',
     'Navegando pelo mar agitado, vocês se deparam com um navio naufragado, ',
     'No alto das montanhas, vocês se deparam com uma ruína esquecida, ',
-    'Ao explorar um pântano sombrio, vocês se deparam com uma árvore gigante, ',
+    'Ao explorar um pântano sombrio, '
+    'vocês se deparam com uma árvore gigante, ',
     'No deserto escaldante, vocês se deparam com um oásis escondido, ',
-    'Enquanto atravessam uma floresta densa, vocês se deparam com uma clareira encantada, ',
-    'Ao explorar uma cidade abandonada, vocês se deparam com uma mansão assombrada, ',
-    'Escalando uma colina íngreme, vocês se deparam com uma caverna misteriosa, ',
+    'Enquanto atravessam uma floresta densa, '
+    'vocês se deparam com uma clareira encantada, ',
+    'Ao explorar uma cidade abandonada, '
+    'vocês se deparam com uma mansão assombrada, ',
+    'Escalando uma colina íngreme, '
+    'vocês se deparam com uma caverna misteriosa, ',
     'Em uma estrada deserta, vocês se deparam com uma carroça abandonada, ',
-    'No fundo de um vale isolado, vocês se deparam com uma fonte de água cristalina, ',
-    'Ao atravessar uma floresta encantada, vocês se deparam com uma estátua enigmática, ',
+    'No fundo de um vale isolado, '
+    'vocês se deparam com uma fonte de água cristalina, ',
+    'Ao atravessar uma floresta encantada, '
+    'vocês se deparam com uma estátua enigmática, ',
     'Viajando pelo deserto vasto, vocês se deparam com uma ruína soterrada, ',
-    'Navegando por um rio sinuoso, vocês se deparam com uma ilha desconhecida, ',
-    'Enquanto exploram uma região glacial, vocês se deparam com uma caverna de gelo, ',
-    'No meio de um campo verdejante, vocês se deparam com uma árvore ancestral, ',
-    'Passando por um vale sombrio, vocês se deparam com um templo abandonado, ',
+    'Navegando por um rio sinuoso, '
+    'vocês se deparam com uma ilha desconhecida, ',
+    'Enquanto exploram uma região glacial, '
+    'vocês se deparam com uma caverna de gelo, ',
+    'No meio de um campo verdejante, '
+    'vocês se deparam com uma árvore ancestral, ',
+    'Passando por um vale sombrio, '
+    'vocês se deparam com um templo abandonado, ',
     'Caminhando pela praia, vocês se deparam com um naufrágio antigo, ',
-    'Viajando pelas terras selvagens, vocês se deparam com uma rocha misteriosa, ',
+    'Viajando pelas terras selvagens, '
+    'vocês se deparam com uma rocha misteriosa, ',
     'Explorando um cânion profundo, vocês se deparam com uma gruta oculta, ',
     'Ao seguir um riacho, vocês se deparam com uma cachoeira majestosa, ',
-    'Escalando uma montanha escarpada, vocês se deparam com uma caverna ventosa, ',
-    'Cruzando uma floresta enevoada, vocês se deparam com uma clareira encantada, ',
-    'Em uma cidade abandonada, vocês se deparam com uma biblioteca esquecida, ',
+    'Escalando uma montanha escarpada, '
+    'vocês se deparam com uma caverna ventosa, ',
+    'Cruzando uma floresta enevoada, '
+    'vocês se deparam com uma clareira encantada, ',
+    'Em uma cidade abandonada, '
+    'vocês se deparam com uma biblioteca esquecida, ',
     'Percorrendo um deserto vasto, vocês se deparam com uma oásis escondido, ',
-    'Ao explorar uma selva densa, vocês se deparam com uma ruína coberta de vegetação, ',
-    'Navegando pelo mar tempestuoso, vocês se deparam com um naufrágio misterioso, ',
+    'Ao explorar uma selva densa, '
+    'vocês se deparam com uma ruína coberta de vegetação, ',
+    'Navegando pelo mar tempestuoso, '
+    'vocês se deparam com um naufrágio misterioso, ',
     'Em uma região vulcânica, vocês se deparam com uma caverna ígnea, ',
-    'Durante uma caminhada na tundra congelada, vocês se deparam com um abrigo improvisado, ',
+    'Durante uma caminhada na tundra congelada, '
+    'vocês se deparam com um abrigo improvisado, ',
     'Viajando por uma planície vasta, vocês se deparam com uma pedra rúnica, ',
-    'Ao atravessar uma floresta assombrada, vocês se deparam com um altar místico, ',
+    'Ao atravessar uma floresta assombrada, '
+    'vocês se deparam com um altar místico, ',
     'Em um vale escondido, vocês se deparam com uma nascente de água quente, ',
-    'Caminhando por um desfiladeiro estreito, vocês se deparam com uma abertura subterrânea, ',
-    'Passando por um pântano enevoado, vocês se deparam com uma árvore retorcida, ',
+    'Caminhando por um desfiladeiro estreito, '
+    'vocês se deparam com uma abertura subterrânea, ',
+    'Passando por um pântano enevoado, '
+    'vocês se deparam com uma árvore retorcida, ',
     'No meio de um campo de flores, vocês se deparam com um marco antigo, ',
-    'Percorrendo uma região desértica, vocês se deparam com uma ruína enterrada, ',
-    'Explorando uma floresta encantada, vocês se deparam com um círculo de pedras, ',
-    'Enquanto seguem um rio serpenteante, vocês se deparam com uma ilha pitoresca, ',
-    'Viajando por uma região montanhosa, vocês se deparam com uma passagem estreita, ',
-    'Ao cruzar um planalto ventoso, vocês se deparam com um abrigo improvisado, ',
+    'Percorrendo uma região desértica, '
+    'vocês se deparam com uma ruína enterrada, ',
+    'Explorando uma floresta encantada, '
+    'vocês se deparam com um círculo de pedras, ',
+    'Enquanto seguem um rio serpenteante, '
+    'vocês se deparam com uma ilha pitoresca, ',
+    'Viajando por uma região montanhosa, '
+    'vocês se deparam com uma passagem estreita, ',
+    'Ao cruzar um planalto ventoso, '
+    'vocês se deparam com um abrigo improvisado, ',
     'Em uma cidade em ruínas, vocês se deparam com uma cripta esquecida, ',
-    'Caminhando por uma praia deserta, vocês se deparam com um baú enterrado, ',
-    'No fundo de um vale verdejante, vocês se deparam com uma nascente de água pura, ',
-    'Atravessando um pântano lamacento, vocês se deparam com uma árvore solitária, ',
+    'Caminhando por uma praia deserta, '
+    'vocês se deparam com um baú enterrado, ',
+    'No fundo de um vale verdejante, '
+    'vocês se deparam com uma nascente de água pura, ',
+    'Atravessando um pântano lamacento, '
+    'vocês se deparam com uma árvore solitária, ',
     'No topo de uma colina, vocês se deparam com um monumento antigo, ',
-    'Percorrendo uma floresta enigmática, vocês se deparam com um altar oculto, ',
+    'Percorrendo uma floresta enigmática, '
+    'vocês se deparam com um altar oculto, ',
     'Explorando uma caverna úmida, vocês se deparam com um veio de minério, ',
-    'Ao seguir um riacho murmurante, vocês se deparam com uma cachoeira majestosa, ',
+    'Ao seguir um riacho murmurante, '
+    'vocês se deparam com uma cachoeira majestosa, ',
     'Em um deserto vasto, vocês se deparam com um oásis escondido, ',
     'Cruzando uma floresta antiga, vocês se deparam com uma pedra rúnica, ',
-    'Viajando por uma região selvagem, vocês se deparam com uma caverna escondida, ',
-    'Ao atravessar uma planície vasta, vocês se deparam com uma ruína coberta de hera, ',
+    'Viajando por uma região selvagem, '
+    'vocês se deparam com uma caverna escondida, ',
+    'Ao atravessar uma planície vasta, '
+    'vocês se deparam com uma ruína coberta de hera, ',
     'Em uma cidade abandonada, vocês se deparam com um templo em ruínas, ',
     'No meio de uma selva densa, vocês se deparam com um altar misterioso, ',
-    'Percorrendo uma praia deserta, vocês se deparam com um naufrágio antigo, ',
-    'Caminhando por uma floresta encantada, vocês se deparam com uma clareira radiante, ',
+    'Percorrendo uma praia deserta, '
+    'vocês se deparam com um naufrágio antigo, ',
+    'Caminhando por uma floresta encantada, '
+    'vocês se deparam com uma clareira radiante, ',
     'Em uma região vulcânica, vocês se deparam com uma gruta ígnea, ',
-    'Passando por um desfiladeiro estreito, vocês se deparam com uma passagem subterrânea, ',
-    'No alto de uma montanha, vocês se deparam com um observatório abandonado, ',
-    'Explorando uma floresta sombria, vocês se deparam com uma árvore centenária, ',
-    'Viajando por um planalto ventoso, vocês se deparam com um monumento enigmático, ',
-    'Ao seguir um rio sereno, vocês se deparam com uma nascente de água cristalina, ',
+    'Passando por um desfiladeiro estreito, '
+    'vocês se deparam com uma passagem subterrânea, ',
+    'No alto de uma montanha, '
+    'vocês se deparam com um observatório abandonado, ',
+    'Explorando uma floresta sombria, '
+    'vocês se deparam com uma árvore centenária, ',
+    'Viajando por um planalto ventoso, '
+    'vocês se deparam com um monumento enigmático, ',
+    'Ao seguir um rio sereno, '
+    'vocês se deparam com uma nascente de água cristalina, ',
     'No meio de um campo verdejante, vocês se deparam com uma pedra rúnica, ',
-    'Atravessando uma floresta antiga, vocês se deparam com um altar esculpido, ',
+    'Atravessando uma floresta antiga, '
+    'vocês se deparam com um altar esculpido, ',
     'Em uma cidade em ruínas, vocês se deparam com uma câmara secreta, ',
-    'Percorrendo uma região selvagem, vocês se deparam com um poço misterioso, ',
+    'Percorrendo uma região selvagem, '
+    'vocês se deparam com um poço misterioso, ',
     'Explorando uma caverna escura, vocês se deparam com um brilho no chão, ',
-    'Ao atravessar um desfiladeiro íngreme, vocês se deparam com um abismo profundo, ',
-    'Caminhando por um pântano enevoado, vocês se deparam com um santuário oculto, ',
+    'Ao atravessar um desfiladeiro íngreme, '
+    'vocês se deparam com um abismo profundo, ',
+    'Caminhando por um pântano enevoado, '
+    'vocês se deparam com um santuário oculto, ',
     'Em uma região glacial, vocês se deparam com uma gruta de gelo, ',
-    'Passando por um vale tranquilo, vocês se deparam com uma ruína coberta de neve, ',
+    'Passando por um vale tranquilo, '
+    'vocês se deparam com uma ruína coberta de neve, ',
     'No alto de uma colina, vocês se deparam com um círculo de pedras, ',
-    'Enquanto seguem uma trilha estreita, vocês se deparam com uma bifurcação, ',
+    'Enquanto seguem uma trilha estreita, '
+    'vocês se deparam com uma bifurcação, ',
     'Em uma cidade abandonada, vocês se deparam com uma loja misteriosa, ',
-    'Atravessando uma floresta encantada, vocês se deparam com uma clareira radiante, ',
-    'Viajando por uma região montanhosa, vocês se deparam com um vale verdejante, ',
+    'Atravessando uma floresta encantada, '
+    'vocês se deparam com uma clareira radiante, ',
+    'Viajando por uma região montanhosa, '
+    'vocês se deparam com um vale verdejante, ',
     'No meio de uma planície vasta, vocês se deparam com um marco antigo, ',
     'Explorando um templo esquecido, vocês se deparam com um altar secreto, ',
     'Ao cruzar um deserto vasto, vocês se deparam com um oásis escondido, ',
-    'Percorrendo uma floresta densa, vocês se deparam com uma árvore ancestral, ',
-    'Passando por um riacho sereno, vocês se deparam com uma cachoeira majestosa, ',
+    'Percorrendo uma floresta densa, '
+    'vocês se deparam com uma árvore ancestral, ',
+    'Passando por um riacho sereno, '
+    'vocês se deparam com uma cachoeira majestosa, ',
     'Em uma cidade em ruínas, vocês se deparam com uma câmara subterrânea, ',
-    'Caminhando por uma praia deserta, vocês se deparam com um naufrágio antigo, ',
+    'Caminhando por uma praia deserta, '
+    'vocês se deparam com um naufrágio antigo, ',
     'No alto de uma montanha, vocês se deparam com uma vista panorâmica, ',
     'Explorando uma caverna escura, vocês se deparam com um brilho no chão, ',
     'Ao seguir um rio sinuoso, vocês se deparam com uma cachoeira majestosa, ',
-    'Em uma floresta encantada, vocês se deparam com um círculo de cogumelos, ',
-    'Percorrendo uma região selvagem, vocês se deparam com um abismo profundo, ',
-    'Passando por um vale tranquilo, vocês se deparam com um monumento antigo, ',
-    'No meio de um campo verdejante, vocês se deparam com um poço misterioso, ',
-    'Atravessando um pântano sombrio, vocês se deparam com um santuário oculto, ',
-    'Viajando por uma região vulcânica, vocês se deparam com uma gruta ígnea, ',
-    'Explorando uma cidade abandonada, vocês se deparam com uma mansão sinistra, ',
-    'Caminhando por uma floresta sombria, vocês se deparam com um altar esculpido, ',
+    'Em uma floresta encantada, '
+    'vocês se deparam com um círculo de cogumelos, ',
+    'Percorrendo uma região selvagem, '
+    'vocês se deparam com um abismo profundo, ',
+    'Passando por um vale tranquilo, '
+    'vocês se deparam com um monumento antigo, ',
+    'No meio de um campo verdejante, '
+    'vocês se deparam com um poço misterioso, ',
+    'Atravessando um pântano sombrio, '
+    'vocês se deparam com um santuário oculto, ',
+    'Viajando por uma região vulcânica, '
+    'vocês se deparam com uma gruta ígnea, ',
+    'Explorando uma cidade abandonada, '
+    'vocês se deparam com uma mansão sinistra, ',
+    'Caminhando por uma floresta sombria, '
+    'vocês se deparam com um altar esculpido, ',
     'No alto de uma colina, vocês se deparam com um círculo de pedras, ',
     'Percorrendo uma praia deserta, vocês se deparam com um baú enterrado, ',
     'Em uma região glacial, vocês se deparam com uma nascente de água pura, ',
-    'Passando por um vale verdejante, vocês se deparam com uma ruína coberta de hera, ',
+    'Passando por um vale verdejante, '
+    'vocês se deparam com uma ruína coberta de hera, ',
     'Ao explorar um templo antigo, vocês se deparam com um altar iluminado, ',
 ]
 
