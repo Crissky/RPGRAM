@@ -342,24 +342,31 @@ REPLY_TEXTS_FIND_TREASURE_END = [
     'uma maleta de madeira com cantos reforçados e alças de couro.',
     'uma caixa de metal enferrujada repousa no canto da sala.',
     'uma bolsa de couro gasta está jogada sobre uma mesa.',
-    'um cofre de pedra está embutido na parede, com uma roda giratória na frente.',
-    'uma arca de carvalho maciço repousa no centro da sala, com fechos de ferro.',
+    'um cofre de pedra está embutido na parede, '
+    'com uma roda giratória na frente.',
+    'uma arca de carvalho maciço repousa no centro da sala, '
+    'com fechos de ferro.',
     'um saco de lona está pendurado em um gancho na parede.',
-    'uma pequena urna de cerâmica está posicionada cuidadosamente em uma prateleira.',
+    'uma pequena urna de cerâmica está posicionada '
+    'cuidadosamente em uma prateleira.',
     'um baú de madeira envernizada está empoleirado no topo de um pedestal.',
     'uma sacola de linho bordada está caída perto da porta.',
-    'um pequeno estojo de couro está preso ao lado de uma estante, com fechos intricados.',
+    'um pequeno estojo de couro está preso ao lado de uma estante, '
+    'com fechos intricados.',
     'uma caixa esculpida que está em exibição em um nicho na parede.',
     'um baú de metal polido está embutido no chão, com um símbolo gravado.',
     'uma bolsa de veludo está jogada despretensiosamente sobre uma cadeira.',
     'uma urna finamente trabalhada repousa sobre uma almofada de seda.',
-    'um pequeno baú de madeira de cerejeira está embutido na parede, com um entalhe de folhas.',
+    'um pequeno baú de madeira de cerejeira está embutido na parede, '
+    'com um entalhe de folhas.',
     'uma sacola de lã está pendurada perto da lareira.',
     'um estojo de couro austero está preso a um suporte de madeira simples.',
-    'uma caixa de pedra entalhada com runas está posicionada no centro da sala.',
+    'uma caixa de pedra entalhada com runas '
+    'está posicionada no centro da sala.',
     'uma bolsa de couro decorada está descansando em um banco de pedra.',
     'um cofre de mogno está embutido no chão, com relevos intrincados.',
-    'uma pequena urna de vidro colorido está posicionada em um pedestal de metal.',
+    'uma pequena urna de vidro colorido '
+    'está posicionada em um pedestal de metal.',
     'uma caixa de metal fortemente trancada, com marcas de uso evidentes.',
     'uma bolsa de pano simples, amarrada com um cordão de couro desgastado.',
     'um cofre de madeira nobre, esculpido com padrões geométricos.',
@@ -513,7 +520,8 @@ REPLY_TEXTS_FIND_TREASURE_OPEN = [
     'Com um giro rápido, você abre o objeto e revela algo intrigante.',
     'Desfazendo o feche, você se depara com algo fascinante dentro.',
     'Ao remover a capa, a revelação do interior é envolvente.',
-    'Com um movimento habilidoso, você abre o objeto e encontra algo cativante.',
+    'Com um movimento habilidoso, você abre o objeto e '
+    'encontra algo cativante.',
     'Deslizando as partes, você expõe o que estava escondido.',
     'Ao romper o lacre, você encontra algo memorável dentro.',
     'Com um gesto cuidadoso, você revela o que estava oculto.',
@@ -538,7 +546,8 @@ REPLY_TEXTS_FIND_TREASURE_OPEN = [
     'Ao desvendar o selo, você encontra algo memorável dentro.',
     'Com um gesto delicado, você revela o que estava oculto.',
     'Ao desfazer os laços, a revelação do interior é envolvente.',
-    'Com um movimento habilidoso, você abre o objeto e descobre algo cativante.',
+    'Com um movimento habilidoso, você abre o objeto e '
+    'descobre algo cativante.',
     'Desprendendo as travas, você revela o conteúdo escondido.',
     'Ao romper o selo, você encontra algo surpreendente dentro.',
     'Com um gesto cuidadoso, você revela o que estava guardado.',
