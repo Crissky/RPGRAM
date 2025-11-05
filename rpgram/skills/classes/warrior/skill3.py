@@ -16,7 +16,6 @@ from rpgram.enums.skill import (
     TargetEnum,
     WarriorSkillEnum
 )
-from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 

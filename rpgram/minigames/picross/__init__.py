@@ -1,1 +1,1 @@
-from rpgram.minigames.picross.picross import PicrossGame
+from rpgram.minigames.picross.picross import PicrossGame  # noqa

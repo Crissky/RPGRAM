@@ -4,7 +4,7 @@ from typing import Union, Any, List
 from function.date_time import get_brazil_time_now
 
 from repository.mongo import Database
-from rpgram import (
+from rpgram import (  # noqa
     Dice,
     Equips,
     Player,
@@ -13,13 +13,17 @@ from rpgram import (
     Bag,
     Status,
 )
-from rpgram.boosters import (
+from rpgram.boosters import (  # noqa
     Classe,
     Equipment,
     Race,
 )
-from rpgram.characters import BaseCharacter, PlayerCharacter, NPCharacter
-from rpgram.conditions import (
+from rpgram.characters import (  # noqa
+    BaseCharacter,
+    PlayerCharacter,
+    NPCharacter,
+)
+from rpgram.conditions import (  # noqa
     Condition,
     HealingCondition,
     Heal1Condition,
@@ -45,7 +49,7 @@ from rpgram.conditions import (
     SilenceCondition,
     StunnedCondition,
 )
-from rpgram.consumables import (
+from rpgram.consumables import (  # noqa
     Consumable,
     CureConsumable,
     PanaceaConsumable,

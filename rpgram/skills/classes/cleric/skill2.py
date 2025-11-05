@@ -371,7 +371,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 if __name__ == '__main__':
-    from rpgram.conditions.debuff import CurseCondition, PoisoningCondition
+    from rpgram.conditions.debuff import CurseCondition
     from rpgram.constants.test import CLERIC_CHARACTER
 
     skill = IxChelsAmphoraSkill(CLERIC_CHARACTER)

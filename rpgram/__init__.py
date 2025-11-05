@@ -1,9 +1,9 @@
-from rpgram.dice import Dice
-from rpgram.equips import Equips
-from rpgram.player import Player
-from rpgram.group import Group
-from rpgram.item import Item
-from rpgram.bag import Bag
-from rpgram.status import Status
-from rpgram.minigames.grid import GridGame
-from rpgram.minigames.secret_word import SecretWordGame
+from rpgram.dice import Dice  # noqa
+from rpgram.equips import Equips  # noqa
+from rpgram.player import Player  # noqa
+from rpgram.group import Group  # noqa
+from rpgram.item import Item  # noqa
+from rpgram.bag import Bag  # noqa
+from rpgram.status import Status  # noqa
+from rpgram.minigames.grid import GridGame  # noqa
+from rpgram.minigames.secret_word import SecretWordGame  # noqa

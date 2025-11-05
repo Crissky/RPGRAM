@@ -1,4 +1,4 @@
-from random import choice, sample
+from random import sample
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.debuff import BurnCondition, PoisoningCondition

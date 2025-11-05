@@ -6,7 +6,6 @@ from rpgram.enums.skill import (
     MultiClasseSkillEnum,
     SkillDefenseEnum,
     SkillTypeEnum,
-    SorcererSkillEnum,
     TargetEnum
 )
 from rpgram.enums.stats_combat import CombatStatsEnum

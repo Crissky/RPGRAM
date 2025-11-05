@@ -1,4 +1,3 @@
-from datetime import date
 import re
 
 from rpgram.enums import DamageEnum

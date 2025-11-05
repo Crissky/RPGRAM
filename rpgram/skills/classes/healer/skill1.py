@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD, ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.barrier import ProtectiveAuraCondition
 from rpgram.conditions.target_skill_buff import (
     VitalityAuraCondition
 )

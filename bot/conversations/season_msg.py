@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 

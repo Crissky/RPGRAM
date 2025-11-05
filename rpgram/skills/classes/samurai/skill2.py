@@ -6,13 +6,7 @@ from rpgram.conditions.debuff import (
     PetrifiedCondition,
     StunnedCondition
 )
-from rpgram.conditions.target_skill_debuff import (
-    DoUchiCondition,
-    KoteUchiCondition
-)
 from rpgram.constants.text import (
-    PHYSICAL_ATTACK_EMOJI_TEXT,
-    PHYSICAL_DEFENSE_EMOJI_TEXT,
     PRECISION_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum

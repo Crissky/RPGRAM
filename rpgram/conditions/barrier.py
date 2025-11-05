@@ -665,7 +665,7 @@ BARRIER_BUFFS: Iterable[BarrierCondition] = BarrierBuffs()
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
-    from rpgram.constants.test import BASE_CHARACTER
+    # from rpgram.constants.test import BASE_CHARACTER
 
     for condition in BarrierBuffs():
         print(condition)

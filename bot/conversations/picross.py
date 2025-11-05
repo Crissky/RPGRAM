@@ -2,18 +2,14 @@ from datetime import timedelta
 from random import choice, randint
 from typing import List
 
-from bson import ObjectId
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
-    CommandHandler,
     ContextTypes,
-    ConversationHandler,
-    PrefixHandler
+    ConversationHandler
 )
 
-from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.picross import (
     GOD_BAD_MOVE_FEEDBACK_TEXTS,
@@ -56,7 +52,6 @@ from constant.text import (
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 from repository.mongo.populate.tools import choice_rarity
 
-from rpgram.enums.rarity import RarityEnum
 from rpgram.minigames.picross.picross import PicrossGame
 
 

@@ -1,4 +1,3 @@
-from datetime import timedelta
 from math import sqrt
 from random import choice
 from time import sleep
@@ -11,7 +10,6 @@ from telegram import (
     InlineKeyboardMarkup,
     Update
 )
-from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
@@ -116,7 +114,6 @@ from bot.functions.chat import (
     HALF_AUTODELETE_TIME,
     MIN_AUTODELETE_TIME,
     answer,
-    call_telegram_message_function,
     callback_data_to_dict,
     callback_data_to_string,
     delete_message,

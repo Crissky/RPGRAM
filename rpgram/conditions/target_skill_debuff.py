@@ -419,7 +419,7 @@ TARGET_DEBUFFS: Iterable[TargetSkillDebuffCondition] = TargetDebuffs()
 
 if __name__ == '__main__':
     from rpgram.conditions.factory import condition_factory
-    from rpgram.constants.test import BASE_CHARACTER
+    # from rpgram.constants.test import BASE_CHARACTER
 
     for target_debuff in TargetDebuffs():
         condition = target_debuff

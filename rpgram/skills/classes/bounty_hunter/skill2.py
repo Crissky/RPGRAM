@@ -1,24 +1,11 @@
 from typing import TYPE_CHECKING
 
-from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.debuff import (
-    BleedingCondition,
-    ImprisonedCondition
-)
-from rpgram.conditions.self_skill import (
-    InvestigationCondition,
-    SharpFaroCondition
-)
 from rpgram.constants.text import (
-    DEXTERITY_EMOJI_TEXT,
-    EVASION_EMOJI_TEXT,
     HIT_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
-from rpgram.enums.debuff import DebuffEnum, get_debuff_emoji_text
-from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.skill import (
     BountyHunterSkillEnum,
     SkillDefenseEnum,

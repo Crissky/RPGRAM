@@ -1,32 +1,19 @@
 from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.barrier import AjaxShieldCondition
 from rpgram.conditions.self_skill import (
-    ArenaDomainCondition,
-    FlamingFuryCondition,
-    TurtleStanceCondition,
-    UnicornStanceCondition
+    FlamingFuryCondition
 )
 from rpgram.conditions.special_damage_skill import (
-    SDAresBladeCondition,
     SDFlamingFuryCondition
 )
 from rpgram.conditions.target_skill_buff import (
     MartialBannerCondition,
-    WarBannerCondition,
     WarCornuCondition
 )
 from rpgram.constants.text import (
-    CHARISMA_EMOJI_TEXT,
-    CONSTITUTION_EMOJI_TEXT,
-    EVASION_EMOJI_TEXT,
-    HIT_EMOJI_TEXT,
-    HIT_POINT_FULL_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
-    PHYSICAL_DEFENSE_EMOJI_TEXT,
-    STRENGTH_EMOJI_TEXT,
-    WISDOM_EMOJI_TEXT
+    STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
@@ -36,7 +23,6 @@ from rpgram.enums.skill import (
     SkillTypeEnum,
     TargetEnum
 )
-from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
