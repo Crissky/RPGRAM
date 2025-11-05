@@ -278,7 +278,6 @@ class HydraFangsSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = self.level_rank
 

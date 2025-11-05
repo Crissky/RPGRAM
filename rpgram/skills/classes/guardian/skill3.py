@@ -203,7 +203,6 @@ class ShatterSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             power = int(total_damage)
             level = self.level_rank

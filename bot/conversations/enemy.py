@@ -792,7 +792,6 @@ async def enemy_attack(
         markdown=True
     )
     report_text += attack_report['text']
-    attacker_action_name = attack_report['attack']['action']
     attacker_skill: BaseSkill = attack_report['attack']['skill']
 
     if not attack_report['dead']:
@@ -897,7 +896,6 @@ async def player_attack(
             markdown=True
         )
         new_report_text = attack_report['text']
-        attacker_action_name = attack_report['attack']['action']
         attacker_skill: BaseSkill = attack_report['attack']['skill']
         is_miss = attack_report['defense']['is_miss']
 
@@ -1087,9 +1085,6 @@ async def player_attack_player(
 ) -> dict:
     '''Função que o Jogador ataca outro Jogador
     '''
-
-    attacker_id = attacker_char.player_id
-    defender_id = str(defender_char.player_id)
 
     # ATACA se INIMIGO estiver vivo
     if defender_char.is_alive:

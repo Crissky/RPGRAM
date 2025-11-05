@@ -280,7 +280,6 @@ async def failed(
     context: ContextTypes.DEFAULT_TYPE
 ):
     print('PUZZLE.FAILED()')
-    chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
     text = choice(GODS_LOSES_FEEDBACK_TEXTS)
@@ -309,7 +308,6 @@ async def good_move(
     context: ContextTypes.DEFAULT_TYPE
 ):
     print('PUZZLE.GOOD_MOVE()')
-    chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
     text = choice(GOD_GOOD_MOVE_FEEDBACK_TEXTS)
@@ -333,7 +331,6 @@ async def bad_move(
     context: ContextTypes.DEFAULT_TYPE
 ):
     print('PUZZLE.BAD_MOVE()')
-    chat_id = query.message.chat_id
     message_id = query.message.message_id
     player_name = query.from_user.name
     text = choice(GOD_BAD_MOVE_FEEDBACK_TEXTS)

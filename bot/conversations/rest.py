@@ -396,7 +396,6 @@ async def autorest_midnight(context: ContextTypes.DEFAULT_TYPE):
         current_jobs = context.job_queue.get_jobs_by_name(job_name)
         player_character: BaseCharacter = char_model.get(user_id)
         player_name = player_character.player_name
-        character_id = player_character._id
         current_hp = player_character.cs.show_hit_points
         player_need_rest = (
             player_character.is_damaged or player_character.is_debuffed

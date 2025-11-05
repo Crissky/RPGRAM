@@ -781,7 +781,7 @@ async def answer(query: CallbackQuery, text: str, **kwargs):
 
     try:
         await query.answer(text=text, **kwargs)
-    except BadRequest as e:
+    except BadRequest:
         print('ANSWER() BADREQUEST EXCEPT.')
         print(f'  text: {text}')
 

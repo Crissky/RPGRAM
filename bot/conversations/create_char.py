@@ -166,7 +166,6 @@ async def start_over(
     context: ContextTypes.DEFAULT_TYPE
 ) -> int:
     race_model = RaceModel()
-    query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.id
     inline_keyboard = [
@@ -241,7 +240,6 @@ async def select_classe(
     context: ContextTypes.DEFAULT_TYPE
 ) -> int:
     classe_model = ClasseModel()
-    query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.id
     race_name = context.user_data['race']
@@ -320,7 +318,6 @@ async def select_name(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ) -> int:
-    query = update.callback_query
     chat_id = update.effective_chat.id
     message_id = update.effective_message.id
     classe_name = context.user_data['classe']
@@ -469,7 +466,6 @@ async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     chat_id = update.effective_chat.id
     player_id = update.effective_user.id
     message_id = update.effective_message.id
-    query = update.callback_query
 
     if (char_model.delete(player_id)):
         new_text = ('Personagem deletado com sucesso!')

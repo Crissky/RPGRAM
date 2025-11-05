@@ -188,8 +188,6 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if reply_message:
         reply_message_id = reply_message.message_id
     elif len(args) >= 4 and WORDGAME_COMMAND in args:
-        bot_name = args[0]
-        command = args[1]
         reply_message_id = int(args[2])
         message_text = args[3]
     else:

@@ -273,7 +273,6 @@ class SudarshanaChakraSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
 
         if target.is_alive and target.is_malegne:
             purge_damage = int(total_damage * 9)

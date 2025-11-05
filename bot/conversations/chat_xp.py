@@ -102,7 +102,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             close_by_owner=False,
         )
 
-    group = add_event_points_from_player(update=update, context=context)
+    add_event_points_from_player(update=update, context=context)
 
 
 CHAT_XP_HANDLER = MessageHandler(

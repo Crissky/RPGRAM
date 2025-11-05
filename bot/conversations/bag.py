@@ -399,9 +399,7 @@ async def check_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return CHECK_ROUTES
 
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     item = get_item_from_bag_by_position(user_id, page, item_pos)
-    target_name = get_player_name(target_id)
     markdown_text = get_trocado_and_target_text(
         user_id=user_id,
         target_id=target_id
@@ -750,7 +748,6 @@ async def use_item_consumable(
     name = item.name
     use_quantity = min(item.quantity, use_quantity)
     all_report_text = [f'Reporting({use_quantity:02}):']
-    target_name = get_player_name(target_id)
     user_name = get_player_name(user_id)
     try:
         for i in range(use_quantity):
@@ -904,7 +901,6 @@ async def identify_item(
     item_pos = data['item']
     page = data['page']
     data_user_id = data['user_id']
-    target_id = data['target_id']
     use_quantity = data['identify']
 
     if data_user_id != user_id:  # Não executa se outro usuário mexer na bolsa
@@ -1489,7 +1485,6 @@ async def sort_items(
     bag_model = BagModel()
     user_id = update.effective_user.id
     data = callback_data_to_dict(query.data)
-    page = data['page']
     data_user_id = data['user_id']
     target_id = data['target_id']
     sort = data['sort']
@@ -1556,7 +1551,6 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if query:
         data = callback_data_to_dict(query.data)
         data_user_id = data['user_id']
-        target_id = data['target_id']
 
         # Não executa se outro usuário mexer na bolsa
         if data_user_id != user_id:

@@ -269,8 +269,6 @@ async def toggle_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_id = query.message.message_id
     player_name = query.from_user.name
     picross = get_picross_from_dict(context=context, message_id=message_id)
-    data = callback_data_to_dict(query.data)
-    action_picross_toggle = data['action_picross_toggle']
 
     if picross is None:
         new_text = 'Esse desafio não existe mais.'

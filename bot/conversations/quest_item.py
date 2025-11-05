@@ -209,7 +209,6 @@ async def complete_item_quest(
     '''
 
     user_id = update.effective_user.id
-    chat_id = update.effective_chat.id
     query = update.callback_query
     data = callback_data_to_dict(query.data)
 

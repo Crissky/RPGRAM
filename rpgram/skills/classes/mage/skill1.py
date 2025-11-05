@@ -281,7 +281,6 @@ class ScorchingBreathSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = self.level_rank + self.dice.value
             condition = BurnCondition(level=level)
@@ -520,7 +519,6 @@ class MudShotSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             power = int(total_damage)
             level = self.level_rank
@@ -587,7 +585,6 @@ class SandStormSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = self.level_rank
             condition = BlindnessCondition(level=level)

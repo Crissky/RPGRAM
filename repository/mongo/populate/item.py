@@ -166,7 +166,7 @@ def choice_total_items(min_items: int = 1, max_items: int = 5) -> int:
     total_numbers = max_items - min_items + 1
     base_prob = total_numbers * 100 * 2
     numbers_probs = {
-        str(n): int(base_prob := base_prob // 1.5)
+        str(n): int(base_prob := base_prob // 1.5)  # noqa
         for n in range(min_items, max_items+1)
     }
 
