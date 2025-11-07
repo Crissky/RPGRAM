@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class PhysicalAttackSkill(BaseSkill):
     NAME = 'Physical Attack'
     DESCRIPTION = 'Ataque Físico baseado em "FOR" e "DES".'
+
     def __init__(self, char: 'BaseCharacter'):
         rank = 0
         level = 0
@@ -37,6 +38,7 @@ class PhysicalAttackSkill(BaseSkill):
 class PrecisionAttackSkill(BaseSkill):
     NAME = 'Precision Attack'
     DESCRIPTION = 'Ataque rápido baseado em "DES".'
+
     def __init__(self, char: 'BaseCharacter'):
         rank = 0
         level = 0
@@ -63,6 +65,7 @@ class PrecisionAttackSkill(BaseSkill):
 class MagicalAttackSkill(BaseSkill):
     NAME = 'Magical Attack'
     DESCRIPTION = 'Ataque Mágico baseado em "INT" e "WIS".'
+
     def __init__(self, char: 'BaseCharacter'):
         rank = 0
         level = 0
