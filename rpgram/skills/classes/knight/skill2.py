@@ -129,7 +129,7 @@ class JusticeBladeSkill(BaseSkill):
                 value=justice_damage,
                 markdown=True,
             )
-            report['text'] = '\(*TRANSGRESSOR*\) ' + damage_report['text']
+            report['text'] = '\(*TRANSGRESSOR*\) ' + damage_report['text']  # noqa
 
         return report
 
@@ -197,7 +197,7 @@ class SovereignCutSkill(BaseSkill):
                 value=justice_damage,
                 markdown=True,
             )
-            report['text'] = '\(*TRANSGRESSOR*\) ' + damage_report['text']
+            report['text'] = '\(*TRANSGRESSOR*\) ' + damage_report['text']  # noqa
 
         return report
 
