@@ -5,7 +5,7 @@ GODS_NAME = 'Thoth & Seshat'
 SECTION_TEXT_PUZZLE = 'DESAFIO'
 SECTION_TEXT_PUZZLE_XP = 'XP DESAFIO'
 PATTERN_PUZZLE = (
-    f'{{{CALLBACK_KEY_LIST.index("row")}:\d'
+    fr'{{{CALLBACK_KEY_LIST.index("row")}:\d'
 )
 
 
