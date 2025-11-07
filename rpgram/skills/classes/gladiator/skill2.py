@@ -1,32 +1,19 @@
 from typing import TYPE_CHECKING
 
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
-from rpgram.conditions.barrier import AjaxShieldCondition
 from rpgram.conditions.self_skill import (
-    ArenaDomainCondition,
-    FlamingFuryCondition,
-    TurtleStanceCondition,
-    UnicornStanceCondition
+    FlamingFuryCondition
 )
 from rpgram.conditions.special_damage_skill import (
-    SDAresBladeCondition,
     SDFlamingFuryCondition
 )
 from rpgram.conditions.target_skill_buff import (
     MartialBannerCondition,
-    WarBannerCondition,
     WarCornuCondition
 )
 from rpgram.constants.text import (
-    CHARISMA_EMOJI_TEXT,
-    CONSTITUTION_EMOJI_TEXT,
-    EVASION_EMOJI_TEXT,
-    HIT_EMOJI_TEXT,
-    HIT_POINT_FULL_EMOJI_TEXT,
     PHYSICAL_ATTACK_EMOJI_TEXT,
-    PHYSICAL_DEFENSE_EMOJI_TEXT,
-    STRENGTH_EMOJI_TEXT,
-    WISDOM_EMOJI_TEXT
+    STRENGTH_EMOJI_TEXT
 )
 from rpgram.enums.classe import ClasseEnum
 from rpgram.enums.damage import DamageEnum, get_damage_emoji_text
@@ -36,7 +23,6 @@ from rpgram.enums.skill import (
     SkillTypeEnum,
     TargetEnum
 )
-from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -48,9 +34,9 @@ if TYPE_CHECKING:
 class MartialBannerSkill(BaseSkill):
     NAME = GladiatorSkillEnum.MARTIAL_BANNER.value
     DESCRIPTION = (
-        f'Usa a própria força e ira para evocar o '
-        f'*Sinal do Senhor da Guerra* e conceder à equipe '
-        f'uma inspiração de combate que aumenta o '
+        'Usa a própria força e ira para evocar o '
+        '*Sinal do Senhor da Guerra* e conceder à equipe '
+        'uma inspiração de combate que aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -93,7 +79,7 @@ class MartialBannerSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* recebe o *Sinal do Senhor da Guerra*, '
-                    f'aumentando o '
+                    'aumentando o '
                     f'{PHYSICAL_ATTACK_EMOJI_TEXT} em '
                     f'*{condition.power}* pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -109,15 +95,15 @@ class MartialBannerSkill(BaseSkill):
 class FlamingFurySkill(BaseSkill):
     NAME = GladiatorSkillEnum.FLAMING_FURY.value
     DESCRIPTION = (
-        f'Por meio de uma conexão baseada no mais puro desejo de guerrear, '
-        f'é banhado pela *Fúria do Senhor da Guerra*, '
-        f'aumentando o '
+        'Por meio de uma conexão baseada no mais puro desejo de guerrear, '
+        'é banhado pela *Fúria do Senhor da Guerra*, '
+        'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (300% + 10% x Rank x Nível) e '
-        f'adicionando dano de '
+        'adicionando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -165,8 +151,8 @@ class FlamingFurySkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* é banhado pela '
-                    f'*Fúria do Senhor da Guerra*, '
-                    f'aumentando o '
+                    '*Fúria do Senhor da Guerra*, '
+                    'aumentando o '
                     f'{PHYSICAL_ATTACK_EMOJI_TEXT} em '
                     f'*{condition.bonus_physical_attack}* pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -182,12 +168,12 @@ class FlamingFurySkill(BaseSkill):
 class WarCornuSkill(BaseSkill):
     NAME = GladiatorSkillEnum.WAR_CORNU.value
     DESCRIPTION = (
-        f'Ergue seu imponente *Cornu de Guerra* '
-        f'e o toca com uma força que ressoa nos corações dos aliados, '
-        f'invocando a antiga *Bravura do Senhor da Guerra*, '
-        f'que concede uma aura de coragem e ferocidade '
-        f'àqueles que lutam ao seu lado, '
-        f'aumentando o '
+        'Ergue seu imponente *Cornu de Guerra* '
+        'e o toca com uma força que ressoa nos corações dos aliados, '
+        'invocando a antiga *Bravura do Senhor da Guerra*, '
+        'que concede uma aura de coragem e ferocidade '
+        'àqueles que lutam ao seu lado, '
+        'aumentando o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{STRENGTH_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
@@ -232,7 +218,7 @@ class WarCornuSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* recebe a *Bravura do Senhor da Guerra*, '
-                    f'aumentando o '
+                    'aumentando o '
                     f'{PHYSICAL_ATTACK_EMOJI_TEXT} em '
                     f'*{condition.power}* pontos.\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'

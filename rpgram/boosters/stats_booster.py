@@ -25,10 +25,10 @@ from rpgram.constants.text import (
 
 
 class StatsBooster:
-    '''Classe Base para ser usada em características que dão bônus aos 
+    '''Classe Base para ser usada em características que dão bônus aos
     atributos dos personagens como: Raça, Classe, Taletos, Equipamentos, etc.
 
-    A princípio esses atributos não são alterados, permanencendo os mesmos 
+    A princípio esses atributos não são alterados, permanencendo os mesmos
     valores do momento de sua criação.
 
     '''
@@ -353,8 +353,12 @@ class StatsBooster:
             secret_bonus_charisma=self.__secret_bonus_charisma,
             secret_multiplier_strength=self.__secret_multiplier_strength,
             secret_multiplier_dexterity=self.__secret_multiplier_dexterity,
-            secret_multiplier_constitution=self.__secret_multiplier_constitution,
-            secret_multiplier_intelligence=self.__secret_multiplier_intelligence,
+            secret_multiplier_constitution=(
+                self.__secret_multiplier_constitution
+            ),
+            secret_multiplier_intelligence=(
+                self.__secret_multiplier_intelligence
+            ),
             secret_multiplier_wisdom=self.__secret_multiplier_wisdom,
             secret_multiplier_charisma=self.__secret_multiplier_charisma,
             secret_bonus_hit_points=self.__secret_bonus_hit_points,

@@ -1,1 +1,1 @@
-from rpgram.minigames.grid.grid_game import GridGame
+from rpgram.minigames.grid.grid_game import GridGame  # noqa

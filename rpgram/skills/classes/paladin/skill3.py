@@ -37,9 +37,9 @@ if TYPE_CHECKING:
 class FloggingsSkill(BaseSkill):
     NAME = PaladinSkillEnum.FLOGGINGS.value
     DESCRIPTION = (
-        f'Entregue a *Sede de Justiça*, castiga a transgressão do alvo com um '
-        f'*Flagelo* repleto de pontas cortantes, '
-        f'causando dano de '
+        'Entregue a *Sede de Justiça*, castiga a transgressão do alvo com um '
+        '*Flagelo* repleto de pontas cortantes, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível).'
     )
@@ -94,14 +94,14 @@ class FloggingsSkill(BaseSkill):
 class CutThroatSkill(BaseSkill):
     NAME = PaladinSkillEnum.CUT_THROAT.value
     DESCRIPTION = (
-        f'Imerso no *Ódio dos Deuses*, pune os pecados do oponente com um '
-        f'*Corte em sua Garganta*, '
-        f'causando dano de '
+        'Imerso no *Ódio dos Deuses*, pune os pecados do oponente com um '
+        '*Corte em sua Garganta*, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
-        f'(Rank x Nível).'
+        '(Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -152,13 +152,13 @@ class CutThroatSkill(BaseSkill):
 class VladsPunishmentSkill(BaseSkill):
     NAME = PaladinSkillEnum.VLADS_PUNISHMENT.value
     DESCRIPTION = (
-        f'Envolto pela *Crueldade e Brutalidade dos Deuses*, '
-        f'escarmenta os sacrilégios do inimigo com um '
-        f'golpe empalador, '
-        f'causando dano de '
+        'Envolto pela *Crueldade e Brutalidade dos Deuses*, '
+        'escarmenta os sacrilégios do inimigo com um '
+        'golpe empalador, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BLEEDING)}* com nível igual ao '
         f'(Rank x Nível + {EmojiEnum.DICE.value}).'
     )
@@ -211,13 +211,13 @@ class VladsPunishmentSkill(BaseSkill):
 class ConfessionSkill(BaseSkill):
     NAME = PaladinSkillEnum.CONFESSION.value
     DESCRIPTION = (
-        f'Combina a *Fé Inabalável* com a *Força da Justiça* '
-        f'para se conecta com uma força superior, canalizando sua energia '
-        f'para purificar a sua alma, '
-        f'revigorando seu espírito e curando seu '
+        'Combina a *Fé Inabalável* com a *Força da Justiça* '
+        'para se conecta com uma força superior, canalizando sua energia '
+        'para purificar a sua alma, '
+        'revigorando seu espírito e curando seu '
         f'{HIT_POINT_FULL_EMOJI_TEXT} com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (300% + 10% x Rank x Nível). '
-        f'além disso, cura todas as *Condições Amaldiçoantes* '
+        'além disso, cura todas as *Condições Amaldiçoantes* '
         f'({get_debuffs_emoji_text(*CURSED_DEBUFFS_NAMES)}).'
     )
     RANK = 1
@@ -259,8 +259,8 @@ class ConfessionSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* respira fundo, clamando às '
-                f'forças superiores que purificam a sua alma e '
-                f'curam as suas feridas.\n'
+                'forças superiores que purificam a sua alma e '
+                'curam as suas feridas.\n'
                 f'*{report_text}*({dice.text}).'
             )
         }
@@ -275,15 +275,15 @@ class ConfessionSkill(BaseSkill):
 class PenitenceSkill(BaseSkill):
     NAME = PaladinSkillEnum.PENITENCE.value
     DESCRIPTION = (
-        f'Constringe o *Cilício* em sua coxa, '
-        f'submetendo-se a um julgamento interior para expurgar '
-        f'os próprios pecados e fortalecer a sua fé, '
-        f'diminuindo o '
+        'Constringe o *Cilício* em sua coxa, '
+        'submetendo-se a um julgamento interior para expurgar '
+        'os próprios pecados e fortalecer a sua fé, '
+        'diminuindo o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT} BASE* em 25% '
-        f'para aumentar o '
+        'para aumentar o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
-        f'(25% do valor base + 1% x Rank x Nível).'
+        '(25% do valor base + 1% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -325,10 +325,10 @@ class PenitenceSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* Constringe o seu *Cilício*, '
-                f'reduzindo o seu '
+                'reduzindo o seu '
                 f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
                 f'em {condition.bonus_hit_points} pontos '
-                f'em favor de aumentar a seu '
+                'em favor de aumentar a seu '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos e a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -344,11 +344,11 @@ class PenitenceSkill(BaseSkill):
 class ConfiscationSkill(BaseSkill):
     NAME = PaladinSkillEnum.CONFISCATION.value
     DESCRIPTION = (
-        f'Usa o poder da fé para desferir um raio de *Energia Sagrada*, '
-        f'causando dano '
+        'Usa o poder da fé para desferir um raio de *Energia Sagrada*, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'*Confiscando* um *Buff* aleatótio do alvo.'
+        '*Confiscando* um *Buff* aleatótio do alvo.'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -415,12 +415,12 @@ class ConfiscationSkill(BaseSkill):
 class ExcommunicateSkill(BaseSkill):
     NAME = PaladinSkillEnum.EXCOMMUNICATE.value
     DESCRIPTION = (
-        f'Usa o poder do seu dogma para desferir uma rajada '
-        f'de *Energia Sagrada*, '
-        f'causando dano '
+        'Usa o poder do seu dogma para desferir uma rajada '
+        'de *Energia Sagrada*, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'*Eliminando* todos os *Buff* do alvo.'
+        '*Eliminando* todos os *Buff* do alvo.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -472,16 +472,16 @@ class ExcommunicateSkill(BaseSkill):
 class ExileSkill(BaseSkill):
     NAME = PaladinSkillEnum.EXILE.value
     DESCRIPTION = (
-        f'Usa uma manifestação poderosa da fé e da justiça para invocar '
-        f'um torrencial de *Energia Sagrada*, '
-        f'causando dano '
+        'Usa uma manifestação poderosa da fé e da justiça para invocar '
+        'um torrencial de *Energia Sagrada*, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (175% + 5% x Rank x Nível), '
-        f'*Eliminando* todos os *Buff* do alvo e '
-        f'adicionando as condições '
+        '*Eliminando* todos os *Buff* do alvo e '
+        'adicionando as condições '
         f'*{get_debuff_emoji_text(DebuffEnum.CURSE)}* e '
         f'*{get_debuff_emoji_text(DebuffEnum.EXHAUSTION)}* com nível igual ao '
-        f'(Rank x Nível).'
+        '(Rank x Nível).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{

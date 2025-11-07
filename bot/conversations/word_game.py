@@ -112,8 +112,8 @@ async def job_start_wordgame(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_timeout_wordgame(context: ContextTypes.DEFAULT_TYPE):
-    ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
-    puzzle encerre. Mas se já estiver forma do horário de spawn, os 
+    ''' Causa dano e Status aos jogadores caso o tempo para concluir o
+    puzzle encerre. Mas se já estiver forma do horário de spawn, os
     deuses irão embora.
     '''
 
@@ -188,12 +188,10 @@ async def answer_wordgame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if reply_message:
         reply_message_id = reply_message.message_id
     elif len(args) >= 4 and WORDGAME_COMMAND in args:
-        bot_name = args[0]
-        command = args[1]
         reply_message_id = int(args[2])
         message_text = args[3]
     else:
-        print(f'Sem reply_message e sem 4 args.')
+        print('Sem reply_message e sem 4 args.')
         return None
 
     game = get_wordgame_from_dict(context=context, message_id=reply_message_id)
@@ -365,7 +363,7 @@ def put_wordgame_in_dict(
     message_id: int,
     game: SecretWordGame,
 ):
-    '''Adiciona o Word Game ao dicionário de Games, em que a chave é a 
+    '''Adiciona o Word Game ao dicionário de Games, em que a chave é a
     message_id.
     '''
 
@@ -380,7 +378,7 @@ def get_wordgame_from_dict(
     context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
 ) -> SecretWordGame:
-    '''Retorna um Word Game do dicionário de Games de acordo com o 
+    '''Retorna um Word Game do dicionário de Games de acordo com o
     message_id passado.
     '''
 
@@ -397,7 +395,7 @@ def remove_wordgame_from_dict(
     context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
 ):
-    '''Remove um Word Game do dicionário de Games de acordo com o 
+    '''Remove um Word Game do dicionário de Games de acordo com o
     message_id passado.
     '''
 
@@ -411,7 +409,7 @@ def put_message_id_in_delete_list(
     context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
 ):
-    '''Adiciona um message_id a lista de message_ids das mensagens que 
+    '''Adiciona um message_id a lista de message_ids das mensagens que
     serão deletadas
     '''
 

@@ -37,9 +37,9 @@ if TYPE_CHECKING:
 class VineWhipSkill(BaseSkill):
     NAME = DruidSkillEnum.VINE_WHIP.value
     DESCRIPTION = (
-        f'Com um movimento rápido, germina instantaneamente sua arma em um '
-        f'*Chicote de Vinha* para atacar o oponente, '
-        f'causando dano de '
+        'Com um movimento rápido, germina instantaneamente sua arma em um '
+        '*Chicote de Vinha* para atacar o oponente, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PLANTY)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
@@ -76,9 +76,9 @@ class VineWhipSkill(BaseSkill):
 class SilkFlossSwordSkill(BaseSkill):
     NAME = DruidSkillEnum.SILK_FLOSS_SWORD.value
     DESCRIPTION = (
-        f'Com maestria, desabrocha prontamente sua arma em uma '
-        f'*Espada Espiheta* e ataca o oponente, '
-        f'causando dano de '
+        'Com maestria, desabrocha prontamente sua arma em uma '
+        '*Espada Espiheta* e ataca o oponente, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PLANTY)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.SLASHING)}* com base no '
@@ -122,9 +122,9 @@ class SilkFlossSwordSkill(BaseSkill):
 class OakWarhammerSkill(BaseSkill):
     NAME = DruidSkillEnum.OAK_WARHAMMER.value
     DESCRIPTION = (
-        f'Desabrolha sua arma em um gigantesco '
+        'Desabrolha sua arma em um gigantesco '
         f'*{DruidSkillEnum.OAK_WARHAMMER.value}* para atacar o oponente, '
-        f'causando dano de '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.PLANTY)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
@@ -168,9 +168,9 @@ class OakWarhammerSkill(BaseSkill):
 class VineBucklerSkill(BaseSkill):
     NAME = DruidSkillEnum.VINE_BUCKLER.value
     DESCRIPTION = (
-        f'Brota um *Broquel* feito de um emaranhado de *Vinhas* ou, '
-        f'caso possua um escudo, o reveste com *Vinhas*, '
-        f'aumentando a '
+        'Brota um *Broquel* feito de um emaranhado de *Vinhas* ou, '
+        'caso possua um escudo, o reveste com *Vinhas*, '
+        'aumentando a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível) e a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -215,7 +215,7 @@ class VineBucklerSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa um *{self.name}*, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_defense} pontos e a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
@@ -231,15 +231,15 @@ class VineBucklerSkill(BaseSkill):
 class SilkFlossSpaulderSkill(BaseSkill):
     NAME = DruidSkillEnum.SILK_FLOSS_SPAULDER.value
     DESCRIPTION = (
-        f'Brolha uma *Espaldeira* constituida de um entrançado de '
-        f'*Madeira Espinhosa* que aumenta o '
+        'Brolha uma *Espaldeira* constituida de um entrançado de '
+        '*Madeira Espinhosa* que aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
-        f'Além disso, adiciona dano de '
+        'Além disso, adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* '
-        f'baseado no '
+        'baseado no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -288,7 +288,7 @@ class SilkFlossSpaulderSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa uma *{self.name}*, '
-                f'aumentando o '
+                'aumentando o '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos e a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -304,8 +304,8 @@ class SilkFlossSpaulderSkill(BaseSkill):
 class OakArmorSkill(BaseSkill):
     NAME = DruidSkillEnum.OAK_ARMOR.value
     DESCRIPTION = (
-        f'Se reveste com um entrelaçado de *Placas de Carvalho* '
-        f'que aumenta a '
+        'Se reveste com um entrelaçado de *Placas de Carvalho* '
+        'que aumenta a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (300% + 10% x Rank x Nível) e a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -352,7 +352,7 @@ class OakArmorSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa uma *{self.name}*, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_defense} pontos e a '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '

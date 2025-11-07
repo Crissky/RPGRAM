@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 class RobustBlockSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.ROBUST_BLOCK.value
     DESCRIPTION = (
-        f'Assume uma postura defensiva aumentando a '
+        'Assume uma postura defensiva aumentando a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -74,7 +74,7 @@ class RobustBlockSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se concentra em fortalecer a sua guarda '
-                f'assumindo uma postura preventiva que aumenta a sua '
+                'assumindo uma postura preventiva que aumenta a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -88,8 +88,8 @@ class RobustBlockSkill(BaseSkill):
 class GuardianShieldSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.GUARDIAN_SHIELD.value
     DESCRIPTION = (
-        f'Erguendo o escudo com *Fé Inabalável*, evoca um *Escudo Familiar '
-        f'Protetivo* que resguarda um aliado com uma barreira baseada na '
+        'Erguendo o escudo com *Fé Inabalável*, evoca um *Escudo Familiar '
+        'Protetivo* que resguarda um aliado com uma barreira baseada na '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -141,7 +141,7 @@ class GuardianShieldSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* se impõe contra o perigo, evocando um '
-                    f'*Escudo Familiar Protetivo* para resguardar '
+                    '*Escudo Familiar Protetivo* para resguardar '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -157,8 +157,8 @@ class GuardianShieldSkill(BaseSkill):
 class HeavyChargeSkill(BaseSkill):
     NAME = MultiClasseSkillEnum.HEAVY_CHARGE.value
     DESCRIPTION = (
-        f'Assume uma postura ofensiva, avançando contra o inimigo '
-        f'usando seu corpo massivo como arma, causando dano de '
+        'Assume uma postura ofensiva, avançando contra o inimigo '
+        'usando seu corpo massivo como arma, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base em '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (75% + 5% x Rank x Nível) e '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (50% + 5% x Rank x Nível).'

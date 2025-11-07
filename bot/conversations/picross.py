@@ -2,18 +2,14 @@ from datetime import timedelta
 from random import choice, randint
 from typing import List
 
-from bson import ObjectId
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
     CallbackQueryHandler,
-    CommandHandler,
     ContextTypes,
-    ConversationHandler,
-    PrefixHandler
+    ConversationHandler
 )
 
-from bot.constants.filters import BASIC_COMMAND_FILTER, PREFIX_COMMANDS
 from bot.constants.job import BASE_JOB_KWARGS
 from bot.constants.picross import (
     GOD_BAD_MOVE_FEEDBACK_TEXTS,
@@ -56,7 +52,6 @@ from constant.text import (
 from function.text import create_text_in_box, escape_for_citation_markdown_v2
 from repository.mongo.populate.tools import choice_rarity
 
-from rpgram.enums.rarity import RarityEnum
 from rpgram.minigames.picross.picross import PicrossGame
 
 
@@ -124,8 +119,8 @@ async def job_start_picross(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def job_timeout_picross(context: ContextTypes.DEFAULT_TYPE):
-    ''' Causa dano e Status aos jogadores caso o tempo para concluir o 
-    picross encerre. Mas se já estiver fora do horário de spawn, o 
+    ''' Causa dano e Status aos jogadores caso o tempo para concluir o
+    picross encerre. Mas se já estiver fora do horário de spawn, o
     deus irá embora.
     '''
 
@@ -274,8 +269,6 @@ async def toggle_picross(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_id = query.message.message_id
     player_name = query.from_user.name
     picross = get_picross_from_dict(context=context, message_id=message_id)
-    data = callback_data_to_dict(query.data)
-    action_picross_toggle = data['action_picross_toggle']
 
     if picross is None:
         new_text = 'Esse desafio não existe mais.'
@@ -400,7 +393,7 @@ def put_picross_in_dict(
     message_id: int,
     picross: PicrossGame,
 ):
-    '''Adiciona o picross ao dicionário de Picrosses, em que a chave é a 
+    '''Adiciona o picross ao dicionário de Picrosses, em que a chave é a
     message_id.
     '''
 

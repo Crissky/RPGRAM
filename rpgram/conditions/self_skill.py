@@ -1,5 +1,5 @@
 ''' Módulo com as Condições do tipo SELF
-    Essas Condições usam dos stats do personagem atualizados, por isso 
+    Essas Condições usam dos stats do personagem atualizados, por isso
     recebem um personagem como argumento.
 '''
 
@@ -1050,7 +1050,8 @@ class TurtleStanceCondition(SelfSkillCondition):
     @property
     def description(self) -> str:
         return (
-            f'*Postura Defensiva* que aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
+            '*Postura Defensiva* que aumenta a '
+            f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
             f'em {self.bonus_physical_defense} pontos '
             f'(100%{EmojiEnum.CONSTITUTION.value} + 10% x Nível) '
             f'por {self.turn} turno(s).'

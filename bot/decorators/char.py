@@ -160,7 +160,7 @@ ATTACK_TEXT = [
 
 
 def need_have_char(callback):
-    '''Pula ação se o jogador não tiver um personagem e avisa qual o comando 
+    '''Pula ação se o jogador não tiver um personagem e avisa qual o comando
     para criar um.
     '''
 
@@ -196,7 +196,7 @@ def skip_if_no_have_char(callback):
     '''
 
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_NO_HAVE_CHAR')
+        print('@SKIP_IF_NO_HAVE_CHAR')
         char_model = CharacterModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
@@ -214,7 +214,7 @@ def skip_if_dead_char(callback):
     '''
 
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_DEAD_CHAR')
+        print('@SKIP_IF_DEAD_CHAR')
         char_model = CharacterModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
@@ -260,7 +260,7 @@ def skip_if_dead_char_silent(callback):
     '''
 
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_DEAD_CHAR_SILENT')
+        print('@SKIP_IF_DEAD_CHAR_SILENT')
         char_model = CharacterModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id

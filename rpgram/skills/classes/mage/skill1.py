@@ -46,9 +46,9 @@ if TYPE_CHECKING:
 class MagicBlastSkill(BaseSkill):
     NAME = MageSkillEnum.MAGIC_BLAST.value
     DESCRIPTION = (
-        f'Concentra energia em um ponto específico, resultando em uma '
-        f'*Explosão Mágica* devastadora '
-        f'que causa dano de '
+        'Concentra energia em um ponto específico, resultando em uma '
+        '*Explosão Mágica* devastadora '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLAST)}* e '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -87,9 +87,9 @@ class MagicBlastSkill(BaseSkill):
 class IceShardSkill(BaseSkill):
     NAME = MageSkillEnum.ICE_SHARD.value
     DESCRIPTION = (
-        f'Com um gesto rápido e preciso, conjura uma *Estaca Afiada '
-        f'de Gelo Puro*, lançando-a em alta velocidade '
-        f'em direção ao seu alvo, causando dano de '
+        'Com um gesto rápido e preciso, conjura uma *Estaca Afiada '
+        'de Gelo Puro*, lançando-a em alta velocidade '
+        'em direção ao seu alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.PIERCING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -128,9 +128,9 @@ class IceShardSkill(BaseSkill):
 class FulminantLightningSkill(BaseSkill):
     NAME = MageSkillEnum.FULMINANT_LIGHTNING.value
     DESCRIPTION = (
-        f'Canalisa na ponta dos dedos uma energia infrene '
-        f'e dispara no alvo um *Raio Fulminante* '
-        f'que causa dano de '
+        'Canalisa na ponta dos dedos uma energia infrene '
+        'e dispara no alvo um *Raio Fulminante* '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -168,11 +168,11 @@ class FulminantLightningSkill(BaseSkill):
 class RockArmorSkill(BaseSkill):
     NAME = MageSkillEnum.ROCK_ARMOR.value
     DESCRIPTION = (
-        f'Assume uma posição defensiva e conjura uma pesada '
-        f'*Armadura de Rocha* que aumenta a '
+        'Assume uma posição defensiva e conjura uma pesada '
+        '*Armadura de Rocha* que aumenta a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na redução de 25% da '
         f'*{EVASION_EMOJI_TEXT} BASE* '
-        f'mais um bônus de (15% x Rank x Nível) do valor reduzido.'
+        'mais um bônus de (15% x Rank x Nível) do valor reduzido.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -214,10 +214,10 @@ class RockArmorSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* conjura uma *Armadura de Rocha*, '
-                f'reduzindo a sua '
+                'reduzindo a sua '
                 f'*{EVASION_EMOJI_TEXT}* '
                 f'em {condition.bonus_evasion} pontos '
-                f'em favor de aumentar a sua '
+                'em favor de aumentar a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -231,13 +231,13 @@ class RockArmorSkill(BaseSkill):
 class ScorchingBreathSkill(BaseSkill):
     NAME = MageSkillEnum.SCORCHING_BREATH.value
     DESCRIPTION = (
-        f'Canaliza a energia nos pulmões e sopra um jato concentrado de '
-        f'*Vapor Superaquecido* '
-        f'contra um alvo, causando dano de '
+        'Canaliza a energia nos pulmões e sopra um jato concentrado de '
+        '*Vapor Superaquecido* '
+        'contra um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.BURN)}* com nível igual ao '
         f'(Rank x Nível + {EmojiEnum.DICE.value}).'
     )
@@ -281,7 +281,6 @@ class ScorchingBreathSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = self.level_rank + self.dice.value
             condition = BurnCondition(level=level)
@@ -294,9 +293,9 @@ class ScorchingBreathSkill(BaseSkill):
 class FireStormSkill(BaseSkill):
     NAME = MageSkillEnum.FIRE_STORM.value
     DESCRIPTION = (
-        f'Com um abanar de mãos, cria um *Tornado de Fogo* que se move pelo '
-        f'campo de batalha, queimando tudo o que encontra e '
-        f'causando dano de '
+        'Com um abanar de mãos, cria um *Tornado de Fogo* que se move pelo '
+        'campo de batalha, queimando tudo o que encontra e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (87% + 2.5% x Rank x Nível).'
@@ -338,7 +337,7 @@ class FireStormSkill(BaseSkill):
 class LavaSkinSkill(BaseSkill):
     NAME = MageSkillEnum.LAVA_SKIN.value
     DESCRIPTION = (
-        f'Transmuta a *Pele* em uma camada de *Lava Endurecida*, '
+        'Transmuta a *Pele* em uma camada de *Lava Endurecida*, '
         f'aumentando a *{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* com base na '
@@ -393,7 +392,7 @@ class LavaSkinSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* transmuta a *Pele* em uma camada de '
-                f'*Lava Endurecida*, aumentando a sua '
+                '*Lava Endurecida*, aumentando a sua '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_magical_defense} pontos '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
@@ -409,7 +408,7 @@ class LavaSkinSkill(BaseSkill):
 class MistFormSkill(BaseSkill):
     NAME = MageSkillEnum.MIST_FORM.value
     DESCRIPTION = (
-        f'Transfigura-se em uma *Forma Etérea* que aumenta a '
+        'Transfigura-se em uma *Forma Etérea* que aumenta a '
         f'*{EVASION_EMOJI_TEXT}* com base na '
         f'*{INTELLIGENCE_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
@@ -457,7 +456,7 @@ class MistFormSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* transfigura o seu corpo em uma '
-                f'*Forma Etérea*, aumentando a sua '
+                '*Forma Etérea*, aumentando a sua '
                 f'*{EVASION_EMOJI_TEXT}* '
                 f'em {condition.bonus_evasion} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_STATUS}'
@@ -471,14 +470,14 @@ class MistFormSkill(BaseSkill):
 class MudShotSkill(BaseSkill):
     NAME = MageSkillEnum.MUD_SHOT.value
     DESCRIPTION = (
-        f'Lança uma bola de lama compacta contra um alvo, explodindo ao '
-        f'impacto e espalhando lama pegajosa '
-        f'contra um alvo, causando dano de '
+        'Lança uma bola de lama compacta contra um alvo, explodindo ao '
+        'impacto e espalhando lama pegajosa '
+        'contra um alvo, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
         f'diminuindo a *{EVASION_EMOJI_TEXT}* '
-        f'com base no dano causado (8% + 2% x Rank x Nível).'
+        'com base no dano causado (8% + 2% x Rank x Nível).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{
@@ -520,7 +519,6 @@ class MudShotSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             power = int(total_damage)
             level = self.level_rank
@@ -539,10 +537,10 @@ class MudShotSkill(BaseSkill):
 class SandStormSkill(BaseSkill):
     NAME = MageSkillEnum.SAND_STORM.value
     DESCRIPTION = (
-        f'Conjura uma *Tempestade de Areia* que varre o campo de batalha, '
-        f'obscurecendo a visão dos inimigos '
+        'Conjura uma *Tempestade de Areia* que varre o campo de batalha, '
+        'obscurecendo a visão dos inimigos '
         f'(*{get_debuff_emoji_text(DebuffEnum.BLINDNESS)}*) e '
-        f'causando dano de '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.GROUND)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (87% + 2.5% x Rank x Nível).'
@@ -587,7 +585,6 @@ class SandStormSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = self.level_rank
             condition = BlindnessCondition(level=level)

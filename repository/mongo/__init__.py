@@ -1,11 +1,11 @@
-from repository.mongo.collection_enum import CollectionEnum
-from repository.mongo.database import Database
-from repository.mongo.models.model import Model
-from repository.mongo.models.character import CharacterModel
-from repository.mongo.models.classe import ClasseModel
-from repository.mongo.models.config import GroupModel
-from repository.mongo.models.item import ItemModel
-from repository.mongo.models.player import PlayerModel
-from repository.mongo.models.race import RaceModel
-from repository.mongo.models.equips import EquipsModel
-from repository.mongo.models.bag import BagModel
+from repository.mongo.collection_enum import CollectionEnum  # noqa
+from repository.mongo.database import Database  # noqa
+from repository.mongo.models.model import Model  # noqa
+from repository.mongo.models.character import CharacterModel  # noqa
+from repository.mongo.models.classe import ClasseModel  # noqa
+from repository.mongo.models.config import GroupModel  # noqa
+from repository.mongo.models.item import ItemModel  # noqa
+from repository.mongo.models.player import PlayerModel  # noqa
+from repository.mongo.models.race import RaceModel  # noqa
+from repository.mongo.models.equips import EquipsModel  # noqa
+from repository.mongo.models.bag import BagModel  # noqa

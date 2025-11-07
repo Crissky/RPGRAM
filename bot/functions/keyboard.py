@@ -24,9 +24,9 @@ def reshape_row_buttons(
     buttons_per_row: int = 2
 ) -> List[List[InlineKeyboardButton]]:
     ''' Transforma uma lista de botões em uma lista de listas de botões,
-        com um número de botões por linha definido pelo parâmetro 
+        com um número de botões por linha definido pelo parâmetro
         buttons_per_row.
-        Por exemplo, se buttons_per_row for 2, então será gerada uma lista com 
+        Por exemplo, se buttons_per_row for 2, então será gerada uma lista com
         listas de botões, onde cada lista de botões terá no máximo 2 botões.
     '''
 

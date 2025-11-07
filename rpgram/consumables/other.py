@@ -3,7 +3,6 @@ from random import uniform
 from typing import Union
 
 from bson import ObjectId
-from rpgram.conditions.condition import Condition
 from rpgram.consumables.consumable import Consumable
 from rpgram.enums.emojis import EmojiEnum
 from rpgram.enums.function import get_enum_index

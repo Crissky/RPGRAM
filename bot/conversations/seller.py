@@ -275,7 +275,6 @@ async def check_sell_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     trocado = get_player_trocado(user_id)
     data = callback_data_to_dict(query.data)
     item_pos = data['sell_item']
@@ -382,7 +381,6 @@ async def buy_item(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     user_id = update.effective_user.id
     user_name = update.effective_user.name
-    silent = get_attribute_group_or_player(chat_id, 'silent')
     data = callback_data_to_dict(query.data)
     item_pos = data['sell_item']
     item_id = data['sell_item_id']

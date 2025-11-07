@@ -209,7 +209,6 @@ async def complete_item_quest(
     '''
 
     user_id = update.effective_user.id
-    chat_id = update.effective_chat.id
     query = update.callback_query
     data = callback_data_to_dict(query.data)
 
@@ -274,7 +273,7 @@ async def complete_trocado_pouch_quest(
     user_id: int,
     query: CallbackQuery
 ):
-    '''Verifica se o Jogador possui o dinheiro suficiente para completar a 
+    '''Verifica se o Jogador possui o dinheiro suficiente para completar a
     quest. Se sim, subtrai o dinheiro do Jogador e retorna True. Se não,
     retorna False e exibe uma mensagem de erro.
     '''
@@ -305,7 +304,7 @@ async def send_item_quest_reward(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
-    '''Edita a mensagem da quest para narrar o agradecimento e envia um 
+    '''Edita a mensagem da quest para narrar o agradecimento e envia um
     Equipamento como recompensa.
     '''
 

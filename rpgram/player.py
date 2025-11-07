@@ -69,7 +69,7 @@ class Player:
 
     def in_chat(self, chat_id: int) -> bool:
         '''Checa se o jogador já possui o chat_id em sua lista.
-        Retorna True se o chat_id esta na lista de chat_ids do jogador e, 
+        Retorna True se o chat_id esta na lista de chat_ids do jogador e,
         caso contrário, retorna False.
         '''
 
@@ -152,7 +152,7 @@ class Player:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                raise ValueError(f'Forneça o valor "True" ou "False"')
+                raise ValueError('Forneça o valor "True" ou "False"')
             self.verbose = value
         elif key in ['SILENT', 'SILENCIOSO']:
             value = value.upper()
@@ -161,7 +161,7 @@ class Player:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                raise ValueError(f'Forneça o valor "True" ou "False"')
+                raise ValueError('Forneça o valor "True" ou "False"')
             self.silent = value
         else:
             raise KeyError(f'"{key}" não é uma chave válida.')

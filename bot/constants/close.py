@@ -1,5 +1,4 @@
 import re
-from rpgram.enums import EmojiEnum
 
 
 # CALLBACKS

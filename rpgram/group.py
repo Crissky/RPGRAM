@@ -109,7 +109,7 @@ class Group:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                raise ValueError(f'Forneça o valor "True" ou "False"')
+                raise ValueError('Forneça o valor "True" ou "False"')
             self.verbose = value
         elif key in ['SILENT', 'SILENCIOSO']:
             value = value.upper()
@@ -118,17 +118,17 @@ class Group:
             elif value in ['TRUE', 'YES', '1']:
                 value = True
             else:
-                raise ValueError(f'Forneça o valor "True" ou "False"')
+                raise ValueError('Forneça o valor "True" ou "False"')
             self.silent = value
         elif key in ['SPAWN_START_TIME', 'START_TIME']:
             value = int(value)
             if value > 24 or value < 0:
-                raise ValueError(f'Forneça um valor entre 0 e 24')
+                raise ValueError('Forneça um valor entre 0 e 24')
             self.spawn_start_time = value
         elif key in ['SPAWN_END_TIME', 'END_TIME']:
             value = int(value)
             if value > 24 or value < 0:
-                raise ValueError(f'Forneça um valor entre 0 e 24')
+                raise ValueError('Forneça um valor entre 0 e 24')
             elif value < self.spawn_start_time:
                 raise ValueError(
                     'Forneça um valor maior que o start_time: '
@@ -138,12 +138,12 @@ class Group:
         elif key in ['MULTIPLIER_XP', 'XP']:
             value = float(value)
             if value < 0.0:
-                raise ValueError(f'Forneça um valor maior que zero.')
+                raise ValueError('Forneça um valor maior que zero.')
             self.multiplier_xp = value
         elif key in ['CHAR_MULTIPLIER_XP', 'CHAR_XP']:
             value = float(value)
             if value < 0.0:
-                raise ValueError(f'Forneça um valor maior que zero.')
+                raise ValueError('Forneça um valor maior que zero.')
             self.character_multiplier_xp = value
         else:
             raise KeyError(f'"{key}" não é uma chave válida.')

@@ -197,7 +197,6 @@ class ConcealmentSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
 
         if target.is_alive and target.is_malegne:
             purge_damage = int(total_damage * 6)
@@ -265,7 +264,6 @@ class HolyFireSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
 
         if target.is_alive and target.is_malegne:
             purge_damage = int(total_damage * 9)
@@ -332,7 +330,6 @@ class DivinePunishmentSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
 
         if target.is_alive and target.is_malegne:
             purge_damage = int(total_damage * 99)
@@ -371,7 +368,7 @@ SKILL_WAY_DESCRIPTION = {
 
 
 if __name__ == '__main__':
-    from rpgram.conditions.debuff import CurseCondition, PoisoningCondition
+    from rpgram.conditions.debuff import CurseCondition
     from rpgram.constants.test import CLERIC_CHARACTER
 
     skill = IxChelsAmphoraSkill(CLERIC_CHARACTER)

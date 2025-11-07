@@ -42,12 +42,12 @@ if TYPE_CHECKING:
 class SacredBalmSkill(BaseSkill):
     NAME = PaladinSkillEnum.SACRED_BALM.value
     DESCRIPTION = (
-        f'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
+        'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
         f'*{PaladinSkillEnum.SACRED_BALM.value}*, '
-        f'concedendo dano '
+        'concedendo dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHT)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -111,13 +111,13 @@ class SacredBalmSkill(BaseSkill):
 class GreenDragonBalmSkill(BaseSkill):
     NAME = PaladinSkillEnum.GREENDRAGON_BALM.value
     DESCRIPTION = (
-        f'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
+        'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
         f'*{PaladinSkillEnum.GREENDRAGON_BALM.value}*, '
-        f'concedendo dano '
+        'concedendo dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.ACID)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -184,13 +184,13 @@ class GreenDragonBalmSkill(BaseSkill):
 class RedPhoenixBalmSkill(BaseSkill):
     NAME = PaladinSkillEnum.REDPHOENIX_BALM.value
     DESCRIPTION = (
-        f'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
+        'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
         f'*{PaladinSkillEnum.REDPHOENIX_BALM.value}*, '
-        f'concedendo dano '
+        'concedendo dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WIND)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -257,14 +257,14 @@ class RedPhoenixBalmSkill(BaseSkill):
 class BlueDjinnBalmSkill(BaseSkill):
     NAME = PaladinSkillEnum.BLUEDJINN_BALM.value
     DESCRIPTION = (
-        f'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
+        'Um toque suave no alvo com a ponta dos dedos, sagramenta-o com o '
         f'*{PaladinSkillEnum.BLUEDJINN_BALM.value}*, '
-        f'concedendo dano '
+        'concedendo dano '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}*, '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}*, de '
         f'*{get_damage_emoji_text(DamageEnum.COLD)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.WATER)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -332,7 +332,7 @@ class BlueDjinnBalmSkill(BaseSkill):
 class SquireAnointingSkill(BaseSkill):
     NAME = PaladinSkillEnum.SQUIRE_ANOINTING.value
     DESCRIPTION = (
-        f'Unge a armadura do alvo com a '
+        'Unge a armadura do alvo com a '
         f'*{PaladinSkillEnum.SQUIRE_ANOINTING.value}* que '
         f'aumenta a *{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
@@ -378,7 +378,7 @@ class SquireAnointingSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
-                    f'que aumenta a '
+                    'que aumenta a '
                     f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_defense} pontos e o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
@@ -396,9 +396,9 @@ class SquireAnointingSkill(BaseSkill):
 class WarriorAnointingSkill(BaseSkill):
     NAME = PaladinSkillEnum.WARRIOR_ANOINTING.value
     DESCRIPTION = (
-        f'Unge a arma do alvo com a '
+        'Unge a arma do alvo com a '
         f'*{PaladinSkillEnum.WARRIOR_ANOINTING.value}* que '
-        f'aumenta o '
+        'aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* e o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
@@ -444,7 +444,7 @@ class WarriorAnointingSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_attack} pontos, o '
                     f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
@@ -464,9 +464,9 @@ class WarriorAnointingSkill(BaseSkill):
 class MaidenAnointingSkill(BaseSkill):
     NAME = PaladinSkillEnum.MAIDEN_ANOINTING.value
     DESCRIPTION = (
-        f'Unge as mãos do alvo com a '
+        'Unge as mãos do alvo com a '
         f'*{PaladinSkillEnum.MAIDEN_ANOINTING.value}* que '
-        f'aumenta a '
+        'aumenta a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
@@ -511,7 +511,7 @@ class MaidenAnointingSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
-                    f'que aumenta a '
+                    'que aumenta a '
                     f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
                     f'em {condition.bonus_magical_defense} pontos e o '
                     f'*{HIT_POINT_FULL_EMOJI_TEXT}* '
@@ -529,9 +529,9 @@ class MaidenAnointingSkill(BaseSkill):
 class KnightAnointingSkill(BaseSkill):
     NAME = PaladinSkillEnum.KNIGHT_ANOINTING.value
     DESCRIPTION = (
-        f'Unge os ombros do alvo com a '
+        'Unge os ombros do alvo com a '
         f'*{PaladinSkillEnum.KNIGHT_ANOINTING.value}* que '
-        f'aumenta o '
+        'aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e o '
@@ -580,7 +580,7 @@ class KnightAnointingSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_attack} pontos, o '
                     f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
@@ -602,9 +602,9 @@ class KnightAnointingSkill(BaseSkill):
 class CourtesanAnointingSkill(BaseSkill):
     NAME = PaladinSkillEnum.COURTESAN_ANOINTING.value
     DESCRIPTION = (
-        f'Unge os lábios do alvo com a '
+        'Unge os lábios do alvo com a '
         f'*{PaladinSkillEnum.COURTESAN_ANOINTING.value}* que '
-        f'aumenta a '
+        'aumenta a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}*, a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base na '
@@ -652,7 +652,7 @@ class CourtesanAnointingSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
-                    f'que aumenta a '
+                    'que aumenta a '
                     f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_defense} pontos, a '
                     f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -672,9 +672,9 @@ class CourtesanAnointingSkill(BaseSkill):
 class LordAnointingSkill(BaseSkill):
     NAME = PaladinSkillEnum.LORD_ANOINTING.value
     DESCRIPTION = (
-        f'Unge o coração do alvo com a '
+        'Unge o coração do alvo com a '
         f'*{PaladinSkillEnum.LORD_ANOINTING.value}* que '
-        f'aumenta o '
+        'aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}*, a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* e o '
@@ -723,7 +723,7 @@ class LordAnointingSkill(BaseSkill):
                 'text': (
                     f'*{target_name}* é ungido com a '
                     f'*{self.name}* '
-                    f'que aumenta o '
+                    'que aumenta o '
                     f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                     f'em {condition.bonus_physical_attack} pontos, o '
                     f'*{PRECISION_ATTACK_EMOJI_TEXT}* '

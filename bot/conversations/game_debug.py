@@ -28,7 +28,7 @@ async def create_game_event(
         disable_notification=silent,
         allow_sending_without_reply=True,
     )
-    
+
     if job_callback:
         job_callback_name = job_callback.__name__.upper()
         job_name = f'{job_callback_name}_{ObjectId()}'
@@ -45,7 +45,7 @@ async def create_game_event(
         text = f'JOGO NÃO ENCONTRADO. USE UM ARG VÁLIDO ({args}).'
         reply_text_kwargs['text'] = text
 
-    response = await call_telegram_message_function(
+    await call_telegram_message_function(
         function_caller='CREATE_GAME_EVENT()',
         function=context.bot.send_message,
         context=context,

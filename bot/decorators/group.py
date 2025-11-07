@@ -63,7 +63,7 @@ def allow_only_in_group(callback):
 
 def skip_if_no_singup_group(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_NO_SINGUP_GROUP')
+        print('@SKIP_IF_NO_SINGUP_GROUP')
         group_model = GroupModel()
         chat_id = update.effective_chat.id
 

@@ -93,7 +93,7 @@ class SpecialDamage:
 
     @property
     def min_damage(self) -> int:
-        '''Retorna o dano mínimo obtido pelo multiplicador do dano. 
+        '''Retorna o dano mínimo obtido pelo multiplicador do dano.
         Sendo 1 o menor valor possível.
         '''
 
@@ -104,7 +104,7 @@ class SpecialDamage:
 
     @property
     def max_damage(self) -> int:
-        '''Retorna o dano máximo obtido pelo multiplicador do dano. 
+        '''Retorna o dano máximo obtido pelo multiplicador do dano.
         Sendo 2 o menor valor possível.
         '''
 
@@ -137,7 +137,7 @@ class SpecialDamage:
 
     @property
     def damage(self) -> int:
-        '''Retorna o dano obtido aleatóriamente entre o min_damage e o 
+        '''Retorna o dano obtido aleatóriamente entre o min_damage e o
         max_damage.
         '''
 
@@ -257,7 +257,7 @@ class SpecialDamage:
 
     @property
     def condition_ratio_list(self) -> List[dict]:
-        '''Retorna uma lista de dicionários, condition_ratio 
+        '''Retorna uma lista de dicionários, condition_ratio
         (Dict[condition, ratio]), com o percentual de chance (ratio: float)
         de causar a condition(Condition).
         '''
@@ -375,7 +375,10 @@ class SpecialDamage:
             ])
         elif self.damage_type == DamageEnum.CRYSTAL:
             condition_list.extend([
-                dict(condition=self.partial(CrystallizedCondition), ratio=0.10),
+                dict(
+                    condition=self.partial(CrystallizedCondition),
+                    ratio=0.10
+                ),
                 dict(condition=self.partial(BleedingCondition), ratio=0.10),
             ])
         elif self.damage_type == DamageEnum.BLAST:

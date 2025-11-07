@@ -23,11 +23,11 @@ if TYPE_CHECKING:
 class ChaosOrbSkill(BaseSkill):
     NAME = SorcererSkillEnum.CHAOS_ORB.value
     DESCRIPTION = (
-        f'Manipulando a essência da magia caótica, conjura um orbe '
-        f'instável que transborda energia imprevisível, '
-        f'causando dano de '
+        'Manipulando a essência da magia caótica, conjura um orbe '
+        'instável que transborda energia imprevisível, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
-        f'*❓❓❓* com base no '
+        '*❓❓❓* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (95% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -62,13 +62,13 @@ class ChaosOrbSkill(BaseSkill):
 class ChaosVampirismSkill(BaseSkill):
     NAME = SorcererSkillEnum.CHAOS_VAMPIRISM.value
     DESCRIPTION = (
-        f'Utiliza a energia do caos para gerar um *Vínculo Caótico* '
-        f'com o inimigo e drenar a sua força vital, '
-        f'causando dano de '
+        'Utiliza a energia do caos para gerar um *Vínculo Caótico* '
+        'com o inimigo e drenar a sua força vital, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
-        f'*❓❓❓* com base no '
+        '*❓❓❓* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
-        f'curando a si em 20% do dano causado.'
+        'curando a si em 20% do dano causado.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -117,13 +117,13 @@ class ChaosVampirismSkill(BaseSkill):
 class ChaosWeaverSkill(BaseSkill):
     NAME = SorcererSkillEnum.CHAOS_WEAVER.value
     DESCRIPTION = (
-        f'Por meio da energia caótica, drena a força vital do inimigo, '
-        f'causando dano de '
+        'Por meio da energia caótica, drena a força vital do inimigo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.CHAOS)}* e '
-        f'*❓❓❓* com base no '
+        '*❓❓❓* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (90% + 5% x Rank x Nível) e '
-        f'tece um *Véu Caótico* que o protege com uma '
-        f'barreira baseada no dano causado (100% + 10% x Rank x Nível)'
+        'tece um *Véu Caótico* que o protege com uma '
+        'barreira baseada no dano causado (100% + 10% x Rank x Nível)'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{

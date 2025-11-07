@@ -268,7 +268,10 @@ async def list_use_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @alert_if_not_chat_owner_to_callback_data_to_dict(alert_text=ACCESS_DENIED)
 @print_basic_infos
-async def list_upgrade_skill(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def list_upgrade_skill(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
     await reply_typing(
         function_caller='SKILL_TREE.LIST_UPGRADE_SKILL()',
         update=update,
@@ -1197,7 +1200,7 @@ def get_classe_buttons(
         ))
 
     items_buttons.append(InlineKeyboardButton(
-        text=f'TODES',
+        text='TODES',
         callback_data=callback_data_to_string({
             'list_all_skill': 1,
             'user_id': user_id,

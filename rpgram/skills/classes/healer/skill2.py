@@ -29,9 +29,9 @@ if TYPE_CHECKING:
 class ProtectiveAuraSkill(BaseSkill):
     NAME = HealerSkillEnum.PROTECTIVE_AURA.value
     DESCRIPTION = (
-        f'Converge *Energia Vital* para tecer um campo de energia benéfica '
-        f'ao redor de um aliado, salvaguardando-o '
-        f'com uma barreira baseada na '
+        'Converge *Energia Vital* para tecer um campo de energia benéfica '
+        'ao redor de um aliado, salvaguardando-o '
+        'com uma barreira baseada na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -80,7 +80,7 @@ class ProtectiveAuraSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* converge *Energia Vital* e tece '
-                    f'um campo de energia benéfica, salvaguardando '
+                    'um campo de energia benéfica, salvaguardando '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -96,13 +96,13 @@ class ProtectiveAuraSkill(BaseSkill):
 class HealingRefugeSkill(BaseSkill):
     NAME = HealerSkillEnum.HEALING_REFUGE.value
     DESCRIPTION = (
-        f'Converge *Energia Vital* para engendrar '
-        f'um campo de energia benéfica '
-        f'ao redor de um aliado, resguardando-o '
-        f'com uma barreira baseada na '
+        'Converge *Energia Vital* para engendrar '
+        'um campo de energia benéfica '
+        'ao redor de um aliado, resguardando-o '
+        'com uma barreira baseada na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) que, '
         f'também, cura {HIT_POINT_FULL_EMOJI_TEXT} a cada turno '
-        f'com uma fração desse valor.'
+        'com uma fração desse valor.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -154,7 +154,7 @@ class HealingRefugeSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{player_name}* converge *Energia Vital* e engendra '
-                    f'um campo de energia benéfica, resguardando '
+                    'um campo de energia benéfica, resguardando '
                     f'*{target_name}* com uma barreira '
                     f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                     f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -170,11 +170,11 @@ class HealingRefugeSkill(BaseSkill):
 class ProtectiveInfusionSkill(BaseSkill):
     NAME = HealerSkillEnum.PROTECTIVE_INFUSION.value
     DESCRIPTION = (
-        f'Usando ervas, cria uma *Infusão Protetiva* que protege um aliado '
-        f'com uma nevoa de incenso purificativo, '
-        f'gerando uma barreira baseada na '
+        'Usando ervas, cria uma *Infusão Protetiva* que protege um aliado '
+        'com uma nevoa de incenso purificativo, '
+        'gerando uma barreira baseada na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) e '
-        f'cura até (Nível) níveis de condições aleatórias a cada turno.'
+        'cura até (Nível) níveis de condições aleatórias a cada turno.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -242,13 +242,13 @@ class BeatifyingAegisSkill(BaseSkill):
     NAME = HealerSkillEnum.BEATIFYING_AEGIS.value
     DESCRIPTION = (
         f'Convoca a *{HealerSkillEnum.BEATIFYING_AEGIS.value}* para '
-        f'criar uma *Proteção Sacra* que escuda um aliado '
-        f'com esse *Artefato Lendário*, '
-        f'concedendo-lhe uma barreira baseada na '
+        'criar uma *Proteção Sacra* que escuda um aliado '
+        'com esse *Artefato Lendário*, '
+        'concedendo-lhe uma barreira baseada na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível) que, '
         f'também, recupera {HIT_POINT_FULL_EMOJI_TEXT} a cada turno '
-        f'com uma fração desse valor e '
-        f'cura até (Nível) níveis de condições aleatórias a cada turno.'
+        'com uma fração desse valor e '
+        'cura até (Nível) níveis de condições aleatórias a cada turno.'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{

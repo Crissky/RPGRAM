@@ -1,7 +1,7 @@
 '''
     Arquivo que salva as Classes base no banco de dados.
 
-    Referência: https://ordempendragon.files.wordpress.com/2017/04/dd-5e-livro-do-jogador-fundo-branco-biblioteca-c3a9lfica.pdf
+    Referência: https://ordempendragon.files.wordpress.com/2017/04/dd-5e-livro-do-jogador-fundo-branco-biblioteca-c3a9lfica.pdf  # noqa
 '''
 
 from repository.mongo import ClasseModel

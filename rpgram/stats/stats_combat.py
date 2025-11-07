@@ -100,7 +100,7 @@ class CombatStats:
             print(f'Recebeu {value} de Dano!!!', end=' ')
         elif value < 0:
             if self.dead:
-                print(f'Não pode curar um personagem morto.')
+                print('Não pode curar um personagem morto.')
                 return None
             print(f'Recebeu {-value} de Cura.', end=' ')
         self.__damage += value
@@ -111,7 +111,7 @@ class CombatStats:
         print(f'HP: {self.show_hp}')
         is_dead_end = self.dead
         if not is_dead_start and is_dead_end:
-            print(f'Morreu!!!')
+            print('Morreu!!!')
             self.__add_death_counter()
             self.clean_status_by_death()
 
@@ -668,50 +668,50 @@ class CombatStats:
 
         if verbose:
             text += f'[{base_hp}{self.bonus_hit_points:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{BARRIER_POINT_FULL_EMOJI_TEXT}: {self.show_barrier_points}'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{INITIATIVE_EMOJI_TEXT}: {self.initiative:02} '
         if verbose:
             text += f'[{base_init}{self.bonus_initiative:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{PHYSICAL_ATTACK_EMOJI_TEXT}: {self.physical_attack:02} '
         if verbose:
             text += f'[{base_phy_atk}{self.bonus_physical_attack:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{PRECISION_ATTACK_EMOJI_TEXT}: {self.precision_attack:02} '
         if verbose:
             text += f'[{base_pre_atk}{self.bonus_precision_attack:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{MAGICAL_ATTACK_EMOJI_TEXT}: {self.magical_attack:02} '
         if verbose:
             text += f'[{base_mag_atk}{self.bonus_magical_attack:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{PHYSICAL_DEFENSE_EMOJI_TEXT}: {self.physical_defense:02} '
         if verbose:
             text += f'[{base_phy_def}{self.bonus_physical_defense:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{MAGICAL_DEFENSE_EMOJI_TEXT}: {self.magical_defense:02} '
         if verbose:
             text += f'[{base_mag_def}{self.bonus_magical_defense:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{HIT_EMOJI_TEXT}: {self.hit:02} '
         if verbose:
             text += f'[{base_hit}{self.bonus_hit:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         text += f'`{EVASION_EMOJI_TEXT}: {self.evasion:02} '
         if verbose:
             text += f'[{base_evasion}{self.bonus_evasion:+}]'
-        text += f'`\n'
+        text += '`\n'
 
         if not markdown:
             text = remove_bold(text)
@@ -797,9 +797,9 @@ class CombatStats:
         else:
             raise KeyError(
                 f'Atributo "{item}" não encontrado.\n'
-                f'Atributos disponíveis: initiative, physical_attack, '
-                f'precision_attack, magical_attack, physical_defense, '
-                f'magical_defense, hit, evasion.'
+                'Atributos disponíveis: initiative, physical_attack, '
+                'precision_attack, magical_attack, physical_defense, '
+                'magical_defense, hit, evasion.'
             )
 
 

@@ -150,11 +150,11 @@ def choice_equip_type() -> str:
 
 
 def choice_total_items(min_items: int = 1, max_items: int = 5) -> int:
-    '''Função que retorna um valor inteiro aleatério entre 
-    min_times e max_times de maneira poderada, em que os valores mais próximos 
+    '''Função que retorna um valor inteiro aleatério entre
+    min_times e max_times de maneira poderada, em que os valores mais próximos
     de min_times tem maior chance de ocorrer.
-    Não funciona para um número grande de elementos. 
-    Acima de 19 elementos, haverão elementos que terão probabildiade zero de 
+    Não funciona para um número grande de elementos.
+    Acima de 19 elementos, haverão elementos que terão probabildiade zero de
     ser escolhido.
 
     '''
@@ -166,7 +166,7 @@ def choice_total_items(min_items: int = 1, max_items: int = 5) -> int:
     total_numbers = max_items - min_items + 1
     base_prob = total_numbers * 100 * 2
     numbers_probs = {
-        str(n): int(base_prob := base_prob // 1.5)
+        str(n): int(base_prob := base_prob // 1.5)  # noqa
         for n in range(min_items, max_items+1)
     }
 
@@ -182,17 +182,17 @@ def choice_material(
 ) -> str:
     '''Retorna um material de um equipamento de maneira aleatória.
     Quanto maior o nível de grupo, maior a diversidade de materiais.
-    Um novo material entrará na lista de escolha (materials) 
+    Um novo material entrará na lista de escolha (materials)
     a cada "level_base" pontos de nível de grupo.
 
     Args:
         "group_level": Nível do Grupo
-        "equipment_materials": Dicionário contendo os materiais dos equipamentos 
-            como chave e o multiplicador como valor.
-        "level_base": Nível base para a ocorrência de novos materiais além do 
+        "equipment_materials": Dicionário contendo os materiais dos
+        equipamentos como chave e o multiplicador como valor.
+        "level_base": Nível base para a ocorrência de novos materiais além do
             primeiro.
         "chance_reducer": Redutor de propabilidade dos materiais mais raros.
-        "total_materials": Número máximo de materiais mais raros que ficarão 
+        "total_materials": Número máximo de materiais mais raros que ficarão
             na lista para serem escolhidos.
 
     level_base: 25      level_base: 50
@@ -224,7 +224,7 @@ def choice_material(
 def choice_weapon_material(group_level: int) -> str:
     '''Retorna um material de arma de maneira aleatória.
     Quanto maior o nível de grupo, maior a diversidade de materiais.
-    Um novo material entrará na lista de escolha (materials) 
+    Um novo material entrará na lista de escolha (materials)
     a cada 25 pontos de nível de grupo.
     '''
 
@@ -239,7 +239,7 @@ def choice_weapon_material(group_level: int) -> str:
 def choice_armor_material(group_level: int) -> str:
     '''Retorna um material de armadura de maneira aleatória.
     Quanto maior o nível de grupo, maior a diversidade de materiais.
-    Um novo material entrará na lista de escolha (materials) 
+    Um novo material entrará na lista de escolha (materials)
     a cada 25 pontos de nível de grupo.
     '''
 
@@ -254,7 +254,7 @@ def choice_armor_material(group_level: int) -> str:
 def choice_accessory_material(group_level: int) -> str:
     '''Retorna um material de acessórios de maneira aleatória.
     Quanto maior o nível de grupo, maior a diversidade de materiais.
-    Um novo material entrará na lista de escolha (materials) 
+    Um novo material entrará na lista de escolha (materials)
     a cada 50 pontos de nível de grupo.
     '''
 
@@ -271,7 +271,7 @@ def get_equip_class_and_material(
     group_level: int,
     material_rank: int,
 ) -> Tuple[str, str]:
-    '''Retorna uma tupla com a classe do equipamento na primeira posição e o 
+    '''Retorna uma tupla com a classe do equipamento na primeira posição e o
     material do equipamento na segunda posição.
     '''
 
@@ -370,9 +370,9 @@ def get_bonus_and_penality(
     group_level: int,
     verbose: bool = False
 ) -> Tuple[int, int]:
-    '''Retorna um tupla com os valores totais de BÔNUS e PENALIDADE 
-    do equipamento. Os bônus são escolhidos com base do tipo de equipamento, 
-    raridade, material level e nível de grupo. A penalidade é escolhida 
+    '''Retorna um tupla com os valores totais de BÔNUS e PENALIDADE
+    do equipamento. Os bônus são escolhidos com base do tipo de equipamento,
+    raridade, material level e nível de grupo. A penalidade é escolhida
     somente com base no nível de grupo.
     '''
     rarity_bonus = BONUS_RARITY[rarity]
@@ -414,8 +414,8 @@ def get_bonus_and_penality(
 
 
 def get_attribute_probabilities(equip_class: str) -> Dict[str, int]:
-    '''Retorna uma tupla contendo dois dicionários com as probabilidades 
-    de distribuição dos bônus e penalidades dos atributos de um equipamento, 
+    '''Retorna uma tupla contendo dois dicionários com as probabilidades
+    de distribuição dos bônus e penalidades dos atributos de um equipamento,
     respectivamente.
     '''
     equipment = ALL_EQUIPMENTS_DEFINITIONS.get(equip_class, None)
@@ -435,7 +435,7 @@ def get_equipment_weight(
     material: str,
     equip_class: str
 ) -> float:
-    '''Retorna o peso do equipamento com base no seu bônus e 
+    '''Retorna o peso do equipamento com base no seu bônus e
     no tipo de equipamento.
     '''
 
@@ -525,7 +525,7 @@ def get_requirements(
     material: str,
     rarity: str,
 ) -> Dict[str, int]:
-    '''Retorna um dicionário com os requisitos necessários para 
+    '''Retorna um dicionário com os requisitos necessários para
     equiapar o equipamento.
     '''
 
@@ -627,10 +627,10 @@ def add_secret_stats(
     group_level: int,
     equip_type: str
 ) -> Dict[str, int]:
-    '''Retorna os atributos bônus do equipamento. 
-    Esses atributos estarão disponíveis para o personagem quando 
+    '''Retorna os atributos bônus do equipamento.
+    Esses atributos estarão disponíveis para o personagem quando
     o item for identificado.
-    Os bônus são selecionado de maneira aleatória. O total de bônus é baseado 
+    Os bônus são selecionado de maneira aleatória. O total de bônus é baseado
     na raridade do item em na metade do nível de grupo.
     '''
 
@@ -906,8 +906,8 @@ def choice_consumable(
     items_dict: dict = None,
 ) -> Item:
     '''Retorna um item consumível para a função create_random_consumable()
-    Arg: items_dict é usando para evitar de baixar novamente a lista de itens 
-    obtidas de uma chamada de anterior. Isso deixa a função muito mais rápida 
+    Arg: items_dict é usando para evitar de baixar novamente a lista de itens
+    obtidas de uma chamada de anterior. Isso deixa a função muito mais rápida
     para loop longos.
     '''
 

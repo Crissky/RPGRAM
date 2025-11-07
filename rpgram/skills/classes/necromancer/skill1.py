@@ -26,9 +26,9 @@ if TYPE_CHECKING:
 class BannedSoulSkill(BaseSkill):
     NAME = NecromancerSkillEnum.BANNED_SOUL.value
     DESCRIPTION = (
-        f'Convoca um *Espírito Espectral* do além-vida que '
-        f'avança sobre um inimigo, '
-        f'causando dano '
+        'Convoca um *Espírito Espectral* do além-vida que '
+        'avança sobre um inimigo, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -64,14 +64,14 @@ class BannedSoulSkill(BaseSkill):
 class VengefulSpiritSkill(BaseSkill):
     NAME = NecromancerSkillEnum.VENGEFUL_SPIRIT.value
     DESCRIPTION = (
-        f'Convoca um *Espírito de Vingaça* provindo do *Cárcere das Almas* '
-        f'que avança sobre um inimigo, '
-        f'causando dano '
+        'Convoca um *Espírito de Vingaça* provindo do *Cárcere das Almas* '
+        'que avança sobre um inimigo, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adicionando a condição '
+        'adicionando a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.DEATH_SENTENCE)}* '
-        f'com nível igual ao (Rank x Nível).'
+        'com nível igual ao (Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -122,9 +122,9 @@ class VengefulSpiritSkill(BaseSkill):
 class UndeadEmbraceSkill(BaseSkill):
     NAME = NecromancerSkillEnum.UNDEAD_EMBRACE.value
     DESCRIPTION = (
-        f'Ergue do solo e reanima um *Cadáver Putrefato* '
-        f'que avança lentamente sobre o inimigo, atacando e '
-        f'causando dano de '
+        'Ergue do solo e reanima um *Cadáver Putrefato* '
+        'que avança lentamente sobre o inimigo, atacando e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'
@@ -165,9 +165,9 @@ class UndeadEmbraceSkill(BaseSkill):
 class AbyssalCreatureSkill(BaseSkill):
     NAME = NecromancerSkillEnum.ABYSSAL_CREATURE.value
     DESCRIPTION = (
-        f'Ergue do solo um cadáver reaimado de uma *Criatura Colossal* '
-        f'que avança lentamente sobre o inimigo, atacando e '
-        f'causando dano de '
+        'Ergue do solo um cadáver reaimado de uma *Criatura Colossal* '
+        'que avança lentamente sobre o inimigo, atacando e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (300% + 5% x Rank x Nível), '
@@ -214,9 +214,9 @@ class AbyssalCreatureSkill(BaseSkill):
 class TheHordeSkill(BaseSkill):
     NAME = NecromancerSkillEnum.THE_HORDE.value
     DESCRIPTION = (
-        f'Ergue do solo uma *Horda* de *Cadáveres Putrefatos Reanimados* '
-        f'que avança lentamente sobre os inimigos, atacando e '
-        f'causando dano de '
+        'Ergue do solo uma *Horda* de *Cadáveres Putrefatos Reanimados* '
+        'que avança lentamente sobre os inimigos, atacando e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* (200% + 2.5% x Rank x Nível), '
         f'mas possui uma baixa taxa de {HIT_EMOJI_TEXT}.'

@@ -30,14 +30,14 @@ if TYPE_CHECKING:
 class KoteUchiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.KOTE_UCHI.value
     DESCRIPTION = (
-        f'Primeiro movimento: ataque que *Desestabiliza os Braços* '
-        f'do oponente, '
-        f'causa dano com base no '
+        'Primeiro movimento: ataque que *Desestabiliza os Braços* '
+        'do oponente, '
+        'causa dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível) e '
-        f'reduz o '
+        'reduz o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e o '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* '
-        f'com base no dano causado (10% + 1% x Rank x Nível).'
+        'com base no dano causado (10% + 1% x Rank x Nível).'
     )
     RANK = 1
     REQUIREMENTS = Requirement(**{
@@ -92,13 +92,13 @@ class KoteUchiSkill(BaseSkill):
 class DoUchiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.DO_UCHI.value
     DESCRIPTION = (
-        f'Segundo movimento: ataque que *Desestabiliza o Tronco* '
-        f'do oponente, '
-        f'causa dano com base no '
+        'Segundo movimento: ataque que *Desestabiliza o Tronco* '
+        'do oponente, '
+        'causa dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'reduz a '
+        'reduz a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
-        f'com base no dano causado (10% + 1% x Rank x Nível).'
+        'com base no dano causado (10% + 1% x Rank x Nível).'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -155,11 +155,11 @@ class DoUchiSkill(BaseSkill):
 class MenUchiSkill(BaseSkill):
     NAME = SamuraiSkillEnum.MEN_UCHI.value
     DESCRIPTION = (
-        f'Terceiro movimento: ataque que visa a cabeça '
-        f'do oponente, '
-        f'causa dano com base no '
+        'Terceiro movimento: ataque que visa a cabeça '
+        'do oponente, '
+        'causa dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (175% + 5% x Rank x Nível) e '
-        f'adiciona a condição '
+        'adiciona a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.STUNNED)}* com nível igual ao '
         f'(Rank x Nível) se tirar 10{EmojiEnum.DICE.value} ou mais. '
         f'Mata o oponente se for *Acerto Crítico*{EmojiEnum.DICE.value}. '

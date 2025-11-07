@@ -57,7 +57,7 @@ def exist_item_in_bag_by_position(
     page: int,
     item_pos: int
 ) -> Item:
-    '''Retorna True se o Item da posição passada existe na Bag e retorna 
+    '''Retorna True se o Item da posição passada existe na Bag e retorna
     False, caso contrário.
     '''
 
@@ -147,7 +147,7 @@ def exists_in_bag(
     item_id: str = None,
     item_name: str = None
 ) -> bool:
-    '''Verifica se um item está na bag. Retornando True caso esteja e False 
+    '''Verifica se um item está na bag. Retornando True caso esteja e False
     caso contrário.
     '''
 

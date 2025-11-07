@@ -95,7 +95,10 @@ if __name__ == '__main__':
 
     errors = []
     for damage in DamageEnum:
-        if damage not in MAGICAL_DAMAGE_TYPES and damage not in PHYSICAL_DAMAGE_TYPES:
+        if (
+            damage not in MAGICAL_DAMAGE_TYPES
+            and damage not in PHYSICAL_DAMAGE_TYPES
+        ):
             errors.append(damage)
     if errors:
         raise ValueError(

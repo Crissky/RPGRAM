@@ -171,7 +171,6 @@ class PicrossGame:
     def text(self) -> str:
         text_io = StringIO()
         max_col_hints = max(len(hints) for hints in self.col_hints)
-        max_row_hints = max(len(hints) for hints in self.row_hints)
 
         # Print column hints
         for i in range(max_col_hints-1, -1, -1):

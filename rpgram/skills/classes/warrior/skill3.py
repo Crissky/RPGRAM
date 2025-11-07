@@ -16,7 +16,6 @@ from rpgram.enums.skill import (
     TargetEnum,
     WarriorSkillEnum
 )
-from rpgram.enums.stats_combat import CombatStatsEnum
 from rpgram.requirement import Requirement
 from rpgram.skills.skill_base import BaseSkill
 
@@ -27,8 +26,8 @@ if TYPE_CHECKING:
 class AegisShadowSkill(BaseSkill):
     NAME = WarriorSkillEnum.AEGIS_SHADOW.value
     DESCRIPTION = (
-        f'Canaliza a sua determinação para ser imbuído pelas '
-        f'*Sombras do Lendário Escudo*, recebendo uma barreira com base no '
+        'Canaliza a sua determinação para ser imbuído pelas '
+        '*Sombras do Lendário Escudo*, recebendo uma barreira com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (200% + 5% x Rank x Nível).'
     )
     RANK = 1
@@ -70,7 +69,7 @@ class AegisShadowSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é imbuído pela *Sombra do Escudo Lendário* '
-                f'que o protege com uma barreira '
+                'que o protege com uma barreira '
                 f'*{condition.barrier_points_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -83,9 +82,9 @@ class AegisShadowSkill(BaseSkill):
 class WarBannerSkill(BaseSkill):
     NAME = WarriorSkillEnum.WAR_BANNER.value
     DESCRIPTION = (
-        f'Usa a própria força e determinação para evocar a '
-        f'*Marca do Senhor da Guerra* e conceder à equipe '
-        f'uma inspiração de combate que aumenta o '
+        'Usa a própria força e determinação para evocar a '
+        '*Marca do Senhor da Guerra* e conceder à equipe '
+        'uma inspiração de combate que aumenta o '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}*, '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* e '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
@@ -132,7 +131,7 @@ class WarBannerSkill(BaseSkill):
             report = {
                 'text': (
                     f'*{target_name}* recebe a *Marca do Senhor da Guerra* '
-                    f'aumentando o '
+                    'aumentando o '
                     f'{PHYSICAL_ATTACK_EMOJI_TEXT}, '
                     f'{PRECISION_ATTACK_EMOJI_TEXT} e '
                     f'{MAGICAL_ATTACK_EMOJI_TEXT} em '
@@ -150,8 +149,8 @@ class WarBannerSkill(BaseSkill):
 class HeroicInspirationSkill(BaseSkill):
     NAME = WarriorSkillEnum.HEROIC_INSPIRATION.value
     DESCRIPTION = (
-        f'Libera uma explosão de '
-        f'energia inspiradora, revigorando o seu espírito e curando seu '
+        'Libera uma explosão de '
+        'energia inspiradora, revigorando o seu espírito e curando seu '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
     )
@@ -194,7 +193,7 @@ class HeroicInspirationSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* respira fundo se concentrando em acalmar a '
-                f'sua mente, curando suas feridas.\n'
+                'sua mente, curando suas feridas.\n'
                 f'*{report_text}*({dice.text}).'
             )
         }
@@ -205,8 +204,8 @@ class HeroicInspirationSkill(BaseSkill):
 class WarCrySkill(BaseSkill):
     NAME = WarriorSkillEnum.WAR_CRY.value
     DESCRIPTION = (
-        f'Libera um grito que ecoa no campo de batalha, elevando os espíritos '
-        f'dos aliados e curando seus '
+        'Libera um grito que ecoa no campo de batalha, elevando os espíritos '
+        'dos aliados e curando seus '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 10% x Rank x Nível).'
     )

@@ -38,14 +38,14 @@ if TYPE_CHECKING:
 class VigilFlameSkill(BaseSkill):
     NAME = HeraldSkillEnum.VIGIL_FLAME.value
     DESCRIPTION = (
-        f'Canaliza uma *Aura de Fogo* que o envolve, '
-        f'inflamando o seu espírito para aumentar a '
+        'Canaliza uma *Aura de Fogo* que o envolve, '
+        'inflamando o seu espírito para aumentar a '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{CONSTITUTION_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
-        f'Além disso, adiciona dano de '
+        'Além disso, adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -88,8 +88,8 @@ class VigilFlameSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se concentra para criar uma '
-                f'*Aura de Fogo*, '
-                f'aumentando a sua '
+                '*Aura de Fogo*, '
+                'aumentando a sua '
                 f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_defense} e a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* '
@@ -105,13 +105,13 @@ class VigilFlameSkill(BaseSkill):
 class FlameMantillaSkill(BaseSkill):
     NAME = HeraldSkillEnum.FLAME_MANTILLA.value
     DESCRIPTION = (
-        f'Libera *Energia Vigílica* que o envolve e '
-        f'usa o calor liberado para criar uma *Mantilha de Chamas*, '
-        f'se resguardando com uma barreira baseada na '
+        'Libera *Energia Vigílica* que o envolve e '
+        'usa o calor liberado para criar uma *Mantilha de Chamas*, '
+        'se resguardando com uma barreira baseada na '
         f'*{PHYSICAL_DEFENSE_EMOJI_TEXT}* (200% + 10% x Rank x Nível). '
-        f'Além disso, adiciona dano de '
+        'Além disso, adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 2
@@ -166,7 +166,7 @@ class FlameMantillaSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* se concentra para criar uma '
-                f'*Mantilha de Chamas*, que o protege com uma barreira '
+                '*Mantilha de Chamas*, que o protege com uma barreira '
                 f'*{barrier_condition.barrier_points_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -179,8 +179,8 @@ class FlameMantillaSkill(BaseSkill):
 class IgneousStrikeSkill(BaseSkill):
     NAME = HeraldSkillEnum.IGNEOUS_STRIKE.value
     DESCRIPTION = (
-        f'Envolve a própria arma em chamas e desfere um poderoso ataque '
-        f'que causa dano de '
+        'Envolve a própria arma em chamas e desfere um poderoso ataque '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -216,9 +216,9 @@ class IgneousStrikeSkill(BaseSkill):
 class PurifyingFlameSkill(BaseSkill):
     NAME = HeraldSkillEnum.IGNEOUS_STRIKE.value
     DESCRIPTION = (
-        f'Envolve a própria arma em *Chamas Brancas* e '
-        f'desfere um ataque impetuoso '
-        f'que causa dano de '
+        'Envolve a própria arma em *Chamas Brancas* e '
+        'desfere um ataque impetuoso '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.BLESSING)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
@@ -259,16 +259,16 @@ class PurifyingFlameSkill(BaseSkill):
 class FlamesOfEquilibriumSkill(BaseSkill):
     NAME = HeraldSkillEnum.FLAMES_OF_EQUILIBRIUM.value
     DESCRIPTION = (
-        f'Envolve a própria arma em *Chamas Azuis e Vermelhas* e '
-        f'desfere um ataque fervoroso '
-        f'que causa dano de '
+        'Envolve a própria arma em *Chamas Azuis e Vermelhas* e '
+        'desfere um ataque fervoroso '
+        'que causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* e '
         f'*{get_damage_emoji_text(DamageEnum.MAGIC)}* com base na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (150% + 5% x Rank x Nível). '
         f'Além disso, aumenta a *{MAGICAL_DEFENSE_EMOJI_TEXT}* com base '
-        f'no dano causado (2% + 1% x Rank x Nível) e '
+        'no dano causado (2% + 1% x Rank x Nível) e '
         f'diminui a *{MAGICAL_DEFENSE_EMOJI_TEXT}* do alvo também '
-        f'com base no dano causado (2% + 1% x Rank x Nível).'
+        'com base no dano causado (2% + 1% x Rank x Nível).'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{
@@ -338,13 +338,13 @@ class FlamesOfEquilibriumSkill(BaseSkill):
 class IgneousHeartSkill(BaseSkill):
     NAME = HeraldSkillEnum.IGNEOUS_HEART.value
     DESCRIPTION = (
-        f'Guiado por um Coração enfartado de *Ímpeto por Justiça*, '
-        f'libera uma *Explosão Vigorosa* que cura seu '
+        'Guiado por um Coração enfartado de *Ímpeto por Justiça*, '
+        'libera uma *Explosão Vigorosa* que cura seu '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
-        f'Além disso, adiciona dano de '
+        'Além disso, adiciona dano de '
         f'*{get_damage_emoji_text(DamageEnum.FIRE)}* '
-        f'baseado na '
+        'baseado na '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
     RANK = 1
@@ -394,7 +394,7 @@ class IgneousHeartSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é envolvido por um *Ímpeto por Justiça* '
-                f'que cura suas feridas.\n'
+                'que cura suas feridas.\n'
                 f'*{cure_report_text}*({dice.text}).\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
                 f'{status_report_text}'
@@ -407,12 +407,12 @@ class IgneousHeartSkill(BaseSkill):
 class PurifyingHeartSkill(BaseSkill):
     NAME = HeraldSkillEnum.PURIFYING_HEART.value
     DESCRIPTION = (
-        f'Guiado por um *Coração Puro*, '
-        f'libera uma *Energia Purificadora* que cura seu '
+        'Guiado por um *Coração Puro*, '
+        'libera uma *Energia Purificadora* que cura seu '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}* com base no '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* (100% + 10% x Rank x Nível). '
-        f'Além disso, cura até (5 x Rank x Nível) níveis de '
-        f'condições aleatórias.'
+        'Além disso, cura até (5 x Rank x Nível) níveis de '
+        'condições aleatórias.'
     )
     RANK = 2
     REQUIREMENTS = Requirement(**{
@@ -472,7 +472,7 @@ class PurifyingHeartSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* é guiado pelo seu *Coração Puro* '
-                f'que cura suas feridas.\n'
+                'que cura suas feridas.\n'
                 f'*{cure_report_text}*({dice.text}).'
                 f'{status_report_text}'
             )

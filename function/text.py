@@ -5,7 +5,7 @@ from constant.text import SECTION_HEAD_ENEMY_START, SECTION_HEAD_ENEMY_END
 
 def escape_markdown_v2(text: str):
     for char in r'\_*[]()~`>#+-=|{}.!':
-        escaped_char = f'\{char}'
+        escaped_char = f'\{char}'  # noqa
         text = text.replace(escaped_char, char)
         text = text.replace(char, escaped_char)
 
@@ -14,7 +14,7 @@ def escape_markdown_v2(text: str):
 
 def escape_basic_markdown_v2(text: str):
     for char in r'_[](){}>#+-=|.!':
-        escaped_char = f'\{char}'
+        escaped_char = f'\{char}'  # noqa
         text = text.replace(escaped_char, char)
         text = text.replace(char, escaped_char)
 
@@ -23,7 +23,7 @@ def escape_basic_markdown_v2(text: str):
 
 def escape_for_citation_markdown_v2(text: str):
     for char in r'_[](){}#+-=|.!':
-        escaped_char = f'\{char}'
+        escaped_char = f'\{char}'  # noqa
         text = text.replace(escaped_char, char)
         text = text.replace(char, escaped_char)
 

@@ -1,7 +1,7 @@
 '''
     Arquivo que salva as Raças base no banco de dados.
 
-    Referência: https://ordempendragon.files.wordpress.com/2017/04/dd-5e-livro-do-jogador-fundo-branco-biblioteca-c3a9lfica.pdf
+    Referência: https://ordempendragon.files.wordpress.com/2017/04/dd-5e-livro-do-jogador-fundo-branco-biblioteca-c3a9lfica.pdf  # noqa
 '''
 
 from repository.mongo import RaceModel
@@ -237,8 +237,8 @@ RACES = [
             'unindo forças em uma vasta horda para o pavor das '
             'terras civilizadas próximas. '
             'Alguns orques crescem e se tornam orgulhosos '
-            'comandantes de tribos orques. Alguns arriscam sair pelo mundo para '
-            'provar seu valor entre os humanos e outras raças mais '
+            'comandantes de tribos orques. Alguns arriscam sair pelo mundo '
+            'para provar seu valor entre os humanos e outras raças mais '
             'civilizadas. Muitos desses se tornam aventureiros, '
             'adquirindo renome pelos seus poderosos feitos e '
             'notoriedade por seus costumes bárbaros e fúria selvagem.\n\n'

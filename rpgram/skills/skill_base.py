@@ -90,7 +90,7 @@ class BaseSkill:
             char: Personagem que possui a habilidade
             cost: Custo para usar da habilidade
             dice: Dado usado para rolar a habilidade
-            is_elusive: Se False, a habilidade pode ser esquivado, 
+            is_elusive: Se False, a habilidade pode ser esquivado,
                 ineludível caso contrário.
             use_equips_damage_types: Se True, a habilidade usa os tipos de dano
                 dos equipamentos do personagem

@@ -1,10 +1,10 @@
-from rpgram.consumables.consumable import Consumable
-from rpgram.consumables.cure import CureConsumable
-from rpgram.consumables.cure import PanaceaConsumable
-from rpgram.consumables.heal import HealingConsumable
-from rpgram.consumables.heal import ReviveConsumable
-from rpgram.consumables.other import IdentifyingConsumable
-from rpgram.consumables.other import TentConsumable
-from rpgram.consumables.other import XPConsumable
-from rpgram.consumables.other import TrocadoPouchConsumable
-from rpgram.consumables.other import GemstoneConsumable
+from rpgram.consumables.consumable import Consumable  # noqa
+from rpgram.consumables.cure import CureConsumable  # noqa
+from rpgram.consumables.cure import PanaceaConsumable  # noqa
+from rpgram.consumables.heal import HealingConsumable  # noqa
+from rpgram.consumables.heal import ReviveConsumable  # noqa
+from rpgram.consumables.other import IdentifyingConsumable  # noqa
+from rpgram.consumables.other import TentConsumable  # noqa
+from rpgram.consumables.other import XPConsumable  # noqa
+from rpgram.consumables.other import TrocadoPouchConsumable  # noqa
+from rpgram.consumables.other import GemstoneConsumable  # noqa

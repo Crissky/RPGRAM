@@ -42,7 +42,7 @@ def need_singup_player(callback):
 
 def skip_if_no_singup_player(callback):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        print(f'@SKIP_IF_NO_SINGUP_PLAYER')
+        print('@SKIP_IF_NO_SINGUP_PLAYER')
         player_model = PlayerModel()
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
@@ -59,8 +59,8 @@ def alert_if_not_chat_owner(
     retry_state=ConversationHandler.END,
     alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
 ):
-    '''Não executa a ação quando o botão é clicado por um usuário que não 
-    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    '''Não executa a ação quando o botão é clicado por um usuário que não
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no
     botão.'''
 
     def decorator(callback):
@@ -91,8 +91,8 @@ def alert_if_not_chat_owner_to_callback_data_to_dict(
     retry_state=ConversationHandler.END,
     alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
 ):
-    '''Não executa a ação quando o botão é clicado por um usuário que não 
-    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    '''Não executa a ação quando o botão é clicado por um usuário que não
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no
     botão.'''
 
     def decorator(callback):
@@ -123,8 +123,8 @@ def alert_if_not_chat_owner_to_anyway(
     retry_state=ConversationHandler.END,
     alert_text='⛔VOCÊ NÃO TEM ACESSO A ESSA MENSAGEM⛔'
 ):
-    '''Não executa a ação quando o botão é clicado por um usuário que não 
-    seja o dono da mensagem e envia um alerta para o usuário que clicou no 
+    '''Não executa a ação quando o botão é clicado por um usuário que não
+    seja o dono da mensagem e envia um alerta para o usuário que clicou no
     botão.'''
 
     def decorator(callback):

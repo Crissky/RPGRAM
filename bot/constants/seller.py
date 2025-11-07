@@ -45,8 +45,8 @@ NOT_ENOUGH_MONEY = 'Você não tem dinheiro suficiente para compra este item.'
 
 
 REPLY_TEXT_NEW_ITEMS_ARRIVED = [
-    f'Saudações, aventureiros! {SELLER_NAME} tem o prazer de anunciar que novos '
-    'tesouros foram adicionados à nossa loja. '
+    f'Saudações, aventureiros! {SELLER_NAME} tem o prazer de anunciar que '
+    'novos tesouros foram adicionados à nossa loja. '
     'Venham conferir as maravilhas que agora adornam nossas prateleiras!',
     f'{SELLER_NAME} saúda a todos! Temos o prazer de informar que nossa '
     'loja está repleta de novidades. '

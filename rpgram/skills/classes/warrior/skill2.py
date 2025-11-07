@@ -25,10 +25,10 @@ if TYPE_CHECKING:
 class BlinkAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.BLINK_ATTACK.value
     DESCRIPTION = (
-        f'Executa um único golpe rápido como um relâmpago, '
-        f'imperceptível aos olhos destreinados, '
-        f'dificultando as chances de esquiva do oponente e '
-        f'causando dano de '
+        'Executa um único golpe rápido como um relâmpago, '
+        'imperceptível aos olhos destreinados, '
+        'dificultando as chances de esquiva do oponente e '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -71,9 +71,9 @@ class BlinkAttackSkill(BaseSkill):
 class LethalAttackSkill(BaseSkill):
     NAME = WarriorSkillEnum.LETHAL_ATTACK.value
     DESCRIPTION = (
-        f'Desfere um ataque preciso focando pontos vitais do inimigo, '
-        f'ignorando suas defesas e '
-        f'causando dano com base no '
+        'Desfere um ataque preciso focando pontos vitais do inimigo, '
+        'ignorando suas defesas e '
+        'causando dano com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (75% + 5% x Rank x Nível).'
     )
     RANK = 3

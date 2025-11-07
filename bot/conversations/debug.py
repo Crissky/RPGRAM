@@ -127,7 +127,7 @@ async def get_random_debuff(
     context: ContextTypes.DEFAULT_TYPE
 ):
     ''' Comando que adiciona debuffs no personagem do jogador.
-    Caso não seja passado nenhum argumento, adiciona 1 nível de 
+    Caso não seja passado nenhum argumento, adiciona 1 nível de
     todos os debuffs.
     O primeiro argumento é o nome do debuff, o segundo é o nível.
     Se o nível não for passado, será considerado 1.

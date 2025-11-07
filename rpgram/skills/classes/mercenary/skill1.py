@@ -26,8 +26,8 @@ if TYPE_CHECKING:
 class NosebreakerSkill(BaseSkill):
     NAME = MercenarySkillEnum.NOSEBREAKER.value
     DESCRIPTION = (
-        f'Concentra sua força em um golpe direto focando a face do inimigo, '
-        f'causando dano de '
+        'Concentra sua força em um golpe direto focando a face do inimigo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -63,8 +63,8 @@ class NosebreakerSkill(BaseSkill):
 class SkullbreakerSkill(BaseSkill):
     NAME = MercenarySkillEnum.SKULLBREAKER.value
     DESCRIPTION = (
-        f'Realiza um ataque físico brutal focando a cabeça do inimigo, '
-        f'causando dano de '
+        'Realiza um ataque físico brutal focando a cabeça do inimigo, '
+        'causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.BLUDGEONING)}* com base no '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -102,7 +102,7 @@ class SkullbreakerSkill(BaseSkill):
 class ImproviseSkill(BaseSkill):
     NAME = MercenarySkillEnum.IMPROVISE.value
     DESCRIPTION = (
-        f'*Improvisa* melhorias temporárias para suas armas, '
+        '*Improvisa* melhorias temporárias para suas armas, '
         f'aumentando o *{PHYSICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{DEXTERITY_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -144,7 +144,7 @@ class ImproviseSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* *Improvisa* melhorias em sua(s) arma(s), '
-                f'aumentando o seu '
+                'aumentando o seu '
                 f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* '
                 f'em {condition.bonus_physical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'

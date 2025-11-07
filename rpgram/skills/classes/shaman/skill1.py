@@ -29,9 +29,9 @@ if TYPE_CHECKING:
 class VineCrosierSkill(BaseSkill):
     NAME = ShamanSkillEnum.VINE_CROSIER.value
     DESCRIPTION = (
-        f'Reveste as próprias armas em um emaranhado de *Vinhas*, '
+        'Reveste as próprias armas em um emaranhado de *Vinhas*, '
         f'transmutando-as em um *{ShamanSkillEnum.VINE_CROSIER.value}* que '
-        f'aumenta o '
+        'aumenta o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (100% + 10% x Rank x Nível).'
     )
@@ -74,7 +74,7 @@ class VineCrosierSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa um *{self.name}*, '
-                f'aumentando o '
+                'aumentando o '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}* em '
                 f'{condition.bonus_magical_attack} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -88,8 +88,8 @@ class VineCrosierSkill(BaseSkill):
 class WildCarnationCloakSkill(BaseSkill):
     NAME = ShamanSkillEnum.WILD_CARNATION_CLOAK.value
     DESCRIPTION = (
-        f'Tece um *Manto* imbuido por *Pétalas de Cravo Selvagem* que '
-        f'aumenta a '
+        'Tece um *Manto* imbuido por *Pétalas de Cravo Selvagem* que '
+        'aumenta a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (200% + 10% x Rank x Nível).'
     )
@@ -134,7 +134,7 @@ class WildCarnationCloakSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa um *{self.name}*, '
-                f'aumentando a '
+                'aumentando a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '
                 f'{condition.bonus_magical_defense} pontos.\n\n'
                 f'{ALERT_SECTION_HEAD_ADD_STATUS}'
@@ -148,8 +148,8 @@ class WildCarnationCloakSkill(BaseSkill):
 class CrystalSapRingSkill(BaseSkill):
     NAME = ShamanSkillEnum.CRYSTAL_SAP_RING.value
     DESCRIPTION = (
-        f'Esculpe um *Anel* reluzente feito de *Seiva Cristalina* que '
-        f'aumenta o '
+        'Esculpe um *Anel* reluzente feito de *Seiva Cristalina* que '
+        'aumenta o '
         f'*{MAGICAL_ATTACK_EMOJI_TEXT}* e a '
         f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* com base na '
         f'*{WISDOM_EMOJI_TEXT}* (300% + 10% x Rank x Nível).'
@@ -195,7 +195,7 @@ class CrystalSapRingSkill(BaseSkill):
         report = {
             'text': (
                 f'*{player_name}* cria e equipa um *{self.name}*, '
-                f'aumentando o '
+                'aumentando o '
                 f'*{MAGICAL_ATTACK_EMOJI_TEXT}* em '
                 f'{condition.bonus_magical_attack} pontos e a '
                 f'*{MAGICAL_DEFENSE_EMOJI_TEXT}* em '

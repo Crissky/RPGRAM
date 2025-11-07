@@ -32,7 +32,7 @@ class Consumable:
         if isinstance(rarity, str):
             rarity = RarityEnum[rarity]
         elif not isinstance(rarity, RarityEnum):
-            raise TypeError(f'rarity precisa ser uma string ou RarityEnum')
+            raise TypeError('rarity precisa ser uma string ou RarityEnum')
 
         self.__name = name
         self.__description = description

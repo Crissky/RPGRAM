@@ -30,8 +30,8 @@ if TYPE_CHECKING:
 class VipersFangSkill(BaseSkill):
     NAME = RogueSkillEnum.VIPERÇÇÇS_FANGS.value
     DESCRIPTION = (
-        f'Com um movimento rápido, golpeia o inimigo '
-        f'após imbuir sua arma com *Veneno*, causando dano de '
+        'Com um movimento rápido, golpeia o inimigo '
+        'após imbuir sua arma com *Veneno*, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível).'
     )
@@ -67,8 +67,8 @@ class VipersFangSkill(BaseSkill):
 class DoubleFangsSkill(BaseSkill):
     NAME = RogueSkillEnum.DOUBLE_FANGS.value
     DESCRIPTION = (
-        f'Com dois movimentos rápidos, golpeia o inimigo duas vezes '
-        f'com uma arma *Envenenada*, causando dano de '
+        'Com dois movimentos rápidos, golpeia o inimigo duas vezes '
+        'com uma arma *Envenenada*, causando dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível).'
     )
@@ -106,12 +106,12 @@ class DoubleFangsSkill(BaseSkill):
 class TaipanInoculateSkill(BaseSkill):
     NAME = RogueSkillEnum.TAIPAN_INOCULATE.value
     DESCRIPTION = (
-        f'Lança um ataque com a arma banhada em uma toxina poderosa que '
-        f'causa dano de '
+        'Lança um ataque com a arma banhada em uma toxina poderosa que '
+        'causa dano de '
         f'*{get_damage_emoji_text(DamageEnum.POISON)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (150% + 5% x Rank x Nível) e '
-        f'adiciona a condição '
+        'adiciona a condição '
         f'*{get_debuff_emoji_text(DebuffEnum.POISONING)}* com nível igual ao '
         f'2 x (Rank x Nível + {EmojiEnum.DICE.value}).'
     )
@@ -152,7 +152,6 @@ class TaipanInoculateSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = (self.level_rank + self.dice.value) * 2
 
@@ -166,10 +165,10 @@ class TaipanInoculateSkill(BaseSkill):
 class PhantomStrikeSkill(BaseSkill):
     NAME = RogueSkillEnum.PHANTOM_STRIKE.value
     DESCRIPTION = (
-        f'Ultrapassa o limiar da velocidade, '
-        f'aparentando ser um espectro que atravessa a realidade, para '
-        f'executar um único golpe furtivo que '
-        f'causa dano '
+        'Ultrapassa o limiar da velocidade, '
+        'aparentando ser um espectro que atravessa a realidade, para '
+        'executar um único golpe furtivo que '
+        'causa dano '
         f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (100% + 5% x Rank x Nível). '
         f'Essa habilidade possui *{HIT_EMOJI_TEXT}* acima do normal.'
@@ -212,14 +211,14 @@ class PhantomStrikeSkill(BaseSkill):
 class ElusiveAssaultSkill(BaseSkill):
     NAME = RogueSkillEnum.ELUSIVE_ASSAULT.value
     DESCRIPTION = (
-        f'Avança como um raio contra o oponente, ricocheteando para '
-        f'enganar suas defesas e '
-        f'atacando-o com um movimento preciso, '
-        f'causando dano '
+        'Avança como um raio contra o oponente, ricocheteando para '
+        'enganar suas defesas e '
+        'atacando-o com um movimento preciso, '
+        'causando dano '
         f'*{get_damage_emoji_text(DamageEnum.GHOSTLY)}* e de '
         f'*{get_damage_emoji_text(DamageEnum.LIGHTNING)}* com base no '
         f'*{PRECISION_ATTACK_EMOJI_TEXT}* (125% + 5% x Rank x Nível). '
-        f'Essa habilidade não pode ser esquivada.'
+        'Essa habilidade não pode ser esquivada.'
     )
     RANK = 3
     REQUIREMENTS = Requirement(**{

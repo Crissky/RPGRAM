@@ -1,4 +1,4 @@
-from random import choice, sample
+from random import sample
 from typing import TYPE_CHECKING
 from constant.text import ALERT_SECTION_HEAD_ADD_STATUS
 from rpgram.conditions.debuff import BurnCondition, PoisoningCondition
@@ -278,7 +278,6 @@ class HydraFangsSkill(BaseSkill):
         total_damage: int,
     ) -> dict:
         report = {'text': ''}
-        target_name = target.player_name
         if target.is_alive:
             level = self.level_rank
 

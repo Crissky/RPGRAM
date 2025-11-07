@@ -1,30 +1,30 @@
-from bot.conversations.add_stats import ADD_STATS_HANDLERS
-from bot.conversations.chat_xp import CHAT_XP_HANDLER
-from bot.conversations.config_group import CONFIG_GROUP_HANDLERS
-from bot.conversations.config_player import CONFIG_PLAYER_HANDLERS
-from bot.conversations.create_char import CREATE_CHAR_HANDLER
-from bot.conversations.help import HELP_HANDLERS
-from bot.conversations.season_msg import SEASON_JOBS_DEFINITIONS
-from bot.conversations.sign_up_group import SIGNUP_GROUP_HANDLER
-from bot.conversations.sign_up_player import SIGNUP_PLAYER_HANDLER
-from bot.conversations.view_group import VIEW_GROUP_HANDLERS
-from bot.conversations.view_level import VIEW_LEVEL_HANDLERS
-from bot.conversations.view_player import VIEW_PLAYER_HANDLERS
-from bot.conversations.view_char import VIEW_CHAR_HANDLERS
-from bot.conversations.rest import REST_HANDLERS
-from bot.conversations.item import TREASURE_HANDLERS
-from bot.conversations.bag import BAG_HANDLER, DROP_HANDLERS
-from bot.conversations.equips import VIEW_EQUIPS_HANDLERS
-from bot.conversations.debug import DEBUG_HANDLERS
-from bot.conversations.close import CLOSE_MSG_HANDLER
-from bot.conversations.race import RACES_HANDLERS
-from bot.conversations.classe import CLASSES_HANDLERS
-from bot.conversations.seller import SELLER_HANDLER
-from bot.conversations.enemy import AMBUSH_HANDLERS
-from bot.conversations.quest_item import ITEM_QUEST_HANDLER
-from bot.conversations.puzzle import PUZZLE_HANDLERS
-from bot.conversations.reset_char import RESET_CHAR_HANDLERS
-from bot.conversations.skill_tree import SKILL_TREE_HANDLERS
-from bot.conversations.word_game import WORDGAME_HANDLERS
-from bot.conversations.picross import PICROSS_HANDLERS
-from bot.conversations.game_debug import GAME_DEBUG_HANDLERS
+from bot.conversations.add_stats import ADD_STATS_HANDLERS  # noqa
+from bot.conversations.chat_xp import CHAT_XP_HANDLER  # noqa
+from bot.conversations.config_group import CONFIG_GROUP_HANDLERS  # noqa
+from bot.conversations.config_player import CONFIG_PLAYER_HANDLERS  # noqa
+from bot.conversations.create_char import CREATE_CHAR_HANDLER  # noqa
+from bot.conversations.help import HELP_HANDLERS  # noqa
+from bot.conversations.season_msg import SEASON_JOBS_DEFINITIONS  # noqa
+from bot.conversations.sign_up_group import SIGNUP_GROUP_HANDLER  # noqa
+from bot.conversations.sign_up_player import SIGNUP_PLAYER_HANDLER  # noqa
+from bot.conversations.view_group import VIEW_GROUP_HANDLERS  # noqa
+from bot.conversations.view_level import VIEW_LEVEL_HANDLERS  # noqa
+from bot.conversations.view_player import VIEW_PLAYER_HANDLERS  # noqa
+from bot.conversations.view_char import VIEW_CHAR_HANDLERS  # noqa
+from bot.conversations.rest import REST_HANDLERS  # noqa
+from bot.conversations.item import TREASURE_HANDLERS  # noqa
+from bot.conversations.bag import BAG_HANDLER, DROP_HANDLERS  # noqa
+from bot.conversations.equips import VIEW_EQUIPS_HANDLERS  # noqa
+from bot.conversations.debug import DEBUG_HANDLERS  # noqa
+from bot.conversations.close import CLOSE_MSG_HANDLER  # noqa
+from bot.conversations.race import RACES_HANDLERS  # noqa
+from bot.conversations.classe import CLASSES_HANDLERS  # noqa
+from bot.conversations.seller import SELLER_HANDLER  # noqa
+from bot.conversations.enemy import AMBUSH_HANDLERS  # noqa
+from bot.conversations.quest_item import ITEM_QUEST_HANDLER  # noqa
+from bot.conversations.puzzle import PUZZLE_HANDLERS  # noqa
+from bot.conversations.reset_char import RESET_CHAR_HANDLERS  # noqa
+from bot.conversations.skill_tree import SKILL_TREE_HANDLERS  # noqa
+from bot.conversations.word_game import WORDGAME_HANDLERS  # noqa
+from bot.conversations.picross import PICROSS_HANDLERS  # noqa
+from bot.conversations.game_debug import GAME_DEBUG_HANDLERS  # noqa

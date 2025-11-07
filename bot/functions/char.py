@@ -521,7 +521,7 @@ async def punishment(
     context: ContextTypes.DEFAULT_TYPE,
     message_id: int,
 ):
-    '''Punição: adiciona dano e Status a todos os jogadores por falharem no 
+    '''Punição: adiciona dano e Status a todos os jogadores por falharem no
     desafio.
     '''
 
