@@ -8,7 +8,6 @@ from function.date_time import (
     datetime_to_string
 )
 from random import randint
-from random import randint
 
 
 MAX_NUM_PLAYERS = 3

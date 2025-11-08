@@ -144,7 +144,7 @@ class Consumable:
 
 if __name__ == '__main__':
     from rpgram.boosters import Classe, Race
-    from rpgram.characters import BaseCharacter
+    from rpgram.characters import BaseCharacter  # noqa
     classe = Classe(
         name='Arqueiro',
         description='Arqueiro Teste',

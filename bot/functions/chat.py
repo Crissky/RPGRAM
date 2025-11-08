@@ -27,7 +27,6 @@ from rpgram.consumables.consumable import Consumable
 from rpgram.consumables.other import GemstoneConsumable, TrocadoPouchConsumable
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
 from rpgram.item import Item
-from random import randint
 
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4

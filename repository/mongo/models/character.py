@@ -29,7 +29,6 @@ class CharacterModel(Model):
 
 
 if __name__ == '__main__':
-    from repository.mongo import ClasseModel, RaceModel
     classe = ClasseModel()
     race = RaceModel()
     barbaro = classe.get('Bárbaro')

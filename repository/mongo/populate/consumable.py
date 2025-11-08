@@ -46,7 +46,6 @@ from rpgram.enums import (
     TrocadoEnum
 )
 from rpgram.enums.debuff import DebuffEnum
-from rpgram.enums.trocado import TrocadoEnum
 
 
 CURE_ITEMS_LEVEL = 1
