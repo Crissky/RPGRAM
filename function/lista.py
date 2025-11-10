@@ -27,6 +27,6 @@ def chunks(_list: Sequence, total_chunks: int):
 
 
 if __name__ == '__main__':
-    l = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    print(list(chunks(l, 6)))
-    print(mean_level(l, 6))
+    number_list = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    print(list(chunks(number_list, 6)))
+    print(mean_level(number_list, 6))
