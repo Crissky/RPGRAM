@@ -437,7 +437,7 @@ def put_grid_in_dict(
     print('PUZZLE.PUT_GRID_IN_DICT()')
     grids = context.chat_data.get('grids', {})
     grids[message_id] = {'grid': grid}
-    if not 'grids' in context.chat_data:
+    if 'grids' not in context.chat_data:
         context.chat_data['grids'] = grids
 
 

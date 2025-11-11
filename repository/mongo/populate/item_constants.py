@@ -1717,27 +1717,27 @@ ALL_NIPPON_EQUIPMENTS = (
 )
 
 for equip_class in ALL_WEAPONS:
-    if not equip_class in ALL_EQUIPMENTS_DEFINITIONS.keys():
+    if equip_class not in ALL_EQUIPMENTS_DEFINITIONS.keys():
         raise ValueError(f'Weapon {equip_class} not defined.')
 print('WEAPONS DEFINED OK!!!')
 
 for equip_class in ONE_HAND_EQUIPMENTS.keys():
-    if not equip_class in ALL_WEAPONS:
+    if equip_class not in ALL_WEAPONS:
         raise ValueError(f'One hand weapon {equip_class} not defined.')
 print('ONE HAND WEAPONS DEFINED OK!!!')
 
 for equip_class in TWO_HANDS_EQUIPMENTS.keys():
-    if not equip_class in ALL_WEAPONS:
+    if equip_class not in ALL_WEAPONS:
         raise ValueError(f'Two hands weapon {equip_class} not defined.')
 print('TWO HANDS WEAPONS DEFINED OK!!!')
 
 for equip_class in ALL_EQUIPMENTS_DEFINITIONS.keys():
-    if not equip_class in ALL_EQUIPMENT_REQUIREMENTS:
+    if equip_class not in ALL_EQUIPMENT_REQUIREMENTS:
         raise ValueError(f'Requirements to {equip_class} not defined.')
 print('EQUIPMENT REQUIREMENTS DEFINED TO ALL EQUIPMENTS!!!')
 
 for equip_class in ALL_EQUIPMENT_REQUIREMENTS:
-    if not equip_class in ALL_EQUIPMENTS_DEFINITIONS.keys():
+    if equip_class not in ALL_EQUIPMENTS_DEFINITIONS.keys():
         raise ValueError(
             f'Equipment {equip_class} not defined to receive requirements.'
         )

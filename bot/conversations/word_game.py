@@ -370,7 +370,7 @@ def put_wordgame_in_dict(
     print('WORDGAME.PUT_WORDGAME_IN_DICT()')
     games = context.chat_data.get(DICT_GAMES_KEY, {})
     games[message_id] = {GAME_OBJECT_KEY: game}
-    if not DICT_GAMES_KEY in context.chat_data:
+    if DICT_GAMES_KEY not in context.chat_data:
         context.chat_data[DICT_GAMES_KEY] = games
 
 
