@@ -473,7 +473,7 @@ class AnansisTrickerySkill(BaseSkill):
 class VidarsBraverySkill(BaseSkill):
     NAME = ClericSkillEnum.VIDARÇÇÇS_BRAVERY.value
     DESCRIPTION = (
-        'Unge um aliado com a *Bravura Indomita de Vigar*, '
+        'Unge um aliado com a *Bravura Indomita de Vidar*, '
         'aumentando o '
         f'*{HIT_POINT_FULL_EMOJI_TEXT}*, '
         f'*{PHYSICAL_ATTACK_EMOJI_TEXT}* e a '
