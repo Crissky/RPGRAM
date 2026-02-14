@@ -1,4 +1,4 @@
-COMMANDS = ['nivel', 'level', 'niveis', 'levels', 'nv', 'lv']
+COMMANDS = ['nivel', 'level', 'niveis', 'levels', 'nv', 'lv', 'nvl', 'lvl']
 
 
 # TEXTS
