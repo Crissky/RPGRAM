@@ -704,8 +704,8 @@ def remove_job_delete_message_from_context(
 
 
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
-    '''Agenda uma função call_telegram_message_function caso ocorra um erro
-    do tipo RetryAfter, TimedOut e o need_response seja False
+    '''Job que chama a função call_telegram_message_function caso ocorra um
+    erro do tipo RetryAfter, TimedOut e o need_response seja False
     '''
 
     print('JOB_CALL_TELEGRAM()')
