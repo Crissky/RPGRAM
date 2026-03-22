@@ -198,7 +198,7 @@ async def call_telegram_message_function(
             f'{function_caller}->'
             'CALL_TELEGRAM_MESSAGE_FUNCTION()'
         )
-        create_job_delete_message_from_context(
+        schedule_job_delete_message_from_context(
             function_caller=complete_function_caller,
             context=context,
             message=response,
@@ -654,7 +654,7 @@ async def delete_message_from_context(
             raise e
 
 
-def create_job_delete_message_from_context(
+def schedule_job_delete_message_from_context(
     function_caller: str,
     context: ContextTypes.DEFAULT_TYPE,
     message: Message,
