@@ -70,7 +70,7 @@ async def job_activate_conditions(context: ContextTypes.DEFAULT_TYPE):
                     auto_delete_message=MIN_AUTODELETE_TIME,
                 )
             except BadRequest as e:
-                if  str(e).startswith("Can't parse entities"):
+                if str(e).startswith("Can't parse entities"):
                     await send_private_message(
                         function_caller='JOB_ACTIVATE_CONDITIONS()',
                         context=context,

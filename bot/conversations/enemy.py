@@ -1239,7 +1239,7 @@ def put_ambush_dict(
         'reply_markup': reply_markup,
         'target_id': target_id,
     }
-    if not 'ambushes' in context.chat_data:
+    if 'ambushes' not in context.chat_data:
         context.chat_data['ambushes'] = ambushes
 
 

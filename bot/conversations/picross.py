@@ -400,7 +400,7 @@ def put_picross_in_dict(
     print('PICROSS.PUT_PICROSS_IN_DICT()')
     picrosses = context.chat_data.get('picrosses', {})
     picrosses[message_id] = {'picross': picross}
-    if not 'picrosses' in context.chat_data:
+    if 'picrosses' not in context.chat_data:
         context.chat_data['picrosses'] = picrosses
 
 

@@ -68,7 +68,7 @@ def singleton(cls):
         _instance = None
 
         def __new__(c, *args, **kwargs):
-            if type(c._instance) != c:
+            if not isinstance(c._instance, c):
                 c._instance = cls.__new__(c, *args, **kwargs)
             return c._instance
     ClassWrapper.__name__ = cls.__name__
@@ -407,3 +407,9 @@ class Model:
     )
         '''
         return {}
+
+
+if __name__ == '__main__':
+    model1 = Model()
+    model2 = Model()
+    print(model1 is model2)

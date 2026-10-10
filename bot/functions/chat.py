@@ -27,7 +27,6 @@ from rpgram.consumables.consumable import Consumable
 from rpgram.consumables.other import GemstoneConsumable, TrocadoPouchConsumable
 from rpgram.enums import EmojiEnum, FaceEmojiEnum
 from rpgram.item import Item
-from random import randint
 
 
 HOURS_DELETE_MESSAGE_FROM_CONTEXT = 4
@@ -199,7 +198,7 @@ async def call_telegram_message_function(
             f'{function_caller}->'
             'CALL_TELEGRAM_MESSAGE_FUNCTION()'
         )
-        create_job_delete_message_from_context(
+        schedule_job_delete_message_from_context(
             function_caller=complete_function_caller,
             context=context,
             message=response,
@@ -655,7 +654,7 @@ async def delete_message_from_context(
             raise e
 
 
-def create_job_delete_message_from_context(
+def schedule_job_delete_message_from_context(
     function_caller: str,
     context: ContextTypes.DEFAULT_TYPE,
     message: Message,
@@ -705,8 +704,8 @@ def remove_job_delete_message_from_context(
 
 
 async def job_call_telegram(context: ContextTypes.DEFAULT_TYPE):
-    '''Agenda uma função call_telegram_message_function caso ocorra um erro
-    do tipo RetryAfter, TimedOut e o need_response seja False
+    '''Job que chama a função call_telegram_message_function caso ocorra um
+    erro do tipo RetryAfter, TimedOut e o need_response seja False
     '''
 
     print('JOB_CALL_TELEGRAM()')

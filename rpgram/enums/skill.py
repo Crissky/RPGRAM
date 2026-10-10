@@ -120,7 +120,7 @@ class BardSkillEnum(Enum):
     WAR_SONG = 'Canção de Guerra'
     CRESCENT_MOON_BALLAD = 'Balada da Lua Crescente'
     TRICKSTER_TROVA = 'Trova do Malandro'
-    INVIGORATING_SONG = 'Canto de Revigorante'
+    INVIGORATING_SONG = 'Canto Revigorante'
 
 
 class ClericSkillEnum(Enum):

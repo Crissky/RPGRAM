@@ -144,7 +144,6 @@ class FlamingFurySkill(BaseSkill):
             sd_condition = SDFlamingFuryCondition(power=sd_power, level=level)
             report_list = char.status.set_conditions(condition, sd_condition)
 
-
             status_report_text = "\n".join(
                 [report["text"] for report in report_list]
             )
